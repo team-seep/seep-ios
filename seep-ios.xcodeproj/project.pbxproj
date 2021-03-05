@@ -3,11 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */; };
+		6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5425F20B31007DC880 /* AlertUtils.swift */; };
+		6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */; };
+		6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5C25F20D5A007DC880 /* RatioUtils.swift */; };
+		6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5F25F20D73007DC880 /* DateUtils.swift */; };
 		6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AF825F2047900955B57 /* AppDelegate.swift */; };
 		6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AFA25F2047900955B57 /* SceneDelegate.swift */; };
 		6E283AFD25F2047900955B57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AFC25F2047900955B57 /* ViewController.swift */; };
@@ -16,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E274E5425F20B31007DC880 /* AlertUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
+		6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtils.swift; sourceTree = "<group>"; };
+		6E274E5C25F20D5A007DC880 /* RatioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioUtils.swift; sourceTree = "<group>"; };
+		6E274E5F25F20D73007DC880 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		6E283AF525F2047900955B57 /* seep-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "seep-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E283AF825F2047900955B57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E283AFA25F2047900955B57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +48,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E274E5325F20B1E007DC880 /* uilts */ = {
+			isa = PBXGroup;
+			children = (
+				6E274E5425F20B31007DC880 /* AlertUtils.swift */,
+				6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */,
+				6E274E5C25F20D5A007DC880 /* RatioUtils.swift */,
+				6E274E5F25F20D73007DC880 /* DateUtils.swift */,
+			);
+			path = uilts;
+			sourceTree = "<group>";
+		};
 		6E283AEC25F2047900955B57 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +80,7 @@
 		6E283AF725F2047900955B57 /* seep-ios */ = {
 			isa = PBXGroup;
 			children = (
+				6E274E5325F20B1E007DC880 /* uilts */,
 				6E283AF825F2047900955B57 /* AppDelegate.swift */,
 				6E283AFA25F2047900955B57 /* SceneDelegate.swift */,
 				6E283AFC25F2047900955B57 /* ViewController.swift */,
@@ -85,7 +105,6 @@
 				F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */,
 				B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -202,7 +221,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */,
+				6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */,
 				6E283AFD25F2047900955B57 /* ViewController.swift in Sources */,
+				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,
+				6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */,
 				6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */,
 				6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */,
 			);
