@@ -22,7 +22,7 @@ struct AlertUtils {
     message: String? = nil,
     onTapOk: @escaping (() -> Void)
   ) {
-    let okAction = UIAlertAction(title: "확인", style: .default) { action in
+    let okAction = UIAlertAction(title: "common_ok".localized, style: .default) { action in
       onTapOk()
     }
     
@@ -40,10 +40,10 @@ struct AlertUtils {
     message: String? = nil,
     onTapOk: @escaping () -> Void
   ) {
-    let okAction = UIAlertAction(title: "확인", style: .default) { (action) in
+    let okAction = UIAlertAction(title: "common_ok".localized, style: .default) { (action) in
       onTapOk()
     }
-    let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+    let cancelAction = UIAlertAction(title: "common_cancel".localized, style: .cancel)
     
     AlertUtils.show(
       viewController: viewController,
@@ -58,7 +58,7 @@ struct AlertUtils {
     title: String?,
     message: String?
   ) {
-    let okAction = UIAlertAction(title: "확인", style: .default)
+    let okAction = UIAlertAction(title: "common_ok".localized, style: .default)
     
     AlertUtils.show(
       viewController: viewController,
@@ -78,7 +78,7 @@ struct AlertUtils {
       picker.sourceType = .camera
       controller.present(picker, animated: true)
     }
-    let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+    let cancelAction = UIAlertAction(title: "common_cancel".localized, style: .cancel, handler: nil)
     
     alert.addAction(libraryAction)
     alert.addAction(cameraAction)
