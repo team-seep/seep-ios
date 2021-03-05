@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */; };
 		6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AF825F2047900955B57 /* AppDelegate.swift */; };
 		6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AFA25F2047900955B57 /* SceneDelegate.swift */; };
 		6E283AFD25F2047900955B57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AFC25F2047900955B57 /* ViewController.swift */; };
@@ -22,6 +23,9 @@
 		6E283B0125F2047A00955B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E283B0425F2047A00955B57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6E283B0625F2047A00955B57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.release.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.release.xcconfig"; sourceTree = "<group>"; };
+		C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seep_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.debug.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +45,8 @@
 			children = (
 				6E283AF725F2047900955B57 /* seep-ios */,
 				6E283AF625F2047900955B57 /* Products */,
+				CE354C8B12BC6DA867D129DA /* Pods */,
+				A59D84F56481B30FACF6A680 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +71,24 @@
 			path = "seep-ios";
 			sourceTree = "<group>";
 		};
+		A59D84F56481B30FACF6A680 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE354C8B12BC6DA867D129DA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */,
+				B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +96,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6E283B0925F2047A00955B57 /* Build configuration list for PBXNativeTarget "seep-ios" */;
 			buildPhases = (
+				707DC633F71B0B56CCB4B569 /* [CP] Check Pods Manifest.lock */,
 				6E283AF125F2047900955B57 /* Sources */,
 				6E283AF225F2047900955B57 /* Frameworks */,
 				6E283AF325F2047900955B57 /* Resources */,
+				F97342ADC6FF9B36E2C0A924 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,6 +154,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		707DC633F71B0B56CCB4B569 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-seep-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F97342ADC6FF9B36E2C0A924 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-seep-ios/Pods-seep-ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-seep-ios/Pods-seep-ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-seep-ios/Pods-seep-ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6E283AF125F2047900955B57 /* Sources */ = {
@@ -271,6 +340,7 @@
 		};
 		6E283B0A25F2047A00955B57 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -292,6 +362,7 @@
 		};
 		6E283B0B25F2047A00955B57 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
