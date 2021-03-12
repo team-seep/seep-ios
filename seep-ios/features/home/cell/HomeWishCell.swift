@@ -17,31 +17,34 @@ class HomeWishCell: BaseTableViewCell {
   let titleLabel = UILabel().then {
     $0.text = "필름카메라 구매"
     $0.textColor = UIColor(r: 51, g: 51, b: 51)
-    $0.font = .systemFont(ofSize: 16, weight: .bold)
+    $0.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
+    $0.setKern(kern: -0.64)
   }
   
-  let deadlineLabel = UILabel().then {
-    let text = "하루 남았어요"
-    let attributedString = NSMutableAttributedString(string: text)
-    let boldTextRange = (text as NSString).range(of: "하루")
-    
-    attributedString.addAttribute(
-      .font,
-      value: UIFont.systemFont(ofSize: 12, weight: .bold),
-      range: boldTextRange
-    )
-    $0.textColor = UIColor(r: 136, g: 136, b: 136)
-    $0.font = .systemFont(ofSize: 12)
-    $0.attributedText = attributedString
-  }
-  
-  let tagButton = UIButton().then {
-    $0.setTitle("버킷리스트", for: .normal)
-    $0.setTitleColor(UIColor(r: 153, g: 153, b: 153), for: .normal)
-    $0.backgroundColor = UIColor(r: 238, g: 238, b: 238)
+  let deadlineLabel = PaddingLabel(
+    topInset: 3,
+    bottomInset: 1,
+    leftInset: 6,
+    rightInset: 6
+  ).then {
+    $0.text = "D-4"
+    $0.textColor = UIColor(r: 235, g: 82, b: 82)
+    $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
     $0.layer.cornerRadius = 4
-    $0.titleLabel?.font = .systemFont(ofSize: 11, weight: .semibold)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5)
+    $0.backgroundColor = UIColor(r: 255, g: 240, b: 240)
+  }
+  
+  let tagLabel = PaddingLabel(
+    topInset: 2,
+    bottomInset: 2,
+    leftInset: 6,
+    rightInset: 6
+  ).then {
+    $0.text = "버킷리스트"
+    $0.textColor = UIColor(r: 153, g: 153, b: 153)
+    $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+    $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
+    $0.layer.cornerRadius = 4
   }
   
   let checkButton = UIButton().then {
@@ -54,7 +57,7 @@ class HomeWishCell: BaseTableViewCell {
     self.selectionStyle = .none
     self.addSubViews(
       containerView, emojiLabel, titleLabel, deadlineLabel,
-      tagButton, checkButton
+      tagLabel, checkButton
     )
   }
   
@@ -79,10 +82,10 @@ class HomeWishCell: BaseTableViewCell {
     
     self.deadlineLabel.snp.makeConstraints { make in
       make.left.equalTo(self.titleLabel)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
+      make.top.equalTo(self.titleLabel.snp.bottom).offset(5)
     }
     
-    self.tagButton.snp.makeConstraints { make in
+    self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.deadlineLabel.snp.right).offset(7)
       make.centerY.equalTo(self.deadlineLabel)
     }

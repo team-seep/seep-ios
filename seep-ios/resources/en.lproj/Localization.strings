@@ -4,10 +4,9 @@
 
 // Home
 "home_write_button" = "📝 위시 쓰러갈래요";
-"home_write_count_format" = "11개의";
-"home_existed_wish" = "위시리스트가 있어요";
-"home_category_total" = "전체";
-"home_category_want_to_do" = "하고싶다";
-"home_category_want_to_buy" = "사고싶다";
-"home_category_want_to_go" = "가고싶다";
+"home_write_count_format1" = "하고 싶은 것들이\n%d개 남았어요!";
+"home_finish_count_format" = "👏 지금까지 %d개를 이뤘어요";
+"home_category_want_to_do" = "하고 싶어요";
+"home_category_want_to_get" = "갖고 싶어요";
+"home_category_want_to_go" = "가고 싶어요";
 "home_category_success" = "성공";
