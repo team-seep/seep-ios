@@ -36,6 +36,11 @@ class HomeVC: BaseVC, View {
       .map { 2 }
       .bind(onNext: self.homeView.moveActiveButton(index:))
       .disposed(by: tempDisposeBag)
+    
+    self.homeView.writeButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.showWirteVC)
+      .disposed(by: tempDisposeBag)
   }
   
   func bind(reactor: HomeReactor) {
@@ -49,6 +54,12 @@ class HomeVC: BaseVC, View {
       HomeWishCell.self,
       forCellReuseIdentifier: HomeWishCell.registerId
     )
+  }
+  
+  private func showWirteVC() {
+    let writeVC = WriteVC.instance()
+    
+    self.present(writeVC, animated: true, completion: nil)
   }
 }
 

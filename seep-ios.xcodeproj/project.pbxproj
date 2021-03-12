@@ -28,8 +28,12 @@
 		6E283AFD25F2047900955B57 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AFC25F2047900955B57 /* HomeVC.swift */; };
 		6E283B0225F2047A00955B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0125F2047A00955B57 /* Assets.xcassets */; };
 		6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */; };
+		6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41F28025FB873500CE1530 /* TextInputView.swift */; };
 		6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
 		6E66A27225FB416700C0C051 /* ViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27125FB416700C0C051 /* ViewType.swift */; };
+		6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27625FB45C500C0C051 /* WriteView.swift */; };
+		6E66A27A25FB489000C0C051 /* WriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27925FB489000C0C051 /* WriteVC.swift */; };
+		6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27C25FB587100C0C051 /* TextInputField.swift */; };
 		6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */; };
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
 		6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */; };
@@ -62,8 +66,12 @@
 		6E283B0125F2047A00955B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E283B0425F2047A00955B57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6E283B0625F2047A00955B57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E41F28025FB873500CE1530 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		6E66A26E25FB40BD00C0C051 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		6E66A27125FB416700C0C051 /* ViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewType.swift; sourceTree = "<group>"; };
+		6E66A27625FB45C500C0C051 /* WriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteView.swift; sourceTree = "<group>"; };
+		6E66A27925FB489000C0C051 /* WriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteVC.swift; sourceTree = "<group>"; };
+		6E66A27C25FB587100C0C051 /* TextInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputField.swift; sourceTree = "<group>"; };
 		6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
 		6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -124,6 +132,7 @@
 		6E274E7C25F20F45007DC880 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				6E66A27525FB45C000C0C051 /* write */,
 				6EE5CE7225FB24C900A737DF /* shared */,
 				6E274E8C25F214FB007DC880 /* home */,
 				6E274E7D25F20F4C007DC880 /* base */,
@@ -197,6 +206,15 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		6E66A27525FB45C000C0C051 /* write */ = {
+			isa = PBXGroup;
+			children = (
+				6E66A27625FB45C500C0C051 /* WriteView.swift */,
+				6E66A27925FB489000C0C051 /* WriteVC.swift */,
+			);
+			path = write;
+			sourceTree = "<group>";
+		};
 		6EE5CE6E25FB1EB500A737DF /* font */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +227,8 @@
 			isa = PBXGroup;
 			children = (
 				6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */,
+				6E66A27C25FB587100C0C051 /* TextInputField.swift */,
+				6E41F28025FB873500CE1530 /* TextInputView.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -355,6 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */,
 				6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */,
 				6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */,
 				6E274E7F25F20F58007DC880 /* BaseView.swift in Sources */,
@@ -365,7 +386,9 @@
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
 				6E274E7A25F20EF2007DC880 /* UILabelExtension.swift in Sources */,
 				6EEED44225F21F2C0059DBE5 /* HomeCategoryHeaderView.swift in Sources */,
+				6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */,
 				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,
+				6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */,
 				6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */,
 				6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */,
 				6E274E8925F20FE5007DC880 /* BaseCollectionViewCell.swift in Sources */,
@@ -374,6 +397,7 @@
 				6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */,
 				6E274E7125F20EB3007DC880 /* UIColorExtension.swift in Sources */,
 				6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */,
+				6E66A27A25FB489000C0C051 /* WriteVC.swift in Sources */,
 				6E274E6E25F20EA0007DC880 /* UIViewExtension.swift in Sources */,
 				6E274E8625F20FC0007DC880 /* BaseTableViewCell.swift in Sources */,
 				6EEED44525F2227F0059DBE5 /* HomeWishCell.swift in Sources */,
