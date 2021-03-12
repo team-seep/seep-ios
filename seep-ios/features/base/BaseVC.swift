@@ -1,10 +1,11 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
 class BaseVC: UIViewController {
   
-  let disposeBag = DisposeBag()
+  var disposeBag = DisposeBag()
   
   
   override func viewDidLoad() {

@@ -1,10 +1,12 @@
 import UIKit
 import RxSwift
+import ReactorKit
 
-class HomeVC: BaseVC {
+class HomeVC: BaseVC, View {
   
   private lazy var homeView = HomeView(frame: self.view.frame)
-  
+  private let homeReactor = HomeReactor()
+  private let tempDisposeBag = DisposeBag()
   
   static func instance() -> HomeVC {
     return HomeVC(nibName: nil, bundle: nil)
@@ -14,6 +16,7 @@ class HomeVC: BaseVC {
     super.viewDidLoad()
     
     self.view = homeView
+    self.reactor = homeReactor
     self.setupTableView()
     self.homeView.startAnimation()
   }
@@ -22,17 +25,21 @@ class HomeVC: BaseVC {
     self.homeView.wantToGetButton.rx.tap.observeOn(MainScheduler.instance)
       .map { 1 }
       .bind(onNext: self.homeView.moveActiveButton(index:))
-      .disposed(by: disposeBag)
+      .disposed(by: tempDisposeBag)
     
     self.homeView.wantToDoButton.rx.tap.observeOn(MainScheduler.instance)
       .map { 0 }
       .bind(onNext: self.homeView.moveActiveButton(index:))
-      .disposed(by: disposeBag)
+      .disposed(by: tempDisposeBag)
     
     self.homeView.wantToGoButton.rx.tap.observeOn(MainScheduler.instance)
       .map { 2 }
       .bind(onNext: self.homeView.moveActiveButton(index:))
-      .disposed(by: disposeBag)
+      .disposed(by: tempDisposeBag)
+  }
+  
+  func bind(reactor: HomeReactor) {
+    
   }
   
   private func setupTableView() {
