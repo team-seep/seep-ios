@@ -6,6 +6,7 @@ class WriteView: BaseView {
   
   let scrollView = UIScrollView().then {
     $0.backgroundColor = .clear
+    $0.showsVerticalScrollIndicator = false
   }
   
   let containerView = UIView().then {
@@ -93,6 +94,7 @@ class WriteView: BaseView {
       string: "write_placeholder_date".localized,
       attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
     )
+    $0.textField.tintColor = .clear
   }
   
   let notificationButton = UIButton().then {
@@ -151,7 +153,7 @@ class WriteView: BaseView {
     
     self.titleLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
-      make.top.equalTo(self.closeButton.snp.bottom).offset(20)
+      make.top.equalToSuperview().offset(20)
     }
     
     self.emojiButton.snp.makeConstraints { make in

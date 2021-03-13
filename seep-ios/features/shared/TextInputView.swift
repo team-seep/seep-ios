@@ -34,28 +34,13 @@ class TextInputView: BaseView {
   override func setup() {
     self.backgroundColor = .clear
     self.addSubViews(containerView, titleLabel, textView)
-    self.textView.delegate = self
+    self.textView.rx
+      .setDelegate(self)
+      .disposed(by: disposeBag)
     self.textView.rx.text.orEmpty.skip(1)
       .filter { $0 != "wrtie_placeholder_memo".localized }
       .map { $0.isEmpty }
       .bind(to: self.rx.isEmpty)
-      .disposed(by: disposeBag)
-    self.textView.rx.didBeginEditing
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        UIView.animate(withDuration: 0.3) {
-          self.containerView.backgroundColor = .white
-        }
-      }
-      .disposed(by: disposeBag)
-    self.textView.rx.didEndEditing
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        UIView.animate(withDuration: 0.3) {
-          self.containerView.layer.borderColor = UIColor(r: 186, g: 186, b: 186).cgColor
-          self.titleLabel.alpha = 0.0
-        }
-      }
       .disposed(by: disposeBag)
   }
   
@@ -112,12 +97,21 @@ extension TextInputView: UITextViewDelegate {
       textView.text = ""
       textView.textColor = UIColor(r: 51, g: 51, b: 51)
     }
+    self.rx.isEmpty.onNext(self.textView.text.isEmpty)
+    UIView.animate(withDuration: 0.3) {
+      self.containerView.backgroundColor = .white
+    }
   }
   
   func textViewDidEndEditing(_ textView: UITextView) {
     if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
       textView.text = "wrtie_placeholder_memo".localized
       textView.textColor = UIColor(r: 186, g: 186, b: 186)
+    }
+    
+    UIView.animate(withDuration: 0.3) {
+      self.containerView.layer.borderColor = UIColor(r: 186, g: 186, b: 186).cgColor
+      self.titleLabel.alpha = 0.0
     }
   }
   
