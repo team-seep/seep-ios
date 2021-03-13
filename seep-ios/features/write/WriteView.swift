@@ -38,8 +38,10 @@ class WriteView: BaseView {
     $0.attributedText = attributedString
   }
   
-  let emojiButton = UIButton().then {
-    $0.setImage(UIImage(named: "img_emoji_empty"), for: .normal)
+  let emojiButton = EmojiButton().then {
+    $0.text = "re"
+//    $0.setImage(UIImage(named: "img_emoji_empty"), for: .normal)
+//    $0.isUserInteractionEnabled = true
   }
   
   let categoryStackView = UIStackView().then {
