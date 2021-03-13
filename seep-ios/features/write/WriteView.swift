@@ -82,7 +82,6 @@ class WriteView: BaseView {
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
-    $0.setTitle("home_category_want_to_do".localized, for: .normal)
     $0.setKern(kern: -0.28)
   }
   
@@ -110,7 +109,6 @@ class WriteView: BaseView {
   let writeButton = UIButton().then {
     $0.layer.cornerRadius = 25
     $0.backgroundColor = UIColor(r: 102, g: 223, b: 27)
-    $0.setTitle("write_button_off".localized, for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
     $0.backgroundColor = UIColor(r: 204, g: 207, b: 211)
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
@@ -212,6 +210,37 @@ class WriteView: BaseView {
     UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
       self.writeButton.alpha = 0.0
       self.writeButton.transform = .init(translationX: 0, y: 100)
+    }
+  }
+  
+  func moveActiveButton(category: Category) {
+    var index = 0
+    switch category {
+    case .wantToDo:
+      index = 0
+    case .wantToGet:
+      index = 1
+    case .wantToGo:
+      index = 2
+    }
+    self.activeButton.snp.remakeConstraints { make in
+      make.centerY.equalTo(self.categoryStackView)
+      make.height.equalTo(30)
+      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
+    }
+    self.activeButton.setTitle(category.rawValue.localized, for: .normal)
+    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
+      self.layoutIfNeeded()
+    }, completion: nil)
+  }
+  
+  func writeButtonEnable(isEnable: Bool) {
+    if isEnable {
+      self.writeButton.setTitle("write_button_on".localized, for: .normal)
+      self.writeButton.backgroundColor = UIColor(r: 102, g: 223, b: 27)
+    } else{
+      self.writeButton.setTitle("write_button_off".localized, for: .normal)
+      self.writeButton.backgroundColor = UIColor(r: 204, g: 207, b: 211)
     }
   }
 }
