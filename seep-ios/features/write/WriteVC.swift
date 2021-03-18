@@ -77,6 +77,11 @@ class WriteVC: BaseVC, View {
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
+    self.writeView.notificationButton.rx.tap
+      .map { Reactor.Action.tapPushButton(()) }
+      .bind(to: self.writeReactor.action)
+      .disposed(by: disposeBag)
+    
     self.datePicker.rx.controlEvent(.valueChanged)
       .observeOn(MainScheduler.instance)
       .bind { [weak self] _ in
@@ -84,7 +89,6 @@ class WriteVC: BaseVC, View {
         self.writeView.dateField.rx.isEmpty.onNext(false)
       }
       .disposed(by: self.disposeBag)
-    
     
     // MARK: State
     self.writeReactor.state
@@ -104,6 +108,12 @@ class WriteVC: BaseVC, View {
       .map { $0.writeButtonEnable }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.writeView.writeButtonEnable(isEnable:))
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.isPushEnable }
+      .observeOn(MainScheduler.instance)
+      .bind(to: self.writeView.notificationButton.rx.isSelected)
       .disposed(by: self.disposeBag)
   }
   

@@ -9,7 +9,7 @@ class WriteReactor: Reactor {
     case tapCategory(Category)
     case inputTitle(String)
     case inputDate(Date)
-    case tapPushEnable(Bool)
+    case tapPushButton(Void)
     case inputMemo(String)
     case tapWriteButton(Void)
   }
@@ -20,7 +20,7 @@ class WriteReactor: Reactor {
     case setCategory(Category)
     case setTitle(String)
     case setDate(Date)
-    case setPushEnable(Bool)
+    case togglePushEnable(Void)
     case setMemo(String)
     case saveWish(Void)
   }
@@ -51,8 +51,8 @@ class WriteReactor: Reactor {
       return Observable.just(Mutation.setTitle(title))
     case .inputDate(let date):
       return Observable.just(Mutation.setDate(date))
-    case .tapPushEnable(let isEnable):
-      return Observable.just(Mutation.setPushEnable(isEnable))
+    case .tapPushButton():
+      return Observable.just(Mutation.togglePushEnable(()))
     case .inputMemo(let memo):
       return Observable.just(Mutation.setMemo(memo))
     case .tapWriteButton():
@@ -76,8 +76,8 @@ class WriteReactor: Reactor {
     case .setDate(let date):
       newState.date = date
       newState.writeButtonEnable = self.validate(state: newState)
-    case .setPushEnable(let isEnable):
-      newState.isPushEnable = isEnable
+    case .togglePushEnable():
+      newState.isPushEnable = !state.isPushEnable
     case .setMemo(let memo):
       newState.memo = memo
     case .saveWish():
