@@ -23,5 +23,9 @@ target 'seep-ios' do
   pod 'SwiftyBeaver'
   
   pod 'ISEmojiView'
+  
+  platform :ios, '12.0'
 
+  pod 'RealmSwift', '=10.1.4'
+  
 end

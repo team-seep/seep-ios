@@ -30,6 +30,8 @@
 		6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */; };
 		6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41F28025FB873500CE1530 /* TextInputView.swift */; };
 		6E41F28425FB916200CE1530 /* WriteReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41F28325FB916200CE1530 /* WriteReactor.swift */; };
+		6E441CA12604549F0010A625 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
+		6E441CA526046F9D0010A625 /* WishServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA426046F9D0010A625 /* WishServices.swift */; };
 		6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
 		6E66A27225FB416700C0C051 /* ViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27125FB416700C0C051 /* ViewType.swift */; };
 		6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27625FB45C500C0C051 /* WriteView.swift */; };
@@ -69,6 +71,8 @@
 		6E283B0625F2047A00955B57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E41F28025FB873500CE1530 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		6E41F28325FB916200CE1530 /* WriteReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReactor.swift; sourceTree = "<group>"; };
+		6E441CA02604549F0010A625 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
+		6E441CA426046F9D0010A625 /* WishServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishServices.swift; sourceTree = "<group>"; };
 		6E66A26E25FB40BD00C0C051 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		6E66A27125FB416700C0C051 /* ViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewType.swift; sourceTree = "<group>"; };
 		6E66A27625FB45C500C0C051 /* WriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteView.swift; sourceTree = "<group>"; };
@@ -185,6 +189,7 @@
 		6E283AF725F2047900955B57 /* seep-ios */ = {
 			isa = PBXGroup;
 			children = (
+				6E441CA326046F920010A625 /* services */,
 				6E66A26D25FB40B600C0C051 /* model */,
 				6E274E7C25F20F45007DC880 /* features */,
 				6E274E6C25F20E8E007DC880 /* extensions */,
@@ -199,11 +204,20 @@
 			path = "seep-ios";
 			sourceTree = "<group>";
 		};
+		6E441CA326046F920010A625 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				6E441CA426046F9D0010A625 /* WishServices.swift */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
 		6E66A26D25FB40B600C0C051 /* model */ = {
 			isa = PBXGroup;
 			children = (
 				6E66A26E25FB40BD00C0C051 /* Category.swift */,
 				6E66A27125FB416700C0C051 /* ViewType.swift */,
+				6E441CA02604549F0010A625 /* Wish.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -389,6 +403,8 @@
 				6E274E8325F20F8D007DC880 /* BaseVC.swift in Sources */,
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
 				6E274E7A25F20EF2007DC880 /* UILabelExtension.swift in Sources */,
+				6E441CA12604549F0010A625 /* Wish.swift in Sources */,
+				6E441CA526046F9D0010A625 /* WishServices.swift in Sources */,
 				6EEED44225F21F2C0059DBE5 /* HomeCategoryHeaderView.swift in Sources */,
 				6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */,
 				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,

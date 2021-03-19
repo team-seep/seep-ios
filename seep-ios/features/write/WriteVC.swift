@@ -4,7 +4,7 @@ import ReactorKit
 class WriteVC: BaseVC, View {
   
   private lazy var writeView = WriteView(frame: self.view.frame)
-  private let writeReactor = WriteReactor()
+  private let writeReactor = WriteReactor(wishService: WishService())
   
   private let datePicker = UIDatePicker().then {
     $0.datePickerMode = .date
@@ -95,6 +95,11 @@ class WriteVC: BaseVC, View {
       }
       .disposed(by: self.disposeBag)
     
+    self.writeView.writeButton.rx.tap
+      .map { Reactor.Action.tapWriteButton(()) }
+      .bind(to: self.writeReactor.action)
+      .disposed(by: disposeBag)
+    
     // MARK: State
     self.writeReactor.state
       .map { $0.category }
@@ -126,6 +131,18 @@ class WriteVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.writeView.setEmojiBackground(isEmpty:))
       .disposed(by: disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.shouldDismiss }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: { [weak self] shouldDismiss in
+        guard let self = self else { return }
+        if shouldDismiss {
+          self.dismiss()
+        }
+      })
+      .disposed(by: disposeBag)
   }
   
   private func setupKeyboardNotification() {
@@ -141,6 +158,10 @@ class WriteVC: BaseVC, View {
       name: UIResponder.keyboardWillHideNotification,
       object: nil
     )
+  }
+  
+  private func dismiss() {
+    self.dismiss(animated: true, completion: nil)
   }
   
   @objc private func keyboardWillShow(_ notification: Notification) {

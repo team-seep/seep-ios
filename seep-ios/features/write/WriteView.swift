@@ -255,6 +255,7 @@ class WriteView: BaseView {
   }
   
   func writeButtonEnable(isEnable: Bool) {
+    self.writeButton.isEnabled = isEnable
     if isEnable {
       self.writeButton.setTitle("write_button_on".localized, for: .normal)
       self.writeButton.backgroundColor = UIColor(r: 102, g: 223, b: 27)

@@ -34,10 +34,16 @@ class WriteReactor: Reactor {
     var isPushEnable: Bool = false
     var memo: String = ""
     var writeButtonEnable: Bool = false
+    var shouldDismiss: Bool = false
   }
   
   let initialState = State()
+  let wishService: WishServiceProtocol
   
+  
+  init(wishService: WishServiceProtocol) {
+    self.wishService = wishService
+  }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
@@ -56,6 +62,16 @@ class WriteReactor: Reactor {
     case .inputMemo(let memo):
       return Observable.just(Mutation.setMemo(memo))
     case .tapWriteButton():
+      let wish = Wish().then {
+        $0.emoji = self.initialState.emoji
+        $0.category = self.initialState.category.rawValue
+        $0.title = self.initialState.title
+        $0.date = self.initialState.date ?? Date()
+        $0.isPushEnable = self.initialState.isPushEnable
+        $0.memo = self.initialState.memo
+      }
+      
+      self.wishService.addWish(wish: wish)
       return Observable.just(Mutation.saveWish(()))
     }
   }
@@ -81,7 +97,7 @@ class WriteReactor: Reactor {
     case .setMemo(let memo):
       newState.memo = memo
     case .saveWish():
-      break
+      newState.shouldDismiss = true
     }
     
     return newState
