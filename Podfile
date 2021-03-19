@@ -21,5 +21,7 @@ target 'seep-ios' do
   pod 'Firebase/Analytics'
   
   pod 'SwiftyBeaver'
+  
+  pod 'ISEmojiView'
 
 end

@@ -1,4 +1,5 @@
 import UIKit
+import ISEmojiView
 
 class WriteView: BaseView {
   
@@ -38,10 +39,15 @@ class WriteView: BaseView {
     $0.attributedText = attributedString
   }
   
-  let emojiButton = EmojiButton().then {
-    $0.text = "re"
-//    $0.setImage(UIImage(named: "img_emoji_empty"), for: .normal)
-//    $0.isUserInteractionEnabled = true
+  let emojiBackground = UIImageView().then {
+    $0.image = UIImage(named: "img_emoji_empty")
+    $0.layer.cornerRadius = 36
+  }
+  
+  let emojiField = UITextField().then {
+    $0.tintColor = .clear
+    $0.textAlignment = .center
+    $0.font = .systemFont(ofSize: 36)
   }
   
   let categoryStackView = UIStackView().then {
@@ -125,12 +131,15 @@ class WriteView: BaseView {
     self.backgroundColor = .white
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
+    self.emojiField.delegate = self
+    self.setupEmojiKeyboard()
     self.categoryStackView.addArrangedSubview(wantToDoButton)
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      titleLabel, emojiButton, categoryStackView, activeButton,
-      titleField, dateField, notificationButton, memoField
+      titleLabel, emojiBackground, emojiField, categoryStackView,
+      activeButton, titleField, dateField, notificationButton,
+      memoField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(closeButton, scrollView, writeButton)
@@ -159,7 +168,13 @@ class WriteView: BaseView {
       make.top.equalToSuperview().offset(20)
     }
     
-    self.emojiButton.snp.makeConstraints { make in
+    self.emojiBackground.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.width.height.equalTo(72)
+      make.top.equalTo(self.titleLabel.snp.bottom).offset(24)
+    }
+    
+    self.emojiField.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.width.height.equalTo(72)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(24)
@@ -167,7 +182,7 @@ class WriteView: BaseView {
     
     self.categoryStackView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(self.emojiButton.snp.bottom).offset(32)
+      make.top.equalTo(self.emojiField.snp.bottom).offset(32)
     }
     
     self.activeButton.snp.makeConstraints { make in
@@ -248,6 +263,25 @@ class WriteView: BaseView {
       self.writeButton.backgroundColor = UIColor(r: 204, g: 207, b: 211)
     }
   }
+  
+  func setEmojiBackground(isEmpty: Bool) {
+    if isEmpty {
+      self.emojiBackground.image = UIImage(named: "img_emoji_empty")
+      self.emojiBackground.backgroundColor = .clear
+    } else {
+      self.emojiBackground.image = nil
+      self.emojiBackground.backgroundColor = UIColor(r: 246, g: 247, b: 249)
+    }
+  }
+  
+  private func setupEmojiKeyboard() {
+    let keyboardSettings = KeyboardSettings(bottomType: .categories)
+    let emojiView = EmojiView(keyboardSettings: keyboardSettings)
+    
+    emojiView.translatesAutoresizingMaskIntoConstraints = false
+    emojiView.delegate = self
+    self.emojiField.inputView = emojiView
+  }
 }
 
 extension WriteView: UIScrollViewDelegate {
@@ -264,5 +298,44 @@ extension WriteView: UIScrollViewDelegate {
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     self.showWriteButton()
+  }
+}
+
+extension WriteView: UITextFieldDelegate {
+  
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    let currentText = textField.text ?? ""
+    guard let stringRange = Range(range, in: currentText) else { return false }
+    let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+    
+    return updatedText.count <= 1
+  }
+}
+
+extension WriteView: EmojiViewDelegate {
+  
+  func emojiViewDidSelectEmoji(_ emoji: String, emojiView: EmojiView) {
+    self.emojiField.text = emoji
+    if self.emojiField.text?.count == 1 {
+      self.emojiField.resignFirstResponder()
+    }
+  }
+  
+  func emojiViewDidPressChangeKeyboardButton(_ emojiView: EmojiView) {
+    self.emojiField.inputView = nil
+    self.emojiField.keyboardType = .default
+    self.emojiField.reloadInputViews()
+  }
+  
+  func emojiViewDidPressDeleteBackwardButton(_ emojiView: EmojiView) {
+    self.emojiField.deleteBackward()
+  }
+  
+  func emojiViewDidPressDismissKeyboardButton(_ emojiView: EmojiView) {
+    self.emojiField.resignFirstResponder()
   }
 }

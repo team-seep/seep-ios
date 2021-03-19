@@ -51,6 +51,11 @@ class WriteVC: BaseVC, View {
   
   func bind(reactor: WriteReactor) {
     // MARK: Action
+    self.writeView.emojiField.rx.text.orEmpty
+      .map { Reactor.Action.inputEmoji($0) }
+      .bind(to: self.writeReactor.action)
+      .disposed(by: disposeBag)
+    
     self.writeView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
       .bind(to: self.writeReactor.action)
@@ -115,6 +120,12 @@ class WriteVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .bind(to: self.writeView.notificationButton.rx.isSelected)
       .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.emoji.isEmpty }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.writeView.setEmojiBackground(isEmpty:))
+      .disposed(by: disposeBag)
   }
   
   private func setupKeyboardNotification() {

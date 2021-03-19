@@ -66,6 +66,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.2.2):
     - GoogleUtilities/Logger
+  - ISEmojiView (0.2.6)
   - Kingfisher (5.15.8):
     - Kingfisher/Core (= 5.15.8)
   - Kingfisher/Core (5.15.8)
@@ -96,6 +97,7 @@ PODS:
 DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Crashlytics
+  - ISEmojiView
   - Kingfisher (~> 5.0)
   - ReactorKit
   - RxCocoa (~> 5)
@@ -117,6 +119,7 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - ISEmojiView
     - Kingfisher
     - nanopb
     - PromisesObjC
@@ -141,6 +144,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: c542a2feaac9ab98fd074e8f1a02c3585bbfbd47
   GoogleDataTransport: 1024b1a4dfbd7a0e92cb20d7e0a6f1fb66b449a4
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
+  ISEmojiView: f7cd94a6c93307f429ec5da001293d0b02247f03
   Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
@@ -154,6 +158,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   WeakMapTable: 05c694ce8439a7a9ebabb56187287a63c57673d6
 
-PODFILE CHECKSUM: 8f3af278cc8e7f321787a266687bc9a5f0b0f8a1
+PODFILE CHECKSUM: 15f6b10b7e5971a775e2bee78532cdbd9cc40743
 
 COCOAPODS: 1.10.1
