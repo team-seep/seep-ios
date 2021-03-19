@@ -10,5 +10,6 @@ class Wish: Object {
   @objc dynamic var date: Date = Date()
   @objc dynamic var isPushEnable: Bool = false
   @objc dynamic var memo: String = ""
+  @objc dynamic var isSuccess: Bool = false
   @objc dynamic var createdAt: Date = Date()
 }
