@@ -63,12 +63,12 @@ class WriteReactor: Reactor {
       return Observable.just(Mutation.setMemo(memo))
     case .tapWriteButton():
       let wish = Wish().then {
-        $0.emoji = self.initialState.emoji
-        $0.category = self.initialState.category.rawValue
-        $0.title = self.initialState.title
-        $0.date = self.initialState.date ?? Date()
-        $0.isPushEnable = self.initialState.isPushEnable
-        $0.memo = self.initialState.memo
+        $0.emoji = self.currentState.emoji
+        $0.category = self.currentState.category.rawValue
+        $0.title = self.currentState.title
+        $0.date = self.currentState.date ?? Date()
+        $0.isPushEnable = self.currentState.isPushEnable
+        $0.memo = self.currentState.memo
       }
       
       self.wishService.addWish(wish: wish)

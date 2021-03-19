@@ -5,14 +5,14 @@ protocol WishServiceProtocol {
   func addWish(wish: Wish)
   func deleteWish(id: ObjectId)
   func searchWish(id: ObjectId) -> Wish?
-  func fetchAllWishes() -> [Wish]
+  func fetchAllWishes(category: Category) -> [Wish]
 }
 
 
 struct WishService: WishServiceProtocol {
   
   func addWish(wish: Wish) {
-    guard let realm = try? Realm() else { return }
+    let realm = try! Realm()
     
     try! realm.write {
       realm.add(wish)
@@ -37,9 +37,9 @@ struct WishService: WishServiceProtocol {
     return targetObject
   }
   
-  func fetchAllWishes() -> [Wish] {
+  func fetchAllWishes(category: Category) -> [Wish] {
     guard let realm = try? Realm() else { return [] }
-    let searchTask = realm.objects(Wish.self).sorted(byKeyPath: "createdAt", ascending: true)
+    let searchTask = realm.objects(Wish.self).filter { $0.category == category.rawValue }
     
     return searchTask.map { $0 }
   }

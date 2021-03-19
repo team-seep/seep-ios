@@ -5,7 +5,7 @@ import ReactorKit
 class HomeVC: BaseVC, View {
   
   private lazy var homeView = HomeView(frame: self.view.frame)
-  private let homeReactor = HomeReactor()
+  private let homeReactor = HomeReactor(wishService: WishService())
   private let tempDisposeBag = DisposeBag()
   
   static func instance() -> HomeVC {
@@ -19,24 +19,13 @@ class HomeVC: BaseVC, View {
     self.reactor = homeReactor
     self.setupTableView()
     self.homeView.startAnimation()
+    
+    Observable.just(HomeReactor.Action.viewDidLoad(()))
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
   }
   
   override func bindEvent() {
-    self.homeView.wantToGetButton.rx.tap.observeOn(MainScheduler.instance)
-      .map { 1 }
-      .bind(onNext: self.homeView.moveActiveButton(index:))
-      .disposed(by: tempDisposeBag)
-    
-    self.homeView.wantToDoButton.rx.tap.observeOn(MainScheduler.instance)
-      .map { 0 }
-      .bind(onNext: self.homeView.moveActiveButton(index:))
-      .disposed(by: tempDisposeBag)
-    
-    self.homeView.wantToGoButton.rx.tap.observeOn(MainScheduler.instance)
-      .map { 2 }
-      .bind(onNext: self.homeView.moveActiveButton(index:))
-      .disposed(by: tempDisposeBag)
-    
     self.homeView.writeButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showWirteVC)
@@ -44,12 +33,42 @@ class HomeVC: BaseVC, View {
   }
   
   func bind(reactor: HomeReactor) {
+    // MARK: Action
+    self.homeView.wantToDoButton.rx.tap
+      .map { HomeReactor.Action.tapCategory(Category.wantToDo) }
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
     
+    self.homeView.wantToGoButton.rx.tap
+      .map { HomeReactor.Action.tapCategory(Category.wantToGo) }
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
+    
+    self.homeView.wantToGetButton.rx.tap
+      .map { HomeReactor.Action.tapCategory(Category.wantToGet) }
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: State
+    self.homeReactor.state
+      .map { $0.wishiList }
+      .bind(to: self.homeView.tableView.rx.items(
+        cellIdentifier: HomeWishCell.registerId,
+        cellType: HomeWishCell.self
+      )) { row, wish, cell in
+        cell.bind(wish: wish)
+      }
+      .disposed(by: disposeBag)
+    
+    self.homeReactor.state
+      .map { $0.category }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.homeView.moveActiveButton(category:))
+      .disposed(by: disposeBag)
   }
   
   private func setupTableView() {
-    self.homeView.tableView.dataSource = self
-    self.homeView.tableView.delegate = self
     self.homeView.tableView.register(
       HomeWishCell.self,
       forCellReuseIdentifier: HomeWishCell.registerId
@@ -63,17 +82,7 @@ class HomeVC: BaseVC, View {
   }
 }
 
-extension HomeVC: UITableViewDataSource, UITableViewDelegate {
-  
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 20
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeWishCell.registerId, for: indexPath) as? HomeWishCell else { return BaseTableViewCell() }
-    
-    return cell
-  }
+extension HomeVC: UITableViewDelegate {
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
     self.homeView.hideWriteButton()

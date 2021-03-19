@@ -65,7 +65,6 @@ class HomeView: BaseView {
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
-    $0.setTitle("home_category_want_to_do".localized, for: .normal)
     $0.setKern(kern: -0.28)
   }
   
@@ -197,12 +196,15 @@ class HomeView: BaseView {
     }
   }
   
-  func moveActiveButton(index: Int) {
+  func moveActiveButton(category: Category) {
+    let index = category.getIndex()
+    
     self.activeButton.snp.remakeConstraints { make in
       make.centerY.equalTo(self.categoryStackView)
       make.height.equalTo(30)
       make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
     }
+    self.activeButton.setTitle(category.rawValue.localized, for: .normal)
     UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
       self.layoutIfNeeded()
     }, completion: nil)
