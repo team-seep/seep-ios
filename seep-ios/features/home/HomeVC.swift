@@ -61,6 +61,11 @@ class HomeVC: BaseVC, View {
       .disposed(by: disposeBag)
     
     self.homeReactor.state
+      .map { $0.successCount }
+      .bind(onNext: self.homeView.setSuccessCount(count:))
+      .disposed(by: disposeBag)
+    
+    self.homeReactor.state
       .map { $0.category }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)

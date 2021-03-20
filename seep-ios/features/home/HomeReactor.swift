@@ -14,10 +14,12 @@ class HomeReactor: Reactor {
   enum Mutation {
     case fetchWishList([Wish])
     case filterCategory(Category)
+    case setSuccessCount(Int)
   }
   
   struct State {
     var wishiList: [Wish] = []
+    var successCount: Int = 0
     var category: Category = .wantToDo
     var viewTYpe: ViewType = .list
   }
@@ -34,8 +36,12 @@ class HomeReactor: Reactor {
     switch action {
     case .viewDidLoad():
       let wishList = self.wishService.fetchAllWishes(category: self.initialState.category)
+      let successCount = self.wishService.getFinishCount()
       
-      return Observable.just(Mutation.fetchWishList(wishList))
+      return Observable.concat([
+        Observable.just(Mutation.fetchWishList(wishList)),
+        Observable.just(Mutation.setSuccessCount(successCount))
+      ])
     case .tapCategory(let category):
       let filterWishList = self.wishService.fetchAllWishes(category: category)
       
@@ -53,6 +59,8 @@ class HomeReactor: Reactor {
       newState.wishiList = wishList
     case .filterCategory(let category):
       newState.category = category
+    case .setSuccessCount(let count):
+      newState.successCount = count
     }
     
     return newState
