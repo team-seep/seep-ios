@@ -23,6 +23,7 @@ class HomeReactor: Reactor {
     var successCount: Int = 0
     var category: Category = .wantToDo
     var viewType: ViewType = .list
+    var endRefresh: Bool = false
   }
   
   let initialState = State()
@@ -66,6 +67,7 @@ class HomeReactor: Reactor {
     switch mutation {
     case .fetchWishList(let wishList):
       newState.wishiList = wishList
+      newState.endRefresh.toggle()
     case .filterCategory(let category):
       newState.category = category
     case .setSuccessCount(let count):

@@ -22,7 +22,7 @@ class HomeVC: BaseVC, View {
     self.reactor = homeReactor
     self.setupTableView()
     self.setupCollectionView()
-    self.homeView.startAnimation()
+    self.homeView.startAnimation() 
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -45,22 +45,27 @@ class HomeVC: BaseVC, View {
     self.homeView.wantToDoButton.rx.tap
       .map { HomeReactor.Action.tapCategory(Category.wantToDo) }
       .bind(to: self.homeReactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeView.wantToGoButton.rx.tap
       .map { HomeReactor.Action.tapCategory(Category.wantToGo) }
       .bind(to: self.homeReactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeView.wantToGetButton.rx.tap
       .map { HomeReactor.Action.tapCategory(Category.wantToGet) }
       .bind(to: self.homeReactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeView.viewTypeButton.rx.tap
       .map { HomeReactor.Action.tapViewType(())}
       .bind(to: self.homeReactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
+    
+    self.homeView.pullToRefresh.rx.controlEvent(.valueChanged)
+      .map { HomeReactor.Action.viewDidLoad(()) }
+      .bind(to: self.homeReactor.action)
+      .disposed(by: self.disposeBag)
     
     // MARK: State
     self.homeReactor.state
@@ -71,7 +76,7 @@ class HomeVC: BaseVC, View {
       )) { row, wish, cell in
         cell.bind(wish: wish)
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeReactor.state
       .map { $0.wishiList }
@@ -81,12 +86,12 @@ class HomeVC: BaseVC, View {
       )) { row, wish, cell in
         cell.bind(wish: wish)
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeReactor.state
       .map { $0.successCount }
       .bind(onNext: self.homeView.setSuccessCount(count:))
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeReactor.state
       .map { $0.category }
@@ -94,14 +99,20 @@ class HomeVC: BaseVC, View {
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.moveActiveButton(category:))
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     self.homeReactor.state
       .map { $0.viewType }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.changeViewType(to:))
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
+    
+    self.homeReactor.state
+      .map { $0.endRefresh }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.homeView.pullToRefresh.endRefreshing)
+      .disposed(by: self.disposeBag)
   }
   
   private func setupTableView() {

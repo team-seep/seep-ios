@@ -2,6 +2,8 @@ import UIKit
 
 class HomeView: BaseView {
   
+  let pullToRefresh = UIRefreshControl()
+  
   let titleLabel = UILabel().then {
     $0.text = String(format: "home_write_count_format1".localized, 24)
     $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
@@ -119,6 +121,7 @@ class HomeView: BaseView {
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
+    self.tableView.refreshControl = self.pullToRefresh
     self.categoryStackView.addArrangedSubview(wantToDoButton)
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
