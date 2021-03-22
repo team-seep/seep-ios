@@ -109,6 +109,14 @@ class HomeVC: BaseVC, View {
       HomeWishCell.self,
       forCellReuseIdentifier: HomeWishCell.registerId
     )
+    self.homeView.tableView.dragInteractionEnabled = true
+    self.homeView.tableView.dragDelegate = self
+    self.homeView.tableView.rx.itemMoved
+      .bind { itemMoveEvent in
+        print("Source index: \(itemMoveEvent.sourceIndex)")
+        print("destenation index: \(itemMoveEvent.destinationIndex)")
+      }
+      .disposed(by: self.disposeBag)
   }
   
   private func setupCollectionView() {
@@ -116,6 +124,8 @@ class HomeVC: BaseVC, View {
       HomeWishCollectionCell.self,
       forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
     )
+    self.homeView.collectionView.dragInteractionEnabled = true
+    self.homeView.collectionView.dragDelegate = self
   }
   
   private func showWirteVC() {
@@ -150,6 +160,36 @@ extension HomeVC: WriteDelegate {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
+  }
+}
+
+extension HomeVC: UITableViewDragDelegate {
+  
+  func tableView(
+    _ tableView: UITableView,
+    itemsForBeginning session: UIDragSession,
+    at indexPath: IndexPath
+  ) -> [UIDragItem] {
+    let wish = self.homeReactor.currentState.wishiList[indexPath.row]
+    let dragItem = UIDragItem(itemProvider: NSItemProvider())
+    
+    dragItem.localObject = wish
+    return [dragItem]
+  }
+}
+
+extension HomeVC: UICollectionViewDragDelegate {
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    itemsForBeginning session: UIDragSession,
+    at indexPath: IndexPath
+  ) -> [UIDragItem] {
+    let wish = self.homeReactor.currentState.wishiList[indexPath.row]
+    let dragItem = UIDragItem(itemProvider: NSItemProvider())
+    
+    dragItem.localObject = wish
+    return [dragItem]
   }
 }
 
