@@ -13,9 +13,8 @@ class HomeView: BaseView {
     $0.image = UIImage(named: "img_home_emoji")
   }
   
-  let finishButton = UIButton().then {
+  let successCountButton = UIButton().then {
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 12)
-    $0.setTitle("home_finish_count_format".localized, for: .normal)
     $0.setTitleColor(.black, for: .normal)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 4, right: 15)
     $0.backgroundColor = .white
@@ -65,7 +64,6 @@ class HomeView: BaseView {
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
-    $0.setTitle("home_category_want_to_do".localized, for: .normal)
     $0.setKern(kern: -0.28)
   }
   
@@ -107,7 +105,7 @@ class HomeView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.addSubViews(
-      titleLabel, emojiView, finishButton, categoryStackView,
+      titleLabel, emojiView, successCountButton, categoryStackView,
       shapeButton, activeButton, tableView, gradientView,
       writeButton
     )
@@ -124,14 +122,14 @@ class HomeView: BaseView {
       make.right.equalToSuperview().offset(-20)
     }
     
-    self.finishButton.snp.makeConstraints { make in
+    self.successCountButton.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(22)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(20 * RatioUtils.height)
     }
     
     self.categoryStackView.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
-      make.top.equalTo(self.finishButton.snp.bottom).offset(50 * RatioUtils.height)
+      make.top.equalTo(self.successCountButton.snp.bottom).offset(50 * RatioUtils.height)
     }
     
     self.shapeButton.snp.makeConstraints { make in
@@ -197,14 +195,30 @@ class HomeView: BaseView {
     }
   }
   
-  func moveActiveButton(index: Int) {
+  func moveActiveButton(category: Category) {
+    let index = category.getIndex()
+    
     self.activeButton.snp.remakeConstraints { make in
       make.centerY.equalTo(self.categoryStackView)
       make.height.equalTo(30)
       make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
     }
+    self.activeButton.setTitle(category.rawValue.localized, for: .normal)
     UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
       self.layoutIfNeeded()
     }, completion: nil)
+  }
+  
+  func setSuccessCount(count: Int) {
+    let text = String(format: "home_finish_count_format".localized, count)
+    let attributedString = NSMutableAttributedString(string: text)
+    let underlineTextRange = (text as NSString).range(of: "\(count)개")
+    
+    attributedString.addAttribute(
+      .foregroundColor,
+      value: UIColor(r: 47, g: 168, b: 249),
+      range: underlineTextRange
+    )
+    self.successCountButton.setAttributedTitle(attributedString, for: .normal)
   }
 }

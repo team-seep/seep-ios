@@ -95,4 +95,16 @@ class HomeWishCell: BaseTableViewCell {
       make.right.equalTo(self.containerView).offset(-16)
     }
   }
+  
+  func bind(wish: Wish) {
+    self.emojiLabel.text = wish.emoji
+    self.titleLabel.text = wish.title
+    self.deadlineLabel.text = self.calculateDDay(date: wish.date)
+  }
+  
+  private func calculateDDay(date: Date) -> String {
+    let dday = Calendar.current.dateComponents([.day], from: Date(), to: date).day ?? -1
+    
+    return "D-\(dday)"
+  }
 }

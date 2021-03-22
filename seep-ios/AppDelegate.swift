@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -7,6 +8,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    self.initilizeFirebase()
     return true
   }
 
@@ -26,5 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didDiscardSceneSessions sceneSessions: Set<UISceneSession>
   ) {
     
+  }
+  
+  private func initilizeFirebase() {
+    FirebaseApp.configure()
   }
 }
