@@ -19,6 +19,10 @@ class HomeVC: BaseVC, View {
     self.reactor = homeReactor
     self.setupTableView()
     self.homeView.startAnimation()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
@@ -67,6 +71,7 @@ class HomeVC: BaseVC, View {
     
     self.homeReactor.state
       .map { $0.category }
+      .skip(1)
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.moveActiveButton(category:))
