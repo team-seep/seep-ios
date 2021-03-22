@@ -5,7 +5,10 @@ import ReactorKit
 class HomeVC: BaseVC, View {
   
   private lazy var homeView = HomeView(frame: self.view.frame)
-  private let homeReactor = HomeReactor(wishService: WishService())
+  private let homeReactor = HomeReactor(
+    wishService: WishService(),
+    userDefaults: UserDefaultsUtils()
+  )
   private let tempDisposeBag = DisposeBag()
   
   static func instance() -> HomeVC {
@@ -18,6 +21,7 @@ class HomeVC: BaseVC, View {
     self.view = homeView
     self.reactor = homeReactor
     self.setupTableView()
+    self.setupCollectionView()
     self.homeView.startAnimation()
   }
   
@@ -53,12 +57,27 @@ class HomeVC: BaseVC, View {
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
     
+    self.homeView.viewTypeButton.rx.tap
+      .map { HomeReactor.Action.tapViewType(())}
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
+    
     // MARK: State
     self.homeReactor.state
       .map { $0.wishiList }
       .bind(to: self.homeView.tableView.rx.items(
         cellIdentifier: HomeWishCell.registerId,
         cellType: HomeWishCell.self
+      )) { row, wish, cell in
+        cell.bind(wish: wish)
+      }
+      .disposed(by: disposeBag)
+    
+    self.homeReactor.state
+      .map { $0.wishiList }
+      .bind(to: self.homeView.collectionView.rx.items(
+              cellIdentifier: HomeWishCollectionCell.registerId,
+              cellType: HomeWishCollectionCell.self
       )) { row, wish, cell in
         cell.bind(wish: wish)
       }
@@ -76,12 +95,26 @@ class HomeVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.moveActiveButton(category:))
       .disposed(by: disposeBag)
+    
+    self.homeReactor.state
+      .map { $0.viewType }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.homeView.changeViewType(to:))
+      .disposed(by: disposeBag)
   }
   
   private func setupTableView() {
     self.homeView.tableView.register(
       HomeWishCell.self,
       forCellReuseIdentifier: HomeWishCell.registerId
+    )
+  }
+  
+  private func setupCollectionView() {
+    self.homeView.collectionView.register(
+      HomeWishCollectionCell.self,
+      forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
     )
   }
   

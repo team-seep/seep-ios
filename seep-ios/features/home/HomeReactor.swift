@@ -7,13 +7,14 @@ class HomeReactor: Reactor {
   enum Action {
     case viewDidLoad(Void)
     case tapCategory(Category)
-//    case tapViewType(ViewType)
+    case tapViewType(Void)
 //    case tapItem(Int)
   }
   
   enum Mutation {
     case fetchWishList([Wish])
     case filterCategory(Category)
+    case setViewType(ViewType)
     case setSuccessCount(Int)
   }
   
@@ -21,15 +22,17 @@ class HomeReactor: Reactor {
     var wishiList: [Wish] = []
     var successCount: Int = 0
     var category: Category = .wantToDo
-    var viewTYpe: ViewType = .list
+    var viewType: ViewType = .list
   }
   
   let initialState = State()
   let wishService: WishServiceProtocol
+  let userDefaults: UserDefaultsUtils
   
   
-  init(wishService: WishServiceProtocol) {
+  init(wishService: WishServiceProtocol, userDefaults: UserDefaultsUtils) {
     self.wishService = wishService
+    self.userDefaults = userDefaults
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
@@ -40,7 +43,8 @@ class HomeReactor: Reactor {
       
       return Observable.concat([
         Observable.just(Mutation.fetchWishList(wishList)),
-        Observable.just(Mutation.setSuccessCount(successCount))
+        Observable.just(Mutation.setSuccessCount(successCount)),
+        Observable.just(Mutation.setViewType(self.userDefaults.getViewType()))
       ])
     case .tapCategory(let category):
       let filterWishList = self.wishService.fetchAllWishes(category: category)
@@ -49,6 +53,11 @@ class HomeReactor: Reactor {
         Observable.just(Mutation.fetchWishList(filterWishList)),
         Observable.just(Mutation.filterCategory(category))
       ])
+    case .tapViewType():
+      let viewType = self.currentState.viewType.toggle()
+      
+      self.userDefaults.setViewType(viewType: viewType)
+      return Observable.just(Mutation.setViewType(viewType))
     }
   }
 
@@ -61,6 +70,8 @@ class HomeReactor: Reactor {
       newState.category = category
     case .setSuccessCount(let count):
       newState.successCount = count
+    case .setViewType(let viewType):
+      newState.viewType = viewType
     }
     
     return newState

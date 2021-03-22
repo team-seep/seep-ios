@@ -67,7 +67,7 @@ class HomeView: BaseView {
     $0.setKern(kern: -0.28)
   }
   
-  let shapeButton = UIButton().then {
+  let viewTypeButton = UIButton().then {
     $0.setImage(UIImage(named: "ic_grid"), for: .normal)
   }
   
@@ -77,6 +77,24 @@ class HomeView: BaseView {
     $0.rowHeight = UITableView.automaticDimension
     $0.separatorStyle = .none
     $0.showsVerticalScrollIndicator = false
+  }
+  
+  let collectionView = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: UICollectionViewLayout()
+  ).then {
+    let layout = UICollectionViewFlowLayout()
+    layout.itemSize = CGSize(
+      width: (UIScreen.main.bounds.width - 40 - 15) / 2,
+      height: (UIScreen.main.bounds.width - 40 - 15) / 2
+    )
+    layout.minimumInteritemSpacing = 15
+    layout.minimumLineSpacing = 16
+    
+    $0.collectionViewLayout = layout
+    $0.backgroundColor = .clear
+    $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    $0.alpha = 0.0
   }
 
   let gradientView = UIView().then {
@@ -106,8 +124,8 @@ class HomeView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.addSubViews(
       titleLabel, emojiView, successCountButton, categoryStackView,
-      shapeButton, activeButton, tableView, gradientView,
-      writeButton
+      viewTypeButton, activeButton, tableView, collectionView,
+      gradientView, writeButton
     )
   }
   
@@ -132,7 +150,7 @@ class HomeView: BaseView {
       make.top.equalTo(self.successCountButton.snp.bottom).offset(50 * RatioUtils.height)
     }
     
-    self.shapeButton.snp.makeConstraints { make in
+    self.viewTypeButton.snp.makeConstraints { make in
       make.right.equalToSuperview().offset(-36)
       make.centerY.equalTo(self.categoryStackView)
     }
@@ -144,6 +162,11 @@ class HomeView: BaseView {
     }
     
     self.tableView.snp.makeConstraints { make in
+      make.left.right.bottom.equalToSuperview()
+      make.top.equalTo(categoryStackView.snp.bottom).offset(16)
+    }
+    
+    self.collectionView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
       make.top.equalTo(categoryStackView.snp.bottom).offset(16)
     }
@@ -220,5 +243,23 @@ class HomeView: BaseView {
       range: underlineTextRange
     )
     self.successCountButton.setAttributedTitle(attributedString, for: .normal)
+  }
+  
+  func changeViewType(to viewType: ViewType) {
+    self.viewTypeButton.setImage(UIImage(named: viewType.toggle().imageName), for: .normal)
+    switch viewType {
+    case .grid:
+      UIView.animate(withDuration: 0.3) { [weak self] in
+        guard let self = self else { return }
+        self.collectionView.alpha = 1.0
+        self.tableView.alpha = 0.0
+      }
+    case .list:
+      UIView.animate(withDuration: 0.3) { [weak self] in
+        guard let self = self else { return }
+        self.collectionView.alpha = 0.0
+        self.tableView.alpha = 1.0
+      }
+    }
   }
 }
