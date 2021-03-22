@@ -81,7 +81,9 @@ class HomeVC: BaseVC, View {
   }
   
   private func showWirteVC() {
-    let writeVC = WriteVC.instance()
+    let writeVC = WriteVC.instance().then {
+      $0.delegate = self
+    }
     
     self.present(writeVC, animated: true, completion: nil)
   }
@@ -101,6 +103,15 @@ extension HomeVC: UITableViewDelegate {
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     self.homeView.showWriteButton()
+  }
+}
+
+extension HomeVC: WriteDelegate {
+  
+  func onSuccessWrite() {
+    Observable.just(HomeReactor.Action.viewDidLoad(()))
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
   }
 }
 

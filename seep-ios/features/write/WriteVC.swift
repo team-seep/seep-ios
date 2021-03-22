@@ -1,8 +1,14 @@
 import RxSwift
 import ReactorKit
 
+protocol WriteDelegate: class {
+  
+  func onSuccessWrite()
+}
+
 class WriteVC: BaseVC, View {
   
+  weak var delegate: WriteDelegate?
   private lazy var writeView = WriteView(frame: self.view.frame)
   private let writeReactor = WriteReactor(wishService: WishService())
   
@@ -139,6 +145,7 @@ class WriteVC: BaseVC, View {
       .bind(onNext: { [weak self] shouldDismiss in
         guard let self = self else { return }
         if shouldDismiss {
+          self.delegate?.onSuccessWrite()
           self.dismiss()
         }
       })
