@@ -15,10 +15,8 @@ class TextInputField: BaseView {
     leftInset: 4,
     rightInset: 4
   ).then {
-    $0.text = "write_placeholder_title".localized
     $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
     $0.textColor = UIColor(r: 47, g: 168, b: 249)
-    $0.setKern(kern: -0.24)
     $0.backgroundColor = .white
     $0.alpha = 0.0
   }
@@ -26,10 +24,6 @@ class TextInputField: BaseView {
   let textField = UITextField().then {
     $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     $0.textColor = UIColor(r: 51, g: 51, b: 51)
-    $0.attributedPlaceholder = NSAttributedString(
-      string: "write_placeholder_title".localized,
-      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
-    )
   }
   
   let errorLabel = UILabel().then {

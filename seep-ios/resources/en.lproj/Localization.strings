@@ -19,11 +19,12 @@
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";
 "wrtie_title_bold" ="차근차근 적어봐요!";
-"write_input_title" = "타이틀";
+"write_header_title" = "제목";
+"write_header_memo" = "메모";
 "write_placeholder_title" = "뭐 하고 싶어요?";
 "write_placeholder_date" = "언제까지 하면 좋을까요?";
 "write_notification" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
-"wrtie_placeholder_memo" = "필요한 정보가 또 있나요?";
+"wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
 "write_button_off" = "🔥어서 채워봅시다!";
 "write_button_on" = "🎉등록해볼까요!";
 "write_button_more" = "😭 조금만...더!";

@@ -103,10 +103,18 @@ class WriteView: BaseView {
     $0.setKern(kern: -0.28)
   }
   
-  let titleField = TextInputField()
+  let titleField = TextInputField().then {
+    $0.titleLabel.text = "write_header_title".localized
+    $0.titleLabel.setKern(kern: -0.24)
+    $0.textField.attributedPlaceholder = NSAttributedString(
+      string: "write_placeholder_title".localized,
+      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
+    )
+  }
   
   let dateField = TextInputField().then {
     $0.titleLabel.text = "write_placeholder_date".localized
+    $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_date".localized,
       attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
