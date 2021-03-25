@@ -60,7 +60,12 @@ class WriteVC: BaseVC, View {
     self.writeView.emojiField.rx.text.orEmpty
       .map { Reactor.Action.inputEmoji($0) }
       .bind(to: self.writeReactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
+    
+    self.writeView.randomButton.rx.tap
+      .map { Reactor.Action.tapRandomEmoji(())}
+      .bind(to: self.writeReactor.action)
+      .disposed(by: self.disposeBag)
     
     self.writeView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
@@ -107,6 +112,12 @@ class WriteVC: BaseVC, View {
       .disposed(by: disposeBag)
     
     // MARK: State
+    self.writeReactor.state
+      .map { $0.emoji }
+      .observeOn(MainScheduler.instance)
+      .bind(to: self.writeView.emojiField.rx.text)
+      .disposed(by: self.disposeBag)
+    
     self.writeReactor.state
       .map { $0.category }
       .observeOn(MainScheduler.instance)

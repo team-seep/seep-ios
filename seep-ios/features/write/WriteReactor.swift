@@ -7,6 +7,7 @@ class WriteReactor: Reactor {
     case viewDidLoad(Void)
     case inputEmoji(String)
     case tapCategory(Category)
+    case tapRandomEmoji(Void)
     case inputTitle(String)
     case inputDate(Date)
     case tapPushButton(Void)
@@ -53,6 +54,10 @@ class WriteReactor: Reactor {
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):
       return Observable.just(Mutation.setCategory(category))
+    case .tapRandomEmoji():
+      let randomEmoji = self.generateRandomEmoji()
+      
+      return Observable.just(Mutation.setEmoji(randomEmoji))
     case .inputTitle(let title):
       return Observable.just(Mutation.setTitle(title))
     case .inputDate(let date):
@@ -105,5 +110,13 @@ class WriteReactor: Reactor {
   
   private func validate(state: State) -> Bool {
     return !state.title.isEmpty && (state.date != nil)
+  }
+  
+  private func generateRandomEmoji() -> String {
+    let range = 0x1F601...0x1F64F
+    let randomIndex = Int.random(in: range)
+    guard let scalar = UnicodeScalar(randomIndex) else { return "❓" }
+    
+    return String(scalar)
   }
 }

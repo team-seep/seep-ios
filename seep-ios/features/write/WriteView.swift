@@ -50,6 +50,14 @@ class WriteView: BaseView {
     $0.font = .systemFont(ofSize: 36)
   }
   
+  let randomButton = UIButton().then {
+    $0.setTitle("write_random_button".localized, for: .normal)
+    $0.layer.cornerRadius = 10
+    $0.backgroundColor = UIColor.seepBlue
+    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
+  }
+  
   let categoryStackView = UIStackView().then {
     $0.alignment = .leading
     $0.axis = .horizontal
@@ -137,9 +145,9 @@ class WriteView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      titleLabel, emojiBackground, emojiField, categoryStackView,
-      activeButton, titleField, dateField, notificationButton,
-      memoField
+      titleLabel, emojiBackground, emojiField, randomButton,
+      categoryStackView, activeButton, titleField, dateField,
+      notificationButton, memoField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(closeButton, scrollView, writeButton)
@@ -178,6 +186,12 @@ class WriteView: BaseView {
       make.centerX.equalToSuperview()
       make.width.height.equalTo(72)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(24)
+    }
+    
+    self.randomButton.snp.makeConstraints { make in
+      make.width.height.equalTo(20)
+      make.left.equalTo(self.emojiBackground.snp.right).offset(4)
+      make.bottom.equalTo(self.emojiBackground)
     }
     
     self.categoryStackView.snp.makeConstraints { make in
