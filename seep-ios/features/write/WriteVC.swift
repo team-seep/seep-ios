@@ -15,6 +15,7 @@ class WriteVC: BaseVC, View {
   private let datePicker = UIDatePicker().then {
     $0.datePickerMode = .date
     $0.preferredDatePickerStyle = .wheels
+    $0.locale = .init(identifier: "ko_KO")
   }
   
   static func instance() -> WriteVC {
