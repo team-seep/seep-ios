@@ -30,6 +30,10 @@ class TextInputView: BaseView {
     $0.textColor = UIColor(r: 186, g: 186, b: 186)
   }
   
+  let errorLabel = UILabel().then {
+    $0.textColor = .optionRed
+    $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
+  }
   
   override func setup() {
     self.backgroundColor = .clear
@@ -63,6 +67,29 @@ class TextInputView: BaseView {
       make.height.equalTo(82)
     }
   }
+  
+  func showError(message: String?) {
+    if let message = message {
+      self.addSubViews(self.errorLabel)
+      self.errorLabel.text = message
+      self.containerView.snp.remakeConstraints { make in
+        make.left.right.equalToSuperview()
+        make.bottom.equalTo(self.textView).offset(16)
+        make.top.equalTo(self.titleLabel).offset(8)
+      }
+      self.errorLabel.snp.makeConstraints { make in
+        make.left.bottom.equalToSuperview()
+        make.top.equalTo(self.containerView.snp.bottom).offset(8)
+      }
+    } else {
+      self.errorLabel.removeFromSuperview()
+      self.containerView.snp.remakeConstraints { make in
+        make.left.right.bottom.equalToSuperview()
+        make.bottom.equalTo(self.textView).offset(16)
+        make.top.equalTo(self.titleLabel).offset(8)
+      }
+    }
+  }
 }
 
 extension Reactive where Base: TextInputView {
@@ -86,6 +113,12 @@ extension Reactive where Base: TextInputView {
           view.titleLabel.alpha = 1.0
         }
       }
+    }
+  }
+  
+  var errorMessage: Binder<String?> {
+    return Binder(self.base) { view, message in
+      view.showError(message: message)
     }
   }
 }
@@ -119,6 +152,12 @@ extension TextInputView: UITextViewDelegate {
     guard let str = textView.text else { return true }
     let newLength = str.count + text.count - range.length
     
-    return newLength <= 100
+    if newLength >= 300 {
+      self.rx.errorMessage.onNext("write_error_max_length_memo".localized)
+    } else {
+      self.rx.errorMessage.onNext(nil)
+    }
+    
+    return newLength <= 300
   }
 }

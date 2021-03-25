@@ -32,6 +32,11 @@ class TextInputField: BaseView {
     )
   }
   
+  let errorLabel = UILabel().then {
+    $0.textColor = .optionRed
+    $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
+  }
+  
   
   override func setup() {
     self.backgroundColor = .clear
@@ -77,6 +82,29 @@ class TextInputField: BaseView {
       make.top.equalTo(self.containerView).offset(16)
     }
   }
+  
+  func showError(message: String?) {
+    if let message = message {
+      self.addSubViews(self.errorLabel)
+      self.errorLabel.text = message
+      self.containerView.snp.remakeConstraints { make in
+        make.left.right.equalToSuperview()
+        make.bottom.equalTo(self.textField).offset(16)
+        make.top.equalTo(self.titleLabel).offset(8)
+      }
+      self.errorLabel.snp.makeConstraints { make in
+        make.left.bottom.equalToSuperview()
+        make.top.equalTo(self.containerView.snp.bottom).offset(8)
+      }
+    } else {
+      self.errorLabel.removeFromSuperview()
+      self.containerView.snp.remakeConstraints { make in
+        make.left.right.bottom.equalToSuperview()
+        make.bottom.equalTo(self.textField).offset(16)
+        make.top.equalTo(self.titleLabel).offset(8)
+      }
+    }
+  }
 }
 
 extension Reactive where Base: TextInputField {
@@ -100,6 +128,12 @@ extension Reactive where Base: TextInputField {
           view.titleLabel.alpha = 1.0
         }
       }
+    }
+  }
+  
+  var errorMessage: Binder<String?> {
+    return Binder(self.base) { view, message in
+      view.showError(message: message)
     }
   }
 }

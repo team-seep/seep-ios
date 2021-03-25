@@ -13,4 +13,8 @@ extension UIColor {
   public class var gray3: UIColor {
     return UIColor(r: 192, g: 197, b: 205)
   }
+  
+  public class var optionRed: UIColor {
+    return UIColor(r: 255, g: 92, b: 82)
+  }
 }

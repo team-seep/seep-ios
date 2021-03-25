@@ -32,6 +32,7 @@ class WriteVC: BaseVC, View {
     self.view = writeView
     self.reactor = writeReactor
     self.setupKeyboardNotification()
+    self.writeView.titleField.textField.delegate = self
     
     self.writeView.dateField.textField.inputView = datePicker
     Observable.just(WriteReactor.Action.viewDidLoad(()))
@@ -97,6 +98,7 @@ class WriteVC: BaseVC, View {
       .bind { [weak self] _ in
         guard let self = self else { return }
         self.writeView.dateField.rx.isEmpty.onNext(false)
+        self.writeView.titleField.showError(message: "")
       }
       .disposed(by: self.disposeBag)
     
@@ -188,5 +190,25 @@ class WriteVC: BaseVC, View {
   
   @objc private func keyboardWillHide(_ notification: Notification) {
     self.writeView.scrollView.contentInset.bottom = .zero
+  }
+}
+
+extension WriteVC: UITextFieldDelegate {
+  
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    guard let text = textField.text else { return true }
+    let newLength = text.count + string.count - range.length
+    
+    if newLength >= 18 {
+      self.writeView.titleField.rx.errorMessage.onNext("write_error_max_length_title".localized)
+    } else {
+      self.writeView.titleField.rx.errorMessage.onNext(nil)
+    }
+    
+    return newLength <= 18
   }
 }
