@@ -113,7 +113,7 @@ class WriteView: BaseView {
   }
   
   let dateField = TextInputField().then {
-    $0.titleLabel.text = "write_placeholder_date".localized
+    $0.titleLabel.text = "write_header_date".localized
     $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_date".localized,

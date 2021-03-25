@@ -20,6 +20,7 @@
 "write_title" = "작은 것부터\n차근차근 적어봐요!";
 "wrtie_title_bold" ="차근차근 적어봐요!";
 "write_header_title" = "제목";
+"write_header_date" = "날짜";
 "write_header_memo" = "메모";
 "write_placeholder_title" = "뭐 하고 싶어요?";
 "write_placeholder_date" = "언제까지 하면 좋을까요?";
