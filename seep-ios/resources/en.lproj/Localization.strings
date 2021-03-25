@@ -26,6 +26,9 @@
 "wrtie_placeholder_memo" = "필요한 정보가 또 있나요?";
 "write_button_off" = "🔥어서 채워봅시다!";
 "write_button_on" = "🎉등록해볼까요!";
+"write_button_more" = "😭 조금만...더!";
 "write_random_button" = "R";
 "write_error_max_length_title" = "📍제목은 18자내로 작성해주세요!";
 "write_error_max_length_memo" = "📍메모는 300자내로 작성해주세요!";
+"write_error_title_empty" = "📍제목을 작성해주세요!";
+"write_error_date_empty" = "📍날짜를 선택해주세요!";

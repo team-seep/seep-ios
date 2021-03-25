@@ -126,15 +126,7 @@ class WriteView: BaseView {
   
   let memoField = TextInputView()
   
-  let writeButton = UIButton().then {
-    $0.layer.cornerRadius = 25
-    $0.backgroundColor = UIColor(r: 102, g: 223, b: 27)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
-    $0.backgroundColor = UIColor(r: 204, g: 207, b: 211)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
-    $0.setKern(kern: -0.51)
-    $0.isEnabled = false
-  }
+  let writeButton = WriteButton()
   
   override func setup() {
     self.backgroundColor = .white
@@ -270,18 +262,7 @@ class WriteView: BaseView {
       self.layoutIfNeeded()
     }, completion: nil)
   }
-  
-  func writeButtonEnable(isEnable: Bool) {
-    self.writeButton.isEnabled = isEnable
-    if isEnable {
-      self.writeButton.setTitle("write_button_on".localized, for: .normal)
-      self.writeButton.backgroundColor = UIColor(r: 102, g: 223, b: 27)
-    } else{
-      self.writeButton.setTitle("write_button_off".localized, for: .normal)
-      self.writeButton.backgroundColor = UIColor(r: 204, g: 207, b: 211)
-    }
-  }
-  
+    
   func setEmojiBackground(isEmpty: Bool) {
     if isEmpty {
       self.emojiBackground.image = UIImage(named: "img_emoji_empty")

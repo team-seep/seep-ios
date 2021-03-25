@@ -98,7 +98,6 @@ class WriteVC: BaseVC, View {
       .bind { [weak self] _ in
         guard let self = self else { return }
         self.writeView.dateField.rx.isEmpty.onNext(false)
-        self.writeView.titleField.showError(message: "")
       }
       .disposed(by: self.disposeBag)
     
@@ -121,6 +120,11 @@ class WriteVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
+      .map { $0.titleError }
+      .bind(to: self.writeView.titleField.rx.errorMessage)
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
       .filter { $0.date != nil }
       .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: $0.date ?? Date())}
       .observeOn(MainScheduler.instance)
@@ -128,9 +132,14 @@ class WriteVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
-      .map { $0.writeButtonEnable }
+      .map { $0.dateError }
+      .bind(to: self.writeView.dateField.rx.errorMessage)
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.writeButtonState }
       .observeOn(MainScheduler.instance)
-      .bind(onNext: self.writeView.writeButtonEnable(isEnable:))
+      .bind(to: self.writeView.writeButton.rx.state)
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
