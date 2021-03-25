@@ -14,8 +14,9 @@ class WriteView: BaseView {
     $0.backgroundColor = .clear
   }
   
-  let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "ic_close"), for: .normal)
+  let topIndicator = UIView().then {
+    $0.backgroundColor = .gray3
+    $0.layer.cornerRadius = 2
   }
   
   let titleLabel = UILabel().then {
@@ -150,13 +151,13 @@ class WriteView: BaseView {
       notificationButton, memoField
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(closeButton, scrollView, writeButton)
+    self.addSubViews(topIndicator, scrollView, writeButton)
   }
   
   override func bindConstraints() {
     self.scrollView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.closeButton.snp.bottom)
+      make.top.equalTo(self.topIndicator.snp.bottom)
     }
     
     self.containerView.snp.makeConstraints { make in
@@ -166,14 +167,16 @@ class WriteView: BaseView {
       make.bottom.equalTo(self.memoField)
     }
     
-    self.closeButton.snp.makeConstraints { make in
-      make.right.equalToSuperview().offset(-20)
+    self.topIndicator.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.width.equalTo(48)
+      make.height.equalTo(4)
       make.top.equalToSuperview().offset(20)
     }
     
     self.titleLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
-      make.top.equalToSuperview().offset(20)
+      make.top.equalToSuperview().offset(42)
     }
     
     self.emojiBackground.snp.makeConstraints { make in

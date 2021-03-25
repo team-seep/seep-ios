@@ -40,13 +40,6 @@ class WriteVC: BaseVC, View {
   }
   
   override func bindEvent() {
-    self.writeView.closeButton.rx.tap
-      .observeOn(MainScheduler.instance)
-      .bind { _ in
-        self.dismiss(animated: true, completion: nil)
-      }
-      .disposed(by: self.eventDisposeBag)
-    
     self.writeView.tapBackground.rx.event
       .observeOn(MainScheduler.instance)
       .bind(onNext: { [weak self] _ in
