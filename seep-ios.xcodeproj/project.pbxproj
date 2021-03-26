@@ -33,17 +33,18 @@
 		6E441CA12604549F0010A625 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
 		6E441CA526046F9D0010A625 /* WishServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA426046F9D0010A625 /* WishServices.swift */; };
 		6E600149260831F1000065C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E600148260831F0000065C8 /* GoogleService-Info.plist */; };
+		6E60018826084516000065C8 /* HomeWishCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60018726084516000065C8 /* HomeWishCollectionCell.swift */; };
 		6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
 		6E66A27225FB416700C0C051 /* ViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27125FB416700C0C051 /* ViewType.swift */; };
 		6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27625FB45C500C0C051 /* WriteView.swift */; };
 		6E66A27A25FB489000C0C051 /* WriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27925FB489000C0C051 /* WriteVC.swift */; };
 		6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27C25FB587100C0C051 /* TextInputField.swift */; };
+		6E69E619260D77200062CBFB /* WriteHashtagField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E618260D77200062CBFB /* WriteHashtagField.swift */; };
+		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
 		6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */; };
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
 		6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */; };
 		6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7725FB301F00A737DF /* HomeReactor.swift */; };
-		6EEED43F25F2191F0059DBE5 /* HomeCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED43E25F2191F0059DBE5 /* HomeCountCell.swift */; };
-		6EEED44225F21F2C0059DBE5 /* HomeCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED44125F21F2C0059DBE5 /* HomeCategoryHeaderView.swift */; };
 		6EEED44525F2227F0059DBE5 /* HomeWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED44425F2227F0059DBE5 /* HomeWishCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,17 +76,18 @@
 		6E441CA02604549F0010A625 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		6E441CA426046F9D0010A625 /* WishServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishServices.swift; sourceTree = "<group>"; };
 		6E600148260831F0000065C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6E60018726084516000065C8 /* HomeWishCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishCollectionCell.swift; sourceTree = "<group>"; };
 		6E66A26E25FB40BD00C0C051 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		6E66A27125FB416700C0C051 /* ViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewType.swift; sourceTree = "<group>"; };
 		6E66A27625FB45C500C0C051 /* WriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteView.swift; sourceTree = "<group>"; };
 		6E66A27925FB489000C0C051 /* WriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteVC.swift; sourceTree = "<group>"; };
 		6E66A27C25FB587100C0C051 /* TextInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputField.swift; sourceTree = "<group>"; };
+		6E69E618260D77200062CBFB /* WriteHashtagField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteHashtagField.swift; sourceTree = "<group>"; };
+		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
 		6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
 		6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		6EE5CE7725FB301F00A737DF /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
-		6EEED43E25F2191F0059DBE5 /* HomeCountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCountCell.swift; sourceTree = "<group>"; };
-		6EEED44125F21F2C0059DBE5 /* HomeCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCategoryHeaderView.swift; sourceTree = "<group>"; };
 		6EEED44425F2227F0059DBE5 /* HomeWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishCell.swift; sourceTree = "<group>"; };
 		B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.release.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.release.xcconfig"; sourceTree = "<group>"; };
 		C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seep_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,6 +233,8 @@
 				6E66A27625FB45C500C0C051 /* WriteView.swift */,
 				6E66A27925FB489000C0C051 /* WriteVC.swift */,
 				6E41F28325FB916200CE1530 /* WriteReactor.swift */,
+				6E7A9A4A260C6AF8008335DA /* WriteButton.swift */,
+				6E69E618260D77200062CBFB /* WriteHashtagField.swift */,
 			);
 			path = write;
 			sourceTree = "<group>";
@@ -256,9 +260,8 @@
 		6EEED43D25F219000059DBE5 /* cell */ = {
 			isa = PBXGroup;
 			children = (
-				6EEED43E25F2191F0059DBE5 /* HomeCountCell.swift */,
-				6EEED44125F21F2C0059DBE5 /* HomeCategoryHeaderView.swift */,
 				6EEED44425F2227F0059DBE5 /* HomeWishCell.swift */,
+				6E60018726084516000065C8 /* HomeWishCollectionCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -408,16 +411,17 @@
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
 				6E274E7A25F20EF2007DC880 /* UILabelExtension.swift in Sources */,
 				6E441CA12604549F0010A625 /* Wish.swift in Sources */,
+				6E60018826084516000065C8 /* HomeWishCollectionCell.swift in Sources */,
 				6E441CA526046F9D0010A625 /* WishServices.swift in Sources */,
-				6EEED44225F21F2C0059DBE5 /* HomeCategoryHeaderView.swift in Sources */,
 				6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */,
+				6E69E619260D77200062CBFB /* WriteHashtagField.swift in Sources */,
 				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,
 				6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */,
 				6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */,
 				6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */,
+				6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */,
 				6E274E8925F20FE5007DC880 /* BaseCollectionViewCell.swift in Sources */,
 				6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */,
-				6EEED43F25F2191F0059DBE5 /* HomeCountCell.swift in Sources */,
 				6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */,
 				6E274E7125F20EB3007DC880 /* UIColorExtension.swift in Sources */,
 				6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */,
@@ -576,6 +580,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				INFOPLIST_FILE = "seep-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -598,6 +603,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				INFOPLIST_FILE = "seep-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;

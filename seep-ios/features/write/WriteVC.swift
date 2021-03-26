@@ -1,14 +1,21 @@
 import RxSwift
 import ReactorKit
 
+protocol WriteDelegate: class {
+  
+  func onSuccessWrite()
+}
+
 class WriteVC: BaseVC, View {
   
+  weak var delegate: WriteDelegate?
   private lazy var writeView = WriteView(frame: self.view.frame)
   private let writeReactor = WriteReactor(wishService: WishService())
   
   private let datePicker = UIDatePicker().then {
     $0.datePickerMode = .date
     $0.preferredDatePickerStyle = .wheels
+    $0.locale = .init(identifier: "ko_KO")
   }
   
   static func instance() -> WriteVC {
@@ -25,6 +32,7 @@ class WriteVC: BaseVC, View {
     self.view = writeView
     self.reactor = writeReactor
     self.setupKeyboardNotification()
+    self.writeView.titleField.textField.delegate = self
     
     self.writeView.dateField.textField.inputView = datePicker
     Observable.just(WriteReactor.Action.viewDidLoad(()))
@@ -33,13 +41,6 @@ class WriteVC: BaseVC, View {
   }
   
   override func bindEvent() {
-    self.writeView.closeButton.rx.tap
-      .observeOn(MainScheduler.instance)
-      .bind { _ in
-        self.dismiss(animated: true, completion: nil)
-      }
-      .disposed(by: self.eventDisposeBag)
-    
     self.writeView.tapBackground.rx.event
       .observeOn(MainScheduler.instance)
       .bind(onNext: { [weak self] _ in
@@ -54,7 +55,12 @@ class WriteVC: BaseVC, View {
     self.writeView.emojiField.rx.text.orEmpty
       .map { Reactor.Action.inputEmoji($0) }
       .bind(to: self.writeReactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
+    
+    self.writeView.randomButton.rx.tap
+      .map { Reactor.Action.tapRandomEmoji(())}
+      .bind(to: self.writeReactor.action)
+      .disposed(by: self.disposeBag)
     
     self.writeView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
@@ -102,9 +108,20 @@ class WriteVC: BaseVC, View {
     
     // MARK: State
     self.writeReactor.state
+      .map { $0.emoji }
+      .observeOn(MainScheduler.instance)
+      .bind(to: self.writeView.emojiField.rx.text)
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
       .map { $0.category }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.writeView.moveActiveButton(category:))
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.titleError }
+      .bind(to: self.writeView.titleField.rx.errorMessage)
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
@@ -115,9 +132,14 @@ class WriteVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
-      .map { $0.writeButtonEnable }
+      .map { $0.dateError }
+      .bind(to: self.writeView.dateField.rx.errorMessage)
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.writeButtonState }
       .observeOn(MainScheduler.instance)
-      .bind(onNext: self.writeView.writeButtonEnable(isEnable:))
+      .bind(to: self.writeView.writeButton.rx.state)
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
@@ -139,6 +161,7 @@ class WriteVC: BaseVC, View {
       .bind(onNext: { [weak self] shouldDismiss in
         guard let self = self else { return }
         if shouldDismiss {
+          self.delegate?.onSuccessWrite()
           self.dismiss()
         }
       })
@@ -176,5 +199,25 @@ class WriteVC: BaseVC, View {
   
   @objc private func keyboardWillHide(_ notification: Notification) {
     self.writeView.scrollView.contentInset.bottom = .zero
+  }
+}
+
+extension WriteVC: UITextFieldDelegate {
+  
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    guard let text = textField.text else { return true }
+    let newLength = text.count + string.count - range.length
+    
+    if newLength >= 18 {
+      self.writeView.titleField.rx.errorMessage.onNext("write_error_max_length_title".localized)
+    } else {
+      self.writeView.titleField.rx.errorMessage.onNext(nil)
+    }
+    
+    return newLength <= 18
   }
 }

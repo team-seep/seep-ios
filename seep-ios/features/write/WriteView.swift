@@ -14,8 +14,9 @@ class WriteView: BaseView {
     $0.backgroundColor = .clear
   }
   
-  let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "ic_close"), for: .normal)
+  let topIndicator = UIView().then {
+    $0.backgroundColor = .gray3
+    $0.layer.cornerRadius = 2
   }
   
   let titleLabel = UILabel().then {
@@ -48,6 +49,14 @@ class WriteView: BaseView {
     $0.tintColor = .clear
     $0.textAlignment = .center
     $0.font = .systemFont(ofSize: 36)
+  }
+  
+  let randomButton = UIButton().then {
+    $0.setTitle("write_random_button".localized, for: .normal)
+    $0.layer.cornerRadius = 10
+    $0.backgroundColor = UIColor.seepBlue
+    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
   }
   
   let categoryStackView = UIStackView().then {
@@ -94,10 +103,18 @@ class WriteView: BaseView {
     $0.setKern(kern: -0.28)
   }
   
-  let titleField = TextInputField()
+  let titleField = TextInputField().then {
+    $0.titleLabel.text = "write_header_title".localized
+    $0.titleLabel.setKern(kern: -0.24)
+    $0.textField.attributedPlaceholder = NSAttributedString(
+      string: "write_placeholder_title".localized,
+      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
+    )
+  }
   
   let dateField = TextInputField().then {
-    $0.titleLabel.text = "write_placeholder_date".localized
+    $0.titleLabel.text = "write_header_date".localized
+    $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_date".localized,
       attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
@@ -117,15 +134,9 @@ class WriteView: BaseView {
   
   let memoField = TextInputView()
   
-  let writeButton = UIButton().then {
-    $0.layer.cornerRadius = 25
-    $0.backgroundColor = UIColor(r: 102, g: 223, b: 27)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
-    $0.backgroundColor = UIColor(r: 204, g: 207, b: 211)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
-    $0.setKern(kern: -0.51)
-    $0.isEnabled = false
-  }
+  let hashtagField = WriteHashtagField()
+  
+  let writeButton = WriteButton()
   
   override func setup() {
     self.backgroundColor = .white
@@ -137,35 +148,37 @@ class WriteView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      titleLabel, emojiBackground, emojiField, categoryStackView,
-      activeButton, titleField, dateField, notificationButton,
-      memoField
+      titleLabel, emojiBackground, emojiField, randomButton,
+      categoryStackView, activeButton, titleField, dateField,
+      notificationButton, memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(closeButton, scrollView, writeButton)
+    self.addSubViews(topIndicator, scrollView, writeButton)
   }
   
   override func bindConstraints() {
     self.scrollView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.closeButton.snp.bottom)
+      make.top.equalTo(self.topIndicator.snp.bottom)
     }
     
     self.containerView.snp.makeConstraints { make in
       make.edges.equalTo(0)
       make.width.equalToSuperview()
       make.top.equalTo(self.titleLabel).offset(-20)
-      make.bottom.equalTo(self.memoField)
+      make.bottom.equalTo(self.hashtagField).offset(20)
     }
     
-    self.closeButton.snp.makeConstraints { make in
-      make.right.equalToSuperview().offset(-20)
+    self.topIndicator.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.width.equalTo(48)
+      make.height.equalTo(4)
       make.top.equalToSuperview().offset(20)
     }
     
     self.titleLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
-      make.top.equalToSuperview().offset(20)
+      make.top.equalToSuperview().offset(42)
     }
     
     self.emojiBackground.snp.makeConstraints { make in
@@ -178,6 +191,12 @@ class WriteView: BaseView {
       make.centerX.equalToSuperview()
       make.width.height.equalTo(72)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(24)
+    }
+    
+    self.randomButton.snp.makeConstraints { make in
+      make.width.height.equalTo(20)
+      make.left.equalTo(self.emojiBackground.snp.right).offset(4)
+      make.bottom.equalTo(self.emojiBackground)
     }
     
     self.categoryStackView.snp.makeConstraints { make in
@@ -210,6 +229,11 @@ class WriteView: BaseView {
     self.memoField.snp.makeConstraints { make in
       make.left.right.equalTo(self.titleField)
       make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+    }
+    
+    self.hashtagField.snp.makeConstraints { make in
+      make.left.equalToSuperview().offset(20)
+      make.top.equalTo(self.memoField.snp.bottom).offset(16)
     }
     
     self.writeButton.snp.makeConstraints { make in
@@ -253,18 +277,7 @@ class WriteView: BaseView {
       self.layoutIfNeeded()
     }, completion: nil)
   }
-  
-  func writeButtonEnable(isEnable: Bool) {
-    self.writeButton.isEnabled = isEnable
-    if isEnable {
-      self.writeButton.setTitle("write_button_on".localized, for: .normal)
-      self.writeButton.backgroundColor = UIColor(r: 102, g: 223, b: 27)
-    } else{
-      self.writeButton.setTitle("write_button_off".localized, for: .normal)
-      self.writeButton.backgroundColor = UIColor(r: 204, g: 207, b: 211)
-    }
-  }
-  
+    
   func setEmojiBackground(isEmpty: Bool) {
     if isEmpty {
       self.emojiBackground.image = UIImage(named: "img_emoji_empty")

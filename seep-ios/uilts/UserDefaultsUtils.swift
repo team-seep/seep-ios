@@ -2,6 +2,8 @@ import Foundation
 
 struct UserDefaultsUtils {
   
+  static let keyViewType = "keyViewType"
+  
   let instance: UserDefaults
   
   
@@ -12,5 +14,15 @@ struct UserDefaultsUtils {
     } else {
       instance = UserDefaults.standard
     }
+  }
+  
+  func setViewType(viewType: ViewType) {
+    self.instance.set(viewType.rawValue, forKey: UserDefaultsUtils.keyViewType)
+  }
+  
+  func getViewType() -> ViewType {
+    let viewTypeRawValue = self.instance.integer(forKey: UserDefaultsUtils.keyViewType)
+    
+    return ViewType(rawValue: viewTypeRawValue) ?? .list
   }
 }
