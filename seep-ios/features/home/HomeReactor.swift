@@ -8,7 +8,6 @@ class HomeReactor: Reactor {
     case viewDidLoad(Void)
     case tapCategory(Category)
     case tapViewType(Void)
-//    case tapItem(Int)
   }
   
   enum Mutation {

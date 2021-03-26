@@ -67,6 +67,16 @@ class HomeVC: BaseVC, View {
       .bind(to: self.homeReactor.action)
       .disposed(by: self.disposeBag)
     
+    self.homeView.tableView.rx.itemSelected
+      .map { self.homeReactor.currentState.wishiList[$0.row] }
+      .bind(onNext: self.showDetail(wish:))
+      .disposed(by: self.disposeBag)
+    
+    self.homeView.collectionView.rx.itemSelected
+      .map { self.homeReactor.currentState.wishiList[$0.row] }
+      .bind(onNext: self.showDetail(wish:))
+      .disposed(by: self.disposeBag)
+    
     // MARK: State
     self.homeReactor.state
       .map { $0.wishiList }
@@ -145,6 +155,12 @@ class HomeVC: BaseVC, View {
     }
     
     self.present(writeVC, animated: true, completion: nil)
+  }
+  
+  private func showDetail(wish: Wish) {
+    let detailVC = DetailVC.instance(wish: wish)
+    
+    self.present(detailVC, animated: true, completion: nil)
   }
 }
 

@@ -18,7 +18,15 @@ extension UIColor {
     return UIColor(r: 192, g: 197, b: 205)
   }
   
+  public class var gray4: UIColor {
+    return UIColor(r: 130, g: 137, b: 147)
+  }
+  
   public class var optionRed: UIColor {
     return UIColor(r: 255, g: 92, b: 82)
+  }
+  
+  public class var tennisGreen: UIColor {
+    return UIColor(r: 102, g: 223, b: 27)
   }
 }

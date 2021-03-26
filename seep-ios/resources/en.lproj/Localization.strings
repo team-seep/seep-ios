@@ -1,6 +1,9 @@
 // Shared
 "common_ok" = "확인";
 "common_cancel" = "취소";
+"common_category_want_to_do" = "하고 싶어요";
+"common_category_want_to_get" = "갖고 싶어요";
+"common_category_want_to_go" = "가고 싶어요";
 
 // Category
 "category_want_to_do" = "하고 싶어요";
@@ -11,9 +14,6 @@
 "home_write_button" = "📝 위시 쓰러갈래요";
 "home_write_count_format1" = "하고 싶은 것들이\n%d개 남았어요!";
 "home_finish_count_format" = "👏 지금까지 %d개를 이뤘어요";
-"home_category_want_to_do" = "하고 싶어요";
-"home_category_want_to_get" = "갖고 싶어요";
-"home_category_want_to_go" = "가고 싶어요";
 "home_category_success" = "성공";
 
 // Write
@@ -36,3 +36,7 @@
 "write_error_date_empty" = "📍날짜를 선택해주세요!";
 "write_placeholder_hashtag" = "해시태그를 달아봐요 (선택)";
 "write_error_max_length_hashtag" = "📍해시태그는 8자내로 작성해주세요!";
+
+// Detail
+"detail_button_more" = "😭 조금만...더!";
+"detail_button_on" = "✔️ 저장";

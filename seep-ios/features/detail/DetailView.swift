@@ -1,7 +1,7 @@
 import UIKit
 import ISEmojiView
 
-class WriteView: BaseView {
+class DetailView: BaseView {
   
   let tapBackground = UITapGestureRecognizer()
   
@@ -19,29 +19,12 @@ class WriteView: BaseView {
     $0.layer.cornerRadius = 2
   }
   
-  let titleLabel = UILabel().then {
-    let text = "write_title".localized
-    let attributedString = NSMutableAttributedString(string: text)
-    let boldTextRange = (text as NSString).range(of: "차근차근 적어봐요!")
-    
-    attributedString.addAttribute(
-      .font,
-      value: UIFont(name: "AppleSDGothicNeo-Bold", size: 20) as Any,
-      range: boldTextRange
-    )
-    attributedString.addAttribute(
-      .kern,
-      value: -0.6,
-      range: .init(location: 0, length: text.count)
-    )
-    $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
-    $0.textColor = UIColor(r: 51, g: 51, b: 51)
-    $0.numberOfLines = 0
-    $0.attributedText = attributedString
+  let moreButton = UIButton().then {
+    $0.setImage(UIImage(named: "ic_more"), for: .normal)
   }
   
   let emojiBackground = UIImageView().then {
-    $0.image = UIImage(named: "img_emoji_empty")
+    $0.backgroundColor = .gray2
     $0.layer.cornerRadius = 36
   }
   
@@ -69,7 +52,7 @@ class WriteView: BaseView {
   
   let wantToDoButton = UIButton().then {
     $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 130, g: 137, b: 147), for: .normal)
+    $0.setTitleColor(.gray4, for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
     $0.setKern(kern: -0.28)
@@ -77,7 +60,7 @@ class WriteView: BaseView {
   
   let wantToGetButton = UIButton().then {
     $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 130, g: 137, b: 147), for: .normal)
+    $0.setTitleColor(.gray4, for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
     $0.setKern(kern: -0.28)
@@ -85,14 +68,14 @@ class WriteView: BaseView {
   
   let wantToGoButton = UIButton().then {
     $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 130, g: 137, b: 147), for: .normal)
+    $0.setTitleColor(.gray4, for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
     $0.setKern(kern: -0.28)
   }
   
   let activeButton = UIButton().then {
-    $0.backgroundColor = UIColor(r: 47, g: 168, b: 249)
+    $0.backgroundColor = .seepBlue
     $0.layer.cornerRadius = 16
     $0.setTitleColor(.white, for: .normal)
     $0.layer.shadowOpacity = 0.15
@@ -108,7 +91,7 @@ class WriteView: BaseView {
     $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_title".localized,
-      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
+      attributes: [.foregroundColor: UIColor.gray3]
     )
   }
   
@@ -117,14 +100,14 @@ class WriteView: BaseView {
     $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_date".localized,
-      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
+      attributes: [.foregroundColor: UIColor.gray3]
     )
     $0.textField.tintColor = .clear
   }
   
   let notificationButton = UIButton().then {
     $0.setTitle("write_notification".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 163, g: 165, b: 170), for: .normal)
+    $0.setTitleColor(.gray4, for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
     $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
     $0.setImage(UIImage(named: "img_check_on_20"), for: .selected)
@@ -136,9 +119,11 @@ class WriteView: BaseView {
   
   let hashtagField = WriteHashtagField()
   
-  let writeButton = WriteButton()
+  let editButton = EditButton()
+  
   
   override func setup() {
+    self.isUserInteractionEnabled = false
     self.backgroundColor = .white
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
@@ -148,12 +133,12 @@ class WriteView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      titleLabel, emojiBackground, emojiField, randomButton,
+      emojiBackground, emojiField, randomButton,
       categoryStackView, activeButton, titleField, dateField,
       notificationButton, memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(topIndicator, scrollView, writeButton)
+    self.addSubViews(topIndicator, moreButton, scrollView, editButton)
   }
   
   override func bindConstraints() {
@@ -165,7 +150,7 @@ class WriteView: BaseView {
     self.containerView.snp.makeConstraints { make in
       make.edges.equalTo(0)
       make.width.equalToSuperview()
-      make.top.equalTo(self.titleLabel).offset(-20)
+      make.top.equalTo(self.emojiBackground)
       make.bottom.equalTo(self.hashtagField).offset(20)
     }
     
@@ -176,21 +161,19 @@ class WriteView: BaseView {
       make.top.equalToSuperview().offset(20)
     }
     
-    self.titleLabel.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(20)
-      make.top.equalToSuperview().offset(42)
+    self.moreButton.snp.makeConstraints { make in
+      make.right.equalToSuperview().offset(-20)
+      make.top.equalToSuperview().offset(10)
     }
     
     self.emojiBackground.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.width.height.equalTo(72)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(24)
+      make.top.equalToSuperview().offset(42)
     }
     
     self.emojiField.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.width.height.equalTo(72)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(24)
+      make.center.equalTo(self.emojiBackground)
     }
     
     self.randomButton.snp.makeConstraints { make in
@@ -236,24 +219,10 @@ class WriteView: BaseView {
       make.top.equalTo(self.memoField.snp.bottom).offset(16)
     }
     
-    self.writeButton.snp.makeConstraints { make in
+    self.editButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.bottom.equalTo(safeAreaLayoutGuide).offset(-35)
       make.height.equalTo(50)
-    }
-  }
-  
-  func showWriteButton() {
-    UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
-      self.writeButton.alpha = 1.0
-      self.writeButton.transform = .identity
-    }
-  }
-  
-  func hideWriteButton() {
-    UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
-      self.writeButton.alpha = 0.0
-      self.writeButton.transform = .init(translationX: 0, y: 100)
     }
   }
   
@@ -298,24 +267,24 @@ class WriteView: BaseView {
   }
 }
 
-extension WriteView: UIScrollViewDelegate {
+extension DetailView: UIScrollViewDelegate {
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    self.hideWriteButton()
+//    self.hideWriteButton()
   }
   
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
-      self.showWriteButton()
+//      self.showWriteButton()
     }
   }
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.showWriteButton()
+//    self.showWriteButton()
   }
 }
 
-extension WriteView: UITextFieldDelegate {
+extension DetailView: UITextFieldDelegate {
   
   func textField(
     _ textField: UITextField,
@@ -330,7 +299,7 @@ extension WriteView: UITextFieldDelegate {
   }
 }
 
-extension WriteView: EmojiViewDelegate {
+extension DetailView: EmojiViewDelegate {
   
   func emojiViewDidSelectEmoji(_ emoji: String, emojiView: EmojiView) {
     self.emojiField.text = emoji
@@ -353,3 +322,4 @@ extension WriteView: EmojiViewDelegate {
     self.emojiField.resignFirstResponder()
   }
 }
+
