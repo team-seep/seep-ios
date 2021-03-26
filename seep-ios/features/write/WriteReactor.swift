@@ -12,6 +12,7 @@ class WriteReactor: Reactor {
     case inputDate(Date)
     case tapPushButton(Void)
     case inputMemo(String)
+    case inputHashtag(String)
     case tapWriteButton(Void)
   }
   
@@ -25,6 +26,7 @@ class WriteReactor: Reactor {
     case setDateError(String)
     case togglePushEnable(Void)
     case setMemo(String)
+    case setHashtag(String)
     case saveWish(Void)
   }
   
@@ -38,6 +40,7 @@ class WriteReactor: Reactor {
     var dateError: String? = nil
     var isPushEnable: Bool = false
     var memo: String = ""
+    var hashtag: String = ""
     var writeButtonState: WriteButton.WriteButtonState = .initial
     var shouldDismiss: Bool = false
   }
@@ -70,6 +73,8 @@ class WriteReactor: Reactor {
       return Observable.just(Mutation.togglePushEnable(()))
     case .inputMemo(let memo):
       return Observable.just(Mutation.setMemo(memo))
+    case .inputHashtag(let hashtag):
+      return Observable.just(Mutation.setHashtag(hashtag))
     case .tapWriteButton():
       if self.currentState.title.isEmpty {
         return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
@@ -83,6 +88,7 @@ class WriteReactor: Reactor {
           $0.date = self.currentState.date ?? Date()
           $0.isPushEnable = self.currentState.isPushEnable
           $0.memo = self.currentState.memo
+          $0.hashtag = self.currentState.hashtag
         }
         
         self.wishService.addWish(wish: wish)
@@ -116,6 +122,8 @@ class WriteReactor: Reactor {
       newState.isPushEnable = !state.isPushEnable
     case .setMemo(let memo):
       newState.memo = memo
+    case .setHashtag(let hashtag):
+      newState.hashtag = hashtag
     case .saveWish():
       newState.shouldDismiss = true
     }
