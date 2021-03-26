@@ -21,9 +21,9 @@ class WriteReactor: Reactor {
     case setEmoji(String)
     case setCategory(Category)
     case setTitle(String)
-    case setTitleError(String)
+    case setTitleError(String?)
     case setDate(Date)
-    case setDateError(String)
+    case setDateError(String?)
     case togglePushEnable(Void)
     case setMemo(String)
     case setHashtag(String)
@@ -66,9 +66,19 @@ class WriteReactor: Reactor {
       
       return Observable.just(Mutation.setEmoji(randomEmoji))
     case .inputTitle(let title):
-      return Observable.just(Mutation.setTitle(title))
+      if title.isEmpty {
+        return Observable.just(Mutation.setTitle(title))
+      } else {
+        return Observable.concat([
+          Observable.just(Mutation.setTitle(title)),
+          Observable.just(Mutation.setTitleError(nil))
+        ])
+      }
     case .inputDate(let date):
-      return Observable.just(Mutation.setDate(date))
+      return Observable.concat([
+        Observable.just(Mutation.setDate(date)),
+        Observable.just(Mutation.setDateError(nil))
+      ])
     case .tapPushButton():
       return Observable.just(Mutation.togglePushEnable(()))
     case .inputMemo(let memo):
