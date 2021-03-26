@@ -34,3 +34,5 @@
 "write_error_max_length_memo" = "📍메모는 300자내로 작성해주세요!";
 "write_error_title_empty" = "📍제목을 작성해주세요!";
 "write_error_date_empty" = "📍날짜를 선택해주세요!";
+"write_placeholder_hashtag" = "해시태그를 달아봐요 (선택)";
+"write_error_max_length_hashtag" = "📍해시태그는 8자내로 작성해주세요!";

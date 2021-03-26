@@ -10,6 +10,10 @@ extension UIColor {
     return UIColor(r: 47, g: 168, b: 249)
   }
   
+  public class var gray2: UIColor {
+    return UIColor(r: 246, g: 247, b: 249)
+  }
+  
   public class var gray3: UIColor {
     return UIColor(r: 192, g: 197, b: 205)
   }

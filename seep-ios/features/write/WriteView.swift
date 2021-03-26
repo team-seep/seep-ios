@@ -134,6 +134,8 @@ class WriteView: BaseView {
   
   let memoField = TextInputView()
   
+  let hashtagField = WriteHashtagField()
+  
   let writeButton = WriteButton()
   
   override func setup() {
@@ -148,7 +150,7 @@ class WriteView: BaseView {
     self.containerView.addSubViews(
       titleLabel, emojiBackground, emojiField, randomButton,
       categoryStackView, activeButton, titleField, dateField,
-      notificationButton, memoField
+      notificationButton, memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, scrollView, writeButton)
@@ -164,7 +166,7 @@ class WriteView: BaseView {
       make.edges.equalTo(0)
       make.width.equalToSuperview()
       make.top.equalTo(self.titleLabel).offset(-20)
-      make.bottom.equalTo(self.memoField)
+      make.bottom.equalTo(self.hashtagField).offset(20)
     }
     
     self.topIndicator.snp.makeConstraints { make in
@@ -227,6 +229,11 @@ class WriteView: BaseView {
     self.memoField.snp.makeConstraints { make in
       make.left.right.equalTo(self.titleField)
       make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+    }
+    
+    self.hashtagField.snp.makeConstraints { make in
+      make.left.equalToSuperview().offset(20)
+      make.top.equalTo(self.memoField.snp.bottom).offset(16)
     }
     
     self.writeButton.snp.makeConstraints { make in
