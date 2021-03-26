@@ -101,6 +101,11 @@ class WriteVC: BaseVC, View {
       }
       .disposed(by: self.disposeBag)
     
+    self.writeView.hashtagField.rx.text.orEmpty
+      .map { Reactor.Action.inputHashtag($0) }
+      .bind(to: self.writeReactor.action)
+      .disposed(by: self.disposeBag)
+    
     self.writeView.writeButton.rx.tap
       .map { Reactor.Action.tapWriteButton(()) }
       .bind(to: self.writeReactor.action)
