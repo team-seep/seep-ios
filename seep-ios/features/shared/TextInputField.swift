@@ -5,7 +5,7 @@ import RxCocoa
 class TextInputField: BaseView {
   
   let containerView = UIView().then {
-    $0.backgroundColor = UIColor(r: 246, g: 247, b: 249)
+    $0.backgroundColor = .gray2
     $0.layer.cornerRadius = 6
   }
   
@@ -16,14 +16,14 @@ class TextInputField: BaseView {
     rightInset: 4
   ).then {
     $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
-    $0.textColor = UIColor(r: 47, g: 168, b: 249)
+    $0.textColor = .seepBlue
     $0.backgroundColor = .white
     $0.alpha = 0.0
   }
   
   let textField = UITextField().then {
     $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
-    $0.textColor = UIColor(r: 51, g: 51, b: 51)
+    $0.textColor = .gray5
   }
   
   let errorLabel = UILabel().then {
@@ -51,8 +51,9 @@ class TextInputField: BaseView {
       .bind { [weak self] _ in
         guard let self = self else { return }
         UIView.animate(withDuration: 0.3) {
-          self.containerView.layer.borderColor = UIColor(r: 186, g: 186, b: 186).cgColor
           self.titleLabel.alpha = 0.0
+          self.containerView.layer.borderWidth = 0
+          self.containerView.backgroundColor = .gray2
         }
       }
       .disposed(by: disposeBag)
@@ -109,18 +110,10 @@ extension Reactive where Base: TextInputField {
   
   var isEmpty: Binder<Bool> {
     return Binder(self.base) { view, isEmpty in
-      if isEmpty {
-        UIView.animate(withDuration: 0.3) {
-          view.containerView.layer.borderColor = UIColor(r: 186, g: 186, b: 186).cgColor
-          view.containerView.layer.borderWidth = 1
-          view.titleLabel.alpha = 0.0
-        }
-      } else {
-        UIView.animate(withDuration: 0.3) {
-          view.containerView.layer.borderColor = UIColor(r: 47, g: 168, b: 249).cgColor
-          view.containerView.layer.borderWidth = 1
-          view.titleLabel.alpha = 1.0
-        }
+      UIView.animate(withDuration: 0.3) {
+        view.containerView.layer.borderColor = UIColor.seepBlue.cgColor
+        view.containerView.layer.borderWidth = 1
+        view.titleLabel.alpha = 1.0
       }
     }
   }

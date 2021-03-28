@@ -12,8 +12,9 @@ class WriteHashtagField: BaseView {
     $0.textAlignment = .left
     $0.returnKeyType = .done
     $0.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
+    $0.textColor = .gray4
     $0.attributedPlaceholder = NSAttributedString(
-      string: "해시태그를 달아봐요 (선택)",
+      string: "write_placeholder_hashtag".localized,
       attributes: [
         .foregroundColor: UIColor.gray3,
         .font: UIFont(name: "AppleSDGothicNeo-Regular", size: 14)!
@@ -26,7 +27,7 @@ class WriteHashtagField: BaseView {
   }
   
   let dashedBorderLayer = CAShapeLayer().then {
-    $0.strokeColor = UIColor(r: 192, g: 197, b: 205).cgColor
+    $0.strokeColor = UIColor.gray3.cgColor
     $0.lineDashPattern = [2, 2]
     $0.fillColor = nil
   }

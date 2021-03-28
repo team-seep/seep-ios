@@ -108,7 +108,7 @@ class WriteView: BaseView {
     $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_title".localized,
-      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
+      attributes: [.foregroundColor: UIColor.gray3]
     )
   }
   
@@ -117,7 +117,7 @@ class WriteView: BaseView {
     $0.titleLabel.setKern(kern: -0.24)
     $0.textField.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_date".localized,
-      attributes: [.foregroundColor: UIColor(r: 186, g: 186, b: 186)]
+      attributes: [.foregroundColor: UIColor.gray3]
     )
     $0.textField.tintColor = .clear
   }

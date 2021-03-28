@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>633495205718-8krq5a33ika6cn6gjk1nlq2sp4ftp83i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.633495205718-8krq5a33ika6cn6gjk1nlq2sp4ftp83i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBvdDeuAfbjhsfCRsB5OR5eI6rXchzBitI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>633495205718</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>macgongmon.seep-ios</string>
+	<key>PROJECT_ID</key>
+	<string>seep-ios</string>
+	<key>STORAGE_BUCKET</key>
+	<string>seep-ios.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:633495205718:ios:c9f245f789103dfd12c8f7</string>
+</dict>
+</plist>
