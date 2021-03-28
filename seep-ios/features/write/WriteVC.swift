@@ -93,12 +93,9 @@ class WriteVC: BaseVC, View {
       .bind(to: self.writeReactor.action)
       .disposed(by: disposeBag)
     
-    self.datePicker.rx.controlEvent(.valueChanged)
-      .observeOn(MainScheduler.instance)
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        self.writeView.dateField.rx.isEmpty.onNext(false)
-      }
+    self.writeView.memoField.rx.text.orEmpty
+      .map { Reactor.Action.inputMemo($0) }
+      .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.writeView.hashtagField.rx.text.orEmpty

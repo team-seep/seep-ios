@@ -35,15 +35,14 @@ class TextInputField: BaseView {
   override func setup() {
     self.backgroundColor = .clear
     self.addSubViews(containerView, titleLabel, textField)
-    self.textField.rx.text.orEmpty.skip(1)
-      .map { $0.isEmpty }
-      .bind(to: self.rx.isEmpty)
-      .disposed(by: disposeBag)
     self.textField.rx.controlEvent(.editingDidBegin)
       .bind { [weak self] _ in
         guard let self = self else { return }
         UIView.animate(withDuration: 0.3) {
           self.containerView.backgroundColor = .white
+          self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
+          self.containerView.layer.borderWidth = 1
+          self.titleLabel.alpha = 1.0
         }
       }
       .disposed(by: disposeBag)
@@ -106,16 +105,6 @@ extension Reactive where Base: TextInputField {
   
   var text: ControlProperty<String?> {
     return base.textField.rx.text
-  }
-  
-  var isEmpty: Binder<Bool> {
-    return Binder(self.base) { view, isEmpty in
-      UIView.animate(withDuration: 0.3) {
-        view.containerView.layer.borderColor = UIColor.seepBlue.cgColor
-        view.containerView.layer.borderWidth = 1
-        view.titleLabel.alpha = 1.0
-      }
-    }
   }
   
   var errorMessage: Binder<String?> {

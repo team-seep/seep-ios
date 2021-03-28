@@ -41,11 +41,6 @@ class TextInputView: BaseView {
     self.textView.rx
       .setDelegate(self)
       .disposed(by: disposeBag)
-    self.textView.rx.text.orEmpty.skip(1)
-      .filter { $0 != "wrtie_placeholder_memo".localized }
-      .map { $0.isEmpty }
-      .bind(to: self.rx.isEmpty)
-      .disposed(by: disposeBag)
   }
   
   override func bindConstraints() {
@@ -98,16 +93,6 @@ extension Reactive where Base: TextInputView {
     return base.textView.rx.text
   }
   
-  var isEmpty: Binder<Bool> {
-    return Binder(self.base) { view, isEmpty in
-      UIView.animate(withDuration: 0.3) {
-        view.containerView.layer.borderColor = UIColor.seepBlue.cgColor
-        view.containerView.layer.borderWidth = 1
-        view.titleLabel.alpha = 1.0
-      }
-    }
-  }
-  
   var errorMessage: Binder<String?> {
     return Binder(self.base) { view, message in
       view.showError(message: message)
@@ -122,9 +107,12 @@ extension TextInputView: UITextViewDelegate {
       textView.text = ""
       textView.textColor = .gray5
     }
-    self.rx.isEmpty.onNext(self.textView.text.isEmpty)
+    
     UIView.animate(withDuration: 0.3) {
       self.containerView.backgroundColor = .white
+      self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
+      self.containerView.layer.borderWidth = 1
+      self.titleLabel.alpha = 1.0
     }
   }
   
