@@ -135,7 +135,7 @@ class DetailView: BaseView {
     self.containerView.addSubViews(
       emojiBackground, emojiField, randomButton,
       categoryStackView, activeButton, titleField, dateField,
-      notificationButton, memoField, hashtagField
+      notificationButton
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, moreButton, scrollView, editButton)
@@ -151,7 +151,7 @@ class DetailView: BaseView {
       make.edges.equalTo(0)
       make.width.equalToSuperview()
       make.top.equalTo(self.emojiBackground)
-      make.bottom.equalTo(self.hashtagField).offset(20)
+      make.bottom.equalTo(self.notificationButton).offset(20)
     }
     
     self.topIndicator.snp.makeConstraints { make in
@@ -209,20 +209,26 @@ class DetailView: BaseView {
       make.top.equalTo(self.dateField.snp.bottom).offset(8)
     }
     
-    self.memoField.snp.makeConstraints { make in
-      make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
-    }
-    
-    self.hashtagField.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(20)
-      make.top.equalTo(self.memoField.snp.bottom).offset(16)
-    }
-    
     self.editButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.bottom.equalTo(safeAreaLayoutGuide).offset(-35)
       make.height.equalTo(50)
+    }
+  }
+  
+  func bind(wish: Wish) {
+    self.emojiField.text = wish.emoji
+    self.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
+    self.titleField.textField.text = wish.title
+    self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
+    self.notificationButton.isSelected = wish.isPushEnable
+    
+    if !wish.memo.isEmpty {
+      self.addMemoField(memo: wish.memo)
+    }
+    
+    if !wish.hashtag.isEmpty {
+      self.addHashtagField(hashtag: wish.hashtag)
     }
   }
   
@@ -264,6 +270,48 @@ class DetailView: BaseView {
     emojiView.translatesAutoresizingMaskIntoConstraints = false
     emojiView.delegate = self
     self.emojiField.inputView = emojiView
+  }
+  
+  private func addMemoField(memo: String) {
+    self.containerView.addSubViews(self.memoField)
+    
+    self.memoField.snp.makeConstraints { make in
+      make.left.right.equalTo(self.titleField)
+      make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+    }
+    
+    self.containerView.snp.remakeConstraints { make in
+      make.edges.equalTo(0)
+      make.width.equalToSuperview()
+      make.top.equalTo(self.emojiBackground)
+      make.bottom.equalTo(self.memoField).offset(20)
+    }
+    
+    self.memoField.textView.text = memo
+  }
+  
+  private func addHashtagField(hashtag: String) {
+    self.containerView.addSubViews(self.hashtagField)
+    
+    if self.memoField.superview != nil {
+      self.hashtagField.snp.makeConstraints { make in
+        make.left.equalToSuperview().offset(20)
+        make.top.equalTo(self.memoField.snp.bottom).offset(16)
+      }
+    } else {
+      self.hashtagField.snp.remakeConstraints { make in
+        make.left.equalToSuperview().offset(20)
+        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+      }
+    }
+    
+    self.containerView.snp.remakeConstraints { make in
+      make.edges.equalTo(0)
+      make.width.equalToSuperview()
+      make.top.equalTo(self.emojiBackground)
+      make.bottom.equalTo(self.hashtagField).offset(20)
+    }
+    self.hashtagField.bind(hashtag: hashtag)
   }
 }
 

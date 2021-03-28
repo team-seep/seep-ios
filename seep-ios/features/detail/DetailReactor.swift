@@ -12,6 +12,7 @@ class DetailReactor: Reactor {
   }
   
   struct State {
+    var isEditable: Bool = false
     var emoji: String
     var category: Category
     var title: String
@@ -56,5 +57,4 @@ class DetailReactor: Reactor {
     }
     return newState
   }
-  
 }

@@ -81,6 +81,23 @@ class WriteHashtagField: BaseView {
     self.addDashedBorder()
   }
   
+  func bind(hashtag: String) {
+    self.textField.text = hashtag
+    self.setHiddenClearButton(isHidden: true)
+    self.setHiddenDashedBorder(isHidden: true)
+    self.textField.frame.size.width = self.textField.intrinsicContentSize.width
+    self.containerView.backgroundColor = .gray2
+    self.textField.attributedPlaceholder = nil
+    self.setContentsLayout()
+    
+    self.containerView.snp.remakeConstraints { make in
+      make.left.equalToSuperview()
+      make.top.equalToSuperview()
+      make.right.equalTo(self.textField).offset(8)
+      make.bottom.equalTo(self.textField).offset(8)
+    }
+  }
+  
   private func addDashedBorder() {
     self.dashedBorderLayer.removeFromSuperlayer()
     self.dashedBorderLayer.frame = self.containerView.bounds

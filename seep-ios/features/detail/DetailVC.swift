@@ -6,13 +6,14 @@ class DetailVC: BaseVC, View {
   
   private lazy var detailView = DetailView(frame: self.view.frame)
   private let detailReactor: DetailReactor
-  
+  private let wish: Wish
   
   init(wish: Wish) {
     self.detailReactor = DetailReactor(
       wish: wish,
       wishService: WishService()
     )
+    self.wish = wish
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -29,6 +30,7 @@ class DetailVC: BaseVC, View {
     
     self.view = self.detailView
     self.reactor = self.detailReactor
+    self.detailView.bind(wish: wish)
   }
   
   func bind(reactor: DetailReactor) {
@@ -38,42 +40,7 @@ class DetailVC: BaseVC, View {
       .map { Reactor.Action.inputTitle($0) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
-    
-    
+        
     // MARK: State
-    self.detailReactor.state
-      .map { $0.emoji }
-      .bind(to: self.detailView.emojiField.rx.text)
-      .disposed(by: self.disposeBag)
-    
-    self.detailReactor.state
-      .map { $0.category }
-      .bind(onNext: self.detailView.moveActiveButton(category:))
-      .disposed(by: self.disposeBag)
-    
-    self.detailReactor.state
-      .map { $0.title }
-      .bind(to: self.detailView.titleField.rx.text)
-      .disposed(by: self.disposeBag)
-    
-    self.detailReactor.state
-      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: $0.date) }
-      .bind(to: self.detailView.dateField.rx.text)
-      .disposed(by: self.disposeBag)
-    
-    self.detailReactor.state
-      .map { $0.isPushEnable }
-      .bind(to: self.detailView.notificationButton.rx.isSelected)
-      .disposed(by: self.disposeBag)
-    
-    self.detailReactor.state
-      .map { $0.memo }
-      .bind(to: self.detailView.memoField.rx.text)
-      .disposed(by: self.disposeBag)
-    
-    self.detailReactor.state
-      .map { $0.hashtag }
-      .bind(to: self.detailView.hashtagField.rx.text)
-      .disposed(by: self.disposeBag)
   }
 }
