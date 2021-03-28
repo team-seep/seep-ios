@@ -42,5 +42,9 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
         
     // MARK: State
+    self.detailReactor.state
+      .map { $0.isEditable }
+      .bind(to: self.detailView.rx.isEditable)
+      .disposed(by: self.disposeBag)
   }
 }

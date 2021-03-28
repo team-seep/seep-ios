@@ -1,5 +1,7 @@
 import UIKit
 import ISEmojiView
+import RxSwift
+import RxCocoa
 
 class DetailView: BaseView {
   
@@ -222,6 +224,11 @@ class DetailView: BaseView {
     self.titleField.textField.text = wish.title
     self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
     self.notificationButton.isSelected = wish.isPushEnable
+    if wish.isPushEnable {
+      self.notificationButton.setTitle("detail_notification_on".localized, for: .normal)
+    } else {
+      
+    }
     
     if !wish.memo.isEmpty {
       self.addMemoField(memo: wish.memo)
@@ -260,6 +267,22 @@ class DetailView: BaseView {
     } else {
       self.emojiBackground.image = nil
       self.emojiBackground.backgroundColor = UIColor(r: 246, g: 247, b: 249)
+    }
+  }
+  
+  func setEditable(isEditable: Bool) {
+    if isEditable {
+      UIView.animate(withDuration: 0.3) { [weak self] in
+        guard let self = self else { return }
+        self.randomButton.alpha = 1.0
+        self.editButton.alpha = 1.0
+      }
+    } else {
+      UIView.animate(withDuration: 0.3) { [weak self] in
+        guard let self = self else { return }
+        self.randomButton.alpha = 0.0
+        self.editButton.alpha = 0.0
+      }
     }
   }
   
@@ -368,6 +391,15 @@ extension DetailView: EmojiViewDelegate {
   
   func emojiViewDidPressDismissKeyboardButton(_ emojiView: EmojiView) {
     self.emojiField.resignFirstResponder()
+  }
+}
+
+extension Reactive where Base: DetailView{
+  
+  var isEditable: Binder<Bool> {
+    return Binder(self.base) { view, isEditable in
+      view.setEditable(isEditable: isEditable)
+    }
   }
 }
 
