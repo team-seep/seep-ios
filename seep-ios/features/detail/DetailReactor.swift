@@ -4,6 +4,7 @@ import ReactorKit
 class DetailReactor: Reactor {
   
   enum Action {
+    case tapEditButton(Void)
     case inputEmoji(String)
     case tapCategory(Category)
     case tapRandomEmoji(Void)
@@ -12,10 +13,11 @@ class DetailReactor: Reactor {
     case tapPushButton(Void)
     case inputMemo(String)
     case inputHashtag(String)
-    case tapEditButton(Void)
+    case tapSaveButton(Void)
   }
   
   enum Mutation {
+    case setEditable(Bool)
     case setEmoji(String)
     case setCategory(Category)
     case setTitle(String)
@@ -25,7 +27,6 @@ class DetailReactor: Reactor {
     case togglePushEnable(Void)
     case setMemo(String)
     case setHashtag(String)
-    case setEditable(Void)
   }
   
   struct State {
@@ -44,6 +45,7 @@ class DetailReactor: Reactor {
   }
   
   let initialState: State
+  let initialWish: Wish
   let wishService: WishServiceProtocol
   
   
@@ -57,12 +59,15 @@ class DetailReactor: Reactor {
       memo: wish.memo,
       hashtag: wish.hashtag
     )
+    self.initialWish = wish
     self.wishService = wishService
   }
   
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+    case .tapEditButton():
+      return Observable.just(Mutation.setEditable(true))
     case .inputEmoji(let emoji):
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):
@@ -91,16 +96,31 @@ class DetailReactor: Reactor {
       return Observable.just(Mutation.setMemo(memo))
     case .inputHashtag(let hashtag):
       return Observable.just(Mutation.setHashtag(hashtag))
-    case .tapEditButton():
-      return Observable.just(Mutation.setEditable(()))
+    case .tapSaveButton():
+      if self.currentState.title.isEmpty {
+        return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
+      } else {
+        let wish = Wish().then {
+          $0.emoji = self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji
+          $0.category = self.currentState.category.rawValue
+          $0.title = self.currentState.title
+          $0.date = self.currentState.date
+          $0.isPushEnable = self.currentState.isPushEnable
+          $0.memo = self.currentState.memo
+          $0.hashtag = self.currentState.hashtag
+        }
+        
+        self.wishService.updateWish(id: self.initialWish._id, newWish: wish)
+        return Observable.just(Mutation.setEditable(false))
+      }
     }
   }
   
   func reduce(state: State, mutation: Mutation) -> State {
     var newState = state
     switch mutation {
-    case .setEditable():
-      newState.isEditable = true
+    case .setEditable(let isEditable):
+      newState.isEditable = isEditable
     case .setEmoji(let emoji):
       newState.emoji = emoji
     case .setCategory(let category):

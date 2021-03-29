@@ -310,6 +310,30 @@ class DetailView: BaseView {
         self.editButton.alpha = 0.0
         self.moreButton.alpha = 1.0
       }
+      self.hashtagField.clearButton.isHidden = true
+      self.hashtagField.containerView.snp.remakeConstraints { make in
+        make.left.equalToSuperview()
+        make.top.equalToSuperview()
+        make.right.equalTo(self.hashtagField.textField).offset(8)
+        make.bottom.equalTo(self.hashtagField.textField).offset(8)
+      }
+      
+      if self.memoField.textView.text == "wrtie_placeholder_memo".localized {
+        self.memoField.removeFromSuperview()
+      }
+      
+      if self.hashtagField.textField.text!.isEmpty {
+        self.hashtagField.removeFromSuperview()
+      } else {
+        if self.memoField.superview == nil {
+          self.hashtagField.snp.remakeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalTo(self.hashtagField.containerView)
+            make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+            make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+          }
+        }
+      }
     }
   }
   
@@ -352,7 +376,7 @@ class DetailView: BaseView {
     }
     
     if !memo.isEmpty {
-      self.memoField.textView.text = memo
+      self.memoField.setText(text: memo)
     }
   }
   

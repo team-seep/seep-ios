@@ -85,6 +85,11 @@ class TextInputView: BaseView {
       }
     }
   }
+  
+  func setText(text: String) {
+    self.textView.text = text
+    self.textView.textColor = .gray5
+  }
 }
 
 extension Reactive where Base: TextInputView {
@@ -105,8 +110,8 @@ extension TextInputView: UITextViewDelegate {
   func textViewDidBeginEditing(_ textView: UITextView) {
     if textView.text == "wrtie_placeholder_memo".localized {
       textView.text = ""
-      textView.textColor = .gray5
     }
+    textView.textColor = .gray5
     
     UIView.animate(withDuration: 0.3) {
       self.containerView.backgroundColor = .white

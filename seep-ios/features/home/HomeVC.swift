@@ -158,7 +158,9 @@ class HomeVC: BaseVC, View {
   }
   
   private func showDetail(wish: Wish) {
-    let detailVC = DetailVC.instance(wish: wish)
+    let detailVC = DetailVC.instance(wish: wish).then {
+      $0.delegate = self
+    }
     
     self.present(detailVC, animated: true, completion: nil)
   }
@@ -184,6 +186,15 @@ extension HomeVC: UITableViewDelegate {
 extension HomeVC: WriteDelegate {
   
   func onSuccessWrite() {
+    Observable.just(HomeReactor.Action.viewDidLoad(()))
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
+  }
+}
+
+extension HomeVC: DetailDelegate {
+  
+  func onDismiss() {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)

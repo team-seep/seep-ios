@@ -93,6 +93,7 @@ class WriteVC: BaseVC, View {
       .disposed(by: disposeBag)
     
     self.writeView.memoField.rx.text.orEmpty
+      .filter { $0 != "wrtie_placeholder_memo".localized }
       .map { Reactor.Action.inputMemo($0) }
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)

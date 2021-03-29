@@ -41,3 +41,7 @@
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";
 "detail_notification_on" = "알림이 켜져있습니다!";
+"detail_action_sheet_delete" = "삭제";
+"detail_action_sheet_edit" = "수정";
+"detail_action_sheet_share" = "공유";
+"detail_action_sheet_cancel" = "취소";

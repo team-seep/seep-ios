@@ -4,7 +4,7 @@ import ReactorKit
 
 protocol DetailDelegate: class {
   
-  func onSuccessDelete()
+  func onDismiss()
 }
 
 class DetailVC: BaseVC, View {
@@ -50,6 +50,12 @@ class DetailVC: BaseVC, View {
     self.detailView.titleField.textField.delegate = self
     self.detailView.dateField.textField.inputView = datePicker
     self.detailView.bind(wish: wish)
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    
+    self.delegate?.onDismiss()
   }
   
   override func bindEvent() {
@@ -113,12 +119,18 @@ class DetailVC: BaseVC, View {
       .disposed(by: disposeBag)
     
     self.detailView.memoField.rx.text.orEmpty
+      .filter { $0 != "wrtie_placeholder_memo".localized }
       .map { Reactor.Action.inputMemo($0) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.hashtagField.rx.text.orEmpty
       .map { Reactor.Action.inputHashtag($0) }
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.detailView.editButton.rx.tap
+      .map { Reactor.Action.tapSaveButton(()) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
         
@@ -177,7 +189,6 @@ class DetailVC: BaseVC, View {
       .bind(onNext: { [weak self] shouldDismiss in
         guard let self = self else { return }
         if shouldDismiss {
-          self.delegate?.onSuccessDelete()
           self.dismiss()
         }
       })
@@ -186,14 +197,27 @@ class DetailVC: BaseVC, View {
   
   private func showActionSheet() {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { action in
+    let deleteAction = UIAlertAction(
+      title: "detail_action_sheet_delete".localized,
+      style: .destructive
+    ) { action in
       
     }
-    let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-    let shereAction = UIAlertAction(title: "공유", style: .default) { action in
+    let cancelAction = UIAlertAction(
+      title: "detail_action_sheet_cancel".localized,
+      style: .cancel,
+      handler: nil
+    )
+    let shereAction = UIAlertAction(
+      title: "detail_action_sheet_share".localized,
+      style: .default
+    ) { action in
       
     }
-    let editAction = UIAlertAction(title: "수정", style: .default) { action in
+    let editAction = UIAlertAction(
+      title: "detail_action_sheet_edit".localized,
+      style: .default
+    ) { action in
       Observable.just(Reactor.Action.tapEditButton(()))
         .bind(to: self.detailReactor.action)
         .disposed(by: self.disposeBag)
