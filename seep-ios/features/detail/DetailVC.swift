@@ -200,8 +200,16 @@ class DetailVC: BaseVC, View {
     let deleteAction = UIAlertAction(
       title: "detail_action_sheet_delete".localized,
       style: .destructive
-    ) { action in
-      
+    ) { [weak self] action in
+      guard let self = self else { return }
+      AlertUtils.showWithCancel(
+        viewController: self,
+        title: nil,
+        message: "삭제하면 복원이 안되요😭\n지워도 될까요?") {
+        Observable.just(Reactor.Action.tapDeleteButton(()))
+          .bind(to: self.detailReactor.action)
+          .disposed(by: self.disposeBag)
+      }
     }
     let cancelAction = UIAlertAction(
       title: "detail_action_sheet_cancel".localized,
