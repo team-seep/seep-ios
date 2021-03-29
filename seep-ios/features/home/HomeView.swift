@@ -34,7 +34,7 @@ class HomeView: BaseView {
   }
   
   let wantToDoButton = UIButton().then {
-    $0.setTitle("home_category_want_to_do".localized, for: .normal)
+    $0.setTitle("common_category_want_to_do".localized, for: .normal)
     $0.setTitleColor(UIColor(r: 186, g: 186, b: 186), for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
@@ -42,7 +42,7 @@ class HomeView: BaseView {
   }
   
   let wantToGetButton = UIButton().then {
-    $0.setTitle("home_category_want_to_get".localized, for: .normal)
+    $0.setTitle("common_category_want_to_get".localized, for: .normal)
     $0.setTitleColor(UIColor(r: 186, g: 186, b: 186), for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
@@ -50,7 +50,7 @@ class HomeView: BaseView {
   }
   
   let wantToGoButton = UIButton().then {
-    $0.setTitle("home_category_want_to_go".localized, for: .normal)
+    $0.setTitle("common_category_want_to_go".localized, for: .normal)
     $0.setTitleColor(UIColor(r: 186, g: 186, b: 186), for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)

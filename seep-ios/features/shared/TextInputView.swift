@@ -5,7 +5,7 @@ import RxCocoa
 class TextInputView: BaseView {
   
   let containerView = UIView().then {
-    $0.backgroundColor = UIColor(r: 246, g: 247, b: 249)
+    $0.backgroundColor = .gray2
     $0.layer.cornerRadius = 6
   }
   
@@ -17,7 +17,7 @@ class TextInputView: BaseView {
   ).then {
     $0.text = "write_header_memo".localized
     $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
-    $0.textColor = UIColor(r: 47, g: 168, b: 249)
+    $0.textColor = .seepBlue
     $0.setKern(kern: -0.24)
     $0.backgroundColor = .white
     $0.alpha = 0.0
@@ -27,7 +27,7 @@ class TextInputView: BaseView {
     $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     $0.backgroundColor = .clear
     $0.text = "wrtie_placeholder_memo".localized
-    $0.textColor = UIColor(r: 186, g: 186, b: 186)
+    $0.textColor = .gray3
   }
   
   let errorLabel = UILabel().then {
@@ -40,11 +40,6 @@ class TextInputView: BaseView {
     self.addSubViews(containerView, titleLabel, textView)
     self.textView.rx
       .setDelegate(self)
-      .disposed(by: disposeBag)
-    self.textView.rx.text.orEmpty.skip(1)
-      .filter { $0 != "wrtie_placeholder_memo".localized }
-      .map { $0.isEmpty }
-      .bind(to: self.rx.isEmpty)
       .disposed(by: disposeBag)
   }
   
@@ -90,30 +85,17 @@ class TextInputView: BaseView {
       }
     }
   }
+  
+  func setText(text: String) {
+    self.textView.text = text
+    self.textView.textColor = .gray5
+  }
 }
 
 extension Reactive where Base: TextInputView {
   
   var text: ControlProperty<String?> {
     return base.textView.rx.text
-  }
-  
-  var isEmpty: Binder<Bool> {
-    return Binder(self.base) { view, isEmpty in
-      if isEmpty {
-        UIView.animate(withDuration: 0.3) {
-          view.containerView.layer.borderColor = UIColor(r: 186, g: 186, b: 186).cgColor
-          view.containerView.layer.borderWidth = 1
-          view.titleLabel.alpha = 0.0
-        }
-      } else {
-        UIView.animate(withDuration: 0.3) {
-          view.containerView.layer.borderColor = UIColor(r: 47, g: 168, b: 249).cgColor
-          view.containerView.layer.borderWidth = 1
-          view.titleLabel.alpha = 1.0
-        }
-      }
-    }
   }
   
   var errorMessage: Binder<String?> {
@@ -128,27 +110,35 @@ extension TextInputView: UITextViewDelegate {
   func textViewDidBeginEditing(_ textView: UITextView) {
     if textView.text == "wrtie_placeholder_memo".localized {
       textView.text = ""
-      textView.textColor = UIColor(r: 51, g: 51, b: 51)
     }
-    self.rx.isEmpty.onNext(self.textView.text.isEmpty)
+    textView.textColor = .gray5
+    
     UIView.animate(withDuration: 0.3) {
       self.containerView.backgroundColor = .white
+      self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
+      self.containerView.layer.borderWidth = 1
+      self.titleLabel.alpha = 1.0
     }
   }
   
   func textViewDidEndEditing(_ textView: UITextView) {
     if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
       textView.text = "wrtie_placeholder_memo".localized
-      textView.textColor = UIColor(r: 186, g: 186, b: 186)
+      textView.textColor = .gray3
     }
     
     UIView.animate(withDuration: 0.3) {
-      self.containerView.layer.borderColor = UIColor(r: 186, g: 186, b: 186).cgColor
+      self.containerView.layer.borderWidth = 0
+      self.containerView.backgroundColor = .gray2
       self.titleLabel.alpha = 0.0
     }
   }
   
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+  func textView(
+    _ textView: UITextView,
+    shouldChangeTextIn range: NSRange,
+    replacementText text: String
+  ) -> Bool {
     guard let str = textView.text else { return true }
     let newLength = str.count + text.count - range.length
     

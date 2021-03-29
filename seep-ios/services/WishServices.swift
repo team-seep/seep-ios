@@ -5,6 +5,7 @@ protocol WishServiceProtocol {
   func addWish(wish: Wish)
   func deleteWish(id: ObjectId)
   func searchWish(id: ObjectId) -> Wish?
+  func updateWish(id: ObjectId, newWish: Wish)
   func fetchAllWishes(category: Category) -> [Wish]
   func getFinishCount() -> Int
 }
@@ -36,6 +37,21 @@ struct WishService: WishServiceProtocol {
     guard let targetObject = searchTask.first else { return nil }
     
     return targetObject
+  }
+  
+  func updateWish(id: ObjectId, newWish: Wish) {
+    guard let realm = try? Realm() else { return }
+    let item = self.searchWish(id: id)
+    
+    try! realm.write {
+      item?.emoji = newWish.emoji
+      item?.category = newWish.category
+      item?.title = newWish.title
+      item?.date = newWish.date
+      item?.isPushEnable = newWish.isPushEnable
+      item?.memo = newWish.memo
+      item?.hashtag = newWish.hashtag
+    }
   }
   
   func fetchAllWishes(category: Category) -> [Wish] {

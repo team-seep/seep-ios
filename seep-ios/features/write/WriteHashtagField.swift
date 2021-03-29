@@ -12,8 +12,9 @@ class WriteHashtagField: BaseView {
     $0.textAlignment = .left
     $0.returnKeyType = .done
     $0.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
+    $0.textColor = .gray4
     $0.attributedPlaceholder = NSAttributedString(
-      string: "해시태그를 달아봐요 (선택)",
+      string: "write_placeholder_hashtag".localized,
       attributes: [
         .foregroundColor: UIColor.gray3,
         .font: UIFont(name: "AppleSDGothicNeo-Regular", size: 14)!
@@ -26,7 +27,7 @@ class WriteHashtagField: BaseView {
   }
   
   let dashedBorderLayer = CAShapeLayer().then {
-    $0.strokeColor = UIColor(r: 192, g: 197, b: 205).cgColor
+    $0.strokeColor = UIColor.gray3.cgColor
     $0.lineDashPattern = [2, 2]
     $0.fillColor = nil
   }
@@ -80,6 +81,47 @@ class WriteHashtagField: BaseView {
     self.addDashedBorder()
   }
   
+  func bind(hashtag: String) {
+    self.textField.text = hashtag
+    self.clearButton.isHidden = true
+    self.dashedBorderLayer.isHidden = true
+    self.textField.frame.size.width = self.textField.intrinsicContentSize.width
+    self.containerView.backgroundColor = .gray2
+    self.textField.attributedPlaceholder = nil
+    self.setContentsLayout()
+    
+    self.containerView.snp.remakeConstraints { make in
+      make.left.equalToSuperview()
+      make.top.equalToSuperview()
+      make.right.equalTo(self.textField).offset(8)
+      make.bottom.equalTo(self.textField).offset(8)
+    }
+  }
+  
+  func setContentsLayout() {
+    self.containerView.snp.remakeConstraints { make in
+      make.left.equalToSuperview()
+      make.top.equalToSuperview()
+      make.right.equalTo(self.clearButton).offset(6)
+      make.bottom.equalTo(self.textField).offset(8)
+    }
+    
+    self.textField.snp.remakeConstraints { make in
+      make.left.equalTo(self.containerView).offset(8)
+      make.top.equalTo(self.containerView).offset(6)
+    }
+    
+    self.clearButton.snp.remakeConstraints { make in
+      make.centerY.equalTo(self.containerView)
+      make.left.equalTo(self.textField.snp.right).offset(6)
+    }
+    
+    self.errorLabel.snp.remakeConstraints { make in
+      make.left.equalTo(self.containerView)
+      make.top.equalTo(self.containerView.snp.bottom).offset(8)
+    }
+  }
+  
   private func addDashedBorder() {
     self.dashedBorderLayer.removeFromSuperlayer()
     self.dashedBorderLayer.frame = self.containerView.bounds
@@ -96,8 +138,8 @@ class WriteHashtagField: BaseView {
       .bind { [weak self] text in
         guard let self = self else { return }
         if let text = text {
-          self.setHiddenClearButton(isHidden: text.isEmpty)
-          self.setHiddenDashedBorder(isHidden: !text.isEmpty)
+          self.clearButton.isHidden = text.isEmpty
+          self.dashedBorderLayer.isHidden = !text.isEmpty
           if !text.isEmpty {
             self.textField.frame.size.width = self.textField.intrinsicContentSize.width
             self.containerView.backgroundColor = .gray2
@@ -121,17 +163,12 @@ class WriteHashtagField: BaseView {
   
   private func setupClearButton() {
     self.clearButton.rx.tap
-      .map { "" }
-      .bind(to: self.textField.rx.text)
-      .disposed(by: self.disposeBag)
-    
-    self.clearButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind { [weak self] _ in
         guard let self = self else { return }
         self.textField.text = ""
-        self.setHiddenClearButton(isHidden: true)
-        self.setHiddenDashedBorder(isHidden: false)
+        self.clearButton.isHidden = true
+        self.dashedBorderLayer.isHidden = false
         self.containerView.backgroundColor = .clear
         self.textField.attributedPlaceholder = NSAttributedString(
           string: "write_placeholder_hashtag".localized,
@@ -145,25 +182,6 @@ class WriteHashtagField: BaseView {
       .disposed(by: self.disposeBag)
   }
   
-  private func setContentsLayout() {
-    self.containerView.snp.remakeConstraints { make in
-      make.left.equalToSuperview()
-      make.top.equalToSuperview()
-      make.right.equalTo(self.clearButton).offset(6)
-      make.bottom.equalTo(self.textField).offset(8)
-    }
-    
-    self.textField.snp.remakeConstraints { make in
-      make.left.equalTo(self.containerView).offset(8)
-      make.top.equalTo(self.containerView).offset(6)
-    }
-    
-    self.clearButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.left.equalTo(self.textField.snp.right).offset(6)
-    }
-  }
-  
   private func setPlaceHolderLayout() {
     self.containerView.snp.remakeConstraints { make in
       make.left.equalToSuperview()
@@ -175,25 +193,6 @@ class WriteHashtagField: BaseView {
     self.textField.snp.remakeConstraints { make in
       make.left.equalTo(self.containerView).offset(8)
       make.top.equalTo(self.containerView).offset(6)
-    }
-    
-    self.clearButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.right.equalTo(self.containerView).offset(-6)
-    }
-  }
-  
-  private func setHiddenClearButton(isHidden: Bool) {
-    UIView.animate(withDuration: 0.3) { [weak self] in
-      guard let self = self else { return }
-      self.clearButton.alpha = isHidden ? 0.0 : 1.0
-    }
-  }
-  
-  private func setHiddenDashedBorder(isHidden: Bool) {
-    UIView.animate(withDuration: 0.3) { [weak self] in
-      guard let self = self else { return }
-      self.dashedBorderLayer.opacity = isHidden ? 0.0 : 1.0
     }
   }
 }
