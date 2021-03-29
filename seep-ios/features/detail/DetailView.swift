@@ -125,7 +125,7 @@ class DetailView: BaseView {
   
   
   override func setup() {
-    self.isUserInteractionEnabled = false
+    self.scrollView.isUserInteractionEnabled = false
     self.backgroundColor = .white
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
@@ -152,8 +152,8 @@ class DetailView: BaseView {
     self.containerView.snp.makeConstraints { make in
       make.edges.equalTo(0)
       make.width.equalToSuperview()
-      make.top.equalTo(self.emojiBackground)
-      make.bottom.equalTo(self.notificationButton).offset(20)
+      make.top.equalToSuperview()
+      make.bottom.equalTo(self.notificationButton).offset(40)
     }
     
     self.topIndicator.snp.makeConstraints { make in
@@ -271,18 +271,59 @@ class DetailView: BaseView {
   }
   
   func setEditable(isEditable: Bool) {
+    self.scrollView.isUserInteractionEnabled = isEditable
+    
     if isEditable {
       UIView.animate(withDuration: 0.3) { [weak self] in
         guard let self = self else { return }
         self.randomButton.alpha = 1.0
         self.editButton.alpha = 1.0
+        self.moreButton.alpha = 0.0
+      }
+      if self.memoField.superview == nil {
+        self.addMemoField(memo: "")
+      }
+      
+      if self.hashtagField.superview == nil {
+        self.addHashtagField(hashtag: "")
+      } else {
+        self.hashtagField.clearButton.isHidden = false
+        self.hashtagField.setContentsLayout()
+        self.hashtagField.clearButton.alpha = 1.0
+        self.hashtagField.snp.remakeConstraints { make in
+          make.left.equalToSuperview().offset(20)
+          make.right.equalTo(self.hashtagField.containerView)
+          make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+          make.top.equalTo(self.memoField.snp.bottom).offset(16)
+        }
+        self.containerView.snp.remakeConstraints { make in
+          make.edges.equalTo(0)
+          make.width.equalToSuperview()
+          make.top.equalToSuperview()
+          make.bottom.equalTo(self.hashtagField).offset(20)
+        }
       }
     } else {
       UIView.animate(withDuration: 0.3) { [weak self] in
         guard let self = self else { return }
         self.randomButton.alpha = 0.0
         self.editButton.alpha = 0.0
+        self.moreButton.alpha = 1.0
       }
+    }
+  }
+  
+  func showEditButton() {
+    UIView.transition(with: self.editButton, duration: 0.3, options: .curveEaseInOut) {
+      self.editButton.alpha = 1.0
+      self.editButton.transform = .identity
+    }
+  }
+  
+  func hideEditButton() {
+    UIView.transition(with: self.editButton, duration: 0.3, options: .curveEaseInOut) {
+      self.editButton.alpha = 0.0
+      self.editButton.transform = .init(translationX: 0, y: 100)
     }
   }
   
@@ -306,52 +347,61 @@ class DetailView: BaseView {
     self.containerView.snp.remakeConstraints { make in
       make.edges.equalTo(0)
       make.width.equalToSuperview()
-      make.top.equalTo(self.emojiBackground)
+      make.top.equalToSuperview()
       make.bottom.equalTo(self.memoField).offset(20)
     }
     
-    self.memoField.textView.text = memo
+    if !memo.isEmpty {
+      self.memoField.textView.text = memo
+    }
   }
   
   private func addHashtagField(hashtag: String) {
     self.containerView.addSubViews(self.hashtagField)
     
+    if !hashtag.isEmpty {
+      self.hashtagField.bind(hashtag: hashtag)
+    }
+    
     if self.memoField.superview != nil {
-      self.hashtagField.snp.makeConstraints { make in
+      self.hashtagField.snp.remakeConstraints { make in
         make.left.equalToSuperview().offset(20)
+        make.right.equalTo(self.hashtagField.containerView)
         make.top.equalTo(self.memoField.snp.bottom).offset(16)
+        make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
       }
     } else {
       self.hashtagField.snp.remakeConstraints { make in
         make.left.equalToSuperview().offset(20)
+        make.right.equalTo(self.hashtagField.containerView)
         make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+        make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
       }
     }
     
     self.containerView.snp.remakeConstraints { make in
       make.edges.equalTo(0)
       make.width.equalToSuperview()
-      make.top.equalTo(self.emojiBackground)
+      make.top.equalToSuperview()
       make.bottom.equalTo(self.hashtagField).offset(20)
     }
-    self.hashtagField.bind(hashtag: hashtag)
   }
 }
 
 extension DetailView: UIScrollViewDelegate {
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//    self.hideWriteButton()
+    self.hideEditButton()
   }
   
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
-//      self.showWriteButton()
+      self.showEditButton()
     }
   }
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//    self.showWriteButton()
+    self.showEditButton()
   }
 }
 

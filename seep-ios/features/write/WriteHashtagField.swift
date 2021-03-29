@@ -83,8 +83,8 @@ class WriteHashtagField: BaseView {
   
   func bind(hashtag: String) {
     self.textField.text = hashtag
-    self.setHiddenClearButton(isHidden: true)
-    self.setHiddenDashedBorder(isHidden: true)
+    self.clearButton.isHidden = true
+    self.dashedBorderLayer.isHidden = true
     self.textField.frame.size.width = self.textField.intrinsicContentSize.width
     self.containerView.backgroundColor = .gray2
     self.textField.attributedPlaceholder = nil
@@ -95,6 +95,30 @@ class WriteHashtagField: BaseView {
       make.top.equalToSuperview()
       make.right.equalTo(self.textField).offset(8)
       make.bottom.equalTo(self.textField).offset(8)
+    }
+  }
+  
+  func setContentsLayout() {
+    self.containerView.snp.remakeConstraints { make in
+      make.left.equalToSuperview()
+      make.top.equalToSuperview()
+      make.right.equalTo(self.clearButton).offset(6)
+      make.bottom.equalTo(self.textField).offset(8)
+    }
+    
+    self.textField.snp.remakeConstraints { make in
+      make.left.equalTo(self.containerView).offset(8)
+      make.top.equalTo(self.containerView).offset(6)
+    }
+    
+    self.clearButton.snp.remakeConstraints { make in
+      make.centerY.equalTo(self.containerView)
+      make.left.equalTo(self.textField.snp.right).offset(6)
+    }
+    
+    self.errorLabel.snp.remakeConstraints { make in
+      make.left.equalTo(self.containerView)
+      make.top.equalTo(self.containerView.snp.bottom).offset(8)
     }
   }
   
@@ -114,8 +138,8 @@ class WriteHashtagField: BaseView {
       .bind { [weak self] text in
         guard let self = self else { return }
         if let text = text {
-          self.setHiddenClearButton(isHidden: text.isEmpty)
-          self.setHiddenDashedBorder(isHidden: !text.isEmpty)
+          self.clearButton.isHidden = text.isEmpty
+          self.dashedBorderLayer.isHidden = !text.isEmpty
           if !text.isEmpty {
             self.textField.frame.size.width = self.textField.intrinsicContentSize.width
             self.containerView.backgroundColor = .gray2
@@ -139,17 +163,12 @@ class WriteHashtagField: BaseView {
   
   private func setupClearButton() {
     self.clearButton.rx.tap
-      .map { "" }
-      .bind(to: self.textField.rx.text)
-      .disposed(by: self.disposeBag)
-    
-    self.clearButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind { [weak self] _ in
         guard let self = self else { return }
         self.textField.text = ""
-        self.setHiddenClearButton(isHidden: true)
-        self.setHiddenDashedBorder(isHidden: false)
+        self.clearButton.isHidden = true
+        self.dashedBorderLayer.isHidden = false
         self.containerView.backgroundColor = .clear
         self.textField.attributedPlaceholder = NSAttributedString(
           string: "write_placeholder_hashtag".localized,
@@ -163,25 +182,6 @@ class WriteHashtagField: BaseView {
       .disposed(by: self.disposeBag)
   }
   
-  private func setContentsLayout() {
-    self.containerView.snp.remakeConstraints { make in
-      make.left.equalToSuperview()
-      make.top.equalToSuperview()
-      make.right.equalTo(self.clearButton).offset(6)
-      make.bottom.equalTo(self.textField).offset(8)
-    }
-    
-    self.textField.snp.remakeConstraints { make in
-      make.left.equalTo(self.containerView).offset(8)
-      make.top.equalTo(self.containerView).offset(6)
-    }
-    
-    self.clearButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.left.equalTo(self.textField.snp.right).offset(6)
-    }
-  }
-  
   private func setPlaceHolderLayout() {
     self.containerView.snp.remakeConstraints { make in
       make.left.equalToSuperview()
@@ -193,25 +193,6 @@ class WriteHashtagField: BaseView {
     self.textField.snp.remakeConstraints { make in
       make.left.equalTo(self.containerView).offset(8)
       make.top.equalTo(self.containerView).offset(6)
-    }
-    
-    self.clearButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.right.equalTo(self.containerView).offset(-6)
-    }
-  }
-  
-  private func setHiddenClearButton(isHidden: Bool) {
-    UIView.animate(withDuration: 0.3) { [weak self] in
-      guard let self = self else { return }
-      self.clearButton.alpha = isHidden ? 0.0 : 1.0
-    }
-  }
-  
-  private func setHiddenDashedBorder(isHidden: Bool) {
-    UIView.animate(withDuration: 0.3) { [weak self] in
-      guard let self = self else { return }
-      self.dashedBorderLayer.opacity = isHidden ? 0.0 : 1.0
     }
   }
 }

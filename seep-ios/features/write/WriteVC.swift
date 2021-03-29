@@ -33,7 +33,6 @@ class WriteVC: BaseVC, View {
     self.reactor = writeReactor
     self.setupKeyboardNotification()
     self.writeView.titleField.textField.delegate = self
-    
     self.writeView.dateField.textField.inputView = datePicker
     Observable.just(WriteReactor.Action.viewDidLoad(()))
       .bind(to: self.writeReactor.action)
