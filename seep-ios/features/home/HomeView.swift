@@ -229,7 +229,7 @@ class HomeView: BaseView {
   }
   
   func setSuccessCount(count: Int) {
-    let text = String(format: "home_finish_count_format".localized, count)
+    let text = count != 0 ? String(format: "home_finish_count_format".localized, count) : String(format: "home_finish_count_format_empty".localized, count)
     let attributedString = NSMutableAttributedString(string: text)
     let underlineTextRange = (text as NSString).range(of: "\(count)개")
     
