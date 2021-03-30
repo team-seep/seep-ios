@@ -201,25 +201,11 @@ class HomeView: BaseView {
   }
   
   func setWishCount(category: Category, count: Int) {
-    let text = String(format: "home_write_\(category.rawValue)_count_format".localized, count)
-    let attributedString = NSMutableAttributedString(string: text)
-    let underlineTextRange = (text as NSString).range(of: String(format: "home_write_\(category.rawValue)_unit".localized, count))
-    let boldTextRange = (text as NSString).range(of: "남았어요!")
-    
-    attributedString.addAttributes([
-      .foregroundColor: UIColor.tennisGreen,
-      .underlineStyle: NSUnderlineStyle.thick.rawValue,
-      .underlineColor: UIColor.tennisGreen,
-      .font: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!
-    ], range: underlineTextRange)
-    
-    attributedString.addAttribute(
-      .font,
-      value: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!,
-      range: boldTextRange
-    )
-    
-    self.titleLabel.attributedText = attributedString
+    if count == 0 {
+      self.titleLabel.attributedText = self.getEmptyTitle(by: category, count: count)
+    } else{
+      self.titleLabel.attributedText = self.getCountTitle(by: category, count: count)
+    }
   }
   
   func startAnimation() {
@@ -271,5 +257,41 @@ class HomeView: BaseView {
         self.tableView.alpha = 1.0
       }
     }
+  }
+  
+  private func getEmptyTitle(by category: Category, count: Int) -> NSMutableAttributedString {
+    let text = "home_write_\(category.rawValue)_count_empty".localized
+    let attributedString = NSMutableAttributedString(string: text)
+    let boldTextRange = (text as NSString).range(of: "적어봐요!")
+    
+    attributedString.addAttribute(
+      .font,
+      value: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!,
+      range: boldTextRange
+    )
+    
+    return attributedString
+  }
+  
+  private func getCountTitle(by category: Category, count: Int) -> NSMutableAttributedString {
+    let text = String(format: "home_write_\(category.rawValue)_count_format".localized, count)
+    let attributedString = NSMutableAttributedString(string: text)
+    let underlineTextRange = (text as NSString).range(of: String(format: "home_write_\(category.rawValue)_unit".localized, count))
+    let boldTextRange = (text as NSString).range(of: "남았어요!")
+    
+    attributedString.addAttributes([
+      .foregroundColor: UIColor.tennisGreen,
+      .underlineStyle: NSUnderlineStyle.thick.rawValue,
+      .underlineColor: UIColor.tennisGreen,
+      .font: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!
+    ], range: underlineTextRange)
+    
+    attributedString.addAttribute(
+      .font,
+      value: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!,
+      range: boldTextRange
+    )
+    
+    return attributedString
   }
 }
