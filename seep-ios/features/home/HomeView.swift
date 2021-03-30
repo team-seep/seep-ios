@@ -58,7 +58,7 @@ class HomeView: BaseView {
   }
   
   let activeButton = UIButton().then {
-    $0.backgroundColor = UIColor(r: 47, g: 168, b: 249)
+    $0.backgroundColor = .seepBlue
     $0.layer.cornerRadius = 15
     $0.setTitleColor(.white, for: .normal)
     $0.layer.shadowOpacity = 0.15
@@ -113,7 +113,7 @@ class HomeView: BaseView {
   let writeButton = UIButton().then {
     $0.setTitle("home_write_button".localized, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
-    $0.backgroundColor = UIColor(r: 56, g: 202, b: 79)
+    $0.backgroundColor = .tennisGreen
     $0.layer.cornerRadius = 25
     $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
   }
