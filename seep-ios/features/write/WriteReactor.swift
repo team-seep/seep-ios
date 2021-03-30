@@ -39,6 +39,7 @@ class WriteReactor: Reactor {
     var date: Date?
     var dateError: String? = nil
     var isPushEnable: Bool = false
+    var isPushButtonVisible: Bool = false
     var memo: String = ""
     var hashtag: String = ""
     var writeButtonState: WriteButton.WriteButtonState = .initial
@@ -124,6 +125,7 @@ class WriteReactor: Reactor {
       newState.dateError = nil
     case .setDate(let date):
       newState.date = date
+      newState.isPushButtonVisible = true
       newState.writeButtonState = self.validateForEnable(state: newState)
     case .setDateError(let errorMessage):
       newState.dateError = errorMessage
