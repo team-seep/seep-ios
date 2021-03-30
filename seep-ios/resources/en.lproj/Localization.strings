@@ -12,7 +12,12 @@
 
 // Home
 "home_write_button" = "📝 위시 쓰러갈래요";
-"home_write_count_format1" = "하고 싶은 것들이\n%d개 남았어요!";
+"home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%d개 남았어요!";
+"home_write_category_want_to_do_unit" = "%d개";
+"home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%d개 남았어요!";
+"home_write_category_want_to_get_unit" = "%d개";
+"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%d군데 남았어요!";
+"home_write_category_want_to_go_unit" = "%d군데";
 "home_finish_count_format" = "👏 지금까지 %d개를 이뤘어요";
 "home_category_success" = "성공";
 

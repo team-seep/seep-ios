@@ -8,6 +8,8 @@ protocol WishServiceProtocol {
   func updateWish(id: ObjectId, newWish: Wish)
   func fetchAllWishes(category: Category) -> [Wish]
   func getFinishCount() -> Int
+  func getWishCount() -> Int
+  func getWishCount(category: Category) -> Int
 }
 
 
@@ -64,6 +66,20 @@ struct WishService: WishServiceProtocol {
   func getFinishCount() -> Int {
     let realm = try! Realm()
     let searchTask = realm.objects(Wish.self).filter { $0.isSuccess == true }
+    
+    return searchTask.count
+  }
+  
+  func getWishCount() -> Int {
+    let realm = try! Realm()
+    let searchTask = realm.objects(Wish.self).filter { $0.isSuccess == false }
+    
+    return searchTask.count
+  }
+  
+  func getWishCount(category: Category) -> Int {
+    let realm = try! Realm()
+    let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == false) && ($0.category == category.rawValue) }
     
     return searchTask.count
   }
