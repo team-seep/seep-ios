@@ -117,6 +117,7 @@ class WriteVC: BaseVC, View {
     
     self.writeReactor.state
       .map { $0.category }
+      .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.writeView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
@@ -148,6 +149,14 @@ class WriteVC: BaseVC, View {
       .map { $0.isPushEnable }
       .observeOn(MainScheduler.instance)
       .bind(to: self.writeView.notificationButton.rx.isSelected)
+      .disposed(by: self.disposeBag)
+    
+    self.writeReactor.state
+      .map { $0.isPushButtonVisible }
+      .filter { $0 == true }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.writeView.showNotificationButton)
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state

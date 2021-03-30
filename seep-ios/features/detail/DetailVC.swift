@@ -205,7 +205,8 @@ class DetailVC: BaseVC, View {
       AlertUtils.showWithCancel(
         viewController: self,
         title: nil,
-        message: "삭제하면 복원이 안되요😭\n지워도 될까요?") {
+        message: "detail_delete_message".localized
+      ) {
         Observable.just(Reactor.Action.tapDeleteButton(()))
           .bind(to: self.detailReactor.action)
           .disposed(by: self.disposeBag)

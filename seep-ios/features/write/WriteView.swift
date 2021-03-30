@@ -150,7 +150,7 @@ class WriteView: BaseView {
     self.containerView.addSubViews(
       titleLabel, emojiBackground, emojiField, randomButton,
       categoryStackView, activeButton, titleField, dateField,
-      notificationButton, memoField, hashtagField
+      memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, scrollView, writeButton)
@@ -221,14 +221,9 @@ class WriteView: BaseView {
       make.top.equalTo(self.titleField.snp.bottom).offset(16)
     }
     
-    self.notificationButton.snp.makeConstraints { make in
-      make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.dateField.snp.bottom).offset(8)
-    }
-    
     self.memoField.snp.makeConstraints { make in
       make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+      make.top.equalTo(self.dateField.snp.bottom).offset(8)
     }
     
     self.hashtagField.snp.makeConstraints { make in
@@ -285,6 +280,21 @@ class WriteView: BaseView {
     } else {
       self.emojiBackground.image = nil
       self.emojiBackground.backgroundColor = UIColor(r: 246, g: 247, b: 249)
+    }
+  }
+  
+  func showNotificationButton(isVisible: Bool) {
+    if isVisible == true {
+      self.containerView.addSubViews(self.notificationButton)
+      self.notificationButton.snp.makeConstraints { make in
+        make.left.right.equalTo(self.titleField)
+        make.top.equalTo(self.dateField.snp.bottom).offset(8)
+      }
+      
+      self.memoField.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.titleField)
+        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+      }
     }
   }
   
