@@ -15,6 +15,7 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
   
   let titleLabel = UILabel().then {
     $0.textColor = .gray5
+    $0.numberOfLines = 2
     $0.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
   }
   

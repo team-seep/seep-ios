@@ -11,6 +11,7 @@ class PageItemView: BaseView {
     $0.rowHeight = UITableView.automaticDimension
     $0.separatorStyle = .none
     $0.showsVerticalScrollIndicator = false
+    $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
   }
 
   let collectionView = UICollectionView(
