@@ -94,6 +94,12 @@ class HomeVC: BaseVC, View {
       .do(onNext: self.setViewType(viewType:))
       .bind(onNext: self.homeView.changeViewType(to:))
       .disposed(by: self.disposeBag)
+    
+    self.homeReactor.state
+      .map { $0.writeButtonTitle }
+      .distinctUntilChanged()
+      .bind(to: self.homeView.writeButton.rx.title())
+      .disposed(by: self.disposeBag)
   }
   
   private func setupPageVC() {

@@ -15,6 +15,7 @@ class HomeReactor: Reactor {
     case setViewType(ViewType)
     case setSuccessCount(Int)
     case setWishCount(Int)
+    case setWriteButtonTitle(String)
   }
   
   struct State {
@@ -22,6 +23,7 @@ class HomeReactor: Reactor {
     var successCount: Int = 0
     var category: Category = .wantToDo
     var viewType: ViewType = .list
+    var writeButtonTitle: String = "home_write_category_want_to_do_button".localized
   }
   
   let initialState = State()
@@ -47,10 +49,12 @@ class HomeReactor: Reactor {
       ])
     case .tapCategory(let category):
       let wishCount = self.wishService.getWishCount(category: category)
+      let writeButtonTitle = "home_write_\(category.rawValue)_button".localized
       
       return Observable.concat([
         Observable.just(Mutation.setWishCount(wishCount)),
-        Observable.just(Mutation.filterCategory(category))
+        Observable.just(Mutation.filterCategory(category)),
+        Observable.just(Mutation.setWriteButtonTitle(writeButtonTitle))
       ])
     case .tapViewType():
       let viewType = self.currentState.viewType.toggle()
@@ -71,6 +75,8 @@ class HomeReactor: Reactor {
       newState.wishCount = count
     case .setViewType(let viewType):
       newState.viewType = viewType
+    case .setWriteButtonTitle(let title):
+      newState.writeButtonTitle = title
     }
     
     return newState

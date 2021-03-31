@@ -77,7 +77,6 @@ class HomeView: BaseView {
   }
   
   let writeButton = UIButton().then {
-    $0.setTitle("home_write_button".localized, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
     $0.backgroundColor = .tennisGreen
     $0.layer.cornerRadius = 25
