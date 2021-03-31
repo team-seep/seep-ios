@@ -91,6 +91,7 @@ class HomeVC: BaseVC, View {
       .map { $0.viewType }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
+      .do(onNext: self.setViewType(viewType:))
       .bind(onNext: self.homeView.changeViewType(to:))
       .disposed(by: self.disposeBag)
   }
@@ -152,6 +153,16 @@ class HomeVC: BaseVC, View {
         animated: true,
         completion: nil
       )
+    }
+  }
+  
+  private func setViewType(viewType: ViewType) {
+    if let viewControllers = self.pageVC.viewControllers {
+      if !viewControllers.isEmpty {
+        if let pageItemVC = viewControllers[0] as? PageItemVC {
+          pageItemVC.setViewType(viewType: viewType)
+        }
+      }
     }
   }
 }

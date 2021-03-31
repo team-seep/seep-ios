@@ -6,6 +6,7 @@ class PageItemReactor: Reactor {
   
   enum Action {
     case viewDidLoad(Void)
+    case setViewType(ViewType)
   }
   
   enum Mutation {
@@ -43,6 +44,8 @@ class PageItemReactor: Reactor {
         Observable.just(Mutation.fetchWishList(wishList)),
         Observable.just(Mutation.setViewType(self.userDefaults.getViewType()))
       ])
+    case .setViewType(let viewType):
+      return Observable.just(Mutation.setViewType(viewType))
     }
   }
 

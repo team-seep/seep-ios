@@ -81,9 +81,22 @@ class PageItemVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.pageItemReactor.state
+      .map { $0.viewType }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.pageItemView.changeViewType(to:))
+      .disposed(by: self.disposeBag)
+    
+    self.pageItemReactor.state
       .map { $0.endRefresh }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.pageItemView.pullToRefresh.endRefreshing)
+      .disposed(by: self.disposeBag)
+  }
+  
+  func setViewType(viewType: ViewType) {
+    Observable.just(PageItemReactor.Action.setViewType(viewType))
+      .bind(to: self.pageItemReactor.action)
       .disposed(by: self.disposeBag)
   }
   

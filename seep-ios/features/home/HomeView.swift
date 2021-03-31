@@ -197,20 +197,6 @@ class HomeView: BaseView {
   
   func changeViewType(to viewType: ViewType) {
     self.viewTypeButton.setImage(UIImage(named: viewType.toggle().imageName), for: .normal)
-    switch viewType {
-    case .grid:
-      UIView.animate(withDuration: 0.3) { [weak self] in
-        guard let self = self else { return }
-//        self.collectionView.alpha = 1.0
-//        self.tableView.alpha = 0.0
-      }
-    case .list:
-      UIView.animate(withDuration: 0.3) { [weak self] in
-        guard let self = self else { return }
-//        self.collectionView.alpha = 0.0
-//        self.tableView.alpha = 1.0
-      }
-    }
   }
   
   private func getEmptyTitle(by category: Category, count: Int) -> NSMutableAttributedString {
