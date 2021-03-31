@@ -2,7 +2,8 @@ import UIKit
 
 class PageItemView: BaseView {
   
-  let pullToRefresh = UIRefreshControl()
+  let pullToRefreshTableView = UIRefreshControl()
+  let pullToRefreshCollectionView = UIRefreshControl()
   
   let tableView = UITableView().then {
     $0.tableFooterView = UIView()
@@ -23,10 +24,15 @@ class PageItemView: BaseView {
     )
     layout.minimumInteritemSpacing = 15
     layout.minimumLineSpacing = 16
+    layout.sectionInset = UIEdgeInsets(
+      top: 0,
+      left: 20,
+      bottom: (UIScreen.main.bounds.width - 40 - 15) / 2,
+      right: 20
+    )
 
     $0.collectionViewLayout = layout
     $0.backgroundColor = .clear
-    $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     $0.alpha = 0.0
   }
 
@@ -43,7 +49,8 @@ class PageItemView: BaseView {
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
-    self.tableView.refreshControl = self.pullToRefresh
+    self.tableView.refreshControl = self.pullToRefreshTableView
+    self.collectionView.refreshControl = self.pullToRefreshCollectionView
     self.addSubViews(tableView, collectionView, gradientView)
   }
   

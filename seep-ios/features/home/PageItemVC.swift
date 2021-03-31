@@ -44,7 +44,12 @@ class PageItemVC: BaseVC, View {
   
   func bind(reactor: PageItemReactor) {
     // MARK: Action
-    self.pageItemView.pullToRefresh.rx.controlEvent(.valueChanged)
+    self.pageItemView.pullToRefreshTableView.rx.controlEvent(.valueChanged)
+      .map { PageItemReactor.Action.viewDidLoad(()) }
+      .bind(to: self.pageItemReactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.pageItemView.pullToRefreshCollectionView.rx.controlEvent(.valueChanged)
       .map { PageItemReactor.Action.viewDidLoad(()) }
       .bind(to: self.pageItemReactor.action)
       .disposed(by: self.disposeBag)
@@ -90,7 +95,13 @@ class PageItemVC: BaseVC, View {
     self.pageItemReactor.state
       .map { $0.endRefresh }
       .observeOn(MainScheduler.instance)
-      .bind(onNext: self.pageItemView.pullToRefresh.endRefreshing)
+      .bind(onNext: self.pageItemView.pullToRefreshTableView.endRefreshing)
+      .disposed(by: self.disposeBag)
+    
+    self.pageItemReactor.state
+      .map { $0.endRefresh }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.pageItemView.pullToRefreshCollectionView.endRefreshing)
       .disposed(by: self.disposeBag)
   }
   
