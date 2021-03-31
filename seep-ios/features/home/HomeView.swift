@@ -2,8 +2,6 @@ import UIKit
 
 class HomeView: BaseView {
   
-  let pullToRefresh = UIRefreshControl()
-  
   let titleLabel = UILabel().then {
     $0.text = String(format: "home_write_count_format1".localized, 24)
     $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
@@ -73,41 +71,9 @@ class HomeView: BaseView {
     $0.setImage(UIImage(named: "ic_grid"), for: .normal)
   }
   
-  let tableView = UITableView().then {
-    $0.tableFooterView = UIView()
+  let containerView = UIView().then {
+    $0.isUserInteractionEnabled = true
     $0.backgroundColor = .clear
-    $0.rowHeight = UITableView.automaticDimension
-    $0.separatorStyle = .none
-    $0.showsVerticalScrollIndicator = false
-  }
-  
-  let collectionView = UICollectionView(
-    frame: .zero,
-    collectionViewLayout: UICollectionViewLayout()
-  ).then {
-    let layout = UICollectionViewFlowLayout()
-    layout.itemSize = CGSize(
-      width: (UIScreen.main.bounds.width - 40 - 15) / 2,
-      height: (UIScreen.main.bounds.width - 40 - 15) / 2
-    )
-    layout.minimumInteritemSpacing = 15
-    layout.minimumLineSpacing = 16
-    
-    $0.collectionViewLayout = layout
-    $0.backgroundColor = .clear
-    $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-    $0.alpha = 0.0
-  }
-
-  let gradientView = UIView().then {
-    let gradientLayer = CAGradientLayer()
-    let topColor = UIColor(r: 246, g: 247, b: 249, a: 0.0).cgColor
-    let bottomColor = UIColor(r: 246, g: 247, b: 249, a: 1.0).cgColor
-
-    gradientLayer.colors = [topColor, bottomColor]
-    gradientLayer.locations = [0.0, 1.0]
-    gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
-    $0.layer.addSublayer(gradientLayer)
   }
   
   let writeButton = UIButton().then {
@@ -121,14 +87,12 @@ class HomeView: BaseView {
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
-    self.tableView.refreshControl = self.pullToRefresh
     self.categoryStackView.addArrangedSubview(wantToDoButton)
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.addSubViews(
       titleLabel, emojiView, successCountButton, categoryStackView,
-      viewTypeButton, activeButton, tableView, collectionView,
-      gradientView, writeButton
+      viewTypeButton, activeButton, containerView, writeButton
     )
   }
   
@@ -164,19 +128,9 @@ class HomeView: BaseView {
       make.centerX.equalTo(self.categoryStackView.arrangedSubviews[0])
     }
     
-    self.tableView.snp.makeConstraints { make in
+    self.containerView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(categoryStackView.snp.bottom).offset(16)
-    }
-    
-    self.collectionView.snp.makeConstraints { make in
-      make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(categoryStackView.snp.bottom).offset(16)
-    }
-
-    self.gradientView.snp.makeConstraints { make in
-      make.left.right.bottom.equalToSuperview()
-      make.height.equalTo(150)
+      make.top.equalTo(self.categoryStackView.snp.bottom).offset(16)
     }
     
     self.writeButton.snp.makeConstraints { make in
@@ -247,14 +201,14 @@ class HomeView: BaseView {
     case .grid:
       UIView.animate(withDuration: 0.3) { [weak self] in
         guard let self = self else { return }
-        self.collectionView.alpha = 1.0
-        self.tableView.alpha = 0.0
+//        self.collectionView.alpha = 1.0
+//        self.tableView.alpha = 0.0
       }
     case .list:
       UIView.animate(withDuration: 0.3) { [weak self] in
         guard let self = self else { return }
-        self.collectionView.alpha = 0.0
-        self.tableView.alpha = 1.0
+//        self.collectionView.alpha = 0.0
+//        self.tableView.alpha = 1.0
       }
     }
   }
