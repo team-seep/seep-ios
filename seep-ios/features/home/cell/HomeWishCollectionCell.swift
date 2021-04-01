@@ -11,14 +11,12 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
   
   let emojiLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 36)
-    $0.text = "📷"
   }
   
   let titleLabel = UILabel().then {
-    $0.text = "필름카메라 구매"
-    $0.textColor = UIColor(r: 51, g: 51, b: 51)
+    $0.textColor = .gray5
+    $0.numberOfLines = 2
     $0.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
-    $0.setKern(kern: -0.64)
   }
   
   let deadlineLabel = PaddingLabel(
@@ -27,11 +25,9 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     leftInset: 6,
     rightInset: 6
   ).then {
-    $0.text = "D-4"
-    $0.textColor = UIColor(r: 235, g: 82, b: 82)
     $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
     $0.layer.cornerRadius = 4
-    $0.backgroundColor = UIColor(r: 255, g: 240, b: 240)
+    $0.layer.masksToBounds = true
   }
   
   let tagLabel = PaddingLabel(
@@ -40,7 +36,6 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     leftInset: 6,
     rightInset: 6
   ).then {
-    $0.text = "버킷리스트"
     $0.textColor = UIColor(r: 153, g: 153, b: 153)
     $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
     $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
@@ -97,11 +92,35 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     self.emojiLabel.text = wish.emoji
     self.titleLabel.text = wish.title
     self.deadlineLabel.text = self.calculateDDay(date: wish.date)
+    self.tagLabel.text = wish.hashtag
+    self.tagLabel.isHidden = wish.hashtag.isEmpty
   }
   
   private func calculateDDay(date: Date) -> String {
     let dday = Calendar.current.dateComponents([.day], from: Date(), to: date).day ?? -1
     
-    return "D-\(dday)"
+    switch dday {
+    case 0..<8:
+      self.deadlineLabel.textColor = .orange
+      self.deadlineLabel.backgroundColor = UIColor(r: 255, g: 241, b: 235)
+    case 8..<31:
+      self.deadlineLabel.textColor = UIColor(r: 102, g: 223, b: 27)
+      self.deadlineLabel.backgroundColor = UIColor(r: 233, g: 253, b: 220)
+    case _ where dday >= 31:
+      self.deadlineLabel.textColor = UIColor(r: 37, g: 152, b: 255)
+      self.deadlineLabel.backgroundColor = UIColor(r: 236, g: 243, b: 250)
+    default:
+      self.deadlineLabel.textColor = UIColor(r: 37, g: 152, b: 255)
+      self.deadlineLabel.backgroundColor = UIColor(r: 236, g: 243, b: 250)
+      break
+    }
+    
+    if dday < 0 {
+      return "D+\(abs(dday))"
+    } else if dday <= 365 {
+      return "D-\(dday)"
+    } else {
+      return "home_in_far_furture".localized
+    }
   }
 }

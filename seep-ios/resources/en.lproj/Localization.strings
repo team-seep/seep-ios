@@ -11,10 +11,23 @@
 "category_want_to_go" = "가고 싶어요";
 
 // Home
-"home_write_button" = "📝 위시 쓰러갈래요";
-"home_write_count_format1" = "하고 싶은 것들이\n%d개 남았어요!";
+"home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
+"home_write_category_want_to_get_button" = "📝 뭐 갖고 싶어요?";
+"home_write_category_want_to_go_button" = "📝 어디 가고 싶어요?";
+"home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
+"home_write_category_want_to_get_count_empty" ="갖고 싶은 것들을\n적어봐요!";
+"home_write_category_want_to_go_count_empty" ="가고 싶은 곳들을\n적어봐요!";
+"home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
+"home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%d개 남았어요!";
+"home_write_category_want_to_do_unit" = "%d개";
+"home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%d개 남았어요!";
+"home_write_category_want_to_get_unit" = "%d개";
+"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%d군데 남았어요!";
+"home_write_category_want_to_go_unit" = "%d군데";
 "home_finish_count_format" = "👏 지금까지 %d개를 이뤘어요";
+"home_finish_count_format_empty" = "😱 지금까지 %d개를 이뤘어요";
 "home_category_success" = "성공";
+"home_in_far_furture" = "먼훗날";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

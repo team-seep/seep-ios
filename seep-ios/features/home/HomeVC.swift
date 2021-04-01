@@ -9,7 +9,8 @@ class HomeVC: BaseVC, View {
     wishService: WishService(),
     userDefaults: UserDefaultsUtils()
   )
-  private let tempDisposeBag = DisposeBag()
+  private let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+  private var pageViewControllers: [UIViewController] = []
   
   static func instance() -> HomeVC {
     return HomeVC(nibName: nil, bundle: nil)
@@ -20,9 +21,19 @@ class HomeVC: BaseVC, View {
     
     self.view = homeView
     self.reactor = homeReactor
-    self.setupTableView()
-    self.setupCollectionView()
-    self.homeView.startAnimation() 
+    self.pageViewControllers = [
+      PageItemVC.instance(category: .wantToDo).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGet).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGo).then {
+        $0.delegate = self
+      }
+    ]
+    self.homeView.startAnimation()
+    self.setupPageVC()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -37,7 +48,7 @@ class HomeVC: BaseVC, View {
     self.homeView.writeButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showWirteVC)
-      .disposed(by: tempDisposeBag)
+      .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: HomeReactor) {
@@ -62,45 +73,16 @@ class HomeVC: BaseVC, View {
       .bind(to: self.homeReactor.action)
       .disposed(by: self.disposeBag)
     
-    self.homeView.pullToRefresh.rx.controlEvent(.valueChanged)
-      .map { HomeReactor.Action.viewDidLoad(()) }
-      .bind(to: self.homeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.homeView.tableView.rx.itemSelected
-      .map { self.homeReactor.currentState.wishiList[$0.row] }
-      .bind(onNext: self.showDetail(wish:))
-      .disposed(by: self.disposeBag)
-    
-    self.homeView.collectionView.rx.itemSelected
-      .map { self.homeReactor.currentState.wishiList[$0.row] }
-      .bind(onNext: self.showDetail(wish:))
-      .disposed(by: self.disposeBag)
-    
     // MARK: State
-    self.homeReactor.state
-      .map { $0.wishiList }
-      .bind(to: self.homeView.tableView.rx.items(
-        cellIdentifier: HomeWishCell.registerId,
-        cellType: HomeWishCell.self
-      )) { row, wish, cell in
-        cell.bind(wish: wish)
-      }
-      .disposed(by: self.disposeBag)
-    
-    self.homeReactor.state
-      .map { $0.wishiList }
-      .bind(to: self.homeView.collectionView.rx.items(
-              cellIdentifier: HomeWishCollectionCell.registerId,
-              cellType: HomeWishCollectionCell.self
-      )) { row, wish, cell in
-        cell.bind(wish: wish)
-      }
-      .disposed(by: self.disposeBag)
-    
     self.homeReactor.state
       .map { $0.successCount }
       .bind(onNext: self.homeView.setSuccessCount(count:))
+      .disposed(by: self.disposeBag)
+    
+    self.homeReactor.state
+      .map { ($0.category, $0.wishCount) }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.homeView.setWishCount)
       .disposed(by: self.disposeBag)
     
     self.homeReactor.state
@@ -108,6 +90,7 @@ class HomeVC: BaseVC, View {
       .skip(1)
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
+      .do(onNext: self.movePageView(category:))
       .bind(onNext: self.homeView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
     
@@ -115,38 +98,31 @@ class HomeVC: BaseVC, View {
       .map { $0.viewType }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
+      .do(onNext: self.setViewType(viewType:))
       .bind(onNext: self.homeView.changeViewType(to:))
       .disposed(by: self.disposeBag)
     
     self.homeReactor.state
-      .map { $0.endRefresh }
-      .observeOn(MainScheduler.instance)
-      .bind(onNext: self.homeView.pullToRefresh.endRefreshing)
+      .map { $0.writeButtonTitle }
+      .distinctUntilChanged()
+      .bind(to: self.homeView.writeButton.rx.title())
       .disposed(by: self.disposeBag)
   }
   
-  private func setupTableView() {
-    self.homeView.tableView.register(
-      HomeWishCell.self,
-      forCellReuseIdentifier: HomeWishCell.registerId
+  private func setupPageVC() {
+    self.addChild(self.pageVC)
+    self.pageVC.delegate = self
+    self.pageVC.dataSource = self
+    self.homeView.containerView.addSubview(self.pageVC.view)
+    self.pageVC.view.snp.makeConstraints { make in
+      make.edges.equalTo(self.homeView.containerView)
+    }
+    self.pageVC.setViewControllers(
+      [self.pageViewControllers[0]],
+      direction: .forward,
+      animated: false,
+      completion: nil
     )
-    self.homeView.tableView.dragInteractionEnabled = true
-    self.homeView.tableView.dragDelegate = self
-    self.homeView.tableView.rx.itemMoved
-      .bind { itemMoveEvent in
-        print("Source index: \(itemMoveEvent.sourceIndex)")
-        print("destenation index: \(itemMoveEvent.destinationIndex)")
-      }
-      .disposed(by: self.disposeBag)
-  }
-  
-  private func setupCollectionView() {
-    self.homeView.collectionView.register(
-      HomeWishCollectionCell.self,
-      forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
-    )
-    self.homeView.collectionView.dragInteractionEnabled = true
-    self.homeView.collectionView.dragDelegate = self
   }
   
   private func showWirteVC() {
@@ -157,29 +133,52 @@ class HomeVC: BaseVC, View {
     self.present(writeVC, animated: true, completion: nil)
   }
   
-  private func showDetail(wish: Wish) {
-    let detailVC = DetailVC.instance(wish: wish).then {
-      $0.delegate = self
-    }
+  private func movePageView(category: Category) {
+    guard let currentViewControllerIndex = self.pageViewControllers.firstIndex(of: self.pageVC.viewControllers![0]) else { return }
     
-    self.present(detailVC, animated: true, completion: nil)
-  }
-}
-
-extension HomeVC: UITableViewDelegate {
-  
-  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    self.homeView.hideWriteButton()
-  }
-  
-  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if !decelerate {
-      self.homeView.showWriteButton()
+    switch category {
+    case .wantToDo:
+      self.pageVC.setViewControllers(
+        [self.pageViewControllers[0]],
+        direction: .reverse,
+        animated: true,
+        completion: nil
+      )
+    case .wantToGet:
+      self.pageVC.setViewControllers(
+        [self.pageViewControllers[1]],
+        direction: currentViewControllerIndex > 1 ? .reverse : .forward,
+        animated: true,
+        completion: nil
+      )
+    case .wantToGo:
+      self.pageVC.setViewControllers(
+        [self.pageViewControllers[2]],
+        direction: .forward,
+        animated: true,
+        completion: nil
+      )
     }
   }
   
-  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.homeView.showWriteButton()
+  private func setViewType(viewType: ViewType) {
+    if let viewControllers = self.pageVC.viewControllers {
+      if !viewControllers.isEmpty {
+        if let pageItemVC = viewControllers[0] as? PageItemVC {
+          pageItemVC.setViewType(viewType: viewType)
+        }
+      }
+    }
+  }
+  
+  private func fetchPageVC() {
+    if let viewControllers = self.pageVC.viewControllers {
+      if !viewControllers.isEmpty {
+        if let pageItemVC = viewControllers[0] as? PageItemVC {
+          pageItemVC.actionFetchData()
+        }
+      }
+    }
   }
 }
 
@@ -189,45 +188,97 @@ extension HomeVC: WriteDelegate {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
+    self.fetchPageVC()
   }
 }
 
-extension HomeVC: DetailDelegate {
+extension HomeVC: PageItemDelegate {
   
   func onDismiss() {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }
-}
-
-extension HomeVC: UITableViewDragDelegate {
   
-  func tableView(
-    _ tableView: UITableView,
-    itemsForBeginning session: UIDragSession,
-    at indexPath: IndexPath
-  ) -> [UIDragItem] {
-    let wish = self.homeReactor.currentState.wishiList[indexPath.row]
-    let dragItem = UIDragItem(itemProvider: NSItemProvider())
-    
-    dragItem.localObject = wish
-    return [dragItem]
+  func scrollViewWillBeginDragging() {
+    self.homeView.hideWriteButton()
+  }
+  
+  func scrollViewDidEndDragging() {
+    self.homeView.showWriteButton()
   }
 }
 
-extension HomeVC: UICollectionViewDragDelegate {
+extension HomeVC: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
   
-  func collectionView(
-    _ collectionView: UICollectionView,
-    itemsForBeginning session: UIDragSession,
-    at indexPath: IndexPath
-  ) -> [UIDragItem] {
-    let wish = self.homeReactor.currentState.wishiList[indexPath.row]
-    let dragItem = UIDragItem(itemProvider: NSItemProvider())
+  func pageViewController(
+    _ pageViewController: UIPageViewController,
+    viewControllerBefore viewController: UIViewController
+  ) -> UIViewController? {
+    guard let viewControllerIndex = self.pageViewControllers.firstIndex(of: viewController) else {
+      return nil
+    }
     
-    dragItem.localObject = wish
-    return [dragItem]
+    let previousIndex = viewControllerIndex - 1
+    guard previousIndex >= 0 else {
+      return nil
+    }
+    
+    guard self.pageViewControllers.count > previousIndex else {
+      return nil
+    }
+    
+    return self.pageViewControllers[previousIndex]
+  }
+
+  func pageViewController(
+    _ pageViewController: UIPageViewController,
+    viewControllerAfter viewController: UIViewController
+  ) -> UIViewController? {
+    guard let viewControllerIndex = self.pageViewControllers.firstIndex(of: viewController) else {
+      return nil
+    }
+    
+    let nextIndex = viewControllerIndex + 1
+    
+    guard nextIndex < self.pageViewControllers.count else {
+      return nil
+    }
+    
+    guard self.pageViewControllers.count > nextIndex else {
+      return nil
+    }
+    
+    return self.pageViewControllers[nextIndex]
+  }
+  
+  func pageViewController(
+    _ pageViewController: UIPageViewController,
+    didFinishAnimating finished: Bool,
+    previousViewControllers: [UIViewController],
+    transitionCompleted completed: Bool
+  ) {
+    if completed {
+      guard let viewControllerIndex = self.pageViewControllers.firstIndex(of: self.pageVC.viewControllers![0]) else {
+        return
+      }
+      
+      switch viewControllerIndex {
+      case 0:
+        Observable.just(HomeReactor.Action.tapCategory(.wantToDo))
+          .bind(to: self.homeReactor.action)
+          .disposed(by: self.disposeBag)
+      case 1:
+        Observable.just(HomeReactor.Action.tapCategory(.wantToGet))
+          .bind(to: self.homeReactor.action)
+          .disposed(by: self.disposeBag)
+      case 2:
+        Observable.just(HomeReactor.Action.tapCategory(.wantToGo))
+          .bind(to: self.homeReactor.action)
+          .disposed(by: self.disposeBag)
+      default:
+        break
+      }
+    }
   }
 }
-
