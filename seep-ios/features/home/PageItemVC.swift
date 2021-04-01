@@ -128,7 +128,9 @@ class PageItemVC: BaseVC, View {
       HomeWishCell.self,
       forCellReuseIdentifier: HomeWishCell.registerId
     )
-    self.pageItemView.tableView.delegate = self
+    self.pageItemView.tableView.rx
+      .setDelegate(self)
+      .disposed(by: self.disposeBag)
   }
   
   private func setupCollectionView() {
@@ -136,7 +138,9 @@ class PageItemVC: BaseVC, View {
       HomeWishCollectionCell.self,
       forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
     )
-    self.pageItemView.collectionView.delegate = self
+    self.pageItemView.collectionView.rx
+      .setDelegate(self)
+      .disposed(by: self.disposeBag)
   }
   
   private func showDetail(wish: Wish) {
