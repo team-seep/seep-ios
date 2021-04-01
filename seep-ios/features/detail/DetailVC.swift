@@ -75,6 +75,11 @@ class DetailVC: BaseVC, View {
   
   func bind(reactor: DetailReactor) {
     // MARK: Action
+    self.detailView.cancelButton.rx.tap
+      .map { DetailReactor.Action.tapCancelButton(()) }
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
     self.detailView.emojiField.rx.text.orEmpty
       .skip(1)
       .map { Reactor.Action.inputEmoji($0) }
@@ -138,6 +143,7 @@ class DetailVC: BaseVC, View {
     self.detailReactor.state
       .map { $0.isEditable }
       .distinctUntilChanged()
+      .delay(.milliseconds(10), scheduler: MainScheduler.instance) // 수정 취소시, 마지막에 editable이 변경되어야해서 딜레이 설정
       .bind(onNext: self.detailView.setEditable(isEditable:))
       .disposed(by: self.disposeBag)
     
@@ -152,6 +158,11 @@ class DetailVC: BaseVC, View {
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.detailView.moveActiveButton(category:))
+      .disposed(by: self.disposeBag)
+    
+    self.detailReactor.state
+      .map { $0.title }
+      .bind(to: self.detailView.titleField.rx.text)
       .disposed(by: self.disposeBag)
 
     self.detailReactor.state
@@ -178,8 +189,21 @@ class DetailVC: BaseVC, View {
     
     self.detailReactor.state
       .map { $0.isPushEnable }
-      .observeOn(MainScheduler.instance)
       .bind(to: self.detailView.notificationButton.rx.isSelected)
+      .disposed(by: self.disposeBag)
+    
+    self.detailReactor.state
+      .map { $0.memo }
+      .distinctUntilChanged()
+      .filter { $0 != "wrtie_placeholder_memo".localized }
+      .observeOn(MainScheduler.instance)
+      .bind(to: self.detailView.memoField.rx.text)
+      .disposed(by: self.disposeBag)
+
+    self.detailReactor.state
+      .map { $0.hashtag }
+      .distinctUntilChanged()
+      .bind(to: self.detailView.hashtagField.rx.text)
       .disposed(by: self.disposeBag)
     
     self.detailReactor.state

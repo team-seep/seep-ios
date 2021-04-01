@@ -25,6 +25,13 @@ class DetailView: BaseView {
     $0.setImage(UIImage(named: "ic_more"), for: .normal)
   }
   
+  let cancelButton = UIButton().then {
+    $0.setTitle("detail_cancel".localized, for: .normal)
+    $0.setTitleColor(.gray3, for: .normal)
+    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
+    $0.alpha = 0.0
+  }
+  
   let emojiBackground = UIImageView().then {
     $0.backgroundColor = .gray2
     $0.layer.cornerRadius = 36
@@ -140,7 +147,7 @@ class DetailView: BaseView {
       notificationButton
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(topIndicator, moreButton, scrollView, editButton)
+    self.addSubViews(topIndicator, moreButton, cancelButton, scrollView, editButton)
   }
   
   override func bindConstraints() {
@@ -164,6 +171,11 @@ class DetailView: BaseView {
     }
     
     self.moreButton.snp.makeConstraints { make in
+      make.right.equalToSuperview().offset(-20)
+      make.top.equalToSuperview().offset(10)
+    }
+    
+    self.cancelButton.snp.makeConstraints { make in
       make.right.equalToSuperview().offset(-20)
       make.top.equalToSuperview().offset(10)
     }
@@ -278,6 +290,7 @@ class DetailView: BaseView {
         guard let self = self else { return }
         self.randomButton.alpha = 1.0
         self.editButton.alpha = 1.0
+        self.cancelButton.alpha = 1.0
         self.moreButton.alpha = 0.0
       }
       if self.memoField.superview == nil {
@@ -309,6 +322,7 @@ class DetailView: BaseView {
         self.randomButton.alpha = 0.0
         self.editButton.alpha = 0.0
         self.moreButton.alpha = 1.0
+        self.cancelButton.alpha = 0.0
       }
       self.hashtagField.clearButton.isHidden = true
       self.hashtagField.containerView.snp.remakeConstraints { make in
@@ -318,12 +332,14 @@ class DetailView: BaseView {
         make.bottom.equalTo(self.hashtagField.textField).offset(8)
       }
       
-      if self.memoField.textView.text == "wrtie_placeholder_memo".localized {
+      if self.memoField.textView.text == "wrtie_placeholder_memo".localized || self.memoField.textView.text.isEmpty {
         self.memoField.removeFromSuperview()
+        self.memoField.setText(text: "")
       }
       
       if self.hashtagField.textField.text!.isEmpty {
         self.hashtagField.removeFromSuperview()
+        self.hashtagField.bind(hashtag: "")
       } else {
         if self.memoField.superview == nil {
           self.hashtagField.snp.remakeConstraints { make in
