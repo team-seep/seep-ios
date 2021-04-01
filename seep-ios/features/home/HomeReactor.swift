@@ -39,7 +39,7 @@ class HomeReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad():
-      let successCount = self.wishService.getFinishCount()
+      let successCount = self.wishService.getFinishCount(category: self.currentState.category)
       let wishCount = self.wishService.getWishCount(category: self.currentState.category)
       
       return Observable.concat([
@@ -49,10 +49,12 @@ class HomeReactor: Reactor {
       ])
     case .tapCategory(let category):
       let wishCount = self.wishService.getWishCount(category: category)
+      let successCount = self.wishService.getFinishCount(category: category)
       let writeButtonTitle = "home_write_\(category.rawValue)_button".localized
       
       return Observable.concat([
         Observable.just(Mutation.setWishCount(wishCount)),
+        Observable.just(Mutation.setSuccessCount(successCount)),
         Observable.just(Mutation.filterCategory(category)),
         Observable.just(Mutation.setWriteButtonTitle(writeButtonTitle))
       ])

@@ -24,8 +24,12 @@
 "home_write_category_want_to_get_unit" = "%d개";
 "home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%d군데 남았어요!";
 "home_write_category_want_to_go_unit" = "%d군데";
-"home_finish_count_format" = "👏 지금까지 %d개를 이뤘어요";
-"home_finish_count_format_empty" = "😱 지금까지 %d개를 이뤘어요";
+"home_finish_count_category_want_to_do_format" = "👏 지금까지 %d개를 이뤘어요";
+"home_finish_count_category_want_to_do_format_empty" = "😱 지금까지 %d개를 이뤘어요";
+"home_finish_count_category_want_to_get_format" = "👏 지금까지 %d개를 겟했어요";
+"home_finish_count_category_want_to_get_format_empty" = "😱 지금까지 %d개를 겟했어요";
+"home_finish_count_category_want_to_go_format" = "👏 지금까지 %d곳를 다녀왔어요";
+"home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
 

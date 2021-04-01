@@ -85,8 +85,9 @@ class HomeVC: BaseVC, View {
     
     // MARK: State
     self.homeReactor.state
-      .map { $0.successCount }
-      .bind(onNext: self.homeView.setSuccessCount(count:))
+      .map { ($0.category, $0.successCount) }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.homeView.setSuccessCount)
       .disposed(by: self.disposeBag)
     
     self.homeReactor.state

@@ -7,7 +7,7 @@ protocol WishServiceProtocol {
   func searchWish(id: ObjectId) -> Wish?
   func updateWish(id: ObjectId, newWish: Wish)
   func fetchAllWishes(category: Category) -> [Wish]
-  func getFinishCount() -> Int
+  func getFinishCount(category: Category) -> Int
   func getWishCount() -> Int
   func getWishCount(category: Category) -> Int
 }
@@ -63,9 +63,9 @@ struct WishService: WishServiceProtocol {
     return searchTask.map { $0 }
   }
   
-  func getFinishCount() -> Int {
+  func getFinishCount(category: Category) -> Int {
     let realm = try! Realm()
-    let searchTask = realm.objects(Wish.self).filter { $0.isSuccess == true }
+    let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == true) && ($0.category == category.rawValue) }
     
     return searchTask.count
   }
