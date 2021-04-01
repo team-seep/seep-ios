@@ -21,7 +21,12 @@ class FinishedVC: BaseVC {
     self.finishedView.backButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.popVC)
-      .disposed(by: self.disposeBag)
+      .disposed(by: self.eventDisposeBag)
+    
+    self.finishedView.emptyBackButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.popVC)
+      .disposed(by: self.eventDisposeBag)
   }
   
   private func popVC() {

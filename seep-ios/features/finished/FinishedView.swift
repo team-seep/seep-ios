@@ -3,7 +3,6 @@ import UIKit
 class FinishedView: BaseView {
   
   let titleLabel = UILabel().then {
-    $0.text = String(format: "home_write_count_format1".localized, 24)
     $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
     $0.textColor = .black
     $0.numberOfLines = 0
@@ -25,21 +24,46 @@ class FinishedView: BaseView {
     $0.backgroundColor = .clear
   }
   
-  let emojiLabel = UILabel().then {
+  let emptyEmojiLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 50)
+    $0.text = "☺️"
   }
   
   let emptyLabel = UILabel().then {
+    let text = "finish_description_empty".localized
+    let paragraphStyle = NSMutableParagraphStyle()
+    
+    paragraphStyle.lineHeightMultiple = 1.31
+    
+    let attributedString = NSMutableAttributedString(
+      string: text,
+      attributes: [
+        .kern: -0.42,
+        .paragraphStyle: paragraphStyle,
+      ])
+    
     $0.textColor = .black
     $0.alpha = 0.4
     $0.numberOfLines = 0
     $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
+    $0.attributedText = attributedString
+    $0.textAlignment = .center
+  }
+  
+  let emptyBackButton = UIButton().then {
+    $0.setTitle("finish_empty_back_button".localized, for: .normal)
+    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
+    $0.setTitleColor(.white, for: .normal)
+    $0.layer.cornerRadius = 25
+    $0.backgroundColor = .gray5
+    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 33, bottom: 16, right: 33)
   }
   
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
-    self.addSubViews(titleLabel, viewTypeButton, backButton)
+    self.emptyView.addSubViews(emptyEmojiLabel, emptyLabel, emptyBackButton)
+    self.addSubViews(titleLabel, viewTypeButton, backButton, emptyView)
     self.titleLabel.attributedText = self.getEmptyTitle()
   }
   
@@ -58,12 +82,33 @@ class FinishedView: BaseView {
       make.left.equalTo(self.titleLabel)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(14)
     }
+    
+    self.emptyView.snp.makeConstraints { make in
+      make.left.right.bottom.equalToSuperview()
+      make.top.equalTo(self.backButton.snp.bottom)
+    }
+    
+    self.emptyBackButton.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.centerY.equalToSuperview()
+      make.height.equalTo(50)
+    }
+    
+    self.emptyLabel.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(self.emptyBackButton.snp.top).offset(-20)
+    }
+    
+    self.emptyEmojiLabel.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(self.emptyLabel.snp.top)
+    }
   }
   
   private func getEmptyTitle() -> NSMutableAttributedString {
     let text = "finish_title_empty".localized
     let attributedString = NSMutableAttributedString(string: text)
-    let boldTextRange = (text as NSString).range(of: "완료된 것이 없네요!")
+    let boldTextRange = (text as NSString).range(of: "완료된 것이 없지만")
     
     attributedString.addAttribute(
       .font,
