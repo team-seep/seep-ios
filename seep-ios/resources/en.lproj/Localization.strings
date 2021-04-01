@@ -59,3 +59,8 @@
 "detail_action_sheet_share" = "공유";
 "detail_action_sheet_cancel" = "취소";
 "detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
+
+// Finish
+"finish_back_button" = "메인 홈으로 돌아가기";
+"finish_title_empty" = "아직\n완료된 것이 없네요!";
+"finish_title_count" = "지금까지\n%d개 이뤘어요!";

@@ -48,6 +48,8 @@
 		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
 		6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACBD592613034A0009AB6F /* PageItemVC.swift */; };
 		6EACBD5D261303540009AB6F /* PageItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACBD5C261303540009AB6F /* PageItemView.swift */; };
+		6ED89715261579B80005FA29 /* FinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED89714261579B80005FA29 /* FinishedView.swift */; };
+		6ED89718261585E10005FA29 /* FinishedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED89717261585E10005FA29 /* FinishedVC.swift */; };
 		6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */; };
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
 		6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */; };
@@ -98,6 +100,8 @@
 		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
 		6EACBD592613034A0009AB6F /* PageItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemVC.swift; sourceTree = "<group>"; };
 		6EACBD5C261303540009AB6F /* PageItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemView.swift; sourceTree = "<group>"; };
+		6ED89714261579B80005FA29 /* FinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedView.swift; sourceTree = "<group>"; };
+		6ED89717261585E10005FA29 /* FinishedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedVC.swift; sourceTree = "<group>"; };
 		6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
 		6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 		6E274E7C25F20F45007DC880 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				6ED89713261579AA0005FA29 /* finished */,
 				6E69E61E260D990E0062CBFB /* detail */,
 				6E66A27525FB45C000C0C051 /* write */,
 				6EE5CE7225FB24C900A737DF /* shared */,
@@ -266,6 +271,15 @@
 				6E69E62D260DBACA0062CBFB /* DetailReactor.swift */,
 			);
 			path = detail;
+			sourceTree = "<group>";
+		};
+		6ED89713261579AA0005FA29 /* finished */ = {
+			isa = PBXGroup;
+			children = (
+				6ED89714261579B80005FA29 /* FinishedView.swift */,
+				6ED89717261585E10005FA29 /* FinishedVC.swift */,
+			);
+			path = finished;
 			sourceTree = "<group>";
 		};
 		6EE5CE6E25FB1EB500A737DF /* font */ = {
@@ -451,6 +465,7 @@
 				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,
 				6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */,
 				6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */,
+				6ED89715261579B80005FA29 /* FinishedView.swift in Sources */,
 				6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */,
 				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
 				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
@@ -465,6 +480,7 @@
 				6E274E6E25F20EA0007DC880 /* UIViewExtension.swift in Sources */,
 				6E274E8625F20FC0007DC880 /* BaseTableViewCell.swift in Sources */,
 				6EEED44525F2227F0059DBE5 /* HomeWishCell.swift in Sources */,
+				6ED89718261585E10005FA29 /* FinishedVC.swift in Sources */,
 				6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */,
 				6E274E8E25F21506007DC880 /* HomeView.swift in Sources */,
 				6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */,

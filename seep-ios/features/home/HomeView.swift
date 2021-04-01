@@ -3,7 +3,6 @@ import UIKit
 class HomeView: BaseView {
   
   let titleLabel = UILabel().then {
-    $0.text = String(format: "home_write_count_format1".localized, 24)
     $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
     $0.textColor = .black
     $0.numberOfLines = 0

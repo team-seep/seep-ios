@@ -12,8 +12,13 @@ class HomeVC: BaseVC, View {
   private let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
   private var pageViewControllers: [UIViewController] = []
   
-  static func instance() -> HomeVC {
-    return HomeVC(nibName: nil, bundle: nil)
+  static func instance() -> UINavigationController {
+    let homeVC = HomeVC(nibName: nil, bundle: nil)
+
+    return UINavigationController(rootViewController: homeVC).then {
+      $0.setNavigationBarHidden(true, animated: false)
+      $0.interactivePopGestureRecognizer?.delegate = nil
+    }
   }
 
   override func viewDidLoad() {
@@ -45,6 +50,11 @@ class HomeVC: BaseVC, View {
   }
   
   override func bindEvent() {
+    self.homeView.successCountButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.goToFinish)
+      .disposed(by: self.eventDisposeBag)
+    
     self.homeView.writeButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showWirteVC)
@@ -123,6 +133,12 @@ class HomeVC: BaseVC, View {
       animated: false,
       completion: nil
     )
+  }
+  
+  private func goToFinish() {
+    let finishedVC = FinishedVC.instance()
+    
+    self.navigationController?.pushViewController(finishedVC, animated: true)
   }
   
   private func showWirteVC() {
