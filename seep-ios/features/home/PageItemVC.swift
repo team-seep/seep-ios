@@ -5,12 +5,14 @@ import ReactorKit
 protocol PageItemDelegate: class {
   
   func onDismiss()
+  func scrollViewWillBeginDragging()
+  func scrollViewDidEndDragging()
 }
 
 class PageItemVC: BaseVC, View {
   
   weak var delegate: PageItemDelegate?
-  private lazy var pageItemView = PageItemView(frame: self.view.frame)
+  lazy var pageItemView = PageItemView(frame: self.view.frame)
   private let pageItemReactor: PageItemReactor
   
   
@@ -126,6 +128,7 @@ class PageItemVC: BaseVC, View {
       HomeWishCell.self,
       forCellReuseIdentifier: HomeWishCell.registerId
     )
+    self.pageItemView.tableView.delegate = self
   }
   
   private func setupCollectionView() {
@@ -133,6 +136,7 @@ class PageItemVC: BaseVC, View {
       HomeWishCollectionCell.self,
       forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
     )
+    self.pageItemView.collectionView.delegate = self
   }
   
   private func showDetail(wish: Wish) {
@@ -154,3 +158,19 @@ extension PageItemVC: DetailDelegate {
   }
 }
 
+extension PageItemVC: UITableViewDelegate, UICollectionViewDelegate {
+  
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    self.delegate?.scrollViewWillBeginDragging()
+  }
+  
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    if !decelerate {
+      self.delegate?.scrollViewDidEndDragging()
+    }
+  }
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    self.delegate?.scrollViewDidEndDragging()
+  }
+}

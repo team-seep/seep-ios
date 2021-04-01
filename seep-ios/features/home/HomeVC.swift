@@ -182,23 +182,6 @@ class HomeVC: BaseVC, View {
   }
 }
 
-extension HomeVC: UITableViewDelegate {
-  
-  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    self.homeView.hideWriteButton()
-  }
-  
-  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if !decelerate {
-      self.homeView.showWriteButton()
-    }
-  }
-  
-  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.homeView.showWriteButton()
-  }
-}
-
 extension HomeVC: WriteDelegate {
   
   func onSuccessWrite() {
@@ -215,6 +198,14 @@ extension HomeVC: PageItemDelegate {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
+  }
+  
+  func scrollViewWillBeginDragging() {
+    self.homeView.hideWriteButton()
+  }
+  
+  func scrollViewDidEndDragging() {
+    self.homeView.showWriteButton()
   }
 }
 
