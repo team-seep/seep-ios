@@ -27,6 +27,7 @@
 "home_finish_count_format" = "👏 지금까지 %d개를 이뤘어요";
 "home_finish_count_format_empty" = "😱 지금까지 %d개를 이뤘어요";
 "home_category_success" = "성공";
+"home_in_far_furture" = "먼훗날";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

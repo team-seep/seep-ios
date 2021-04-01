@@ -10,11 +10,7 @@ class HomeVC: BaseVC, View {
     userDefaults: UserDefaultsUtils()
   )
   private let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-  private let pageViewControllers: [UIViewController] = [
-    PageItemVC.instance(category: .wantToDo),
-    PageItemVC.instance(category: .wantToGet),
-    PageItemVC.instance(category: .wantToGo)
-  ]
+  private var pageViewControllers: [UIViewController] = []
   
   static func instance() -> HomeVC {
     return HomeVC(nibName: nil, bundle: nil)
@@ -25,6 +21,17 @@ class HomeVC: BaseVC, View {
     
     self.view = homeView
     self.reactor = homeReactor
+    self.pageViewControllers = [
+      PageItemVC.instance(category: .wantToDo).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGet).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGo).then {
+        $0.delegate = self
+      }
+    ]
     self.homeView.startAnimation()
     self.setupPageVC()
   }
@@ -126,14 +133,6 @@ class HomeVC: BaseVC, View {
     self.present(writeVC, animated: true, completion: nil)
   }
   
-  private func showDetail(wish: Wish) {
-    let detailVC = DetailVC.instance(wish: wish).then {
-      $0.delegate = self
-    }
-    
-    self.present(detailVC, animated: true, completion: nil)
-  }
-  
   private func movePageView(category: Category) {
     guard let currentViewControllerIndex = self.pageViewControllers.firstIndex(of: self.pageVC.viewControllers![0]) else { return }
     
@@ -171,6 +170,16 @@ class HomeVC: BaseVC, View {
       }
     }
   }
+  
+  private func fetchPageVC() {
+    if let viewControllers = self.pageVC.viewControllers {
+      if !viewControllers.isEmpty {
+        if let pageItemVC = viewControllers[0] as? PageItemVC {
+          pageItemVC.actionFetchData()
+        }
+      }
+    }
+  }
 }
 
 extension HomeVC: UITableViewDelegate {
@@ -196,10 +205,11 @@ extension HomeVC: WriteDelegate {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
+    self.fetchPageVC()
   }
 }
 
-extension HomeVC: DetailDelegate {
+extension HomeVC: PageItemDelegate {
   
   func onDismiss() {
     Observable.just(HomeReactor.Action.viewDidLoad(()))

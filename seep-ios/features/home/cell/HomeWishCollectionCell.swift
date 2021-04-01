@@ -115,6 +115,12 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
       break
     }
     
-    return dday < 0 ? "D+\(abs(dday))" : "D-\(dday)"
+    if dday < 0 {
+      return "D+\(abs(dday))"
+    } else if dday <= 365 {
+      return "D-\(dday)"
+    } else {
+      return "home_in_far_furture".localized
+    }
   }
 }

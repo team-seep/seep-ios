@@ -34,6 +34,7 @@ class PageItemView: BaseView {
 
     $0.collectionViewLayout = layout
     $0.backgroundColor = .clear
+    $0.showsVerticalScrollIndicator = false
     $0.alpha = 0.0
   }
 

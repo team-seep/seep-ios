@@ -189,6 +189,7 @@ class DetailVC: BaseVC, View {
       .bind(onNext: { [weak self] shouldDismiss in
         guard let self = self else { return }
         if shouldDismiss {
+          self.delegate?.onDismiss()
           self.dismiss()
         }
       })

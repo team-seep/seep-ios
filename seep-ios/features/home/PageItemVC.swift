@@ -2,8 +2,14 @@ import UIKit
 import RxSwift
 import ReactorKit
 
+protocol PageItemDelegate: class {
+  
+  func onDismiss()
+}
+
 class PageItemVC: BaseVC, View {
   
+  weak var delegate: PageItemDelegate?
   private lazy var pageItemView = PageItemView(frame: self.view.frame)
   private let pageItemReactor: PageItemReactor
   
@@ -37,9 +43,7 @@ class PageItemVC: BaseVC, View {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    Observable.just(PageItemReactor.Action.viewDidLoad(()))
-      .bind(to: self.pageItemReactor.action)
-      .disposed(by: self.disposeBag)
+    self.actionFetchData()
   }
   
   func bind(reactor: PageItemReactor) {
@@ -111,6 +115,12 @@ class PageItemVC: BaseVC, View {
       .disposed(by: self.disposeBag)
   }
   
+  func actionFetchData() {
+    Observable.just(PageItemReactor.Action.viewDidLoad(()))
+      .bind(to: self.pageItemReactor.action)
+      .disposed(by: self.disposeBag)
+  }
+  
   private func setupTableView() {
     self.pageItemView.tableView.register(
       HomeWishCell.self,
@@ -140,6 +150,7 @@ extension PageItemVC: DetailDelegate {
     Observable.just(PageItemReactor.Action.viewDidLoad(()))
       .bind(to: self.pageItemReactor.action)
       .disposed(by: self.disposeBag)
+    self.delegate?.onDismiss()
   }
 }
 
