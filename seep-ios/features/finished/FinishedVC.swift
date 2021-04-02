@@ -30,6 +30,8 @@ class FinishedVC: BaseVC, View {
     
     view = finishedView
     self.reactor = self.finishedReactor
+    self.setupTableView()
+    self.setupCollectionView()
     
     Observable.just(FinishedReactor.Action.viewDidLoad(()))
       .bind(to: self.finishedReactor.action)

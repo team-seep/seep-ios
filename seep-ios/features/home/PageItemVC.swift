@@ -5,6 +5,7 @@ import ReactorKit
 protocol PageItemDelegate: class {
   
   func onDismiss()
+  func onFinishWish()
   func scrollViewWillBeginDragging()
   func scrollViewDidEndDragging()
 }
@@ -78,6 +79,10 @@ class PageItemVC: BaseVC, View {
         cellType: HomeWishCell.self
       )) { row, wish, cell in
         cell.bind(wish: wish)
+        cell.checkButton.rx.tap
+          .map { PageItemReactor.Action.tapFinishButton(row) }
+          .bind(to: self.pageItemReactor.action)
+          .disposed(by: cell.disposeBag)
       }
       .disposed(by: self.disposeBag)
 
@@ -108,6 +113,17 @@ class PageItemVC: BaseVC, View {
       .map { $0.endRefresh }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.pageItemView.pullToRefreshCollectionView.endRefreshing)
+      .disposed(by: self.disposeBag)
+    
+    self.pageItemReactor.state
+      .map { $0.fetchHomeVC }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] isFinish in
+        if isFinish {
+          self?.delegate?.onFinishWish()
+        }
+      }
       .disposed(by: self.disposeBag)
   }
   

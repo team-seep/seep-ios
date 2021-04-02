@@ -43,12 +43,14 @@ class HomeWishCell: BaseTableViewCell {
   
   let checkButton = UIButton().then {
     $0.setImage(UIImage(named: "img_check_off"), for: .normal)
+    $0.setImage(UIImage(named: "img_check_on"), for: .highlighted)
   }
   
   
   override func setup() {
     self.backgroundColor = .clear
     self.selectionStyle = .none
+    self.contentView.isUserInteractionEnabled = false
     self.addSubViews(
       containerView, emojiLabel, titleLabel, deadlineLabel,
       tagLabel, checkButton

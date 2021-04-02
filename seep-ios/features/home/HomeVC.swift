@@ -218,6 +218,12 @@ extension HomeVC: PageItemDelegate {
       .disposed(by: disposeBag)
   }
   
+  func onFinishWish() {
+    Observable.just(HomeReactor.Action.viewDidLoad(()))
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
+  }
+  
   func scrollViewWillBeginDragging() {
     self.homeView.hideWriteButton()
   }
