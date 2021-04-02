@@ -142,7 +142,7 @@ class FinishedView: BaseView {
     
     self.tableView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.backButton.snp.bottom).offset(10)
+      make.top.equalTo(self.backButton.snp.bottom).offset(27)
     }
     
     self.collectionView.snp.makeConstraints { make in

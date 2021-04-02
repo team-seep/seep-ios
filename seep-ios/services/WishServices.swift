@@ -63,6 +63,7 @@ struct WishService: WishServiceProtocol {
     
     realm.beginWrite()
     wish.isSuccess = true
+    wish.finishDate = DateUtils.now()
     try! realm.commitWrite()
   }
   

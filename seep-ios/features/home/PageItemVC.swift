@@ -160,7 +160,7 @@ class PageItemVC: BaseVC, View {
   }
   
   private func showDetail(wish: Wish) {
-    let detailVC = DetailVC.instance(wish: wish).then {
+    let detailVC = DetailVC.instance(wish: wish, mode: .fromHome).then {
       $0.delegate = self
     }
     

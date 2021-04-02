@@ -62,8 +62,8 @@ class FinishedVC: BaseVC, View {
       .map { $0.finishedWishiList }
       .distinctUntilChanged()
       .bind(to: self.finishedView.tableView.rx.items(
-        cellIdentifier: HomeWishCell.registerId,
-        cellType: HomeWishCell.self
+        cellIdentifier: FinishedTableCell.registerId,
+        cellType: FinishedTableCell.self
       )) { row, wish, cell in
         cell.bind(wish: wish)
       }
@@ -73,8 +73,8 @@ class FinishedVC: BaseVC, View {
       .map { $0.finishedWishiList }
       .distinctUntilChanged()
       .bind(to: self.finishedView.collectionView.rx.items(
-        cellIdentifier: HomeWishCollectionCell.registerId,
-        cellType: HomeWishCollectionCell.self
+        cellIdentifier: FinishedCollectionCell.registerId,
+        cellType: FinishedCollectionCell.self
       )) { row, wish, cell in
         cell.bind(wish: wish)
       }
@@ -105,15 +105,31 @@ class FinishedVC: BaseVC, View {
   
   private func setupTableView() {
     self.finishedView.tableView.register(
-      HomeWishCell.self,
-      forCellReuseIdentifier: HomeWishCell.registerId
+      FinishedTableCell.self,
+      forCellReuseIdentifier: FinishedTableCell.registerId
     )
+    
+    self.finishedView.tableView.rx.itemSelected
+      .map { self.finishedReactor.currentState.finishedWishiList[$0.row] }
+      .bind(onNext: self.showDetail(wish:))
+      .disposed(by: self.disposeBag)
   }
   
   private func setupCollectionView() {
     self.finishedView.collectionView.register(
-      HomeWishCollectionCell.self,
-      forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
+      FinishedCollectionCell.self,
+      forCellWithReuseIdentifier: FinishedCollectionCell.registerId
     )
+    
+    self.finishedView.collectionView.rx.itemSelected
+      .map { self.finishedReactor.currentState.finishedWishiList[$0.row] }
+      .bind(onNext: self.showDetail(wish:))
+      .disposed(by: self.disposeBag)
+  }
+  
+  private func showDetail(wish: Wish) {
+    let detailVC = DetailVC.instance(wish: wish, mode: .fromFinish)
+    
+    self.present(detailVC, animated: true, completion: nil)
   }
 }

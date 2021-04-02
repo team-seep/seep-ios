@@ -230,7 +230,8 @@ class DetailView: BaseView {
     }
   }
   
-  func bind(wish: Wish) {
+  func bind(wish: Wish, mode: DetailMode) {
+    self.moreButton.isHidden = (mode == .fromFinish)
     self.emojiField.text = wish.emoji
     self.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
     self.titleField.textField.text = wish.title
