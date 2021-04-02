@@ -3,7 +3,6 @@ import UIKit
 class HomeView: BaseView {
   
   let titleLabel = UILabel().then {
-    $0.text = String(format: "home_write_count_format1".localized, 24)
     $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
     $0.textColor = .black
     $0.numberOfLines = 0
@@ -181,14 +180,14 @@ class HomeView: BaseView {
     }, completion: nil)
   }
   
-  func setSuccessCount(count: Int) {
-    let text = count != 0 ? String(format: "home_finish_count_format".localized, count) : String(format: "home_finish_count_format_empty".localized, count)
+  func setSuccessCount(category: Category, count: Int) {
+    let text = count != 0 ? String(format: "home_finish_count_\(category.rawValue)_format".localized, count) : String(format: "home_finish_count_\(category.rawValue)_format_empty".localized, count)
     let attributedString = NSMutableAttributedString(string: text)
-    let underlineTextRange = (text as NSString).range(of: "\(count)개")
+    let underlineTextRange = (text as NSString).range(of: category == .wantToGo ? "\(count)곳" : "\(count)개")
     
     attributedString.addAttribute(
       .foregroundColor,
-      value: UIColor(r: 47, g: 168, b: 249),
+      value: UIColor.seepBlue,
       range: underlineTextRange
     )
     self.successCountButton.setAttributedTitle(attributedString, for: .normal)

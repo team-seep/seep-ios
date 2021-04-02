@@ -6,8 +6,10 @@ protocol WishServiceProtocol {
   func deleteWish(id: ObjectId)
   func searchWish(id: ObjectId) -> Wish?
   func updateWish(id: ObjectId, newWish: Wish)
+  func finishWish(wish: Wish)
   func fetchAllWishes(category: Category) -> [Wish]
-  func getFinishCount() -> Int
+  func getFinishCount(category: Category) -> Int
+  func fetchFinishedWishes(category: Category) -> [Wish]
   func getWishCount() -> Int
   func getWishCount(category: Category) -> Int
 }
@@ -56,18 +58,34 @@ struct WishService: WishServiceProtocol {
     }
   }
   
+  func finishWish(wish: Wish) {
+    guard let realm = try? Realm() else { return }
+    
+    realm.beginWrite()
+    wish.isSuccess = true
+    wish.finishDate = DateUtils.now()
+    try! realm.commitWrite()
+  }
+  
   func fetchAllWishes(category: Category) -> [Wish] {
     guard let realm = try? Realm() else { return [] }
-    let searchTask = realm.objects(Wish.self).filter { $0.category == category.rawValue }
+    let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == false) && ($0.category == category.rawValue) }
     
     return searchTask.map { $0 }
   }
   
-  func getFinishCount() -> Int {
+  func getFinishCount(category: Category) -> Int {
     let realm = try! Realm()
-    let searchTask = realm.objects(Wish.self).filter { $0.isSuccess == true }
+    let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == true) && ($0.category == category.rawValue) }
     
     return searchTask.count
+  }
+  
+  func fetchFinishedWishes(category: Category) -> [Wish] {
+    guard let realm = try? Realm() else { return [] }
+    let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == true) && ($0.category == category.rawValue) }
+    
+    return searchTask.map { $0 }
   }
   
   func getWishCount() -> Int {

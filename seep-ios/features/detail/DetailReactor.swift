@@ -6,6 +6,7 @@ class DetailReactor: Reactor {
   enum Action {
     case tapEditButton(Void)
     case tapDeleteButton(Void)
+    case tapCancelButton(Void)
     case inputEmoji(String)
     case tapCategory(Category)
     case tapRandomEmoji(Void)
@@ -20,6 +21,7 @@ class DetailReactor: Reactor {
   enum Mutation {
     case setEditable(Bool)
     case deleteWish(Void)
+    case resetWish(Void)
     case setEmoji(String)
     case setCategory(Category)
     case setTitle(String)
@@ -74,6 +76,8 @@ class DetailReactor: Reactor {
       self.wishService.deleteWish(id: self.initialWish._id)
       
       return Observable.just(Mutation.deleteWish(()))
+    case .tapCancelButton():
+      return Observable.just(Mutation.resetWish(()))
     case .inputEmoji(let emoji):
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):
@@ -129,6 +133,8 @@ class DetailReactor: Reactor {
       newState.isEditable = isEditable
     case .deleteWish():
       newState.shouldDismiss = true
+    case .resetWish():
+      newState = self.initialState
     case .setEmoji(let emoji):
       newState.emoji = emoji
     case .setCategory(let category):

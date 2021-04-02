@@ -28,4 +28,12 @@ struct DateUtils {
     
     return dateFormatter.string(from: Date())
   }
+  
+  static func now() -> Date {
+    let nowDate = Date()
+    let calendar = Calendar(identifier: .gregorian)
+    let midnightDate = calendar.startOfDay(for: nowDate)
+    
+    return midnightDate
+  }
 }

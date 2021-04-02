@@ -12,8 +12,13 @@ class HomeVC: BaseVC, View {
   private let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
   private var pageViewControllers: [UIViewController] = []
   
-  static func instance() -> HomeVC {
-    return HomeVC(nibName: nil, bundle: nil)
+  static func instance() -> UINavigationController {
+    let homeVC = HomeVC(nibName: nil, bundle: nil)
+
+    return UINavigationController(rootViewController: homeVC).then {
+      $0.setNavigationBarHidden(true, animated: false)
+      $0.interactivePopGestureRecognizer?.delegate = nil
+    }
   }
 
   override func viewDidLoad() {
@@ -45,6 +50,12 @@ class HomeVC: BaseVC, View {
   }
   
   override func bindEvent() {
+    self.homeView.successCountButton.rx.tap
+      .map { self.homeReactor.currentState.category }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.goToFinish)
+      .disposed(by: self.eventDisposeBag)
+    
     self.homeView.writeButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showWirteVC)
@@ -75,8 +86,9 @@ class HomeVC: BaseVC, View {
     
     // MARK: State
     self.homeReactor.state
-      .map { $0.successCount }
-      .bind(onNext: self.homeView.setSuccessCount(count:))
+      .map { ($0.category, $0.successCount) }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.homeView.setSuccessCount)
       .disposed(by: self.disposeBag)
     
     self.homeReactor.state
@@ -123,6 +135,12 @@ class HomeVC: BaseVC, View {
       animated: false,
       completion: nil
     )
+  }
+  
+  private func goToFinish(category: Category) {
+    let finishedVC = FinishedVC.instance(category: category)
+    
+    self.navigationController?.pushViewController(finishedVC, animated: true)
   }
   
   private func showWirteVC() {
@@ -195,6 +213,12 @@ extension HomeVC: WriteDelegate {
 extension HomeVC: PageItemDelegate {
   
   func onDismiss() {
+    Observable.just(HomeReactor.Action.viewDidLoad(()))
+      .bind(to: self.homeReactor.action)
+      .disposed(by: disposeBag)
+  }
+  
+  func onFinishWish() {
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)

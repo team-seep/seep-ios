@@ -87,8 +87,13 @@ class TextInputView: BaseView {
   }
   
   func setText(text: String) {
-    self.textView.text = text
-    self.textView.textColor = .gray5
+    if text.isEmpty {
+      self.textView.text = "wrtie_placeholder_memo".localized
+      self.textView.textColor = .gray3
+    } else {
+      self.textView.text = text
+      self.textView.textColor = .gray5
+    }
   }
 }
 
