@@ -59,11 +59,47 @@ class FinishedView: BaseView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 33, bottom: 16, right: 33)
   }
   
+  let tableView = UITableView().then {
+    $0.tableFooterView = UIView()
+    $0.backgroundColor = .clear
+    $0.rowHeight = UITableView.automaticDimension
+    $0.separatorStyle = .none
+    $0.showsVerticalScrollIndicator = false
+    $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
+  }
+
+  let collectionView = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: UICollectionViewLayout()
+  ).then {
+    let layout = UICollectionViewFlowLayout()
+    layout.itemSize = CGSize(
+      width: (UIScreen.main.bounds.width - 40 - 15) / 2,
+      height: (UIScreen.main.bounds.width - 40 - 15) / 2
+    )
+    layout.minimumInteritemSpacing = 15
+    layout.minimumLineSpacing = 16
+    layout.sectionInset = UIEdgeInsets(
+      top: 0,
+      left: 20,
+      bottom: (UIScreen.main.bounds.width - 40 - 15) / 2,
+      right: 20
+    )
+
+    $0.collectionViewLayout = layout
+    $0.backgroundColor = .clear
+    $0.showsVerticalScrollIndicator = false
+    $0.alpha = 0.0
+  }
+  
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
     self.emptyView.addSubViews(emptyEmojiLabel, emptyLabel, emptyBackButton)
-    self.addSubViews(titleLabel, viewTypeButton, backButton, emptyView)
+    self.addSubViews(
+      titleLabel, viewTypeButton, backButton, tableView,
+      collectionView, emptyView
+    )
     self.titleLabel.attributedText = self.getEmptyTitle()
   }
   
@@ -75,7 +111,7 @@ class FinishedView: BaseView {
     
     self.viewTypeButton.snp.makeConstraints { make in
       make.top.equalTo(self.titleLabel)
-      make.right.equalToSuperview().offset(36)
+      make.right.equalToSuperview().offset(-36)
     }
     
     self.backButton.snp.makeConstraints { make in
@@ -103,6 +139,46 @@ class FinishedView: BaseView {
       make.centerX.equalToSuperview()
       make.bottom.equalTo(self.emptyLabel.snp.top)
     }
+    
+    self.tableView.snp.makeConstraints { make in
+      make.left.right.bottom.equalToSuperview()
+      make.top.equalTo(self.backButton.snp.bottom).offset(10)
+    }
+    
+    self.collectionView.snp.makeConstraints { make in
+      make.edges.equalTo(tableView)
+    }
+  }
+  
+  func setEmptyViewHidden(isHidden: Bool) {
+    self.emptyView.isHidden = isHidden
+    self.backButton.isHidden = !isHidden
+    self.viewTypeButton.isHidden = !isHidden
+  }
+  
+  func changeViewType(to viewType: ViewType) {
+    switch viewType {
+    case .grid:
+      UIView.animate(withDuration: 0.3) { [weak self] in
+        guard let self = self else { return }
+        self.collectionView.alpha = 1.0
+        self.tableView.alpha = 0.0
+      }
+    case .list:
+      UIView.animate(withDuration: 0.3) { [weak self] in
+        guard let self = self else { return }
+        self.collectionView.alpha = 0.0
+        self.tableView.alpha = 1.0
+      }
+    }
+  }
+  
+  func setFinishedCount(category: Category, count: Int) {
+    if count == 0 {
+      self.titleLabel.attributedText = self.getEmptyTitle()
+    } else{
+      self.titleLabel.attributedText = self.getCountTitle(by: category, count: count)
+    }
   }
   
   private func getEmptyTitle() -> NSMutableAttributedString {
@@ -119,11 +195,21 @@ class FinishedView: BaseView {
     return attributedString
   }
   
-  private func getCountTitle(count: Int) -> NSMutableAttributedString {
-    let text = String(format: "finish_title_count".localized, count)
+  private func getCountTitle(by category: Category, count: Int) -> NSMutableAttributedString {
+    let text = String(format: "finish_count_\(category.rawValue)_format".localized, count)
     let attributedString = NSMutableAttributedString(string: text)
-    let underlineTextRange = (text as NSString).range(of: String(format: "home_write_category_want_to_do_unit".localized, count))
-    let boldTextRange = (text as NSString).range(of: "이뤘어요!")
+    let underlineTextRange = (text as NSString).range(of: category == .wantToGo ? "\(count)곳" : "\(count)개")
+    var boldTextRange: NSRange {
+      switch category {
+      case .wantToDo:
+        return (text as NSString).range(of: "이뤘어요!")
+      case.wantToGet:
+        return (text as NSString).range(of: "겟했어요!")
+      case .wantToGo:
+        return (text as NSString).range(of: "다녀왔어요!")
+      }
+    }
+    
     
     attributedString.addAttributes([
       .foregroundColor: UIColor.tennisGreen,

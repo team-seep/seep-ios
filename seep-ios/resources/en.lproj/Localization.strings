@@ -70,4 +70,7 @@
 "finish_title_empty" = "아직...\n완료된 것이 없지만";
 "finish_description_empty" = "하고 싶은게 많은 것만으로도\n반짝반짝 빛나는 사람인걸요.\n당신을 응원할게요!";
 "finish_empty_back_button" = "메인으로 돌아가기";
-"finish_title_count" = "지금까지\n%d개 이뤘어요!";
+"finish_count_category_want_to_do_format" = "지금까지 %d개를 이뤘어요";
+"finish_count_category_want_to_get_format" = "지금까지 %d개를 겟했어요";
+"finish_count_category_want_to_go_format" = "지금까지 %d곳를 다녀왔어요";
+

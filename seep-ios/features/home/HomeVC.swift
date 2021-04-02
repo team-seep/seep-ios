@@ -51,6 +51,7 @@ class HomeVC: BaseVC, View {
   
   override func bindEvent() {
     self.homeView.successCountButton.rx.tap
+      .map { self.homeReactor.currentState.category }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.goToFinish)
       .disposed(by: self.eventDisposeBag)
@@ -136,8 +137,8 @@ class HomeVC: BaseVC, View {
     )
   }
   
-  private func goToFinish() {
-    let finishedVC = FinishedVC.instance()
+  private func goToFinish(category: Category) {
+    let finishedVC = FinishedVC.instance(category: category)
     
     self.navigationController?.pushViewController(finishedVC, animated: true)
   }

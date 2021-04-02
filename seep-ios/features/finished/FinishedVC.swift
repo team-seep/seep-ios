@@ -2,19 +2,38 @@ import UIKit
 import RxSwift
 import ReactorKit
 
-class FinishedVC: BaseVC {
+class FinishedVC: BaseVC, View {
   
   private lazy var finishedView = FinishedView(frame: self.view.frame)
+  private let finishedReactor: FinishedReactor
   
   
-  static func instance() -> FinishedVC {
-    return FinishedVC(nibName: nil, bundle: nil)
+  init(category: Category) {
+    self.finishedReactor = FinishedReactor(
+      category: category,
+      wishService: WishService(),
+      userDefaults: UserDefaultsUtils()
+    )
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  static func instance(category: Category) -> FinishedVC {
+    return FinishedVC(category: category)
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     view = finishedView
+    self.reactor = self.finishedReactor
+    
+    Observable.just(FinishedReactor.Action.viewDidLoad(()))
+      .bind(to: self.finishedReactor.action)
+      .disposed(by: self.disposeBag)
   }
   
   override func bindEvent() {
@@ -29,7 +48,70 @@ class FinishedVC: BaseVC {
       .disposed(by: self.eventDisposeBag)
   }
   
+  func bind(reactor: FinishedReactor) {
+    // MARK: Action
+    self.finishedView.viewTypeButton.rx.tap
+      .map { FinishedReactor.Action.tapViewType(()) }
+      .bind(to: self.finishedReactor.action)
+      .disposed(by: self.disposeBag)
+    
+    // MARK: State
+    self.finishedReactor.state
+      .map { $0.finishedWishiList }
+      .distinctUntilChanged()
+      .bind(to: self.finishedView.tableView.rx.items(
+        cellIdentifier: HomeWishCell.registerId,
+        cellType: HomeWishCell.self
+      )) { row, wish, cell in
+        cell.bind(wish: wish)
+      }
+      .disposed(by: self.disposeBag)
+    
+    self.finishedReactor.state
+      .map { $0.finishedWishiList }
+      .distinctUntilChanged()
+      .bind(to: self.finishedView.collectionView.rx.items(
+        cellIdentifier: HomeWishCollectionCell.registerId,
+        cellType: HomeWishCollectionCell.self
+      )) { row, wish, cell in
+        cell.bind(wish: wish)
+      }
+      .disposed(by: self.disposeBag)
+    
+    self.finishedReactor.state
+      .map { $0.isHiddenEmptyView }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.finishedView.setEmptyViewHidden(isHidden:))
+      .disposed(by: self.disposeBag)
+    
+    self.finishedReactor.state
+      .map{ $0.viewType }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.finishedView.changeViewType(to:))
+      .disposed(by: self.disposeBag)
+    
+    self.finishedReactor.state
+      .map { (self.finishedReactor.category, $0.finishedCount) }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.finishedView.setFinishedCount)
+      .disposed(by: self.disposeBag)
+  }
+  
   private func popVC() {
     self.navigationController?.popViewController(animated: true)
+  }
+  
+  private func setupTableView() {
+    self.finishedView.tableView.register(
+      HomeWishCell.self,
+      forCellReuseIdentifier: HomeWishCell.registerId
+    )
+  }
+  
+  private func setupCollectionView() {
+    self.finishedView.collectionView.register(
+      HomeWishCollectionCell.self,
+      forCellWithReuseIdentifier: HomeWishCollectionCell.registerId
+    )
   }
 }
