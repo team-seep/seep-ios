@@ -116,7 +116,7 @@ class HomeView: BaseView {
     }
     
     self.viewTypeButton.snp.makeConstraints { make in
-      make.right.equalToSuperview().offset(-36)
+      make.right.equalToSuperview().offset(-24)
       make.centerY.equalTo(self.categoryStackView)
     }
     
