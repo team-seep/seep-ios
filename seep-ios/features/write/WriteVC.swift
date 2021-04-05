@@ -119,6 +119,7 @@ class WriteVC: BaseVC, View {
       .map { $0.category }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
+      .do(onNext: self.writeView.setTitlePlaceholder(by:))
       .bind(onNext: self.writeView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
     

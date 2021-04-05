@@ -39,7 +39,9 @@
 "write_header_title" = "제목";
 "write_header_date" = "날짜";
 "write_header_memo" = "메모";
-"write_placeholder_title" = "뭐 하고 싶어요?";
+"write_placeholder_title_category_want_to_do" = "뭐 하고 싶어요?";
+"write_placeholder_title_category_want_to_get" = "뭐 갖고 싶어요?";
+"write_placeholder_title_category_want_to_go" = "어디 가고 싶어요?";
 "write_placeholder_date" = "언제까지 하면 좋을까요?";
 "write_notification" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
 "wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
