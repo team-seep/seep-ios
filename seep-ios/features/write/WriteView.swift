@@ -139,6 +139,17 @@ class WriteView: BaseView {
   
   let hashtagField = WriteHashtagField()
   
+  let gradientView = UIView().then {
+    let gradientLayer = CAGradientLayer()
+    let topColor = UIColor(r: 246, g: 247, b: 249, a: 0.0).cgColor
+    let bottomColor = UIColor(r: 246, g: 247, b: 249, a: 1.0).cgColor
+
+    gradientLayer.colors = [topColor, bottomColor]
+    gradientLayer.locations = [0.0, 1.0]
+    gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
+    $0.layer.addSublayer(gradientLayer)
+  }
+  
   let writeButton = WriteButton()
   
   override func setup() {
@@ -156,7 +167,7 @@ class WriteView: BaseView {
       titleField, dateField, memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(topIndicator, scrollView, writeButton)
+    self.addSubViews(topIndicator, scrollView, gradientView, writeButton)
   }
   
   override func bindConstraints() {
@@ -239,6 +250,11 @@ class WriteView: BaseView {
     self.hashtagField.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
       make.top.equalTo(self.memoField.snp.bottom).offset(16)
+    }
+    
+    self.gradientView.snp.makeConstraints { make in
+      make.left.right.bottom.equalToSuperview()
+      make.height.equalTo(150)
     }
     
     self.writeButton.snp.makeConstraints { make in

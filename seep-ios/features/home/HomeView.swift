@@ -76,7 +76,7 @@ class HomeView: BaseView {
   }
   
   let writeButton = UIButton().then {
-    $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
     $0.backgroundColor = .tennisGreen
     $0.layer.cornerRadius = 25
     $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
