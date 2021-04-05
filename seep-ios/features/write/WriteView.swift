@@ -239,7 +239,7 @@ class WriteView: BaseView {
     
     self.dateField.snp.makeConstraints { make in
       make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.titleField.snp.bottom).offset(16)
+      make.top.equalTo(self.titleField.snp.bottom).offset(8)
     }
     
     self.memoField.snp.makeConstraints { make in
