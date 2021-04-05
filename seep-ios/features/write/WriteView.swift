@@ -5,6 +5,13 @@ class WriteView: BaseView {
   
   let tapBackground = UITapGestureRecognizer()
   
+  let accessoryView = InputAccessoryView(frame: CGRect(
+    x: 0,
+    y: 0,
+    width: UIScreen.main.bounds.width,
+    height: 45
+  ))
+  
   let scrollView = UIScrollView().then {
     $0.backgroundColor = .clear
     $0.showsVerticalScrollIndicator = false
@@ -153,6 +160,11 @@ class WriteView: BaseView {
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
     self.emojiField.delegate = self
+    self.emojiField.inputAccessoryView = self.accessoryView
+    self.titleField.textField.inputAccessoryView = self.accessoryView
+    self.dateField.textField.inputAccessoryView = self.accessoryView
+    self.memoField.textView.inputAccessoryView = self.accessoryView
+    self.hashtagField.textField.inputAccessoryView = self.accessoryView
     self.setupEmojiKeyboard()
     self.categoryStackView.addArrangedSubview(wantToDoButton)
     self.categoryStackView.addArrangedSubview(wantToGetButton)

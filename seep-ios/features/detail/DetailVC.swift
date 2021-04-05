@@ -79,6 +79,13 @@ class DetailVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showActionSheet)
       .disposed(by: self.eventDisposeBag)
+    
+    self.detailView.accessoryView.finishButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] in
+        self?.detailView.endEditing(true)
+      }
+      .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: DetailReactor) {

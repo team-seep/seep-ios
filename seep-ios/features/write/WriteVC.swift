@@ -47,6 +47,13 @@ class WriteVC: BaseVC, View {
         self.writeView.endEditing(true)
       })
       .disposed(by: self.eventDisposeBag)
+    
+    self.writeView.accessoryView.finishButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] in
+        self?.writeView.endEditing(true)
+      }
+      .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: WriteReactor) {
