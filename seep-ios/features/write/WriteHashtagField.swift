@@ -105,7 +105,7 @@ class WriteHashtagField: BaseView {
         make.left.equalToSuperview()
         make.top.equalToSuperview()
         make.right.equalTo(self.textField).offset(8)
-        make.bottom.equalTo(self.textField).offset(8)
+        make.bottom.equalTo(self.textField).offset(6)
       }
     }
   }
@@ -115,7 +115,7 @@ class WriteHashtagField: BaseView {
       make.left.equalToSuperview()
       make.top.equalToSuperview()
       make.right.equalTo(self.clearButton).offset(6)
-      make.bottom.equalTo(self.textField).offset(8)
+      make.bottom.equalTo(self.textField).offset(6)
     }
     
     self.textField.snp.remakeConstraints { make in
@@ -199,7 +199,7 @@ class WriteHashtagField: BaseView {
       make.left.equalToSuperview()
       make.top.equalToSuperview()
       make.right.equalTo(self.textField).offset(8)
-      make.bottom.equalTo(self.textField).offset(8)
+      make.bottom.equalTo(self.textField).offset(4)
     }
     
     self.textField.snp.remakeConstraints { make in

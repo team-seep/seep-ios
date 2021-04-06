@@ -32,7 +32,7 @@ class HomeView: BaseView {
   
   let wantToDoButton = UIButton().then {
     $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 186, g: 186, b: 186), for: .normal)
+    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
@@ -40,7 +40,7 @@ class HomeView: BaseView {
   
   let wantToGetButton = UIButton().then {
     $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 186, g: 186, b: 186), for: .normal)
+    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
@@ -48,7 +48,7 @@ class HomeView: BaseView {
   
   let wantToGoButton = UIButton().then {
     $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 186, g: 186, b: 186), for: .normal)
+    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
@@ -57,7 +57,7 @@ class HomeView: BaseView {
   let activeButton = UIButton().then {
     $0.backgroundColor = .seepBlue
     $0.layer.cornerRadius = 15
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(.clear, for: .normal)
     $0.layer.shadowOpacity = 0.15
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -76,11 +76,13 @@ class HomeView: BaseView {
   }
   
   let writeButton = UIButton().then {
-    $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
     $0.backgroundColor = .tennisGreen
     $0.layer.cornerRadius = 25
     $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
   }
+  
+  let toast = ToastView(frame: CGRect(x: 20, y: -58, width: UIScreen.main.bounds.width - 40, height: 58))
   
   
   override func setup() {
@@ -89,8 +91,8 @@ class HomeView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.addSubViews(
-      titleLabel, emojiView, successCountButton, categoryStackView,
-      viewTypeButton, activeButton, containerView, writeButton
+      titleLabel, emojiView, successCountButton, activeButton,
+      categoryStackView, viewTypeButton, containerView, writeButton
     )
   }
   
@@ -116,7 +118,7 @@ class HomeView: BaseView {
     }
     
     self.viewTypeButton.snp.makeConstraints { make in
-      make.right.equalToSuperview().offset(-36)
+      make.right.equalToSuperview().offset(-24)
       make.centerY.equalTo(self.categoryStackView)
     }
     
@@ -152,6 +154,28 @@ class HomeView: BaseView {
     }
   }
   
+  func showFinishToast() {
+    let window = UIApplication.shared.windows[0]
+    let topPadding = window.safeAreaInsets.top
+    
+    self.addSubViews(toast)
+    
+    UIView.transition(with: toast, duration: 0.5, options: .curveEaseInOut) { [weak self] in
+      self?.toast.transform = .init(translationX: 0, y: topPadding + 10 + 58)
+    } completion: { isComplete in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+        guard let self = self else { return }
+        UIView.transition(with: self.toast, duration: 0.5, options: .curveEaseInOut) { [weak self] in
+          self?.toast.transform = .identity
+        } completion: { [weak self] isCompleteRemove in
+          if isCompleteRemove {
+            self?.toast.removeFromSuperview()
+          }
+        }
+      }
+    }
+  }
+  
   func setWishCount(category: Category, count: Int) {
     if count == 0 {
       self.titleLabel.attributedText = self.getEmptyTitle(by: category, count: count)
@@ -175,9 +199,19 @@ class HomeView: BaseView {
       make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
     }
     self.activeButton.setTitle(category.rawValue.localized, for: .normal)
-    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
-      self.layoutIfNeeded()
-    }, completion: nil)
+    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: { [weak self] in
+      self?.layoutIfNeeded()
+    }) { [weak self] isComplete in
+      self?.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self?.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self?.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+    }
   }
   
   func setSuccessCount(category: Category, count: Int) {

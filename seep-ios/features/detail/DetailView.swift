@@ -7,6 +7,13 @@ class DetailView: BaseView {
   
   let tapBackground = UITapGestureRecognizer()
   
+  let accessoryView = InputAccessoryView(frame: CGRect(
+    x: 0,
+    y: 0,
+    width: UIScreen.main.bounds.width,
+    height: 45
+  ))
+  
   let scrollView = UIScrollView().then {
     $0.backgroundColor = .clear
     $0.showsVerticalScrollIndicator = false
@@ -51,12 +58,15 @@ class DetailView: BaseView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
   }
   
+  let stackContainerView = UIView().then {
+    $0.backgroundColor = UIColor(r: 232, g: 246, b: 255)
+    $0.layer.cornerRadius = 24
+  }
+  
   let categoryStackView = UIStackView().then {
     $0.alignment = .leading
     $0.axis = .horizontal
     $0.distribution = .equalSpacing
-    $0.backgroundColor = UIColor(r: 232, g: 246, b: 255)
-    $0.layer.cornerRadius = 24
   }
   
   let wantToDoButton = UIButton().then {
@@ -86,7 +96,7 @@ class DetailView: BaseView {
   let activeButton = UIButton().then {
     $0.backgroundColor = .seepBlue
     $0.layer.cornerRadius = 16
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(.clear, for: .normal)
     $0.layer.shadowOpacity = 0.15
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -137,13 +147,18 @@ class DetailView: BaseView {
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
     self.emojiField.delegate = self
+    self.emojiField.inputAccessoryView = self.accessoryView
+    self.titleField.textField.inputAccessoryView = self.accessoryView
+    self.dateField.textField.inputAccessoryView = self.accessoryView
+    self.memoField.textView.inputAccessoryView = self.accessoryView
+    self.hashtagField.textField.inputAccessoryView = self.accessoryView
     self.setupEmojiKeyboard()
     self.categoryStackView.addArrangedSubview(wantToDoButton)
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      emojiBackground, emojiField, randomButton,
-      categoryStackView, activeButton, titleField, dateField,
+      emojiBackground, emojiField, randomButton, stackContainerView,
+      activeButton, categoryStackView, titleField, dateField,
       notificationButton
     )
     self.scrollView.addSubview(containerView)
@@ -199,6 +214,13 @@ class DetailView: BaseView {
     self.categoryStackView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(self.emojiField.snp.bottom).offset(32)
+    }
+    
+    self.stackContainerView.snp.makeConstraints { make in
+      make.left.equalTo(self.categoryStackView).offset(-8)
+      make.right.equalTo(self.categoryStackView).offset(8)
+      make.centerY.equalTo(self.categoryStackView)
+      make.height.equalTo(48)
     }
     
     self.activeButton.snp.makeConstraints { make in
@@ -270,7 +292,17 @@ class DetailView: BaseView {
     self.activeButton.setTitle(category.rawValue.localized, for: .normal)
     UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
       self.layoutIfNeeded()
-    }, completion: nil)
+    }, completion: { [weak self] isComplete in
+      self?.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self?.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self?.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+    })
   }
     
   func setEmojiBackground(isEmpty: Bool) {

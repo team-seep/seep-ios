@@ -8,12 +8,13 @@ class PageItemReactor: Reactor {
     case viewDidLoad(Void)
     case setViewType(ViewType)
     case tapFinishButton(Int)
+    case afterFinish(Void)
   }
   
   enum Mutation {
     case fetchWishList([Wish])
     case setViewType(ViewType)
-    case fetchHome(Void)
+    case fetchHome(Bool)
   }
   
   struct State {
@@ -56,8 +57,10 @@ class PageItemReactor: Reactor {
       
       return Observable.concat([
         Observable.just(Mutation.fetchWishList(wishList)),
-        Observable.just(Mutation.fetchHome(()))
+        Observable.just(Mutation.fetchHome(true))
       ])
+    case .afterFinish():
+      return Observable.just(Mutation.fetchHome(false))
     }
   }
 
@@ -69,9 +72,8 @@ class PageItemReactor: Reactor {
       newState.endRefresh.toggle()
     case .setViewType(let viewType):
       newState.viewType = viewType
-    case .fetchHome():
-      newState.fetchHomeVC = false
-      newState.fetchHomeVC = true
+    case .fetchHome(let fetchHome):
+      newState.fetchHomeVC = fetchHome
     }
     
     return newState

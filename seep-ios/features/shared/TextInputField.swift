@@ -66,7 +66,7 @@ class TextInputField: BaseView {
     
     self.containerView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.bottom.equalTo(self.textField).offset(16)
+      make.bottom.equalTo(self.textField).offset(14)
       make.top.equalTo(self.titleLabel).offset(8)
     }
     

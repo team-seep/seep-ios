@@ -47,6 +47,13 @@ class WriteVC: BaseVC, View {
         self.writeView.endEditing(true)
       })
       .disposed(by: self.eventDisposeBag)
+    
+    self.writeView.accessoryView.finishButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] in
+        self?.writeView.endEditing(true)
+      }
+      .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: WriteReactor) {
@@ -119,6 +126,7 @@ class WriteVC: BaseVC, View {
       .map { $0.category }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
+      .do(onNext: self.writeView.setTitlePlaceholder(by:))
       .bind(onNext: self.writeView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
     

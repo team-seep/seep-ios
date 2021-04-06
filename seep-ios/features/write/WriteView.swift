@@ -5,6 +5,13 @@ class WriteView: BaseView {
   
   let tapBackground = UITapGestureRecognizer()
   
+  let accessoryView = InputAccessoryView(frame: CGRect(
+    x: 0,
+    y: 0,
+    width: UIScreen.main.bounds.width,
+    height: 45
+  ))
+  
   let scrollView = UIScrollView().then {
     $0.backgroundColor = .clear
     $0.showsVerticalScrollIndicator = false
@@ -59,12 +66,15 @@ class WriteView: BaseView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
   }
   
+  let stackContainerView = UIView().then {
+    $0.backgroundColor = UIColor(r: 232, g: 246, b: 255)
+    $0.layer.cornerRadius = 24
+  }
+  
   let categoryStackView = UIStackView().then {
     $0.alignment = .leading
     $0.axis = .horizontal
     $0.distribution = .equalSpacing
-    $0.backgroundColor = UIColor(r: 232, g: 246, b: 255)
-    $0.layer.cornerRadius = 24
   }
   
   let wantToDoButton = UIButton().then {
@@ -94,7 +104,7 @@ class WriteView: BaseView {
   let activeButton = UIButton().then {
     $0.backgroundColor = UIColor(r: 47, g: 168, b: 249)
     $0.layer.cornerRadius = 16
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(.clear, for: .normal)
     $0.layer.shadowOpacity = 0.15
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -106,10 +116,6 @@ class WriteView: BaseView {
   let titleField = TextInputField().then {
     $0.titleLabel.text = "write_header_title".localized
     $0.titleLabel.setKern(kern: -0.24)
-    $0.textField.attributedPlaceholder = NSAttributedString(
-      string: "write_placeholder_title".localized,
-      attributes: [.foregroundColor: UIColor.gray3]
-    )
   }
   
   let dateField = TextInputField().then {
@@ -136,6 +142,17 @@ class WriteView: BaseView {
   
   let hashtagField = WriteHashtagField()
   
+  let gradientView = UIView().then {
+    let gradientLayer = CAGradientLayer()
+    let topColor = UIColor(r: 246, g: 247, b: 249, a: 0.0).cgColor
+    let bottomColor = UIColor(r: 246, g: 247, b: 249, a: 1.0).cgColor
+
+    gradientLayer.colors = [topColor, bottomColor]
+    gradientLayer.locations = [0.0, 1.0]
+    gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
+    $0.layer.addSublayer(gradientLayer)
+  }
+  
   let writeButton = WriteButton()
   
   override func setup() {
@@ -143,17 +160,22 @@ class WriteView: BaseView {
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
     self.emojiField.delegate = self
+    self.emojiField.inputAccessoryView = self.accessoryView
+    self.titleField.textField.inputAccessoryView = self.accessoryView
+    self.dateField.textField.inputAccessoryView = self.accessoryView
+    self.memoField.textView.inputAccessoryView = self.accessoryView
+    self.hashtagField.textField.inputAccessoryView = self.accessoryView
     self.setupEmojiKeyboard()
     self.categoryStackView.addArrangedSubview(wantToDoButton)
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
       titleLabel, emojiBackground, emojiField, randomButton,
-      categoryStackView, activeButton, titleField, dateField,
-      memoField, hashtagField
+      stackContainerView, activeButton, categoryStackView,
+      titleField, dateField, memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(topIndicator, scrollView, writeButton)
+    self.addSubViews(topIndicator, scrollView, gradientView, writeButton)
   }
   
   override func bindConstraints() {
@@ -204,6 +226,13 @@ class WriteView: BaseView {
       make.top.equalTo(self.emojiField.snp.bottom).offset(32)
     }
     
+    self.stackContainerView.snp.makeConstraints { make in
+      make.left.equalTo(self.categoryStackView).offset(-8)
+      make.right.equalTo(self.categoryStackView).offset(8)
+      make.centerY.equalTo(self.categoryStackView)
+      make.height.equalTo(48)
+    }
+    
     self.activeButton.snp.makeConstraints { make in
       make.centerY.equalTo(self.categoryStackView)
       make.height.equalTo(32)
@@ -218,7 +247,7 @@ class WriteView: BaseView {
     
     self.dateField.snp.makeConstraints { make in
       make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.titleField.snp.bottom).offset(16)
+      make.top.equalTo(self.titleField.snp.bottom).offset(8)
     }
     
     self.memoField.snp.makeConstraints { make in
@@ -229,6 +258,11 @@ class WriteView: BaseView {
     self.hashtagField.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
       make.top.equalTo(self.memoField.snp.bottom).offset(16)
+    }
+    
+    self.gradientView.snp.makeConstraints { make in
+      make.left.right.bottom.equalToSuperview()
+      make.height.equalTo(150)
     }
     
     self.writeButton.snp.makeConstraints { make in
@@ -270,7 +304,17 @@ class WriteView: BaseView {
     self.activeButton.setTitle(category.rawValue.localized, for: .normal)
     UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
       self.layoutIfNeeded()
-    }, completion: nil)
+    }, completion: { [weak self] icComplete in
+      self?.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self?.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self?.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self?.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self?.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+    })
   }
     
   func setEmojiBackground(isEmpty: Bool) {
@@ -296,6 +340,13 @@ class WriteView: BaseView {
         make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
       }
     }
+  }
+  
+  func setTitlePlaceholder(by category: Category) {
+    self.titleField.textField.attributedPlaceholder = NSAttributedString(
+      string: "write_placeholder_title_\(category.rawValue)".localized,
+      attributes: [.foregroundColor: UIColor.gray3]
+    )
   }
   
   private func setupEmojiKeyboard() {

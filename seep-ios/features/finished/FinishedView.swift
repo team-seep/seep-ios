@@ -111,7 +111,7 @@ class FinishedView: BaseView {
     
     self.viewTypeButton.snp.makeConstraints { make in
       make.top.equalTo(self.titleLabel)
-      make.right.equalToSuperview().offset(-36)
+      make.right.equalToSuperview().offset(-24)
     }
     
     self.backButton.snp.makeConstraints { make in

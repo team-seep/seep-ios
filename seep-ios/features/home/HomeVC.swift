@@ -56,6 +56,12 @@ class HomeVC: BaseVC, View {
       .bind(onNext: self.goToFinish)
       .disposed(by: self.eventDisposeBag)
     
+    self.homeView.toast.actionButton.rx.tap
+      .map { self.homeReactor.currentState.category }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.goToFinish)
+      .disposed(by: self.eventDisposeBag)
+    
     self.homeView.writeButton.rx.tap
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showWirteVC)
@@ -219,6 +225,7 @@ extension HomeVC: PageItemDelegate {
   }
   
   func onFinishWish() {
+    self.homeView.showFinishToast()
     Observable.just(HomeReactor.Action.viewDidLoad(()))
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
