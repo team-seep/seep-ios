@@ -118,7 +118,6 @@ class PageItemVC: BaseVC, View {
     self.pageItemReactor.state
       .map { $0.fetchHomeVC }
       .distinctUntilChanged()
-      .debug()
       .observeOn(MainScheduler.instance)
       .bind { [weak self] isFinish in
         guard let self = self else { return }
