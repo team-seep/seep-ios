@@ -28,6 +28,7 @@ class TextInputView: BaseView {
     $0.backgroundColor = .clear
     $0.text = "wrtie_placeholder_memo".localized
     $0.textColor = .gray3
+    $0.textContainerInset = .zero
   }
   
   let errorLabel = UILabel().then {
@@ -56,8 +57,8 @@ class TextInputView: BaseView {
     }
     
     self.textView.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(16)
-      make.right.equalToSuperview().offset(-16)
+      make.left.equalToSuperview().offset(10)
+      make.right.equalToSuperview().offset(-10)
       make.top.equalTo(self.containerView).offset(16)
       make.height.equalTo(82)
     }
