@@ -82,6 +82,8 @@ class HomeView: BaseView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
   }
   
+  let toast = ToastView(frame: CGRect(x: 20, y: -58, width: UIScreen.main.bounds.width - 40, height: 58))
+  
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
@@ -149,6 +151,28 @@ class HomeView: BaseView {
     UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
       self.writeButton.alpha = 0.0
       self.writeButton.transform = .init(translationX: 0, y: 100)
+    }
+  }
+  
+  func showFinishToast() {
+    let window = UIApplication.shared.windows[0]
+    let topPadding = window.safeAreaInsets.top
+    
+    self.addSubViews(toast)
+    
+    UIView.transition(with: toast, duration: 0.5, options: .curveEaseInOut) { [weak self] in
+      self?.toast.transform = .init(translationX: 0, y: topPadding + 10 + 58)
+    } completion: { isComplete in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+        guard let self = self else { return }
+        UIView.transition(with: self.toast, duration: 0.5, options: .curveEaseInOut) { [weak self] in
+          self?.toast.transform = .identity
+        } completion: { [weak self] isCompleteRemove in
+          if isCompleteRemove {
+            self?.toast.removeFromSuperview()
+          }
+        }
+      }
     }
   }
   
