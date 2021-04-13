@@ -137,7 +137,7 @@ class WriteVC: BaseVC, View {
     
     self.writeReactor.state
       .filter { $0.date != nil }
-      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: $0.date ?? Date())}
+      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: $0.date ?? Date())}
       .observeOn(MainScheduler.instance)
       .bind(to: self.writeView.dateField.rx.text)
       .disposed(by: self.disposeBag)
