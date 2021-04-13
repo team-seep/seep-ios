@@ -8,6 +8,10 @@ class HomeView: BaseView {
     $0.numberOfLines = 0
   }
   
+  let greenLine = UIView().then {
+    $0.backgroundColor = .tennisGreen
+  }
+  
   let emojiView = UIImageView().then {
     $0.image = UIImage(named: "img_home_emoji")
   }
@@ -91,8 +95,9 @@ class HomeView: BaseView {
     self.categoryStackView.addArrangedSubview(wantToGetButton)
     self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.addSubViews(
-      titleLabel, emojiView, successCountButton, activeButton,
-      categoryStackView, viewTypeButton, containerView, writeButton
+      titleLabel, greenLine, emojiView, successCountButton,
+      activeButton, categoryStackView, viewTypeButton, containerView,
+      writeButton
     )
   }
   
@@ -100,6 +105,13 @@ class HomeView: BaseView {
     self.titleLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(22)
       make.top.equalTo(safeAreaLayoutGuide).offset(34 * RatioUtils.height)
+    }
+    
+    self.greenLine.snp.makeConstraints { make in
+      make.left.equalTo(self.titleLabel)
+      make.bottom.equalTo(self.titleLabel)
+      make.width.equalTo(44)
+      make.height.equalTo(2)
     }
     
     self.emojiView.snp.makeConstraints { make in
@@ -177,6 +189,7 @@ class HomeView: BaseView {
   }
   
   func setWishCount(category: Category, count: Int) {
+    self.greenLine.isHidden = count == 0
     if count == 0 {
       self.titleLabel.attributedText = self.getEmptyTitle(by: category, count: count)
     } else{
@@ -253,8 +266,6 @@ class HomeView: BaseView {
     
     attributedString.addAttributes([
       .foregroundColor: UIColor.tennisGreen,
-      .underlineStyle: NSUnderlineStyle.thick.rawValue,
-      .underlineColor: UIColor.tennisGreen,
       .font: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!
     ], range: underlineTextRange)
     
