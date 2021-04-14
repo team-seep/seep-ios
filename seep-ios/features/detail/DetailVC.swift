@@ -172,6 +172,7 @@ class DetailVC: BaseVC, View {
       .map { $0.category }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
+      .do(onNext: self.detailView.setTitlePlaceholder(by:))
       .bind(onNext: self.detailView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
     

@@ -108,10 +108,6 @@ class DetailView: BaseView {
   let titleField = TextInputField().then {
     $0.titleLabel.text = "write_header_title".localized
     $0.titleLabel.setKern(kern: -0.24)
-    $0.textField.attributedPlaceholder = NSAttributedString(
-      string: "write_placeholder_title".localized,
-      attributes: [.foregroundColor: UIColor.gray3]
-    )
   }
   
   let dateField = TextInputField().then {
@@ -313,6 +309,13 @@ class DetailView: BaseView {
       self.emojiBackground.image = nil
       self.emojiBackground.backgroundColor = UIColor(r: 246, g: 247, b: 249)
     }
+  }
+  
+  func setTitlePlaceholder(by category: Category) {
+    self.titleField.textField.attributedPlaceholder = NSAttributedString(
+      string: "write_placeholder_title_\(category.rawValue)".localized,
+      attributes: [.foregroundColor: UIColor.gray3]
+    )
   }
   
   func setEditable(isEditable: Bool) {
