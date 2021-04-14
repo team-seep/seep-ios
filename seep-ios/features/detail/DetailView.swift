@@ -286,18 +286,18 @@ class DetailView: BaseView {
       make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
     }
     self.activeButton.setTitle(category.rawValue.localized, for: .normal)
-    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
+    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: { [weak self] in
+      guard let self = self else { return }
       self.layoutIfNeeded()
-    }, completion: { [weak self] isComplete in
-      self?.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self?.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self?.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self?.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self?.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self?.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self?.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self?.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self?.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+      self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     })
   }
     
