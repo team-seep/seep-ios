@@ -40,6 +40,7 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
     $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
     $0.layer.cornerRadius = 4
+    $0.layer.masksToBounds = true
   }
   
   let checkButton = UIButton().then {
@@ -73,12 +74,12 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     }
     
     self.deadlineLabel.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(17)
+      make.left.equalTo(self.titleLabel)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
     }
     
     self.tagLabel.snp.makeConstraints { make in
-      make.left.equalTo(self.deadlineLabel)
+      make.left.height.equalTo(self.deadlineLabel)
       make.top.equalTo(self.deadlineLabel.snp.bottom).offset(6)
     }
     

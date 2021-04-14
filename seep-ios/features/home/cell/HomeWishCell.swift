@@ -39,6 +39,7 @@ class HomeWishCell: BaseTableViewCell {
     $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
     $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
     $0.layer.cornerRadius = 4
+    $0.layer.masksToBounds = true
   }
   
   let checkButton = UIButton().then {
@@ -83,7 +84,7 @@ class HomeWishCell: BaseTableViewCell {
     
     self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.deadlineLabel.snp.right).offset(7)
-      make.centerY.equalTo(self.deadlineLabel)
+      make.centerY.height.equalTo(self.deadlineLabel)
     }
     
     self.checkButton.snp.makeConstraints { make in
