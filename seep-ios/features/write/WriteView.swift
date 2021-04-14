@@ -161,6 +161,11 @@ class WriteView: BaseView {
     self.scrollView.delegate = self
     self.emojiField.delegate = self
     self.emojiField.inputAccessoryView = self.accessoryView
+    self.emojiField.rx.controlEvent(.editingDidBegin)
+      .bind { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      }
+      .disposed(by: self.disposeBag)
     self.titleField.textField.inputAccessoryView = self.accessoryView
     self.dateField.textField.inputAccessoryView = self.accessoryView
     self.memoField.textView.inputAccessoryView = self.accessoryView
