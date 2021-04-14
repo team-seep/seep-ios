@@ -209,7 +209,7 @@ class DetailView: BaseView {
     
     self.categoryStackView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(self.emojiField.snp.bottom).offset(32)
+      make.top.equalTo(self.emojiBackground.snp.bottom).offset(32)
     }
     
     self.stackContainerView.snp.makeConstraints { make in
