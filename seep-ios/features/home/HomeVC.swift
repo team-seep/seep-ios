@@ -72,21 +72,33 @@ class HomeVC: BaseVC, View {
     // MARK: Action
     self.homeView.wantToDoButton.rx.tap
       .map { HomeReactor.Action.tapCategory(Category.wantToDo) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.homeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.wantToGoButton.rx.tap
       .map { HomeReactor.Action.tapCategory(Category.wantToGo) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.homeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.wantToGetButton.rx.tap
       .map { HomeReactor.Action.tapCategory(Category.wantToGet) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.homeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.viewTypeButton.rx.tap
       .map { HomeReactor.Action.tapViewType(())}
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.homeReactor.action)
       .disposed(by: self.disposeBag)
     

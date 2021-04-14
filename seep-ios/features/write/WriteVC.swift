@@ -65,21 +65,33 @@ class WriteVC: BaseVC, View {
     
     self.writeView.randomButton.rx.tap
       .map { Reactor.Action.tapRandomEmoji(())}
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.writeView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.writeView.wantToGetButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToGet) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.writeView.wantToGoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToGo) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -96,6 +108,9 @@ class WriteVC: BaseVC, View {
     
     self.writeView.notificationButton.rx.tap
       .map { Reactor.Action.tapPushButton(()) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: disposeBag)
     

@@ -89,6 +89,9 @@ class FinishedVC: BaseVC, View {
     self.finishedReactor.state
       .map{ $0.viewType }
       .observeOn(MainScheduler.instance)
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(onNext: self.finishedView.changeViewType(to:))
       .disposed(by: self.disposeBag)
     

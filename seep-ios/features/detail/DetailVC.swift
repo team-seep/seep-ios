@@ -103,21 +103,33 @@ class DetailVC: BaseVC, View {
     
     self.detailView.randomButton.rx.tap
       .map { Reactor.Action.tapRandomEmoji(())}
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.wantToGetButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToGet) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.wantToGoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToGo) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -135,6 +147,9 @@ class DetailVC: BaseVC, View {
     
     self.detailView.notificationButton.rx.tap
       .map { Reactor.Action.tapPushButton(()) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.detailReactor.action)
       .disposed(by: disposeBag)
     
