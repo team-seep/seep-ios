@@ -467,17 +467,23 @@ class DetailView: BaseView {
 extension DetailView: UIScrollViewDelegate {
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    self.hideEditButton()
+    if self.moreButton.alpha == 0 {
+      self.hideEditButton()
+    }
   }
   
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
-      self.showEditButton()
+      if self.moreButton.alpha == 0 {
+        self.showEditButton()
+      }
     }
   }
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.showEditButton()
+    if self.moreButton.alpha == 0 {
+      self.showEditButton()
+    }
   }
 }
 
