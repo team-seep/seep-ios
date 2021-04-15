@@ -81,7 +81,10 @@ class DetailReactor: Reactor {
     case .inputEmoji(let emoji):
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):
-      return Observable.just(Mutation.setCategory(category))
+      return Observable.concat([
+        Observable.just(Mutation.setCategory(category)),
+        Observable.just(Mutation.setEditable(true))
+      ])
     case .tapRandomEmoji():
       let randomEmoji = self.generateRandomEmoji()
       
@@ -101,7 +104,10 @@ class DetailReactor: Reactor {
         Observable.just(Mutation.setDateError(nil))
       ])
     case .tapPushButton():
-      return Observable.just(Mutation.togglePushEnable(()))
+      return Observable.concat([
+        Observable.just(Mutation.togglePushEnable(())),
+        Observable.just(Mutation.setEditable(true))
+      ])
     case .inputMemo(let memo):
       return Observable.just(Mutation.setMemo(memo))
     case .inputHashtag(let hashtag):

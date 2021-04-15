@@ -138,7 +138,6 @@ class DetailView: BaseView {
   
   
   override func setup() {
-    self.scrollView.isUserInteractionEnabled = false
     self.backgroundColor = .white
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
@@ -160,7 +159,7 @@ class DetailView: BaseView {
     self.containerView.addSubViews(
       emojiBackground, emojiField, randomButton, stackContainerView,
       activeButton, categoryStackView, titleField, dateField,
-      notificationButton
+      notificationButton, memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, moreButton, cancelButton, scrollView, editButton)
@@ -324,8 +323,6 @@ class DetailView: BaseView {
   }
   
   func setEditable(isEditable: Bool) {
-    self.scrollView.isUserInteractionEnabled = isEditable
-    
     if isEditable {
       UIView.animate(withDuration: 0.3) { [weak self] in
         guard let self = self else { return }
@@ -334,11 +331,11 @@ class DetailView: BaseView {
         self.cancelButton.alpha = 1.0
         self.moreButton.alpha = 0.0
       }
-      if self.memoField.superview == nil {
+      if self.memoField.isHidden {
         self.addMemoField(memo: "")
       }
-      
-      if self.hashtagField.superview == nil {
+
+      if self.hashtagField.isHidden {
         self.addHashtagField(hashtag: "")
       } else {
         self.hashtagField.clearButton.isHidden = false
@@ -372,17 +369,17 @@ class DetailView: BaseView {
         make.right.equalTo(self.hashtagField.textField).offset(8)
         make.bottom.equalTo(self.hashtagField.textField).offset(8)
       }
-      
+
       if self.memoField.textView.text == "wrtie_placeholder_memo".localized || self.memoField.textView.text.isEmpty {
-        self.memoField.removeFromSuperview()
+        self.memoField.isHidden = true
         self.memoField.setText(text: "")
       }
-      
+
       if self.hashtagField.textField.text!.isEmpty {
-        self.hashtagField.removeFromSuperview()
+        self.hashtagField.isHidden = true
         self.hashtagField.bind(hashtag: "")
       } else {
-        if self.memoField.superview == nil {
+        if self.memoField.isHidden {
           self.hashtagField.snp.remakeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalTo(self.hashtagField.containerView)
@@ -418,8 +415,7 @@ class DetailView: BaseView {
   }
   
   private func addMemoField(memo: String) {
-    self.containerView.addSubViews(self.memoField)
-    
+    self.memoField.isHidden = false
     self.memoField.snp.makeConstraints { make in
       make.left.right.equalTo(self.titleField)
       make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
@@ -438,8 +434,7 @@ class DetailView: BaseView {
   }
   
   private func addHashtagField(hashtag: String) {
-    self.containerView.addSubViews(self.hashtagField)
-    
+    self.hashtagField.isHidden = false
     if !hashtag.isEmpty {
       self.hashtagField.bind(hashtag: hashtag)
     }

@@ -101,6 +101,11 @@ class DetailVC: BaseVC, View {
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
+    self.detailView.emojiField.rx.controlEvent(.editingDidBegin)
+      .map { Reactor.Action.tapEditButton(()) }
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
     self.detailView.randomButton.rx.tap
       .map { Reactor.Action.tapRandomEmoji(())}
       .do(onNext: { _ in
@@ -111,6 +116,7 @@ class DetailVC: BaseVC, View {
     
     self.detailView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
+      .debug()
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -139,9 +145,19 @@ class DetailVC: BaseVC, View {
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
+    self.detailView.titleField.textField.rx.controlEvent(.editingDidBegin)
+      .map { Reactor.Action.tapEditButton(()) }
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
     self.datePicker.rx.date
       .skip(1)
       .map { Reactor.Action.inputDate($0) }
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.detailView.dateField.textField.rx.controlEvent(.editingDidBegin)
+      .map { Reactor.Action.tapEditButton(()) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -156,11 +172,22 @@ class DetailVC: BaseVC, View {
     self.detailView.memoField.rx.text.orEmpty
       .filter { $0 != "wrtie_placeholder_memo".localized }
       .map { Reactor.Action.inputMemo($0) }
+      .debug()
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.detailView.memoField.textView.rx.didBeginEditing
+      .map { Reactor.Action.tapEditButton(()) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.hashtagField.rx.text.orEmpty
       .map { Reactor.Action.inputHashtag($0) }
+      .bind(to: self.detailReactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.detailView.hashtagField.textField.rx.controlEvent(.editingDidBegin)
+      .map { Reactor.Action.tapEditButton(()) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -172,8 +199,10 @@ class DetailVC: BaseVC, View {
     // MARK: State
     self.detailReactor.state
       .map { $0.isEditable }
+      .debug()
       .distinctUntilChanged()
       .delay(.milliseconds(10), scheduler: MainScheduler.instance) // 수정 취소시, 마지막에 editable이 변경되어야해서 딜레이 설정
+      
       .bind(onNext: self.detailView.setEditable(isEditable:))
       .disposed(by: self.disposeBag)
     
