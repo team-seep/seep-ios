@@ -308,17 +308,8 @@ class DetailVC: BaseVC, View {
     ) { action in
       
     }
-    let editAction = UIAlertAction(
-      title: "detail_action_sheet_edit".localized,
-      style: .default
-    ) { action in
-      Observable.just(Reactor.Action.tapEditButton(()))
-        .bind(to: self.detailReactor.action)
-        .disposed(by: self.disposeBag)
-    }
     
     alertController.addAction(shereAction)
-    alertController.addAction(editAction)
     alertController.addAction(deleteAction)
     alertController.addAction(cancelAction)
     
