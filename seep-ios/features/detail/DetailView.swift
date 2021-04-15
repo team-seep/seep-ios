@@ -258,11 +258,11 @@ class DetailView: BaseView {
     self.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
     self.titleField.textField.text = wish.title
     self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
+    
+    self.notificationButton.isHidden = !wish.isPushEnable
     self.notificationButton.isSelected = wish.isPushEnable
     if wish.isPushEnable {
       self.notificationButton.setTitle("detail_notification_on".localized, for: .normal)
-    } else {
-      
     }
     
     if !wish.memo.isEmpty {
@@ -331,8 +331,16 @@ class DetailView: BaseView {
         self.cancelButton.alpha = 1.0
         self.moreButton.alpha = 0.0
       }
+      self.notificationButton.isHidden = false
+      
+      self.memoField.isHidden = false
       if self.memoField.isHidden {
         self.addMemoField(memo: "")
+      } else {
+        self.memoField.snp.remakeConstraints { make in
+          make.left.right.equalTo(self.titleField)
+          make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+        }
       }
 
       if self.hashtagField.isHidden {
@@ -362,6 +370,8 @@ class DetailView: BaseView {
         self.moreButton.alpha = 1.0
         self.cancelButton.alpha = 0.0
       }
+      self.notificationButton.isHidden = !self.notificationButton.isSelected
+      
       self.hashtagField.clearButton.isHidden = true
       self.hashtagField.containerView.snp.remakeConstraints { make in
         make.left.equalToSuperview()
@@ -373,17 +383,47 @@ class DetailView: BaseView {
       if self.memoField.textView.text == "wrtie_placeholder_memo".localized || self.memoField.textView.text.isEmpty {
         self.memoField.isHidden = true
         self.memoField.setText(text: "")
+      } else {
+        if self.notificationButton.isHidden {
+          self.memoField.snp.remakeConstraints { make in
+            make.left.right.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom).offset(16)
+          }
+        }
       }
 
       if self.hashtagField.textField.text!.isEmpty {
         self.hashtagField.isHidden = true
         self.hashtagField.bind(hashtag: "")
       } else {
-        if self.memoField.isHidden {
+        if self.notificationButton.isHidden {
+          if self.memoField.isHidden {
+            self.hashtagField.snp.remakeConstraints { make in
+              make.left.equalToSuperview().offset(20)
+              make.right.equalTo(self.hashtagField.containerView)
+              make.top.equalTo(self.dateField.snp.bottom).offset(16)
+              make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+            }
+          } else {
+            self.hashtagField.snp.remakeConstraints { make in
+              make.left.equalToSuperview().offset(20)
+              make.right.equalTo(self.hashtagField.containerView)
+              make.top.equalTo(self.memoField.snp.bottom).offset(16)
+              make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+            }
+          }
+        } else if self.memoField.isHidden {
           self.hashtagField.snp.remakeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalTo(self.hashtagField.containerView)
             make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+            make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+          }
+        } else {
+          self.hashtagField.snp.remakeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalTo(self.hashtagField.containerView)
+            make.top.equalTo(self.memoField.snp.bottom).offset(16)
             make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
           }
         }
@@ -405,6 +445,10 @@ class DetailView: BaseView {
     }
   }
   
+  private func refreshLayout() {
+    
+  }
+  
   private func setupEmojiKeyboard() {
     let keyboardSettings = KeyboardSettings(bottomType: .categories)
     let emojiView = EmojiView(keyboardSettings: keyboardSettings)
@@ -415,10 +459,16 @@ class DetailView: BaseView {
   }
   
   private func addMemoField(memo: String) {
-    self.memoField.isHidden = false
-    self.memoField.snp.makeConstraints { make in
-      make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+    if self.notificationButton.isHidden {
+      self.memoField.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.titleField)
+        make.top.equalTo(self.dateField.snp.bottom).offset(16)
+      }
+    } else {
+      self.memoField.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.titleField)
+        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+      }
     }
     
     self.containerView.snp.remakeConstraints { make in
@@ -439,18 +489,25 @@ class DetailView: BaseView {
       self.hashtagField.bind(hashtag: hashtag)
     }
     
-    if self.memoField.superview != nil {
+    if self.notificationButton.isHidden {
       self.hashtagField.snp.remakeConstraints { make in
         make.left.equalToSuperview().offset(20)
         make.right.equalTo(self.hashtagField.containerView)
-        make.top.equalTo(self.memoField.snp.bottom).offset(16)
+        make.top.equalTo(self.dateField.snp.bottom).offset(16)
+        make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+      }
+    } else if self.memoField.isHidden {
+      self.hashtagField.snp.remakeConstraints { make in
+        make.left.equalToSuperview().offset(20)
+        make.right.equalTo(self.hashtagField.containerView)
+        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
         make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
       }
     } else {
       self.hashtagField.snp.remakeConstraints { make in
         make.left.equalToSuperview().offset(20)
         make.right.equalTo(self.hashtagField.containerView)
-        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+        make.top.equalTo(self.memoField.snp.bottom).offset(16)
         make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
       }
     }

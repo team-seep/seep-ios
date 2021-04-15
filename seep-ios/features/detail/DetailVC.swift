@@ -116,7 +116,6 @@ class DetailVC: BaseVC, View {
     
     self.detailView.wantToDoButton.rx.tap
       .map { Reactor.Action.tapCategory(.wantToDo) }
-      .debug()
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -172,7 +171,6 @@ class DetailVC: BaseVC, View {
     self.detailView.memoField.rx.text.orEmpty
       .filter { $0 != "wrtie_placeholder_memo".localized }
       .map { Reactor.Action.inputMemo($0) }
-      .debug()
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -199,7 +197,6 @@ class DetailVC: BaseVC, View {
     // MARK: State
     self.detailReactor.state
       .map { $0.isEditable }
-      .debug()
       .distinctUntilChanged()
       .delay(.milliseconds(10), scheduler: MainScheduler.instance) // 수정 취소시, 마지막에 editable이 변경되어야해서 딜레이 설정
       
