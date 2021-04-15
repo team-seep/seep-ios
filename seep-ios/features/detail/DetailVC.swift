@@ -92,6 +92,9 @@ class DetailVC: BaseVC, View {
     // MARK: Action
     self.detailView.cancelButton.rx.tap
       .map { DetailReactor.Action.tapCancelButton(()) }
+      .do(onNext: { [weak self] _ in
+        self?.detailView.endEditing(true)
+      })
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     

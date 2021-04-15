@@ -43,7 +43,8 @@
 "write_placeholder_title_category_want_to_get" = "뭐 갖고 싶어요?";
 "write_placeholder_title_category_want_to_go" = "어디 가고 싶어요?";
 "write_placeholder_date" = "언제까지 하면 좋을까요?";
-"write_notification" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
+"write_notification_off" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
+"write_notification_on" = "알림이 켜져있습니다!";
 "wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
 "write_button_off" = "🔥어서 채워봅시다!";
 "write_button_on" = "🎉등록해볼까요!";

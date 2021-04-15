@@ -121,8 +121,10 @@ class DetailView: BaseView {
   }
   
   let notificationButton = UIButton().then {
-    $0.setTitle("write_notification".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
+    $0.setTitle("write_notification_off".localized, for: .normal)
+    $0.setTitle("write_notification_on".localized, for: .selected)
+    $0.setTitleColor(.gray3, for: .normal)
+    $0.setTitleColor(.gray5, for: .selected)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
     $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
     $0.setImage(UIImage(named: "img_check_on_20"), for: .selected)
