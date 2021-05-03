@@ -32,6 +32,7 @@
 "home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
+"home_empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

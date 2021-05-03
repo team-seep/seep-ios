@@ -37,6 +37,22 @@ class PageItemView: BaseView {
     $0.showsVerticalScrollIndicator = false
     $0.alpha = 0.0
   }
+    
+  let emptyLabel = UILabel().then {
+    $0.textColor = UIColor(r: 170, g: 170, b: 170)
+    $0.numberOfLines = 0
+    let paragraphStyle = NSMutableParagraphStyle().then {
+      $0.lineHeightMultiple = 1.5
+    }
+    let attributedText = NSMutableAttributedString(
+      string: "home_empty".localized,
+      attributes: [
+        .paragraphStyle: paragraphStyle,
+        .font: UIFont.appleRegular(size: 12) as Any
+      ])
+    $0.attributedText = attributedText
+    $0.textAlignment = .center
+  }
 
   let gradientView = UIView().then {
     let gradientLayer = CAGradientLayer()
@@ -53,7 +69,7 @@ class PageItemView: BaseView {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
     self.tableView.refreshControl = self.pullToRefreshTableView
     self.collectionView.refreshControl = self.pullToRefreshCollectionView
-    self.addSubViews(tableView, collectionView, gradientView)
+    self.addSubViews(tableView, collectionView, emptyLabel, gradientView)
   }
   
   override func bindConstraints() {
@@ -65,6 +81,11 @@ class PageItemView: BaseView {
     self.collectionView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
       make.top.equalToSuperview()
+    }
+    
+    self.emptyLabel.snp.makeConstraints { make in
+      make.centerX.equalTo(self.tableView)
+      make.top.equalToSuperview().offset(181)
     }
     
     self.gradientView.snp.makeConstraints { make in

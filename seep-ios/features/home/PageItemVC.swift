@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import ReactorKit
 
-protocol PageItemDelegate: class {
+protocol PageItemDelegate: AnyObject {
   
   func onDismiss()
   func onFinishWish()
@@ -128,6 +128,12 @@ class PageItemVC: BaseVC, View {
             .disposed(by: self.disposeBag)
         }
       }
+      .disposed(by: self.disposeBag)
+    
+    self.pageItemReactor.state
+      .map { $0.isEmptyMessageHidden }
+      .distinctUntilChanged()
+      .bind(to: self.pageItemView.emptyLabel.rx.isHidden)
       .disposed(by: self.disposeBag)
   }
   

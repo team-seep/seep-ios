@@ -23,10 +23,8 @@ target 'seep-ios' do
   pod 'SwiftyBeaver'
   
   pod 'ISEmojiView'
-  
-  platform :ios, '12.0'
 
-  pod 'RealmSwift', '=10.1.4'
+  pod 'RealmSwift', '=10.5.2'
   
   pod 'Firebase/Analytics'
 end
