@@ -12,9 +12,7 @@ class HomeView: BaseView {
     $0.backgroundColor = .tennisGreen
   }
   
-  let emojiView = UIImageView().then {
-    $0.image = UIImage(named: "img_home_emoji")
-  }
+  let emojiView = EmojiImageView()
   
   let successCountButton = UIButton().then {
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 12)

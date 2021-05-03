@@ -75,7 +75,7 @@ class HomeVC: BaseVC, View {
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
-      .bind(to: self.homeReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.wantToGoButton.rx.tap
@@ -83,7 +83,7 @@ class HomeVC: BaseVC, View {
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
-      .bind(to: self.homeReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.wantToGetButton.rx.tap
@@ -91,7 +91,7 @@ class HomeVC: BaseVC, View {
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
-      .bind(to: self.homeReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.viewTypeButton.rx.tap
@@ -99,28 +99,29 @@ class HomeVC: BaseVC, View {
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
-      .bind(to: self.homeReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     // MARK: State
-    self.homeReactor.state
+    reactor.state
       .map { ($0.category, $0.successCount) }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.setSuccessCount)
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { ($0.category, $0.wishCount) }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.setWishCount)
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { $0.category }
       .skip(1)
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .do(onNext: self.movePageView(category:))
+      .do(onNext: self.homeView.emojiView.bind(category:))
       .bind(onNext: self.homeView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
     

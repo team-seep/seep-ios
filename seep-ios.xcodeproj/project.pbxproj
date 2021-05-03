@@ -52,6 +52,8 @@
 		6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62D260DBACA0062CBFB /* DetailReactor.swift */; };
 		6E764AE8263FA96C00A99402 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE7263FA96C00A99402 /* UIFontExtension.swift */; };
 		6E764AEA263FBBE300A99402 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE9263FBBE300A99402 /* DdayLabel.swift */; };
+		6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */; };
+		6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AED263FCB4700A99402 /* UIImageExtension.swift */; };
 		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
 		6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */; };
 		6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACBD592613034A0009AB6F /* PageItemVC.swift */; };
@@ -112,6 +114,8 @@
 		6E69E62D260DBACA0062CBFB /* DetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReactor.swift; sourceTree = "<group>"; };
 		6E764AE7263FA96C00A99402 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		6E764AE9263FBBE300A99402 /* DdayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
+		6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiImageVIew.swift; sourceTree = "<group>"; };
+		6E764AED263FCB4700A99402 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
 		6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackUtils.swift; sourceTree = "<group>"; };
 		6EACBD592613034A0009AB6F /* PageItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemVC.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 				6E274E7925F20EF2007DC880 /* UILabelExtension.swift */,
 				6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */,
 				6E764AE7263FA96C00A99402 /* UIFontExtension.swift */,
+				6E764AED263FCB4700A99402 /* UIImageExtension.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 				6EACBD592613034A0009AB6F /* PageItemVC.swift */,
 				6EACBD5C261303540009AB6F /* PageItemView.swift */,
 				6E07528226136D8800041E7B /* PageItemReactor.swift */,
+				6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */,
 			);
 			path = home;
 			sourceTree = "<group>";
@@ -487,6 +493,7 @@
 				6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */,
 				6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */,
 				6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */,
+				6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */,
 				6E274E7F25F20F58007DC880 /* BaseView.swift in Sources */,
 				6E41F28425FB916200CE1530 /* WriteReactor.swift in Sources */,
 				6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */,
@@ -516,6 +523,7 @@
 				6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */,
 				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
 				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
+				6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */,
 				6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */,
 				6E35721C261AF9F7003E18EA /* ToastView.swift in Sources */,
 				6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */,
