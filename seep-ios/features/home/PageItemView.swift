@@ -48,7 +48,7 @@ class PageItemView: BaseView {
       string: "home_empty".localized,
       attributes: [
         .paragraphStyle: paragraphStyle,
-        .font: UIFont.appleRegular(size: 12) as Any
+        .font: UIFont.appleMedium(size: 12) as Any
       ])
     $0.attributedText = attributedText
     $0.textAlignment = .center
