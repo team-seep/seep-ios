@@ -34,6 +34,7 @@ class FinishedTableCell: BaseTableViewCell {
     $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
     $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
     $0.layer.cornerRadius = 4
+    $0.layer.masksToBounds = true
   }
   
   let checkedImage = UIImageView().then {
