@@ -10,7 +10,7 @@ class WriteVC: BaseVC, View {
   
   weak var delegate: WriteDelegate?
   private lazy var writeView = WriteView(frame: self.view.frame)
-  private let writeReactor = WriteReactor(wishService: WishService())
+  private let writeReactor: WriteReactor
   
   private let datePicker = UIDatePicker().then {
     $0.datePickerMode = .date
@@ -18,8 +18,18 @@ class WriteVC: BaseVC, View {
     $0.locale = .init(identifier: "ko_KO")
   }
   
-  static func instance() -> WriteVC {
-    return WriteVC(nibName: nil, bundle: nil)
+  
+  init(category: Category) {
+    self.writeReactor = WriteReactor(category: category, wishService: WishService())
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  static func instance(category: Category) -> WriteVC {
+    return WriteVC(category: category)
   }
   
   deinit {

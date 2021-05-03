@@ -33,7 +33,7 @@ class WriteReactor: Reactor {
   struct State {
     var descriptionIndex: Int = 1
     var emoji: String = ""
-    var category: Category = .wantToDo
+    var category: Category
     var title: String = ""
     var titleError: String? = nil
     var date: Date?
@@ -46,11 +46,12 @@ class WriteReactor: Reactor {
     var shouldDismiss: Bool = false
   }
   
-  let initialState = State()
+  let initialState: State
   let wishService: WishServiceProtocol
   
   
-  init(wishService: WishServiceProtocol) {
+  init(category: Category, wishService: WishServiceProtocol) {
+    self.initialState = State(category: category)
     self.wishService = wishService
   }
   

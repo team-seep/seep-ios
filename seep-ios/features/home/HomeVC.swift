@@ -44,7 +44,7 @@ class HomeVC: BaseVC, View {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }
@@ -63,8 +63,9 @@ class HomeVC: BaseVC, View {
       .disposed(by: self.eventDisposeBag)
     
     self.homeView.writeButton.rx.tap
+      .map { self.homeReactor.currentState.category }
       .observeOn(MainScheduler.instance)
-      .bind(onNext: self.showWirteVC)
+      .bind(onNext: self.showWirteVC(category:))
       .disposed(by: self.eventDisposeBag)
   }
   
@@ -95,7 +96,7 @@ class HomeVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.homeView.viewTypeButton.rx.tap
-      .map { HomeReactor.Action.tapViewType(())}
+      .map { HomeReactor.Action.tapViewType }
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -125,7 +126,7 @@ class HomeVC: BaseVC, View {
       .bind(onNext: self.homeView.moveActiveButton(category:))
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { $0.viewType }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
@@ -133,7 +134,7 @@ class HomeVC: BaseVC, View {
       .bind(onNext: self.homeView.changeViewType(to:))
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { $0.writeButtonTitle }
       .distinctUntilChanged()
       .bind(to: self.homeView.writeButton.rx.title())
@@ -162,8 +163,8 @@ class HomeVC: BaseVC, View {
     self.navigationController?.pushViewController(finishedVC, animated: true)
   }
   
-  private func showWirteVC() {
-    let writeVC = WriteVC.instance().then {
+  private func showWirteVC(category: Category) {
+    let writeVC = WriteVC.instance(category: category).then {
       $0.delegate = self
     }
     
@@ -222,7 +223,7 @@ class HomeVC: BaseVC, View {
 extension HomeVC: WriteDelegate {
   
   func onSuccessWrite() {
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
     self.fetchPageVC()
@@ -232,14 +233,14 @@ extension HomeVC: WriteDelegate {
 extension HomeVC: PageItemDelegate {
   
   func onDismiss() {
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }
   
   func onFinishWish() {
     self.homeView.showFinishToast()
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }
