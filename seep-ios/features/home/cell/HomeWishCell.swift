@@ -34,8 +34,8 @@ class HomeWishCell: BaseTableViewCell {
   }
   
   let checkButton = UIButton().then {
-    $0.setImage(UIImage(named: "img_check_off"), for: .normal)
-    $0.setImage(UIImage(named: "img_check_on"), for: .highlighted)
+    $0.setImage(.icCheckOff, for: .normal)
+    $0.setImage(.icCheckOn, for: .highlighted)
   }
   
   

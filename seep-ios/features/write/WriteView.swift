@@ -135,8 +135,8 @@ class WriteView: BaseView {
     $0.setTitleColor(.gray5, for: .selected)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
     $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
-    $0.setImage(UIImage(named: "img_check_on_20"), for: .selected)
-    $0.setImage(UIImage(named: "img_check_off_20"), for: .normal)
+    $0.setImage(.icCheckOn, for: .selected)
+    $0.setImage(.icCheckOff, for: .normal)
     $0.contentHorizontalAlignment = .left
   }
   

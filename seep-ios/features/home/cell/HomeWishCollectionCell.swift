@@ -35,7 +35,7 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
   }
   
   let checkButton = UIButton().then {
-    $0.setImage(UIImage(named: "img_check_off"), for: .normal)
+    $0.setImage(.icCheckOff, for: .normal)
   }
   
   

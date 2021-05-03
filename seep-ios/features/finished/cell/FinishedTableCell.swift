@@ -38,7 +38,7 @@ class FinishedTableCell: BaseTableViewCell {
   }
   
   let checkedImage = UIImageView().then {
-    $0.image = UIImage(named: "img_check_on")
+    $0.image = .icCheckOn
   }
   
   
