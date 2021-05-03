@@ -71,7 +71,7 @@ struct WishService: WishServiceProtocol {
     guard let realm = try? Realm() else { return [] }
     let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == false) && ($0.category == category.rawValue) }
     
-    return searchTask.map { $0 }
+    return searchTask.map { $0 }.sorted(by: Wish.deadlineOrder)
   }
   
   func getFinishCount(category: Category) -> Int {
