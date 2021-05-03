@@ -93,6 +93,10 @@ class PageItemVC: BaseVC, View {
               cellType: HomeWishCollectionCell.self
       )) { row, wish, cell in
         cell.bind(wish: wish)
+        cell.checkButton.rx.tap
+          .map { PageItemReactor.Action.tapFinishButton(row) }
+          .bind(to: self.pageItemReactor.action)
+          .disposed(by: cell.disposeBag)
       }
       .disposed(by: self.disposeBag)
     
