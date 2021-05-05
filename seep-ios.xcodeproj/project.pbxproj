@@ -39,6 +39,7 @@
 		6E441CA12604549F0010A625 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
 		6E441CA526046F9D0010A625 /* WishServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA426046F9D0010A625 /* WishServices.swift */; };
 		6E5DECFE264263F70005487F /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFD264263F70005487F /* TagLabel.swift */; };
+		6E5DED002642D8FC0005487F /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFF2642D8FC0005487F /* CategoryView.swift */; };
 		6E600149260831F1000065C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E600148260831F0000065C8 /* GoogleService-Info.plist */; };
 		6E60018826084516000065C8 /* HomeWishCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60018726084516000065C8 /* HomeWishCollectionCell.swift */; };
 		6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
@@ -102,6 +103,7 @@
 		6E441CA02604549F0010A625 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		6E441CA426046F9D0010A625 /* WishServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishServices.swift; sourceTree = "<group>"; };
 		6E5DECFD264263F70005487F /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
+		6E5DECFF2642D8FC0005487F /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		6E600148260831F0000065C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6E60018726084516000065C8 /* HomeWishCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishCollectionCell.swift; sourceTree = "<group>"; };
 		6E66A26E25FB40BD00C0C051 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				6E357216261AF273003E18EA /* InputAccessoryView.swift */,
 				6E764AE9263FBBE300A99402 /* DdayLabel.swift */,
 				6E5DECFD264263F70005487F /* TagLabel.swift */,
+				6E5DECFF2642D8FC0005487F /* CategoryView.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */,
 				6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */,
 				6E764AEA263FBBE300A99402 /* DdayLabel.swift in Sources */,
+				6E5DED002642D8FC0005487F /* CategoryView.swift in Sources */,
 				6E43A5C426171D3C00FB1738 /* FinishedCollectionView.swift in Sources */,
 				6E43A5BD2616C8B500FB1738 /* FinishedReactor.swift in Sources */,
 				6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */,

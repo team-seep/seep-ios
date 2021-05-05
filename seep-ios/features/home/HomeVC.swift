@@ -31,17 +31,6 @@ class HomeVC: BaseVC, View {
     
     self.view = homeView
     self.reactor = homeReactor
-    self.pageViewControllers = [
-      PageItemVC.instance(category: .wantToDo).then {
-        $0.delegate = self
-      },
-      PageItemVC.instance(category: .wantToGet).then {
-        $0.delegate = self
-      },
-      PageItemVC.instance(category: .wantToGo).then {
-        $0.delegate = self
-      }
-    ]
     self.registerNotification()
     self.setupPageVC()
   }
@@ -77,24 +66,8 @@ class HomeVC: BaseVC, View {
   
   func bind(reactor: HomeReactor) {
     // MARK: Action
-    self.homeView.wantToDoButton.rx.tap
-      .map { HomeReactor.Action.tapCategory(Category.wantToDo) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: reactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.homeView.wantToGoButton.rx.tap
-      .map { HomeReactor.Action.tapCategory(Category.wantToGo) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: reactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.homeView.wantToGetButton.rx.tap
-      .map { HomeReactor.Action.tapCategory(Category.wantToGet) }
+    self.homeView.categoryView.rx.tapCategory
+      .map { HomeReactor.Action.tapCategory($0)}
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -129,7 +102,7 @@ class HomeVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .do(onNext: self.movePageView(category:))
       .do(onNext: self.homeView.emojiView.bind(category:))
-      .bind(onNext: self.homeView.moveActiveButton(category:))
+      .bind(to: self.homeView.categoryView.rx.category)
       .disposed(by: self.disposeBag)
     
     reactor.state
@@ -148,6 +121,17 @@ class HomeVC: BaseVC, View {
   }
   
   private func setupPageVC() {
+    self.pageViewControllers = [
+      PageItemVC.instance(category: .wantToDo).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGet).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGo).then {
+        $0.delegate = self
+      }
+    ]
     self.addChild(self.pageVC)
     self.pageVC.delegate = self
     self.pageVC.dataSource = self

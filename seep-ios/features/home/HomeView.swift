@@ -3,7 +3,7 @@ import UIKit
 class HomeView: BaseView {
   
   let titleLabel = UILabel().then {
-    $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
+    $0.font = .appleLight(size: 22)
     $0.textColor = .black
     $0.numberOfLines = 0
   }
@@ -15,7 +15,7 @@ class HomeView: BaseView {
   let emojiView = EmojiImageView()
   
   let successCountButton = UIButton().then {
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 12)
+    $0.titleLabel?.font = .appleSemiBold(size: 12)
     $0.setTitleColor(.black, for: .normal)
     $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 4, right: 15)
     $0.backgroundColor = .white
@@ -25,51 +25,10 @@ class HomeView: BaseView {
     $0.layer.shadowOpacity = 0.05
   }
   
-  let categoryStackView = UIStackView().then {
-    $0.alignment = .leading
-    $0.axis = .horizontal
-    $0.distribution = .equalSpacing
-    $0.backgroundColor = .clear
-  }
-  
-  let wantToDoButton = UIButton().then {
-    $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let wantToGetButton = UIButton().then {
-    $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let wantToGoButton = UIButton().then {
-    $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let activeButton = UIButton().then {
-    $0.backgroundColor = .seepBlue
-    $0.layer.cornerRadius = 15
-    $0.setTitleColor(.clear, for: .normal)
-    $0.layer.shadowOpacity = 0.15
-    $0.layer.shadowColor = UIColor.black.cgColor
-    $0.layer.shadowOffset = CGSize(width: 0, height: 2)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
-    $0.setKern(kern: -0.28)
-  }
+  let categoryView = CategoryView()
   
   let viewTypeButton = UIButton().then {
-    $0.setImage(UIImage(named: "ic_grid"), for: .normal)
+    $0.setImage(.icGrid, for: .normal)
   }
   
   let containerView = UIView().then {
@@ -78,7 +37,7 @@ class HomeView: BaseView {
   }
   
   let writeButton = UIButton().then {
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 17)
+    $0.titleLabel?.font = .appleExtraBold(size: 17)
     $0.backgroundColor = .tennisGreen
     $0.layer.cornerRadius = 25
     $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
@@ -89,12 +48,9 @@ class HomeView: BaseView {
   
   override func setup() {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
-    self.categoryStackView.addArrangedSubview(wantToDoButton)
-    self.categoryStackView.addArrangedSubview(wantToGetButton)
-    self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.addSubViews(
       titleLabel, greenLine, emojiView, successCountButton,
-      activeButton, categoryStackView, viewTypeButton, containerView,
+      categoryView, viewTypeButton, containerView,
       writeButton
     )
   }
@@ -122,25 +78,19 @@ class HomeView: BaseView {
       make.top.equalTo(self.titleLabel.snp.bottom).offset(20 * RatioUtils.height)
     }
     
-    self.categoryStackView.snp.makeConstraints { make in
+    self.categoryView.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
       make.top.equalTo(self.successCountButton.snp.bottom).offset(50 * RatioUtils.height)
     }
     
     self.viewTypeButton.snp.makeConstraints { make in
       make.right.equalToSuperview().offset(-24)
-      make.centerY.equalTo(self.categoryStackView)
-    }
-    
-    self.activeButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(30)
-      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[0])
+      make.centerY.equalTo(self.categoryView)
     }
     
     self.containerView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.categoryStackView.snp.bottom).offset(16)
+      make.top.equalTo(self.categoryView.snp.bottom).offset(16)
     }
     
     self.writeButton.snp.makeConstraints { make in
@@ -205,30 +155,6 @@ class HomeView: BaseView {
     } completion: { [weak self] _ in
       self?.emojiView.transform = .identity
     }
-  }
-  
-  func moveActiveButton(category: Category) {
-    let index = category.getIndex()
-    
-    self.activeButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(30)
-      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
-    }
-    self.activeButton.setTitle(category.rawValue.localized, for: .normal)
-    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: { [weak self] in
-      guard let self = self else { return }
-      self.layoutIfNeeded()
-      self.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-    })
   }
   
   func setSuccessCount(category: Category, count: Int) {
