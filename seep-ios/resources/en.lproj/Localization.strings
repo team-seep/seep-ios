@@ -4,6 +4,9 @@
 "common_category_want_to_do" = "하고 싶어요";
 "common_category_want_to_get" = "갖고 싶어요";
 "common_category_want_to_go" = "가고 싶어요";
+"common_category_want_to_do_unit" = "%02d개";
+"common_category_want_to_get_unit" = "%02d개";
+"common_category_want_to_go_unit" = "%02d곳";
 
 // Category
 "category_want_to_do" = "하고 싶어요";
@@ -19,11 +22,8 @@
 "home_write_category_want_to_go_count_empty" ="가고 싶은 곳들을\n적어봐요!";
 "home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
 "home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%02d개 남았어요!";
-"home_write_category_want_to_do_unit" = "%02d개";
 "home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%02d개 남았어요!";
-"home_write_category_want_to_get_unit" = "%02d개";
-"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%02d군데 남았어요!";
-"home_write_category_want_to_go_unit" = "%02d군데";
+"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%02d곳 남았어요!";
 "home_finish_count_category_want_to_do_format" = "👏 지금까지 %d개를 이뤘어요";
 "home_finish_count_category_want_to_do_format_empty" = "😱 지금까지 %d개를 이뤘어요";
 "home_finish_count_category_want_to_get_format" = "👏 지금까지 %d개를 겟했어요";
@@ -77,6 +77,3 @@
 "finish_count_category_want_to_do_format" = "지금까지\n%02d개 이뤘어요!";
 "finish_count_category_want_to_get_format" = "지금까지\n%02d개 겟했어요!";
 "finish_count_category_want_to_go_format" = "지금까지\n%02d곳 다녀왔어요!";
-"finish_count_category_want_to_do_unit" = "%02d개";
-"finish_count_category_want_to_get_unit" = "%02d개";
-"finish_count_category_want_to_go_unit" = "%02d곳";

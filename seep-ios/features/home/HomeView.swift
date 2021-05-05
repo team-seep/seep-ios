@@ -265,7 +265,7 @@ class HomeView: BaseView {
   private func getCountTitle(by category: Category, count: Int) -> NSMutableAttributedString {
     let text = String(format: "home_write_\(category.rawValue)_count_format".localized, count)
     let attributedString = NSMutableAttributedString(string: text)
-    let underlineTextRange = (text as NSString).range(of: String(format: "home_write_\(category.rawValue)_unit".localized, count))
+    let underlineTextRange = (text as NSString).range(of: String(format: "common_\(category.rawValue)_unit".localized, count))
     let boldTextRange = (text as NSString).range(of: "남았어요!")
     
     attributedString.addAttributes([

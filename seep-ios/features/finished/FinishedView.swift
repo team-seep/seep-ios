@@ -210,7 +210,7 @@ class FinishedView: BaseView {
   private func getCountTitle(by category: Category, count: Int) -> NSMutableAttributedString {
     let text = String(format: "finish_count_\(category.rawValue)_format".localized, count)
     let attributedString = NSMutableAttributedString(string: text)
-    let underlineTextRange = (text as NSString).range(of: String(format: "finish_count_\(category.rawValue)_unit".localized, count))
+    let underlineTextRange = (text as NSString).range(of: String(format: "common_\(category.rawValue)_unit".localized, count))
     var boldTextRange: NSRange {
       switch category {
       case .wantToDo:
