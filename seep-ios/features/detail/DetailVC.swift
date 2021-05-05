@@ -91,7 +91,7 @@ class DetailVC: BaseVC, View {
   func bind(reactor: DetailReactor) {
     // MARK: Action
     self.detailView.cancelButton.rx.tap
-      .map { DetailReactor.Action.tapCancelButton(()) }
+      .map { DetailReactor.Action.tapCancelButton }
       .do(onNext: { [weak self] _ in
         self?.detailView.endEditing(true)
       })
@@ -105,12 +105,12 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.emojiField.rx.controlEvent(.editingDidBegin)
-      .map { Reactor.Action.tapEditButton(()) }
+      .map { Reactor.Action.tapEditButton }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.randomButton.rx.tap
-      .map { Reactor.Action.tapRandomEmoji(())}
+      .map { Reactor.Action.tapRandomEmojiButton }
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -148,7 +148,7 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.titleField.textField.rx.controlEvent(.editingDidBegin)
-      .map { Reactor.Action.tapEditButton(()) }
+      .map { Reactor.Action.tapEditButton }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -159,7 +159,7 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.dateField.textField.rx.controlEvent(.editingDidBegin)
-      .map { Reactor.Action.tapEditButton(()) }
+      .map { Reactor.Action.tapEditButton }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -178,7 +178,7 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.memoField.textView.rx.didBeginEditing
-      .map { Reactor.Action.tapEditButton(()) }
+      .map { Reactor.Action.tapEditButton }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -188,12 +188,12 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.hashtagField.textField.rx.controlEvent(.editingDidBegin)
-      .map { Reactor.Action.tapEditButton(()) }
+      .map { Reactor.Action.tapEditButton }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.editButton.rx.tap
-      .map { Reactor.Action.tapSaveButton(()) }
+      .map { Reactor.Action.tapSaveButton }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
         
@@ -292,7 +292,7 @@ class DetailVC: BaseVC, View {
         title: nil,
         message: "detail_delete_message".localized
       ) {
-        Observable.just(Reactor.Action.tapDeleteButton(()))
+        Observable.just(Reactor.Action.tapDeleteButton)
           .bind(to: self.detailReactor.action)
           .disposed(by: self.disposeBag)
       }
