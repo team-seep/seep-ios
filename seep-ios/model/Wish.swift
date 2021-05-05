@@ -19,4 +19,8 @@ class Wish: Object {
   static func deadlineOrder(wish1: Wish, wish2: Wish) -> Bool {
     return wish1.date < wish2.date
   }
+  
+  static func finishOrder(wish1: Wish, wish2: Wish) -> Bool {
+    return wish1.finishDate! > wish2.finishDate!
+  }
 }
