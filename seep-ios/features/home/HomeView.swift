@@ -113,7 +113,7 @@ class HomeView: BaseView {
     }
     
     self.emojiView.snp.makeConstraints { make in
-      make.top.equalTo(safeAreaLayoutGuide).offset(30 * RatioUtils.height)
+      make.top.equalTo(safeAreaLayoutGuide)
       make.right.equalToSuperview().offset(-20)
     }
     
@@ -195,9 +195,15 @@ class HomeView: BaseView {
     }
   }
   
-  func startAnimation() {
-    UIView.animate(withDuration: 2, delay: 0, options: [.autoreverse, .repeat]) {
-      self.emojiView.transform = self.emojiView.transform.rotated(by: 0.3)
+  func startEmojiAnimation() {
+    UIView.transition(
+      with: self.emojiView,
+      duration: 2,
+      options: [.autoreverse,.repeat]
+    ) { [weak self] in
+      self?.emojiView.transform = .init(translationX: 0, y: 10)
+    } completion: { [weak self] _ in
+      self?.emojiView.transform = .identity
     }
   }
   

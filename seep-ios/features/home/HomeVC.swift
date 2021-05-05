@@ -12,6 +12,11 @@ class HomeVC: BaseVC, View {
   private let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
   private var pageViewControllers: [UIViewController] = []
   
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
   static func instance() -> UINavigationController {
     let homeVC = HomeVC(nibName: nil, bundle: nil)
 
@@ -37,13 +42,14 @@ class HomeVC: BaseVC, View {
         $0.delegate = self
       }
     ]
-    self.homeView.startAnimation()
+    self.registerNotification()
     self.setupPageVC()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
+     
+    self.homeView.startEmojiAnimation()
     Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
@@ -157,6 +163,15 @@ class HomeVC: BaseVC, View {
     )
   }
   
+  private func registerNotification() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(willEnterForeground),
+      name: UIApplication.willEnterForegroundNotification,
+      object: nil
+    )
+  }
+  
   private func goToFinish(category: Category) {
     let finishedVC = FinishedVC.instance(category: category)
     
@@ -217,6 +232,10 @@ class HomeVC: BaseVC, View {
         }
       }
     }
+  }
+  
+  @objc private func willEnterForeground() {
+    self.homeView.startEmojiAnimation()
   }
 }
 
