@@ -163,7 +163,6 @@ class FinishedView: BaseView {
   
   func setEmptyViewHidden(isHidden: Bool) {
     self.emptyView.isHidden = isHidden
-    self.backButton.isHidden = !isHidden
     self.viewTypeButton.isHidden = !isHidden
   }
   

@@ -70,7 +70,7 @@
 "detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
 
 // Finish
-"finish_back_button" = "메인홈으로 돌아가기";
+"finish_back_button" = "메인 홈으로 돌아가기";
 "finish_title_empty" = "아직...\n완료된 것이 없지만";
 "finish_description_empty" = "하고 싶은게 많은 것만으로도\n반짝반짝 빛나는 사람인걸요.\n당신을 응원할게요!";
 "finish_empty_back_button" = "메인으로 돌아가기";
