@@ -274,7 +274,7 @@ class WriteView: BaseView {
     
     self.writeButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(safeAreaLayoutGuide).offset(-35)
+      make.bottom.equalTo(safeAreaLayoutGuide).offset(-23)
       make.height.equalTo(50)
     }
   }
