@@ -59,7 +59,7 @@ class DetailView: BaseView {
   }
   
   let stackContainerView = UIView().then {
-    $0.backgroundColor = UIColor(r: 232, g: 246, b: 255)
+    $0.backgroundColor = .gray2
     $0.layer.cornerRadius = 24
   }
   
@@ -71,24 +71,24 @@ class DetailView: BaseView {
   
   let wantToDoButton = UIButton().then {
     $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+    $0.setTitleColor(.gray3, for: .normal)
+    $0.titleLabel?.font = .appleRegular(size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
     $0.setKern(kern: -0.28)
   }
   
   let wantToGetButton = UIButton().then {
     $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+    $0.setTitleColor(.gray3, for: .normal)
+    $0.titleLabel?.font = .appleRegular(size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
     $0.setKern(kern: -0.28)
   }
   
   let wantToGoButton = UIButton().then {
     $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+    $0.setTitleColor(.gray3, for: .normal)
+    $0.titleLabel?.font = .appleRegular(size: 14)
     $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
     $0.setKern(kern: -0.28)
   }
