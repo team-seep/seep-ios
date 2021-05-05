@@ -131,7 +131,9 @@ class FinishedVC: BaseVC, View {
   }
   
   private func showDetail(wish: Wish) {
-    let detailVC = DetailVC.instance(wish: wish, mode: .fromFinish)
+    let detailVC = DetailVC.instance(wish: wish, mode: .fromFinish).then {
+      $0.view.isUserInteractionEnabled = false
+    }
     
     self.present(detailVC, animated: true, completion: nil)
   }
