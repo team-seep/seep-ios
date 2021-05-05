@@ -26,17 +26,13 @@ class FinishedTableCell: BaseTableViewCell {
   
   let tagLabel = TagLabel()
   
-  let checkedImage = UIImageView().then {
-    $0.image = .icCheckOn
-  }
-  
   
   override func setup() {
     self.backgroundColor = .clear
     self.selectionStyle = .none
     self.addSubViews(
       containerView, emojiLabel, titleLabel, finishDateLabel,
-      tagLabel, checkedImage
+      tagLabel
     )
   }
   
@@ -67,11 +63,6 @@ class FinishedTableCell: BaseTableViewCell {
     self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.finishDateLabel.snp.right).offset(7)
       make.centerY.equalTo(self.finishDateLabel)
-    }
-    
-    self.checkedImage.snp.makeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.right.equalTo(self.containerView).offset(-16)
     }
   }
   

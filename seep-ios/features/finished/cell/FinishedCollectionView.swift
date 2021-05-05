@@ -27,16 +27,12 @@ class FinishedCollectionCell: BaseCollectionViewCell {
   
   let tagLabel = TagLabel()
   
-  let checkedImage = UIImageView().then {
-    $0.image = .icCheckOn
-  }
-  
   
   override func setup() {
     self.backgroundColor = .clear
     self.addSubViews(
       containerView, emojiLabel, titleLabel, finishDateLabel,
-      tagLabel, checkedImage
+      tagLabel
     )
   }
   
@@ -65,11 +61,6 @@ class FinishedCollectionCell: BaseCollectionViewCell {
     self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.finishDateLabel)
       make.top.equalTo(self.finishDateLabel.snp.bottom).offset(6)
-    }
-    
-    self.checkedImage.snp.makeConstraints { make in
-      make.right.equalToSuperview().offset(-14)
-      make.bottom.equalToSuperview().offset(-20)
     }
   }
   
