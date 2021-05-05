@@ -25,18 +25,7 @@ class FinishedCollectionCell: BaseCollectionViewCell {
     $0.alpha = 0.4
   }
   
-  let tagLabel = PaddingLabel(
-    topInset: 2,
-    bottomInset: 2,
-    leftInset: 6,
-    rightInset: 6
-  ).then {
-    $0.textColor = UIColor(r: 153, g: 153, b: 153)
-    $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
-    $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
-    $0.layer.cornerRadius = 4
-    $0.layer.masksToBounds = true
-  }
+  let tagLabel = TagLabel()
   
   let checkedImage = UIImageView().then {
     $0.image = .icCheckOn
