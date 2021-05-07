@@ -124,7 +124,7 @@ class DetailView: BaseView {
   override func bindConstraints() {
     self.scrollView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.topIndicator.snp.bottom)
+      make.top.equalTo(self.moreButton.snp.bottom)
     }
     
     self.containerView.snp.makeConstraints { make in
