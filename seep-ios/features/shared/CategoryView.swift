@@ -40,7 +40,7 @@ class CategoryView: BaseView {
   private let activeButton = UIButton().then {
     $0.backgroundColor = .seepBlue
     $0.layer.cornerRadius = 15
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(.clear, for: .normal)
     $0.layer.shadowOpacity = 0.15
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -53,7 +53,7 @@ class CategoryView: BaseView {
     self.stackView.addArrangedSubview(wantToDoButton)
     self.stackView.addArrangedSubview(wantToGetButton)
     self.stackView.addArrangedSubview(wantToGoButton)
-    self.addSubViews(stackView, activeButton)
+    self.addSubViews(activeButton, stackView)
     
     self.wantToGoButton.rx.tap
       .map { Category.wantToGo }
@@ -101,6 +101,16 @@ class CategoryView: BaseView {
     UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
       guard let self = self else { return }
       self.layoutIfNeeded()
+      
+      self.wantToDoButton.setTitleColor(category == .wantToDo ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self.wantToDoButton.titleLabel?.font = category == .wantToDo ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
+      self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToGetButton.setTitleColor(category == .wantToGet ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self.wantToGetButton.titleLabel?.font = category == .wantToGet ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
+      self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToGoButton.setTitleColor(category == .wantToGo ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
+      self.wantToGoButton.titleLabel?.font = category == .wantToGo ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
+      self.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     }
   }
 }
