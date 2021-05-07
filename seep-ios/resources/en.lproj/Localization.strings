@@ -77,3 +77,7 @@
 "finish_count_category_want_to_do_format" = "지금까지\n%02d개 이뤘어요!";
 "finish_count_category_want_to_get_format" = "지금까지\n%02d개 겟했어요!";
 "finish_count_category_want_to_go_format" = "지금까지\n%02d곳 다녀왔어요!";
+
+// Notification
+"notification_two_day_before_format" = "🔔 %@ 완료까지 2일 남았어요!";
+"notification_day_before_format" = "🔔 잊지마세요! 내일은 %@ 완료하는 날";
