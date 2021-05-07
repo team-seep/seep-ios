@@ -58,51 +58,8 @@ class DetailView: BaseView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
   }
   
-  let stackContainerView = UIView().then {
-    $0.backgroundColor = .gray2
-    $0.layer.cornerRadius = 24
-  }
-  
-  let categoryStackView = UIStackView().then {
-    $0.alignment = .leading
-    $0.axis = .horizontal
-    $0.distribution = .equalSpacing
-  }
-  
-  let wantToDoButton = UIButton().then {
-    $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(.gray3, for: .normal)
-    $0.titleLabel?.font = .appleRegular(size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let wantToGetButton = UIButton().then {
-    $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(.gray3, for: .normal)
-    $0.titleLabel?.font = .appleRegular(size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let wantToGoButton = UIButton().then {
-    $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(.gray3, for: .normal)
-    $0.titleLabel?.font = .appleRegular(size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let activeButton = UIButton().then {
-    $0.backgroundColor = .seepBlue
-    $0.layer.cornerRadius = 16
-    $0.setTitleColor(.clear, for: .normal)
-    $0.layer.shadowOpacity = 0.15
-    $0.layer.shadowColor = UIColor.black.cgColor
-    $0.layer.shadowOffset = CGSize(width: 0, height: 2)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
-    $0.setKern(kern: -0.28)
+  let categoryView = CategoryView().then {
+    $0.containerView.backgroundColor = .gray2
   }
   
   let titleField = TextInputField().then {
@@ -155,13 +112,10 @@ class DetailView: BaseView {
     self.memoField.textView.inputAccessoryView = self.accessoryView
     self.hashtagField.textField.inputAccessoryView = self.accessoryView
     self.setupEmojiKeyboard()
-    self.categoryStackView.addArrangedSubview(wantToDoButton)
-    self.categoryStackView.addArrangedSubview(wantToGetButton)
-    self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      emojiBackground, emojiField, randomButton, stackContainerView,
-      activeButton, categoryStackView, titleField, dateField,
-      notificationButton, memoField, hashtagField
+      emojiBackground, emojiField, randomButton, categoryView,
+      titleField, dateField, notificationButton, memoField,
+      hashtagField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, moreButton, cancelButton, scrollView, editButton)
@@ -213,28 +167,15 @@ class DetailView: BaseView {
       make.bottom.equalTo(self.emojiBackground)
     }
     
-    self.categoryStackView.snp.makeConstraints { make in
+    self.categoryView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(self.emojiBackground.snp.bottom).offset(32)
-    }
-    
-    self.stackContainerView.snp.makeConstraints { make in
-      make.left.equalTo(self.categoryStackView).offset(-8)
-      make.right.equalTo(self.categoryStackView).offset(8)
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(48)
-    }
-    
-    self.activeButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(32)
-      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[0])
     }
     
     self.titleField.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
       make.right.equalToSuperview().offset(-20)
-      make.top.equalTo(self.categoryStackView.snp.bottom).offset(32)
+      make.top.equalTo(self.categoryView.snp.bottom).offset(32)
     }
     
     self.dateField.snp.makeConstraints { make in
@@ -257,7 +198,7 @@ class DetailView: BaseView {
   func bind(wish: Wish, mode: DetailMode) {
     self.moreButton.isHidden = (mode == .fromFinish)
     self.emojiField.text = wish.emoji
-    self.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
+    self.categoryView.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
     self.titleField.textField.text = wish.title
     self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
     
@@ -274,37 +215,6 @@ class DetailView: BaseView {
     if !wish.hashtag.isEmpty {
       self.addHashtagField(hashtag: wish.hashtag)
     }
-  }
-  
-  func moveActiveButton(category: Category) {
-    var index = 0
-    switch category {
-    case .wantToDo:
-      index = 0
-    case .wantToGet:
-      index = 1
-    case .wantToGo:
-      index = 2
-    }
-    self.activeButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(30)
-      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
-    }
-    self.activeButton.setTitle(category.rawValue.localized, for: .normal)
-    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: { [weak self] in
-      guard let self = self else { return }
-      self.layoutIfNeeded()
-      self.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-    })
   }
     
   func setEmojiBackground(isEmpty: Bool) {

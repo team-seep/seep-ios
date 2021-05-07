@@ -95,18 +95,18 @@ class DetailVC: BaseVC, View {
       .do(onNext: { [weak self] _ in
         self?.detailView.endEditing(true)
       })
-      .bind(to: self.detailReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.emojiField.rx.text.orEmpty
       .skip(1)
       .map { Reactor.Action.inputEmoji($0) }
-      .bind(to: self.detailReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.emojiField.rx.controlEvent(.editingDidBegin)
       .map { Reactor.Action.tapEditButton }
-      .bind(to: self.detailReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.detailView.randomButton.rx.tap
@@ -114,27 +114,11 @@ class DetailVC: BaseVC, View {
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
-      .bind(to: self.detailReactor.action)
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
-    self.detailView.wantToDoButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToDo) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: self.detailReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.detailView.wantToGetButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToGet) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: self.detailReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.detailView.wantToGoButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToGo) }
+    self.detailView.categoryView.rx.tapCategory
+      .map { Reactor.Action.tapCategory($0) }
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -217,7 +201,7 @@ class DetailVC: BaseVC, View {
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .do(onNext: self.detailView.setTitlePlaceholder(by:))
-      .bind(onNext: self.detailView.moveActiveButton(category:))
+      .bind(to: self.detailView.categoryView.rx.category)
       .disposed(by: self.disposeBag)
     
     self.detailReactor.state
