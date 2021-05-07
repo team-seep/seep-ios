@@ -19,25 +19,16 @@ class CategoryView: BaseView {
   
   private let wantToDoButton = UIButton().then {
     $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
-    $0.titleLabel?.font = .appleMedium(size: 14)
-//    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
   }
   
   private let wantToGetButton = UIButton().then {
     $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
-    $0.titleLabel?.font = .appleMedium(size: 14)
-//    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
   }
   
   private let wantToGoButton = UIButton().then {
     $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
-    $0.titleLabel?.font = .appleMedium(size: 14)
-//    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
   }
   
@@ -119,10 +110,10 @@ class CategoryView: BaseView {
       self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 6, left: 18, bottom: 6, right: 18) : UIEdgeInsets(top: 8, left: 18, bottom: 4, right: 18)
       self.wantToGetButton.setTitleColor(category == .wantToGet ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
       self.wantToGetButton.titleLabel?.font = category == .wantToGet ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
-      self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 6, left: 18, bottom: 6, right: 18) : UIEdgeInsets(top: 8, left: 18, bottom: 4, right: 18)
       self.wantToGoButton.setTitleColor(category == .wantToGo ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
       self.wantToGoButton.titleLabel?.font = category == .wantToGo ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
-      self.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 6, left: 18, bottom: 6, right: 18) : UIEdgeInsets(top: 8, left: 18, bottom: 4, right: 18)
     }
   }
 }

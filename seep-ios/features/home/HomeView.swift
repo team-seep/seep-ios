@@ -79,8 +79,8 @@ class HomeView: BaseView {
     }
     
     self.categoryView.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(20)
-      make.top.equalTo(self.successCountButton.snp.bottom).offset(50 * RatioUtils.height)
+      make.left.equalToSuperview().offset(12)
+      make.top.equalTo(self.successCountButton.snp.bottom).offset(42 * RatioUtils.height)
     }
     
     self.viewTypeButton.snp.makeConstraints { make in
@@ -90,7 +90,7 @@ class HomeView: BaseView {
     
     self.containerView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.categoryView.snp.bottom).offset(16)
+      make.top.equalTo(self.categoryView.snp.bottom).offset(8)
     }
     
     self.writeButton.snp.makeConstraints { make in
