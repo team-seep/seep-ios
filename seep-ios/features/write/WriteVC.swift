@@ -81,24 +81,8 @@ class WriteVC: BaseVC, View {
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
-    self.writeView.wantToDoButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToDo) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: self.writeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.writeView.wantToGetButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToGet) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: self.writeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.writeView.wantToGoButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToGo) }
+    self.writeView.categoryView.rx.tapCategory
+      .map { Reactor.Action.tapCategory($0) }
       .do(onNext: { _ in
         FeedbackUtils.feedbackInstance.impactOccurred()
       })
@@ -152,7 +136,7 @@ class WriteVC: BaseVC, View {
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .do(onNext: self.writeView.setTitlePlaceholder(by:))
-      .bind(onNext: self.writeView.moveActiveButton(category:))
+      .bind(to: self.writeView.categoryView.rx.category)
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
