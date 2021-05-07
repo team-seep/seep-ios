@@ -6,6 +6,10 @@ class CategoryView: BaseView {
   
   let categoryPublisher = PublishSubject<Category>()
   
+  let containerView = UIView().then {
+    $0.layer.cornerRadius = 24
+  }
+  
   private let stackView = UIStackView().then {
     $0.alignment = .leading
     $0.axis = .horizontal
@@ -17,7 +21,7 @@ class CategoryView: BaseView {
     $0.setTitle("common_category_want_to_do".localized, for: .normal)
     $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
     $0.titleLabel?.font = .appleMedium(size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+//    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
   }
   
@@ -25,7 +29,7 @@ class CategoryView: BaseView {
     $0.setTitle("common_category_want_to_get".localized, for: .normal)
     $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
     $0.titleLabel?.font = .appleMedium(size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+//    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
   }
   
@@ -33,7 +37,7 @@ class CategoryView: BaseView {
     $0.setTitle("common_category_want_to_go".localized, for: .normal)
     $0.setTitleColor(UIColor(r: 136, g: 136, b: 136), for: .normal)
     $0.titleLabel?.font = .appleMedium(size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+//    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
     $0.setKern(kern: -0.28)
   }
   
@@ -53,7 +57,7 @@ class CategoryView: BaseView {
     self.stackView.addArrangedSubview(wantToDoButton)
     self.stackView.addArrangedSubview(wantToGetButton)
     self.stackView.addArrangedSubview(wantToGoButton)
-    self.addSubViews(activeButton, stackView)
+    self.addSubViews(containerView, activeButton, stackView)
     
     self.wantToGoButton.rx.tap
       .map { Category.wantToGo }
@@ -73,8 +77,8 @@ class CategoryView: BaseView {
   
   override func bindConstraints() {
     self.stackView.snp.makeConstraints { make in
-      make.left.equalToSuperview()
-      make.top.equalToSuperview()
+      make.left.equalTo(self.containerView).offset(8)
+      make.top.equalTo(self.containerView).offset(8)
     }
     
     self.activeButton.snp.makeConstraints { make in
@@ -83,8 +87,16 @@ class CategoryView: BaseView {
       make.centerX.equalTo(self.stackView.arrangedSubviews[0])
     }
     
+    self.containerView.snp.makeConstraints { make in
+      make.top.equalToSuperview()
+      make.left.equalToSuperview()
+      make.right.equalTo(self.stackView).offset(8)
+      make.bottom.equalTo(self.stackView).offset(8)
+      make.height.equalTo(48).priority(.high)
+    }
+    
     self.snp.makeConstraints { make in
-      make.edges.equalTo(self.stackView)
+      make.edges.equalTo(self.containerView)
     }
   }
   
@@ -104,7 +116,7 @@ class CategoryView: BaseView {
       
       self.wantToDoButton.setTitleColor(category == .wantToDo ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
       self.wantToDoButton.titleLabel?.font = category == .wantToDo ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
-      self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
+      self.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 6, left: 18, bottom: 6, right: 18) : UIEdgeInsets(top: 8, left: 18, bottom: 4, right: 18)
       self.wantToGetButton.setTitleColor(category == .wantToGet ? .white : UIColor(r: 136, g: 136, b: 136), for: .normal)
       self.wantToGetButton.titleLabel?.font = category == .wantToGet ? .appleExtraBold(size: 14) : .appleMedium(size: 14)
       self.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
