@@ -12,7 +12,7 @@ class DdayLabel: PaddingLabel {
   }
   
   func bind(dday: Date) {
-    let remainDay = Calendar.current.dateComponents([.day], from: Date(), to: dday).day ?? -1
+    let remainDay = Calendar.current.dateComponents([.day], from: Date().startOfDay, to: dday.startOfDay).day ?? -1
     
     switch remainDay {
     case _ where remainDay < 0:
