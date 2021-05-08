@@ -1,51 +1,76 @@
 import UserNotifications
+import RxSwift
 
 class NotificationManager {
   
-  static let shared = UNUserNotificationCenter.current()
+  static let shared = NotificationManager()
   
-  // Todo: 예약, 취소
+  final let twoDay = 60 * 60 * 24 * 2
+  final let oneDay = 60 * 60 * 24
   
   func reserve(wish: Wish) {
-    self.reserveTwoDayBeforeNotification(wish: wish)
-    self.reserveDayBeforeNotification(wish: wish)
+    let distance = Date().distance(to: wish.date.startOfDay)
+    
+    if distance >= TimeInterval(twoDay) {
+      self.reserveTwoDayBeforeNotification(wish: wish)
+    }
+    if distance >= TimeInterval(oneDay) {
+      self.reserveDayBeforeNotification(wish: wish)
+    }
+  }
+  
+  func cancel(wish: Wish) {
+    let ids = [wish._id.stringValue + "_day_before", wish._id.stringValue + "_two_day_before"]
+    
+    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
   }
   
   private func reserveDayBeforeNotification(wish: Wish) {
     let notificationContent = UNMutableNotificationContent().then {
-      $0.title = String(format: "notification_two_day_before_format".localized, wish.title)
+      $0.title = String(format: "notification_day_before_format".localized, wish.title)
     }
-    let trigger = UNCalendarNotificationTrigger(
-      dateMatching: Calendar.current.dateComponents([.year, .month, .day], from: wish.date),
-      repeats: false
-    )
+    
+    var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: wish.date)
+    components.hour = 11
+    components.minute = 0
+    components.second = 0
+    components.day = (components.day ?? 0) - 2
+    
+    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
     let request = UNNotificationRequest(
-      identifier: wish._id.stringValue,
+      identifier: wish._id.stringValue + "_day_before",
       content: notificationContent,
       trigger: trigger
     )
     
     UNUserNotificationCenter.current().add(request) { error in
-      print(error)
+      if let error = error {
+        print("Notification error: \(error)")
+      }
     }
   }
   
   private func reserveTwoDayBeforeNotification(wish: Wish) {
     let notificationContent = UNMutableNotificationContent().then {
-      $0.title = String(format: "notification_day_before_format".localized, wish.title)
+      $0.title = String(format: "notification_tow_day_before_format".localized, wish.title)
     }
-    let trigger = UNCalendarNotificationTrigger(
-      dateMatching: Calendar.current.dateComponents([.year, .month, .day], from: wish.date),
-      repeats: false
-    )
+    var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: wish.date)
+    components.hour = 11
+    components.minute = 0
+    components.second = 0
+    components.day = (components.day ?? 0) - 1
+    
+    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
     let request = UNNotificationRequest(
-      identifier: wish._id.stringValue,
+      identifier: wish._id.stringValue + "_tow_day_before",
       content: notificationContent,
       trigger: trigger
     )
     
     UNUserNotificationCenter.current().add(request) { error in
-      print(error)
+      if let error = error {
+        print("Notification error: \(error)")
+      }
     }
   }
 }

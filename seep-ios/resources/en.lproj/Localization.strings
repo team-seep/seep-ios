@@ -80,4 +80,4 @@
 
 // Notification
 "notification_two_day_before_format" = "🔔 %@ 완료까지 2일 남았어요!";
-"notification_day_before_format" = "🔔 잊지마세요! 내일은 %@ 완료하는 날";
+"notification_day_before_format" = "🔔 잊지마세요!\n내일은 '%@' 완료하는 날";

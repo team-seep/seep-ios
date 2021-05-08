@@ -102,8 +102,11 @@ class WriteReactor: Reactor {
           $0.memo = self.currentState.memo
           $0.hashtag = self.currentState.hashtag
         }
-        
         self.wishService.addWish(wish: wish)
+        
+        if self.currentState.isPushEnable {
+          NotificationManager.shared.reserve(wish: wish)
+        }
         return Observable.just(Mutation.saveWish(()))
       }
     }

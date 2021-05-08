@@ -96,7 +96,7 @@ class WriteVC: BaseVC, View {
     
     self.datePicker.rx.date
       .skip(1)
-      .map { Reactor.Action.inputDate($0) }
+      .map { Reactor.Action.inputDate($0.endOfDay) }
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
