@@ -127,6 +127,11 @@ class DetailReactor: Reactor {
         }
         
         self.wishService.updateWish(id: self.initialWish._id, newWish: wish)
+        
+        NotificationManager.shared.cancel(wish: self.initialWish)
+        if self.currentState.isPushEnable {
+          NotificationManager.shared.reserve(wish: wish)
+        }
         return Observable.just(Mutation.setEditable(false))
       }
     }
