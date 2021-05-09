@@ -11,6 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     self.initilizeFirebase()
     self.requestNotificationAuthorization()
+    application.registerForRemoteNotifications()
     return true
   }
 

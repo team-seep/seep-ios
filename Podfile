@@ -27,4 +27,5 @@ target 'seep-ios' do
   pod 'RealmSwift', '=10.5.2'
   
   pod 'Firebase/Analytics'
+  pod 'Firebase/Messaging'
 end

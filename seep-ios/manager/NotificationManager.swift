@@ -27,14 +27,16 @@ class NotificationManager {
   
   private func reserveDayBeforeNotification(wish: Wish) {
     let notificationContent = UNMutableNotificationContent().then {
-      $0.title = String(format: "notification_day_before_format".localized, wish.title)
+      $0.title = "notification_day_before_title".localized
+      $0.body = String(format: "notification_day_before_body_foramt".localized, wish.title)
+      $0.sound = .default
     }
     
     var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: wish.date)
     components.hour = 11
     components.minute = 0
     components.second = 0
-    components.day = (components.day ?? 0) - 2
+    components.day = (components.day ?? 0) - 1
     
     let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
     let request = UNNotificationRequest(
@@ -52,13 +54,15 @@ class NotificationManager {
   
   private func reserveTwoDayBeforeNotification(wish: Wish) {
     let notificationContent = UNMutableNotificationContent().then {
-      $0.title = String(format: "notification_tow_day_before_format".localized, wish.title)
+      $0.title = "notification_two_day_before_title".localized
+      $0.body = String(format: "notification_two_day_before_body_format".localized, wish.title)
+      $0.sound = .default
     }
     var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: wish.date)
     components.hour = 11
     components.minute = 0
     components.second = 0
-    components.day = (components.day ?? 0) - 1
+    components.day = (components.day ?? 0) - 2
     
     let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
     let request = UNNotificationRequest(

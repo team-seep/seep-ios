@@ -119,6 +119,7 @@
 		6E69E62A260DB7640062CBFB /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		6E69E62D260DBACA0062CBFB /* DetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReactor.swift; sourceTree = "<group>"; };
 		6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
+		6E69FD49264698E900F0AB60 /* seep-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "seep-ios.entitlements"; sourceTree = "<group>"; };
 		6E764AE7263FA96C00A99402 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		6E764AE9263FBBE300A99402 /* DdayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
 		6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiImageVIew.swift; sourceTree = "<group>"; };
@@ -249,6 +250,7 @@
 		6E283AF725F2047900955B57 /* seep-ios */ = {
 			isa = PBXGroup;
 			children = (
+				6E69FD49264698E900F0AB60 /* seep-ios.entitlements */,
 				6E9BFEA026453C9C0093CA89 /* manager */,
 				6E600148260831F0000065C8 /* GoogleService-Info.plist */,
 				6E441CA326046F920010A625 /* services */,
@@ -711,6 +713,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = X975A2HM62;
@@ -734,6 +737,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = X975A2HM62;
