@@ -10,7 +10,7 @@ class WriteVC: BaseVC, View {
   
   weak var delegate: WriteDelegate?
   private lazy var writeView = WriteView(frame: self.view.frame)
-  private let writeReactor = WriteReactor(wishService: WishService())
+  private let writeReactor: WriteReactor
   
   private let datePicker = UIDatePicker().then {
     $0.datePickerMode = .date
@@ -18,8 +18,18 @@ class WriteVC: BaseVC, View {
     $0.locale = .init(identifier: "ko_KO")
   }
   
-  static func instance() -> WriteVC {
-    return WriteVC(nibName: nil, bundle: nil)
+  
+  init(category: Category) {
+    self.writeReactor = WriteReactor(category: category, wishService: WishService())
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  static func instance(category: Category) -> WriteVC {
+    return WriteVC(category: category)
   }
   
   deinit {
@@ -65,21 +75,17 @@ class WriteVC: BaseVC, View {
     
     self.writeView.randomButton.rx.tap
       .map { Reactor.Action.tapRandomEmoji(())}
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
-    self.writeView.wantToDoButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToDo) }
-      .bind(to: self.writeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.writeView.wantToGetButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToGet) }
-      .bind(to: self.writeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.writeView.wantToGoButton.rx.tap
-      .map { Reactor.Action.tapCategory(.wantToGo) }
+    self.writeView.categoryView.rx.tapCategory
+      .map { Reactor.Action.tapCategory($0) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
@@ -90,12 +96,15 @@ class WriteVC: BaseVC, View {
     
     self.datePicker.rx.date
       .skip(1)
-      .map { Reactor.Action.inputDate($0) }
+      .map { Reactor.Action.inputDate($0.endOfDay) }
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
     self.writeView.notificationButton.rx.tap
       .map { Reactor.Action.tapPushButton(()) }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
       .bind(to: self.writeReactor.action)
       .disposed(by: disposeBag)
     
@@ -127,7 +136,7 @@ class WriteVC: BaseVC, View {
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .do(onNext: self.writeView.setTitlePlaceholder(by:))
-      .bind(onNext: self.writeView.moveActiveButton(category:))
+      .bind(to: self.writeView.categoryView.rx.category)
       .disposed(by: self.disposeBag)
     
     self.writeReactor.state
@@ -137,7 +146,7 @@ class WriteVC: BaseVC, View {
     
     self.writeReactor.state
       .filter { $0.date != nil }
-      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: $0.date ?? Date())}
+      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: $0.date ?? Date())}
       .observeOn(MainScheduler.instance)
       .bind(to: self.writeView.dateField.rx.text)
       .disposed(by: self.disposeBag)

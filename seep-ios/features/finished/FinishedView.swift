@@ -8,6 +8,10 @@ class FinishedView: BaseView {
     $0.numberOfLines = 0
   }
   
+  let greenLine = UIView().then {
+    $0.backgroundColor = .tennisGreen
+  }
+  
   let viewTypeButton = UIButton().then {
     $0.setImage(UIImage(named: "ic_grid"), for: .normal)
   }
@@ -97,8 +101,8 @@ class FinishedView: BaseView {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
     self.emptyView.addSubViews(emptyEmojiLabel, emptyLabel, emptyBackButton)
     self.addSubViews(
-      titleLabel, viewTypeButton, backButton, tableView,
-      collectionView, emptyView
+      titleLabel, greenLine, viewTypeButton, backButton,
+      tableView, collectionView, emptyView
     )
     self.titleLabel.attributedText = self.getEmptyTitle()
   }
@@ -107,6 +111,13 @@ class FinishedView: BaseView {
     self.titleLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(22)
       make.top.equalTo(safeAreaLayoutGuide).offset(34 * RatioUtils.height)
+    }
+    
+    self.greenLine.snp.makeConstraints { make in
+      make.left.equalTo(self.titleLabel)
+      make.bottom.equalTo(self.titleLabel)
+      make.width.equalTo(44)
+      make.height.equalTo(2)
     }
     
     self.viewTypeButton.snp.makeConstraints { make in
@@ -152,7 +163,6 @@ class FinishedView: BaseView {
   
   func setEmptyViewHidden(isHidden: Bool) {
     self.emptyView.isHidden = isHidden
-    self.backButton.isHidden = !isHidden
     self.viewTypeButton.isHidden = !isHidden
   }
   
@@ -174,6 +184,7 @@ class FinishedView: BaseView {
   }
   
   func setFinishedCount(category: Category, count: Int) {
+    self.greenLine.isHidden = count == 0
     if count == 0 {
       self.titleLabel.attributedText = self.getEmptyTitle()
     } else{
@@ -198,7 +209,7 @@ class FinishedView: BaseView {
   private func getCountTitle(by category: Category, count: Int) -> NSMutableAttributedString {
     let text = String(format: "finish_count_\(category.rawValue)_format".localized, count)
     let attributedString = NSMutableAttributedString(string: text)
-    let underlineTextRange = (text as NSString).range(of: category == .wantToGo ? "\(count)곳" : "\(count)개")
+    let underlineTextRange = (text as NSString).range(of: String(format: "common_\(category.rawValue)_unit".localized, count))
     var boldTextRange: NSRange {
       switch category {
       case .wantToDo:
@@ -213,8 +224,6 @@ class FinishedView: BaseView {
     
     attributedString.addAttributes([
       .foregroundColor: UIColor.tennisGreen,
-      .underlineStyle: NSUnderlineStyle.thick.rawValue,
-      .underlineColor: UIColor.tennisGreen,
       .font: UIFont(name: "AppleSDGothicNeo-Bold", size: 22)!
     ], range: underlineTextRange)
     

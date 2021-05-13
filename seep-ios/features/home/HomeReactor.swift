@@ -5,9 +5,10 @@ import ReactorKit
 class HomeReactor: Reactor {
   
   enum Action {
-    case viewDidLoad(Void)
+    case viewDidLoad
     case tapCategory(Category)
-    case tapViewType(Void)
+    case tapViewType
+    case tapWriteButton
   }
   
   enum Mutation {
@@ -16,6 +17,7 @@ class HomeReactor: Reactor {
     case setSuccessCount(Int)
     case setWishCount(Int)
     case setWriteButtonTitle(String)
+    case toggleShowWrite
   }
   
   struct State {
@@ -24,6 +26,7 @@ class HomeReactor: Reactor {
     var category: Category = .wantToDo
     var viewType: ViewType = .list
     var writeButtonTitle: String = "home_write_category_want_to_do_button".localized
+    var showWrite: Bool = false
   }
   
   let initialState = State()
@@ -38,7 +41,7 @@ class HomeReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewDidLoad():
+    case .viewDidLoad:
       let successCount = self.wishService.getFinishCount(category: self.currentState.category)
       let wishCount = self.wishService.getWishCount(category: self.currentState.category)
       
@@ -58,11 +61,13 @@ class HomeReactor: Reactor {
         Observable.just(Mutation.filterCategory(category)),
         Observable.just(Mutation.setWriteButtonTitle(writeButtonTitle))
       ])
-    case .tapViewType():
+    case .tapViewType:
       let viewType = self.currentState.viewType.toggle()
       
       self.userDefaults.setViewType(viewType: viewType)
       return Observable.just(Mutation.setViewType(viewType))
+    case .tapWriteButton:
+      return Observable.just(Mutation.toggleShowWrite)
     }
   }
 
@@ -79,6 +84,8 @@ class HomeReactor: Reactor {
       newState.viewType = viewType
     case .setWriteButtonTitle(let title):
       newState.writeButtonTitle = title
+    case .toggleShowWrite:
+      newState.showWrite.toggle()
     }
     
     return newState

@@ -58,60 +58,13 @@ class DetailView: BaseView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
   }
   
-  let stackContainerView = UIView().then {
-    $0.backgroundColor = UIColor(r: 232, g: 246, b: 255)
-    $0.layer.cornerRadius = 24
-  }
-  
-  let categoryStackView = UIStackView().then {
-    $0.alignment = .leading
-    $0.axis = .horizontal
-    $0.distribution = .equalSpacing
-  }
-  
-  let wantToDoButton = UIButton().then {
-    $0.setTitle("common_category_want_to_do".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let wantToGetButton = UIButton().then {
-    $0.setTitle("common_category_want_to_get".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let wantToGoButton = UIButton().then {
-    $0.setTitle("common_category_want_to_go".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
-    $0.setKern(kern: -0.28)
-  }
-  
-  let activeButton = UIButton().then {
-    $0.backgroundColor = .seepBlue
-    $0.layer.cornerRadius = 16
-    $0.setTitleColor(.clear, for: .normal)
-    $0.layer.shadowOpacity = 0.15
-    $0.layer.shadowColor = UIColor.black.cgColor
-    $0.layer.shadowOffset = CGSize(width: 0, height: 2)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
-    $0.setKern(kern: -0.28)
+  let categoryView = CategoryView().then {
+    $0.containerView.backgroundColor = .gray2
   }
   
   let titleField = TextInputField().then {
     $0.titleLabel.text = "write_header_title".localized
     $0.titleLabel.setKern(kern: -0.24)
-    $0.textField.attributedPlaceholder = NSAttributedString(
-      string: "write_placeholder_title".localized,
-      attributes: [.foregroundColor: UIColor.gray3]
-    )
   }
   
   let dateField = TextInputField().then {
@@ -125,12 +78,14 @@ class DetailView: BaseView {
   }
   
   let notificationButton = UIButton().then {
-    $0.setTitle("write_notification".localized, for: .normal)
-    $0.setTitleColor(.gray4, for: .normal)
+    $0.setTitle("write_notification_off".localized, for: .normal)
+    $0.setTitle("write_notification_on".localized, for: .selected)
+    $0.setTitleColor(.gray3, for: .normal)
+    $0.setTitleColor(.gray5, for: .selected)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
     $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
-    $0.setImage(UIImage(named: "img_check_on_20"), for: .selected)
-    $0.setImage(UIImage(named: "img_check_off_20"), for: .normal)
+    $0.setImage(.icCheckOn20, for: .selected)
+    $0.setImage(.icCheckOff20, for: .normal)
     $0.contentHorizontalAlignment = .left
   }
   
@@ -142,24 +97,25 @@ class DetailView: BaseView {
   
   
   override func setup() {
-    self.scrollView.isUserInteractionEnabled = false
     self.backgroundColor = .white
     self.addGestureRecognizer(self.tapBackground)
     self.scrollView.delegate = self
     self.emojiField.delegate = self
     self.emojiField.inputAccessoryView = self.accessoryView
+    self.emojiField.rx.controlEvent(.editingDidBegin)
+      .bind { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      }
+      .disposed(by: self.disposeBag)
     self.titleField.textField.inputAccessoryView = self.accessoryView
     self.dateField.textField.inputAccessoryView = self.accessoryView
     self.memoField.textView.inputAccessoryView = self.accessoryView
     self.hashtagField.textField.inputAccessoryView = self.accessoryView
     self.setupEmojiKeyboard()
-    self.categoryStackView.addArrangedSubview(wantToDoButton)
-    self.categoryStackView.addArrangedSubview(wantToGetButton)
-    self.categoryStackView.addArrangedSubview(wantToGoButton)
     self.containerView.addSubViews(
-      emojiBackground, emojiField, randomButton, stackContainerView,
-      activeButton, categoryStackView, titleField, dateField,
-      notificationButton
+      emojiBackground, emojiField, randomButton, categoryView,
+      titleField, dateField, notificationButton, memoField,
+      hashtagField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, moreButton, cancelButton, scrollView, editButton)
@@ -168,7 +124,7 @@ class DetailView: BaseView {
   override func bindConstraints() {
     self.scrollView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.topIndicator.snp.bottom)
+      make.top.equalTo(self.moreButton.snp.bottom)
     }
     
     self.containerView.snp.makeConstraints { make in
@@ -211,28 +167,15 @@ class DetailView: BaseView {
       make.bottom.equalTo(self.emojiBackground)
     }
     
-    self.categoryStackView.snp.makeConstraints { make in
+    self.categoryView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(self.emojiField.snp.bottom).offset(32)
-    }
-    
-    self.stackContainerView.snp.makeConstraints { make in
-      make.left.equalTo(self.categoryStackView).offset(-8)
-      make.right.equalTo(self.categoryStackView).offset(8)
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(48)
-    }
-    
-    self.activeButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(32)
-      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[0])
+      make.top.equalTo(self.emojiBackground.snp.bottom).offset(32)
     }
     
     self.titleField.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(20)
       make.right.equalToSuperview().offset(-20)
-      make.top.equalTo(self.categoryStackView.snp.bottom).offset(32)
+      make.top.equalTo(self.categoryView.snp.bottom).offset(32)
     }
     
     self.dateField.snp.makeConstraints { make in
@@ -255,14 +198,14 @@ class DetailView: BaseView {
   func bind(wish: Wish, mode: DetailMode) {
     self.moreButton.isHidden = (mode == .fromFinish)
     self.emojiField.text = wish.emoji
-    self.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
+    self.categoryView.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
     self.titleField.textField.text = wish.title
     self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
+    
+    self.notificationButton.isHidden = !wish.isPushEnable
     self.notificationButton.isSelected = wish.isPushEnable
     if wish.isPushEnable {
       self.notificationButton.setTitle("detail_notification_on".localized, for: .normal)
-    } else {
-      
     }
     
     if !wish.memo.isEmpty {
@@ -272,37 +215,6 @@ class DetailView: BaseView {
     if !wish.hashtag.isEmpty {
       self.addHashtagField(hashtag: wish.hashtag)
     }
-  }
-  
-  func moveActiveButton(category: Category) {
-    var index = 0
-    switch category {
-    case .wantToDo:
-      index = 0
-    case .wantToGet:
-      index = 1
-    case .wantToGo:
-      index = 2
-    }
-    self.activeButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.categoryStackView)
-      make.height.equalTo(30)
-      make.centerX.equalTo(self.categoryStackView.arrangedSubviews[index])
-    }
-    self.activeButton.setTitle(category.rawValue.localized, for: .normal)
-    UIView.animate(withDuration: 0.3, delay: 0, options:.curveEaseOut, animations: {
-      self.layoutIfNeeded()
-    }, completion: { [weak self] isComplete in
-      self?.wantToDoButton.setTitleColor(category == .wantToDo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self?.wantToDoButton.titleLabel?.font = category == .wantToDo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self?.wantToDoButton.contentEdgeInsets = category == .wantToDo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self?.wantToGoButton.setTitleColor(category == .wantToGo ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self?.wantToGoButton.titleLabel?.font = category == .wantToGo ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self?.wantToGoButton.contentEdgeInsets = category == .wantToGo ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-      self?.wantToGetButton.setTitleColor(category == .wantToGet ? UIColor.white : UIColor(r: 136, g: 136, b: 136), for: .normal)
-      self?.wantToGetButton.titleLabel?.font = category == .wantToGet ? UIFont(name: "AppleSDGothicNeoEB00", size: 14) : UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-      self?.wantToGetButton.contentEdgeInsets = category == .wantToGet ? UIEdgeInsets(top: 3, left: 18, bottom: 0, right: 18) : UIEdgeInsets(top: 6, left: 18, bottom: 4, right: 18)
-    })
   }
     
   func setEmojiBackground(isEmpty: Bool) {
@@ -315,9 +227,14 @@ class DetailView: BaseView {
     }
   }
   
+  func setTitlePlaceholder(by category: Category) {
+    self.titleField.textField.attributedPlaceholder = NSAttributedString(
+      string: "write_placeholder_title_\(category.rawValue)".localized,
+      attributes: [.foregroundColor: UIColor.gray3]
+    )
+  }
+  
   func setEditable(isEditable: Bool) {
-    self.scrollView.isUserInteractionEnabled = isEditable
-    
     if isEditable {
       UIView.animate(withDuration: 0.3) { [weak self] in
         guard let self = self else { return }
@@ -326,11 +243,19 @@ class DetailView: BaseView {
         self.cancelButton.alpha = 1.0
         self.moreButton.alpha = 0.0
       }
-      if self.memoField.superview == nil {
-        self.addMemoField(memo: "")
-      }
+      self.notificationButton.isHidden = false
       
-      if self.hashtagField.superview == nil {
+      self.memoField.isHidden = false
+      if self.memoField.isHidden {
+        self.addMemoField(memo: "")
+      } else {
+        self.memoField.snp.remakeConstraints { make in
+          make.left.right.equalTo(self.titleField)
+          make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+        }
+      }
+
+      if self.hashtagField.isHidden {
         self.addHashtagField(hashtag: "")
       } else {
         self.hashtagField.clearButton.isHidden = false
@@ -357,6 +282,8 @@ class DetailView: BaseView {
         self.moreButton.alpha = 1.0
         self.cancelButton.alpha = 0.0
       }
+      self.notificationButton.isHidden = !self.notificationButton.isSelected
+      
       self.hashtagField.clearButton.isHidden = true
       self.hashtagField.containerView.snp.remakeConstraints { make in
         make.left.equalToSuperview()
@@ -364,21 +291,51 @@ class DetailView: BaseView {
         make.right.equalTo(self.hashtagField.textField).offset(8)
         make.bottom.equalTo(self.hashtagField.textField).offset(8)
       }
-      
+
       if self.memoField.textView.text == "wrtie_placeholder_memo".localized || self.memoField.textView.text.isEmpty {
-        self.memoField.removeFromSuperview()
+        self.memoField.isHidden = true
         self.memoField.setText(text: "")
+      } else {
+        if self.notificationButton.isHidden {
+          self.memoField.snp.remakeConstraints { make in
+            make.left.right.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom).offset(16)
+          }
+        }
       }
-      
+
       if self.hashtagField.textField.text!.isEmpty {
-        self.hashtagField.removeFromSuperview()
+        self.hashtagField.isHidden = true
         self.hashtagField.bind(hashtag: "")
       } else {
-        if self.memoField.superview == nil {
+        if self.notificationButton.isHidden {
+          if self.memoField.isHidden {
+            self.hashtagField.snp.remakeConstraints { make in
+              make.left.equalToSuperview().offset(20)
+              make.right.equalTo(self.hashtagField.containerView)
+              make.top.equalTo(self.dateField.snp.bottom).offset(16)
+              make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+            }
+          } else {
+            self.hashtagField.snp.remakeConstraints { make in
+              make.left.equalToSuperview().offset(20)
+              make.right.equalTo(self.hashtagField.containerView)
+              make.top.equalTo(self.memoField.snp.bottom).offset(16)
+              make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+            }
+          }
+        } else if self.memoField.isHidden {
           self.hashtagField.snp.remakeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalTo(self.hashtagField.containerView)
             make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+            make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+          }
+        } else {
+          self.hashtagField.snp.remakeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalTo(self.hashtagField.containerView)
+            make.top.equalTo(self.memoField.snp.bottom).offset(16)
             make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
           }
         }
@@ -400,6 +357,10 @@ class DetailView: BaseView {
     }
   }
   
+  private func refreshLayout() {
+    
+  }
+  
   private func setupEmojiKeyboard() {
     let keyboardSettings = KeyboardSettings(bottomType: .categories)
     let emojiView = EmojiView(keyboardSettings: keyboardSettings)
@@ -410,11 +371,16 @@ class DetailView: BaseView {
   }
   
   private func addMemoField(memo: String) {
-    self.containerView.addSubViews(self.memoField)
-    
-    self.memoField.snp.makeConstraints { make in
-      make.left.right.equalTo(self.titleField)
-      make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+    if self.notificationButton.isHidden {
+      self.memoField.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.titleField)
+        make.top.equalTo(self.dateField.snp.bottom).offset(16)
+      }
+    } else {
+      self.memoField.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.titleField)
+        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+      }
     }
     
     self.containerView.snp.remakeConstraints { make in
@@ -430,24 +396,30 @@ class DetailView: BaseView {
   }
   
   private func addHashtagField(hashtag: String) {
-    self.containerView.addSubViews(self.hashtagField)
-    
+    self.hashtagField.isHidden = false
     if !hashtag.isEmpty {
       self.hashtagField.bind(hashtag: hashtag)
     }
     
-    if self.memoField.superview != nil {
+    if self.notificationButton.isHidden {
       self.hashtagField.snp.remakeConstraints { make in
         make.left.equalToSuperview().offset(20)
         make.right.equalTo(self.hashtagField.containerView)
-        make.top.equalTo(self.memoField.snp.bottom).offset(16)
+        make.top.equalTo(self.dateField.snp.bottom).offset(16)
+        make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
+      }
+    } else if self.memoField.isHidden {
+      self.hashtagField.snp.remakeConstraints { make in
+        make.left.equalToSuperview().offset(20)
+        make.right.equalTo(self.hashtagField.containerView)
+        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
         make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
       }
     } else {
       self.hashtagField.snp.remakeConstraints { make in
         make.left.equalToSuperview().offset(20)
         make.right.equalTo(self.hashtagField.containerView)
-        make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
+        make.top.equalTo(self.memoField.snp.bottom).offset(16)
         make.bottom.equalTo(self.hashtagField.errorLabel).offset(10)
       }
     }
@@ -464,17 +436,23 @@ class DetailView: BaseView {
 extension DetailView: UIScrollViewDelegate {
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    self.hideEditButton()
+    if self.moreButton.alpha == 0 {
+      self.hideEditButton()
+    }
   }
   
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
-      self.showEditButton()
+      if self.moreButton.alpha == 0 {
+        self.showEditButton()
+      }
     }
   }
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.showEditButton()
+    if self.moreButton.alpha == 0 {
+      self.showEditButton()
+    }
   }
 }
 

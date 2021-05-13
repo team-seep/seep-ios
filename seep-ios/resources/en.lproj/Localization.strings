@@ -4,6 +4,9 @@
 "common_category_want_to_do" = "하고 싶어요";
 "common_category_want_to_get" = "갖고 싶어요";
 "common_category_want_to_go" = "가고 싶어요";
+"common_category_want_to_do_unit" = "%02d개";
+"common_category_want_to_get_unit" = "%02d개";
+"common_category_want_to_go_unit" = "%02d곳";
 
 // Category
 "category_want_to_do" = "하고 싶어요";
@@ -18,12 +21,9 @@
 "home_write_category_want_to_get_count_empty" ="갖고 싶은 것들을\n적어봐요!";
 "home_write_category_want_to_go_count_empty" ="가고 싶은 곳들을\n적어봐요!";
 "home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
-"home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%d개 남았어요!";
-"home_write_category_want_to_do_unit" = "%d개";
-"home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%d개 남았어요!";
-"home_write_category_want_to_get_unit" = "%d개";
-"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%d군데 남았어요!";
-"home_write_category_want_to_go_unit" = "%d군데";
+"home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%02d개 남았어요!";
+"home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%02d개 남았어요!";
+"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%02d곳 남았어요!";
 "home_finish_count_category_want_to_do_format" = "👏 지금까지 %d개를 이뤘어요";
 "home_finish_count_category_want_to_do_format_empty" = "😱 지금까지 %d개를 이뤘어요";
 "home_finish_count_category_want_to_get_format" = "👏 지금까지 %d개를 겟했어요";
@@ -32,6 +32,7 @@
 "home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
+"home_empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";
@@ -43,7 +44,8 @@
 "write_placeholder_title_category_want_to_get" = "뭐 갖고 싶어요?";
 "write_placeholder_title_category_want_to_go" = "어디 가고 싶어요?";
 "write_placeholder_date" = "언제까지 하면 좋을까요?";
-"write_notification" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
+"write_notification_off" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
+"write_notification_on" = "알림이 켜져있습니다!";
 "wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
 "write_button_off" = "🔥어서 채워봅시다!";
 "write_button_on" = "🎉등록해볼까요!";
@@ -68,11 +70,16 @@
 "detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
 
 // Finish
-"finish_back_button" = "메인홈으로 돌아가기";
+"finish_back_button" = "메인 홈으로 돌아가기";
 "finish_title_empty" = "아직...\n완료된 것이 없지만";
 "finish_description_empty" = "하고 싶은게 많은 것만으로도\n반짝반짝 빛나는 사람인걸요.\n당신을 응원할게요!";
 "finish_empty_back_button" = "메인으로 돌아가기";
-"finish_count_category_want_to_do_format" = "지금까지\n%d개 이뤘어요!";
-"finish_count_category_want_to_get_format" = "지금까지\n%d개 겟했어요!";
-"finish_count_category_want_to_go_format" = "지금까지\n%d곳 다녀왔어요!";
+"finish_count_category_want_to_do_format" = "지금까지\n%02d개 이뤘어요!";
+"finish_count_category_want_to_get_format" = "지금까지\n%02d개 겟했어요!";
+"finish_count_category_want_to_go_format" = "지금까지\n%02d곳 다녀왔어요!";
 
+// Notification
+"notification_two_day_before_title" = "🔔 여기보세요👀";
+"notification_two_day_before_body_format" = "'%@' 완료까지 2일 남았어요!";
+"notification_day_before_title" = "🔔 잊지마세요!";
+"notification_day_before_body_foramt" = "내일은 '%@' 완료하는 날";

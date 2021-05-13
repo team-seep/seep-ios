@@ -22,6 +22,7 @@ class PageItemReactor: Reactor {
     var viewType: ViewType = .list
     var endRefresh: Bool = false
     var fetchHomeVC: Bool = false
+    var isEmptyMessageHidden: Bool = true
   }
   
   let initialState = State()
@@ -69,6 +70,7 @@ class PageItemReactor: Reactor {
     switch mutation {
     case .fetchWishList(let wishList):
       newState.wishiList = wishList
+      newState.isEmptyMessageHidden = !wishList.isEmpty
       newState.endRefresh.toggle()
     case .setViewType(let viewType):
       newState.viewType = viewType

@@ -14,4 +14,13 @@ class Wish: Object {
   @objc dynamic var hashtag: String = ""
   @objc dynamic var isSuccess: Bool = false
   @objc dynamic var createdAt: Date = Date()
+  
+  
+  static func deadlineOrder(wish1: Wish, wish2: Wish) -> Bool {
+    return wish1.date < wish2.date
+  }
+  
+  static func finishOrder(wish1: Wish, wish2: Wish) -> Bool {
+    return wish1.finishDate! > wish2.finishDate!
+  }
 }

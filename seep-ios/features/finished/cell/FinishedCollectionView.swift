@@ -25,28 +25,14 @@ class FinishedCollectionCell: BaseCollectionViewCell {
     $0.alpha = 0.4
   }
   
-  let tagLabel = PaddingLabel(
-    topInset: 2,
-    bottomInset: 2,
-    leftInset: 6,
-    rightInset: 6
-  ).then {
-    $0.textColor = UIColor(r: 153, g: 153, b: 153)
-    $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
-    $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
-    $0.layer.cornerRadius = 4
-  }
-  
-  let checkedImage = UIImageView().then {
-    $0.image = UIImage(named: "img_check_on")
-  }
+  let tagLabel = TagLabel()
   
   
   override func setup() {
     self.backgroundColor = .clear
     self.addSubViews(
       containerView, emojiLabel, titleLabel, finishDateLabel,
-      tagLabel, checkedImage
+      tagLabel
     )
   }
   
@@ -75,11 +61,6 @@ class FinishedCollectionCell: BaseCollectionViewCell {
     self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.finishDateLabel)
       make.top.equalTo(self.finishDateLabel.snp.bottom).offset(6)
-    }
-    
-    self.checkedImage.snp.makeConstraints { make in
-      make.right.equalToSuperview().offset(-14)
-      make.bottom.equalToSuperview().offset(-20)
     }
   }
   

@@ -12,6 +12,11 @@ class HomeVC: BaseVC, View {
   private let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
   private var pageViewControllers: [UIViewController] = []
   
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
   static func instance() -> UINavigationController {
     let homeVC = HomeVC(nibName: nil, bundle: nil)
 
@@ -26,25 +31,15 @@ class HomeVC: BaseVC, View {
     
     self.view = homeView
     self.reactor = homeReactor
-    self.pageViewControllers = [
-      PageItemVC.instance(category: .wantToDo).then {
-        $0.delegate = self
-      },
-      PageItemVC.instance(category: .wantToGet).then {
-        $0.delegate = self
-      },
-      PageItemVC.instance(category: .wantToGo).then {
-        $0.delegate = self
-      }
-    ]
-    self.homeView.startAnimation()
+    self.registerNotification()
     self.setupPageVC()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+     
+    self.homeView.startEmojiAnimation()
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }
@@ -63,56 +58,54 @@ class HomeVC: BaseVC, View {
       .disposed(by: self.eventDisposeBag)
     
     self.homeView.writeButton.rx.tap
+      .map { self.homeReactor.currentState.category }
       .observeOn(MainScheduler.instance)
-      .bind(onNext: self.showWirteVC)
+      .bind(onNext: self.showWirteVC(category:))
       .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: HomeReactor) {
     // MARK: Action
-    self.homeView.wantToDoButton.rx.tap
-      .map { HomeReactor.Action.tapCategory(Category.wantToDo) }
-      .bind(to: self.homeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.homeView.wantToGoButton.rx.tap
-      .map { HomeReactor.Action.tapCategory(Category.wantToGo) }
-      .bind(to: self.homeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.homeView.wantToGetButton.rx.tap
-      .map { HomeReactor.Action.tapCategory(Category.wantToGet) }
-      .bind(to: self.homeReactor.action)
+    self.homeView.categoryView.rx.tapCategory
+      .map { HomeReactor.Action.tapCategory($0)}
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.homeView.viewTypeButton.rx.tap
-      .map { HomeReactor.Action.tapViewType(())}
-      .bind(to: self.homeReactor.action)
+      .map { HomeReactor.Action.tapViewType }
+      .do(onNext: { _ in
+        FeedbackUtils.feedbackInstance.impactOccurred()
+      })
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     // MARK: State
-    self.homeReactor.state
+    reactor.state
       .map { ($0.category, $0.successCount) }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.setSuccessCount)
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { ($0.category, $0.wishCount) }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.homeView.setWishCount)
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { $0.category }
       .skip(1)
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .do(onNext: self.movePageView(category:))
-      .bind(onNext: self.homeView.moveActiveButton(category:))
+      .do(onNext: self.homeView.emojiView.bind(category:))
+      .bind(to: self.homeView.categoryView.rx.category)
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { $0.viewType }
       .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
@@ -120,7 +113,7 @@ class HomeVC: BaseVC, View {
       .bind(onNext: self.homeView.changeViewType(to:))
       .disposed(by: self.disposeBag)
     
-    self.homeReactor.state
+    reactor.state
       .map { $0.writeButtonTitle }
       .distinctUntilChanged()
       .bind(to: self.homeView.writeButton.rx.title())
@@ -128,6 +121,17 @@ class HomeVC: BaseVC, View {
   }
   
   private func setupPageVC() {
+    self.pageViewControllers = [
+      PageItemVC.instance(category: .wantToDo).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGet).then {
+        $0.delegate = self
+      },
+      PageItemVC.instance(category: .wantToGo).then {
+        $0.delegate = self
+      }
+    ]
     self.addChild(self.pageVC)
     self.pageVC.delegate = self
     self.pageVC.dataSource = self
@@ -143,14 +147,23 @@ class HomeVC: BaseVC, View {
     )
   }
   
+  private func registerNotification() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(willEnterForeground),
+      name: UIApplication.willEnterForegroundNotification,
+      object: nil
+    )
+  }
+  
   private func goToFinish(category: Category) {
     let finishedVC = FinishedVC.instance(category: category)
     
     self.navigationController?.pushViewController(finishedVC, animated: true)
   }
   
-  private func showWirteVC() {
-    let writeVC = WriteVC.instance().then {
+  private func showWirteVC(category: Category) {
+    let writeVC = WriteVC.instance(category: category).then {
       $0.delegate = self
     }
     
@@ -204,12 +217,16 @@ class HomeVC: BaseVC, View {
       }
     }
   }
+  
+  @objc private func willEnterForeground() {
+    self.homeView.startEmojiAnimation()
+  }
 }
 
 extension HomeVC: WriteDelegate {
   
   func onSuccessWrite() {
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
     self.fetchPageVC()
@@ -219,14 +236,14 @@ extension HomeVC: WriteDelegate {
 extension HomeVC: PageItemDelegate {
   
   func onDismiss() {
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }
   
   func onFinishWish() {
     self.homeView.showFinishToast()
-    Observable.just(HomeReactor.Action.viewDidLoad(()))
+    Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
   }

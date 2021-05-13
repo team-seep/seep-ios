@@ -24,21 +24,7 @@ class FinishedTableCell: BaseTableViewCell {
     $0.alpha = 0.4
   }
   
-  let tagLabel = PaddingLabel(
-    topInset: 2,
-    bottomInset: 2,
-    leftInset: 6,
-    rightInset: 6
-  ).then {
-    $0.textColor = UIColor(r: 153, g: 153, b: 153)
-    $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
-    $0.backgroundColor = UIColor(r: 241, g: 241, b: 241)
-    $0.layer.cornerRadius = 4
-  }
-  
-  let checkedImage = UIImageView().then {
-    $0.image = UIImage(named: "img_check_on")
-  }
+  let tagLabel = TagLabel()
   
   
   override func setup() {
@@ -46,7 +32,7 @@ class FinishedTableCell: BaseTableViewCell {
     self.selectionStyle = .none
     self.addSubViews(
       containerView, emojiLabel, titleLabel, finishDateLabel,
-      tagLabel, checkedImage
+      tagLabel
     )
   }
   
@@ -77,11 +63,6 @@ class FinishedTableCell: BaseTableViewCell {
     self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.finishDateLabel.snp.right).offset(7)
       make.centerY.equalTo(self.finishDateLabel)
-    }
-    
-    self.checkedImage.snp.makeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.right.equalTo(self.containerView).offset(-16)
     }
   }
   

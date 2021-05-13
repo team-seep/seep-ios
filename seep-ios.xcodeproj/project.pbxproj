@@ -38,6 +38,8 @@
 		6E43A5C426171D3C00FB1738 /* FinishedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43A5C326171D3C00FB1738 /* FinishedCollectionView.swift */; };
 		6E441CA12604549F0010A625 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
 		6E441CA526046F9D0010A625 /* WishServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA426046F9D0010A625 /* WishServices.swift */; };
+		6E5DECFE264263F70005487F /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFD264263F70005487F /* TagLabel.swift */; };
+		6E5DED002642D8FC0005487F /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFF2642D8FC0005487F /* CategoryView.swift */; };
 		6E600149260831F1000065C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E600148260831F0000065C8 /* GoogleService-Info.plist */; };
 		6E60018826084516000065C8 /* HomeWishCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60018726084516000065C8 /* HomeWishCollectionCell.swift */; };
 		6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
@@ -50,7 +52,14 @@
 		6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E623260D9E630062CBFB /* DetailVC.swift */; };
 		6E69E62B260DB7640062CBFB /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62A260DB7640062CBFB /* EditButton.swift */; };
 		6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62D260DBACA0062CBFB /* DetailReactor.swift */; };
+		6E69FD4826468BDC00F0AB60 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */; };
+		6E764AE8263FA96C00A99402 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE7263FA96C00A99402 /* UIFontExtension.swift */; };
+		6E764AEA263FBBE300A99402 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE9263FBBE300A99402 /* DdayLabel.swift */; };
+		6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */; };
+		6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AED263FCB4700A99402 /* UIImageExtension.swift */; };
 		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
+		6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */; };
+		6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */; };
 		6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACBD592613034A0009AB6F /* PageItemVC.swift */; };
 		6EACBD5D261303540009AB6F /* PageItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACBD5C261303540009AB6F /* PageItemView.swift */; };
 		6ED89715261579B80005FA29 /* FinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED89714261579B80005FA29 /* FinishedView.swift */; };
@@ -95,6 +104,8 @@
 		6E43A5C326171D3C00FB1738 /* FinishedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedCollectionView.swift; sourceTree = "<group>"; };
 		6E441CA02604549F0010A625 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		6E441CA426046F9D0010A625 /* WishServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishServices.swift; sourceTree = "<group>"; };
+		6E5DECFD264263F70005487F /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
+		6E5DECFF2642D8FC0005487F /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		6E600148260831F0000065C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6E60018726084516000065C8 /* HomeWishCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishCollectionCell.swift; sourceTree = "<group>"; };
 		6E66A26E25FB40BD00C0C051 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -107,7 +118,15 @@
 		6E69E623260D9E630062CBFB /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		6E69E62A260DB7640062CBFB /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		6E69E62D260DBACA0062CBFB /* DetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReactor.swift; sourceTree = "<group>"; };
+		6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
+		6E69FD49264698E900F0AB60 /* seep-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "seep-ios.entitlements"; sourceTree = "<group>"; };
+		6E764AE7263FA96C00A99402 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
+		6E764AE9263FBBE300A99402 /* DdayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
+		6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiImageVIew.swift; sourceTree = "<group>"; };
+		6E764AED263FCB4700A99402 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
+		6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackUtils.swift; sourceTree = "<group>"; };
+		6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		6EACBD592613034A0009AB6F /* PageItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemVC.swift; sourceTree = "<group>"; };
 		6EACBD5C261303540009AB6F /* PageItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemView.swift; sourceTree = "<group>"; };
 		6ED89714261579B80005FA29 /* FinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedView.swift; sourceTree = "<group>"; };
@@ -141,6 +160,7 @@
 				6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */,
 				6E274E5C25F20D5A007DC880 /* RatioUtils.swift */,
 				6E274E5F25F20D73007DC880 /* DateUtils.swift */,
+				6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */,
 			);
 			path = uilts;
 			sourceTree = "<group>";
@@ -163,6 +183,9 @@
 				6E274E7625F20EE4007DC880 /* UIImageViewExtension.swift */,
 				6E274E7925F20EF2007DC880 /* UILabelExtension.swift */,
 				6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */,
+				6E764AE7263FA96C00A99402 /* UIFontExtension.swift */,
+				6E764AED263FCB4700A99402 /* UIImageExtension.swift */,
+				6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -201,6 +224,7 @@
 				6EACBD592613034A0009AB6F /* PageItemVC.swift */,
 				6EACBD5C261303540009AB6F /* PageItemView.swift */,
 				6E07528226136D8800041E7B /* PageItemReactor.swift */,
+				6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */,
 			);
 			path = home;
 			sourceTree = "<group>";
@@ -226,6 +250,8 @@
 		6E283AF725F2047900955B57 /* seep-ios */ = {
 			isa = PBXGroup;
 			children = (
+				6E69FD49264698E900F0AB60 /* seep-ios.entitlements */,
+				6E9BFEA026453C9C0093CA89 /* manager */,
 				6E600148260831F0000065C8 /* GoogleService-Info.plist */,
 				6E441CA326046F920010A625 /* services */,
 				6E66A26D25FB40B600C0C051 /* model */,
@@ -300,6 +326,14 @@
 			path = detail;
 			sourceTree = "<group>";
 		};
+		6E9BFEA026453C9C0093CA89 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
+			);
+			path = manager;
+			sourceTree = "<group>";
+		};
 		6ED89713261579AA0005FA29 /* finished */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,6 +361,9 @@
 				6E66A27C25FB587100C0C051 /* TextInputField.swift */,
 				6E41F28025FB873500CE1530 /* TextInputView.swift */,
 				6E357216261AF273003E18EA /* InputAccessoryView.swift */,
+				6E764AE9263FBBE300A99402 /* DdayLabel.swift */,
+				6E5DECFD264263F70005487F /* TagLabel.swift */,
+				6E5DECFF2642D8FC0005487F /* CategoryView.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -473,16 +510,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E5DECFE264263F70005487F /* TagLabel.swift in Sources */,
 				6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */,
 				6E69E62B260DB7640062CBFB /* EditButton.swift in Sources */,
 				6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */,
 				6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */,
 				6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */,
+				6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */,
 				6E274E7F25F20F58007DC880 /* BaseView.swift in Sources */,
 				6E41F28425FB916200CE1530 /* WriteReactor.swift in Sources */,
 				6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */,
 				6E43A5C12617192600FB1738 /* FinishedTableCell.swift in Sources */,
 				6E274E7425F20EC6007DC880 /* StringExtension.swift in Sources */,
+				6E764AE8263FA96C00A99402 /* UIFontExtension.swift in Sources */,
 				6E283AFD25F2047900955B57 /* HomeVC.swift in Sources */,
 				6E274E8325F20F8D007DC880 /* BaseVC.swift in Sources */,
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
@@ -491,8 +531,12 @@
 				6EACBD5D261303540009AB6F /* PageItemView.swift in Sources */,
 				6E60018826084516000065C8 /* HomeWishCollectionCell.swift in Sources */,
 				6E441CA526046F9D0010A625 /* WishServices.swift in Sources */,
+				6E69FD4826468BDC00F0AB60 /* DateExtensions.swift in Sources */,
 				6E357217261AF273003E18EA /* InputAccessoryView.swift in Sources */,
 				6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */,
+				6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */,
+				6E764AEA263FBBE300A99402 /* DdayLabel.swift in Sources */,
+				6E5DED002642D8FC0005487F /* CategoryView.swift in Sources */,
 				6E43A5C426171D3C00FB1738 /* FinishedCollectionView.swift in Sources */,
 				6E43A5BD2616C8B500FB1738 /* FinishedReactor.swift in Sources */,
 				6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */,
@@ -504,6 +548,8 @@
 				6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */,
 				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
 				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
+				6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */,
+				6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */,
 				6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */,
 				6E35721C261AF9F7003E18EA /* ToastView.swift in Sources */,
 				6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */,
@@ -667,8 +713,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				INFOPLIST_FILE = "seep-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -690,8 +737,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				INFOPLIST_FILE = "seep-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
