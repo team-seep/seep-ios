@@ -33,7 +33,7 @@ class FinishedVC: BaseVC, View {
     self.setupTableView()
     self.setupCollectionView()
     
-    Observable.just(FinishedReactor.Action.viewDidLoad(()))
+    Observable.just(FinishedReactor.Action.viewDidLoad)
       .bind(to: self.finishedReactor.action)
       .disposed(by: self.disposeBag)
   }
@@ -53,7 +53,7 @@ class FinishedVC: BaseVC, View {
   func bind(reactor: FinishedReactor) {
     // MARK: Action
     self.finishedView.viewTypeButton.rx.tap
-      .map { FinishedReactor.Action.tapViewType(()) }
+      .map { FinishedReactor.Action.tapViewType }
       .bind(to: self.finishedReactor.action)
       .disposed(by: self.disposeBag)
     
