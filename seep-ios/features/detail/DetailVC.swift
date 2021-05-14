@@ -289,8 +289,10 @@ class DetailVC: BaseVC, View {
     let shereAction = UIAlertAction(
       title: "detail_action_sheet_share".localized,
       style: .default
-    ) { action in
+    ) { [weak self] action in
+      let sharePhotoVC = SharePhotoVC.instance()
       
+      self?.present(sharePhotoVC, animated: true, completion: nil)
     }
     
     alertController.addAction(shereAction)

@@ -15,4 +15,5 @@ extension UIImage {
   static let icCheckOff = UIImage(named: "ic_check_off")
   static let icCheckOn20 = UIImage(named: "ic_check_on_20")
   static let icCheckOn = UIImage(named: "ic_check_on")
+  static let icLogoBlack = UIImage(named: "ic_logo_black")
 }
