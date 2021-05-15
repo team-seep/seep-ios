@@ -2,12 +2,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ShareCategoryButton: UIButton {
+class ShareTypeButton: UIButton {
   
   let selectedIndicator = UIView().then {
     $0.backgroundColor = .tennisGreen
     $0.isHidden = true
-    $0.layer.cornerRadius = 0.5
+    $0.layer.cornerRadius = 1.5
   }
   
   
@@ -34,12 +34,12 @@ class ShareCategoryButton: UIButton {
       make.left.equalToSuperview().offset(12)
       make.right.equalToSuperview().offset(-12)
       make.bottom.equalToSuperview()
-      make.height.equalTo(1)
+      make.height.equalTo(3)
     }
   }
 }
 
-extension Reactive where Base: ShareCategoryButton {
+extension Reactive where Base: ShareTypeButton {
   
   var isSelected: Binder<Bool> {
     return Binder(self.base) { view, isSelected in

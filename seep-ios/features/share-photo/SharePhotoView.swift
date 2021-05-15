@@ -48,17 +48,7 @@ class SharePhotoView: BaseView {
     $0.layer.masksToBounds = true
   }
   
-  let emojiButton = ShareCategoryButton().then {
-    $0.setTitle("share_photo_emoji".localized, for: .normal)
-  }
-  
-  let buttonDividorView = UIView().then{
-    $0.backgroundColor = UIColor(r: 238, g: 238, b: 238)
-  }
-  
-  let photoButton = ShareCategoryButton().then {
-    $0.setTitle("share_photo_album".localized, for: .normal)
-  }
+  let shareTypeSwitchButton = ShareTypeSwitchView()
   
   let collectionView = UICollectionView(
     frame: .zero,
@@ -76,16 +66,13 @@ class SharePhotoView: BaseView {
   
   
   override func setup() {
-    self.backgroundColor = .white
+    self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
     self.ddayContainer.addSubViews(ddayLabel)
     self.photoContainer.addSubViews(
       dateLabel, logoImage, emojiLabel, titleLabel,
       ddayContainer
     )
-    self.addSubViews(
-      photoContainer, emojiButton, buttonDividorView, photoButton,
-      collectionView
-    )
+    self.addSubViews(photoContainer, shareTypeSwitchButton, collectionView)
   }
   
   override func bindConstraints() {
@@ -122,29 +109,18 @@ class SharePhotoView: BaseView {
       make.edges.equalTo(self.ddayLabel)
     }
     
-    self.buttonDividorView.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.width.equalTo(1)
-      make.height.equalTo(30)
-      make.top.equalTo(self.photoContainer.snp.bottom).offset(6)
-    }
-    
-    self.emojiButton.snp.makeConstraints { make in
-      make.left.equalToSuperview()
-      make.right.equalTo(self.buttonDividorView.snp.left)
+    self.shareTypeSwitchButton.snp.makeConstraints { make in
       make.top.equalTo(self.photoContainer.snp.bottom)
-      make.height.equalTo(42)
-    }
-    
-    self.photoButton.snp.makeConstraints { make in
-      make.left.equalTo(self.buttonDividorView.snp.right)
-      make.right.equalToSuperview()
-      make.top.bottom.equalTo(self.emojiButton)
+      make.left.right.equalToSuperview()
     }
     
     self.collectionView.snp.makeConstraints { make in
       make.left.right.bottom.equalToSuperview()
-      make.top.equalTo(self.emojiButton.snp.bottom)
+      make.top.equalTo(self.shareTypeSwitchButton.snp.bottom)
     }
+  }
+  
+  func setCollectionViewHidden(by type: ShareTypeSwitchView.ShareType) {
+    self.collectionView.isHidden = type == .emoji
   }
 }

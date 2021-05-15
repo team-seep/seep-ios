@@ -1,4 +1,5 @@
 import UIKit
+import Photos
 
 class SharePhotoCell: BaseCollectionViewCell {
   
@@ -7,9 +8,11 @@ class SharePhotoCell: BaseCollectionViewCell {
     width: (UIScreen.main.bounds.width - 2) / 3,
     height: (UIScreen.main.bounds.width - 2) / 3
   )
+  var imageRequestId: PHImageRequestID?
   
   let photo = UIImageView().then {
     $0.contentMode = .scaleAspectFill
+    $0.clipsToBounds = true
   }
   
   let dimmedView = UIView().then{
@@ -22,6 +25,13 @@ class SharePhotoCell: BaseCollectionViewCell {
     $0.isHidden = true
   }
   
+  
+  override func prepareForReuse() {
+    if let imageRequestId = self.imageRequestId {
+      PHImageManager.default().cancelImageRequest(imageRequestId)
+    }
+    super.prepareForReuse()
+  }
   
   override func setup() {
     self.backgroundColor = .gray
@@ -39,6 +49,20 @@ class SharePhotoCell: BaseCollectionViewCell {
     
     self.selectedMarker.snp.makeConstraints { make in
       make.center.equalToSuperview()
+    }
+  }
+  
+  func bind(asset: PHAsset) {
+    let options = PHImageRequestOptions()
+    options.isNetworkAccessAllowed = true
+
+    self.imageRequestId = PHImageManager.default().requestImage(
+      for: asset,
+      targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
+      contentMode: .aspectFit,
+      options: options) { (image, info) in
+      guard let image = image else { return }
+      self.photo.image = image
     }
   }
 }
