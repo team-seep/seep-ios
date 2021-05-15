@@ -25,4 +25,8 @@ extension UIFont {
   static func appleExtraBold(size: CGFloat) -> UIFont? {
     return UIFont(name: "AppleSDGothicNeoEB00", size: size)
   }
+  
+  static func appleUltraLight(size: CGFloat) -> UIFont? {
+    return UIFont(name: "AppleSDGothicNeo-UltraLight", size: size)
+  }
 }

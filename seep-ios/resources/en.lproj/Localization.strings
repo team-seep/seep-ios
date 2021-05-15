@@ -83,3 +83,7 @@
 "notification_two_day_before_body_format" = "'%@' 완료까지 2일 남았어요!";
 "notification_day_before_title" = "🔔 잊지마세요!";
 "notification_day_before_body_foramt" = "내일은 '%@' 완료하는 날";
+
+// Share-photo
+"share_photo_emoji" = "😀 이모지";
+"share_photo_album" = "🏞 사진";

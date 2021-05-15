@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */; };
 		6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07528226136D8800041E7B /* PageItemReactor.swift */; };
+		6E091572264F80AB0048EB79 /* ShareCategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091571264F80AB0048EB79 /* ShareCategoryButton.swift */; };
+		6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091574264F87070048EB79 /* SharePhotoCell.swift */; };
 		6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5425F20B31007DC880 /* AlertUtils.swift */; };
 		6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */; };
 		6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5C25F20D5A007DC880 /* RatioUtils.swift */; };
@@ -75,6 +77,8 @@
 
 /* Begin PBXFileReference section */
 		6E07528226136D8800041E7B /* PageItemReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemReactor.swift; sourceTree = "<group>"; };
+		6E091571264F80AB0048EB79 /* ShareCategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCategoryButton.swift; sourceTree = "<group>"; };
+		6E091574264F87070048EB79 /* SharePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
 		6E274E5425F20B31007DC880 /* AlertUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
 		6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtils.swift; sourceTree = "<group>"; };
 		6E274E5C25F20D5A007DC880 /* RatioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioUtils.swift; sourceTree = "<group>"; };
@@ -157,6 +161,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E091573264F86F90048EB79 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				6E091574264F87070048EB79 /* SharePhotoCell.swift */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
 		6E274E5325F20B1E007DC880 /* uilts */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,8 +365,10 @@
 		6EE1706A264E58D000C3E94B /* share-photo */ = {
 			isa = PBXGroup;
 			children = (
+				6E091573264F86F90048EB79 /* cell */,
 				6EE1706B264E58E400C3E94B /* SharePhotoView.swift */,
 				6EE1706D264E590F00C3E94B /* SharePhotoVC.swift */,
+				6E091571264F80AB0048EB79 /* ShareCategoryButton.swift */,
 			);
 			path = "share-photo";
 			sourceTree = "<group>";
@@ -560,6 +574,7 @@
 				6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */,
 				6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */,
 				6ED89715261579B80005FA29 /* FinishedView.swift in Sources */,
+				6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */,
 				6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */,
 				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
 				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
@@ -569,6 +584,7 @@
 				6E35721C261AF9F7003E18EA /* ToastView.swift in Sources */,
 				6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */,
 				6E274E8925F20FE5007DC880 /* BaseCollectionViewCell.swift in Sources */,
+				6E091572264F80AB0048EB79 /* ShareCategoryButton.swift in Sources */,
 				6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */,
 				6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */,
 				6E274E7125F20EB3007DC880 /* UIColorExtension.swift in Sources */,
