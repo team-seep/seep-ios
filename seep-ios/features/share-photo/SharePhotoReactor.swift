@@ -14,18 +14,17 @@ class SharePhotoReactor: Reactor {
   
   enum Mutation {
     case setShareType(ShareTypeSwitchView.ShareType)
-    case setPhotoPermissionGranted(Bool)
     case fetchAllPhotos([PHAsset])
+    case setAlertMessage(String)
   }
   
   struct State {
     var shareType: ShareTypeSwitchView.ShareType = .emoji
-    var isPhotoPermissionGranted = true
     var photos: [PHAsset] = []
   }
   
   let initialState = State()
-  
+  let alertPublisher = PublishRelay<String>()
   
   init(wish: Wish) {
     
@@ -53,6 +52,7 @@ class SharePhotoReactor: Reactor {
               }
           }
         }
+        .catchError(self.handleError(error:))
     default:
       return Observable.empty()
     }
@@ -66,8 +66,8 @@ class SharePhotoReactor: Reactor {
       newState.shareType = shareType
     case .fetchAllPhotos(let photos):
       newState.photos = photos
-    case .setPhotoPermissionGranted(let isGranted):
-      newState.isPhotoPermissionGranted = isGranted
+    case .setAlertMessage(let message):
+      self.alertPublisher.accept(message)
     }
     
     return newState
@@ -80,13 +80,13 @@ class SharePhotoReactor: Reactor {
     case .authorized:
       return .just(true)
     case .denied:
-      let deniedError = CommonError(desc: "Photo Authorization status is denied.")
+      let deniedError = CommonError(desc: "share_photo_deny_message".localized)
       
       return .error(deniedError)
     case .notDetermined:
       return .just(false)
     case .restricted:
-      let restrictedError = CommonError(desc: "Photo Authorization status is restricted.")
+      let restrictedError = CommonError(desc: "share_photo_deny_message".localized)
       
       return .error(restrictedError)
     default:
@@ -104,7 +104,7 @@ class SharePhotoReactor: Reactor {
           observer.onNext(())
           observer.onCompleted()
         case .denied:
-          let deniedError = CommonError(desc: "Photo Authorization status is denied.")
+          let deniedError = CommonError(desc: "share_photo_deny_message".localized)
           
           observer.onError(deniedError)
         default:
@@ -125,5 +125,13 @@ class SharePhotoReactor: Reactor {
     let assets = PHAsset.fetchAssets(with: .image, options: fetchOption)
     
     return .just(assets.objects(at: IndexSet(0..<assets.count - 1)))
+  }
+  
+  private func handleError(error: Error) -> Observable<Mutation> {
+    if let commonError = error as? CommonError {
+      return .just(.setAlertMessage(commonError.description))
+    } else{
+      return .just(.setAlertMessage(error.localizedDescription))
+    }
   }
 }

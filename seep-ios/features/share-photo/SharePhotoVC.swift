@@ -63,5 +63,29 @@ class SharePhotoVC: BaseVC, View {
         cell.bind(asset: asset)
       }
       .disposed(by: self.disposeBag)
+    
+    reactor.alertPublisher
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.showDeniedAlert(message:))
+      .disposed(by: self.disposeBag)
+  }
+  
+  private func showDeniedAlert(message: String) {
+    AlertUtils.showWithCancel(
+      viewController: self,
+      title: nil,
+      message: message,
+      onTapOk: { [weak self] in
+        self?.gotoAppPrivacySettings()
+    })
+  }
+  
+  private func gotoAppPrivacySettings() {
+    guard let url = URL(string: UIApplication.openSettingsURLString),
+          UIApplication.shared.canOpenURL(url) else {
+      return
+    }
+    
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 }
