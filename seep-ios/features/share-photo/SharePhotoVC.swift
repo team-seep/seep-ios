@@ -56,6 +56,7 @@ class SharePhotoVC: BaseVC, View {
     
     reactor.state
       .map { $0.photos }
+      .distinctUntilChanged()
       .bind(to: self.sharePhotoView.collectionView.rx.items(
               cellIdentifier: SharePhotoCell.registerId,
               cellType: SharePhotoCell.self
