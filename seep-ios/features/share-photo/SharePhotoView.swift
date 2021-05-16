@@ -18,7 +18,7 @@ class SharePhotoView: BaseView {
   
   let emojiLabel = UILabel().then {
     $0.text = "🍩"
-    $0.font = .systemFont(ofSize: 100)
+    $0.font = .systemFont(ofSize: 150)
   }
   
   let titleLabel = UILabel().then {
