@@ -124,7 +124,11 @@ class SharePhotoReactor: Reactor {
     }
     let assets = PHAsset.fetchAssets(with: .image, options: fetchOption)
     
-    return .just(assets.objects(at: IndexSet(0..<assets.count - 1)))
+    if assets.count > 0 {
+      return .just(assets.objects(at: IndexSet(0..<assets.count - 1)))
+    } else {
+      return .just([])
+    }
   }
   
   private func handleError(error: Error) -> Observable<Mutation> {
