@@ -25,6 +25,13 @@ class SharePhotoCell: BaseCollectionViewCell {
     $0.isHidden = true
   }
   
+  override var isSelected: Bool {
+    didSet {
+      self.dimmedView.isHidden = !self.isSelected
+      self.selectedMarker.isHidden = !self.isSelected
+    }
+  }
+  
   
   override func prepareForReuse() {
     if let imageRequestId = self.imageRequestId {
@@ -59,7 +66,7 @@ class SharePhotoCell: BaseCollectionViewCell {
     self.imageRequestId = PHImageManager.default().requestImage(
       for: asset,
       targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
-      contentMode: .aspectFit,
+      contentMode: .aspectFill,
       options: options) { (image, info) in
       guard let image = image else { return }
       self.photo.image = image

@@ -1,9 +1,16 @@
 import UIKit
+import Photos
 
 class SharePhotoView: BaseView {
   
   let photoContainer = UIView().then {
     $0.backgroundColor = UIColor(r: 207, g: 164, b: 110)
+  }
+  
+  let imageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFill
+    $0.clipsToBounds = true
+    $0.isHidden = true
   }
   
   let dateLabel = UILabel().then {
@@ -69,8 +76,8 @@ class SharePhotoView: BaseView {
     self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
     self.ddayContainer.addSubViews(ddayLabel)
     self.photoContainer.addSubViews(
-      dateLabel, logoImage, emojiLabel, titleLabel,
-      ddayContainer
+      imageView, dateLabel, logoImage, emojiLabel,
+      titleLabel, ddayContainer
     )
     self.addSubViews(photoContainer, shareTypeSwitchButton, collectionView)
   }
@@ -79,6 +86,10 @@ class SharePhotoView: BaseView {
     self.photoContainer.snp.makeConstraints { make in
       make.left.top.right.equalToSuperview()
       make.height.equalTo(UIScreen.main.bounds.width)
+    }
+    
+    self.imageView.snp.makeConstraints { make in
+      make.edges.equalTo(self.photoContainer)
     }
     
     self.dateLabel.snp.makeConstraints { make in
@@ -122,5 +133,22 @@ class SharePhotoView: BaseView {
   
   func setCollectionViewHidden(by type: ShareTypeSwitchView.ShareType) {
     self.collectionView.isHidden = type == .emoji
+    self.imageView.isHidden = type == .emoji
+    self.emojiLabel.isHidden = type == .photo
+  }
+  
+  func setPhotoBackground(asset: PHAsset?) {
+    guard let asset = asset else { return }
+    let options = PHImageRequestOptions()
+    options.isNetworkAccessAllowed = true
+
+    PHImageManager.default().requestImage(
+      for: asset,
+      targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
+      contentMode: .aspectFit,
+      options: options) { (image, info) in
+      guard let image = image else { return }
+      self.imageView.image = image
+    }
   }
 }

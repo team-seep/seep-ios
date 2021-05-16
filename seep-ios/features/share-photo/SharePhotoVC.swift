@@ -64,6 +64,12 @@ class SharePhotoVC: BaseVC, View {
       }
       .disposed(by: self.disposeBag)
     
+    reactor.state
+      .map { $0.selectedPhoto }
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.sharePhotoView.setPhotoBackground(asset:))
+      .disposed(by: self.disposeBag)
+    
     reactor.alertPublisher
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showDeniedAlert(message:))

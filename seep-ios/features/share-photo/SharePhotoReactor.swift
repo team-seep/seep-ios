@@ -15,12 +15,14 @@ class SharePhotoReactor: Reactor {
   enum Mutation {
     case setShareType(ShareTypeSwitchView.ShareType)
     case fetchAllPhotos([PHAsset])
+    case setSelectedPhoto(PHAsset)
     case setAlertMessage(String)
   }
   
   struct State {
     var shareType: ShareTypeSwitchView.ShareType = .emoji
     var photos: [PHAsset] = []
+    var selectedPhoto: PHAsset?
   }
   
   let initialState = State()
@@ -53,6 +55,10 @@ class SharePhotoReactor: Reactor {
           }
         }
         .catchError(self.handleError(error:))
+    case .selectPhoto(let index):
+      let selectedPhoto = self.currentState.photos[index]
+      
+      return .just(.setSelectedPhoto(selectedPhoto))
     default:
       return Observable.empty()
     }
@@ -68,6 +74,8 @@ class SharePhotoReactor: Reactor {
       newState.photos = photos
     case .setAlertMessage(let message):
       self.alertPublisher.accept(message)
+    case .setSelectedPhoto(let asset):
+      newState.selectedPhoto = asset
     }
     
     return newState
