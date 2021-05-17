@@ -31,8 +31,8 @@ class ShareTypeButton: UIButton {
   
   private func bindConstraints() {
     self.selectedIndicator.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(12)
-      make.right.equalToSuperview().offset(-12)
+      make.left.equalToSuperview().offset(12).priority(.high)
+      make.right.equalToSuperview().offset(-12).priority(.high)
       make.bottom.equalToSuperview()
       make.height.equalTo(3)
     }

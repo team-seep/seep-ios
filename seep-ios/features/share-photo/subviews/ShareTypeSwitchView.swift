@@ -30,8 +30,8 @@ class ShareTypeSwitchView: BaseView {
   
   override func bindConstraints() {
     self.buttonDividorView.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.width.equalTo(1)
+      make.centerX.equalToSuperview().priority(.high)
+      make.width.equalTo(1).priority(.high)
       make.height.equalTo(30)
       make.top.equalToSuperview().offset(6)
     }

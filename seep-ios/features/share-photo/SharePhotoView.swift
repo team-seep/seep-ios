@@ -125,8 +125,8 @@ class SharePhotoView: BaseView {
     self.topIndicator.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.width.equalTo(48)
-      make.height.equalTo(4)
-      make.top.equalToSuperview().offset(9)
+      make.height.equalTo(4).priority(.high)
+      make.top.equalToSuperview().offset(9).priority(.high)
     }
     
     self.titleLabel.snp.makeConstraints { make in
@@ -142,7 +142,7 @@ class SharePhotoView: BaseView {
     self.photoContainer.snp.makeConstraints { make in
       make.left.right.equalToSuperview()
       make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
-      make.height.equalTo(UIScreen.main.bounds.width)
+      make.height.equalTo(UIScreen.main.bounds.width).priority(.high)
     }
     
     self.imageView.snp.makeConstraints { make in
