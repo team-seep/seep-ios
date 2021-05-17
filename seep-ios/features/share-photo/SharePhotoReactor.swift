@@ -72,6 +72,9 @@ class SharePhotoReactor: Reactor {
       newState.shareType = shareType
     case .fetchAllPhotos(let photos):
       newState.photos = photos
+      if newState.selectedPhoto == nil {
+        newState.selectedPhoto = photos[0]
+      }
     case .setAlertMessage(let message):
       self.alertPublisher.accept(message)
     case .setSelectedPhoto(let asset):
