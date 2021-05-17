@@ -1,11 +1,16 @@
 import RxSwift
 import ReactorKit
 
+protocol SharePhotoDelegate: AnyObject {
+  
+  func onSuccessSave()
+}
+
 class SharePhotoVC: BaseVC, View {
   
   private let sharePhotoView = SharePhotoView()
   private let sharePhotoReactor: SharePhotoReactor
-  
+  weak var delegate: SharePhotoDelegate?
   
   init(wish: Wish) {
     self.sharePhotoReactor = SharePhotoReactor(
@@ -43,6 +48,11 @@ class SharePhotoVC: BaseVC, View {
     self.sharePhotoView.doubleTapGesture.rx.event
       .map { _ in SharePhotoReactor.Action.doubleTapPhoto }
       .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.sharePhotoView.shareButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.savePhotoToAlbum)
       .disposed(by: self.disposeBag)
     
     // MARK: Bind action
@@ -140,5 +150,30 @@ class SharePhotoVC: BaseVC, View {
     }
     
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  }
+  
+  private func savePhotoToAlbum() {
+    let image = self.sharePhotoView.photoContainer.asImage()
+    
+    UIImageWriteToSavedPhotosAlbum(
+      image,
+      self,
+      #selector(saveError(_:didFinishSavingWithError:contextInfo:)),
+      nil
+    )
+  }
+  
+  @objc func saveError(
+    _ image: UIImage,
+    didFinishSavingWithError error: Error?,
+    contextInfo: UnsafeRawPointer
+  ) {
+    if let error = error {
+      print("error: \(error.localizedDescription)")
+    } else {
+      self.dismiss(animated: true) {
+        self.delegate?.onSuccessSave()
+      }
+    }
   }
 }

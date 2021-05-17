@@ -112,6 +112,14 @@ class SharePhotoView: BaseView {
     $0.register(SharePhotoCell.self, forCellWithReuseIdentifier: SharePhotoCell.registerId)
   }
   
+  let shareButton = UIButton().then {
+    $0.titleLabel?.font = .appleExtraBold(size: 17)
+    $0.setTitle("share_photo_button".localized, for: .normal)
+    $0.backgroundColor = .tennisGreen
+    $0.layer.cornerRadius = 25
+    $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
+  }
+  
   
   override func setup() {
     self.backgroundColor = .white
@@ -123,7 +131,7 @@ class SharePhotoView: BaseView {
     self.photoContainer.addGestureRecognizer(self.doubleTapGesture)
     self.addSubViews(
       topIndicator, titleLabel, cancelButton, photoContainer,
-      shareTypeSwitchButton, collectionView, emojiCollectionView
+      shareTypeSwitchButton, collectionView, emojiCollectionView, shareButton
     )
   }
   
@@ -200,6 +208,12 @@ class SharePhotoView: BaseView {
     
     self.emojiCollectionView.snp.makeConstraints { make in
       make.edges.equalTo(self.collectionView)
+    }
+    
+    self.shareButton.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.height.equalTo(50)
+      make.bottom.equalTo(safeAreaLayoutGuide).offset(-24)
     }
   }
   
