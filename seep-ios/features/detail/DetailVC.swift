@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import ReactorKit
 
-protocol DetailDelegate: class {
+protocol DetailDelegate: AnyObject {
   
   func onDismiss()
 }
@@ -293,6 +293,7 @@ class DetailVC: BaseVC, View {
       guard let self = self else { return }
       let sharePhotoVC = SharePhotoVC.instance(wish: self.wish)
       
+      sharePhotoVC.delegate = self
       self.present(sharePhotoVC, animated: true, completion: nil)
     }
     
@@ -354,5 +355,12 @@ extension DetailVC: UITextFieldDelegate {
     }
     
     return newLength <= 18
+  }
+}
+
+extension DetailVC: SharePhotoDelegate {
+  
+  func onSuccessSave() {
+    self.detailView.showFinishToast()
   }
 }

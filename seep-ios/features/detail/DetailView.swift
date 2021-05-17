@@ -95,6 +95,11 @@ class DetailView: BaseView {
   
   let editButton = EditButton()
   
+  let toast = ToastView(frame: CGRect(x: 20, y: -58, width: UIScreen.main.bounds.width - 40, height: 58)).then {
+    $0.actionButton.isHidden = true
+    $0.messageLabel.text = "share_photo_success".localized
+  }
+  
   
   override func setup() {
     self.backgroundColor = .white
@@ -354,6 +359,27 @@ class DetailView: BaseView {
     UIView.transition(with: self.editButton, duration: 0.3, options: .curveEaseInOut) {
       self.editButton.alpha = 0.0
       self.editButton.transform = .init(translationX: 0, y: 100)
+    }
+  }
+  
+  func showFinishToast() {
+    let window = UIApplication.shared.windows[0]
+    
+    self.addSubViews(toast)
+    
+    UIView.transition(with: toast, duration: 0.5, options: .curveEaseInOut) { [weak self] in
+      self?.toast.transform = .init(translationX: 0, y: 14 + 58)
+    } completion: { isComplete in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+        guard let self = self else { return }
+        UIView.transition(with: self.toast, duration: 0.5, options: .curveEaseInOut) { [weak self] in
+          self?.toast.transform = .identity
+        } completion: { [weak self] isCompleteRemove in
+          if isCompleteRemove {
+            self?.toast.removeFromSuperview()
+          }
+        }
+      }
     }
   }
   
