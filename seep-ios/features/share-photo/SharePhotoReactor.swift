@@ -35,7 +35,7 @@ class SharePhotoReactor: Reactor {
   let userDefaults: UserDefaultsUtils
   let alertPublisher = PublishRelay<String>()
   
-  init(wish: Wish, userDefaults: UserDefaultsUtils) {
+  init(userDefaults: UserDefaultsUtils) {
     self.userDefaults = userDefaults
     self.initialState = State(isTooltipShown: userDefaults.getSharePhotoTooltipIsShow())
   }

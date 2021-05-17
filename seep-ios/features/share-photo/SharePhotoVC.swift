@@ -10,13 +10,12 @@ class SharePhotoVC: BaseVC, View {
   
   private let sharePhotoView = SharePhotoView()
   private let sharePhotoReactor: SharePhotoReactor
+  private let wish: Wish
   weak var delegate: SharePhotoDelegate?
   
   init(wish: Wish) {
-    self.sharePhotoReactor = SharePhotoReactor(
-      wish: wish,
-      userDefaults: UserDefaultsUtils()
-    )
+    self.wish = wish
+    self.sharePhotoReactor = SharePhotoReactor(userDefaults: UserDefaultsUtils())
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -36,6 +35,7 @@ class SharePhotoVC: BaseVC, View {
     self.sharePhotoView.snp.makeConstraints { make in
       make.edges.equalTo(0)
     }
+    self.sharePhotoView.bind(wish: self.wish)
   }
   
   func bind(reactor: SharePhotoReactor) {

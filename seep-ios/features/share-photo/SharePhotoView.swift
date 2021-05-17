@@ -217,6 +217,25 @@ class SharePhotoView: BaseView {
     }
   }
   
+  func bind(wish: Wish) {
+    self.dateLabel.text = DateUtils.toString(format: "yyyy.MM.dd", date: wish.date)
+    self.photoTitleLabel.text = wish.title
+    self.emojiLabel.text = wish.emoji
+    self.photoContainer.backgroundColor = wish.emoji.image()?.averageColor
+    
+    let remainDay = Calendar.current.dateComponents([.day], from: Date().startOfDay, to: wish.date.startOfDay).day ?? -1
+    
+    if remainDay < 0 {
+      self.ddayLabel.text = "D+\(abs(remainDay))"
+    } else if remainDay == 0 {
+      self.ddayLabel.text = "D-Day"
+    } else if remainDay <= 365 {
+      self.ddayLabel.text = "D-\(remainDay)"
+    } else {
+      self.ddayLabel.text = "home_in_far_furture".localized
+    }
+  }
+  
   func setCollectionViewHidden(by type: ShareTypeSwitchView.ShareType) {
     self.collectionView.isHidden = type == .emoji
     self.emojiCollectionView.isHidden = type == .photo
