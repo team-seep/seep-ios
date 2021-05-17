@@ -38,7 +38,6 @@ class SharePhotoView: BaseView {
   let dateLabel = UILabel().then {
     $0.font = .appleSemiBold(size: 16)
     $0.textColor = .black
-    $0.text = "2021.05.09"
   }
   
   let logoImage = UIImageView().then {
@@ -46,12 +45,10 @@ class SharePhotoView: BaseView {
   }
   
   let emojiLabel = UILabel().then {
-    $0.text = "🍩"
     $0.font = .systemFont(ofSize: 150)
   }
   
   let photoTitleLabel = UILabel().then {
-    $0.text = "치팅데이기념 랜디스도넛"
     $0.font = .appleUltraLight(size: 24)
     $0.textColor = .black
   }
@@ -71,7 +68,6 @@ class SharePhotoView: BaseView {
   ).then {
     $0.textColor = .white
     $0.font = .appleSemiBold(size: 22)
-    $0.text = "D-Day"
     $0.backgroundColor = .gray5
     $0.layer.cornerRadius = 12
     $0.layer.masksToBounds = true
