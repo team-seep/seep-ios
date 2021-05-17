@@ -31,6 +31,12 @@ class SharePhotoVC: BaseVC, View {
   }
   
   func bind(reactor: SharePhotoReactor) {
+    // MARK: Bind event
+    self.sharePhotoView.cancelButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.dismiss)
+      .disposed(by: self.disposeBag)
+    
     // MARK: Bind action
     self.sharePhotoView.shareTypeSwitchButton.rx.tapEmojiButton
       .map { SharePhotoReactor.Action.tapEmojiButton }
@@ -85,6 +91,10 @@ class SharePhotoVC: BaseVC, View {
       onTapOk: { [weak self] in
         self?.gotoAppPrivacySettings()
     })
+  }
+  
+  private func dismiss() {
+    self.dismiss(animated: true, completion: nil)
   }
   
   private func gotoAppPrivacySettings() {

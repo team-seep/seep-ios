@@ -3,6 +3,23 @@ import Photos
 
 class SharePhotoView: BaseView {
   
+  let topIndicator = UIView().then {
+    $0.backgroundColor = .gray3
+    $0.layer.cornerRadius = 2
+  }
+  
+  let titleLabel = UILabel().then {
+    $0.font = .appleLight(size: 20)
+    $0.textColor = .gray5
+    $0.text = "share_photo_title".localized
+  }
+  
+  let cancelButton = UIButton().then {
+    $0.setTitle("share_photo_dismiss".localized, for: .normal)
+    $0.titleLabel?.font = .appleRegular(size: 14)
+    $0.setTitleColor(.gray4, for: .normal)
+  }
+  
   let photoContainer = UIView().then {
     $0.backgroundColor = UIColor(r: 207, g: 164, b: 110)
   }
@@ -28,7 +45,7 @@ class SharePhotoView: BaseView {
     $0.font = .systemFont(ofSize: 150)
   }
   
-  let titleLabel = UILabel().then {
+  let photoTitleLabel = UILabel().then {
     $0.text = "치팅데이기념 랜디스도넛"
     $0.font = .appleUltraLight(size: 24)
     $0.textColor = .black
@@ -57,6 +74,10 @@ class SharePhotoView: BaseView {
   
   let shareTypeSwitchButton = ShareTypeSwitchView()
   
+  let emojiCollectionView = UIView().then {
+    $0.backgroundColor = UIColor(r: 246, g: 246, b: 246)
+  }
+  
   let collectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewLayout()
@@ -73,18 +94,39 @@ class SharePhotoView: BaseView {
   
   
   override func setup() {
-    self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
+    self.backgroundColor = .white
     self.ddayContainer.addSubViews(ddayLabel)
     self.photoContainer.addSubViews(
       imageView, dateLabel, logoImage, emojiLabel,
-      titleLabel, ddayContainer
+      photoTitleLabel, ddayContainer
     )
-    self.addSubViews(photoContainer, shareTypeSwitchButton, collectionView)
+    self.addSubViews(
+      topIndicator, titleLabel, cancelButton, photoContainer,
+      shareTypeSwitchButton, collectionView, emojiCollectionView
+    )
   }
   
   override func bindConstraints() {
+    self.topIndicator.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.width.equalTo(48)
+      make.height.equalTo(4)
+      make.top.equalToSuperview().offset(9)
+    }
+    
+    self.titleLabel.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.top.equalTo(self.topIndicator.snp.bottom).offset(12)
+    }
+    
+    self.cancelButton.snp.makeConstraints { make in
+      make.centerY.equalTo(self.titleLabel)
+      make.right.equalToSuperview().offset(-20)
+    }
+    
     self.photoContainer.snp.makeConstraints { make in
-      make.left.top.right.equalToSuperview()
+      make.left.right.equalToSuperview()
+      make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
       make.height.equalTo(UIScreen.main.bounds.width)
     }
     
@@ -106,14 +148,14 @@ class SharePhotoView: BaseView {
       make.center.equalToSuperview()
     }
     
-    self.titleLabel.snp.makeConstraints { make in
+    self.photoTitleLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(21)
       make.bottom.equalToSuperview().offset(-21)
     }
     
     self.ddayLabel.snp.makeConstraints { make in
-      make.left.equalTo(self.titleLabel)
-      make.bottom.equalTo(self.titleLabel.snp.top).offset(-13)
+      make.left.equalTo(self.photoTitleLabel)
+      make.bottom.equalTo(self.photoTitleLabel.snp.top).offset(-13)
     }
     
     self.ddayContainer.snp.makeConstraints { make in
@@ -129,10 +171,15 @@ class SharePhotoView: BaseView {
       make.left.right.bottom.equalToSuperview()
       make.top.equalTo(self.shareTypeSwitchButton.snp.bottom)
     }
+    
+    self.emojiCollectionView.snp.makeConstraints { make in
+      make.edges.equalTo(self.collectionView)
+    }
   }
   
   func setCollectionViewHidden(by type: ShareTypeSwitchView.ShareType) {
     self.collectionView.isHidden = type == .emoji
+    self.emojiCollectionView.isHidden = type == .photo
     self.imageView.isHidden = type == .emoji
     self.emojiLabel.isHidden = type == .photo
   }
