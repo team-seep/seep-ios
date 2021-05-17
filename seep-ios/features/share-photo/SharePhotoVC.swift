@@ -8,7 +8,10 @@ class SharePhotoVC: BaseVC, View {
   
   
   init(wish: Wish) {
-    self.sharePhotoReactor = SharePhotoReactor(wish: wish)
+    self.sharePhotoReactor = SharePhotoReactor(
+      wish: wish,
+      userDefaults: UserDefaultsUtils()
+    )
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -75,6 +78,24 @@ class SharePhotoVC: BaseVC, View {
       .map { $0.selectedPhoto }
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.sharePhotoView.setPhotoBackground(asset:))
+      .disposed(by: self.disposeBag)
+    
+    reactor.state
+      .map { $0.isTooltipShown }
+      .filter { $0 == false }
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] _ in
+        guard let self = self else { return }
+        self.sharePhotoView.showTooltip { [weak self] isCompleted in
+          guard let self = self else { return }
+          
+          if isCompleted {
+            Observable.just(SharePhotoReactor.Action.tooltipDisappeared)
+              .bind(to: reactor.action)
+              .disposed(by: self.disposeBag)
+          }
+        }
+      }
       .disposed(by: self.disposeBag)
     
     reactor.alertPublisher

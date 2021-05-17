@@ -72,6 +72,21 @@ class SharePhotoView: BaseView {
     $0.layer.masksToBounds = true
   }
   
+  let tooltipView = PaddingLabel(
+    topInset: 6,
+    bottomInset: 4,
+    leftInset: 10,
+    rightInset: 10
+  ).then {
+    $0.font = .appleRegular(size: 14)
+    $0.textColor = .black
+    $0.text = "share_photo_tooltip".localized
+    $0.backgroundColor = .white
+    $0.layer.cornerRadius = 15
+    $0.layer.masksToBounds = true
+    $0.isHidden = true
+  }
+  
   let shareTypeSwitchButton = ShareTypeSwitchView()
   
   let emojiCollectionView = UIView().then {
@@ -98,7 +113,7 @@ class SharePhotoView: BaseView {
     self.ddayContainer.addSubViews(ddayLabel)
     self.photoContainer.addSubViews(
       imageView, dateLabel, logoImage, emojiLabel,
-      photoTitleLabel, ddayContainer
+      photoTitleLabel, ddayContainer, tooltipView
     )
     self.addSubViews(
       topIndicator, titleLabel, cancelButton, photoContainer,
@@ -162,6 +177,11 @@ class SharePhotoView: BaseView {
       make.edges.equalTo(self.ddayLabel)
     }
     
+    self.tooltipView.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.height.equalTo(30)
+    }
+    
     self.shareTypeSwitchButton.snp.makeConstraints { make in
       make.top.equalTo(self.photoContainer.snp.bottom)
       make.left.right.equalToSuperview()
@@ -196,6 +216,23 @@ class SharePhotoView: BaseView {
       options: options) { (image, info) in
       guard let image = image else { return }
       self.imageView.image = image
+    }
+  }
+  
+  func showTooltip(onDismiss: @escaping (Bool) -> Void) {
+    self.tooltipView.isHidden = false
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+      guard let self = self else { return }
+      UIView.transition(
+        with: self.tooltipView,
+        duration: 0.3,
+        options: .curveEaseInOut
+      ) { [weak self] in
+        guard let self = self else { return }
+        self.tooltipView.alpha = 0
+      } completion: { isComplete in
+        onDismiss(isComplete)
+      }
     }
   }
 }

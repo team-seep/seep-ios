@@ -6,6 +6,7 @@ import Photos
 class SharePhotoReactor: Reactor {
   
   enum Action {
+    case tooltipDisappeared
     case tapEmojiButton
     case tapPhotoButton
     case selectPhoto(Int)
@@ -13,6 +14,7 @@ class SharePhotoReactor: Reactor {
   }
   
   enum Mutation {
+    case setTooltipShown(Bool)
     case setShareType(ShareTypeSwitchView.ShareType)
     case fetchAllPhotos([PHAsset])
     case setSelectedPhoto(PHAsset)
@@ -20,20 +22,26 @@ class SharePhotoReactor: Reactor {
   }
   
   struct State {
+    var isTooltipShown: Bool
     var shareType: ShareTypeSwitchView.ShareType = .emoji
     var photos: [PHAsset] = []
     var selectedPhoto: PHAsset?
   }
   
-  let initialState = State()
+  let initialState: State
+  let userDefaults: UserDefaultsUtils
   let alertPublisher = PublishRelay<String>()
   
-  init(wish: Wish) {
-    
+  init(wish: Wish, userDefaults: UserDefaultsUtils) {
+    self.userDefaults = userDefaults
+    self.initialState = State(isTooltipShown: userDefaults.getSharePhotoTooltipIsShow())
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+    case .tooltipDisappeared:
+      self.userDefaults.setSharePhotoTooltipIsShow(isShown: true)
+      return .just(.setTooltipShown(true))
     case .tapEmojiButton:
       return .just(.setShareType(.emoji))
     case .tapPhotoButton:
@@ -68,6 +76,8 @@ class SharePhotoReactor: Reactor {
     var newState = state
     
     switch mutation {
+    case .setTooltipShown(let isShown):
+      newState.isTooltipShown = isShown
     case .setShareType(let shareType):
       newState.shareType = shareType
     case .fetchAllPhotos(let photos):
