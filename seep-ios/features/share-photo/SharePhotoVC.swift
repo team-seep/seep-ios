@@ -40,6 +40,11 @@ class SharePhotoVC: BaseVC, View {
       .bind(onNext: self.dismiss)
       .disposed(by: self.disposeBag)
     
+    self.sharePhotoView.doubleTapGesture.rx.event
+      .map { _ in SharePhotoReactor.Action.doubleTapPhoto }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // MARK: Bind action
     self.sharePhotoView.shareTypeSwitchButton.rx.tapEmojiButton
       .map { SharePhotoReactor.Action.tapEmojiButton }
@@ -59,6 +64,7 @@ class SharePhotoVC: BaseVC, View {
     // MARK: Bind State
     reactor.state
       .map { $0.shareType }
+      .distinctUntilChanged()
       .do(onNext: self.sharePhotoView.setCollectionViewHidden(by:))
       .bind(to: self.sharePhotoView.shareTypeSwitchButton.rx.selectType)
       .disposed(by: self.disposeBag)
@@ -76,12 +82,14 @@ class SharePhotoVC: BaseVC, View {
     
     reactor.state
       .map { $0.selectedPhoto }
+      .distinctUntilChanged()
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.sharePhotoView.setPhotoBackground(asset:))
       .disposed(by: self.disposeBag)
     
     reactor.state
       .map { $0.isTooltipShown }
+      .distinctUntilChanged()
       .filter { $0 == false }
       .observeOn(MainScheduler.instance)
       .bind { [weak self] _ in
@@ -96,6 +104,13 @@ class SharePhotoVC: BaseVC, View {
           }
         }
       }
+      .disposed(by: self.disposeBag)
+    
+    reactor.state
+      .map{ $0.isPhotoTextColorBlack }
+      .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
+      .bind(onNext: self.sharePhotoView.setPhotoTextColor(isBlack:))
       .disposed(by: self.disposeBag)
     
     reactor.alertPublisher

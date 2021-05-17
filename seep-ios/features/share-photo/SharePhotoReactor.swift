@@ -7,6 +7,7 @@ class SharePhotoReactor: Reactor {
   
   enum Action {
     case tooltipDisappeared
+    case doubleTapPhoto
     case tapEmojiButton
     case tapPhotoButton
     case selectPhoto(Int)
@@ -15,6 +16,7 @@ class SharePhotoReactor: Reactor {
   
   enum Mutation {
     case setTooltipShown(Bool)
+    case changePhotoTextColor
     case setShareType(ShareTypeSwitchView.ShareType)
     case fetchAllPhotos([PHAsset])
     case setSelectedPhoto(PHAsset)
@@ -23,6 +25,7 @@ class SharePhotoReactor: Reactor {
   
   struct State {
     var isTooltipShown: Bool
+    var isPhotoTextColorBlack = true
     var shareType: ShareTypeSwitchView.ShareType = .emoji
     var photos: [PHAsset] = []
     var selectedPhoto: PHAsset?
@@ -42,6 +45,8 @@ class SharePhotoReactor: Reactor {
     case .tooltipDisappeared:
       self.userDefaults.setSharePhotoTooltipIsShow(isShown: true)
       return .just(.setTooltipShown(true))
+    case .doubleTapPhoto:
+      return .just(.changePhotoTextColor)
     case .tapEmojiButton:
       return .just(.setShareType(.emoji))
     case .tapPhotoButton:
@@ -78,6 +83,8 @@ class SharePhotoReactor: Reactor {
     switch mutation {
     case .setTooltipShown(let isShown):
       newState.isTooltipShown = isShown
+    case .changePhotoTextColor:
+      newState.isPhotoTextColorBlack.toggle()
     case .setShareType(let shareType):
       newState.shareType = shareType
     case .fetchAllPhotos(let photos):

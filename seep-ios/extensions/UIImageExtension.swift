@@ -16,6 +16,7 @@ extension UIImage {
   static let icCheckOn20 = UIImage(named: "ic_check_on_20")
   static let icCheckOn = UIImage(named: "ic_check_on")
   static let icLogoBlack = UIImage(named: "ic_logo_black")
+  static let icLogoWhite = UIImage(named: "ic_logo_white")
   
   var averageColor: UIColor? {
     guard let inputImage = CIImage(image: self) else { return nil }

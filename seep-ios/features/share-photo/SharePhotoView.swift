@@ -3,6 +3,10 @@ import Photos
 
 class SharePhotoView: BaseView {
   
+  let doubleTapGesture = UITapGestureRecognizer().then {
+    $0.numberOfTapsRequired = 2
+  }
+  
   let topIndicator = UIView().then {
     $0.backgroundColor = .gray3
     $0.layer.cornerRadius = 2
@@ -22,6 +26,7 @@ class SharePhotoView: BaseView {
   
   let photoContainer = UIView().then {
     $0.backgroundColor = UIColor(r: 207, g: 164, b: 110)
+    $0.isUserInteractionEnabled = true
   }
   
   let imageView = UIImageView().then {
@@ -115,6 +120,7 @@ class SharePhotoView: BaseView {
       imageView, dateLabel, logoImage, emojiLabel,
       photoTitleLabel, ddayContainer, tooltipView
     )
+    self.photoContainer.addGestureRecognizer(self.doubleTapGesture)
     self.addSubViews(
       topIndicator, titleLabel, cancelButton, photoContainer,
       shareTypeSwitchButton, collectionView, emojiCollectionView
@@ -234,5 +240,11 @@ class SharePhotoView: BaseView {
         onDismiss(isComplete)
       }
     }
+  }
+  
+  func setPhotoTextColor(isBlack: Bool) {
+    self.dateLabel.textColor = isBlack ? .gray5 : .white
+    self.photoTitleLabel.textColor = isBlack ? .gray5 : .white
+    self.logoImage.image = isBlack ? .icLogoBlack : .icLogoWhite
   }
 }
