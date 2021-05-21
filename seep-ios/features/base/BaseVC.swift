@@ -8,10 +8,15 @@ class BaseVC: UIViewController {
   var disposeBag = DisposeBag()
   var eventDisposeBag = DisposeBag()
   
+    
   override func viewDidLoad() {
     super.viewDidLoad()
-    bindEvent()
+    
+    self.setupView()
+    self.bindEvent()
   }
   
   func bindEvent() { }
+    
+  func setupView() { }
 }

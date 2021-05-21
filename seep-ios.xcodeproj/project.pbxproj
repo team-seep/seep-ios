@@ -42,6 +42,9 @@
 		6E43A5C426171D3C00FB1738 /* FinishedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43A5C326171D3C00FB1738 /* FinishedCollectionView.swift */; };
 		6E441CA12604549F0010A625 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
 		6E441CA526046F9D0010A625 /* WishServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA426046F9D0010A625 /* WishServices.swift */; };
+		6E4F5D8E2657DF580061A13C /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D8D2657DF580061A13C /* SplashView.swift */; };
+		6E4F5D912657E03F0061A13C /* splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E4F5D902657E03F0061A13C /* splash.json */; };
+		6E4F5D932657E0BA0061A13C /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D922657E0BA0061A13C /* SplashVC.swift */; };
 		6E5DECFE264263F70005487F /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFD264263F70005487F /* TagLabel.swift */; };
 		6E5DED002642D8FC0005487F /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFF2642D8FC0005487F /* CategoryView.swift */; };
 		6E600149260831F1000065C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E600148260831F0000065C8 /* GoogleService-Info.plist */; };
@@ -115,6 +118,9 @@
 		6E43A5C326171D3C00FB1738 /* FinishedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedCollectionView.swift; sourceTree = "<group>"; };
 		6E441CA02604549F0010A625 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		6E441CA426046F9D0010A625 /* WishServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishServices.swift; sourceTree = "<group>"; };
+		6E4F5D8D2657DF580061A13C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		6E4F5D902657E03F0061A13C /* splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = splash.json; sourceTree = "<group>"; };
+		6E4F5D922657E0BA0061A13C /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		6E5DECFD264263F70005487F /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
 		6E5DECFF2642D8FC0005487F /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		6E600148260831F0000065C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -190,6 +196,7 @@
 		6E274E6325F20E20007DC880 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				6E4F5D8F2657E0340061A13C /* lottie */,
 				6EE5CE6E25FB1EB500A737DF /* font */,
 				6E274E6A25F20E3F007DC880 /* Localization.strings */,
 			);
@@ -215,6 +222,7 @@
 		6E274E7C25F20F45007DC880 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				6E4F5D8C2657DF500061A13C /* splash */,
 				6EE1706A264E58D000C3E94B /* share-photo */,
 				6ED89713261579AA0005FA29 /* finished */,
 				6E69E61E260D990E0062CBFB /* detail */,
@@ -314,6 +322,23 @@
 				6E441CA426046F9D0010A625 /* WishServices.swift */,
 			);
 			path = services;
+			sourceTree = "<group>";
+		};
+		6E4F5D8C2657DF500061A13C /* splash */ = {
+			isa = PBXGroup;
+			children = (
+				6E4F5D8D2657DF580061A13C /* SplashView.swift */,
+				6E4F5D922657E0BA0061A13C /* SplashVC.swift */,
+			);
+			path = splash;
+			sourceTree = "<group>";
+		};
+		6E4F5D8F2657E0340061A13C /* lottie */ = {
+			isa = PBXGroup;
+			children = (
+				6E4F5D902657E03F0061A13C /* splash.json */,
+			);
+			path = lottie;
 			sourceTree = "<group>";
 		};
 		6E66A26D25FB40B600C0C051 /* model */ = {
@@ -498,6 +523,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E4F5D912657E03F0061A13C /* splash.json in Resources */,
 				6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */,
 				6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */,
 				6E600149260831F1000065C8 /* GoogleService-Info.plist in Resources */,
@@ -576,6 +602,7 @@
 				6E441CA12604549F0010A625 /* Wish.swift in Sources */,
 				6EACBD5D261303540009AB6F /* PageItemView.swift in Sources */,
 				6E9ACDF826501AA400ED39BF /* ShareTypeSwitchView.swift in Sources */,
+				6E4F5D932657E0BA0061A13C /* SplashVC.swift in Sources */,
 				6E60018826084516000065C8 /* HomeWishCollectionCell.swift in Sources */,
 				6E441CA526046F9D0010A625 /* WishServices.swift in Sources */,
 				6E69FD4826468BDC00F0AB60 /* DateExtensions.swift in Sources */,
@@ -604,6 +631,7 @@
 				6E35721C261AF9F7003E18EA /* ToastView.swift in Sources */,
 				6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */,
 				6E274E8925F20FE5007DC880 /* BaseCollectionViewCell.swift in Sources */,
+				6E4F5D8E2657DF580061A13C /* SplashView.swift in Sources */,
 				6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */,
 				6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */,
 				6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */,
