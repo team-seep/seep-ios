@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import ReactorKit
 
-protocol DetailDelegate: class {
+protocol DetailDelegate: AnyObject {
   
   func onDismiss()
 }
@@ -289,8 +289,12 @@ class DetailVC: BaseVC, View {
     let shereAction = UIAlertAction(
       title: "detail_action_sheet_share".localized,
       style: .default
-    ) { action in
+    ) { [weak self] action in
+      guard let self = self else { return }
+      let sharePhotoVC = SharePhotoVC.instance(wish: self.wish)
       
+      sharePhotoVC.delegate = self
+      self.present(sharePhotoVC, animated: true, completion: nil)
     }
     
     alertController.addAction(shereAction)
@@ -351,5 +355,12 @@ extension DetailVC: UITextFieldDelegate {
     }
     
     return newLength <= 18
+  }
+}
+
+extension DetailVC: SharePhotoDelegate {
+  
+  func onSuccessSave() {
+    self.detailView.showFinishToast()
   }
 }

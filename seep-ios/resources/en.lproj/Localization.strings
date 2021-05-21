@@ -83,3 +83,13 @@
 "notification_two_day_before_body_format" = "'%@' 완료까지 2일 남았어요!";
 "notification_day_before_title" = "🔔 잊지마세요!";
 "notification_day_before_body_foramt" = "내일은 '%@' 완료하는 날";
+
+// Share-photo
+"share_photo_title" = "공유하기";
+"share_photo_dismiss" = "닫기";
+"share_photo_emoji" = "😀 이모지";
+"share_photo_album" = "🏞 사진";
+"share_photo_deny_message" = "사진 사용 권한을 허용하면 공유 이미지를 만들 수 있어요!";
+"share_photo_tooltip" = "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요";
+"share_photo_button" = "👌 이렇게 공유할래요";
+"share_photo_success" = "👌 공유하기 완료! 앨범에서 확인해보세요";

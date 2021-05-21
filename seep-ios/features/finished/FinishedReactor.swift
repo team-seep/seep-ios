@@ -5,8 +5,8 @@ import ReactorKit
 class FinishedReactor: Reactor {
   
   enum Action {
-    case viewDidLoad(Void)
-    case tapViewType(Void)
+    case viewDidLoad
+    case tapViewType
   }
   
   enum Mutation {
@@ -40,7 +40,7 @@ class FinishedReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewDidLoad():
+    case .viewDidLoad:
       let finishedWishList = self.wishService.fetchFinishedWishes(category: self.category)
       
       return Observable.concat([
@@ -48,7 +48,7 @@ class FinishedReactor: Reactor {
         Observable.just(Mutation.setViewType(self.userDefaults.getViewType())),
         Observable.just(Mutation.setEmptyViewHidden(!finishedWishList.isEmpty))
       ])
-    case .tapViewType():
+    case .tapViewType:
       return Observable.just(Mutation.setViewType(self.currentState.viewType.toggle()))
     }
   }
