@@ -68,7 +68,7 @@ class CategoryView: BaseView {
   
   override func bindConstraints() {
     self.stackView.snp.makeConstraints { make in
-      make.left.equalTo(self.containerView).offset(8)
+      make.left.equalTo(self.containerView).offset(10)
       make.top.equalTo(self.containerView).offset(8)
     }
     
@@ -81,7 +81,7 @@ class CategoryView: BaseView {
     self.containerView.snp.makeConstraints { make in
       make.top.equalToSuperview()
       make.left.equalToSuperview()
-      make.right.equalTo(self.stackView).offset(8)
+      make.right.equalTo(self.stackView).offset(10)
       make.bottom.equalTo(self.stackView).offset(8)
       make.height.equalTo(48).priority(.high)
     }
