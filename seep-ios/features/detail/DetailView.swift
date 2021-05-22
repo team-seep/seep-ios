@@ -247,6 +247,7 @@ class DetailView: BaseView {
         self.editButton.alpha = 1.0
         self.cancelButton.alpha = 1.0
         self.moreButton.alpha = 0.0
+        self.categoryView.containerView.backgroundColor = UIColor(r: 232, g: 246, b: 255)
       }
       self.notificationButton.isHidden = false
       
@@ -286,6 +287,7 @@ class DetailView: BaseView {
         self.editButton.alpha = 0.0
         self.moreButton.alpha = 1.0
         self.cancelButton.alpha = 0.0
+        self.categoryView.containerView.backgroundColor = .gray2
       }
       self.notificationButton.isHidden = !self.notificationButton.isSelected
       

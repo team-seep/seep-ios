@@ -186,7 +186,6 @@ class DetailVC: BaseVC, View {
       .map { $0.isEditable }
       .distinctUntilChanged()
       .delay(.milliseconds(10), scheduler: MainScheduler.instance) // 수정 취소시, 마지막에 editable이 변경되어야해서 딜레이 설정
-      
       .bind(onNext: self.detailView.setEditable(isEditable:))
       .disposed(by: self.disposeBag)
     
