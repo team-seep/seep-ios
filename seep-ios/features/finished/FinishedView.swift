@@ -10,6 +10,7 @@ class FinishedView: BaseView {
   
   let greenLine = UIView().then {
     $0.backgroundColor = .tennisGreen
+    $0.layer.cornerRadius = 1
   }
   
   let viewTypeButton = UIButton().then {
