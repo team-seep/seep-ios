@@ -55,12 +55,12 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     
     self.ddayLabel.snp.makeConstraints { make in
       make.left.equalTo(self.titleLabel)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
+      make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
     }
     
     self.tagLabel.snp.makeConstraints { make in
       make.left.height.equalTo(self.ddayLabel)
-      make.top.equalTo(self.ddayLabel.snp.bottom).offset(6)
+      make.bottom.equalTo(self.checkButton)
     }
     
     self.checkButton.snp.makeConstraints { make in

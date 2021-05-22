@@ -80,7 +80,7 @@ class FinishedView: BaseView {
     let layout = UICollectionViewFlowLayout()
     layout.itemSize = CGSize(
       width: (UIScreen.main.bounds.width - 40 - 15) / 2,
-      height: (UIScreen.main.bounds.width - 40 - 15) / 2
+      height: ((UIScreen.main.bounds.width - 40 - 15) / 2) * 1.09
     )
     layout.minimumInteritemSpacing = 15
     layout.minimumLineSpacing = 16

@@ -55,12 +55,12 @@ class FinishedCollectionCell: BaseCollectionViewCell {
     
     self.finishDateLabel.snp.makeConstraints { make in
       make.left.equalToSuperview().offset(17)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(12)
+      make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
     }
     
     self.tagLabel.snp.makeConstraints { make in
       make.left.equalTo(self.finishDateLabel)
-      make.top.equalTo(self.finishDateLabel.snp.bottom).offset(6)
+      make.bottom.equalToSuperview().offset(-20)
     }
   }
   
