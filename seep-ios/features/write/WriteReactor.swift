@@ -88,11 +88,15 @@ class WriteReactor: Reactor {
     case .inputHashtag(let hashtag):
       return Observable.just(Mutation.setHashtag(hashtag))
     case .tapWriteButton():
+      var observables: [Observable<Mutation>] = []
       if self.currentState.title.isEmpty {
-        return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
-      } else if self.currentState.date == nil {
-        return Observable.just(Mutation.setDateError("write_error_date_empty".localized))
-      } else {
+        observables.append(.just(.setTitleError("write_error_title_empty".localized)))
+      }
+      if self.currentState.date == nil {
+        observables.append(.just(.setDateError("write_error_date_empty".localized)))
+      }
+      
+      if observables.isEmpty {
         let wish = Wish().then {
           $0.emoji = self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji
           $0.category = self.currentState.category.rawValue
@@ -107,8 +111,10 @@ class WriteReactor: Reactor {
         if self.currentState.isPushEnable {
           NotificationManager.shared.reserve(wish: wish)
         }
-        return Observable.just(Mutation.saveWish(()))
+        observables.append(.just(.saveWish(())))
       }
+      
+      return .concat(observables)
     }
   }
   
@@ -126,14 +132,12 @@ class WriteReactor: Reactor {
       newState.writeButtonState = self.validateForEnable(state: newState)
     case .setTitleError(let errorMessage):
       newState.titleError = errorMessage
-      newState.dateError = nil
     case .setDate(let date):
       newState.date = date
       newState.isPushButtonVisible = true
       newState.writeButtonState = self.validateForEnable(state: newState)
     case .setDateError(let errorMessage):
       newState.dateError = errorMessage
-      newState.titleError = nil
     case .togglePushEnable():
       newState.isPushEnable = !state.isPushEnable
     case .setMemo(let memo):
