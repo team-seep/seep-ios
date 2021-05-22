@@ -10,7 +10,7 @@ class FinishedCollectionCell: BaseCollectionViewCell {
   }
   
   let emojiLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 36)
+    $0.font = .systemFont(ofSize: 28)
   }
   
   let titleLabel = UILabel().then {

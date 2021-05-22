@@ -15,11 +15,11 @@ class FinishedTableCell: BaseTableViewCell {
   
   let titleLabel = UILabel().then {
     $0.textColor = .gray5
-    $0.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
+    $0.font = .appleSemiBold(size: 16)
   }
   
   let finishDateLabel = UILabel().then {
-    $0.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 11)
+    $0.font = .appleSemiBold(size: 11)
     $0.textColor = .black
     $0.alpha = 0.4
   }
@@ -51,17 +51,17 @@ class FinishedTableCell: BaseTableViewCell {
     }
     
     self.titleLabel.snp.makeConstraints { make in
-      make.top.equalTo(self.emojiLabel).offset(3)
+      make.top.equalTo(self.containerView).offset(16)
       make.left.equalTo(self.emojiLabel.snp.right).offset(14)
     }
     
     self.finishDateLabel.snp.makeConstraints { make in
       make.left.equalTo(self.titleLabel)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
+      make.top.equalTo(self.titleLabel.snp.bottom).offset(7)
     }
     
     self.tagLabel.snp.makeConstraints { make in
-      make.left.equalTo(self.finishDateLabel.snp.right).offset(7)
+      make.left.equalTo(self.finishDateLabel.snp.right).offset(8)
       make.centerY.equalTo(self.finishDateLabel)
     }
   }
