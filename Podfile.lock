@@ -85,6 +85,7 @@ PODS:
   - Kingfisher (5.15.8):
     - Kingfisher/Core (= 5.15.8)
   - Kingfisher/Core (5.15.8)
+  - lottie-ios (3.2.1)
   - nanopb (2.30907.0):
     - nanopb/decode (= 2.30907.0)
     - nanopb/encode (= 2.30907.0)
@@ -120,6 +121,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - ISEmojiView
   - Kingfisher (~> 5.0)
+  - lottie-ios
   - ReactorKit
   - RealmSwift (= 10.5.2)
   - RxCocoa (~> 5)
@@ -145,6 +147,7 @@ SPEC REPOS:
     - GoogleUtilities
     - ISEmojiView
     - Kingfisher
+    - lottie-ios
     - nanopb
     - PromisesObjC
     - ReactorKit
@@ -174,6 +177,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
   ISEmojiView: f7cd94a6c93307f429ec5da001293d0b02247f03
   Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
+  lottie-ios: 106e92eaf11fbed0a76590b4cdb9b5ec26123ff7
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   ReactorKit: 6d894a20c3d508344320901cd8e386fde92df4b6
@@ -188,6 +192,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   WeakMapTable: 05c694ce8439a7a9ebabb56187287a63c57673d6
 
-PODFILE CHECKSUM: bc253102c6dea1c2bb9b7b37b8ef9b63457a6060
+PODFILE CHECKSUM: 2883aea7c678f432cf6876495ee656fd2690c731
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.0

@@ -28,4 +28,6 @@ target 'seep-ios' do
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Messaging'
+  
+  pod 'lottie-ios'
 end
