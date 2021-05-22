@@ -225,10 +225,9 @@ class HomeVC: BaseVC, View {
 
 extension HomeVC: WriteDelegate {
   
-  func onSuccessWrite() {
-    Observable.just(HomeReactor.Action.viewDidLoad)
-      .bind(to: self.homeReactor.action)
-      .disposed(by: disposeBag)
+  func onSuccessWrite(category: Category) {
+    self.homeReactor.action.onNext(.viewDidLoad)
+    self.homeReactor.action.onNext(.tapCategory(category))
     self.fetchPageVC()
   }
 }

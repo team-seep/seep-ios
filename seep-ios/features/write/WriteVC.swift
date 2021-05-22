@@ -1,9 +1,9 @@
 import RxSwift
 import ReactorKit
 
-protocol WriteDelegate: class {
+protocol WriteDelegate: AnyObject {
   
-  func onSuccessWrite()
+  func onSuccessWrite(category: Category)
 }
 
 class WriteVC: BaseVC, View {
@@ -189,7 +189,7 @@ class WriteVC: BaseVC, View {
       .bind(onNext: { [weak self] shouldDismiss in
         guard let self = self else { return }
         if shouldDismiss {
-          self.delegate?.onSuccessWrite()
+          self.delegate?.onSuccessWrite(category: self.writeReactor.currentState.category)
           self.dismiss()
         }
       })
