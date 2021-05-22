@@ -89,7 +89,7 @@
 "share_photo_dismiss" = "닫기";
 "share_photo_emoji" = "😀 이모지";
 "share_photo_album" = "🏞 사진";
-"share_photo_deny_message" = "사진 사용 권한을 허용하면 공유 이미지를 만들 수 있어요!";
+"share_photo_deny_message" = "원하는 사진으로 공유하기 위해 앨범 접근 권한이 필요해요.";
 "share_photo_tooltip" = "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요";
 "share_photo_button" = "👌 이렇게 공유할래요";
 "share_photo_success" = "👌 공유하기 완료! 앨범에서 확인해보세요";
