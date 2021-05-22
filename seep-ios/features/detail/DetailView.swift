@@ -209,9 +209,6 @@ class DetailView: BaseView {
     
     self.notificationButton.isHidden = !wish.isPushEnable
     self.notificationButton.isSelected = wish.isPushEnable
-    if wish.isPushEnable {
-      self.notificationButton.setTitle("detail_notification_on".localized, for: .normal)
-    }
     
     if !wish.memo.isEmpty {
       self.addMemoField(memo: wish.memo)
