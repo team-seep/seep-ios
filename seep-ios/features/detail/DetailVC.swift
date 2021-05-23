@@ -175,6 +175,7 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.hashtagField.rx.text.orEmpty
+      .skip(1)
       .map { Reactor.Action.inputHashtag($0) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
