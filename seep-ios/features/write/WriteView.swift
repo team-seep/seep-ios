@@ -110,6 +110,7 @@ class WriteView: BaseView {
     gradientLayer.locations = [0.0, 1.0]
     gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
     $0.layer.addSublayer(gradientLayer)
+    $0.isUserInteractionEnabled = false
   }
   
   let writeButton = WriteButton()
