@@ -54,6 +54,7 @@ class PageItemReactor: Reactor {
     case .tapFinishButton(let index):
       let tappedWish = self.currentState.wishiList[index]
       self.wishService.finishWish(wish: tappedWish)
+      self.cancelNotification(wish: tappedWish)
       let wishList = self.wishService.fetchAllWishes(category: self.category)
       
       return Observable.concat([
@@ -79,5 +80,9 @@ class PageItemReactor: Reactor {
     }
     
     return newState
+  }
+  
+  private func cancelNotification(wish: Wish) {
+    NotificationManager.shared.cancel(wish: wish)
   }
 }
