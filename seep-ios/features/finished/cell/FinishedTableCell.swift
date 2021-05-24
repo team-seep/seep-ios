@@ -58,6 +58,7 @@ class FinishedTableCell: BaseTableViewCell {
     self.finishDateLabel.snp.makeConstraints { make in
       make.left.equalTo(self.titleLabel)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(7)
+      make.width.greaterThanOrEqualTo(83)
     }
     
     self.tagLabel.snp.makeConstraints { make in
