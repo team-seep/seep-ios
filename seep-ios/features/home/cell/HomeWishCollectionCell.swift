@@ -38,7 +38,6 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
   }
   
   override func bindConstraints() {
-    
     self.containerView.snp.makeConstraints { make in
       make.edges.equalTo(0)
     }
@@ -54,16 +53,6 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
       make.top.equalTo(self.emojiLabel.snp.bottom).offset(12)
     }
     
-    self.ddayLabel.snp.makeConstraints { make in
-      make.left.equalTo(self.titleLabel)
-      make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
-    }
-    
-    self.tagLabel.snp.makeConstraints { make in
-      make.left.height.equalTo(self.ddayLabel)
-      make.bottom.equalTo(self.checkButton)
-    }
-    
     self.checkButton.snp.makeConstraints { make in
       make.right.equalToSuperview().offset(-14)
       make.bottom.equalToSuperview().offset(-20)
@@ -76,5 +65,26 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
     self.ddayLabel.bind(dday: wish.date)
     self.tagLabel.text = wish.hashtag
     self.tagLabel.isHidden = wish.hashtag.isEmpty
+    
+    if wish.hashtag.isEmpty {
+      self.ddayLabel.snp.removeConstraints()
+      self.ddayLabel.snp.makeConstraints { make in
+        make.left.equalTo(self.titleLabel)
+        make.bottom.equalTo(self.checkButton)
+      }
+    } else {
+      
+      self.ddayLabel.snp.removeConstraints()
+      self.tagLabel.snp.removeConstraints()
+      self.ddayLabel.snp.makeConstraints { make in
+        make.left.equalTo(self.titleLabel)
+        make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
+      }
+      
+      self.tagLabel.snp.makeConstraints { make in
+        make.left.height.equalTo(self.ddayLabel)
+        make.bottom.equalTo(self.checkButton)
+      }
+    }
   }
 }
