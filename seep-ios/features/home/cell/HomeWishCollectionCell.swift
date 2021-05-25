@@ -70,7 +70,7 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
       self.ddayLabel.snp.removeConstraints()
       self.ddayLabel.snp.makeConstraints { make in
         make.left.equalTo(self.titleLabel)
-        make.bottom.equalTo(self.checkButton)
+        make.centerY.equalTo(self.checkButton)
       }
     } else {
       
@@ -83,7 +83,7 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
       
       self.tagLabel.snp.makeConstraints { make in
         make.left.height.equalTo(self.ddayLabel)
-        make.bottom.equalTo(self.checkButton)
+        make.centerY.equalTo(self.checkButton)
       }
     }
   }
