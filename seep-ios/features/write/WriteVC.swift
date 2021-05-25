@@ -132,7 +132,6 @@ class WriteVC: BaseVC, View {
     reactor.state
       .map { $0.isTooltipShown }
       .distinctUntilChanged()
-      .debug()
       .filter { $0 == false }
       .observeOn(MainScheduler.instance)
       .bind { [weak self] _ in
