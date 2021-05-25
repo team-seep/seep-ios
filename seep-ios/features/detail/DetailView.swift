@@ -33,8 +33,8 @@ class DetailView: BaseView {
   }
   
   let shareButton = UIButton().then {
-    $0.setTitle("detail_action_sheet_share".localized, for: .normal)
-    $0.setTitleColor(.gray3, for: .normal)
+    $0.setTitle("공유하기", for: .normal)
+    $0.setTitleColor(.gray5, for: .normal)
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
   }
   
