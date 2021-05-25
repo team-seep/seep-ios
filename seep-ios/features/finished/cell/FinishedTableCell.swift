@@ -51,7 +51,7 @@ class FinishedTableCell: BaseTableViewCell {
     }
     
     self.titleLabel.snp.makeConstraints { make in
-      make.top.equalTo(self.containerView).offset(16)
+      make.top.equalTo(self.emojiLabel).offset(3)
       make.left.equalTo(self.emojiLabel.snp.right).offset(14)
     }
     
