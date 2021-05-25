@@ -5,6 +5,7 @@ class WriteReactor: Reactor {
   
   enum Action {
     case viewDidLoad(Void)
+    case tooltipDisappeared
     case inputEmoji(String)
     case tapCategory(Category)
     case tapRandomEmoji(Void)
@@ -17,6 +18,7 @@ class WriteReactor: Reactor {
   }
   
   enum Mutation {
+    case setTooltipShown(Bool)
     case fetchDescription(Int)
     case setEmoji(String)
     case setCategory(Category)
@@ -31,6 +33,7 @@ class WriteReactor: Reactor {
   }
   
   struct State {
+    var isTooltipShown: Bool
     var descriptionIndex: Int = 1
     var emoji: String = ""
     var category: Category
@@ -48,17 +51,30 @@ class WriteReactor: Reactor {
   
   let initialState: State
   let wishService: WishServiceProtocol
+  let userDefaults: UserDefaultsUtils
   
   
-  init(category: Category, wishService: WishServiceProtocol) {
-    self.initialState = State(category: category)
+  init(
+    category: Category,
+    wishService: WishServiceProtocol,
+    userDefaults: UserDefaultsUtils
+  ) {
+    self.initialState = State(
+      isTooltipShown: userDefaults.getRandomEmojiTooltipIsShow(),
+      category: category
+    )
     self.wishService = wishService
+    self.userDefaults = userDefaults
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad():
       return Observable.just(Mutation.fetchDescription(1))
+    case .tooltipDisappeared:
+      self.userDefaults.setRandomEmojiTooltipIsShow(isShown: true)
+      
+      return .just(.setTooltipShown(true))
     case .inputEmoji(let emoji):
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):
@@ -121,6 +137,8 @@ class WriteReactor: Reactor {
   func reduce(state: State, mutation: Mutation) -> State {
     var newState = state
     switch mutation {
+    case .setTooltipShown(let isShown):
+      newState.isTooltipShown = isShown
     case .fetchDescription(let index):
       newState.descriptionIndex = index
     case .setEmoji(let emoji):

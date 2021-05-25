@@ -4,6 +4,7 @@ struct UserDefaultsUtils {
   
   static let keyViewType = "keyViewType"
   static let keySharePhotoTooltipIsShow = "keySharePhotoTooltipIsShow"
+  static let keyRandomEmojiTooltipIsShow = "keyRandomEmojiTooltipIsShow"
   
   let instance: UserDefaults
   
@@ -33,5 +34,13 @@ struct UserDefaultsUtils {
   
   func getSharePhotoTooltipIsShow() -> Bool {
     return self.instance.bool(forKey: UserDefaultsUtils.keySharePhotoTooltipIsShow)
+  }
+  
+  func setRandomEmojiTooltipIsShow(isShown: Bool) {
+    self.instance.set(isShown, forKey: UserDefaultsUtils.keyRandomEmojiTooltipIsShow)
+  }
+  
+  func getRandomEmojiTooltipIsShow() -> Bool {
+    return self.instance.bool(forKey: UserDefaultsUtils.keyRandomEmojiTooltipIsShow)
   }
 }

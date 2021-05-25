@@ -59,6 +59,7 @@
 "write_error_max_length_hashtag" = "📍해시태그는 7자내로 작성해주세요!";
 
 // Detail
+"detail_random_info" = "Random으로 이모지를\n골라드립니다!";
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";
 "detail_cancel" = "취소";
