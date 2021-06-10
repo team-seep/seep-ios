@@ -4,6 +4,8 @@ import RxCocoa
 
 class WriteHashtagField: BaseView {
   
+  let maxLength = 7
+  
   let containerView = UIView().then {
     $0.layer.cornerRadius = 6
   }
@@ -70,8 +72,8 @@ class WriteHashtagField: BaseView {
     }
     
     self.snp.makeConstraints { make in
-      make.left.top.right.equalTo(self.containerView)
-      make.bottom.equalTo(self.errorLabel).offset(10)
+      make.left.top.right.equalTo(self.containerView).priority(.high)
+      make.bottom.equalTo(self.errorLabel).offset(10).priority(.high)
     }
   }
   
@@ -217,16 +219,15 @@ extension WriteHashtagField: UITextFieldDelegate {
     replacementString string: String
   ) -> Bool {
     guard let text = textField.text else { return true }
-    
     let newLength = text.count + string.trimmingCharacters(in: .newlines).count - range.length
     
-    if newLength >= 8 {
+    if newLength > self.maxLength {
       self.errorLabel.text = "write_error_max_length_hashtag".localized
     } else {
       self.errorLabel.text = nil
     }
     
-    return newLength <= 8
+    return newLength <= self.maxLength
   }
 }
 

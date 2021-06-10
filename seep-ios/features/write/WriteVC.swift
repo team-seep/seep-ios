@@ -1,9 +1,9 @@
 import RxSwift
 import ReactorKit
 
-protocol WriteDelegate: class {
+protocol WriteDelegate: AnyObject {
   
-  func onSuccessWrite()
+  func onSuccessWrite(category: Category)
 }
 
 class WriteVC: BaseVC, View {
@@ -20,7 +20,11 @@ class WriteVC: BaseVC, View {
   
   
   init(category: Category) {
-    self.writeReactor = WriteReactor(category: category, wishService: WishService())
+    self.writeReactor = WriteReactor(
+      category: category,
+      wishService: WishService(),
+      userDefaults: UserDefaultsUtils()
+    )
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -125,6 +129,21 @@ class WriteVC: BaseVC, View {
       .disposed(by: disposeBag)
     
     // MARK: State
+    reactor.state
+      .map { $0.isTooltipShown }
+      .distinctUntilChanged()
+      .filter { $0 == false }
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] _ in
+        guard let self = self else { return }
+        self.writeView.showRandomEmojiTooltip { isCompleted in
+          if isCompleted {
+            reactor.action.onNext(.tooltipDisappeared)
+          }
+        }
+      }
+      .disposed(by: self.disposeBag)
+      
     self.writeReactor.state
       .map { $0.emoji }
       .observeOn(MainScheduler.instance)
@@ -189,7 +208,7 @@ class WriteVC: BaseVC, View {
       .bind(onNext: { [weak self] shouldDismiss in
         guard let self = self else { return }
         if shouldDismiss {
-          self.delegate?.onSuccessWrite()
+          self.delegate?.onSuccessWrite(category: self.writeReactor.currentState.category)
           self.dismiss()
         }
       })

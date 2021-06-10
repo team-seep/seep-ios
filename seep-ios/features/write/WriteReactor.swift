@@ -5,6 +5,7 @@ class WriteReactor: Reactor {
   
   enum Action {
     case viewDidLoad(Void)
+    case tooltipDisappeared
     case inputEmoji(String)
     case tapCategory(Category)
     case tapRandomEmoji(Void)
@@ -17,6 +18,7 @@ class WriteReactor: Reactor {
   }
   
   enum Mutation {
+    case setTooltipShown(Bool)
     case fetchDescription(Int)
     case setEmoji(String)
     case setCategory(Category)
@@ -31,6 +33,7 @@ class WriteReactor: Reactor {
   }
   
   struct State {
+    var isTooltipShown: Bool
     var descriptionIndex: Int = 1
     var emoji: String = ""
     var category: Category
@@ -48,17 +51,30 @@ class WriteReactor: Reactor {
   
   let initialState: State
   let wishService: WishServiceProtocol
+  let userDefaults: UserDefaultsUtils
   
   
-  init(category: Category, wishService: WishServiceProtocol) {
-    self.initialState = State(category: category)
+  init(
+    category: Category,
+    wishService: WishServiceProtocol,
+    userDefaults: UserDefaultsUtils
+  ) {
+    self.initialState = State(
+      isTooltipShown: userDefaults.getRandomEmojiTooltipIsShow(),
+      category: category
+    )
     self.wishService = wishService
+    self.userDefaults = userDefaults
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad():
       return Observable.just(Mutation.fetchDescription(1))
+    case .tooltipDisappeared:
+      self.userDefaults.setRandomEmojiTooltipIsShow(isShown: true)
+      
+      return .just(.setTooltipShown(true))
     case .inputEmoji(let emoji):
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):
@@ -88,11 +104,15 @@ class WriteReactor: Reactor {
     case .inputHashtag(let hashtag):
       return Observable.just(Mutation.setHashtag(hashtag))
     case .tapWriteButton():
+      var observables: [Observable<Mutation>] = []
       if self.currentState.title.isEmpty {
-        return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
-      } else if self.currentState.date == nil {
-        return Observable.just(Mutation.setDateError("write_error_date_empty".localized))
-      } else {
+        observables.append(.just(.setTitleError("write_error_title_empty".localized)))
+      }
+      if self.currentState.date == nil {
+        observables.append(.just(.setDateError("write_error_date_empty".localized)))
+      }
+      
+      if observables.isEmpty {
         let wish = Wish().then {
           $0.emoji = self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji
           $0.category = self.currentState.category.rawValue
@@ -107,14 +127,18 @@ class WriteReactor: Reactor {
         if self.currentState.isPushEnable {
           NotificationManager.shared.reserve(wish: wish)
         }
-        return Observable.just(Mutation.saveWish(()))
+        observables.append(.just(.saveWish(())))
       }
+      
+      return .concat(observables)
     }
   }
   
   func reduce(state: State, mutation: Mutation) -> State {
     var newState = state
     switch mutation {
+    case .setTooltipShown(let isShown):
+      newState.isTooltipShown = isShown
     case .fetchDescription(let index):
       newState.descriptionIndex = index
     case .setEmoji(let emoji):
@@ -126,14 +150,12 @@ class WriteReactor: Reactor {
       newState.writeButtonState = self.validateForEnable(state: newState)
     case .setTitleError(let errorMessage):
       newState.titleError = errorMessage
-      newState.dateError = nil
     case .setDate(let date):
       newState.date = date
       newState.isPushButtonVisible = true
       newState.writeButtonState = self.validateForEnable(state: newState)
     case .setDateError(let errorMessage):
       newState.dateError = errorMessage
-      newState.titleError = nil
     case .togglePushEnable():
       newState.isPushEnable = !state.isPushEnable
     case .setMemo(let memo):

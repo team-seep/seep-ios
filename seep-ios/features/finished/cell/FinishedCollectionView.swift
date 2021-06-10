@@ -10,7 +10,7 @@ class FinishedCollectionCell: BaseCollectionViewCell {
   }
   
   let emojiLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 36)
+    $0.font = .systemFont(ofSize: 28)
   }
   
   let titleLabel = UILabel().then {
@@ -48,19 +48,19 @@ class FinishedCollectionCell: BaseCollectionViewCell {
     }
     
     self.titleLabel.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(14)
+      make.left.equalTo(self.emojiLabel)
       make.right.equalToSuperview().offset(-14)
       make.top.equalTo(self.emojiLabel.snp.bottom).offset(12)
     }
     
     self.finishDateLabel.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(17)
-      make.top.equalTo(self.titleLabel.snp.bottom).offset(12)
+      make.left.equalTo(self.emojiLabel)
+      make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
     }
     
     self.tagLabel.snp.makeConstraints { make in
-      make.left.equalTo(self.finishDateLabel)
-      make.top.equalTo(self.finishDateLabel.snp.bottom).offset(6)
+      make.left.equalTo(self.emojiLabel)
+      make.bottom.equalToSuperview().offset(-20)
     }
   }
   

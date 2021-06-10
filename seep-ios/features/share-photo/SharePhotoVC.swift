@@ -75,6 +75,7 @@ class SharePhotoVC: BaseVC, View {
     reactor.state
       .map { $0.shareType }
       .distinctUntilChanged()
+      .observeOn(MainScheduler.instance)
       .do(onNext: self.sharePhotoView.setCollectionViewHidden(by:))
       .bind(to: self.sharePhotoView.shareTypeSwitchButton.rx.selectType)
       .disposed(by: self.disposeBag)

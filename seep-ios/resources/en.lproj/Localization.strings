@@ -28,7 +28,7 @@
 "home_finish_count_category_want_to_do_format_empty" = "😱 지금까지 %d개를 이뤘어요";
 "home_finish_count_category_want_to_get_format" = "👏 지금까지 %d개를 겟했어요";
 "home_finish_count_category_want_to_get_format_empty" = "😱 지금까지 %d개를 겟했어요";
-"home_finish_count_category_want_to_go_format" = "👏 지금까지 %d곳를 다녀왔어요";
+"home_finish_count_category_want_to_go_format" = "👏 지금까지 %d곳을 다녀왔어요";
 "home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
@@ -45,7 +45,7 @@
 "write_placeholder_title_category_want_to_go" = "어디 가고 싶어요?";
 "write_placeholder_date" = "언제까지 하면 좋을까요?";
 "write_notification_off" = "미리 알려드릴께요! (알림은 2일전, 1일전에 갑니다!)";
-"write_notification_on" = "알림이 켜져있습니다!";
+"write_notification_on" = "🔔 알림이 켜져있습니다!";
 "wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
 "write_button_off" = "🔥어서 채워봅시다!";
 "write_button_on" = "🎉등록해볼까요!";
@@ -56,12 +56,12 @@
 "write_error_title_empty" = "📍제목을 작성해주세요!";
 "write_error_date_empty" = "📍날짜를 선택해주세요!";
 "write_placeholder_hashtag" = "해시태그를 달아봐요 (선택)";
-"write_error_max_length_hashtag" = "📍해시태그는 8자내로 작성해주세요!";
+"write_error_max_length_hashtag" = "📍해시태그는 7자내로 작성해주세요!";
 
 // Detail
+"detail_random_info" = "Random으로 이모지를\n골라드립니다!";
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";
-"detail_notification_on" = "알림이 켜져있습니다!";
 "detail_cancel" = "취소";
 "detail_action_sheet_delete" = "삭제";
 "detail_action_sheet_edit" = "수정";
@@ -89,7 +89,7 @@
 "share_photo_dismiss" = "닫기";
 "share_photo_emoji" = "😀 이모지";
 "share_photo_album" = "🏞 사진";
-"share_photo_deny_message" = "사진 사용 권한을 허용하면 공유 이미지를 만들 수 있어요!";
+"share_photo_deny_message" = "원하는 사진으로 공유하기 위해 앨범 접근 권한이 필요해요.";
 "share_photo_tooltip" = "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요";
 "share_photo_button" = "👌 이렇게 공유할래요";
 "share_photo_success" = "👌 공유하기 완료! 앨범에서 확인해보세요";

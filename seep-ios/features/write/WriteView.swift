@@ -65,7 +65,23 @@ class WriteView: BaseView {
     $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 12)
     $0.contentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
   }
-    
+  
+  let randomTooltipView = PaddingLabel(
+    topInset: 6,
+    bottomInset: 6,
+    leftInset: 8,
+    rightInset: 8
+  ).then {
+    $0.font = .appleBold(size: 11)
+    $0.textColor = .gray1
+    $0.backgroundColor = .gray5
+    $0.layer.cornerRadius = 5
+    $0.clipsToBounds = true
+    $0.numberOfLines = 0
+    $0.text = "detail_random_info".localized
+    $0.isHidden = true
+  }
+  
   let categoryView = CategoryView().then {
     $0.containerView.backgroundColor = UIColor(r: 232, g: 246, b: 255)
   }
@@ -110,6 +126,7 @@ class WriteView: BaseView {
     gradientLayer.locations = [0.0, 1.0]
     gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
     $0.layer.addSublayer(gradientLayer)
+    $0.isUserInteractionEnabled = false
   }
   
   let writeButton = WriteButton()
@@ -132,8 +149,8 @@ class WriteView: BaseView {
     self.setupEmojiKeyboard()
     self.containerView.addSubViews(
       titleLabel, emojiBackground, emojiField, randomButton,
-      categoryView, titleField, dateField, memoField,
-      hashtagField
+      randomTooltipView, categoryView, titleField, dateField,
+      memoField, hashtagField
     )
     self.scrollView.addSubview(containerView)
     self.addSubViews(topIndicator, scrollView, gradientView, writeButton)
@@ -180,6 +197,11 @@ class WriteView: BaseView {
       make.width.height.equalTo(20)
       make.left.equalTo(self.emojiBackground.snp.right).offset(4)
       make.bottom.equalTo(self.emojiBackground)
+    }
+    
+    self.randomTooltipView.snp.makeConstraints { make in
+      make.left.equalTo(self.randomButton.snp.left)
+      make.bottom.equalTo(self.randomButton.snp.top).offset(-4)
     }
     
     self.categoryView.snp.makeConstraints { make in
@@ -264,6 +286,21 @@ class WriteView: BaseView {
       string: "write_placeholder_title_\(category.rawValue)".localized,
       attributes: [.foregroundColor: UIColor.gray3]
     )
+  }
+  
+  func showRandomEmojiTooltip(onDismiss: @escaping (Bool) -> Void) {
+    self.randomTooltipView.isHidden = false
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+      guard let self = self else { return }
+      UIView.transition(
+        with: self.randomTooltipView,
+        duration: 0.3,
+        options: .curveEaseInOut) { [weak self] in
+        self?.randomTooltipView.alpha = 0
+      } completion: { isComplete in
+        onDismiss(isComplete)
+      }
+    }
   }
   
   private func setupEmojiKeyboard() {

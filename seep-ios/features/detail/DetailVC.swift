@@ -86,6 +86,14 @@ class DetailVC: BaseVC, View {
         self?.detailView.endEditing(true)
       }
       .disposed(by: self.eventDisposeBag)
+    
+    self.detailView.shareButton.rx.tap
+      .observeOn(MainScheduler.instance)
+      .bind { [weak self] _ in
+        guard let self = self else { return }
+        self.showSharePhoto(wish: self.wish)
+      }
+      .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: DetailReactor) {
@@ -167,6 +175,7 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     self.detailView.hashtagField.rx.text.orEmpty
+      .skip(1)
       .map { Reactor.Action.inputHashtag($0) }
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
@@ -186,7 +195,6 @@ class DetailVC: BaseVC, View {
       .map { $0.isEditable }
       .distinctUntilChanged()
       .delay(.milliseconds(10), scheduler: MainScheduler.instance) // 수정 취소시, 마지막에 editable이 변경되어야해서 딜레이 설정
-      
       .bind(onNext: self.detailView.setEditable(isEditable:))
       .disposed(by: self.disposeBag)
     
@@ -291,10 +299,8 @@ class DetailVC: BaseVC, View {
       style: .default
     ) { [weak self] action in
       guard let self = self else { return }
-      let sharePhotoVC = SharePhotoVC.instance(wish: self.wish)
       
-      sharePhotoVC.delegate = self
-      self.present(sharePhotoVC, animated: true, completion: nil)
+      self.showSharePhoto(wish: self.wish)
     }
     
     alertController.addAction(shereAction)
@@ -331,6 +337,13 @@ class DetailVC: BaseVC, View {
     
     self.detailView.scrollView.contentInset.bottom = keyboardViewEndFrame.height
     self.detailView.scrollView.scrollIndicatorInsets = self.detailView.scrollView.contentInset
+  }
+  
+  private func showSharePhoto(wish: Wish) {
+    let sharePhotoVC = SharePhotoVC.instance(wish: self.wish)
+    
+    sharePhotoVC.delegate = self
+    self.present(sharePhotoVC, animated: true, completion: nil)
   }
   
   @objc private func keyboardWillHide(_ notification: Notification) {

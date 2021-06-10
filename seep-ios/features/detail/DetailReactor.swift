@@ -49,7 +49,7 @@ class DetailReactor: Reactor {
   }
   
   let initialState: State
-  let initialWish: Wish
+  var initialWish: Wish
   let wishService: WishServiceProtocol
   
   
@@ -117,6 +117,7 @@ class DetailReactor: Reactor {
         return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
       } else {
         let wish = Wish().then {
+          $0._id = self.initialWish._id
           $0.emoji = self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji
           $0.category = self.currentState.category.rawValue
           $0.title = self.currentState.title
@@ -132,6 +133,7 @@ class DetailReactor: Reactor {
         if self.currentState.isPushEnable {
           NotificationManager.shared.reserve(wish: wish)
         }
+        self.initialWish = wish
         return Observable.just(Mutation.setEditable(false))
       }
     }

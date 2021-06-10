@@ -19,6 +19,7 @@ extension UIImage {
   static let icLogoWhite = UIImage(named: "ic_logo_white")
   
   var averageColor: UIColor? {
+    let offset: CGFloat = 100.0
     guard let inputImage = CIImage(image: self) else { return nil }
     let extentVector = CIVector(
       x: inputImage.extent.origin.x,
@@ -42,10 +43,10 @@ extension UIImage {
     )
     
     return UIColor(
-      red: CGFloat(bitmap[0]) / 255,
-      green: CGFloat(bitmap[1]) / 255,
-      blue: CGFloat(bitmap[2]) / 255,
-      alpha: CGFloat(bitmap[3]) / 255
+      red: ((CGFloat(bitmap[0]) + (offset)) / 255),
+      green: ((CGFloat(bitmap[1]) + (offset)) / 255),
+      blue: ((CGFloat(bitmap[2]) + (offset)) / 255),
+      alpha: (CGFloat(bitmap[3]) / 255)
     )
   }
 }

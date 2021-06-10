@@ -24,6 +24,10 @@ class SharePhotoView: BaseView {
     $0.setTitleColor(.gray4, for: .normal)
   }
   
+  let topDividor = UIView().then {
+    $0.backgroundColor = UIColor(r: 246, g: 246, b: 246)
+  }
+  
   let photoContainer = UIView().then {
     $0.backgroundColor = UIColor(r: 207, g: 164, b: 110)
     $0.isUserInteractionEnabled = true
@@ -88,6 +92,10 @@ class SharePhotoView: BaseView {
     $0.isHidden = true
   }
   
+  let bottomDividorView = UIView().then {
+    $0.backgroundColor = UIColor(r: 246, g: 246, b: 246)
+  }
+  
   let shareTypeSwitchButton = ShareTypeSwitchView()
   
   let emojiCollectionView = UIView().then {
@@ -127,7 +135,8 @@ class SharePhotoView: BaseView {
     self.photoContainer.addGestureRecognizer(self.doubleTapGesture)
     self.addSubViews(
       topIndicator, titleLabel, cancelButton, photoContainer,
-      shareTypeSwitchButton, collectionView, emojiCollectionView, shareButton
+      topDividor, shareTypeSwitchButton, collectionView, emojiCollectionView,
+      bottomDividorView, shareButton
     )
   }
   
@@ -147,6 +156,12 @@ class SharePhotoView: BaseView {
     self.cancelButton.snp.makeConstraints { make in
       make.centerY.equalTo(self.titleLabel)
       make.right.equalToSuperview().offset(-20)
+    }
+    
+    self.topDividor.snp.makeConstraints { make in
+      make.left.right.equalToSuperview()
+      make.bottom.equalTo(self.photoContainer.snp.top)
+      make.height.equalTo(1)
     }
     
     self.photoContainer.snp.makeConstraints { make in
@@ -195,6 +210,12 @@ class SharePhotoView: BaseView {
     self.shareTypeSwitchButton.snp.makeConstraints { make in
       make.top.equalTo(self.photoContainer.snp.bottom)
       make.left.right.equalToSuperview()
+    }
+    
+    self.bottomDividorView.snp.makeConstraints { make in
+      make.left.right.equalToSuperview()
+      make.top.equalTo(self.shareTypeSwitchButton)
+      make.height.equalTo(1)
     }
     
     self.collectionView.snp.makeConstraints { make in

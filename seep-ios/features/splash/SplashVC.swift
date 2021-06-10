@@ -12,7 +12,7 @@ class SplashVC: BaseVC {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.splashView.lottieView.play { [weak self] isComplete in
+    self.splashView.playRandomSplash { [weak self] isComplete in
       self?.goToHome()
     }
   }
