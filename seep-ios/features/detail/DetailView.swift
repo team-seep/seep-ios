@@ -32,12 +32,6 @@ class DetailView: BaseView {
     $0.setImage(UIImage(named: "ic_more"), for: .normal)
   }
   
-  let shareButton = UIButton().then {
-    $0.setTitle("공유하기", for: .normal)
-    $0.setTitleColor(.gray5, for: .normal)
-    $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
-  }
-  
   let cancelButton = UIButton().then {
     $0.setTitle("detail_cancel".localized, for: .normal)
     $0.setTitleColor(.gray3, for: .normal)
@@ -129,10 +123,13 @@ class DetailView: BaseView {
       hashtagField
     )
     self.scrollView.addSubview(containerView)
-    self.addSubViews(
-      topIndicator, moreButton, shareButton, cancelButton,
-      scrollView, editButton
-    )
+    self.addSubViews([
+      topIndicator,
+      moreButton,
+      cancelButton,
+      scrollView,
+      editButton
+    ])
   }
   
   override func bindConstraints() {
@@ -158,10 +155,6 @@ class DetailView: BaseView {
     self.moreButton.snp.makeConstraints { make in
       make.right.equalToSuperview().offset(-20)
       make.top.equalToSuperview().offset(10)
-    }
-    
-    self.shareButton.snp.makeConstraints { make in
-      make.right.top.equalTo(self.moreButton)
     }
     
     self.cancelButton.snp.makeConstraints { make in
@@ -214,8 +207,6 @@ class DetailView: BaseView {
   }
   
   func bind(wish: Wish, mode: DetailMode) {
-    self.moreButton.isHidden = (mode == .fromFinish)
-    self.shareButton.isHidden = (mode == .fromHome)
     self.emojiField.text = wish.emoji
     self.categoryView.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
     self.titleField.textField.text = wish.title

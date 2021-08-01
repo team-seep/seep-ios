@@ -38,12 +38,14 @@ struct AlertUtils {
     viewController: UIViewController,
     title: String? = nil,
     message: String? = nil,
+    okButton: String = "common_ok".localized,
+    cancelButton: String = "common_cancel".localized,
     onTapOk: @escaping () -> Void
   ) {
-    let okAction = UIAlertAction(title: "common_ok".localized, style: .default) { (action) in
+    let okAction = UIAlertAction(title: okButton, style: .default) { (action) in
       onTapOk()
     }
-    let cancelAction = UIAlertAction(title: "common_cancel".localized, style: .cancel)
+    let cancelAction = UIAlertAction(title: cancelButton, style: .cancel)
     
     AlertUtils.show(
       viewController: viewController,

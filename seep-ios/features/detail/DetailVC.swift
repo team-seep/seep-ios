@@ -77,6 +77,7 @@ class DetailVC: BaseVC, View {
     
     self.detailView.moreButton.rx.tap
       .observeOn(MainScheduler.instance)
+      .map { self.mode }
       .bind(onNext: self.showActionSheet)
       .disposed(by: self.eventDisposeBag)
     
@@ -84,14 +85,6 @@ class DetailVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .bind { [weak self] in
         self?.detailView.endEditing(true)
-      }
-      .disposed(by: self.eventDisposeBag)
-    
-    self.detailView.shareButton.rx.tap
-      .observeOn(MainScheduler.instance)
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        self.showSharePhoto(wish: self.wish)
       }
       .disposed(by: self.eventDisposeBag)
   }
@@ -272,23 +265,8 @@ class DetailVC: BaseVC, View {
       .disposed(by: disposeBag)
   }
   
-  private func showActionSheet() {
+  private func showActionSheet(mode: DetailMode) {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    let deleteAction = UIAlertAction(
-      title: "detail_action_sheet_delete".localized,
-      style: .destructive
-    ) { [weak self] action in
-      guard let self = self else { return }
-      AlertUtils.showWithCancel(
-        viewController: self,
-        title: nil,
-        message: "detail_delete_message".localized
-      ) {
-        Observable.just(Reactor.Action.tapDeleteButton)
-          .bind(to: self.detailReactor.action)
-          .disposed(by: self.disposeBag)
-      }
-    }
     let cancelAction = UIAlertAction(
       title: "detail_action_sheet_cancel".localized,
       style: .cancel,
@@ -303,8 +281,43 @@ class DetailVC: BaseVC, View {
       self.showSharePhoto(wish: self.wish)
     }
     
+    if mode == .fromHome {
+      let deleteAction = UIAlertAction(
+        title: "detail_action_sheet_delete".localized,
+        style: .destructive
+      ) { [weak self] action in
+        guard let self = self else { return }
+        AlertUtils.showWithCancel(
+          viewController: self,
+          title: nil,
+          message: "detail_delete_message".localized
+        ) {
+          Observable.just(Reactor.Action.tapDeleteButton)
+            .bind(to: self.detailReactor.action)
+            .disposed(by: self.disposeBag)
+        }
+      }
+      
+      alertController.addAction(deleteAction)
+    } else {
+      let cancelFinishAction = UIAlertAction(
+        title: "detail_action_sheet_cancel_finish".localized,
+        style: .default) { [weak self] action in
+        guard let self = self else { return }
+        AlertUtils.showWithCancel(
+          viewController: self,
+          title: "detail_cancel_finish_title".localized,
+          message: "detail_cancel_finish_description".localized,
+          okButton: "detail_cancel_finish_ok".localized,
+          cancelButton: "detail_cancel_finish_no".localized) {
+          self.detailReactor.action.onNext(.tapCancelFinish)
+        }
+      }
+      
+      alertController.addAction(cancelFinishAction)
+    }
+    
     alertController.addAction(shereAction)
-    alertController.addAction(deleteAction)
     alertController.addAction(cancelAction)
     
     self.present(alertController, animated: true, completion: nil)

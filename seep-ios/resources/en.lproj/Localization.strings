@@ -33,6 +33,8 @@
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
 "home_empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
+"home_finish_alert_title" = "완료했어요!";
+"home_finish_alert_description" = "완료 후 완료 목록에서\n확인할 수 있습니다!";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";
@@ -63,11 +65,16 @@
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";
 "detail_cancel" = "취소";
-"detail_action_sheet_delete" = "삭제";
+"detail_action_sheet_delete" = "삭제하기";
+"detail_action_sheet_cancel_finish" = "완료 취소하기";
 "detail_action_sheet_edit" = "수정";
-"detail_action_sheet_share" = "공유";
-"detail_action_sheet_cancel" = "취소";
+"detail_action_sheet_share" = "공유하기";
+"detail_action_sheet_cancel" = "취소하기";
 "detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
+"detail_cancel_finish_title" = "완료된 항목을 취소할까요?";
+"detail_cancel_finish_description" = "취소시 다시 메인 홈에서\n확인할 수 있습니다!";
+"detail_cancel_finish_no" = "아니요";
+"detail_cancel_finish_ok" = "취소할래요";
 
 // Finish
 "finish_back_button" = "메인 홈으로 돌아가기";

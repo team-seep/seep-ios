@@ -8,6 +8,12 @@ extension UIView {
     }
   }
   
+  func addSubViews(_ views: [UIView]) {
+    for view in views {
+      self.addSubview(view)
+    }
+  }
+  
   func asImage() -> UIImage {
     let renderer = UIGraphicsImageRenderer(bounds: bounds)
     
