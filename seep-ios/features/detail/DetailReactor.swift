@@ -7,6 +7,7 @@ class DetailReactor: Reactor {
     case tapEditButton
     case tapDeleteButton
     case tapCancelButton
+    case tapCancelFinish
     case inputEmoji(String)
     case tapCategory(Category)
     case tapRandomEmojiButton
@@ -78,6 +79,10 @@ class DetailReactor: Reactor {
       return Observable.just(Mutation.deleteWish)
     case .tapCancelButton:
       return Observable.just(Mutation.resetWish)
+    case .tapCancelFinish:
+      self.wishService.cancelFinishWish(wish: self.initialWish)
+      
+      return .just(.deleteWish)
     case .inputEmoji(let emoji):
       return Observable.just(Mutation.setEmoji(emoji))
     case .tapCategory(let category):

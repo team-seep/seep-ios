@@ -6,6 +6,7 @@ protocol WishServiceProtocol {
   func deleteWish(id: ObjectId)
   func searchWish(id: ObjectId) -> Wish?
   func updateWish(id: ObjectId, newWish: Wish)
+  func cancelFinishWish(wish: Wish)
   func finishWish(wish: Wish)
   func fetchAllWishes(category: Category) -> [Wish]
   func getFinishCount(category: Category) -> Int
@@ -56,6 +57,15 @@ struct WishService: WishServiceProtocol {
       item?.memo = newWish.memo
       item?.hashtag = newWish.hashtag
     }
+  }
+  
+  func cancelFinishWish(wish: Wish) {
+    guard let realm = try? Realm() else { return }
+    
+    realm.beginWrite()
+    wish.isSuccess = false
+    wish.finishDate = nil
+    try! realm.commitWrite()
   }
   
   func finishWish(wish: Wish) {

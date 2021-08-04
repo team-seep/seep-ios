@@ -51,12 +51,6 @@ class HomeVC: BaseVC, View {
       .bind(onNext: self.goToFinish)
       .disposed(by: self.eventDisposeBag)
     
-    self.homeView.toast.actionButton.rx.tap
-      .map { self.homeReactor.currentState.category }
-      .observeOn(MainScheduler.instance)
-      .bind(onNext: self.goToFinish)
-      .disposed(by: self.eventDisposeBag)
-    
     self.homeView.writeButton.rx.tap
       .map { self.homeReactor.currentState.category }
       .observeOn(MainScheduler.instance)
@@ -218,6 +212,14 @@ class HomeVC: BaseVC, View {
     }
   }
   
+  private func showFinishAlert() {
+    AlertUtils.show(
+      viewController: self,
+      title: "home_finish_alert_title".localized,
+      message: "home_finish_alert_description".localized
+    )
+  }
+  
   @objc private func willEnterForeground() {
     self.homeView.startEmojiAnimation()
   }
@@ -241,7 +243,7 @@ extension HomeVC: PageItemDelegate {
   }
   
   func onFinishWish() {
-    self.homeView.showFinishToast()
+    self.showFinishAlert()
     Observable.just(HomeReactor.Action.viewDidLoad)
       .bind(to: self.homeReactor.action)
       .disposed(by: disposeBag)
