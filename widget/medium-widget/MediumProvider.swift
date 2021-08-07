@@ -2,17 +2,17 @@ import WidgetKit
 import SwiftUI
 import Intents
 
-struct Provider: IntentTimelineProvider {
-  func placeholder(in context: Context) -> SimpleEntry {
-    SimpleEntry(date: Date(), configuration: ConfigurationIntent())
+struct MediumProvider: IntentTimelineProvider {
+  func placeholder(in context: Context) -> MediumEntry {
+    MediumEntry(date: Date(), configuration: ConfigurationIntent())
   }
   
   func getSnapshot(
     for configuration: ConfigurationIntent,
     in context: Context,
-    completion: @escaping (SimpleEntry) -> ()
+    completion: @escaping (MediumEntry) -> ()
   ) {
-    let entry = SimpleEntry(date: Date(), configuration: configuration)
+    let entry = MediumEntry(date: Date(), configuration: configuration)
     
     completion(entry)
   }
@@ -20,9 +20,9 @@ struct Provider: IntentTimelineProvider {
   func getTimeline(
     for configuration: ConfigurationIntent,
     in context: Context,
-    completion: @escaping (Timeline<SimpleEntry>) -> Void
+    completion: @escaping (Timeline<MediumEntry>) -> Void
   ) {
-    var entries: [SimpleEntry] = []
+    var entries: [MediumEntry] = []
     
     // Generate a timeline consisting of five entries an hour apart, starting from the current date.
     let currentDate = Date()
@@ -32,7 +32,7 @@ struct Provider: IntentTimelineProvider {
         value: hourOffset,
         to: currentDate
       )!
-      let entry = SimpleEntry(date: entryDate, configuration: configuration)
+      let entry = MediumEntry(date: entryDate, configuration: configuration)
       entries.append(entry)
     }
     

@@ -3,7 +3,7 @@ import SwiftUI
 import Intents
 
 struct SmallWidget: Widget {
-  let kind: String = "smallWidget"
+  let kind: String = "\(SmallWidget.self)"
   
   var body: some WidgetConfiguration {
     StaticConfiguration(
