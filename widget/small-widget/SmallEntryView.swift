@@ -3,13 +3,15 @@ import WidgetKit
 
 struct SmallEntryView : View {
   
+  let categoryData: SmallWidgetData
+  
   var body: some View {
     VStack(
       alignment: .leading,
       spacing: 0,
       content: {
         HStack(alignment: .top, spacing: 0) {
-          Text("😍")
+          Text(self.categoryData.emoji)
             .font(.system(size: 30))
           Spacer()
         }
@@ -17,8 +19,7 @@ struct SmallEntryView : View {
         
         HStack(alignment: .top, spacing: 0) {
           VStack(alignment: .leading, spacing: -2) {
-            Text("지금")
-              .multilineTextAlignment(.center)
+            Text(self.categoryData.title)
               .font(.custom("AppleSDGothicNeoEB00", size: 20))
               .foregroundColor(.white)
             
@@ -29,11 +30,11 @@ struct SmallEntryView : View {
           .fixedSize()
           Spacer()
         }
-        .offset(x: 16, y: 0)
-        .padding(.top, 12)
+        .padding(.init(top: 8, leading: 16, bottom: 0, trailing: 0))
         
-        Text("뭐 하고 싶어요?")
+        Text(self.categoryData.description)
           .foregroundColor(.white)
+          .multilineTextAlignment(.leading)
           .font(Font.custom("AppleSDGothicNeo-Light", size: 20))
           .padding(.init(top: 4, leading: 16, bottom: 0, trailing: 0))
         
@@ -47,14 +48,14 @@ struct SmallEntryView : View {
         blue: 27/255,
         opacity: 1
       ))
-      .widgetURL(URL(string: "widget://add?category=category_want_to_do"))
+      .widgetURL(URL(string: self.categoryData.deepLink))
   }
 }
 
 
 struct SmallEntryView_Previews: PreviewProvider {
   static var previews: some View {
-    SmallEntryView()
+    SmallEntryView(categoryData: .init(category: .wantToGo))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }

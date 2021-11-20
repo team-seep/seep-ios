@@ -7,7 +7,9 @@ struct widgets: WidgetBundle {
   
   @WidgetBundleBuilder
   var body: some Widget {
-    SmallWidget()
+    SmallWidget(category: .wantToDo)
+    SmallWidget(category: .wantToGet)
+    SmallWidget(category: .wantToGo)
     MediumWidget()
   }
 }
