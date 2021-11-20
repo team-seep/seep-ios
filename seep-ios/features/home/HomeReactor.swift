@@ -8,7 +8,6 @@ class HomeReactor: Reactor {
     case viewDidLoad
     case tapCategory(Category)
     case tapViewType
-    case tapWriteButton
   }
   
   enum Mutation {
@@ -17,7 +16,7 @@ class HomeReactor: Reactor {
     case setSuccessCount(Int)
     case setWishCount(Int)
     case setWriteButtonTitle(String)
-    case toggleShowWrite
+    case presentWrite(Category)
   }
   
   struct State {
@@ -30,8 +29,9 @@ class HomeReactor: Reactor {
   }
   
   let initialState = State()
-  let wishService: WishServiceProtocol
-  let userDefaults: UserDefaultsUtils
+  let presentWritePublisher = PublishRelay<Category>()
+  private let wishService: WishServiceProtocol
+  private let userDefaults: UserDefaultsUtils
   
   
   init(wishService: WishServiceProtocol, userDefaults: UserDefaultsUtils) {
@@ -45,10 +45,11 @@ class HomeReactor: Reactor {
       let successCount = self.wishService.getFinishCount(category: self.currentState.category)
       let wishCount = self.wishService.getWishCount(category: self.currentState.category)
       
-      return Observable.concat([
-        Observable.just(Mutation.setWishCount(wishCount)),
-        Observable.just(Mutation.setSuccessCount(successCount)),
-        Observable.just(Mutation.setViewType(self.userDefaults.getViewType()))
+      return .merge([
+        .just(Mutation.setWishCount(wishCount)),
+        .just(Mutation.setSuccessCount(successCount)),
+        .just(Mutation.setViewType(self.userDefaults.getViewType())),
+        self.handleDeepkLink(urlString: self.userDefaults.getDeepLink())
       ])
     case .tapCategory(let category):
       let wishCount = self.wishService.getWishCount(category: category)
@@ -66,11 +67,9 @@ class HomeReactor: Reactor {
       
       self.userDefaults.setViewType(viewType: viewType)
       return Observable.just(Mutation.setViewType(viewType))
-    case .tapWriteButton:
-      return Observable.just(Mutation.toggleShowWrite)
     }
   }
-
+  
   func reduce(state: State, mutation: Mutation) -> State {
     var newState = state
     switch mutation {
@@ -84,10 +83,27 @@ class HomeReactor: Reactor {
       newState.viewType = viewType
     case .setWriteButtonTitle(let title):
       newState.writeButtonTitle = title
-    case .toggleShowWrite:
-      newState.showWrite.toggle()
+    case let .presentWrite(category):
+      self.presentWritePublisher.accept(category)
     }
     
     return newState
+  }
+  
+  private func handleDeepkLink(urlString: String) -> Observable<Mutation> {
+    self.userDefaults.setDeepLink(deepLink: "")
+    guard !urlString.isEmpty,
+          let urlComponents = URLComponents(string: urlString) else {
+            return .empty()
+          }
+    
+    if urlComponents.host == "add" {
+      if let categoryQuery = urlComponents.queryItems?.first(where: { $0.name == "category" }),
+         let category = Category(rawValue: categoryQuery.value ?? "") {
+        
+        return .just(.presentWrite(category))
+      }
+    }
+    return .empty()
   }
 }
