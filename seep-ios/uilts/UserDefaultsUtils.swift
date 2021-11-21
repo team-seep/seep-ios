@@ -5,6 +5,7 @@ struct UserDefaultsUtils {
   static let keyViewType = "keyViewType"
   static let keySharePhotoTooltipIsShow = "keySharePhotoTooltipIsShow"
   static let keyRandomEmojiTooltipIsShow = "keyRandomEmojiTooltipIsShow"
+  private let keyDeepLink = "keyDeepLink"
   
   let instance: UserDefaults
   
@@ -42,5 +43,13 @@ struct UserDefaultsUtils {
   
   func getRandomEmojiTooltipIsShow() -> Bool {
     return self.instance.bool(forKey: UserDefaultsUtils.keyRandomEmojiTooltipIsShow)
+  }
+  
+  func setDeepLink(deepLink: String) {
+    self.instance.set(deepLink, forKey: self.keyDeepLink)
+  }
+  
+  func getDeepLink() -> String {
+    return self.instance.string(forKey: self.keyDeepLink) ?? ""
   }
 }
