@@ -80,11 +80,11 @@
 		6EB50EFC26BD549000F0096E /* widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50EF726BD548F00F0096E /* widget.intentdefinition */; };
 		6EB50EFF26BD549000F0096E /* widgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 6EB50EEF26BD548F00F0096E /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6EB50F0526BD56BA00F0096E /* MediumProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0426BD56BA00F0096E /* MediumProvider.swift */; };
-		6EB50F0726BD574400F0096E /* SmallEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0626BD574400F0096E /* SmallEntryView.swift */; };
+		6EB50F0726BD574400F0096E /* SmallWriteEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0626BD574400F0096E /* SmallWriteEntryView.swift */; };
 		6EB50F0826BD5F9C00F0096E /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
-		6EB50F0A26BD638C00F0096E /* SmallProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0926BD638C00F0096E /* SmallProvider.swift */; };
-		6EB50F0C26BD65BF00F0096E /* SmallEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0B26BD65BF00F0096E /* SmallEntry.swift */; };
-		6EB50F0E26BD6A6E00F0096E /* SmallWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0D26BD6A6E00F0096E /* SmallWidget.swift */; };
+		6EB50F0A26BD638C00F0096E /* SmallWriteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0926BD638C00F0096E /* SmallWriteProvider.swift */; };
+		6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */; };
+		6EB50F0E26BD6A6E00F0096E /* SmallWriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */; };
 		6EC9BF9D26BE0456007C7708 /* MediumEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9C26BE0456007C7708 /* MediumEntry.swift */; };
 		6EC9BF9F26BE05D8007C7708 /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9E26BE05D8007C7708 /* MediumWidget.swift */; };
 		6EC9BFA126BE073B007C7708 /* MediumEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BFA026BE073B007C7708 /* MediumEntryView.swift */; };
@@ -99,7 +99,7 @@
 		6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */; };
 		6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7725FB301F00A737DF /* HomeReactor.swift */; };
 		6EEED44525F2227F0059DBE5 /* HomeWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED44425F2227F0059DBE5 /* HomeWishCell.swift */; };
-		6EF9A6622748E4A8000AE0DD /* SmallWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9A6612748E4A8000AE0DD /* SmallWidgetData.swift */; };
+		6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */; };
 		6EF9A6652748E528000AE0DD /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9A6642748E528000AE0DD /* Category.swift */; };
 /* End PBXBuildFile section */
 
@@ -203,10 +203,10 @@
 		6EB50EF826BD549000F0096E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6EB50EFA26BD549000F0096E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6EB50F0426BD56BA00F0096E /* MediumProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumProvider.swift; sourceTree = "<group>"; };
-		6EB50F0626BD574400F0096E /* SmallEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallEntryView.swift; sourceTree = "<group>"; };
-		6EB50F0926BD638C00F0096E /* SmallProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallProvider.swift; sourceTree = "<group>"; };
-		6EB50F0B26BD65BF00F0096E /* SmallEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallEntry.swift; sourceTree = "<group>"; };
-		6EB50F0D26BD6A6E00F0096E /* SmallWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidget.swift; sourceTree = "<group>"; };
+		6EB50F0626BD574400F0096E /* SmallWriteEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteEntryView.swift; sourceTree = "<group>"; };
+		6EB50F0926BD638C00F0096E /* SmallWriteProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteProvider.swift; sourceTree = "<group>"; };
+		6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteEntry.swift; sourceTree = "<group>"; };
+		6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidget.swift; sourceTree = "<group>"; };
 		6EC9BF9C26BE0456007C7708 /* MediumEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumEntry.swift; sourceTree = "<group>"; };
 		6EC9BF9E26BE05D8007C7708 /* MediumWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidget.swift; sourceTree = "<group>"; };
 		6EC9BFA026BE073B007C7708 /* MediumEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumEntryView.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 		6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		6EE5CE7725FB301F00A737DF /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
 		6EEED44425F2227F0059DBE5 /* HomeWishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishCell.swift; sourceTree = "<group>"; };
-		6EF9A6612748E4A8000AE0DD /* SmallWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidgetData.swift; sourceTree = "<group>"; };
+		6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidgetData.swift; sourceTree = "<group>"; };
 		6EF9A6642748E528000AE0DD /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.release.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.release.xcconfig"; sourceTree = "<group>"; };
 		C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seep_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -476,7 +476,7 @@
 			children = (
 				6EF9A6632748E522000AE0DD /* model */,
 				6EC9BF9B26BE0432007C7708 /* medium-widget */,
-				6EB50F0F26BD6BDA00F0096E /* small-widget */,
+				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
 				6EB50EF526BD548F00F0096E /* widget.swift */,
 				6EB50EF726BD548F00F0096E /* widget.intentdefinition */,
 				6EB50EF826BD549000F0096E /* Assets.xcassets */,
@@ -485,16 +485,16 @@
 			path = widget;
 			sourceTree = "<group>";
 		};
-		6EB50F0F26BD6BDA00F0096E /* small-widget */ = {
+		6EB50F0F26BD6BDA00F0096E /* small-write-widget */ = {
 			isa = PBXGroup;
 			children = (
-				6EB50F0626BD574400F0096E /* SmallEntryView.swift */,
-				6EB50F0926BD638C00F0096E /* SmallProvider.swift */,
-				6EB50F0B26BD65BF00F0096E /* SmallEntry.swift */,
-				6EB50F0D26BD6A6E00F0096E /* SmallWidget.swift */,
-				6EF9A6612748E4A8000AE0DD /* SmallWidgetData.swift */,
+				6EB50F0626BD574400F0096E /* SmallWriteEntryView.swift */,
+				6EB50F0926BD638C00F0096E /* SmallWriteProvider.swift */,
+				6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */,
+				6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */,
+				6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */,
 			);
-			path = "small-widget";
+			path = "small-write-widget";
 			sourceTree = "<group>";
 		};
 		6EC9BF9B26BE0432007C7708 /* medium-widget */ = {
@@ -826,17 +826,17 @@
 			files = (
 				6EC9BFA526BE0870007C7708 /* WishlistItemView.swift in Sources */,
 				6EC9BF9F26BE05D8007C7708 /* MediumWidget.swift in Sources */,
-				6EB50F0C26BD65BF00F0096E /* SmallEntry.swift in Sources */,
+				6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */,
 				6EB50EFB26BD549000F0096E /* widget.intentdefinition in Sources */,
-				6EB50F0726BD574400F0096E /* SmallEntryView.swift in Sources */,
+				6EB50F0726BD574400F0096E /* SmallWriteEntryView.swift in Sources */,
 				6EB50F0526BD56BA00F0096E /* MediumProvider.swift in Sources */,
-				6EB50F0E26BD6A6E00F0096E /* SmallWidget.swift in Sources */,
+				6EB50F0E26BD6A6E00F0096E /* SmallWriteWidget.swift in Sources */,
 				6EC9BFA126BE073B007C7708 /* MediumEntryView.swift in Sources */,
-				6EB50F0A26BD638C00F0096E /* SmallProvider.swift in Sources */,
+				6EB50F0A26BD638C00F0096E /* SmallWriteProvider.swift in Sources */,
 				6EF9A6652748E528000AE0DD /* Category.swift in Sources */,
 				6EB50EF626BD548F00F0096E /* widget.swift in Sources */,
 				6EC9BF9D26BE0456007C7708 /* MediumEntry.swift in Sources */,
-				6EF9A6622748E4A8000AE0DD /* SmallWidgetData.swift in Sources */,
+				6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1004,7 +1004,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1031,7 +1031,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1055,11 +1055,12 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1078,11 +1079,12 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

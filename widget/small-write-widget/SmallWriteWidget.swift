@@ -2,7 +2,7 @@ import WidgetKit
 import SwiftUI
 import Intents
 
-struct SmallWidget: Widget {
+struct SmallWriteWidget: Widget {
   let category: Category
   let description: String
   
@@ -26,10 +26,10 @@ struct SmallWidget: Widget {
   
   var body: some WidgetConfiguration {
     StaticConfiguration(
-      kind: "\(SmallWidget.self)-" + self.category.rawValue,
-      provider: SmallProvider()
+      kind: "\(SmallWriteWidget.self)-" + self.category.rawValue,
+      provider: SmallWriteProvider()
     ) { entry in
-      SmallEntryView(categoryData: SmallWidgetData(category: category))
+      SmallWriteEntryView(categoryData: SmallWriteWidgetData(category: category))
     }
     .configurationDisplayName("빠르게 등록하기")
     .description("누구보다 빠르게 " + self.description + "을 등록해보는건 어때요?")

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SmallWidgetData {
+struct SmallWriteWidgetData {
   let category: Category
   let emoji: String
   let title: String

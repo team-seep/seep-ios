@@ -80,7 +80,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
-            value = "SmallWidget-category_want_to_go"
+            value = "SmallWriteWidget-category_want_to_go"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable

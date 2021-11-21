@@ -1,9 +1,9 @@
 import SwiftUI
 import WidgetKit
 
-struct SmallEntryView : View {
+struct SmallWriteEntryView : View {
   
-  let categoryData: SmallWidgetData
+  let categoryData: SmallWriteWidgetData
   
   var body: some View {
     VStack(
@@ -53,9 +53,9 @@ struct SmallEntryView : View {
 }
 
 
-struct SmallEntryView_Previews: PreviewProvider {
+struct SmallWriteEntryView_Previews: PreviewProvider {
   static var previews: some View {
-    SmallEntryView(categoryData: .init(category: .wantToGo))
+    SmallWriteEntryView(categoryData: .init(category: .wantToGo))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }
