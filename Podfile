@@ -30,4 +30,9 @@ target 'seep-ios' do
   pod 'Firebase/Messaging'
   
   pod 'lottie-ios'
+  
+  target 'widgetExtension' do
+    inherit! :search_paths
+    pod 'RealmSwift', '=10.5.2'
+  end
 end
