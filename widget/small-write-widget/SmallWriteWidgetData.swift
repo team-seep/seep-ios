@@ -25,12 +25,12 @@ struct SmallWriteWidgetData {
       
     case .wantToGet:
       self.emoji = "🤩"
-      self.title = "생일 선물"
+      self.title = "연말에"
       self.description = "뭐 갖고 싶어요?"
       
     case .wantToGo:
       self.emoji = "😆"
-      self.title = "지금"
+      self.title = "이번주 주말"
       self.description = "어디\n가고 싶어요?"
     }
     self.deepLink = "widget://add?category=\(category.rawValue)"

@@ -20,7 +20,7 @@ struct SmallWriteWidget: Widget {
     case .wantToGet:
       self.description = "갖고싶은 것"
     case .wantToGo:
-      self.description = "가고싶은 것"
+      self.description = "가고싶은 곳"
     }
   }
   

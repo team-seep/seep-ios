@@ -10,6 +10,5 @@ struct widgets: WidgetBundle {
     SmallWriteWidget(category: .wantToDo)
     SmallWriteWidget(category: .wantToGet)
     SmallWriteWidget(category: .wantToGo)
-    MediumWidget()
   }
 }
