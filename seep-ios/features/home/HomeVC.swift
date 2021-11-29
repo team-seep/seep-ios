@@ -56,6 +56,13 @@ class HomeVC: BaseVC, View {
       .observeOn(MainScheduler.instance)
       .bind(onNext: self.showWirteVC(category:))
       .disposed(by: self.eventDisposeBag)
+    
+    self.homeReactor.presentWritePublisher
+      .asDriver(onErrorJustReturn: Category.wantToDo)
+      .drive { [weak self] category in
+        self?.showWirteVC(category: category)
+      }
+      .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: HomeReactor) {
@@ -156,7 +163,7 @@ class HomeVC: BaseVC, View {
     self.navigationController?.pushViewController(finishedVC, animated: true)
   }
   
-  private func showWirteVC(category: Category) {
+  func showWirteVC(category: Category) {
     let writeVC = WriteVC.instance(category: category).then {
       $0.delegate = self
     }
