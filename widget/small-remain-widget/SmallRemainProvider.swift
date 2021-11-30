@@ -31,7 +31,7 @@ struct SmallRemainProvider: TimelineProvider {
     
     let realmPath = FileManager.default
       .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
-      .appendingPathComponent("db.realm")
+      .appendingPathComponent("default.realm")
     let realmConfig = Realm.Configuration(fileURL: realmPath)
     
     if let realm = try? Realm(configuration: realmConfig) {
