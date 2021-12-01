@@ -1,6 +1,9 @@
 import UIKit
-import Firebase
 import UserNotifications
+
+import Firebase
+import RealmSwift
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -10,6 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     self.initilizeFirebase()
+    self.copyDefaultToAppGroup()
+    self.setupRealmConfig()
     self.requestNotificationAuthorization()
     application.registerForRemoteNotifications()
     return true
@@ -47,6 +52,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Error: \(error)")
       }
     }
+  }
+  
+  private func copyDefaultToAppGroup() {
+    let fileManager = FileManager.default
+    let originalPath = Realm.Configuration.defaultConfiguration.fileURL!
+    let appGroupURL = FileManager.default
+      .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")!
+      .appendingPathComponent("default.realm")
+    
+    if fileManager.fileExists(atPath: originalPath.path) {
+      do{
+        try fileManager.replaceItemAt(appGroupURL, withItemAt: originalPath)
+        print("Successfully replaced DB file")
+        try fileManager.removeItem(at: originalPath)
+      }
+      catch{
+        print("Error info: \(error)")
+      }
+    } else {
+      print("File is not exist on original path")
+    }
+  }
+  
+  private func setupRealmConfig() {
+    var config = Realm.Configuration()
+
+    config.fileURL = FileManager.default
+      .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
+      .appendingPathComponent("default.realm")
+
+    Realm.Configuration.defaultConfiguration = config
   }
 }
 
