@@ -66,7 +66,6 @@
 		6E6CBE34274A0B55005D7BFE /* SmallRemainProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CBE33274A0B55005D7BFE /* SmallRemainProvider.swift */; };
 		6E6CBE36274A0B86005D7BFE /* SmallRemainEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CBE35274A0B86005D7BFE /* SmallRemainEntry.swift */; };
 		6E6CBE38274A0B9B005D7BFE /* SmallRemainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CBE37274A0B9B005D7BFE /* SmallRemainWidget.swift */; };
-		6E6CBE3A274A0BD9005D7BFE /* SmallRemainWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CBE39274A0BD9005D7BFE /* SmallRemainWidgetData.swift */; };
 		6E6CBE3B274A2B53005D7BFE /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
 		6E6CBE3C274A2B67005D7BFE /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
 		6E764AE8263FA96C00A99402 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE7263FA96C00A99402 /* UIFontExtension.swift */; };
@@ -196,7 +195,6 @@
 		6E6CBE33274A0B55005D7BFE /* SmallRemainProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainProvider.swift; sourceTree = "<group>"; };
 		6E6CBE35274A0B86005D7BFE /* SmallRemainEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainEntry.swift; sourceTree = "<group>"; };
 		6E6CBE37274A0B9B005D7BFE /* SmallRemainWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainWidget.swift; sourceTree = "<group>"; };
-		6E6CBE39274A0BD9005D7BFE /* SmallRemainWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainWidgetData.swift; sourceTree = "<group>"; };
 		6E764AE7263FA96C00A99402 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		6E764AE9263FBBE300A99402 /* DdayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
 		6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiImageVIew.swift; sourceTree = "<group>"; };
@@ -478,7 +476,6 @@
 				6E6CBE33274A0B55005D7BFE /* SmallRemainProvider.swift */,
 				6E6CBE35274A0B86005D7BFE /* SmallRemainEntry.swift */,
 				6E6CBE37274A0B9B005D7BFE /* SmallRemainWidget.swift */,
-				6E6CBE39274A0BD9005D7BFE /* SmallRemainWidgetData.swift */,
 			);
 			path = "small-remain-widget";
 			sourceTree = "<group>";
@@ -877,7 +874,6 @@
 				6E6CBE3B274A2B53005D7BFE /* Wish.swift in Sources */,
 				6E6CBE34274A0B55005D7BFE /* SmallRemainProvider.swift in Sources */,
 				6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */,
-				6E6CBE3A274A0BD9005D7BFE /* SmallRemainWidgetData.swift in Sources */,
 				6EB50EFB26BD549000F0096E /* widget.intentdefinition in Sources */,
 				6EB50F0726BD574400F0096E /* SmallWriteEntryView.swift in Sources */,
 				6EB50F0526BD56BA00F0096E /* MediumProvider.swift in Sources */,
