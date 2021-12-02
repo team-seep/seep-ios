@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>REALM_NAME</key>
-	<string>$(REALM_NAME)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -26,6 +24,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>공유할 이미지를 만들기 위해 앨범에 접근이 필요해요.</string>
+	<key>REALM_NAME</key>
+	<string>$(REALM_NAME)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AppleSDGothicNeoEB00.ttf</string>
