@@ -2,38 +2,40 @@ import SwiftUI
 import WidgetKit
 
 struct MediumEntryView: View {
-  var body: some View {
-    ZStack {
-      Color.white
-      
-      VStack(
-        alignment: .leading,
-        spacing: nil,
-        content: {
-          WishlistItemView()
-            .padding(.leading, 14)
-          
-          Divider()
-            .border(Color(red: 0.93, green: 0.93, blue: 0.93), width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-            .padding(.horizontal, 15)
-          
-          WishlistItemView()
-            .padding(.leading, 14)
-          
-          Divider()
-            .border(Color(red: 0.93, green: 0.93, blue: 0.93), width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-            .padding(.horizontal, 15)
-          
-          WishlistItemView()
-            .padding(.leading, 14)
-        })
+    let entry: MediumEntry
+    
+    var body: some View {
+        VStack {
+            VStack {
+                if entry.wishes.isEmpty {
+                    
+                } else {
+                    if entry.wishes.count == 1 {
+                        WishlistItemView(wish: entry.wishes[0])
+                        
+                        Spacer()
+                    } else if entry.wishes.count == 2 {
+                        WishlistItemView(wish: entry.wishes[0])
+                        WishlistItemView(wish: entry.wishes[1])
+                        
+                        Spacer()
+                    } else {
+                        WishlistItemView(wish: entry.wishes[0])
+                        WishlistItemView(wish: entry.wishes[1])
+                        WishlistItemView(wish: entry.wishes[2])
+                    }
+                }
+            }
+            .padding(.init(top: 12, leading: 15, bottom: 12, trailing: 15))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(r: 246, g: 247, b: 249))
     }
-  }
 }
 
 struct MediumEntryView_Previews: PreviewProvider {
-  static var previews: some View {
-    MediumEntryView()
-      .previewContext(WidgetPreviewContext(family: .systemMedium))
-  }
+    static var previews: some View {
+        MediumEntryView(entry: MediumEntry.preview)
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+    }
 }

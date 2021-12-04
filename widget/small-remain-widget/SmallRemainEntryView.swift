@@ -2,7 +2,6 @@ import SwiftUI
 import WidgetKit
 
 struct SmallRemainEntryView: View {
-  
   let entry: SmallRemainEntry
   
   var body: some View {

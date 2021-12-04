@@ -71,6 +71,9 @@
 		6E6D610327587B8C00A0BFD9 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D610227587B8C00A0BFD9 /* BundleExtensions.swift */; };
 		6E6D610727587C8500A0BFD9 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D610527587C6800A0BFD9 /* BundleExtensions.swift */; };
 		6E6D610927587F4300A0BFD9 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E6D610827587F4300A0BFD9 /* GoogleService-Info-Dev.plist */; };
+		6E7206C8275B323D009C7AFC /* DdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7206C7275B323D009C7AFC /* DdayView.swift */; };
+		6E7206CA275B3374009C7AFC /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7206C9275B3374009C7AFC /* ViewExtensions.swift */; };
+		6E7206CB275B3696009C7AFC /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */; };
 		6E764AE8263FA96C00A99402 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE7263FA96C00A99402 /* UIFontExtension.swift */; };
 		6E764AEA263FBBE300A99402 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AE9263FBBE300A99402 /* DdayLabel.swift */; };
 		6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */; };
@@ -94,6 +97,7 @@
 		6EB50F0A26BD638C00F0096E /* SmallWriteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0926BD638C00F0096E /* SmallWriteProvider.swift */; };
 		6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */; };
 		6EB50F0E26BD6A6E00F0096E /* SmallWriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */; };
+		6EBF9BEB275912AF00C70B1A /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF9BEA275912AF00C70B1A /* ColorExtensions.swift */; };
 		6EC9BF9D26BE0456007C7708 /* MediumEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9C26BE0456007C7708 /* MediumEntry.swift */; };
 		6EC9BF9F26BE05D8007C7708 /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9E26BE05D8007C7708 /* MediumWidget.swift */; };
 		6EC9BFA126BE073B007C7708 /* MediumEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BFA026BE073B007C7708 /* MediumEntryView.swift */; };
@@ -201,6 +205,8 @@
 		6E6D610227587B8C00A0BFD9 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		6E6D610527587C6800A0BFD9 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		6E6D610827587F4300A0BFD9 /* GoogleService-Info-Dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Dev.plist"; sourceTree = "<group>"; };
+		6E7206C7275B323D009C7AFC /* DdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayView.swift; sourceTree = "<group>"; };
+		6E7206C9275B3374009C7AFC /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		6E764AE7263FA96C00A99402 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		6E764AE9263FBBE300A99402 /* DdayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
 		6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiImageVIew.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 		6EB50F0926BD638C00F0096E /* SmallWriteProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteProvider.swift; sourceTree = "<group>"; };
 		6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteEntry.swift; sourceTree = "<group>"; };
 		6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidget.swift; sourceTree = "<group>"; };
+		6EBF9BEA275912AF00C70B1A /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		6EC9BF9C26BE0456007C7708 /* MediumEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumEntry.swift; sourceTree = "<group>"; };
 		6EC9BF9E26BE05D8007C7708 /* MediumWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidget.swift; sourceTree = "<group>"; };
 		6EC9BFA026BE073B007C7708 /* MediumEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumEntryView.swift; sourceTree = "<group>"; };
@@ -447,8 +454,8 @@
 			children = (
 				6E66A26E25FB40BD00C0C051 /* Category.swift */,
 				6E66A27125FB416700C0C051 /* ViewType.swift */,
-				6E441CA02604549F0010A625 /* Wish.swift */,
 				6E091578264FA94E0048EB79 /* CommonError.swift */,
+				6E441CA02604549F0010A625 /* Wish.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -491,6 +498,8 @@
 			isa = PBXGroup;
 			children = (
 				6E6D610527587C6800A0BFD9 /* BundleExtensions.swift */,
+				6EBF9BEA275912AF00C70B1A /* ColorExtensions.swift */,
+				6E7206C9275B3374009C7AFC /* ViewExtensions.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -524,14 +533,14 @@
 		6EB50EF426BD548F00F0096E /* widget */ = {
 			isa = PBXGroup;
 			children = (
-				6E6D610427587C6000A0BFD9 /* extensions */,
-				6E6CBE30274A0088005D7BFE /* small-remain-widget */,
-				6EC9BF9B26BE0432007C7708 /* medium-widget */,
-				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
-				6EB50EF526BD548F00F0096E /* widget.swift */,
 				6EB50EF726BD548F00F0096E /* widget.intentdefinition */,
-				6EB50EF826BD549000F0096E /* Assets.xcassets */,
 				6EB50EFA26BD549000F0096E /* Info.plist */,
+				6EB50EF526BD548F00F0096E /* widget.swift */,
+				6EB50EF826BD549000F0096E /* Assets.xcassets */,
+				6E6D610427587C6000A0BFD9 /* extensions */,
+				6EC9BF9B26BE0432007C7708 /* medium-widget */,
+				6E6CBE30274A0088005D7BFE /* small-remain-widget */,
+				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
 			);
 			path = widget;
 			sourceTree = "<group>";
@@ -564,6 +573,7 @@
 			isa = PBXGroup;
 			children = (
 				6EC9BFA426BE0870007C7708 /* WishlistItemView.swift */,
+				6E7206C7275B323D009C7AFC /* DdayView.swift */,
 			);
 			path = subviews;
 			sourceTree = "<group>";
@@ -914,6 +924,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E7206CB275B3696009C7AFC /* DateExtensions.swift in Sources */,
+				6E7206CA275B3374009C7AFC /* ViewExtensions.swift in Sources */,
 				6EC9BFA526BE0870007C7708 /* WishlistItemView.swift in Sources */,
 				6EC9BF9F26BE05D8007C7708 /* MediumWidget.swift in Sources */,
 				6E6CBE38274A0B9B005D7BFE /* SmallRemainWidget.swift in Sources */,
@@ -922,9 +934,11 @@
 				6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */,
 				6EB50EFB26BD549000F0096E /* widget.intentdefinition in Sources */,
 				6EB50F0726BD574400F0096E /* SmallWriteEntryView.swift in Sources */,
+				6E7206C8275B323D009C7AFC /* DdayView.swift in Sources */,
 				6EB50F0526BD56BA00F0096E /* MediumProvider.swift in Sources */,
 				6EB50F0E26BD6A6E00F0096E /* SmallWriteWidget.swift in Sources */,
 				6E6CBE3C274A2B67005D7BFE /* Category.swift in Sources */,
+				6EBF9BEB275912AF00C70B1A /* ColorExtensions.swift in Sources */,
 				6E6CBE36274A0B86005D7BFE /* SmallRemainEntry.swift in Sources */,
 				6EC9BFA126BE073B007C7708 /* MediumEntryView.swift in Sources */,
 				6EB50F0A26BD638C00F0096E /* SmallWriteProvider.swift in Sources */,

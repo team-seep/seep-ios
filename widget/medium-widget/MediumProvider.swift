@@ -2,41 +2,45 @@ import WidgetKit
 import SwiftUI
 import Intents
 
+import RealmSwift
+
 struct MediumProvider: IntentTimelineProvider {
-  func placeholder(in context: Context) -> MediumEntry {
-    MediumEntry(date: Date(), configuration: ConfigurationIntent())
-  }
-  
-  func getSnapshot(
-    for configuration: ConfigurationIntent,
-    in context: Context,
-    completion: @escaping (MediumEntry) -> ()
-  ) {
-    let entry = MediumEntry(date: Date(), configuration: configuration)
-    
-    completion(entry)
-  }
-  
-  func getTimeline(
-    for configuration: ConfigurationIntent,
-    in context: Context,
-    completion: @escaping (Timeline<MediumEntry>) -> Void
-  ) {
-    var entries: [MediumEntry] = []
-    
-    // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    let currentDate = Date()
-    for hourOffset in 0 ..< 5 {
-      let entryDate = Calendar.current.date(
-        byAdding: .hour,
-        value: hourOffset,
-        to: currentDate
-      )!
-      let entry = MediumEntry(date: entryDate, configuration: configuration)
-      entries.append(entry)
+    func placeholder(in context: Context) -> MediumEntry {
+        return self.generateEntry()
     }
     
-    let timeline = Timeline(entries: entries, policy: .atEnd)
-    completion(timeline)
-  }
+    func getSnapshot(
+        for configuration: ConfigurationIntent,
+        in context: Context,
+        completion: @escaping (MediumEntry) -> ()
+    ) {
+        completion(self.generateEntry())
+    }
+    
+    func getTimeline(
+        for configuration: ConfigurationIntent,
+        in context: Context,
+        completion: @escaping (Timeline<MediumEntry>) -> Void
+    ) {
+        let timeline = Timeline(entries: [self.generateEntry()], policy: .atEnd)
+        
+        completion(timeline)
+    }
+    
+    private func generateEntry() -> MediumEntry {
+        let realmPath = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
+            .appendingPathComponent(Bundle.realmName)
+        let realmConfig = Realm.Configuration(fileURL: realmPath)
+        
+        if let realm = try? Realm(configuration: realmConfig) {
+            let wishes = realm.objects(Wish.self).map { $0 }.sorted(by: Wish.deadlineOrder)
+            let wishSlice = wishes.count < 3 ? wishes : Array(wishes[..<3])
+            let entry = MediumEntry(date: Date(), wishes: wishSlice)
+            
+            return entry
+        } else {
+            return MediumEntry.preview
+        }
+    }
 }
