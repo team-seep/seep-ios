@@ -9,6 +9,6 @@ struct widgets: WidgetBundle {
     var body: some Widget {
         SmallWriteWidget()
         SmallRemainWidget()
-        MediumWidget()
+        MediumVerticalWidget()
     }
 }

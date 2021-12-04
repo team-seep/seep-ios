@@ -4,15 +4,15 @@ import Intents
 
 import RealmSwift
 
-struct MediumProvider: IntentTimelineProvider {
-    func placeholder(in context: Context) -> MediumEntry {
+struct MediumVerticalProvider: IntentTimelineProvider {
+    func placeholder(in context: Context) -> MediumVerticalEntry {
         return self.generateEntry()
     }
     
     func getSnapshot(
         for configuration: ConfigurationIntent,
         in context: Context,
-        completion: @escaping (MediumEntry) -> ()
+        completion: @escaping (MediumVerticalEntry) -> ()
     ) {
         completion(self.generateEntry())
     }
@@ -20,14 +20,14 @@ struct MediumProvider: IntentTimelineProvider {
     func getTimeline(
         for configuration: ConfigurationIntent,
         in context: Context,
-        completion: @escaping (Timeline<MediumEntry>) -> Void
+        completion: @escaping (Timeline<MediumVerticalEntry>) -> Void
     ) {
         let timeline = Timeline(entries: [self.generateEntry()], policy: .atEnd)
         
         completion(timeline)
     }
     
-    private func generateEntry() -> MediumEntry {
+    private func generateEntry() -> MediumVerticalEntry {
         let realmPath = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
@@ -36,11 +36,11 @@ struct MediumProvider: IntentTimelineProvider {
         if let realm = try? Realm(configuration: realmConfig) {
             let wishes = realm.objects(Wish.self).map { $0 }.sorted(by: Wish.deadlineOrder)
             let wishSlice = wishes.count < 3 ? wishes : Array(wishes[..<3])
-            let entry = MediumEntry(date: Date(), wishes: wishSlice)
+            let entry = MediumVerticalEntry(date: Date(), wishes: wishSlice)
             
             return entry
         } else {
-            return MediumEntry.preview
+            return MediumVerticalEntry.preview
         }
     }
 }

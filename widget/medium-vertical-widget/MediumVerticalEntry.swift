@@ -1,16 +1,16 @@
 import WidgetKit
 
-struct MediumEntry: TimelineEntry {
+struct MediumVerticalEntry: TimelineEntry {
     let date: Date
     let wishes: [Wish]
     
-    static var preview: MediumEntry {
+    static var preview: MediumVerticalEntry {
         let wish = Wish()
         
         wish.title = "제목이 들어갑니다."
         wish.emoji = "🙈"
         wish.date = Date()
         
-        return MediumEntry(date: Date(), wishes: [wish, wish, wish])
+        return MediumVerticalEntry(date: Date(), wishes: [wish, wish, wish])
     }
 }

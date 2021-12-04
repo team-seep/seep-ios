@@ -1,8 +1,8 @@
 import SwiftUI
 import WidgetKit
 
-struct MediumEntryView: View {
-    let entry: MediumEntry
+struct MediumVerticalEntryView: View {
+    let entry: MediumVerticalEntry
     
     var body: some View {
         VStack {
@@ -35,7 +35,7 @@ struct MediumEntryView: View {
 
 struct MediumEntryView_Previews: PreviewProvider {
     static var previews: some View {
-        MediumEntryView(entry: MediumEntry.preview)
+        MediumVerticalEntryView(entry: MediumVerticalEntry.preview)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
