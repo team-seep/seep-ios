@@ -10,5 +10,6 @@ struct widgets: WidgetBundle {
         SmallWriteWidget()
         SmallRemainWidget()
         MediumVerticalWidget()
+        MediumHorizontalWidget()
     }
 }
