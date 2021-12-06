@@ -8,7 +8,7 @@ struct MediumVerticalEntryView: View {
         VStack {
             VStack {
                 if entry.wishes.isEmpty {
-                    
+                    EmptyView()
                 } else {
                     if entry.wishes.count == 1 {
                         WishlistItemView(wish: entry.wishes[0])
