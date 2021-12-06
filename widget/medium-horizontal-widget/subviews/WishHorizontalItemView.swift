@@ -16,24 +16,29 @@ struct WishHorizontalItemView: View {
             alignment: .leading,
             spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/,
             content: {
-                Text(wish.emoji)
-                    .font(.system(size: 28))
+                HStack {
+                    Text(wish.emoji)
+                        .font(.system(size: 28))
+                    
+                    Spacer()
+                }
                 
                 Text(wish.title)
                     .font(.custom("AppleSDGothicNeo-Regular", size: 14))
                     .foregroundColor(.black)
-                    .padding(.top, 5)
+                    .padding(.top, 3)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(2)
                 
-                DdayView(date: self.wish.date)
-                    .padding(.top, 9)
-                
                 Spacer()
+                
+                DdayView(date: self.wish.date)
             })
-            .padding(12)
+            .padding(.init(top: 12, leading: 12, bottom: 14, trailing: 12))
+            .frame(width: (UIScreen.mediumWidgetWidth - 30 - 16) / 3)
             .background(Color.white)
             .cornerRadius(12)
+            
     }
 }
 

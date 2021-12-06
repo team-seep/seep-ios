@@ -80,7 +80,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
-            value = "MediumVerticalWidget"
+            value = "MediumHorizontalWidget"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable

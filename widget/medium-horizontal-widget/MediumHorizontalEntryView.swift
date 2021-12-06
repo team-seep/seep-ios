@@ -5,10 +5,10 @@ struct MediumHorizontalEntryView: View {
     let entry: MediumHorizontalEntry
     
     var body: some View {
-        HStack {
+        VStack {
             HStack(spacing: 8) {
                 if entry.wishes.isEmpty {
-                    
+                    EmptyView()
                 } else {
                     if entry.wishes.count == 1 {
                         WishHorizontalItemView(wish: entry.wishes[0])
