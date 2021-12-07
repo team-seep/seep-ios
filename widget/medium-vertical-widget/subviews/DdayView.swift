@@ -15,9 +15,9 @@ struct DdayView: View {
         Text(self.getDday(dday: self.date))
             .font(.custom("AppleSDGothicNeo-Bold", size: 12))
             .padding(.init(top: 3, leading: 6, bottom: 1, trailing: 7))
-            .cornerRadius(4)
             .foregroundColor(self.getTextColor(dday: self.date))
             .background(self.getBackground(dday: self.date))
+            .cornerRadius(4)
     }
     
     private func getDday(dday: Date) -> String {

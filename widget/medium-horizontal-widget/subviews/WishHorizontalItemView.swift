@@ -14,7 +14,7 @@ struct WishHorizontalItemView: View {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/,
+            spacing: 0,
             content: {
                 HStack {
                     Text(wish.emoji)
@@ -26,7 +26,7 @@ struct WishHorizontalItemView: View {
                 Text(wish.title)
                     .font(.custom("AppleSDGothicNeo-Regular", size: 14))
                     .foregroundColor(.black)
-                    .padding(.top, 3)
+                    .padding(.top, 9)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(2)
                 

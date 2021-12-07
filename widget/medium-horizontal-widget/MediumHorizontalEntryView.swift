@@ -26,7 +26,7 @@ struct MediumHorizontalEntryView: View {
                     }
                 }
             }
-            .padding(.init(top: 13, leading: 15, bottom: 16, trailing: 15))
+            .padding(.init(top: 14, leading: 15, bottom: 14, trailing: 15))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(r: 246, g: 247, b: 249))
