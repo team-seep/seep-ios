@@ -4,10 +4,12 @@ import Intents
 
 @main
 struct widgets: WidgetBundle {
-  
-  @WidgetBundleBuilder
-  var body: some Widget {
-    SmallWriteWidget()
-    SmallRemainWidget()
-  }
+    
+    @WidgetBundleBuilder
+    var body: some Widget {
+        SmallWriteWidget()
+        SmallRemainWidget()
+        MediumVerticalWidget()
+        MediumHorizontalWidget()
+    }
 }
