@@ -17,7 +17,7 @@ struct SmallWriteProvider: TimelineProvider {
   func getTimeline(in context: Context, completion: @escaping (Timeline<SmallWriteEntry>) -> Void) {
     let date = Date()
     let entry = SmallWriteEntry(date: date)
-    let nextUpdateDate = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+    let nextUpdateDate = Calendar.current.date(byAdding: .hour, value: 1, to: date)!
     let timeline = Timeline(entries: [entry], policy: .after(nextUpdateDate))
     
     completion(timeline)
