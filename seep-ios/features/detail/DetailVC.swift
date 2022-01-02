@@ -87,6 +87,13 @@ class DetailVC: BaseVC, View {
         self?.detailView.endEditing(true)
       }
       .disposed(by: self.eventDisposeBag)
+    
+    self.detailReactor.dismissPublisher
+        .asDriver(onErrorJustReturn: ())
+        .drive(onNext: { [weak self] in
+            self?.dismiss()
+        })
+        .disposed(by: self.eventDisposeBag)
   }
   
   func bind(reactor: DetailReactor) {
