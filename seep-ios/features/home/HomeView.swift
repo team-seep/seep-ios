@@ -18,7 +18,9 @@ class HomeView: BaseView {
   let successCountButton = UIButton().then {
     $0.titleLabel?.font = .appleSemiBold(size: 12)
     $0.setTitleColor(.black, for: .normal)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 4, right: 15)
+    $0.setImage(UIImage(named: "ic_right_arrow"), for: .normal)
+    $0.semanticContentAttribute = .forceRightToLeft
+    $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 4, right: 10)
     $0.backgroundColor = .white
     $0.layer.cornerRadius = 12
     $0.layer.shadowColor = UIColor.black.cgColor

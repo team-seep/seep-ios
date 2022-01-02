@@ -80,6 +80,7 @@
 		6E6D610327587B8C00A0BFD9 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D610227587B8C00A0BFD9 /* BundleExtensions.swift */; };
 		6E6D610727587C8500A0BFD9 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D610527587C6800A0BFD9 /* BundleExtensions.swift */; };
 		6E6D610927587F4300A0BFD9 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E6D610827587F4300A0BFD9 /* GoogleService-Info-Dev.plist */; };
+		6E7112D02781870600396CC0 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6E7112CF2781870600396CC0 /* ReactorKit */; };
 		6E7206C8275B323D009C7AFC /* DdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7206C7275B323D009C7AFC /* DdayView.swift */; };
 		6E7206CA275B3374009C7AFC /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7206C9275B3374009C7AFC /* ViewExtensions.swift */; };
 		6E7206CB275B3696009C7AFC /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */; };
@@ -298,6 +299,7 @@
 				6E62036727638DD5006B8393 /* FirebaseCrashlytics in Frameworks */,
 				6E62035F276388DE006B8393 /* SwiftyBeaver in Frameworks */,
 				6E74E20C2763834E00D872D5 /* RxSwift in Frameworks */,
+				6E7112D02781870600396CC0 /* ReactorKit in Frameworks */,
 				57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -753,6 +755,7 @@
 				6E62036427638DD5006B8393 /* FirebaseAnalytics */,
 				6E62036627638DD5006B8393 /* FirebaseCrashlytics */,
 				6E62036827638DD5006B8393 /* FirebaseMessaging */,
+				6E7112CF2781870600396CC0 /* ReactorKit */,
 			);
 			productName = "seep-ios";
 			productReference = 6E283AF525F2047900955B57 /* seep-ios.app */;
@@ -811,6 +814,7 @@
 				6E62035D276388DE006B8393 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 				6E62036027638996006B8393 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				6E62036327638DD5006B8393 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				6E7112CE2781870600396CC0 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			productRefGroup = 6E283AF625F2047900955B57 /* Products */;
 			projectDirPath = "";
@@ -1386,6 +1390,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		6E7112CE2781870600396CC0 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
 		6E74E2062763834E00D872D5 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -1444,6 +1456,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E62036327638DD5006B8393 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		6E7112CF2781870600396CC0 /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E7112CE2781870600396CC0 /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 		6E74E2072763834E00D872D5 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
