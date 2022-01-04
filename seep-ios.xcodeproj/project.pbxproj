@@ -100,6 +100,7 @@
 		6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AED263FCB4700A99402 /* UIImageExtension.swift */; };
 		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
 		6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */; };
+		6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AB5352783226B00C6F825 /* EmojiInputView.swift */; };
 		6E9ACDF826501AA400ED39BF /* ShareTypeSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9ACDF726501AA400ED39BF /* ShareTypeSwitchView.swift */; };
 		6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */; };
 		6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACBD592613034A0009AB6F /* PageItemVC.swift */; };
@@ -240,6 +241,7 @@
 		6E764AED263FCB4700A99402 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
 		6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackUtils.swift; sourceTree = "<group>"; };
+		6E9AB5352783226B00C6F825 /* EmojiInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputView.swift; sourceTree = "<group>"; };
 		6E9ACDF726501AA400ED39BF /* ShareTypeSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTypeSwitchView.swift; sourceTree = "<group>"; };
 		6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		6EACBD592613034A0009AB6F /* PageItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemVC.swift; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 		6E66A27525FB45C000C0C051 /* write */ = {
 			isa = PBXGroup;
 			children = (
+				6E9AB5342783223D00C6F825 /* subviews */,
 				6E66A27625FB45C500C0C051 /* WriteView.swift */,
 				6E66A27925FB489000C0C051 /* WriteVC.swift */,
 				6E41F28325FB916200CE1530 /* WriteReactor.swift */,
@@ -572,6 +575,14 @@
 			isa = PBXGroup;
 			children = (
 				6E7206D6275B48C6009C7AFC /* WishHorizontalItemView.swift */,
+			);
+			path = subviews;
+			sourceTree = "<group>";
+		};
+		6E9AB5342783223D00C6F825 /* subviews */ = {
+			isa = PBXGroup;
+			children = (
+				6E9AB5352783226B00C6F825 /* EmojiInputView.swift */,
 			);
 			path = subviews;
 			sourceTree = "<group>";
@@ -988,6 +999,7 @@
 				6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */,
 				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
 				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
+				6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */,
 				6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */,
 				6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */,
 				6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */,

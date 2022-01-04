@@ -36,7 +36,9 @@ class WriteVC: BaseVC, View {
   }
   
   static func instance(category: Category) -> WriteVC {
-    return WriteVC(category: category)
+      return WriteVC(category: category).then {
+          $0.modalPresentationStyle = .overCurrentContext
+      }
   }
   
   deinit {
