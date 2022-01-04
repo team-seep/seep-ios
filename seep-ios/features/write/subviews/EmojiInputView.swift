@@ -2,8 +2,18 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import ISEmojiView
 
 final class EmojiInputView: BaseView {
+    override var inputAccessoryView: UIView? {
+        set {
+            self.emojiField.inputAccessoryView = newValue
+        }
+        get {
+            return self.emojiField.inputAccessoryView
+        }
+    }
+    
     private let emojiBackground = UIImageView().then {
         $0.image = UIImage(named: "img_emoji_empty")
         $0.layer.cornerRadius = 36
@@ -46,6 +56,14 @@ final class EmojiInputView: BaseView {
             self.randomButton,
             self.randomTooltipView
         ])
+        self.emojiField.delegate = self
+        self.emojiField.rx.controlEvent(.editingDidBegin)
+            .asDriver()
+            .drive(onNext: {
+                FeedbackUtils.feedbackInstance.impactOccurred()
+            })
+            .disposed(by: self.disposeBag)
+        self.setupEmojiKeyboard()
     }
     
     override func bindConstraints() {
@@ -97,8 +115,17 @@ final class EmojiInputView: BaseView {
                 options: .curveEaseInOut
             ) { [weak self] in
                 self?.randomTooltipView.alpha = 0
-            })
+            }
         }
+    }
+    
+    private func setupEmojiKeyboard() {
+        let keyboardSettings = KeyboardSettings(bottomType: .categories)
+        let emojiView = EmojiView(keyboardSettings: keyboardSettings)
+        
+        emojiView.translatesAutoresizingMaskIntoConstraints = false
+        emojiView.delegate = self
+        self.emojiField.inputView = emojiView
     }
 }
 
@@ -111,5 +138,42 @@ extension Reactive where Base: EmojiInputView {
         return Binder(self.base) { base, isEmpty in
             base.setEmojiBackground(isEmpty: isEmpty)
         }
+    }
+}
+
+extension EmojiInputView: UITextFieldDelegate {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        return updatedText.count <= 1
+    }
+}
+
+extension EmojiInputView: EmojiViewDelegate {
+    func emojiViewDidSelectEmoji(_ emoji: String, emojiView: EmojiView) {
+        self.emojiField.text = emoji
+        if self.emojiField.text?.count == 1 {
+            self.emojiField.resignFirstResponder()
+        }
+    }
+    
+    func emojiViewDidPressChangeKeyboardButton(_ emojiView: EmojiView) {
+        self.emojiField.inputView = nil
+        self.emojiField.keyboardType = .default
+        self.emojiField.reloadInputViews()
+    }
+    
+    func emojiViewDidPressDeleteBackwardButton(_ emojiView: EmojiView) {
+        self.emojiField.deleteBackward()
+    }
+    
+    func emojiViewDidPressDismissKeyboardButton(_ emojiView: EmojiView) {
+        self.emojiField.resignFirstResponder()
     }
 }

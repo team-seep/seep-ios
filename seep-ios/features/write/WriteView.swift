@@ -1,5 +1,4 @@
 import UIKit
-import ISEmojiView
 
 final class WriteView: BaseView {
     let tapBackground = UITapGestureRecognizer()
@@ -16,7 +15,7 @@ final class WriteView: BaseView {
         $0.showsVerticalScrollIndicator = false
     }
     
-    let containerView = UIView().then {
+    private let containerView = UIView().then {
         $0.backgroundColor = .clear
     }
     
@@ -24,7 +23,7 @@ final class WriteView: BaseView {
         $0.setImage(UIImage(named: "ic_close"), for: .normal)
     }
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         let text = "write_title".localized
         let attributedString = NSMutableAttributedString(string: text)
         let boldTextRange = (text as NSString).range(of: "차근차근 적어봐요!")
@@ -45,23 +44,36 @@ final class WriteView: BaseView {
         $0.attributedText = attributedString
     }
     
+    let emojiInputView = EmojiInputView()
+    
     let categoryView = CategoryView().then {
         $0.containerView.backgroundColor = UIColor(r: 232, g: 246, b: 255)
     }
     
-    let titleField = TextInputField().then {
-        $0.titleLabel.text = "write_header_title".localized
-        $0.titleLabel.setKern(kern: -0.24)
+    let titleField = TextInputField(
+        normalIcon: UIImage(named: "ic_title_normal"),
+        focusedIcon: UIImage(named: "ic_title_forcused"),
+        title: "write_header_title".localized,
+        placeholder: nil
+    )
+    
+    let dateField = TextInputField(
+        normalIcon: UIImage(named: "ic_calendar_normal"),
+        focusedIcon: UIImage(named: "ic_calendar_normal"),
+        title: "write_header_date".localized,
+        placeholder: "write_placeholder_date".localized
+    )
+    
+    private let dateSwitchLabel = UILabel().then {
+        $0.font = .appleRegular(size: 14)
+        $0.textColor = .gray5
+        $0.text = "write_switch_title".localized
     }
     
-    let dateField = TextInputField().then {
-        $0.titleLabel.text = "write_header_date".localized
-        $0.titleLabel.setKern(kern: -0.24)
-        $0.textField.attributedPlaceholder = NSAttributedString(
-            string: "write_placeholder_date".localized,
-            attributes: [.foregroundColor: UIColor.gray3]
-        )
-        $0.textField.tintColor = .clear
+    let dateSwitch = UISwitch().then {
+        $0.onTintColor = .gray3
+        $0.onTintColor = .tennisGreen
+        $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
     
     let notificationButton = UIButton().then {
@@ -98,59 +110,88 @@ final class WriteView: BaseView {
         self.backgroundColor = .white
         self.addGestureRecognizer(self.tapBackground)
         self.scrollView.delegate = self
-        self.emojiField.delegate = self
-        self.emojiField.inputAccessoryView = self.accessoryView
-        self.emojiField.rx.controlEvent(.editingDidBegin)
-            .bind { _ in
-                FeedbackUtils.feedbackInstance.impactOccurred()
-            }
-            .disposed(by: self.disposeBag)
-        self.titleField.textField.inputAccessoryView = self.accessoryView
-        self.dateField.textField.inputAccessoryView = self.accessoryView
+        
+        self.emojiInputView.inputAccessoryView = self.accessoryView
+        self.titleField.inputAccessoryView = self.accessoryView
+        self.dateField.inputAccessoryView = self.accessoryView
         self.memoField.textView.inputAccessoryView = self.accessoryView
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
-        self.setupEmojiKeyboard()
-        self.containerView.addSubViews(
-            titleLabel, emojiBackground, emojiField, randomButton,
-            randomTooltipView, categoryView, titleField, dateField,
-            memoField, hashtagField
-        )
+        
+        self.containerView.addSubViews([
+            self.titleLabel,
+            self.emojiInputView,
+            self.categoryView,
+            self.titleField,
+            self.dateField,
+            self.dateSwitchLabel,
+            self.dateSwitch,
+            self.memoField,
+            self.hashtagField
+        ])
         self.scrollView.addSubview(containerView)
-        self.addSubViews(scrollView, gradientView, writeButton)
+        self.addSubViews([
+            self.closeButton,
+            self.scrollView,
+            self.gradientView,
+            self.writeButton
+        ])
     }
     
     override func bindConstraints() {
+        self.closeButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(13)
+            make.width.height.equalTo(24)
+        }
+        
         self.scrollView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalTo(self.closeButton.snp.bottom)
         }
         
         self.containerView.snp.makeConstraints { make in
             make.edges.equalTo(0)
             make.width.equalToSuperview()
-            make.top.equalTo(self.titleLabel).offset(-20)
-            make.bottom.equalTo(self.hashtagField).offset(20)
+            make.top.equalTo(self.closeButton).priority(.high)
+            make.bottom.equalTo(self.hashtagField).offset(20).priority(.high)
         }
         
         self.titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(42)
+            make.top.equalToSuperview().offset(33)
+        }
+        
+        self.emojiInputView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
         }
         
         self.categoryView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(self.emojiField.snp.bottom).offset(32)
+            make.top.equalTo(self.emojiInputView.snp.bottom).offset(32)
         }
         
         self.titleField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(self.categoryView.snp.bottom).offset(32)
+            make.top.equalTo(self.categoryView.snp.bottom).offset(31)
         }
         
         self.dateField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.titleField.snp.bottom).offset(8)
+            make.top.equalTo(self.titleField.snp.bottom).offset(24)
+        }
+        
+        self.dateSwitch.snp.makeConstraints { make in
+            make.right.equalTo(self.dateField)
+            make.top.equalTo(self.dateField)
+            make.height.equalTo(20)
+        }
+        
+        self.dateSwitchLabel.snp.makeConstraints { make in
+            make.right.equalTo(self.dateSwitch.snp.left).offset(-8)
+            make.centerY.equalTo(self.dateSwitch)
         }
         
         self.memoField.snp.makeConstraints { make in
@@ -205,19 +246,7 @@ final class WriteView: BaseView {
     }
     
     func setTitlePlaceholder(by category: Category) {
-        self.titleField.textField.attributedPlaceholder = NSAttributedString(
-            string: "write_placeholder_title_\(category.rawValue)".localized,
-            attributes: [.foregroundColor: UIColor.gray3]
-        )
-    }
-    
-    private func setupEmojiKeyboard() {
-        let keyboardSettings = KeyboardSettings(bottomType: .categories)
-        let emojiView = EmojiView(keyboardSettings: keyboardSettings)
-        
-        emojiView.translatesAutoresizingMaskIntoConstraints = false
-        emojiView.delegate = self
-        self.emojiField.inputView = emojiView
+        self.titleField.placeholder = "write_placeholder_title_\(category.rawValue)".localized
     }
 }
 
@@ -235,44 +264,5 @@ extension WriteView: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.showWriteButton()
-    }
-}
-
-extension WriteView: UITextFieldDelegate {
-    
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-    ) -> Bool {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        return updatedText.count <= 1
-    }
-}
-
-extension WriteView: EmojiViewDelegate {
-    
-    func emojiViewDidSelectEmoji(_ emoji: String, emojiView: EmojiView) {
-        self.emojiField.text = emoji
-        if self.emojiField.text?.count == 1 {
-            self.emojiField.resignFirstResponder()
-        }
-    }
-    
-    func emojiViewDidPressChangeKeyboardButton(_ emojiView: EmojiView) {
-        self.emojiField.inputView = nil
-        self.emojiField.keyboardType = .default
-        self.emojiField.reloadInputViews()
-    }
-    
-    func emojiViewDidPressDeleteBackwardButton(_ emojiView: EmojiView) {
-        self.emojiField.deleteBackward()
-    }
-    
-    func emojiViewDidPressDismissKeyboardButton(_ emojiView: EmojiView) {
-        self.emojiField.resignFirstResponder()
     }
 }

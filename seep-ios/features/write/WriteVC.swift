@@ -51,8 +51,8 @@ class WriteVC: BaseVC, View {
     self.view = writeView
     self.reactor = writeReactor
     self.setupKeyboardNotification()
-    self.writeView.titleField.textField.delegate = self
-    self.writeView.dateField.textField.inputView = datePicker
+//    self.writeView.titleField.textField.delegate = self
+    self.writeView.dateField.inputView = datePicker
     Observable.just(WriteReactor.Action.viewDidLoad(()))
       .bind(to: self.writeReactor.action)
       .disposed(by: disposeBag)
@@ -77,18 +77,18 @@ class WriteVC: BaseVC, View {
   
   func bind(reactor: WriteReactor) {
     // MARK: Action
-    self.writeView.emojiField.rx.text.orEmpty
-      .map { Reactor.Action.inputEmoji($0) }
-      .bind(to: self.writeReactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.writeView.randomButton.rx.tap
-      .map { Reactor.Action.tapRandomEmoji(())}
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: self.writeReactor.action)
-      .disposed(by: self.disposeBag)
+//    self.writeView.emojiField.rx.text.orEmpty
+//      .map { Reactor.Action.inputEmoji($0) }
+//      .bind(to: self.writeReactor.action)
+//      .disposed(by: self.disposeBag)
+//
+//    self.writeView.randomButton.rx.tap
+//      .map { Reactor.Action.tapRandomEmoji(())}
+//      .do(onNext: { _ in
+//        FeedbackUtils.feedbackInstance.impactOccurred()
+//      })
+//      .bind(to: self.writeReactor.action)
+//      .disposed(by: self.disposeBag)
     
     self.writeView.categoryView.rx.tapCategory
       .map { Reactor.Action.tapCategory($0) }
@@ -134,26 +134,26 @@ class WriteVC: BaseVC, View {
       .disposed(by: disposeBag)
     
     // MARK: State
-    reactor.state
-      .map { $0.isTooltipShown }
-      .distinctUntilChanged()
-      .filter { $0 == false }
-      .observeOn(MainScheduler.instance)
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        self.writeView.showRandomEmojiTooltip { isCompleted in
-          if isCompleted {
-            reactor.action.onNext(.tooltipDisappeared)
-          }
-        }
-      }
-      .disposed(by: self.disposeBag)
+//    reactor.state
+//      .map { $0.isTooltipShown }
+//      .distinctUntilChanged()
+//      .filter { $0 == false }
+//      .observeOn(MainScheduler.instance)
+//      .bind { [weak self] _ in
+//        guard let self = self else { return }
+//        self.writeView.showRandomEmojiTooltip { isCompleted in
+//          if isCompleted {
+//            reactor.action.onNext(.tooltipDisappeared)
+//          }
+//        }
+//      }
+//      .disposed(by: self.disposeBag)
       
-    self.writeReactor.state
-      .map { $0.emoji }
-      .observeOn(MainScheduler.instance)
-      .bind(to: self.writeView.emojiField.rx.text)
-      .disposed(by: self.disposeBag)
+//    self.writeReactor.state
+//      .map { $0.emoji }
+//      .observeOn(MainScheduler.instance)
+//      .bind(to: self.writeView.emojiField.rx.text)
+//      .disposed(by: self.disposeBag)
     
     self.writeReactor.state
       .map { $0.category }
@@ -200,11 +200,11 @@ class WriteVC: BaseVC, View {
       .bind(onNext: self.writeView.showNotificationButton)
       .disposed(by: self.disposeBag)
     
-    self.writeReactor.state
-      .map { $0.emoji.isEmpty }
-      .observeOn(MainScheduler.instance)
-      .bind(onNext: self.writeView.setEmojiBackground(isEmpty:))
-      .disposed(by: disposeBag)
+//    self.writeReactor.state
+//      .map { $0.emoji.isEmpty }
+//      .observeOn(MainScheduler.instance)
+//      .bind(onNext: self.writeView.setEmojiBackground(isEmpty:))
+//      .disposed(by: disposeBag)
     
     self.writeReactor.state
       .map { $0.shouldDismiss }
@@ -254,22 +254,23 @@ class WriteVC: BaseVC, View {
   }
 }
 
-extension WriteVC: UITextFieldDelegate {
-  
-  func textField(
-    _ textField: UITextField,
-    shouldChangeCharactersIn range: NSRange,
-    replacementString string: String
-  ) -> Bool {
-    guard let text = textField.text else { return true }
-    let newLength = text.count + string.count - range.length
-    
-    if newLength >= 18 {
-      self.writeView.titleField.rx.errorMessage.onNext("write_error_max_length_title".localized)
-    } else {
-      self.writeView.titleField.rx.errorMessage.onNext(nil)
-    }
-    
-    return newLength <= 18
-  }
-}
+// TODO: 에러 디자인 나오면 적용
+//extension WriteVC: UITextFieldDelegate {
+//
+//  func textField(
+//    _ textField: UITextField,
+//    shouldChangeCharactersIn range: NSRange,
+//    replacementString string: String
+//  ) -> Bool {
+//    guard let text = textField.text else { return true }
+//    let newLength = text.count + string.count - range.length
+//
+//    if newLength >= 18 {
+//      self.writeView.titleField.rx.errorMessage.onNext("write_error_max_length_title".localized)
+//    } else {
+//      self.writeView.titleField.rx.errorMessage.onNext(nil)
+//    }
+//
+//    return newLength <= 18
+//  }
+//}

@@ -55,8 +55,8 @@ class DetailVC: BaseVC, View {
     self.view = self.detailView
     self.reactor = self.detailReactor
     self.setupKeyboardNotification()
-    self.detailView.titleField.textField.delegate = self
-    self.detailView.dateField.textField.inputView = datePicker
+//    self.detailView.titleField.textField.delegate = self
+    self.detailView.dateField.inputView = datePicker
     self.detailView.bind(wish: wish, mode: mode)
   }
   
@@ -139,10 +139,10 @@ class DetailVC: BaseVC, View {
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
-    self.detailView.titleField.textField.rx.controlEvent(.editingDidBegin)
-      .map { Reactor.Action.tapEditButton }
-      .bind(to: self.detailReactor.action)
-      .disposed(by: self.disposeBag)
+//    self.detailView.titleField.textField.rx.controlEvent(.editingDidBegin)
+//      .map { Reactor.Action.tapEditButton }
+//      .bind(to: self.detailReactor.action)
+//      .disposed(by: self.disposeBag)
     
     self.datePicker.rx.date
       .skip(1)
@@ -150,10 +150,10 @@ class DetailVC: BaseVC, View {
       .bind(to: self.detailReactor.action)
       .disposed(by: self.disposeBag)
     
-    self.detailView.dateField.textField.rx.controlEvent(.editingDidBegin)
-      .map { Reactor.Action.tapEditButton }
-      .bind(to: self.detailReactor.action)
-      .disposed(by: self.disposeBag)
+//    self.detailView.dateField.textField.rx.controlEvent(.editingDidBegin)
+//      .map { Reactor.Action.tapEditButton }
+//      .bind(to: self.detailReactor.action)
+//      .disposed(by: self.disposeBag)
     
     self.detailView.notificationButton.rx.tap
       .map { Reactor.Action.tapPushButton(()) }

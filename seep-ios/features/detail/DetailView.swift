@@ -62,20 +62,19 @@ class DetailView: BaseView {
     $0.containerView.backgroundColor = .gray2
   }
   
-  let titleField = TextInputField().then {
-    $0.titleLabel.text = "write_header_title".localized
-    $0.titleLabel.setKern(kern: -0.24)
-  }
-  
-  let dateField = TextInputField().then {
-    $0.titleLabel.text = "write_header_date".localized
-    $0.titleLabel.setKern(kern: -0.24)
-    $0.textField.attributedPlaceholder = NSAttributedString(
-      string: "write_placeholder_date".localized,
-      attributes: [.foregroundColor: UIColor.gray3]
+    let titleField = TextInputField(
+        normalIcon: UIImage(named: "ic_title_normal"),
+        focusedIcon: UIImage(named: "ic_title_forcused"),
+        title: "write_header_title".localized,
+        placeholder: nil
     )
-    $0.textField.tintColor = .clear
-  }
+  
+    let dateField = TextInputField(
+        normalIcon: UIImage(named: "ic_calendar_normal"),
+        focusedIcon: UIImage(named: "ic_calendar_normal"),
+        title: "write_header_date".localized,
+        placeholder: "write_placeholder_date".localized
+    )
   
   let notificationButton = UIButton().then {
     $0.setTitle("write_notification_off".localized, for: .normal)
@@ -112,8 +111,8 @@ class DetailView: BaseView {
         FeedbackUtils.feedbackInstance.impactOccurred()
       }
       .disposed(by: self.disposeBag)
-    self.titleField.textField.inputAccessoryView = self.accessoryView
-    self.dateField.textField.inputAccessoryView = self.accessoryView
+    self.titleField.inputAccessoryView = self.accessoryView
+    self.dateField.inputAccessoryView = self.accessoryView
     self.memoField.textView.inputAccessoryView = self.accessoryView
     self.hashtagField.textField.inputAccessoryView = self.accessoryView
     self.setupEmojiKeyboard()
@@ -209,8 +208,8 @@ class DetailView: BaseView {
   func bind(wish: Wish, mode: DetailMode) {
     self.emojiField.text = wish.emoji
     self.categoryView.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
-    self.titleField.textField.text = wish.title
-    self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
+//    self.titleField.textField.text = wish.title
+//    self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
     
     self.notificationButton.isHidden = !wish.isPushEnable
     self.notificationButton.isSelected = wish.isPushEnable
@@ -243,10 +242,7 @@ class DetailView: BaseView {
   }
   
   func setTitlePlaceholder(by category: Category) {
-    self.titleField.textField.attributedPlaceholder = NSAttributedString(
-      string: "write_placeholder_title_\(category.rawValue)".localized,
-      attributes: [.foregroundColor: UIColor.gray3]
-    )
+    self.titleField.placeholder = "write_placeholder_title_\(category.rawValue)".localized
   }
   
   func setEditable(isEditable: Bool) {
