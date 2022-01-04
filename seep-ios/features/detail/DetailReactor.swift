@@ -1,4 +1,7 @@
+import Foundation
+
 import RxSwift
+import RxCocoa
 import ReactorKit
 
 class DetailReactor: Reactor {
@@ -32,6 +35,7 @@ class DetailReactor: Reactor {
     case togglePushEnable
     case setMemo(String)
     case setHashtag(String)
+    case dismiss
   }
   
   struct State {
@@ -51,7 +55,8 @@ class DetailReactor: Reactor {
   
   let initialState: State
   var initialWish: Wish
-  let wishService: WishServiceProtocol
+    let dismissPublisher = PublishRelay<Void>()
+  private let wishService: WishServiceProtocol
   
   
   init(wish: Wish, wishService: WishServiceProtocol) {
@@ -117,6 +122,7 @@ class DetailReactor: Reactor {
       return Observable.just(Mutation.setMemo(memo))
     case .inputHashtag(let hashtag):
       return Observable.just(Mutation.setHashtag(hashtag))
+        
     case .tapSaveButton:
       if self.currentState.title.isEmpty {
         return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
@@ -139,7 +145,10 @@ class DetailReactor: Reactor {
           NotificationManager.shared.reserve(wish: wish)
         }
         self.initialWish = wish
-        return Observable.just(Mutation.setEditable(false))
+        return .merge([
+            .just(.setEditable(false)),
+            .just(.dismiss)
+        ])
       }
     }
   }
@@ -175,6 +184,9 @@ class DetailReactor: Reactor {
       newState.memo = memo
     case .setHashtag(let hashtag):
       newState.hashtag = hashtag
+        
+    case .dismiss:
+        self.dismissPublisher.accept(())
     }
     
     return newState
