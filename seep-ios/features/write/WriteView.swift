@@ -102,9 +102,41 @@ final class WriteView: BaseView {
         $0.tableFooterView = UIView()
         $0.estimatedRowHeight = UITableView.automaticDimension
         $0.separatorStyle = .none
+        $0.register(
+            WriteNotificationTableViewCell.self,
+            forCellReuseIdentifier: WriteNotificationTableViewCell.registerId
+        )
+    }
+    
+    let addNotificationButton = UIButton().then {
+        $0.setTitle("write_add_notification".localized, for: .normal)
+        $0.setTitleColor(.seepBlue, for: .normal)
+        $0.setImage(UIImage(named: "ic_small_plus"), for: .normal)
+        $0.titleLabel?.font = .appleExtraBold(size: 14)
+        $0.semanticContentAttribute = .forceLeftToRight
+    }
+    
+    private let memoIcon = UIImageView().then {
+        $0.image = UIImage(named: "ic_memo")
+    }
+    
+    private let memoLabel = UILabel().then {
+        $0.font = .appleRegular(size: 14)
+        $0.textColor = .gray5
+        $0.text = "write_header_memo".localized
     }
     
     let memoField = TextInputView()
+    
+    private let hashtagIcon = UIImageView().then {
+        $0.image = UIImage(named: "ic_hashtag")
+    }
+    
+    private let hashtagLabel = UILabel().then {
+        $0.font = .appleRegular(size: 14)
+        $0.textColor = .gray5
+        $0.text = "write_header_hashtag".localized
+    }
     
     let hashtagField = WriteHashtagField()
     
@@ -145,7 +177,13 @@ final class WriteView: BaseView {
             self.notificationLabel,
             self.notificationSwitchLabel,
             self.notificationSwitch,
+            self.notificationTableView,
+            self.addNotificationButton,
+            self.memoIcon,
+            self.memoLabel,
             self.memoField,
+            self.hashtagIcon,
+            self.hashtagLabel,
             self.hashtagField
         ])
         self.scrollView.addSubview(containerView)
@@ -234,14 +272,52 @@ final class WriteView: BaseView {
             make.centerY.equalTo(self.notificationSwitch)
         }
         
+        self.notificationTableView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalTo(self.notificationIcon.snp.bottom).offset(10)
+            make.height.equalTo(56)
+        }
+        
+        self.addNotificationButton.snp.makeConstraints { make in
+            make.left.equalTo(self.notificationTableView)
+            make.right.equalTo(self.notificationTableView)
+            make.top.equalTo(self.notificationTableView.snp.bottom).offset(8)
+            make.height.equalTo(32)
+        }
+        
+        self.memoIcon.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.addNotificationButton.snp.bottom).offset(26)
+            make.width.equalTo(16)
+            make.height.equalTo(16)
+        }
+        
+        self.memoLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(self.memoIcon)
+            make.left.equalTo(self.memoIcon.snp.right).offset(4)
+        }
+        
         self.memoField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.notificationIcon.snp.bottom).offset(8)
+            make.top.equalTo(self.memoIcon.snp.bottom).offset(10)
+        }
+        
+        self.hashtagIcon.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.memoField.snp.bottom).offset(26)
+            make.width.equalTo(16)
+            make.height.equalTo(16)
+        }
+        
+        self.hashtagLabel.snp.makeConstraints { make in
+            make.left.equalTo(self.hashtagIcon.snp.right).offset(4)
+            make.centerY.equalTo(self.hashtagIcon)
         }
         
         self.hashtagField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.memoField.snp.bottom).offset(16)
+            make.top.equalTo(self.hashtagIcon.snp.bottom).offset(10)
         }
         
         self.gradientView.snp.makeConstraints { make in
