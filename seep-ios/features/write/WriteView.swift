@@ -67,7 +67,7 @@ final class WriteView: BaseView {
     private let dateSwitchLabel = UILabel().then {
         $0.font = .appleRegular(size: 14)
         $0.textColor = .gray5
-        $0.text = "write_switch_title".localized
+        $0.text = "write_date_switch_title".localized
     }
     
     let dateSwitch = UISwitch().then {
@@ -76,16 +76,32 @@ final class WriteView: BaseView {
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
     
-    let notificationButton = UIButton().then {
-        $0.setTitle("write_notification_off".localized, for: .normal)
-        $0.setTitle("write_notification_on".localized, for: .selected)
-        $0.setTitleColor(.gray3, for: .normal)
-        $0.setTitleColor(.gray5, for: .selected)
-        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
-        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
-        $0.setImage(.icCheckOn20, for: .selected)
-        $0.setImage(.icCheckOff20, for: .normal)
-        $0.contentHorizontalAlignment = .left
+    private let notificationIcon = UIImageView().then {
+        $0.image = UIImage(named: "ic_notification_normal")
+    }
+    
+    private let notificationLabel = UILabel().then {
+        $0.font = .appleRegular(size: 14)
+        $0.textColor = .gray5
+        $0.text = "write_header_notification".localized
+    }
+    
+    private let notificationSwitchLabel = UILabel().then {
+        $0.font = .appleRegular(size: 14)
+        $0.textColor = .gray5
+        $0.text = "write_notification_switch_title".localized
+    }
+    
+    let notificationSwitch = UISwitch().then {
+        $0.onTintColor = .gray3
+        $0.onTintColor = .tennisGreen
+        $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+    }
+    
+    let notificationTableView = UITableView().then {
+        $0.tableFooterView = UIView()
+        $0.estimatedRowHeight = UITableView.automaticDimension
+        $0.separatorStyle = .none
     }
     
     let memoField = TextInputView()
@@ -125,6 +141,10 @@ final class WriteView: BaseView {
             self.dateField,
             self.dateSwitchLabel,
             self.dateSwitch,
+            self.notificationIcon,
+            self.notificationLabel,
+            self.notificationSwitchLabel,
+            self.notificationSwitch,
             self.memoField,
             self.hashtagField
         ])
@@ -185,8 +205,7 @@ final class WriteView: BaseView {
         
         self.dateSwitch.snp.makeConstraints { make in
             make.right.equalTo(self.dateField)
-            make.top.equalTo(self.dateField)
-            make.height.equalTo(20)
+            make.top.equalTo(self.dateField).offset(-8)
         }
         
         self.dateSwitchLabel.snp.makeConstraints { make in
@@ -194,9 +213,30 @@ final class WriteView: BaseView {
             make.centerY.equalTo(self.dateSwitch)
         }
         
+        self.notificationIcon.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.width.height.equalTo(16)
+        }
+        
+        self.notificationLabel.snp.makeConstraints { make in
+            make.left.equalTo(self.notificationIcon.snp.right).offset(4)
+            make.centerY.equalTo(self.notificationIcon)
+        }
+        
+        self.notificationSwitch.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-20)
+            make.centerY.equalTo(self.notificationLabel)
+        }
+        
+        self.notificationSwitchLabel.snp.makeConstraints { make in
+            make.right.equalTo(self.notificationSwitch.snp.left).offset(-8)
+            make.centerY.equalTo(self.notificationSwitch)
+        }
+        
         self.memoField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom).offset(8)
+            make.top.equalTo(self.notificationIcon.snp.bottom).offset(8)
         }
         
         self.hashtagField.snp.makeConstraints { make in
@@ -227,21 +267,6 @@ final class WriteView: BaseView {
         UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
             self.writeButton.alpha = 0.0
             self.writeButton.transform = .init(translationX: 0, y: 100)
-        }
-    }
-    
-    func showNotificationButton(isVisible: Bool) {
-        if isVisible == true {
-            self.containerView.addSubViews(self.notificationButton)
-            self.notificationButton.snp.makeConstraints { make in
-                make.left.right.equalTo(self.titleField)
-                make.top.equalTo(self.dateField.snp.bottom).offset(8)
-            }
-            
-            self.memoField.snp.remakeConstraints { make in
-                make.left.right.equalTo(self.titleField)
-                make.top.equalTo(self.notificationButton.snp.bottom).offset(16)
-            }
         }
     }
     

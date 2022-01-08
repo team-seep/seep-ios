@@ -142,7 +142,7 @@ final class TextInputField: BaseView {
         self.containerView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.bottom.equalTo(self.textField).offset(14)
-            make.top.equalTo(self.iconImage.snp.bottom).offset(13)
+            make.top.equalTo(self.iconImage.snp.bottom).offset(10)
         }
         
         self.textField.snp.makeConstraints { make in

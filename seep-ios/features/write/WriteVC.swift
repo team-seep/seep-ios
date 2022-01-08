@@ -109,14 +109,14 @@ class WriteVC: BaseVC, View {
       .bind(to: self.writeReactor.action)
       .disposed(by: self.disposeBag)
     
-    self.writeView.notificationButton.rx.tap
-      .map { Reactor.Action.tapPushButton(()) }
-      .do(onNext: { _ in
-        FeedbackUtils.feedbackInstance.impactOccurred()
-      })
-      .bind(to: self.writeReactor.action)
-      .disposed(by: disposeBag)
-    
+//    self.writeView.notificationButton.rx.tap
+//      .map { Reactor.Action.tapPushButton(()) }
+//      .do(onNext: { _ in
+//        FeedbackUtils.feedbackInstance.impactOccurred()
+//      })
+//      .bind(to: self.writeReactor.action)
+//      .disposed(by: disposeBag)
+//
     self.writeView.memoField.rx.text.orEmpty
       .filter { $0 != "wrtie_placeholder_memo".localized }
       .map { Reactor.Action.inputMemo($0) }
@@ -186,19 +186,19 @@ class WriteVC: BaseVC, View {
       .bind(to: self.writeView.writeButton.rx.state)
       .disposed(by: self.disposeBag)
     
-    self.writeReactor.state
-      .map { $0.isPushEnable }
-      .observeOn(MainScheduler.instance)
-      .bind(to: self.writeView.notificationButton.rx.isSelected)
-      .disposed(by: self.disposeBag)
-    
-    self.writeReactor.state
-      .map { $0.isPushButtonVisible }
-      .filter { $0 == true }
-      .distinctUntilChanged()
-      .observeOn(MainScheduler.instance)
-      .bind(onNext: self.writeView.showNotificationButton)
-      .disposed(by: self.disposeBag)
+//    self.writeReactor.state
+//      .map { $0.isPushEnable }
+//      .observeOn(MainScheduler.instance)
+//      .bind(to: self.writeView.notificationButton.rx.isSelected)
+//      .disposed(by: self.disposeBag)
+//    
+//    self.writeReactor.state
+//      .map { $0.isPushButtonVisible }
+//      .filter { $0 == true }
+//      .distinctUntilChanged()
+//      .observeOn(MainScheduler.instance)
+//      .bind(onNext: self.writeView.showNotificationButton)
+//      .disposed(by: self.disposeBag)
     
 //    self.writeReactor.state
 //      .map { $0.emoji.isEmpty }
