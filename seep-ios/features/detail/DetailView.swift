@@ -208,9 +208,8 @@ class DetailView: BaseView {
     self.categoryView.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
 //    self.titleField.textField.text = wish.title
 //    self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
-    
-    self.notificationButton.isHidden = !wish.isPushEnable
-    self.notificationButton.isSelected = wish.isPushEnable
+//    self.notificationButton.isHidden = !wish.isPushEnable
+//    self.notificationButton.isSelected = wish.isPushEnable
     
     if !wish.memo.isEmpty {
       self.addMemoField(memo: wish.memo)

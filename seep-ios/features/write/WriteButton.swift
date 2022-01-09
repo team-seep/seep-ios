@@ -8,7 +8,6 @@ class WriteButton: UIButton {
   
   enum WriteButtonState {
     case initial
-    case more
     case active
   }
   
@@ -27,9 +26,7 @@ class WriteButton: UIButton {
     case .initial:
       self.setTitle("write_button_off".localized, for: .normal)
       self.backgroundColor = UIColor(r: 204, g: 207, b: 211)
-    case .more:
-      self.setTitle("write_button_more".localized, for: .normal)
-      self.backgroundColor = UIColor(r: 204, g: 207, b: 211)
+        
     case .active:
       self.setTitle("write_button_on".localized, for: .normal)
       self.backgroundColor = UIColor(r: 102, g: 223, b: 27)

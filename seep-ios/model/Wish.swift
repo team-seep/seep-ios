@@ -2,14 +2,13 @@ import Foundation
 import RealmSwift
 
 class Wish: Object, Identifiable {
-    
     @objc dynamic var _id: ObjectId = ObjectId.generate()
     @objc dynamic var emoji: String = ""
     @objc dynamic var category: String = ""
     @objc dynamic var title: String = ""
     @objc dynamic var date: Date = Date()
     @objc dynamic var finishDate: Date?
-    @objc dynamic var isPushEnable: Bool = false
+    var notifications = List<SeepNotification>()
     @objc dynamic var memo: String = ""
     @objc dynamic var hashtag: String = ""
     @objc dynamic var isSuccess: Bool = false

@@ -46,7 +46,7 @@ class DetailReactor: Reactor {
     var titleError: String? = nil
     var date: Date
     var dateError: String? = nil
-    var isPushEnable: Bool
+    var isPushEnable: Bool = false
     var memo: String
     var hashtag: String
     var editButtonState: EditButton.EditButtonState = .active
@@ -65,7 +65,6 @@ class DetailReactor: Reactor {
       category: Category(rawValue: wish.category) ?? .wantToDo,
       title: wish.title,
       date: wish.date,
-      isPushEnable: wish.isPushEnable,
       memo: wish.memo,
       hashtag: wish.hashtag
     )
@@ -133,7 +132,6 @@ class DetailReactor: Reactor {
           $0.category = self.currentState.category.rawValue
           $0.title = self.currentState.title
           $0.date = self.currentState.date
-          $0.isPushEnable = self.currentState.isPushEnable
           $0.memo = self.currentState.memo
           $0.hashtag = self.currentState.hashtag
         }

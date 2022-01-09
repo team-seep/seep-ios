@@ -81,6 +81,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
+        config.schemaVersion = 1
+        
+        config.migrationBlock = { migragion, oldSchemaVersion in
+            if oldSchemaVersion < 2 {
+                migragion.enumerateObjects(ofType: Wish.className()) { oldObject, newObject in
+                    if let isPushEnable = oldObject?["isPushEnable"] as? Bool,
+                       isPushEnable {
+                        newObject?["notifications"] = [
+                            SeepNotification(type: .dayAgo),
+                            SeepNotification(type: .twoDayAgo)
+                        ]
+                    }
+                }
+            }
+        }
         
         Realm.Configuration.defaultConfiguration = config
     }
