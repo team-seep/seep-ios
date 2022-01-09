@@ -63,15 +63,13 @@ class DetailView: BaseView {
   }
   
     let titleField = TextInputField(
-        normalIcon: UIImage(named: "ic_title_normal"),
-        focusedIcon: UIImage(named: "ic_title_forcused"),
+        iconImage: UIImage(named: "ic_title"),
         title: "write_header_title".localized,
         placeholder: nil
     )
   
     let dateField = TextInputField(
-        normalIcon: UIImage(named: "ic_calendar_normal"),
-        focusedIcon: UIImage(named: "ic_calendar_normal"),
+        iconImage: UIImage(named: "ic_calendar"),
         title: "write_header_date".localized,
         placeholder: "write_placeholder_date".localized
     )

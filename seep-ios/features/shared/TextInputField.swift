@@ -36,7 +36,9 @@ final class TextInputField: BaseView {
         $0.layer.cornerRadius = 6
     }
     
-    private let iconImage = UIImageView()
+    private let iconImage = UIImageView().then {
+        $0.tintColor = .gray5
+    }
     
     private let titleLabel = UILabel().then {
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
@@ -53,18 +55,12 @@ final class TextInputField: BaseView {
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
     }
     
-    private let normalIcon: UIImage?
-    private let focusedIcon: UIImage?
-    
     init(
-        normalIcon: UIImage?,
-        focusedIcon: UIImage?,
+        iconImage: UIImage?,
         title: String,
         placeholder: String?
     ) {
-        self.normalIcon = normalIcon
-        self.focusedIcon = focusedIcon
-        self.iconImage.image = normalIcon
+        self.iconImage.image = iconImage?.withRenderingMode(.alwaysTemplate)
         self.titleLabel.text = title
         self.textField.placeholder = placeholder
         
@@ -97,7 +93,7 @@ final class TextInputField: BaseView {
                 ) { [weak self] in
                     guard let self = self else { return }
                     
-                    self.iconImage.image = self.focusedIcon
+                    self.iconImage.tintColor = .seepBlue
                     self.containerView.backgroundColor = .white
                     self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
                     self.containerView.layer.borderWidth = 1
@@ -118,7 +114,7 @@ final class TextInputField: BaseView {
                 ) { [weak self] in
                     guard let self = self else { return }
                     
-                    self.iconImage.image = self.normalIcon
+                    self.iconImage.tintColor = .gray5
                     self.titleLabel.textColor = .gray5
                     self.containerView.layer.borderWidth = 0
                     self.containerView.backgroundColor = .gray2
