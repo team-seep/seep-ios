@@ -56,16 +56,25 @@ final class CategoryView: BaseView {
         
         self.wantToGoButton.rx.tap
             .map { Category.wantToGo }
+            .do(onNext: { [weak self] in
+                self?.moveActiveButton(category: $0)
+            })
             .bind(to: self.categoryPublisher)
             .disposed(by: self.disposeBag)
         
         self.wantToDoButton.rx.tap
             .map { Category.wantToDo }
+            .do(onNext: { [weak self] in
+                self?.moveActiveButton(category: $0)
+            })
             .bind(to: self.categoryPublisher)
             .disposed(by: self.disposeBag)
         
         self.wantToGetButton.rx.tap
             .map { Category.wantToGet }
+            .do(onNext: { [weak self] in
+                self?.moveActiveButton(category: $0)
+            })
             .bind(to: self.categoryPublisher)
             .disposed(by: self.disposeBag)
     }
@@ -126,12 +135,6 @@ final class CategoryView: BaseView {
 extension Reactive where Base: CategoryView {
     var tapCategory: ControlEvent<Category>  {
         return .init(events: base.categoryPublisher)
-    }
-    
-    var category: Binder<Category> {
-        return Binder(self.base) { view, category in
-            view.moveActiveButton(category: category)
-        }
     }
 }
 

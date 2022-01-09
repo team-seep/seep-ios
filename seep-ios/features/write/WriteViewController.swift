@@ -8,10 +8,11 @@ protocol WriteDelegate: AnyObject {
     func onSuccessWrite(category: Category)
 }
 
-final class WriteViewController: BaseVC, View {
+final class WriteViewController: BaseVC, View, WriteCoordinator {
     weak var delegate: WriteDelegate?
     private let writeView = WriteView()
     private let writeReactor: WriteReactor
+    private weak var coordinator: WriteCoordinator?
     
     private let datePicker = UIDatePicker().then {
         $0.datePickerMode = .date
@@ -51,11 +52,19 @@ final class WriteViewController: BaseVC, View {
         super.viewDidLoad()
         
         self.reactor = self.writeReactor
+        self.coordinator = self
         self.setupKeyboardNotification()
         self.writeView.dateField.inputView = self.datePicker
     }
     
     override func bindEvent() {
+        self.writeView.closeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.coordinator?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: self.eventDisposeBag)
+        
         self.writeView.tapBackground.rx.event
             .asDriver()
             .drive(onNext: { [weak self] _ in
@@ -74,18 +83,10 @@ final class WriteViewController: BaseVC, View {
     
     func bind(reactor: WriteReactor) {
         // MARK: Action
-            self.writeView.emojiInputView.rx.emoji
-              .map { Reactor.Action.inputEmoji($0) }
-              .bind(to: reactor.action)
-              .disposed(by: self.disposeBag)
-        
-        self.writeView.emojiInputView.rx.tapRandomEmojiButton
-              .map { Reactor.Action.tapRandomEmoji }
-              .do(onNext: { _ in
-                FeedbackUtils.feedbackInstance.impactOccurred()
-              })
-              .bind(to: reactor.action)
-              .disposed(by: self.disposeBag)
+        self.writeView.emojiInputView.rx.emoji
+            .map { Reactor.Action.inputEmoji($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
         
         self.writeView.categoryView.rx.tapCategory
             .map { Reactor.Action.tapCategory($0) }
@@ -101,6 +102,15 @@ final class WriteViewController: BaseVC, View {
             .disposed(by: self.disposeBag)
         
         self.datePicker.rx.date
+            .skip(1) // 초기값을 바로 전달해서 하나 스킵합니다.
+            .do(onNext: { [weak self] deadline in
+                let dateString = DateUtils.toString(
+                    format: "yyyy년 MM월 dd일 eeee 까지",
+                    date: deadline.endOfDay
+                )
+                
+                self?.writeView.dateField.textField.text = dateString
+            })
             .map { Reactor.Action.inputDeadline($0.endOfDay) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -127,74 +137,58 @@ final class WriteViewController: BaseVC, View {
             .disposed(by: disposeBag)
         
         // MARK: State
-            reactor.state
-              .map { $0.isTooltipShown }
-              .asDriver(onErrorJustReturn: true)
-              .distinctUntilChanged()
-              .filter { $0 == false }
-              .drive(onNext: { [weak self] _ in
+        reactor.state
+            .map { $0.isTooltipShown }
+            .asDriver(onErrorJustReturn: true)
+            .distinctUntilChanged()
+            .filter { $0 == false }
+            .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                  self.writeView.emojiInputView.showRandomEmojiTooltip()
-                  self.writeReactor.action.onNext(.tooltipDisappeared)
-              })
-              .disposed(by: self.disposeBag)
+                self.writeView.emojiInputView.showRandomEmojiTooltip()
+                self.writeReactor.action.onNext(.tooltipDisappeared)
+            })
+            .disposed(by: self.disposeBag)
         
-        //    self.writeReactor.state
-        //      .map { $0.emoji }
-        //      .observeOn(MainScheduler.instance)
-        //      .bind(to: self.writeView.emojiField.rx.text)
-        //      .disposed(by: self.disposeBag)
-        
-        self.writeReactor.state
+        reactor.state
             .map { $0.category }
             .distinctUntilChanged()
-            .observeOn(MainScheduler.instance)
-            .do(onNext: self.writeView.setTitlePlaceholder(by:))
-                .bind(to: self.writeView.categoryView.rx.category)
-                .disposed(by: self.disposeBag)
+            .asDriver(onErrorJustReturn: .wantToDo)
+            .drive(onNext: { [weak self] category in
+                self?.writeView.setTitlePlaceholder(by: category)
+            })
+            .disposed(by: self.disposeBag)
                 
-                self.writeReactor.state
-                .map { $0.titleError }
-                .bind(to: self.writeView.titleField.rx.errorMessage)
-                .disposed(by: self.disposeBag)
+        reactor.state
+            .map { $0.titleError }
+            .asDriver(onErrorJustReturn: nil)
+            .drive(self.writeView.titleField.rx.errorMessage)
+            .disposed(by: self.disposeBag)
         
-        //    self.writeReactor.state
-        //      .filter { $0.date != nil }
-        //      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: $0.date ?? Date())}
-        //      .observeOn(MainScheduler.instance)
-        //      .bind(to: self.writeView.dateField.rx.text)
-        //      .disposed(by: self.disposeBag)
+        reactor.state
+            .map { $0.deadlineError }
+            .asDriver(onErrorJustReturn: nil)
+            .drive(self.writeView.dateField.rx.errorMessage)
+            .disposed(by: self.disposeBag)
         
-        //    self.writeReactor.state
-        //      .map { $0.dateError }
-        //      .bind(to: self.writeView.dateField.rx.errorMessage)
-        //      .disposed(by: self.disposeBag)
+        reactor.state
+            .map { $0.notifications }
+            .asDriver(onErrorJustReturn: [])
+            .do(onNext: { [weak self] notifications in
+                self?.writeView.updateNotificationTableViewHeight(by: notifications)
+            })
+            .drive(self.writeView.notificationTableView.rx.items(
+                    cellIdentifier: WriteNotificationTableViewCell.registerId,
+                    cellType: WriteNotificationTableViewCell.self
+            )) { row, notification, cell in
+                cell.bind(notification: notification)
+            }
+            .disposed(by: self.disposeBag)
         
         self.writeReactor.state
             .map { $0.writeButtonState }
             .observeOn(MainScheduler.instance)
             .bind(to: self.writeView.writeButton.rx.state)
             .disposed(by: self.disposeBag)
-        
-        //    self.writeReactor.state
-        //      .map { $0.isPushEnable }
-        //      .observeOn(MainScheduler.instance)
-        //      .bind(to: self.writeView.notificationButton.rx.isSelected)
-        //      .disposed(by: self.disposeBag)
-        //
-        //    self.writeReactor.state
-        //      .map { $0.isPushButtonVisible }
-        //      .filter { $0 == true }
-        //      .distinctUntilChanged()
-        //      .observeOn(MainScheduler.instance)
-        //      .bind(onNext: self.writeView.showNotificationButton)
-        //      .disposed(by: self.disposeBag)
-        
-        //    self.writeReactor.state
-        //      .map { $0.emoji.isEmpty }
-        //      .observeOn(MainScheduler.instance)
-        //      .bind(onNext: self.writeView.setEmojiBackground(isEmpty:))
-        //      .disposed(by: disposeBag)
         
         //    self.writeReactor.state
         //      .map { $0.shouldDismiss }
@@ -223,10 +217,6 @@ final class WriteViewController: BaseVC, View {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
-    }
-    
-    private func dismiss() {
-        self.dismiss(animated: true, completion: nil)
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {

@@ -97,14 +97,16 @@ class HomeVC: BaseVC, View {
       .disposed(by: self.disposeBag)
     
     reactor.state
-      .map { $0.category }
-      .skip(1)
-      .distinctUntilChanged()
-      .observeOn(MainScheduler.instance)
-      .do(onNext: self.movePageView(category:))
-      .do(onNext: self.homeView.emojiView.bind(category:))
-      .bind(to: self.homeView.categoryView.rx.category)
-      .disposed(by: self.disposeBag)
+        .map { $0.category }
+        .skip(1)
+        .distinctUntilChanged()
+        .observeOn(MainScheduler.instance)
+        .asDriver(onErrorJustReturn: .wantToDo)
+        .drive(onNext: { [weak self] category in
+            self?.movePageView(category: category)
+            self?.homeView.emojiView.bind(category: category)
+        })
+        .disposed(by: self.disposeBag)
     
     reactor.state
       .map { $0.viewType }

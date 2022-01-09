@@ -25,7 +25,7 @@ final class EmojiInputView: BaseView {
         $0.font = .systemFont(ofSize: 36)
     }
     
-    fileprivate let randomButton = UIButton().then {
+    private let randomButton = UIButton().then {
         $0.setTitle("write_random_button".localized, for: .normal)
         $0.layer.cornerRadius = 10
         $0.backgroundColor = UIColor.seepBlue
@@ -57,13 +57,32 @@ final class EmojiInputView: BaseView {
             self.randomTooltipView
         ])
         self.emojiField.delegate = self
-        self.emojiField.rx.controlEvent(.editingDidBegin)
+        self.emojiField.rx
+            .controlEvent(.editingDidBegin)
             .asDriver()
             .drive(onNext: {
                 FeedbackUtils.feedbackInstance.impactOccurred()
             })
             .disposed(by: self.disposeBag)
         self.setupEmojiKeyboard()
+        self.randomButton.rx.tap
+            .asDriver()
+            .do(onNext: { _ in
+              FeedbackUtils.feedbackInstance.impactOccurred()
+            })
+            .drive(onNext: { [weak self] in
+                let randomEmoji = self?.generateRandomEmoji()
+                
+                self?.emojiField.text = randomEmoji
+                self?.setEmojiBackground(isEmpty: false)
+            })
+            .disposed(by: self.disposeBag)
+        self.emojiField.rx.text.orEmpty
+            .asDriver()
+            .drive(onNext: { [weak self] emoji in
+                self?.setEmojiBackground(isEmpty: emoji.isEmpty)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     override func bindConstraints() {
@@ -95,16 +114,6 @@ final class EmojiInputView: BaseView {
         }
     }
     
-    fileprivate func setEmojiBackground(isEmpty: Bool) {
-        if isEmpty {
-            self.emojiBackground.image = UIImage(named: "img_emoji_empty")
-            self.emojiBackground.backgroundColor = .clear
-        } else {
-            self.emojiBackground.image = nil
-            self.emojiBackground.backgroundColor = UIColor(r: 246, g: 247, b: 249)
-        }
-    }
-    
     func showRandomEmojiTooltip() {
         self.randomTooltipView.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
@@ -119,6 +128,16 @@ final class EmojiInputView: BaseView {
         }
     }
     
+    private func setEmojiBackground(isEmpty: Bool) {
+        if isEmpty {
+            self.emojiBackground.image = UIImage(named: "img_emoji_empty")
+            self.emojiBackground.backgroundColor = .clear
+        } else {
+            self.emojiBackground.image = nil
+            self.emojiBackground.backgroundColor = UIColor(r: 246, g: 247, b: 249)
+        }
+    }
+    
     private func setupEmojiKeyboard() {
         let keyboardSettings = KeyboardSettings(bottomType: .categories)
         let emojiView = EmojiView(keyboardSettings: keyboardSettings)
@@ -127,21 +146,37 @@ final class EmojiInputView: BaseView {
         emojiView.delegate = self
         self.emojiField.inputView = emojiView
     }
+    
+    private func generateRandomEmoji() -> String {
+        let emojiArray = [
+            0x1f600...0x1f64f,
+            0x1f680...0x1f6c5,
+            0x1f6cb...0x1f6d2,
+            0x1f6e0...0x1f6e5,
+            0x1f6f3...0x1f6fa,
+            0x1f7e0...0x1f7eb,
+            0x1f90d...0x1f93a,
+            0x1f93c...0x1f945,
+            0x1f947...0x1f971,
+            0x1f973...0x1f976,
+            0x1f97a...0x1f9a2,
+            0x1f9a5...0x1f9aa,
+            0x1f9ae...0x1f9ca,
+            0x1f9cd...0x1f9ff,
+            0x1fa70...0x1fa73,
+            0x1fa78...0x1fa7a,
+            0x1fa80...0x1fa82,
+            0x1fa90...0x1fa95,
+        ].reduce([], +).map { return UnicodeScalar($0)! }
+        guard let scalar = emojiArray.randomElement() else { return "❓" }
+        
+        return String(scalar)
+    }
 }
 
 extension Reactive where Base: EmojiInputView {
     var emoji: ControlProperty<String> {
         return base.emojiField.rx.text.orEmpty
-    }
-    
-    var tapRandomEmojiButton: ControlEvent<Void> {
-        return base.randomButton.rx.tap
-    }
-    
-    var isEmojiEmpty: Binder<Bool> {
-        return Binder(self.base) { base, isEmpty in
-            base.setEmojiBackground(isEmpty: isEmpty)
-        }
     }
 }
 

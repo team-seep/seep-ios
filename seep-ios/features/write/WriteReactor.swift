@@ -8,7 +8,6 @@ class WriteReactor: Reactor {
     enum Action {
         case tooltipDisappeared
         case inputEmoji(String)
-        case tapRandomEmoji
         case tapCategory(Category)
         case inputTitle(String)
         case inputDeadline(Date)
@@ -50,6 +49,7 @@ class WriteReactor: Reactor {
         var title: String = ""
         var titleError: String? = nil
         var deadline: Date? = nil
+        var deadlineError: String? = nil
         var deadlineEnable = true
         var notifications: [SeepNotification] = [SeepNotification()]
         var isNotificationEnable = true
@@ -86,11 +86,6 @@ class WriteReactor: Reactor {
             
         case .inputEmoji(let emoji):
             return .just(.setEmoji(emoji))
-            
-        case .tapRandomEmoji:
-            let randomEmoji = self.generateRandomEmoji()
-            
-            return .just(.setEmoji(randomEmoji))
             
         case .tapCategory(let category):
             return .just(.setCategory(category))
@@ -225,31 +220,5 @@ class WriteReactor: Reactor {
     
     private func validateForEnable(title: String) -> WriteButton.WriteButtonState {
         return title.isEmpty ? .initial : .active
-    }
-    
-    private func generateRandomEmoji() -> String {
-        let emojiArray = [
-            0x1f600...0x1f64f,
-            0x1f680...0x1f6c5,
-            0x1f6cb...0x1f6d2,
-            0x1f6e0...0x1f6e5,
-            0x1f6f3...0x1f6fa,
-            0x1f7e0...0x1f7eb,
-            0x1f90d...0x1f93a,
-            0x1f93c...0x1f945,
-            0x1f947...0x1f971,
-            0x1f973...0x1f976,
-            0x1f97a...0x1f9a2,
-            0x1f9a5...0x1f9aa,
-            0x1f9ae...0x1f9ca,
-            0x1f9cd...0x1f9ff,
-            0x1fa70...0x1fa73,
-            0x1fa78...0x1fa7a,
-            0x1fa80...0x1fa82,
-            0x1fa90...0x1fa95,
-        ].reduce([], +).map { return UnicodeScalar($0)! }
-        guard let scalar = emojiArray.randomElement() else { return "❓" }
-        
-        return String(scalar)
     }
 }

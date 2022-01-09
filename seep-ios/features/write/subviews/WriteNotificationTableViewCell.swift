@@ -9,11 +9,12 @@ import UIKit
 
 final class WriteNotificationTableViewCell: BaseTableViewCell {
     static let registerId = "\(WriteNotificationTableViewCell.self)"
-    static let height: CGFloat = 56
+    static let height: CGFloat = 64
     
     private let containerView = UIView().then {
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(r: 225, g: 227, b: 231).cgColor
+        $0.layer.cornerRadius = 6
     }
     
     private let titleLabel = UILabel().then {
@@ -27,6 +28,7 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
     }
     
     override func setup() {
+        self.backgroundColor = .clear
         self.selectionStyle = .none
         self.addSubViews([
             self.containerView,
@@ -39,7 +41,7 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
         self.containerView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
             make.bottom.equalToSuperview()
             make.height.equalTo(56)
         }
@@ -56,5 +58,11 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
             make.width.equalTo(24)
             make.height.equalTo(24)
         }
+    }
+    
+    func bind(notification: SeepNotification) {
+        guard let type = SeepNotification.NotificationType(rawValue: notification.type) else { return }
+        
+        self.titleLabel.text = "\(type.toString), \(notification.time.toString(format: "a hh시 mm분"))"
     }
 }

@@ -97,6 +97,7 @@ final class WriteView: BaseView {
     }
     
     let notificationTableView = UITableView().then {
+        $0.backgroundColor = .clear
         $0.tableFooterView = UIView()
         $0.estimatedRowHeight = UITableView.automaticDimension
         $0.separatorStyle = .none
@@ -273,7 +274,7 @@ final class WriteView: BaseView {
         self.notificationTableView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.top.equalTo(self.notificationIcon.snp.bottom).offset(10)
+            make.top.equalTo(self.notificationIcon.snp.bottom).offset(2)
             make.height.equalTo(56)
         }
         
@@ -327,6 +328,12 @@ final class WriteView: BaseView {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-23)
             make.height.equalTo(50)
+        }
+    }
+    
+    func updateNotificationTableViewHeight(by notifications: [SeepNotification]) {
+        self.notificationTableView.snp.updateConstraints { make in
+            make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
         }
     }
     

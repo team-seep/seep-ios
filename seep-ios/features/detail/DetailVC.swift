@@ -205,12 +205,13 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
 
     self.detailReactor.state
-      .map { $0.category }
-      .distinctUntilChanged()
-      .observeOn(MainScheduler.instance)
-      .do(onNext: self.detailView.setTitlePlaceholder(by:))
-      .bind(to: self.detailView.categoryView.rx.category)
-      .disposed(by: self.disposeBag)
+        .map { $0.category }
+        .distinctUntilChanged()
+        .asDriver(onErrorJustReturn: .wantToDo)
+        .drive(onNext: { [weak self] category in
+            self?.detailView.setTitlePlaceholder(by: category)
+        })
+        .disposed(by: self.disposeBag)
     
     self.detailReactor.state
       .map { $0.title }
