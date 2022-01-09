@@ -25,7 +25,7 @@ final class EmojiInputView: BaseView {
         $0.font = .systemFont(ofSize: 36)
     }
     
-    private let randomButton = UIButton().then {
+    fileprivate let randomButton = UIButton().then {
         $0.setTitle("write_random_button".localized, for: .normal)
         $0.layer.cornerRadius = 10
         $0.backgroundColor = UIColor.seepBlue
@@ -105,7 +105,7 @@ final class EmojiInputView: BaseView {
         }
     }
     
-    fileprivate func showRandomEmojiTooltip() {
+    func showRandomEmojiTooltip() {
         self.randomTooltipView.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self = self else { return }
@@ -132,6 +132,10 @@ final class EmojiInputView: BaseView {
 extension Reactive where Base: EmojiInputView {
     var emoji: ControlProperty<String> {
         return base.emojiField.rx.text.orEmpty
+    }
+    
+    var tapRandomEmojiButton: ControlEvent<Void> {
+        return base.randomButton.rx.tap
     }
     
     var isEmojiEmpty: Binder<Bool> {

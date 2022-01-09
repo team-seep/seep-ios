@@ -164,7 +164,7 @@ class HomeVC: BaseVC, View {
   }
   
   func showWirteVC(category: Category) {
-    let writeVC = WriteVC.instance(category: category).then {
+    let writeVC = WriteViewController.instance(category: category).then {
       $0.delegate = self
     }
     

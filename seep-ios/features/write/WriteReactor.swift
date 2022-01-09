@@ -11,7 +11,7 @@ class WriteReactor: Reactor {
         case tapRandomEmoji
         case tapCategory(Category)
         case inputTitle(String)
-        case setDeadline(Date)
+        case inputDeadline(Date)
         case tapDeadlineSwitch(Bool)
         case addNotification(SeepNotification)
         case updateNotification(index: Int, notification: SeepNotification)
@@ -102,7 +102,7 @@ class WriteReactor: Reactor {
                 .just(.setWriteButtonState(self.validateForEnable(title: title)))
             ])
             
-        case .setDeadline(let date):
+        case .inputDeadline(let date):
             return .just(.setDeadline(date))
             
         case .tapDeadlineSwitch(let isEnable):
