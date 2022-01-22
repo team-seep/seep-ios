@@ -80,6 +80,13 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
                 self?.writeView.endEditing(true)
             })
             .disposed(by: self.eventDisposeBag)
+        
+        self.writeView.addNotificationButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.coordinator?.pushNotification()
+            })
+            .disposed(by: self.eventDisposeBag)
     }
     
     func bind(reactor: WriteReactor) {

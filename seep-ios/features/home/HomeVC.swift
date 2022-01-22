@@ -165,13 +165,17 @@ class HomeVC: BaseVC, View {
     self.navigationController?.pushViewController(finishedVC, animated: true)
   }
   
-  func showWirteVC(category: Category) {
-    let writeVC = WriteViewController.instance(category: category).then {
-      $0.delegate = self
+    func showWirteVC(category: Category) {
+        let viewController = WriteViewController.instance(category: category).then {
+            $0.delegate = self
+        }
+        let navigationViewController = UINavigationController(rootViewController: viewController).then {
+            $0.isNavigationBarHidden = true
+            $0.modalPresentationStyle = .overCurrentContext
+        }
+        
+        self.present(navigationViewController, animated: true, completion: nil)
     }
-    
-    self.present(writeVC, animated: true, completion: nil)
-  }
   
   private func movePageView(category: Category) {
     guard let currentViewControllerIndex = self.pageViewControllers.firstIndex(of: self.pageVC.viewControllers![0]) else { return }

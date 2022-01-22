@@ -109,3 +109,14 @@
 "share_photo_tooltip" = "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요";
 "share_photo_button" = "👌 이렇게 공유할래요";
 "share_photo_success" = "👌 공유하기 완료! 앨범에서 확인해보세요";
+
+// Notification
+"notification_add_title" = "알림 추가";
+"notification_edit_title" = "알림 수정";
+"notification_date" = "알림 날짜";
+"notification_type_targat_day" = "당일";
+"notification_type_before_day" = "1일 전";
+"notification_type_before_two_day" = "2일 전";
+"notification_type_before_week" = "일주일 전";
+"notification_type_everyday" = "매일";
+"notification_time" = "알림 시간";

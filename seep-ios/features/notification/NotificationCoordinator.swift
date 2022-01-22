@@ -1,0 +1,3 @@
+protocol NotificationCoordinator: AnyObject, BaseCoordinator {
+    
+}
