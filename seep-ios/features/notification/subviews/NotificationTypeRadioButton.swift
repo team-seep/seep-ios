@@ -7,6 +7,14 @@ final class NotificationTypeRadioButton: BaseView {
     static let height: CGFloat = 56
     fileprivate let tapGesture = UITapGestureRecognizer()
     
+    var isSelected: Bool {
+        didSet {
+            self.checkImage.image = isSelected
+                ? UIImage(named: "ic_radio_on")
+                : UIImage(named: "ic_radio_off")
+        }
+    }
+    
     enum ButtonType {
         case targetDay
         case beforeDay
@@ -44,6 +52,8 @@ final class NotificationTypeRadioButton: BaseView {
     
     init(type: ButtonType) {
         self.titleLabel.text = type.title
+        self.isSelected = false
+        
         super.init(frame: .zero)
     }
     

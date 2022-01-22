@@ -120,3 +120,4 @@
 "notification_type_before_week" = "일주일 전";
 "notification_type_everyday" = "매일";
 "notification_time" = "알림 시간";
+"notification_add" = "✔️ 저장";
