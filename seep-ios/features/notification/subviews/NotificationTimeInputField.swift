@@ -106,4 +106,13 @@ final class NotificationTimeInputField: BaseView {
             make.bottom.equalTo(self.containerView).priority(.high)
         }
     }
+    
+    func setTime(date: Date) {
+        let dateString = DateUtils.toString(
+            format: "a h시 mm분",
+            date: date
+        )
+        
+        self.textField.text = dateString
+    }
 }

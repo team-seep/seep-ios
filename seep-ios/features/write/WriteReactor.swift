@@ -13,6 +13,8 @@ class WriteReactor: Reactor {
         case inputDeadline(Date)
         case tapDeadlineSwitch(Bool)
         case addNotification(SeepNotification)
+        case tapAddNotificationButton
+        case tapEditNotification(index: Int)
         case updateNotification(index: Int, notification: SeepNotification)
         case deleteNotification(index: Int)
         case tapNotificationSwitch(Bool)
@@ -35,7 +37,7 @@ class WriteReactor: Reactor {
         case updateNotification(Int, SeepNotification)
         case deleteNotification(Int)
         case setNotificationEnable(Bool)
-        case pushNotificationDetail([SeepNotification], Int)
+        case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
         case setHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
@@ -59,7 +61,7 @@ class WriteReactor: Reactor {
     }
     
     let initialState: State
-    let pushNotificationDetailPublisher = PublishRelay<([SeepNotification], Int)>()
+    let pushNotificationPublisher = PublishRelay<([SeepNotification], Int?)>()
     let dismissPublisher = PublishRelay<Void>()
     private let wishService: WishServiceProtocol
     private let userDefaults: UserDefaultsUtils
@@ -105,6 +107,12 @@ class WriteReactor: Reactor {
             
         case .addNotification(let notification):
             return .just(.addNotifictaion(notification))
+            
+        case .tapAddNotificationButton:
+            return .just(.pushNotificationDetail(self.currentState.notifications, nil))
+            
+        case .tapEditNotification(let index):
+            return .just(.pushNotificationDetail(self.currentState.notifications, index))
             
         case .updateNotification(let index, let notification):
             return .just(.updateNotification(index, notification))
@@ -200,7 +208,7 @@ class WriteReactor: Reactor {
             newState.isNotificationEnable = isEnable
             
         case .pushNotificationDetail(let notifications, let index):
-            self.pushNotificationDetailPublisher.accept((notifications, index))
+            self.pushNotificationPublisher.accept((notifications, index))
             
         case .setMemo(let memo):
             newState.memo = memo

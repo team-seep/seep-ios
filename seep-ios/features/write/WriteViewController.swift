@@ -81,10 +81,13 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             })
             .disposed(by: self.eventDisposeBag)
         
-        self.writeView.addNotificationButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.coordinator?.pushNotification()
+        self.writeReactor.pushNotificationPublisher
+            .asDriver(onErrorJustReturn: ([], nil))
+            .drive(onNext: { [weak self] (notifications, selectedIndex) in
+                self?.coordinator?.pushNotification(
+                    totalNotifications: notifications,
+                    selectedIndex: selectedIndex
+                )
             })
             .disposed(by: self.eventDisposeBag)
     }
@@ -135,6 +138,17 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         
         self.writeView.notificationSwitch.rx.value
             .map { Reactor.Action.tapNotificationSwitch($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.writeView.addNotificationButton.rx.tap
+            .map { Reactor.Action.tapAddNotificationButton }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.writeView.notificationTableView.rx.itemSelected
+            .debug()
+            .map { Reactor.Action.tapEditNotification(index: $0.row) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
@@ -286,3 +300,15 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
 //    return newLength <= 18
 //  }
 //}
+
+extension WriteViewController: NotificationViewControllerDelegate {
+    func onEditNotification(index: Int, notification: SeepNotification) {
+        self.writeReactor.action.onNext(
+            .updateNotification(index: index, notification: notification)
+        )
+    }
+    
+    func onAddNotification(notification: SeepNotification) {
+        self.writeReactor.action.onNext(.addNotification(notification))
+    }
+}

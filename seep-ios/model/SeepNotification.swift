@@ -6,6 +6,15 @@ class SeepNotification: Object {
     @objc dynamic var type: String
     @objc dynamic var time: Date
     
+    var notificationType: NotificationType {
+        get {
+            return NotificationType(rawValue: self.type) ?? .targetDay
+        }
+        set {
+            self.type = newValue.rawValue
+        }
+    }
+    
     init(
         type: NotificationType = .targetDay,
         time: Date = Calendar.current.date(
@@ -41,19 +50,19 @@ extension SeepNotification {
         var toString: String {
             switch self {
             case .targetDay:
-                return "당일"
+                return "notification_type_targat_day".localized
                 
             case .dayAgo:
-                return "1일 전"
+                return "notification_type_before_day".localized
                 
             case .twoDayAgo:
-                return "2일 전"
+                return "notification_type_before_two_day".localized
                 
             case .weekAgo:
-                return "일주일 전"
+                return "notification_type_before_week".localized
                 
             case .everyDay:
-                return "매일"
+                return "notification_type_everyday".localized
             }
         }
     }

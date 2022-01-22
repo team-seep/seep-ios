@@ -1,7 +1,17 @@
 import UIKit
 
-final class NotificationViewController: BaseVC, NotificationCoordinator {
+import ReactorKit
+
+protocol NotificationViewControllerDelegate: AnyObject {
+    func onEditNotification(index: Int, notification: SeepNotification)
+    
+    func onAddNotification(notification: SeepNotification)
+}
+
+final class NotificationViewController: BaseVC, View, NotificationCoordinator {
+    weak var delegate: NotificationViewControllerDelegate?
     private let notificationView = NotificationView()
+    private let notificationReactor: NotificationReactor
     private weak var coordinator: NotificationCoordinator?
     
     private let datePicker = UIDatePicker().then {
@@ -10,8 +20,30 @@ final class NotificationViewController: BaseVC, NotificationCoordinator {
         $0.locale = .init(identifier: "ko_KO")
     }
     
-    static func instance() -> NotificationViewController {
-        return NotificationViewController(nibName: nil, bundle: nil)
+    init(
+        totalNotifications: [SeepNotification],
+        selectedIndex: Int? = nil
+    ) {
+        self.notificationReactor = NotificationReactor(
+            totalNotifications: totalNotifications,
+            selectedIndex: selectedIndex
+        )
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    static func instance(
+        totalNotifications: [SeepNotification],
+        selectedIndex: Int? = nil
+    ) -> NotificationViewController {
+        return NotificationViewController(
+            totalNotifications: totalNotifications,
+            selectedIndex: selectedIndex
+        )
     }
     
     deinit {
@@ -26,6 +58,7 @@ final class NotificationViewController: BaseVC, NotificationCoordinator {
         super.viewDidLoad()
         
         self.coordinator = self
+        self.reactor = self.notificationReactor
         self.notificationView.timeField.inputView = self.datePicker
     }
     
@@ -43,6 +76,44 @@ final class NotificationViewController: BaseVC, NotificationCoordinator {
                 self?.notificationView.endEditing(true)
             })
             .disposed(by: self.eventDisposeBag)
+        
+        self.notificationReactor.addNotificationPublisher
+            .asDriver(onErrorJustReturn: SeepNotification())
+            .drive(onNext: { [weak self] notification in
+                self?.delegate?.onAddNotification(notification: notification)
+                self?.coordinator?.popup(animated: true)
+            })
+            .disposed(by: self.eventDisposeBag)
+        
+        self.notificationReactor.editNotificationPublisher
+            .asDriver(onErrorJustReturn: (SeepNotification(), 0))
+            .drive(onNext: { [weak self] (notification, selectedIndex) in
+                self?.delegate?.onEditNotification(index: selectedIndex, notification: notification)
+                self?.coordinator?.popup(animated: true)
+            })
+            .disposed(by: self.eventDisposeBag)
+    }
+    
+    func bind(reactor: NotificationReactor) {
+        // Bind Action
+        self.notificationView.notificationGroupView.rx.selectedType
+            .map { Reactor.Action.selectNotificationType($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.datePicker.rx.date
+            .skip(1)
+            .do(onNext: { [weak self] date in
+                self?.notificationView.timeField.setTime(date: date)
+            })
+            .map { Reactor.Action.inputNotificationTime($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.notificationView.addButton.rx.tap
+            .map { Reactor.Action.tapAddButton }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
     }
     
     private func setupKeyboardNotification() {

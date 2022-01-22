@@ -29,6 +29,7 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
     override func setup() {
         self.backgroundColor = .clear
         self.selectionStyle = .none
+        self.contentView.isUserInteractionEnabled = false
         self.addSubViews([
             self.containerView,
             self.titleLabel,
@@ -62,8 +63,7 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
     func bind(notification: SeepNotification, isEnable: Bool) {
         guard let type = SeepNotification.NotificationType(rawValue: notification.type) else { return }
         
-        self.titleLabel.text = "\(type.toString), \(notification.time.toString(format: "a hh시 mm분"))"
-        
+        self.titleLabel.text = "\(type.toString), \(notification.time.toString(format: "a h시 mm분"))"
         UIView.transition(
             with: self,
             duration: 0.3,

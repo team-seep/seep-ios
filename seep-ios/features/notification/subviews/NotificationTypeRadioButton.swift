@@ -15,32 +15,6 @@ final class NotificationTypeRadioButton: BaseView {
         }
     }
     
-    enum ButtonType {
-        case targetDay
-        case beforeDay
-        case beforeTwoDay
-        case beforeWeek
-        case everyday
-        
-        var title: String {
-            switch self {
-            case .targetDay:
-                return "notification_type_targat_day".localized
-                
-            case .beforeDay:
-                return "notification_type_before_day".localized
-                
-            case .beforeTwoDay:
-                return "notification_type_before_two_day".localized
-                
-            case .beforeWeek:
-                return "notification_type_before_week".localized
-                
-            case .everyday:
-                return "notification_type_everyday".localized
-            }
-        }
-    }
     private let titleLabel = UILabel().then {
         $0.font = .appleRegular(size: 16)
         $0.textColor = .black
@@ -50,8 +24,8 @@ final class NotificationTypeRadioButton: BaseView {
         $0.image = UIImage(named: "ic_radio_off")
     }
     
-    init(type: ButtonType) {
-        self.titleLabel.text = type.title
+    init(type: SeepNotification.NotificationType) {
+        self.titleLabel.text = type.toString
         self.isSelected = false
         
         super.init(frame: .zero)

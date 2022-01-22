@@ -4,17 +4,17 @@ import RxSwift
 import RxCocoa
 
 final class NotificationButtonGropView: BaseView {
-    fileprivate let selectedType = PublishSubject<NotificationTypeRadioButton.ButtonType>()
+    fileprivate let selectedType = PublishSubject<SeepNotification.NotificationType>()
     
     private let targetDayButton = NotificationTypeRadioButton(type: .targetDay)
     
-    private let beforeDayButton = NotificationTypeRadioButton(type: .everyday)
+    private let beforeDayButton = NotificationTypeRadioButton(type: .dayAgo)
     
-    private let beforeTwoDayButton = NotificationTypeRadioButton(type: .beforeTwoDay)
+    private let beforeTwoDayButton = NotificationTypeRadioButton(type: .twoDayAgo)
     
-    private let beforeWeekButton = NotificationTypeRadioButton(type: .beforeWeek)
+    private let beforeWeekButton = NotificationTypeRadioButton(type: .weekAgo)
     
-    private let everydayButton = NotificationTypeRadioButton(type: .everyday)
+    private let everydayButton = NotificationTypeRadioButton(type: .everyDay)
     
     override func setup() {
         self.addSubViews([
@@ -27,7 +27,7 @@ final class NotificationButtonGropView: BaseView {
         self.selectRadioButton(type: .targetDay)
         
         self.targetDayButton.rx.tap
-            .map { NotificationTypeRadioButton.ButtonType.targetDay }
+            .map { SeepNotification.NotificationType.targetDay }
             .do(onNext: { [weak self] type in
                 self?.selectRadioButton(type: type)
             })
@@ -35,7 +35,7 @@ final class NotificationButtonGropView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.beforeDayButton.rx.tap
-            .map { NotificationTypeRadioButton.ButtonType.beforeDay }
+            .map { SeepNotification.NotificationType.dayAgo }
             .do(onNext: { [weak self] type in
                 self?.selectRadioButton(type: type)
             })
@@ -43,7 +43,7 @@ final class NotificationButtonGropView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.beforeTwoDayButton.rx.tap
-            .map { NotificationTypeRadioButton.ButtonType.beforeTwoDay }
+            .map { SeepNotification.NotificationType.twoDayAgo }
             .do(onNext: { [weak self] type in
                 self?.selectRadioButton(type: type)
             })
@@ -51,7 +51,7 @@ final class NotificationButtonGropView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.beforeWeekButton.rx.tap
-            .map { NotificationTypeRadioButton.ButtonType.beforeWeek }
+            .map { SeepNotification.NotificationType.weekAgo }
             .do(onNext: { [weak self] type in
                 self?.selectRadioButton(type: type)
             })
@@ -59,7 +59,7 @@ final class NotificationButtonGropView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.everydayButton.rx.tap
-            .map { NotificationTypeRadioButton.ButtonType.everyday }
+            .map { SeepNotification.NotificationType.everyDay }
             .do(onNext: { [weak self] type in
                 self?.selectRadioButton(type: type)
             })
@@ -104,17 +104,17 @@ final class NotificationButtonGropView: BaseView {
         }
     }
     
-    private func selectRadioButton(type: NotificationTypeRadioButton.ButtonType) {
+    private func selectRadioButton(type: SeepNotification.NotificationType) {
         self.targetDayButton.isSelected = type == .targetDay
-        self.beforeDayButton.isSelected = type == .beforeDay
-        self.beforeTwoDayButton.isSelected = type == .beforeTwoDay
-        self.beforeWeekButton.isSelected = type == .beforeWeek
-        self.everydayButton.isSelected = type == .everyday
+        self.beforeDayButton.isSelected = type == .dayAgo
+        self.beforeTwoDayButton.isSelected = type == .twoDayAgo
+        self.beforeWeekButton.isSelected = type == .weekAgo
+        self.everydayButton.isSelected = type == .everyDay
     }
 }
 
 extension Reactive where Base: NotificationButtonGropView {
-    var selectedType: ControlEvent<NotificationTypeRadioButton.ButtonType> {
+    var selectedType: ControlEvent<SeepNotification.NotificationType> {
         return ControlEvent(events: base.selectedType)
     }
 }

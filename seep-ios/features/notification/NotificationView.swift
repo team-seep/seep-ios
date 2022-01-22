@@ -33,7 +33,7 @@ final class NotificationView: BaseView {
         $0.font = .appleRegular(size: 14)
     }
     
-    private let notificationGroupView = NotificationButtonGropView()
+    let notificationGroupView = NotificationButtonGropView()
     
     private let dividorView = UIView().then {
         $0.backgroundColor = .gray2
