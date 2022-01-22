@@ -20,11 +20,10 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
     private let titleLabel = UILabel().then {
         $0.font = .appleRegular(size: 16)
         $0.textColor = .gray5
-        $0.text = "당일, 오전 11시 00분"
     }
     
     private let rightArrowImage = UIImageView().then {
-        $0.image = UIImage(named: "ic_arrow_right")
+        $0.image = UIImage(named: "ic_arrow_right")?.withRenderingMode(.alwaysTemplate)
     }
     
     override func setup() {
@@ -60,9 +59,25 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
         }
     }
     
-    func bind(notification: SeepNotification) {
+    func bind(notification: SeepNotification, isEnable: Bool) {
         guard let type = SeepNotification.NotificationType(rawValue: notification.type) else { return }
         
         self.titleLabel.text = "\(type.toString), \(notification.time.toString(format: "a hh시 mm분"))"
+        
+        UIView.transition(
+            with: self,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) { [weak self] in
+            if isEnable {
+                self?.containerView.backgroundColor = .gray1
+                self?.titleLabel.textColor = .gray5
+                self?.rightArrowImage.tintColor = .gray5
+            } else {
+                self?.containerView.backgroundColor = .gray2
+                self?.titleLabel.textColor = .gray3
+                self?.rightArrowImage.tintColor = .gray3
+            }
+        }
     }
 }

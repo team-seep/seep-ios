@@ -55,6 +55,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         self.coordinator = self
         self.setupKeyboardNotification()
         self.writeView.dateField.inputView = self.datePicker
+        self.writeView.categoryView.moveActiveButton(category: self.writeReactor.currentState.category)
     }
     
     override func bindEvent() {
@@ -101,6 +102,11 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
+        self.writeView.dateSwitch.rx.value
+            .map { Reactor.Action.tapDeadlineSwitch($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
         self.datePicker.rx.date
             .skip(1) // 초기값을 바로 전달해서 하나 스킵합니다.
             .do(onNext: { [weak self] deadline in
@@ -117,6 +123,11 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         
         self.writeView.dateSwitch.rx.value
             .map { Reactor.Action.tapDeadlineSwitch($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.writeView.notificationSwitch.rx.value
+            .map { Reactor.Action.tapNotificationSwitch($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
@@ -171,17 +182,31 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .disposed(by: self.disposeBag)
         
         reactor.state
-            .map { $0.notifications }
+            .map { $0.deadlineEnable }
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.writeView.dateField.rx.isDateEnable)
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map { state in
+                return state.notifications.map { ($0, state.isNotificationEnable) }
+            }
             .asDriver(onErrorJustReturn: [])
-            .do(onNext: { [weak self] notifications in
-                self?.writeView.updateNotificationTableViewHeight(by: notifications)
+            .do(onNext: { [weak self] (notificationsWithEnable) in
+                self?.writeView.updateNotificationTableViewHeight(by: notificationsWithEnable)
             })
             .drive(self.writeView.notificationTableView.rx.items(
                     cellIdentifier: WriteNotificationTableViewCell.registerId,
                     cellType: WriteNotificationTableViewCell.self
             )) { row, notification, cell in
-                cell.bind(notification: notification)
+                cell.bind(notification: notification.0, isEnable: notification.1)
             }
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map { $0.isNotificationEnable }
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.writeView.rx.isNotificationEnable)
             .disposed(by: self.disposeBag)
         
         self.writeReactor.state

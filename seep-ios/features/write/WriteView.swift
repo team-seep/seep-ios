@@ -1,5 +1,8 @@
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 final class WriteView: BaseView {
     let tapBackground = UITapGestureRecognizer()
     
@@ -69,7 +72,8 @@ final class WriteView: BaseView {
     }
     
     let dateSwitch = UISwitch().then {
-        $0.onTintColor = .gray3
+        $0.tintColor = .gray3
+        $0.isOn = true
         $0.onTintColor = .tennisGreen
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
@@ -91,7 +95,8 @@ final class WriteView: BaseView {
     }
     
     let notificationSwitch = UISwitch().then {
-        $0.onTintColor = .gray3
+        $0.tintColor = .gray3
+        $0.isOn = true
         $0.onTintColor = .tennisGreen
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
@@ -110,7 +115,11 @@ final class WriteView: BaseView {
     let addNotificationButton = UIButton().then {
         $0.setTitle("write_add_notification".localized, for: .normal)
         $0.setTitleColor(.seepBlue, for: .normal)
-        $0.setImage(UIImage(named: "ic_small_plus"), for: .normal)
+        $0.setImage(
+            UIImage(named: "ic_small_plus")?.withRenderingMode(.alwaysTemplate),
+            for: .normal
+        )
+        $0.tintColor = .seepBlue
         $0.titleLabel?.font = .appleExtraBold(size: 14)
         $0.semanticContentAttribute = .forceLeftToRight
     }
@@ -331,7 +340,7 @@ final class WriteView: BaseView {
         }
     }
     
-    func updateNotificationTableViewHeight(by notifications: [SeepNotification]) {
+    func updateNotificationTableViewHeight(by notifications: [(SeepNotification, Bool)]) {
         self.notificationTableView.snp.updateConstraints { make in
             make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
         }
@@ -354,6 +363,25 @@ final class WriteView: BaseView {
     func setTitlePlaceholder(by category: Category) {
         self.titleField.placeholder = "write_placeholder_title_\(category.rawValue)".localized
     }
+    
+    fileprivate func setNotificationEnable(isEnable: Bool) {
+        self.addNotificationButton.isUserInteractionEnabled = isEnable
+        self.notificationTableView.isUserInteractionEnabled = isEnable
+        
+        UIView.transition(
+            with: self,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) { [weak self] in
+            if isEnable {
+                self?.addNotificationButton.tintColor = .seepBlue
+                self?.addNotificationButton.setTitleColor(.seepBlue, for: .normal)
+            } else {
+                self?.addNotificationButton.tintColor = .gray3
+                self?.addNotificationButton.setTitleColor(.gray3, for: .normal)
+            }
+        }
+    }
 }
 
 extension WriteView: UIScrollViewDelegate {
@@ -370,5 +398,13 @@ extension WriteView: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.showWriteButton()
+    }
+}
+
+extension Reactive where Base: WriteView {
+    var isNotificationEnable: Binder<Bool> {
+        return Binder(self.base) { view, isEnable in
+            view.setNotificationEnable(isEnable: isEnable)
+        }
     }
 }

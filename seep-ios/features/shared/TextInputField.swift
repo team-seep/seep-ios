@@ -176,11 +176,36 @@ final class TextInputField: BaseView {
         }
     }
     
-    private func setPlaceholder(placeholder: String?) {
+    fileprivate func setDateEnable(isEnable: Bool) {
+        self.isUserInteractionEnabled = isEnable
+        UIView.transition(
+            with: self,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) { [weak self] in
+            if isEnable {
+                self?.textField.attributedPlaceholder = NSAttributedString(
+                    string: "write_placeholder_date_enable".localized,
+                    attributes: [.foregroundColor: UIColor.gray3]
+                )
+            } else {
+                self?.textField.attributedPlaceholder = NSAttributedString(
+                    string: "write_placeholder_date_disable".localized,
+                    attributes: [.foregroundColor: UIColor.gray5]
+                )
+            }
+            self?.textField.tintColor = .clear
+        }
+    }
+    
+    private func setPlaceholder(
+        placeholder: String?,
+        color: UIColor = .gray3
+    ) {
         guard let placeholder = placeholder else { return }
         self.textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
-            attributes: [.foregroundColor: UIColor.gray3]
+            attributes: [.foregroundColor: color]
         )
         self.textField.tintColor = .clear
     }
@@ -194,6 +219,12 @@ extension Reactive where Base: TextInputField {
     var errorMessage: Binder<String?> {
         return Binder(self.base) { view, message in
             view.showError(message: message)
+        }
+    }
+    
+    var isDateEnable: Binder<Bool> {
+        return Binder(self.base) { view, isEnable in
+            view.setDateEnable(isEnable: isEnable)
         }
     }
 }
