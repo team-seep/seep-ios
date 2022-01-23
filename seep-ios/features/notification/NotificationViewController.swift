@@ -30,6 +30,9 @@ final class NotificationViewController: BaseVC, View, NotificationCoordinator {
         )
         
         super.init(nibName: nil, bundle: nil)
+        if let selectedIndex = selectedIndex {
+            self.notificationView.bind(notification: totalNotifications[selectedIndex])
+        }
     }
     
     required init?(coder: NSCoder) {

@@ -32,11 +32,12 @@ final class NotificationTimeInputField: BaseView {
     let textField = UITextField().then {
         $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
         $0.textColor = .gray5
+        $0.tintColor = .clear
         $0.text = "오전 11시 00분"
     }
     
-    private let downArrowImage = UIImageView().then {
-        $0.image = UIImage(named: "ic_chevron_down")
+    private let downArrowImage = UIButton().then {
+        $0.setImage(UIImage(named: "ic_chevron_down"), for: .normal)
     }
     
     override func setup() {
@@ -78,6 +79,13 @@ final class NotificationTimeInputField: BaseView {
                     
                     self.containerView.layer.borderColor = UIColor(r: 225, g: 227, b: 231).cgColor
                 }
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.downArrowImage.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.textField.becomeFirstResponder()
             })
             .disposed(by: self.disposeBag)
     }

@@ -104,7 +104,7 @@ final class NotificationButtonGropView: BaseView {
         }
     }
     
-    private func selectRadioButton(type: SeepNotification.NotificationType) {
+    func selectRadioButton(type: SeepNotification.NotificationType) {
         self.targetDayButton.isSelected = type == .targetDay
         self.beforeDayButton.isSelected = type == .dayAgo
         self.beforeTwoDayButton.isSelected = type == .twoDayAgo

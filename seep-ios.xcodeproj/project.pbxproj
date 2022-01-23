@@ -47,8 +47,8 @@
 		6E43A5C426171D3C00FB1738 /* FinishedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E43A5C326171D3C00FB1738 /* FinishedCollectionView.swift */; };
 		6E441CA12604549F0010A625 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA02604549F0010A625 /* Wish.swift */; };
 		6E441CA526046F9D0010A625 /* WishServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E441CA426046F9D0010A625 /* WishServices.swift */; };
-		6E4AD34C278AACCB00819C43 /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4AD34B278AACCB00819C43 /* SeepNotification.swift */; };
-		6E4AD34D278ABE1100819C43 /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4AD34B278AACCB00819C43 /* SeepNotification.swift */; };
+		6E4AD34C278AACCB00819C43 /* NotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */; };
+		6E4AD34D278ABE1100819C43 /* NotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */; };
 		6E4C32602789234200550BBB /* WriteNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C325F2789234200550BBB /* WriteNotificationTableViewCell.swift */; };
 		6E4F5D8E2657DF580061A13C /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D8D2657DF580061A13C /* SplashView.swift */; };
 		6E4F5D932657E0BA0061A13C /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D922657E0BA0061A13C /* SplashVC.swift */; };
@@ -108,6 +108,8 @@
 		6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AED263FCB4700A99402 /* UIImageExtension.swift */; };
 		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
 		6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */; };
+		6E80428A279D260D008A0EB4 /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E804289279D260D008A0EB4 /* SeepNotification.swift */; };
+		6E80428B279D26B0008A0EB4 /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E804289279D260D008A0EB4 /* SeepNotification.swift */; };
 		6E875726279BD9BC00BAA5BF /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E875725279BD9BC00BAA5BF /* NotificationView.swift */; };
 		6E875729279BDDFE00BAA5BF /* NotificationTypeRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E875728279BDDFE00BAA5BF /* NotificationTypeRadioButton.swift */; };
 		6E87572B279BE65300BAA5BF /* NotificationButtonGropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572A279BE65300BAA5BF /* NotificationButtonGropView.swift */; };
@@ -216,7 +218,7 @@
 		6E43A5C326171D3C00FB1738 /* FinishedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedCollectionView.swift; sourceTree = "<group>"; };
 		6E441CA02604549F0010A625 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		6E441CA426046F9D0010A625 /* WishServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishServices.swift; sourceTree = "<group>"; };
-		6E4AD34B278AACCB00819C43 /* SeepNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeepNotification.swift; sourceTree = "<group>"; };
+		6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDTO.swift; sourceTree = "<group>"; };
 		6E4C325F2789234200550BBB /* WriteNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteNotificationTableViewCell.swift; sourceTree = "<group>"; };
 		6E4F5D8D2657DF580061A13C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6E4F5D922657E0BA0061A13C /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 		6E764AED263FCB4700A99402 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
 		6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackUtils.swift; sourceTree = "<group>"; };
+		6E804289279D260D008A0EB4 /* SeepNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeepNotification.swift; sourceTree = "<group>"; };
 		6E875725279BD9BC00BAA5BF /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		6E875728279BDDFE00BAA5BF /* NotificationTypeRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTypeRadioButton.swift; sourceTree = "<group>"; };
 		6E87572A279BE65300BAA5BF /* NotificationButtonGropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationButtonGropView.swift; sourceTree = "<group>"; };
@@ -522,11 +525,12 @@
 		6E66A26D25FB40B600C0C051 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				6E804288279D2578008A0EB4 /* presentation */,
+				6E804287279D256E008A0EB4 /* dto */,
 				6E66A26E25FB40BD00C0C051 /* Category.swift */,
 				6E66A27125FB416700C0C051 /* ViewType.swift */,
 				6E091578264FA94E0048EB79 /* CommonError.swift */,
 				6E441CA02604549F0010A625 /* Wish.swift */,
-				6E4AD34B278AACCB00819C43 /* SeepNotification.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -603,6 +607,22 @@
 				6E7206D6275B48C6009C7AFC /* WishHorizontalItemView.swift */,
 			);
 			path = subviews;
+			sourceTree = "<group>";
+		};
+		6E804287279D256E008A0EB4 /* dto */ = {
+			isa = PBXGroup;
+			children = (
+				6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */,
+			);
+			path = dto;
+			sourceTree = "<group>";
+		};
+		6E804288279D2578008A0EB4 /* presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
+			);
+			path = presentation;
 			sourceTree = "<group>";
 		};
 		6E875724279BD9A500BAA5BF /* notification */ = {
@@ -1057,6 +1077,7 @@
 				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
 				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
 				6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */,
+				6E80428A279D260D008A0EB4 /* SeepNotification.swift in Sources */,
 				6E87572D279BEB0E00BAA5BF /* NotificationViewController.swift in Sources */,
 				6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */,
 				6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */,
@@ -1079,7 +1100,7 @@
 				6E274E8625F20FC0007DC880 /* BaseTableViewCell.swift in Sources */,
 				6EEED44525F2227F0059DBE5 /* HomeWishCell.swift in Sources */,
 				6ED89718261585E10005FA29 /* FinishedVC.swift in Sources */,
-				6E4AD34C278AACCB00819C43 /* SeepNotification.swift in Sources */,
+				6E4AD34C278AACCB00819C43 /* NotificationDTO.swift in Sources */,
 				6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */,
 				6E274E8E25F21506007DC880 /* HomeView.swift in Sources */,
 				6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */,
@@ -1103,6 +1124,7 @@
 				6E6CBE34274A0B55005D7BFE /* SmallRemainProvider.swift in Sources */,
 				6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */,
 				6EB50EFB26BD549000F0096E /* widget.intentdefinition in Sources */,
+				6E80428B279D26B0008A0EB4 /* SeepNotification.swift in Sources */,
 				6EB50F0726BD574400F0096E /* SmallWriteEntryView.swift in Sources */,
 				6E7206D0275B4791009C7AFC /* MediumHorizontalEntry.swift in Sources */,
 				6E7206C8275B323D009C7AFC /* DdayView.swift in Sources */,
@@ -1117,7 +1139,7 @@
 				6E6CBE32274A0111005D7BFE /* SmallRemainEntryView.swift in Sources */,
 				6EB50EF626BD548F00F0096E /* widget.swift in Sources */,
 				6E6D610727587C8500A0BFD9 /* BundleExtensions.swift in Sources */,
-				6E4AD34D278ABE1100819C43 /* SeepNotification.swift in Sources */,
+				6E4AD34D278ABE1100819C43 /* NotificationDTO.swift in Sources */,
 				6EC9BF9D26BE0456007C7708 /* MediumVerticalEntry.swift in Sources */,
 				6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */,
 				6E7206D4275B4801009C7AFC /* MediumHorizontalEntryView.swift in Sources */,

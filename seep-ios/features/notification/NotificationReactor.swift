@@ -68,11 +68,11 @@ final class NotificationReactor: Reactor {
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
-        let newState = state
+        var newState = state
         
         switch mutation {
         case .setNotificationType(let type):
-            newState.notification.notificationType = type
+            newState.notification.type = type
             
         case .setNotificationTime(let time):
             newState.notification.time = time

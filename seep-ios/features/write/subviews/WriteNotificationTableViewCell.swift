@@ -1,11 +1,7 @@
-//
-//  WriteNotificationTableViewCell.swift
-//  seep-ios
-//
-//  Created by Hyun Sik Yoo on 2022/01/08.
-//
-
 import UIKit
+
+import RxSwift
+import RxCocoa
 
 final class WriteNotificationTableViewCell: BaseTableViewCell {
     static let registerId = "\(WriteNotificationTableViewCell.self)"
@@ -26,6 +22,8 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
         $0.image = UIImage(named: "ic_arrow_right")?.withRenderingMode(.alwaysTemplate)
     }
     
+    fileprivate let buttonArea = UIButton()
+    
     override func setup() {
         self.backgroundColor = .clear
         self.selectionStyle = .none
@@ -33,7 +31,8 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
         self.addSubViews([
             self.containerView,
             self.titleLabel,
-            self.rightArrowImage
+            self.rightArrowImage,
+            self.buttonArea
         ])
     }
     
@@ -58,12 +57,14 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
             make.width.equalTo(24)
             make.height.equalTo(24)
         }
+        
+        self.buttonArea.snp.makeConstraints { make in
+            make.edges.equalTo(self.containerView)
+        }
     }
     
     func bind(notification: SeepNotification, isEnable: Bool) {
-        guard let type = SeepNotification.NotificationType(rawValue: notification.type) else { return }
-        
-        self.titleLabel.text = "\(type.toString), \(notification.time.toString(format: "a h시 mm분"))"
+        self.titleLabel.text = "\(notification.type.toString), \(notification.time.toString(format: "a h시 mm분"))"
         UIView.transition(
             with: self,
             duration: 0.3,
@@ -79,5 +80,11 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
                 self?.rightArrowImage.tintColor = .gray3
             }
         }
+    }
+}
+
+extension Reactive where Base: WriteNotificationTableViewCell {
+    var tap: ControlEvent<Void> {
+        return base.buttonArea.rx.tap
     }
 }

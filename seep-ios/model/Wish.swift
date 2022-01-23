@@ -8,7 +8,7 @@ class Wish: Object, Identifiable {
     @objc dynamic var title: String = ""
     @objc dynamic var date: Date = Date()
     @objc dynamic var finishDate: Date?
-    var notifications = List<SeepNotification>()
+    var notifications = List<NotificationDTO>()
     @objc dynamic var memo: String = ""
     @objc dynamic var hashtag: String = ""
     @objc dynamic var isSuccess: Bool = false

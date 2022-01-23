@@ -142,6 +142,11 @@ final class NotificationView: BaseView {
         }
     }
     
+    func bind(notification: SeepNotification) {
+        self.notificationGroupView.selectRadioButton(type: notification.type)
+        self.timeField.setTime(date: notification.time)
+    }
+    
     func showWriteButton() {
       UIView.transition(with: self.addButton, duration: 0.3, options: .curveEaseInOut) {
         self.addButton.alpha = 1.0

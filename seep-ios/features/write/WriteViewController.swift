@@ -146,12 +146,6 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-        self.writeView.notificationTableView.rx.itemSelected
-            .debug()
-            .map { Reactor.Action.tapEditNotification(index: $0.row) }
-            .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
-        
         self.writeView.memoField.rx.text.orEmpty
             .filter { $0 != "wrtie_placeholder_memo".localized }
             .map { Reactor.Action.inputMemo($0) }
@@ -221,6 +215,10 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
                     cellType: WriteNotificationTableViewCell.self
             )) { row, notification, cell in
                 cell.bind(notification: notification.0, isEnable: notification.1)
+                cell.rx.tap
+                    .map { Reactor.Action.tapEditNotification(index: row) }
+                    .bind(to: reactor.action)
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: self.disposeBag)
         
