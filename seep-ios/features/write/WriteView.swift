@@ -168,7 +168,7 @@ final class WriteView: BaseView {
         $0.backgroundColor = .clear
     }
     
-    let hashtagField = WriteHashtagField()
+    let hashtagField = CustomHashtagField()
     
     let writeButton = WriteButton()
     

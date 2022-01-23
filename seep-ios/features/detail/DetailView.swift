@@ -88,7 +88,7 @@ class DetailView: BaseView {
   
   let memoField = TextInputView()
   
-  let hashtagField = WriteHashtagField()
+  let hashtagField = CustomHashtagField()
   
   let editButton = EditButton()
   
@@ -267,9 +267,7 @@ class DetailView: BaseView {
       if self.hashtagField.isHidden {
         self.addHashtagField(hashtag: "")
       } else {
-        self.hashtagField.clearButton.isHidden = false
         self.hashtagField.setContentsLayout()
-        self.hashtagField.clearButton.alpha = 1.0
         self.hashtagField.snp.remakeConstraints { make in
           make.left.equalToSuperview().offset(20)
           make.right.equalTo(self.hashtagField.containerView)
@@ -293,8 +291,6 @@ class DetailView: BaseView {
         self.categoryView.containerView.backgroundColor = .gray2
       }
       self.notificationButton.isHidden = !self.notificationButton.isSelected
-      
-      self.hashtagField.clearButton.isHidden = true
       self.hashtagField.containerView.snp.remakeConstraints { make in
         make.left.equalToSuperview()
         make.top.equalToSuperview()

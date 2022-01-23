@@ -1,51 +1,45 @@
 import UIKit
+
 import RxSwift
 import RxCocoa
 
-class WriteHashtagField: BaseView {
-  
-  let maxLength = 7
+final class CustomHashtagField: BaseView {
+  private let maxLength = 7
   
   let containerView = UIView().then {
     $0.layer.cornerRadius = 6
+    $0.backgroundColor = .gray2
   }
   
   let textField = UITextField().then {
     $0.textAlignment = .left
     $0.returnKeyType = .done
-    $0.font = UIFont(name: "AppleSDGothicNeoEB00", size: 14)
-    $0.textColor = .gray4
+    $0.font = .appleRegular(size: 14)
+    $0.textColor = .gray5
     $0.attributedPlaceholder = NSAttributedString(
       string: "write_placeholder_hashtag".localized,
       attributes: [
         .foregroundColor: UIColor.gray3,
-        .font: UIFont(name: "AppleSDGothicNeo-Regular", size: 14)!
+        .font: UIFont.appleRegular(size: 14) as Any
       ]
     )
   }
   
-  let clearButton = UIButton().then {
-    $0.setImage(UIImage(named: "ic_close"), for: .normal)
-  }
-  
-  let dashedBorderLayer = CAShapeLayer().then {
-    $0.strokeColor = UIColor.gray3.cgColor
-    $0.lineDashPattern = [2, 2]
-    $0.fillColor = nil
-  }
-  
   let errorLabel = UILabel().then {
     $0.textColor = .optionRed
-    $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
+    $0.font = .appleRegular(size: 12)
   }
   
   
   override func setup() {
-    self.addSubViews(containerView, textField, clearButton, errorLabel)
+    self.addSubViews([
+        self.containerView,
+        self.textField,
+        self.errorLabel
+    ])
     self.backgroundColor = .clear
     self.textField.delegate = self
     self.setupBorder()
-    self.setupClearButton()
   }
   
   override func bindConstraints() {
@@ -61,11 +55,6 @@ class WriteHashtagField: BaseView {
       make.top.equalTo(self.containerView).offset(6)
     }
     
-    self.clearButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.right.equalTo(self.containerView).offset(-6)
-    }
-    
     self.errorLabel.snp.makeConstraints { make in
       make.left.equalTo(self.containerView)
       make.top.equalTo(self.containerView.snp.bottom).offset(8)
@@ -77,12 +66,6 @@ class WriteHashtagField: BaseView {
     }
   }
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    
-    self.addDashedBorder()
-  }
-  
   func bind(hashtag: String) {
     if hashtag.isEmpty {
       self.textField.text = nil
@@ -90,14 +73,12 @@ class WriteHashtagField: BaseView {
         string: "write_placeholder_hashtag".localized,
         attributes: [
           .foregroundColor: UIColor.gray3,
-          .font: UIFont(name: "AppleSDGothicNeo-Regular", size: 14)!
+          .font: UIFont.appleRegular(size: 14) as Any
         ]
       )
       self.setPlaceHolderLayout()
     } else {
       self.textField.text = hashtag
-      self.clearButton.isHidden = true
-      self.dashedBorderLayer.isHidden = true
       self.textField.frame.size.width = self.textField.intrinsicContentSize.width
       self.containerView.backgroundColor = .gray2
       self.textField.attributedPlaceholder = nil
@@ -116,7 +97,7 @@ class WriteHashtagField: BaseView {
     self.containerView.snp.remakeConstraints { make in
       make.left.equalToSuperview()
       make.top.equalToSuperview()
-      make.right.equalTo(self.clearButton).offset(6)
+      make.right.equalTo(self.textField).offset(8)
       make.bottom.equalTo(self.textField).offset(6)
     }
     
@@ -125,74 +106,60 @@ class WriteHashtagField: BaseView {
       make.top.equalTo(self.containerView).offset(6)
     }
     
-    self.clearButton.snp.remakeConstraints { make in
-      make.centerY.equalTo(self.containerView)
-      make.left.equalTo(self.textField.snp.right).offset(6)
-    }
-    
     self.errorLabel.snp.remakeConstraints { make in
       make.left.equalTo(self.containerView)
       make.top.equalTo(self.containerView.snp.bottom).offset(8)
     }
   }
   
-  private func addDashedBorder() {
-    self.dashedBorderLayer.removeFromSuperlayer()
-    self.dashedBorderLayer.frame = self.containerView.bounds
-    self.dashedBorderLayer.path = UIBezierPath(
-      roundedRect: self.containerView.bounds,
-      cornerRadius: 6
-    ).cgPath
-    self.containerView.layer.addSublayer(self.dashedBorderLayer)
-  }
-  
   private func setupBorder() {
-    self.textField.rx.text
-      .observeOn(MainScheduler.instance)
-      .bind { [weak self] text in
-        guard let self = self else { return }
-        if let text = text {
-          self.clearButton.isHidden = text.isEmpty
-          self.dashedBorderLayer.isHidden = !text.isEmpty
-          if !text.isEmpty {
+    self.textField.rx
+        .controlEvent(.editingDidBegin)
+        .asDriver()
+        .drive(onNext: { [weak self] in
+            guard let self = self else { return }
+            
+            UIView.transition(
+                with: self,
+                duration: 0.3,
+                options: .transitionCrossDissolve
+            ) { [weak self] in
+                guard let self = self else { return }
+                
+                self.containerView.backgroundColor = .gray1
+                self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
+                self.containerView.layer.borderWidth = 1
+            }
+        })
+        .disposed(by: self.disposeBag)
+    
+    self.textField.rx
+        .controlEvent(.editingDidEnd)
+        .asDriver()
+        .drive(onNext: { [weak self] in
+            guard let self = self else { return }
+            
+            UIView.transition(
+                with: self,
+                duration: 0.3,
+                options: .transitionCrossDissolve
+            ) { [weak self] in
+                guard let self = self else { return }
+                
+                self.containerView.layer.borderWidth = 0
+                self.containerView.backgroundColor = .gray2
+            }
+        })
+        .disposed(by: self.disposeBag)
+    
+    self.textField.rx.text.orEmpty
+        .asDriver()
+        .drive(onNext: { [weak self] text in
+            guard let self = self else { return }
+            
             self.textField.frame.size.width = self.textField.intrinsicContentSize.width
-            self.containerView.backgroundColor = .gray2
-            self.textField.attributedPlaceholder = nil
             self.setContentsLayout()
-          } else {
-            self.containerView.backgroundColor = .clear
-            self.textField.attributedPlaceholder = NSAttributedString(
-              string: "write_placeholder_hashtag".localized,
-              attributes: [
-                .foregroundColor: UIColor.gray3,
-                .font: UIFont(name: "AppleSDGothicNeo-Regular", size: 14)!
-              ]
-            )
-            self.setPlaceHolderLayout()
-          }
-        }
-      }
-      .disposed(by: self.disposeBag)
-  }
-  
-  private func setupClearButton() {
-    self.clearButton.rx.tap
-      .observeOn(MainScheduler.instance)
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        self.textField.text = ""
-        self.clearButton.isHidden = true
-        self.dashedBorderLayer.isHidden = false
-        self.containerView.backgroundColor = .clear
-        self.textField.attributedPlaceholder = NSAttributedString(
-          string: "write_placeholder_hashtag".localized,
-          attributes: [
-            .foregroundColor: UIColor.gray3,
-            .font: UIFont(name: "AppleSDGothicNeo-Regular", size: 14)!
-          ]
-        )
-        self.setPlaceHolderLayout()
-      }
+        })
       .disposed(by: self.disposeBag)
   }
   
@@ -211,8 +178,7 @@ class WriteHashtagField: BaseView {
   }
 }
 
-extension WriteHashtagField: UITextFieldDelegate {
-  
+extension CustomHashtagField: UITextFieldDelegate {
   func textField(
     _ textField: UITextField,
     shouldChangeCharactersIn range: NSRange,
@@ -231,8 +197,7 @@ extension WriteHashtagField: UITextFieldDelegate {
   }
 }
 
-extension Reactive where Base: WriteHashtagField {
-  
+extension Reactive where Base: CustomHashtagField {
   var text: ControlProperty<String?> {
     return base.textField.rx.text
   }

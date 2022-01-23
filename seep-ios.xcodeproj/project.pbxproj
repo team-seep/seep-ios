@@ -73,7 +73,7 @@
 		6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27625FB45C500C0C051 /* WriteView.swift */; };
 		6E66A27A25FB489000C0C051 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27925FB489000C0C051 /* WriteViewController.swift */; };
 		6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27C25FB587100C0C051 /* TextInputField.swift */; };
-		6E69E619260D77200062CBFB /* WriteHashtagField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E618260D77200062CBFB /* WriteHashtagField.swift */; };
+		6E69E619260D77200062CBFB /* CustomHashtagField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E618260D77200062CBFB /* CustomHashtagField.swift */; };
 		6E69E620260D991B0062CBFB /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E61F260D991B0062CBFB /* DetailView.swift */; };
 		6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E623260D9E630062CBFB /* DetailVC.swift */; };
 		6E69E62B260DB7640062CBFB /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62A260DB7640062CBFB /* EditButton.swift */; };
@@ -238,7 +238,7 @@
 		6E66A27625FB45C500C0C051 /* WriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteView.swift; sourceTree = "<group>"; };
 		6E66A27925FB489000C0C051 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		6E66A27C25FB587100C0C051 /* TextInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputField.swift; sourceTree = "<group>"; };
-		6E69E618260D77200062CBFB /* WriteHashtagField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteHashtagField.swift; sourceTree = "<group>"; };
+		6E69E618260D77200062CBFB /* CustomHashtagField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHashtagField.swift; sourceTree = "<group>"; };
 		6E69E61F260D991B0062CBFB /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		6E69E623260D9E630062CBFB /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		6E69E62A260DB7640062CBFB /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
@@ -636,6 +636,7 @@
 			isa = PBXGroup;
 			children = (
 				6E80428D279D2D07008A0EB4 /* HashtagCollectionViewCell.swift */,
+				6E4C325F2789234200550BBB /* WriteNotificationTableViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -666,10 +667,9 @@
 			isa = PBXGroup;
 			children = (
 				6E80428C279D2CEE008A0EB4 /* cells */,
-				6E69E618260D77200062CBFB /* WriteHashtagField.swift */,
+				6E69E618260D77200062CBFB /* CustomHashtagField.swift */,
 				6E7A9A4A260C6AF8008335DA /* WriteButton.swift */,
 				6E9AB5352783226B00C6F825 /* EmojiInputView.swift */,
-				6E4C325F2789234200550BBB /* WriteNotificationTableViewCell.swift */,
 			);
 			path = subviews;
 			sourceTree = "<group>";
@@ -1085,7 +1085,7 @@
 				6E43A5BD2616C8B500FB1738 /* FinishedReactor.swift in Sources */,
 				6EACBD5A2613034A0009AB6F /* PageItemVC.swift in Sources */,
 				6E091577264F99A50048EB79 /* SharePhotoReactor.swift in Sources */,
-				6E69E619260D77200062CBFB /* WriteHashtagField.swift in Sources */,
+				6E69E619260D77200062CBFB /* CustomHashtagField.swift in Sources */,
 				6E804292279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,
 				6E6D610327587B8C00A0BFD9 /* BundleExtensions.swift in Sources */,

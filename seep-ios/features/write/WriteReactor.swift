@@ -39,7 +39,8 @@ class WriteReactor: Reactor {
         case setNotificationEnable(Bool)
         case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
-        case setHashtag(String)
+        case selectHashtag(index: Int)
+        case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
         case dismiss
     }
@@ -57,6 +58,7 @@ class WriteReactor: Reactor {
         var isNotificationEnable = true
         var memo: String = ""
         var hashtags: [HashtagType] = HashtagType.array
+        var selectedHashtag: HashtagType?
         var selectedHahstagIndex: Int?
         var customHashtag: String = ""
         var writeButtonState: WriteButton.WriteButtonState = .initial
@@ -135,10 +137,10 @@ class WriteReactor: Reactor {
             return .just(.setMemo(memo))
             
         case .tapHashtag(let index):
-            return .empty()
+            return .just(.selectHashtag(index: index))
             
         case .inputHashtag(let hashtag):
-            return .just(.setHashtag(hashtag))
+            return .just(.setCustomHashtag(hashtag))
             
         case .tapWriteButton:
             return .empty()
@@ -215,7 +217,10 @@ class WriteReactor: Reactor {
         case .setMemo(let memo):
             newState.memo = memo
             
-        case .setHashtag(let hashtag):
+        case .selectHashtag(let index):
+            newState.selectedHashtag = newState.hashtags[index]
+            
+        case .setCustomHashtag(let hashtag):
             newState.customHashtag = hashtag
             
         case .setWriteButtonState(let state):

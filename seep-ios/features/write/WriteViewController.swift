@@ -152,6 +152,11 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .bind(to: self.writeReactor.action)
             .disposed(by: self.disposeBag)
         
+        self.writeView.hashtagCollectionView.rx.itemSelected
+            .map { Reactor.Action.tapHashtag(index: $0.row) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
         self.writeView.hashtagField.rx.text.orEmpty
             .map { Reactor.Action.inputHashtag($0) }
             .bind(to: self.writeReactor.action)
@@ -240,10 +245,10 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             }
             .disposed(by: self.disposeBag)
         
-        self.writeReactor.state
+        reactor.state
             .map { $0.writeButtonState }
-            .observeOn(MainScheduler.instance)
-            .bind(to: self.writeView.writeButton.rx.state)
+            .asDriver(onErrorJustReturn: .initial)
+            .drive(self.writeView.writeButton.rx.state)
             .disposed(by: self.disposeBag)
         
         //    self.writeReactor.state
