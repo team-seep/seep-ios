@@ -22,6 +22,10 @@ final class WriteView: BaseView {
         $0.backgroundColor = .clear
     }
     
+    private let backgroundView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
     let closeButton = UIButton().then {
         $0.setImage(UIImage(named: "ic_close"), for: .normal)
     }
@@ -146,26 +150,32 @@ final class WriteView: BaseView {
         $0.text = "write_header_hashtag".localized
     }
     
-    let hashtagField = WriteHashtagField()
-    
-    let gradientView = UIView().then {
-        let gradientLayer = CAGradientLayer()
-        let topColor = UIColor(r: 246, g: 247, b: 249, a: 0.0).cgColor
-        let bottomColor = UIColor(r: 246, g: 247, b: 249, a: 1.0).cgColor
+    let hashtagCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    ).then {
+        let layout = LeftAlignedCollectionViewFlowLayout()
         
-        gradientLayer.colors = [topColor, bottomColor]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
-        $0.layer.addSublayer(gradientLayer)
-        $0.isUserInteractionEnabled = false
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
+        layout.estimatedItemSize = HashtagCollectionViewCell.estimatedSize
+        
+        $0.collectionViewLayout = layout
+        $0.register(
+            HashtagCollectionViewCell.self,
+            forCellWithReuseIdentifier: HashtagCollectionViewCell.registerID
+        )
+        $0.backgroundColor = .clear
     }
+    
+    let hashtagField = WriteHashtagField()
     
     let writeButton = WriteButton()
     
     override func setup() {
         self.backgroundColor = .white
-        self.addGestureRecognizer(self.tapBackground)
-        self.scrollView.delegate = self
+        
+        self.backgroundView.addGestureRecognizer(self.tapBackground)
         
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
@@ -174,6 +184,7 @@ final class WriteView: BaseView {
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
         
         self.containerView.addSubViews([
+            self.backgroundView,
             self.titleLabel,
             self.emojiInputView,
             self.categoryView,
@@ -192,14 +203,14 @@ final class WriteView: BaseView {
             self.memoField,
             self.hashtagIcon,
             self.hashtagLabel,
-            self.hashtagField
+            self.hashtagCollectionView,
+            self.hashtagField,
+            self.writeButton
         ])
         self.scrollView.addSubview(containerView)
         self.addSubViews([
             self.closeButton,
-            self.scrollView,
-            self.gradientView,
-            self.writeButton
+            self.scrollView
         ])
     }
     
@@ -219,7 +230,11 @@ final class WriteView: BaseView {
             make.edges.equalTo(0)
             make.width.equalToSuperview()
             make.top.equalTo(self.closeButton).priority(.high)
-            make.bottom.equalTo(self.hashtagField).offset(20).priority(.high)
+            make.bottom.equalTo(self.writeButton).offset(20).priority(.high)
+        }
+        
+        self.backgroundView.snp.makeConstraints { make in
+            make.edges.equalTo(self.containerView)
         }
         
         self.titleLabel.snp.makeConstraints { make in
@@ -323,19 +338,23 @@ final class WriteView: BaseView {
             make.centerY.equalTo(self.hashtagIcon)
         }
         
-        self.hashtagField.snp.makeConstraints { make in
+        self.hashtagCollectionView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
             make.top.equalTo(self.hashtagIcon.snp.bottom).offset(10)
+            make.height.equalTo(72)
         }
         
-        self.gradientView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(150)
+        self.hashtagField.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.hashtagCollectionView.snp.bottom).offset(8)
         }
         
         self.writeButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide).offset(-23)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(self.hashtagField.snp.bottom).offset(40)
             make.height.equalTo(50)
         }
     }
@@ -343,20 +362,6 @@ final class WriteView: BaseView {
     func updateNotificationTableViewHeight(by notifications: [(SeepNotification, Bool)]) {
         self.notificationTableView.snp.updateConstraints { make in
             make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
-        }
-    }
-    
-    func showWriteButton() {
-        UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
-            self.writeButton.alpha = 1.0
-            self.writeButton.transform = .identity
-        }
-    }
-    
-    func hideWriteButton() {
-        UIView.transition(with: self.writeButton, duration: 0.3, options: .curveEaseInOut) {
-            self.writeButton.alpha = 0.0
-            self.writeButton.transform = .init(translationX: 0, y: 100)
         }
     }
     
@@ -381,23 +386,6 @@ final class WriteView: BaseView {
                 self?.addNotificationButton.setTitleColor(.gray3, for: .normal)
             }
         }
-    }
-}
-
-extension WriteView: UIScrollViewDelegate {
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.hideWriteButton()
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            self.showWriteButton()
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        self.showWriteButton()
     }
 }
 

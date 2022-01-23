@@ -56,7 +56,9 @@ class WriteReactor: Reactor {
         var notifications: [SeepNotification] = [SeepNotification()]
         var isNotificationEnable = true
         var memo: String = ""
-        var hashtag: String = ""
+        var hashtags: [HashtagType] = HashtagType.array
+        var selectedHahstagIndex: Int?
+        var customHashtag: String = ""
         var writeButtonState: WriteButton.WriteButtonState = .initial
     }
     
@@ -214,7 +216,7 @@ class WriteReactor: Reactor {
             newState.memo = memo
             
         case .setHashtag(let hashtag):
-            newState.hashtag = hashtag
+            newState.customHashtag = hashtag
             
         case .setWriteButtonState(let state):
             newState.writeButtonState = state

@@ -121,3 +121,14 @@
 "notification_type_everyday" = "매일";
 "notification_time" = "알림 시간";
 "notification_add" = "✔️ 저장";
+
+// Hashtag
+"hashtag_trip" = "여행";
+"hashtag_shopping" = "쇼핑";
+"hashtag_sports" = "스포츠";
+"hashtag_career" = "커리어";
+"hashtag_life" = "일상";
+"hashtag_hobby" = "취미";
+"hashtag_date" = "데이트";
+"hashtag_stock" = "주식";
+"hashtag_leisure" = "여가생활";

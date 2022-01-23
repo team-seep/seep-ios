@@ -228,6 +228,18 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .drive(self.writeView.rx.isNotificationEnable)
             .disposed(by: self.disposeBag)
         
+        reactor.state
+            .map { $0.hashtags }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: [])
+            .drive(self.writeView.hashtagCollectionView.rx.items(
+                    cellIdentifier: HashtagCollectionViewCell.registerID,
+                    cellType: HashtagCollectionViewCell.self
+            )) { row, hashtagType, cell in
+                cell.bind(type: hashtagType)
+            }
+            .disposed(by: self.disposeBag)
+        
         self.writeReactor.state
             .map { $0.writeButtonState }
             .observeOn(MainScheduler.instance)
