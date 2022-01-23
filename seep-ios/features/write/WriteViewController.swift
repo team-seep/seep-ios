@@ -191,12 +191,16 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
                 
         reactor.state
             .map { $0.titleError }
+            .distinctUntilChanged()
+            .skip(1)
             .asDriver(onErrorJustReturn: nil)
             .drive(self.writeView.titleField.rx.errorMessage)
             .disposed(by: self.disposeBag)
         
         reactor.state
             .map { $0.deadlineError }
+            .distinctUntilChanged()
+            .skip(1)
             .asDriver(onErrorJustReturn: nil)
             .drive(self.writeView.dateField.rx.errorMessage)
             .disposed(by: self.disposeBag)
@@ -294,27 +298,6 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         self.writeView.scrollView.contentInset.bottom = .zero
     }
 }
-
-// TODO: 에러 디자인 나오면 적용
-//extension WriteVC: UITextFieldDelegate {
-//
-//  func textField(
-//    _ textField: UITextField,
-//    shouldChangeCharactersIn range: NSRange,
-//    replacementString string: String
-//  ) -> Bool {
-//    guard let text = textField.text else { return true }
-//    let newLength = text.count + string.count - range.length
-//
-//    if newLength >= 18 {
-//      self.writeView.titleField.rx.errorMessage.onNext("write_error_max_length_title".localized)
-//    } else {
-//      self.writeView.titleField.rx.errorMessage.onNext(nil)
-//    }
-//
-//    return newLength <= 18
-//  }
-//}
 
 extension WriteViewController: NotificationViewControllerDelegate {
     func onEditNotification(index: Int, notification: SeepNotification) {

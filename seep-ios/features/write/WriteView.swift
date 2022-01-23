@@ -176,6 +176,7 @@ final class WriteView: BaseView {
         self.backgroundColor = .white
         
         self.backgroundView.addGestureRecognizer(self.tapBackground)
+        self.titleField.textField.delegate = self
         
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
@@ -388,6 +389,26 @@ final class WriteView: BaseView {
         }
     }
 }
+
+extension WriteView: UITextFieldDelegate {
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    guard let text = textField.text else { return true }
+    let newLength = text.count + string.count - range.length
+
+    if newLength >= 18 {
+      self.titleField.rx.errorMessage.onNext("write_error_max_length_title".localized)
+    } else {
+      self.titleField.rx.errorMessage.onNext(nil)
+    }
+
+    return newLength <= 18
+  }
+}
+
 
 extension Reactive where Base: WriteView {
     var isNotificationEnable: Binder<Bool> {

@@ -99,7 +99,6 @@ class WriteReactor: Reactor {
         case .inputTitle(let title):
             return .merge([
                 .just(.setTitle(title)),
-                .just(.setTitleError(nil)),
                 .just(.setWriteButtonState(self.validateForEnable(title: title)))
             ])
             

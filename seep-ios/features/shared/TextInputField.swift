@@ -157,21 +157,18 @@ final class TextInputField: BaseView {
         if let message = message {
             self.addSubViews(self.errorLabel)
             self.errorLabel.text = message
-            self.containerView.snp.remakeConstraints { make in
-                make.left.right.equalToSuperview()
-                make.bottom.equalTo(self.textField).offset(16)
-                make.top.equalTo(self.titleLabel).offset(8)
-            }
             self.errorLabel.snp.makeConstraints { make in
-                make.left.bottom.equalToSuperview()
+                make.left.equalToSuperview()
                 make.top.equalTo(self.containerView.snp.bottom).offset(8)
+            }
+            
+            self.snp.updateConstraints { make in
+                make.bottom.equalTo(self.containerView).offset(10).priority(.high)
             }
         } else {
             self.errorLabel.removeFromSuperview()
-            self.containerView.snp.remakeConstraints { make in
-                make.left.right.bottom.equalToSuperview()
-                make.bottom.equalTo(self.textField).offset(14)
-                make.top.equalTo(self.iconImage.snp.bottom).offset(13)
+            self.snp.updateConstraints { make in
+                make.bottom.equalTo(self.containerView).priority(.high)
             }
         }
     }
