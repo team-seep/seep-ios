@@ -53,7 +53,7 @@ class PageItemReactor: Reactor {
       return Observable.just(Mutation.setViewType(viewType))
     case .tapFinishButton(let index):
       let tappedWish = self.currentState.wishiList[index]
-      self.wishService.finishWish(wish: tappedWish)
+        self.wishService.finishWish(id: tappedWish.id)
       self.cancelNotification(wish: tappedWish)
       let wishList = self.wishService.fetchAllWishes(category: self.category)
       

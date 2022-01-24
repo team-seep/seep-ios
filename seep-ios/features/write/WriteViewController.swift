@@ -90,6 +90,14 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
                 )
             })
             .disposed(by: self.eventDisposeBag)
+        
+        self.writeReactor.dismissWishCategoryPublisher
+            .asDriver(onErrorJustReturn: .wantToDo)
+            .drive(onNext: { [weak self] category in
+                self?.delegate?.onSuccessWrite(category: category)
+                self?.coordinator?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: self.eventDisposeBag)
     }
     
     func bind(reactor: WriteReactor) {
@@ -193,6 +201,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .map { $0.titleError }
             .distinctUntilChanged()
             .skip(1)
+            .debug()
             .asDriver(onErrorJustReturn: nil)
             .drive(self.writeView.titleField.rx.errorMessage)
             .disposed(by: self.disposeBag)
@@ -206,7 +215,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .disposed(by: self.disposeBag)
         
         reactor.state
-            .map { $0.deadlineEnable }
+            .map { $0.isDeadlineEnable }
             .asDriver(onErrorJustReturn: false)
             .drive(self.writeView.dateField.rx.isDateEnable)
             .disposed(by: self.disposeBag)
@@ -254,19 +263,6 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .asDriver(onErrorJustReturn: .initial)
             .drive(self.writeView.writeButton.rx.state)
             .disposed(by: self.disposeBag)
-        
-        //    self.writeReactor.state
-        //      .map { $0.shouldDismiss }
-        //      .distinctUntilChanged()
-        //      .observeOn(MainScheduler.instance)
-        //      .bind(onNext: { [weak self] shouldDismiss in
-        //        guard let self = self else { return }
-        //        if shouldDismiss {
-        //          self.delegate?.onSuccessWrite(category: self.writeReactor.currentState.category)
-        //          self.dismiss()
-        //        }
-        //      })
-        //      .disposed(by: disposeBag)
     }
     
     private func setupKeyboardNotification() {

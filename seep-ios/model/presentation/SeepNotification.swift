@@ -28,6 +28,7 @@ struct SeepNotification: Equatable {
         }
     }
     
+    var id = UUID().uuidString
     var type: NotificationType
     var time: Date
     
@@ -42,5 +43,14 @@ struct SeepNotification: Equatable {
     ) {
         self.type = type
         self.time = time
+    }
+    
+    init(dto: NotificationDTO) {
+        self.type = NotificationType(rawValue: dto.type) ?? .targetDay
+        self.time = dto.time
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.type == rhs.type && lhs.time == rhs.time
     }
 }

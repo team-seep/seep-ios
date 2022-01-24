@@ -35,7 +35,8 @@ struct SmallRemainProvider: TimelineProvider {
         let realmConfig = Realm.Configuration(fileURL: realmPath)
         
         if let realm = try? Realm(configuration: realmConfig) {
-            let searchTask = realm.objects(Wish.self).filter { ($0.isSuccess == false) && ($0.category == randomCategory.rawValue) }
+            let searchTask = realm.objects(WishDTO.self)
+                .filter { ($0.isSuccess == false) && ($0.category == randomCategory.rawValue) }
             let wishCount = searchTask.map { $0 }.count
             
             let entry = SmallRemainEntry(date: date, category: randomCategory, count: wishCount)

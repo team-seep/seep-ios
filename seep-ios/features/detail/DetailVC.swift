@@ -224,7 +224,8 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
 
     self.detailReactor.state
-      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: $0.date)}
+        .compactMap { $0.date }
+      .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: $0)}
       .observeOn(MainScheduler.instance)
       .bind(to: self.detailView.dateField.rx.text)
       .disposed(by: self.disposeBag)
@@ -254,7 +255,9 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
 
     self.detailReactor.state
-      .map { $0.hashtag }
+      .compactMap { $0.hashtags }
+        .filter { !$0.isEmpty }
+        .map { $0[0] }
       .distinctUntilChanged()
       .bind(to: self.detailView.hashtagField.rx.text)
       .disposed(by: self.disposeBag)

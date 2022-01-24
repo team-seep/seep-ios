@@ -44,11 +44,11 @@ class DetailReactor: Reactor {
     var category: Category
     var title: String
     var titleError: String? = nil
-    var date: Date
+    var date: Date?
     var dateError: String? = nil
     var isPushEnable: Bool = false
     var memo: String
-    var hashtag: String
+    var hashtags: [String]
     var editButtonState: EditButton.EditButtonState = .active
     var shouldDismiss: Bool = false
   }
@@ -59,14 +59,14 @@ class DetailReactor: Reactor {
   private let wishService: WishServiceProtocol
   
   
-  init(wish: Wish, wishService: WishServiceProtocol) {
-    self.initialState = State(
-      emoji: wish.emoji,
-      category: Category(rawValue: wish.category) ?? .wantToDo,
-      title: wish.title,
-      date: wish.date,
-      memo: wish.memo,
-      hashtag: wish.hashtag
+    init(wish: Wish, wishService: WishServiceProtocol) {
+        self.initialState = State(
+            emoji: wish.emoji,
+            category: wish.category,
+            title: wish.title,
+            date: wish.endDate,
+            memo: wish.memo,
+            hashtags: wish.hashtags
     )
     self.initialWish = wish
     self.wishService = wishService
@@ -77,14 +77,15 @@ class DetailReactor: Reactor {
     switch action {
     case .tapEditButton:
       return Observable.just(Mutation.setEditable(true))
+        
     case .tapDeleteButton:
-      self.wishService.deleteWish(id: self.initialWish._id)
+      self.wishService.deleteWish(id: self.initialWish.id)
       
       return Observable.just(Mutation.deleteWish)
     case .tapCancelButton:
       return Observable.just(Mutation.resetWish)
     case .tapCancelFinish:
-      self.wishService.cancelFinishWish(wish: self.initialWish)
+        self.wishService.cancelFinishWish(id: self.initialWish.id)
       
       return .just(.deleteWish)
     case .inputEmoji(let emoji):
@@ -126,17 +127,17 @@ class DetailReactor: Reactor {
       if self.currentState.title.isEmpty {
         return Observable.just(Mutation.setTitleError("write_error_title_empty".localized))
       } else {
-        let wish = Wish().then {
-          $0._id = self.initialWish._id
-          $0.emoji = self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji
-          $0.category = self.currentState.category.rawValue
-          $0.title = self.currentState.title
-          $0.date = self.currentState.date
-          $0.memo = self.currentState.memo
-          $0.hashtag = self.currentState.hashtag
-        }
+        let wish = Wish(
+            emoji: self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji,
+            category: self.currentState.category,
+            title: self.currentState.title,
+            endDate: self.currentState.date,
+            notifications: [],
+            memo: self.currentState.memo,
+            hashtags: []
+        )
         
-        self.wishService.updateWish(id: self.initialWish._id, newWish: wish)
+        self.wishService.updateWish(id: self.initialWish.id, newWish: wish)
         
         NotificationManager.shared.cancel(wish: self.initialWish)
         if self.currentState.isPushEnable {
@@ -181,7 +182,7 @@ class DetailReactor: Reactor {
     case .setMemo(let memo):
       newState.memo = memo
     case .setHashtag(let hashtag):
-      newState.hashtag = hashtag
+      newState.hashtags = [hashtag]
         
     case .dismiss:
         self.dismissPublisher.accept(())

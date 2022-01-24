@@ -205,7 +205,7 @@ class DetailView: BaseView {
   
   func bind(wish: Wish, mode: DetailMode) {
     self.emojiField.text = wish.emoji
-    self.categoryView.moveActiveButton(category: Category(rawValue: wish.category) ?? .wantToDo)
+    self.categoryView.moveActiveButton(category: wish.category)
 //    self.titleField.textField.text = wish.title
 //    self.dateField.textField.text = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee", date: wish.date)
 //    self.notificationButton.isHidden = !wish.isPushEnable
@@ -215,8 +215,8 @@ class DetailView: BaseView {
       self.addMemoField(memo: wish.memo)
     }
     
-    if !wish.hashtag.isEmpty {
-      self.addHashtagField(hashtag: wish.hashtag)
+    if !wish.hashtags.isEmpty {
+      self.addHashtagField(hashtag: wish.hashtags[0])
     }
     
     self.emojiField.isUserInteractionEnabled = (mode == .fromHome)

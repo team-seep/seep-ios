@@ -34,13 +34,16 @@ struct MediumHorizontalProvider: IntentTimelineProvider {
         let realmConfig = Realm.Configuration(fileURL: realmPath)
         
         if let realm = try? Realm(configuration: realmConfig) {
-            let wishes = realm.objects(Wish.self)
+            let wishes = realm.objects(WishDTO.self)
                 .map { $0 }
+                .map { dto in
+                    return Wish(dto: dto)
+                }
                 .filter { !$0.isSuccess }
                 .sorted(by: Wish.deadlineOrder)
             let wishSlice = wishes.count < 3 ? wishes : Array(wishes[..<3])
             let entry = MediumHorizontalEntry(date: Date(), wishes: wishSlice)
-            
+
             return entry
         } else {
             return MediumHorizontalEntry.preview

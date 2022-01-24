@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         config.migrationBlock = { migragion, oldSchemaVersion in
             if oldSchemaVersion < 2 {
-                migragion.enumerateObjects(ofType: Wish.className()) { oldObject, newObject in
+                migragion.enumerateObjects(ofType: WishDTO.className()) { oldObject, newObject in
                     if let isPushEnable = oldObject?["isPushEnable"] as? Bool,
                        isPushEnable {
                         newObject?["notifications"] = [

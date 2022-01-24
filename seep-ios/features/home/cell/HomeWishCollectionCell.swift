@@ -62,29 +62,32 @@ class HomeWishCollectionCell: BaseCollectionViewCell {
   func bind(wish: Wish) {
     self.emojiLabel.text = wish.emoji
     self.titleLabel.text = wish.title
-    self.ddayLabel.bind(dday: wish.date)
-    self.tagLabel.text = wish.hashtag
-    self.tagLabel.isHidden = wish.hashtag.isEmpty
     
-    if wish.hashtag.isEmpty {
+    if let endDate = wish.endDate {
+        self.ddayLabel.bind(dday: endDate)
+    }
+    
+    self.tagLabel.isHidden = wish.hashtags.isEmpty
+    if wish.hashtags.isEmpty {
       self.ddayLabel.snp.removeConstraints()
       self.ddayLabel.snp.makeConstraints { make in
         make.left.equalTo(self.titleLabel)
         make.bottom.equalTo(self.checkButton)
       }
     } else {
-      
-      self.ddayLabel.snp.removeConstraints()
-      self.tagLabel.snp.removeConstraints()
-      self.ddayLabel.snp.makeConstraints { make in
-        make.left.equalTo(self.titleLabel)
-        make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
-      }
-      
-      self.tagLabel.snp.makeConstraints { make in
-        make.left.height.equalTo(self.ddayLabel)
-        make.bottom.equalTo(self.checkButton)
-      }
+        self.tagLabel.text = wish.hashtags[0]
+        
+        self.ddayLabel.snp.removeConstraints()
+        self.tagLabel.snp.removeConstraints()
+        self.ddayLabel.snp.makeConstraints { make in
+            make.left.equalTo(self.titleLabel)
+            make.bottom.equalTo(self.tagLabel.snp.top).offset(-6)
+        }
+        
+        self.tagLabel.snp.makeConstraints { make in
+            make.left.height.equalTo(self.ddayLabel)
+            make.bottom.equalTo(self.checkButton)
+        }
     }
   }
 }

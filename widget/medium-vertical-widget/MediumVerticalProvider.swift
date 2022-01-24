@@ -34,8 +34,8 @@ struct MediumVerticalProvider: IntentTimelineProvider {
         let realmConfig = Realm.Configuration(fileURL: realmPath)
         
         if let realm = try? Realm(configuration: realmConfig) {
-            let wishes = realm.objects(Wish.self)
-                .map { $0 }
+            let wishes = realm.objects(WishDTO.self)
+                .map { Wish(dto: $0) }
                 .filter { !$0.isSuccess }
                 .sorted(by: Wish.deadlineOrder)
             let wishSlice = wishes.count < 3 ? wishes : Array(wishes[..<3])

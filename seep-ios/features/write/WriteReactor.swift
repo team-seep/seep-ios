@@ -33,6 +33,7 @@ class WriteReactor: Reactor {
         case setTitleError(String?)
         case setDeadline(Date)
         case setDeadlineEnable(Bool)
+        case setDeadlineError(String?)
         case addNotifictaion(SeepNotification)
         case updateNotification(Int, SeepNotification)
         case deleteNotification(Int)
@@ -42,7 +43,7 @@ class WriteReactor: Reactor {
         case selectHashtag(index: Int)
         case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
-        case dismiss
+        case dismissWishCategory(Category)
     }
     
     struct State {
@@ -53,20 +54,19 @@ class WriteReactor: Reactor {
         var titleError: String? = nil
         var deadline: Date? = nil
         var deadlineError: String? = nil
-        var deadlineEnable = true
+        var isDeadlineEnable = true
         var notifications: [SeepNotification] = [SeepNotification()]
         var isNotificationEnable = true
         var memo: String = ""
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
-        var selectedHahstagIndex: Int?
         var customHashtag: String = ""
         var writeButtonState: WriteButton.WriteButtonState = .initial
     }
     
     let initialState: State
     let pushNotificationPublisher = PublishRelay<([SeepNotification], Int?)>()
-    let dismissPublisher = PublishRelay<Void>()
+    let dismissWishCategoryPublisher = PublishRelay<Category>()
     private let wishService: WishServiceProtocol
     private let userDefaults: UserDefaultsUtils
     
@@ -99,14 +99,21 @@ class WriteReactor: Reactor {
         case .inputTitle(let title):
             return .merge([
                 .just(.setTitle(title)),
+                .just(.setTitleError(nil)),
                 .just(.setWriteButtonState(self.validateForEnable(title: title)))
             ])
             
         case .inputDeadline(let date):
-            return .just(.setDeadline(date))
+            return .merge([
+                .just(.setDeadline(date)),
+                .just(.setDeadlineError(nil))
+            ])
             
         case .tapDeadlineSwitch(let isEnable):
-            return .just(.setDeadlineEnable(isEnable))
+            return .merge([
+                .just(.setDeadlineEnable(isEnable)),
+                .just(.setDeadlineError(nil))
+            ])
             
         case .addNotification(let notification):
             return .just(.addNotifictaion(notification))
@@ -142,34 +149,21 @@ class WriteReactor: Reactor {
             return .just(.setCustomHashtag(hashtag))
             
         case .tapWriteButton:
-            return .empty()
-//            var observables: [Observable<Mutation>] = []
-//            if self.currentState.title.isEmpty {
-//                observables.append(.just(.setTitleError("write_error_title_empty".localized)))
-//            }
-//            if self.currentState.notifications == nil {
-//                observables.append(.just(.setDateError("write_error_date_empty".localized)))
-//            }
-//
-//            if observables.isEmpty {
-//                let wish = Wish().then {
-//                    $0.emoji = self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji
-//                    $0.category = self.currentState.category.rawValue
-//                    $0.title = self.currentState.title
-//                    $0.date = self.currentState.notificationDates ?? Date()
-//                    $0.isPushEnable = self.currentState.isPushEnable
-//                    $0.memo = self.currentState.memo
-//                    $0.hashtag = self.currentState.hashtag
-//                }
-//                self.wishService.addWish(wish: wish)
-//
-//                if self.currentState.isNotificationEnable {
-//                    NotificationManager.shared.reserve(wish: wish)
-//                }
-//                observables.append(.just(.saveWish(())))
-//            }
-//
-//            return .concat(observables)
+            var observables: [Observable<Mutation>] = []
+            
+            if self.currentState.title.isEmpty {
+                observables.append(.just(.setTitleError("write_error_title_empty".localized)))
+            }
+            
+            if self.currentState.isDeadlineEnable && self.currentState.deadline == nil {
+                observables.append(.just(.setDeadlineError("write_error_date_empty".localized)))
+            }
+            
+            if observables.isEmpty {
+                return self.writeWish()
+            } else {
+                return .concat(observables)
+            }
         }
     }
     
@@ -196,7 +190,10 @@ class WriteReactor: Reactor {
             newState.deadline = date
             
         case .setDeadlineEnable(let isEnable):
-            newState.deadlineEnable = isEnable
+            newState.isDeadlineEnable = isEnable
+            
+        case .setDeadlineError(let errorMessage):
+            newState.deadlineError = errorMessage
             
         case .addNotifictaion(let notification):
             newState.notifications.append(notification)
@@ -225,8 +222,8 @@ class WriteReactor: Reactor {
         case .setWriteButtonState(let state):
             newState.writeButtonState = state
             
-        case .dismiss:
-            self.dismissPublisher.accept(())
+        case .dismissWishCategory(let category):
+            self.dismissWishCategoryPublisher.accept(category)
         }
         
         return newState
@@ -234,5 +231,58 @@ class WriteReactor: Reactor {
     
     private func validateForEnable(title: String) -> WriteButton.WriteButtonState {
         return title.isEmpty ? .initial : .active
+    }
+    
+    private func writeWish() -> Observable<Mutation> {
+        var hashtags: [String] = []
+
+        if let selectedHashtag = self.currentState.selectedHashtag {
+            hashtags.append(selectedHashtag.description)
+        }
+
+        if !self.currentState.customHashtag.isEmpty {
+            hashtags.append(self.currentState.customHashtag)
+        }
+
+        let wish = Wish(
+            emoji: self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji,
+            category: self.currentState.category,
+            title: self.currentState.title,
+            endDate: self.currentState.deadline,
+            notifications: self.currentState.notifications,
+            memo: self.currentState.memo,
+            hashtags: hashtags
+        )
+        
+        self.wishService.addWish(wish: wish)
+        // TODO: 알림 설정 필요
+//        NotificationManager.shared.reserve(wish: wish)
+        return .just(.dismissWishCategory(wish.category))
+    }
+    
+    private func generateRandomEmoji() -> String {
+      let emojiArray = [
+        0x1f600...0x1f64f,
+        0x1f680...0x1f6c5,
+        0x1f6cb...0x1f6d2,
+        0x1f6e0...0x1f6e5,
+        0x1f6f3...0x1f6fa,
+        0x1f7e0...0x1f7eb,
+        0x1f90d...0x1f93a,
+        0x1f93c...0x1f945,
+        0x1f947...0x1f971,
+        0x1f973...0x1f976,
+        0x1f97a...0x1f9a2,
+        0x1f9a5...0x1f9aa,
+        0x1f9ae...0x1f9ca,
+        0x1f9cd...0x1f9ff,
+        0x1fa70...0x1fa73,
+        0x1fa78...0x1fa7a,
+        0x1fa80...0x1fa82,
+        0x1fa90...0x1fa95,
+      ].reduce([], +).map { return UnicodeScalar($0)! }
+      guard let scalar = emojiArray.randomElement() else { return "❓" }
+      
+      return String(scalar)
     }
 }
