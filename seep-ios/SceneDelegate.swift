@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func goToMain() {
         guard let window = self.window else { return }
         
-        window.rootViewController = HomeVC.instance()
+        window.rootViewController = HomeViewController.instance()
         UIView.transition(
             with: window,
             duration: 0.3,
@@ -49,8 +49,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                let category = Category(rawValue: categoryQuery.value ?? "") {
                 
                 if let navigationVC = self.window?.rootViewController as? UINavigationController,
-                   let homeVC = navigationVC.topViewController as? HomeVC {
-                    homeVC.showWirteVC(category: category)
+                   let homeViewController = navigationVC.topViewController as? HomeViewController {
+                    
+                    homeViewController.presentWrite(category: category)
                 } else {
                     UserDefaultsUtils().setDeepLink(deepLink: widgetDeepLink.url.absoluteString)
                 }
