@@ -16,10 +16,10 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
         navigationOrientation: .horizontal,
         options: nil
     )
-    private let pageViewControllers: [PageItemVC] = [
-        PageItemVC.instance(category: .wantToDo),
-        PageItemVC.instance(category: .wantToGet),
-        PageItemVC.instance(category: .wantToGo)
+    private let pageViewControllers: [PageItemViewController] = [
+        PageItemViewController.instance(category: .wantToDo),
+        PageItemViewController.instance(category: .wantToGet),
+        PageItemViewController.instance(category: .wantToGo)
     ]
     
     deinit {
@@ -166,7 +166,7 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
     }
     
     private func movePageView(category: Category) {
-        guard let currentPageViewController = self.pageViewController.viewControllers?[0] as? PageItemVC,
+        guard let currentPageViewController = self.pageViewController.viewControllers?[0] as? PageItemViewController,
               let currentIndex = self.pageViewControllers.firstIndex(of: currentPageViewController) else {
             return
         }
@@ -199,7 +199,7 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
     private func setViewType(viewType: ViewType) {
         if let viewControllers = self.pageViewController.viewControllers {
             if !viewControllers.isEmpty {
-                if let pageItemVC = viewControllers[0] as? PageItemVC {
+                if let pageItemVC = viewControllers[0] as? PageItemViewController {
                     pageItemVC.setViewType(viewType: viewType)
                 }
             }
@@ -209,7 +209,7 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
     private func fetchPageVC() {
         if let viewControllers = self.pageViewController.viewControllers {
             if !viewControllers.isEmpty {
-                if let pageItemVC = viewControllers[0] as? PageItemVC {
+                if let pageItemVC = viewControllers[0] as? PageItemViewController {
                     pageItemVC.actionFetchData()
                 }
             }
@@ -261,7 +261,7 @@ extension HomeViewController: UIPageViewControllerDelegate, UIPageViewController
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
-        guard let pageItemViewController = viewController as? PageItemVC,
+        guard let pageItemViewController = viewController as? PageItemViewController,
               let index = self.pageViewControllers.firstIndex(of: pageItemViewController) else {
             return nil
         }
@@ -282,7 +282,7 @@ extension HomeViewController: UIPageViewControllerDelegate, UIPageViewController
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard let pageItemViewController = viewController as? PageItemVC,
+        guard let pageItemViewController = viewController as? PageItemViewController,
               let index = self.pageViewControllers.firstIndex(of: pageItemViewController) else {
             return nil
         }
@@ -306,7 +306,7 @@ extension HomeViewController: UIPageViewControllerDelegate, UIPageViewController
         transitionCompleted completed: Bool
     ) {
         if completed {
-            guard let currentViewController = self.pageViewController.viewControllers?[0] as? PageItemVC,
+            guard let currentViewController = self.pageViewController.viewControllers?[0] as? PageItemViewController,
                   let currentIndex = self.pageViewControllers.firstIndex(of: currentViewController) else {
                 return
             }
