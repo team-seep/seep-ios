@@ -414,6 +414,7 @@ extension Reactive where Base: WriteView {
     var isNotificationEnable: Binder<Bool> {
         return Binder(self.base) { view, isEnable in
             view.setNotificationEnable(isEnable: isEnable)
+            view.notificationSwitch.setOn(isEnable, animated: true)
         }
     }
 }

@@ -44,6 +44,7 @@ class WriteReactor: Reactor {
         case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
         case dismissWishCategory(Category)
+        case showToast(String)
     }
     
     struct State {
@@ -67,6 +68,7 @@ class WriteReactor: Reactor {
     let initialState: State
     let pushNotificationPublisher = PublishRelay<([SeepNotification], Int?)>()
     let dismissWishCategoryPublisher = PublishRelay<Category>()
+    let showToastPublisher = PublishRelay<String>()
     private let wishService: WishServiceProtocol
     private let userDefaults: UserDefaultsUtils
     
@@ -112,7 +114,8 @@ class WriteReactor: Reactor {
         case .tapDeadlineSwitch(let isEnable):
             return .merge([
                 .just(.setDeadlineEnable(isEnable)),
-                .just(.setDeadlineError(nil))
+                .just(.setDeadlineError(nil)),
+                .just(.setNotificationEnable(isEnable))
             ])
             
         case .addNotification(let notification):
@@ -131,7 +134,14 @@ class WriteReactor: Reactor {
             return .just(.deleteNotification(index))
             
         case .tapNotificationSwitch(let isEnable):
-            return .just(.setNotificationEnable(isEnable))
+            if !self.currentState.isDeadlineEnable {
+                return .merge([
+                    .just(.setNotificationEnable(!isEnable)),
+                    .just(.showToast("알림 허용을 위해선 날짜 지정이 필요해요."))
+                ])
+            } else {
+                return .just(.setNotificationEnable(isEnable))
+            }
             
         case .tapNotification(let index):
             return .just(.pushNotificationDetail(
@@ -224,6 +234,9 @@ class WriteReactor: Reactor {
             
         case .dismissWishCategory(let category):
             self.dismissWishCategoryPublisher.accept(category)
+            
+        case .showToast(let message):
+            self.showToastPublisher.accept(message)
         }
         
         return newState
@@ -251,7 +264,7 @@ class WriteReactor: Reactor {
             endDate: self.currentState.deadline,
             notifications: self.currentState.notifications,
             memo: self.currentState.memo,
-            hashtags: hashtags
+            hashtag: ""
         )
         
         self.wishService.addWish(wish: wish)

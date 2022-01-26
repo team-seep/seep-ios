@@ -71,10 +71,6 @@ class FinishedTableCell: BaseTableViewCell {
     self.emojiLabel.text = wish.emoji
     self.titleLabel.text = wish.title
     self.finishDateLabel.text = DateUtils.toString(format: "yyyy년 MM월 dd일", date: wish.finishDate!)
-    
-    if !wish.hashtags.isEmpty {
-        self.tagLabel.text = wish.hashtags[0]
-    }
-    self.tagLabel.isHidden = wish.hashtags.isEmpty
+    self.tagLabel.text = wish.hashtag
   }
 }

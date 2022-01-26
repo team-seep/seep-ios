@@ -215,8 +215,8 @@ class DetailView: BaseView {
       self.addMemoField(memo: wish.memo)
     }
     
-    if !wish.hashtags.isEmpty {
-      self.addHashtagField(hashtag: wish.hashtags[0])
+    if !wish.hashtag.isEmpty {
+      self.addHashtagField(hashtag: wish.hashtag)
     }
     
     self.emojiField.isUserInteractionEnabled = (mode == .fromHome)

@@ -52,7 +52,7 @@ struct WishService: WishServiceProtocol {
       item?.title = newWish.title
       item?.endDate = newWish.endDate
       item?.memo = newWish.memo
-      item?.hashtags = newWish.hashtags
+      item?.hashtag = newWish.hashtag
     }
   }
   

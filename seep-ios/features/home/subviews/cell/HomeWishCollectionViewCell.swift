@@ -73,15 +73,15 @@ final class HomeWishCollectionViewCell: BaseCollectionViewCell {
             self.ddayLabel.bind(dday: endDate)
         }
         
-        self.tagLabel.isHidden = wish.hashtags.isEmpty
-        if wish.hashtags.isEmpty {
+        self.tagLabel.isHidden = wish.hashtag.isEmpty
+        if wish.hashtag.isEmpty {
             self.ddayLabel.snp.removeConstraints()
             self.ddayLabel.snp.makeConstraints { make in
                 make.left.equalTo(self.titleLabel)
                 make.bottom.equalTo(self.checkButton)
             }
         } else {
-            self.tagLabel.text = wish.hashtags[0]
+            self.tagLabel.text = wish.hashtag
             
             self.ddayLabel.snp.removeConstraints()
             self.tagLabel.snp.removeConstraints()

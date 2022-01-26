@@ -9,7 +9,7 @@ struct Wish: Equatable {
     let finishDate: Date?
     var notifications: [SeepNotification]
     var memo: String
-    var hashtags: [String]
+    var hashtag: String
     var isSuccess: Bool
     let createdAt: Date
     
@@ -44,7 +44,7 @@ struct Wish: Equatable {
         finishDate: Date? = nil,
         notifications: [SeepNotification] = [],
         memo: String = "",
-        hashtags: [String] = [],
+        hashtag: String = "",
         isSuccess: Bool = false,
         createdAt: Date = Date()
     ) {
@@ -56,7 +56,7 @@ struct Wish: Equatable {
         self.finishDate = finishDate
         self.notifications = notifications
         self.memo = memo
-        self.hashtags = hashtags
+        self.hashtag = hashtag
         self.isSuccess = isSuccess
         self.createdAt = createdAt
     }
@@ -70,7 +70,7 @@ struct Wish: Equatable {
         self.finishDate = dto.finishDate
         self.notifications = Array(dto.notifications).map(SeepNotification.init)
         self.memo = dto.memo
-        self.hashtags = Array(dto.hashtag)
+        self.hashtag = dto.hashtag
         self.isSuccess = dto.isSuccess
         self.createdAt = dto.createdAt
     }

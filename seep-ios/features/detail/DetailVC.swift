@@ -255,9 +255,7 @@ class DetailVC: BaseVC, View {
       .disposed(by: self.disposeBag)
 
     self.detailReactor.state
-      .compactMap { $0.hashtags }
-        .filter { !$0.isEmpty }
-        .map { $0[0] }
+      .compactMap { $0.hashtag }
       .distinctUntilChanged()
       .bind(to: self.detailView.hashtagField.rx.text)
       .disposed(by: self.disposeBag)

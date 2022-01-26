@@ -83,9 +83,6 @@ final class HomeWishTableViewCell: BaseTableViewCell {
             self.ddayLabel.bind(dday: endDate)
         }
         
-        if !wish.hashtags.isEmpty {
-            self.tagLabel.text = wish.hashtags[0]
-        }
-        self.tagLabel.isHidden = wish.hashtags.isEmpty
+        self.tagLabel.text = wish.hashtag
     }
 }

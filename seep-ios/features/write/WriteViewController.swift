@@ -13,6 +13,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     private let writeView = WriteView()
     private let writeReactor: WriteReactor
     private weak var coordinator: WriteCoordinator?
+    private var isKeyboardShown = false
     
     private let datePicker = UIDatePicker().then {
         $0.datePickerMode = .date
@@ -161,11 +162,24 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .disposed(by: self.disposeBag)
         
         self.writeView.hashtagCollectionView.rx.itemSelected
-            .map { Reactor.Action.tapHashtag(index: $0.row) }
-            .bind(to: reactor.action)
+            .map { $0.row }
+            .bind(onNext: { [weak self] index in
+                guard let self = self else { return }
+                if self.isKeyboardShown {
+                    self.writeView.endEditing(true)
+                } else {
+                    self.writeView.hashtagField.deselect()
+                    self.writeReactor.action.onNext(.tapHashtag(index: index))
+                }
+            })
             .disposed(by: self.disposeBag)
         
         self.writeView.hashtagField.rx.text.orEmpty
+            .do(onNext: { [weak self] text in
+                if !text.isEmpty {
+                    self?.writeView.hashtagCollectionView.deselectAllItems(animated: true)
+                }
+            })
             .map { Reactor.Action.inputHashtag($0) }
             .bind(to: self.writeReactor.action)
             .disposed(by: self.disposeBag)
@@ -288,10 +302,12 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         
         self.writeView.scrollView.contentInset.bottom = keyboardViewEndFrame.height
         self.writeView.scrollView.scrollIndicatorInsets = self.writeView.scrollView.contentInset
+        self.isKeyboardShown = true
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.writeView.scrollView.contentInset.bottom = .zero
+        self.isKeyboardShown = false
     }
 }
 

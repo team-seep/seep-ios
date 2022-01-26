@@ -48,7 +48,7 @@ class DetailReactor: Reactor {
     var dateError: String? = nil
     var isPushEnable: Bool = false
     var memo: String
-    var hashtags: [String]
+    var hashtag: String
     var editButtonState: EditButton.EditButtonState = .active
     var shouldDismiss: Bool = false
   }
@@ -66,7 +66,7 @@ class DetailReactor: Reactor {
             title: wish.title,
             date: wish.endDate,
             memo: wish.memo,
-            hashtags: wish.hashtags
+            hashtag: wish.hashtag
     )
     self.initialWish = wish
     self.wishService = wishService
@@ -134,7 +134,7 @@ class DetailReactor: Reactor {
             endDate: self.currentState.date,
             notifications: [],
             memo: self.currentState.memo,
-            hashtags: []
+            hashtag: self.currentState.hashtag
         )
         
         self.wishService.updateWish(id: self.initialWish.id, newWish: wish)
@@ -182,7 +182,7 @@ class DetailReactor: Reactor {
     case .setMemo(let memo):
       newState.memo = memo
     case .setHashtag(let hashtag):
-      newState.hashtags = [hashtag]
+      newState.hashtag = hashtag
         
     case .dismiss:
         self.dismissPublisher.accept(())
