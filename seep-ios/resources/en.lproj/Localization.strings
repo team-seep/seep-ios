@@ -32,6 +32,7 @@
 "home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
+"home_no_deanline" = "일정없음";
 "home_empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 "home_finish_alert_title" = "완료했어요!";
 "home_finish_alert_description" = "완료 후 완료 목록에서\n확인할 수 있습니다!";

@@ -78,11 +78,8 @@ final class HomeWishTableViewCell: BaseTableViewCell {
     func bind(wish: Wish) {
         self.emojiLabel.text = wish.emoji
         self.titleLabel.text = wish.title
-        
-        if let endDate = wish.endDate {
-            self.ddayLabel.bind(dday: endDate)
-        }
-        
+        self.ddayLabel.bind(dday: wish.endDate)
         self.tagLabel.text = wish.hashtag
+        self.tagLabel.isHidden = wish.hashtag.isEmpty
     }
 }

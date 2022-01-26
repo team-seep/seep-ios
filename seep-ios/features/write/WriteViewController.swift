@@ -162,19 +162,15 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .disposed(by: self.disposeBag)
         
         self.writeView.hashtagCollectionView.rx.itemSelected
-            .map { $0.row }
-            .bind(onNext: { [weak self] index in
-                guard let self = self else { return }
-                if self.isKeyboardShown {
-                    self.writeView.endEditing(true)
-                } else {
-                    self.writeView.hashtagField.deselect()
-                    self.writeReactor.action.onNext(.tapHashtag(index: index))
-                }
+            .map { Reactor.Action.tapHashtag(index: $0.row) }
+            .do(onNext: { [weak self] _ in
+                self?.writeView.endEditing(true)
             })
+            .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         self.writeView.hashtagField.rx.text.orEmpty
+            .distinctUntilChanged()
             .do(onNext: { [weak self] text in
                 if !text.isEmpty {
                     self?.writeView.hashtagCollectionView.deselectAllItems(animated: true)
@@ -270,6 +266,13 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             )) { row, hashtagType, cell in
                 cell.bind(type: hashtagType)
             }
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map { $0.customHashtag }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: "")
+            .drive(self.writeView.hashtagField.rx.setText)
             .disposed(by: self.disposeBag)
         
         reactor.state

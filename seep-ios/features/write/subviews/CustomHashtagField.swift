@@ -223,5 +223,23 @@ extension Reactive where Base: CustomHashtagField {
     var text: ControlProperty<String?> {
         return base.textField.rx.text
     }
+    
+    var setText: Binder<String> {
+        return Binder(self.base) { view, text in
+            if text.isEmpty {
+                UIView.transition(
+                    with: base,
+                    duration: 0.3,
+                    options: .transitionCrossDissolve
+                ) { [weak base] in
+                    guard let base = base else { return }
+                    
+                    base.containerView.layer.borderWidth = 0
+                    base.containerView.backgroundColor = .gray2
+                }
+            }
+            base.textField.text = text
+        }
+    }
 }
 

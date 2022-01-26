@@ -40,7 +40,7 @@ class WriteReactor: Reactor {
         case setNotificationEnable(Bool)
         case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
-        case selectHashtag(index: Int)
+        case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
         case dismissWishCategory(Category)
@@ -153,10 +153,16 @@ class WriteReactor: Reactor {
             return .just(.setMemo(memo))
             
         case .tapHashtag(let index):
-            return .just(.selectHashtag(index: index))
+            return .merge([
+                .just(.setCustomHashtag("")),
+                .just(.selectHashtag(index: index))
+            ])
             
         case .inputHashtag(let hashtag):
-            return .just(.setCustomHashtag(hashtag))
+            return .merge([
+                .just(.selectHashtag(index: nil)),
+                .just(.setCustomHashtag(hashtag))
+            ])
             
         case .tapWriteButton:
             var observables: [Observable<Mutation>] = []
@@ -224,7 +230,11 @@ class WriteReactor: Reactor {
             newState.memo = memo
             
         case .selectHashtag(let index):
-            newState.selectedHashtag = newState.hashtags[index]
+            if let index = index {
+                newState.selectedHashtag = newState.hashtags[index]
+            } else {
+                newState.selectedHashtag = nil
+            }
             
         case .setCustomHashtag(let hashtag):
             newState.customHashtag = hashtag
@@ -247,14 +257,13 @@ class WriteReactor: Reactor {
     }
     
     private func writeWish() -> Observable<Mutation> {
-        var hashtags: [String] = []
-
+        var hashtag = ""
+        
         if let selectedHashtag = self.currentState.selectedHashtag {
-            hashtags.append(selectedHashtag.description)
+            hashtag = selectedHashtag.description
         }
-
         if !self.currentState.customHashtag.isEmpty {
-            hashtags.append(self.currentState.customHashtag)
+            hashtag = self.currentState.customHashtag
         }
 
         let wish = Wish(
@@ -264,7 +273,7 @@ class WriteReactor: Reactor {
             endDate: self.currentState.deadline,
             notifications: self.currentState.notifications,
             memo: self.currentState.memo,
-            hashtag: ""
+            hashtag: hashtag
         )
         
         self.wishService.addWish(wish: wish)
