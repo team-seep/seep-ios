@@ -417,7 +417,7 @@
 				6E4F5D8C2657DF500061A13C /* splash */,
 				6EE1706A264E58D000C3E94B /* share-photo */,
 				6ED89713261579AA0005FA29 /* finished */,
-				6E69E61E260D990E0062CBFB /* detail */,
+				6E69E61E260D990E0062CBFB /* wish-detail */,
 				6E66A27525FB45C000C0C051 /* write */,
 				6EE5CE7225FB24C900A737DF /* shared */,
 				6E274E8C25F214FB007DC880 /* home */,
@@ -563,7 +563,7 @@
 			path = write;
 			sourceTree = "<group>";
 		};
-		6E69E61E260D990E0062CBFB /* detail */ = {
+		6E69E61E260D990E0062CBFB /* wish-detail */ = {
 			isa = PBXGroup;
 			children = (
 				6E69E61F260D991B0062CBFB /* DetailView.swift */,
@@ -571,7 +571,7 @@
 				6E69E62A260DB7640062CBFB /* EditButton.swift */,
 				6E69E62D260DBACA0062CBFB /* DetailReactor.swift */,
 			);
-			path = detail;
+			path = "wish-detail";
 			sourceTree = "<group>";
 		};
 		6E6CBE30274A0088005D7BFE /* small-remain-widget */ = {
