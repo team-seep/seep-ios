@@ -131,16 +131,15 @@ class FinishedVC: BaseVC, View {
   }
   
   private func showDetail(wish: Wish) {
-    let detailVC = DetailVC.instance(wish: wish, mode: .fromFinish)
+    let detailVC = WishDetailViewController.instance(wish: wish, mode: .fromFinish)
     
     detailVC.delegate = self
     self.present(detailVC, animated: true, completion: nil)
   }
 }
 
-extension FinishedVC: DetailDelegate {
-  
-  func onDismiss() {
-    self.finishedReactor.action.onNext(.viewDidLoad)
-  }
+extension FinishedVC: WishDetailDelegate {
+    func onUpdateCategory(category: Category) {
+        self.finishedReactor.action.onNext(.viewDidLoad)
+    }
 }

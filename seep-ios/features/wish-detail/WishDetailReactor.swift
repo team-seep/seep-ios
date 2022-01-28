@@ -1,12 +1,19 @@
 import Foundation
 
 import RxSwift
+import RxCocoa
 import ReactorKit
-import RxRelay
 
-class WriteReactor: Reactor {
+final class WishDetailReactor: Reactor {
     enum Action {
-        case tooltipDisappeared
+        /// 아무 필드 입력하면 수정 모드로 전환되는 액션
+        case tapEditButton
+        case tapDeleteButton
+        case tapCancelButton
+        case tapSharePhoto
+        
+        /// 달성 취소하기
+        case tapCancelFinish
         case inputEmoji(String)
         case tapCategory(Category)
         case inputTitle(String)
@@ -18,14 +25,17 @@ class WriteReactor: Reactor {
         case updateNotification(index: Int, notification: SeepNotification)
         case deleteNotification(index: Int)
         case tapNotificationSwitch(Bool)
+        case tapNotification(index: Int)
         case inputMemo(String)
         case tapHashtag(index: Int)
         case inputHashtag(String)
-        case tapWriteButton
+        case tapSaveButton
     }
-    
+  
     enum Mutation {
-        case setTooltipShown(Bool)
+        case setEditable(isEditable: Bool)
+        case presentSharePhoto
+        case resetWish
         case setEmoji(String)
         case setCategory(Category)
         case setTitle(String)
@@ -34,74 +44,93 @@ class WriteReactor: Reactor {
         case setDeadlineEnable(Bool)
         case setDeadlineError(String?)
         case addNotifictaion(SeepNotification)
-        case updateNotification(Int, SeepNotification)
-        case deleteNotification(Int)
+        case updateNotification(index: Int, notification: SeepNotification)
+        case deleteNotification(index: Int)
         case setNotificationEnable(Bool)
         case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
-        case setWriteButtonState(WriteButton.WriteButtonState)
-        case dismissWishCategory(Category)
-        case showToast(String)
+        case setEditButtonState(EditButton.EditButtonState)
+        case popupWishCategory(Category)
+        case showToast(message: String)
     }
-    
+  
     struct State {
-        var isTooltipShown: Bool
-        var emoji: String = ""
+        var isEditable: Bool = false
+        var emoji: String
         var category: Category
-        var title: String = ""
+        var title: String
         var titleError: String? = nil
-        var deadline: Date? = nil
+        var deadline: Date?
         var deadlineError: String? = nil
-        var isDeadlineEnable = true
-        var notifications: [SeepNotification] = [SeepNotification()]
-        var isNotificationEnable = true
-        var memo: String = ""
+        var isDeadlineEnable: Bool
+        var notifications: [SeepNotification]
+        var isNotificationEnable: Bool
+        var memo: String
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String = ""
-        var writeButtonState: WriteButton.WriteButtonState = .initial
+        var editButtonState: EditButton.EditButtonState = .active
     }
-    
+  
     let initialState: State
+    var initialWish: Wish
+    let popupWithCategoryPublisher = PublishRelay<Category>()
     let pushNotificationPublisher = PublishRelay<([SeepNotification], Int?)>()
-    let dismissWishCategoryPublisher = PublishRelay<Category>()
+    let presentSharePhotoPublisher = PublishRelay<Wish>()
     let showToastPublisher = PublishRelay<String>()
     private let wishService: WishServiceProtocol
-    private let userDefaults: UserDefaultsUtils
     
-    init(
-        category: Category,
-        wishService: WishServiceProtocol,
-        userDefaults: UserDefaultsUtils
-    ) {
+    init(wish: Wish, wishService: WishServiceProtocol) {
         self.initialState = State(
-            isTooltipShown: userDefaults.getRandomEmojiTooltipIsShow(),
-            category: category
+            emoji: wish.emoji,
+            category: wish.category,
+            title: wish.title,
+            isDeadlineEnable: wish.endDate != nil,
+            notifications: wish.notifications,
+            isNotificationEnable: !wish.notifications.isEmpty,
+            memo: wish.memo
         )
+        self.initialWish = wish
         self.wishService = wishService
-        self.userDefaults = userDefaults
     }
-    
+  
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .tooltipDisappeared:
-            self.userDefaults.setRandomEmojiTooltipIsShow(isShown: true)
+        case .tapEditButton:
+            return .just(.setEditable(isEditable: true))
             
-            return .just(.setTooltipShown(true))
+        case .tapDeleteButton:
+            self.wishService.deleteWish(id: self.initialWish.id)
+            
+            return .just(.popupWishCategory(self.currentState.category))
+            
+        case .tapCancelButton:
+            return .just(.resetWish)
+            
+        case .tapSharePhoto:
+            return .just(.presentSharePhoto)
+            
+        case .tapCancelFinish:
+            self.wishService.cancelFinishWish(id: self.initialWish.id)
+            
+            return .just(.popupWishCategory(self.currentState.category))
             
         case .inputEmoji(let emoji):
             return .just(.setEmoji(emoji))
             
         case .tapCategory(let category):
-            return .just(.setCategory(category))
+            return .merge([
+                .just(.setCategory(category)),
+                .just(.setEditable(isEditable: true))
+            ])
             
         case .inputTitle(let title):
             return .merge([
                 .just(.setTitle(title)),
                 .just(.setTitleError(nil)),
-                .just(.setWriteButtonState(self.validateForEnable(title: title)))
+                .just(.setEditButtonState(self.validateForEnable(title: title)))
             ])
             
         case .inputDeadline(let date):
@@ -127,24 +156,31 @@ class WriteReactor: Reactor {
             return .just(.pushNotificationDetail(self.currentState.notifications, index))
             
         case .updateNotification(let index, let notification):
-            return .just(.updateNotification(index, notification))
+            return .just(.updateNotification(index: index, notification: notification))
             
         case .deleteNotification(let index):
-            return .just(.deleteNotification(index))
+            return .just(.deleteNotification(index: index))
             
         case .tapNotificationSwitch(let isEnable):
             if !self.currentState.isDeadlineEnable {
                 return .merge([
                     .just(.setNotificationEnable(!isEnable)),
-                    .just(.showToast("알림 허용을 위해선 날짜 지정이 필요해요."))
+                    .just(.showToast(message: "알림 허용을 위해선 날짜 지정이 필요해요."))
                 ])
             } else {
                 return .just(.setNotificationEnable(isEnable))
             }
             
+        case .tapNotification(let index):
+            return .just(.pushNotificationDetail(
+                self.currentState.notifications,
+                index
+            ))
+            
+            
         case .inputMemo(let memo):
             return .just(.setMemo(memo))
-            
+             
         case .tapHashtag(let index):
             return .merge([
                 .just(.setCustomHashtag("")),
@@ -157,7 +193,7 @@ class WriteReactor: Reactor {
                 .just(.setCustomHashtag(hashtag))
             ])
             
-        case .tapWriteButton:
+        case .tapSaveButton:
             var observables: [Observable<Mutation>] = []
             
             if self.currentState.title.isEmpty {
@@ -169,19 +205,24 @@ class WriteReactor: Reactor {
             }
             
             if observables.isEmpty {
-                return self.writeWish()
+                return self.updateWish()
             } else {
                 return .merge(observables)
             }
         }
     }
-    
+  
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
-        
         switch mutation {
-        case .setTooltipShown(let isShown):
-            newState.isTooltipShown = isShown
+        case .setEditable(let isEditable):
+            newState.isEditable = isEditable
+            
+        case .presentSharePhoto:
+            self.presentSharePhotoPublisher.accept(self.initialWish)
+            
+        case .resetWish:
+            newState = self.initialState
             
         case .setEmoji(let emoji):
             newState.emoji = emoji
@@ -232,11 +273,11 @@ class WriteReactor: Reactor {
         case .setCustomHashtag(let hashtag):
             newState.customHashtag = hashtag
             
-        case .setWriteButtonState(let state):
-            newState.writeButtonState = state
+        case .setEditButtonState(let state):
+            newState.editButtonState = state
             
-        case .dismissWishCategory(let category):
-            self.dismissWishCategoryPublisher.accept(category)
+        case .popupWishCategory(let category):
+            self.popupWithCategoryPublisher.accept(category)
             
         case .showToast(let message):
             self.showToastPublisher.accept(message)
@@ -245,11 +286,45 @@ class WriteReactor: Reactor {
         return newState
     }
     
-    private func validateForEnable(title: String) -> WriteButton.WriteButtonState {
-        return title.isEmpty ? .initial : .active
+    private func validateForEnable(state: State) -> EditButton.EditButtonState {
+        if state.title.isEmpty {
+            return .more
+        } else {
+            return .active
+        }
     }
     
-    private func writeWish() -> Observable<Mutation> {
+    private func generateRandomEmoji() -> String {
+        let emojiArray = [
+            0x1f600...0x1f64f,
+            0x1f680...0x1f6c5,
+            0x1f6cb...0x1f6d2,
+            0x1f6e0...0x1f6e5,
+            0x1f6f3...0x1f6fa,
+            0x1f7e0...0x1f7eb,
+            0x1f90d...0x1f93a,
+            0x1f93c...0x1f945,
+            0x1f947...0x1f971,
+            0x1f973...0x1f976,
+            0x1f97a...0x1f9a2,
+            0x1f9a5...0x1f9aa,
+            0x1f9ae...0x1f9ca,
+            0x1f9cd...0x1f9ff,
+            0x1fa70...0x1fa73,
+            0x1fa78...0x1fa7a,
+            0x1fa80...0x1fa82,
+            0x1fa90...0x1fa95,
+        ].reduce([], +).map { return UnicodeScalar($0)! }
+        guard let scalar = emojiArray.randomElement() else { return "❓" }
+        
+        return String(scalar)
+    }
+    
+    private func validateForEnable(title: String) -> EditButton.EditButtonState {
+        return title.isEmpty ? .more : .active
+    }
+    
+    private func updateWish() -> Observable<Mutation> {
         var hashtag = ""
         
         if let selectedHashtag = self.currentState.selectedHashtag {
@@ -258,9 +333,11 @@ class WriteReactor: Reactor {
         if !self.currentState.customHashtag.isEmpty {
             hashtag = self.currentState.customHashtag
         }
-
+        
         let wish = Wish(
-            emoji: self.currentState.emoji.isEmpty ? self.generateRandomEmoji() : self.currentState.emoji,
+            emoji: self.currentState.emoji.isEmpty
+                ? self.generateRandomEmoji()
+                : self.currentState.emoji,
             category: self.currentState.category,
             title: self.currentState.title,
             endDate: self.currentState.deadline,
@@ -269,35 +346,17 @@ class WriteReactor: Reactor {
             hashtag: hashtag
         )
         
-        self.wishService.addWish(wish: wish)
-        // TODO: 알림 설정 필요
-//        NotificationManager.shared.reserve(wish: wish)
-        return .just(.dismissWishCategory(wish.category))
-    }
-    
-    private func generateRandomEmoji() -> String {
-      let emojiArray = [
-        0x1f600...0x1f64f,
-        0x1f680...0x1f6c5,
-        0x1f6cb...0x1f6d2,
-        0x1f6e0...0x1f6e5,
-        0x1f6f3...0x1f6fa,
-        0x1f7e0...0x1f7eb,
-        0x1f90d...0x1f93a,
-        0x1f93c...0x1f945,
-        0x1f947...0x1f971,
-        0x1f973...0x1f976,
-        0x1f97a...0x1f9a2,
-        0x1f9a5...0x1f9aa,
-        0x1f9ae...0x1f9ca,
-        0x1f9cd...0x1f9ff,
-        0x1fa70...0x1fa73,
-        0x1fa78...0x1fa7a,
-        0x1fa80...0x1fa82,
-        0x1fa90...0x1fa95,
-      ].reduce([], +).map { return UnicodeScalar($0)! }
-      guard let scalar = emojiArray.randomElement() else { return "❓" }
-      
-      return String(scalar)
+        self.wishService.updateWish(id: self.initialWish.id, newWish: wish)
+        
+        NotificationManager.shared.cancel(wish: self.initialWish)
+        if self.currentState.isNotificationEnable {
+            NotificationManager.shared.reserve(wish: wish)
+        }
+        self.initialWish = wish
+        
+        return .merge([
+            .just(.setEditable(isEditable: false)),
+            .just(.popupWishCategory(self.currentState.category))
+        ])
     }
 }

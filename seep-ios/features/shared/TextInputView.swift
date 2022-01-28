@@ -99,16 +99,20 @@ class TextInputView: BaseView {
 }
 
 extension Reactive where Base: TextInputView {
-  
-  var text: ControlProperty<String?> {
-    return base.textView.rx.text
-  }
-  
-  var errorMessage: Binder<String?> {
-    return Binder(self.base) { view, message in
-      view.showError(message: message)
+    
+    var text: ControlProperty<String?> {
+        return base.textView.rx.text
     }
-  }
+    
+    var errorMessage: Binder<String?> {
+        return Binder(self.base) { view, message in
+            view.showError(message: message)
+        }
+    }
+    
+    var didBeginEditing: ControlEvent<()> {
+        return base.textView.rx.didBeginEditing
+    }
 }
 
 extension TextInputView: UITextViewDelegate {

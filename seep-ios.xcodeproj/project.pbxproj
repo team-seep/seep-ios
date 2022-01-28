@@ -77,10 +77,10 @@
 		6E66A27A25FB489000C0C051 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27925FB489000C0C051 /* WriteViewController.swift */; };
 		6E66A27D25FB587100C0C051 /* TextInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A27C25FB587100C0C051 /* TextInputField.swift */; };
 		6E69E619260D77200062CBFB /* CustomHashtagField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E618260D77200062CBFB /* CustomHashtagField.swift */; };
-		6E69E620260D991B0062CBFB /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E61F260D991B0062CBFB /* DetailView.swift */; };
-		6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E623260D9E630062CBFB /* DetailVC.swift */; };
+		6E69E620260D991B0062CBFB /* WishDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E61F260D991B0062CBFB /* WishDetailView.swift */; };
+		6E69E624260D9E630062CBFB /* WishDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E623260D9E630062CBFB /* WishDetailViewController.swift */; };
 		6E69E62B260DB7640062CBFB /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62A260DB7640062CBFB /* EditButton.swift */; };
-		6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62D260DBACA0062CBFB /* DetailReactor.swift */; };
+		6E69E62E260DBACA0062CBFB /* WishDetailReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E62D260DBACA0062CBFB /* WishDetailReactor.swift */; };
 		6E69FD4826468BDC00F0AB60 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */; };
 		6E6CBE32274A0111005D7BFE /* SmallRemainEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CBE31274A0111005D7BFE /* SmallRemainEntryView.swift */; };
 		6E6CBE34274A0B55005D7BFE /* SmallRemainProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6CBE33274A0B55005D7BFE /* SmallRemainProvider.swift */; };
@@ -112,6 +112,7 @@
 		6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */; };
 		6E764AEE263FCB4700A99402 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E764AED263FCB4700A99402 /* UIImageExtension.swift */; };
 		6E7A9A4B260C6AF8008335DA /* WriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9A4A260C6AF8008335DA /* WriteButton.swift */; };
+		6E7EA28127A376E000D5F38D /* WishDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */; };
 		6E7FDDA026269C8C0066B8A9 /* FeedbackUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */; };
 		6E80428A279D260D008A0EB4 /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E804289279D260D008A0EB4 /* SeepNotification.swift */; };
 		6E80428B279D26B0008A0EB4 /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E804289279D260D008A0EB4 /* SeepNotification.swift */; };
@@ -246,10 +247,10 @@
 		6E66A27925FB489000C0C051 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		6E66A27C25FB587100C0C051 /* TextInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputField.swift; sourceTree = "<group>"; };
 		6E69E618260D77200062CBFB /* CustomHashtagField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHashtagField.swift; sourceTree = "<group>"; };
-		6E69E61F260D991B0062CBFB /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		6E69E623260D9E630062CBFB /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
+		6E69E61F260D991B0062CBFB /* WishDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDetailView.swift; sourceTree = "<group>"; };
+		6E69E623260D9E630062CBFB /* WishDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDetailViewController.swift; sourceTree = "<group>"; };
 		6E69E62A260DB7640062CBFB /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
-		6E69E62D260DBACA0062CBFB /* DetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReactor.swift; sourceTree = "<group>"; };
+		6E69E62D260DBACA0062CBFB /* WishDetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDetailReactor.swift; sourceTree = "<group>"; };
 		6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		6E69FD49264698E900F0AB60 /* seep-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "seep-ios.entitlements"; sourceTree = "<group>"; };
 		6E6CBE31274A0111005D7BFE /* SmallRemainEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainEntryView.swift; sourceTree = "<group>"; };
@@ -273,6 +274,7 @@
 		6E764AEB263FCAE500A99402 /* EmojiImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiImageVIew.swift; sourceTree = "<group>"; };
 		6E764AED263FCB4700A99402 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		6E7A9A4A260C6AF8008335DA /* WriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteButton.swift; sourceTree = "<group>"; };
+		6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDetailCoordinator.swift; sourceTree = "<group>"; };
 		6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackUtils.swift; sourceTree = "<group>"; };
 		6E804289279D260D008A0EB4 /* SeepNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeepNotification.swift; sourceTree = "<group>"; };
 		6E80428D279D2D07008A0EB4 /* HashtagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -566,10 +568,11 @@
 		6E69E61E260D990E0062CBFB /* wish-detail */ = {
 			isa = PBXGroup;
 			children = (
-				6E69E61F260D991B0062CBFB /* DetailView.swift */,
-				6E69E623260D9E630062CBFB /* DetailVC.swift */,
-				6E69E62A260DB7640062CBFB /* EditButton.swift */,
-				6E69E62D260DBACA0062CBFB /* DetailReactor.swift */,
+				6E7EA28227A3AB6A00D5F38D /* subviews */,
+				6E69E61F260D991B0062CBFB /* WishDetailView.swift */,
+				6E69E623260D9E630062CBFB /* WishDetailViewController.swift */,
+				6E69E62D260DBACA0062CBFB /* WishDetailReactor.swift */,
+				6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */,
 			);
 			path = "wish-detail";
 			sourceTree = "<group>";
@@ -630,6 +633,14 @@
 			isa = PBXGroup;
 			children = (
 				6E7206D6275B48C6009C7AFC /* WishHorizontalItemView.swift */,
+			);
+			path = subviews;
+			sourceTree = "<group>";
+		};
+		6E7EA28227A3AB6A00D5F38D /* subviews */ = {
+			isa = PBXGroup;
+			children = (
+				6E69E62A260DB7640062CBFB /* EditButton.swift */,
 			);
 			path = subviews;
 			sourceTree = "<group>";
@@ -1110,6 +1121,7 @@
 				6EACBD5A2613034A0009AB6F /* PageItemViewController.swift in Sources */,
 				6E091577264F99A50048EB79 /* SharePhotoReactor.swift in Sources */,
 				6E69E619260D77200062CBFB /* CustomHashtagField.swift in Sources */,
+				6E7EA28127A376E000D5F38D /* WishDetailCoordinator.swift in Sources */,
 				6E804292279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				6E495EE927A0DC9E00323689 /* UICollectionViewExtension.swift in Sources */,
 				6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */,
@@ -1118,9 +1130,9 @@
 				6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */,
 				6ED89715261579B80005FA29 /* FinishedView.swift in Sources */,
 				6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */,
-				6E69E62E260DBACA0062CBFB /* DetailReactor.swift in Sources */,
-				6E69E620260D991B0062CBFB /* DetailView.swift in Sources */,
-				6E69E624260D9E630062CBFB /* DetailVC.swift in Sources */,
+				6E69E62E260DBACA0062CBFB /* WishDetailReactor.swift in Sources */,
+				6E69E620260D991B0062CBFB /* WishDetailView.swift in Sources */,
+				6E69E624260D9E630062CBFB /* WishDetailViewController.swift in Sources */,
 				6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */,
 				6E80428A279D260D008A0EB4 /* SeepNotification.swift in Sources */,
 				6E87572D279BEB0E00BAA5BF /* NotificationViewController.swift in Sources */,

@@ -5,6 +5,12 @@ import RxCocoa
 import ISEmojiView
 
 final class EmojiInputView: BaseView {
+    var isEditable: Bool = true {
+        didSet {
+            self.randomButton.alpha = isEditable ? 1.0 : 0.0
+        }
+    }
+    
     override var inputAccessoryView: UIView? {
         set {
             self.emojiField.inputAccessoryView = newValue
@@ -128,6 +134,10 @@ final class EmojiInputView: BaseView {
         }
     }
     
+    func setEmoji(emoji: String) {
+        self.emojiField.text = emoji
+    }
+    
     private func setEmojiBackground(isEmpty: Bool) {
         if isEmpty {
             self.emojiBackground.image = UIImage(named: "img_emoji_empty")
@@ -177,6 +187,10 @@ final class EmojiInputView: BaseView {
 extension Reactive where Base: EmojiInputView {
     var emoji: ControlProperty<String> {
         return base.emojiField.rx.text.orEmpty
+    }
+    
+    func controlEvent(_ controlEvents: UIControl.Event) -> ControlEvent<()> {
+        return base.emojiField.rx.controlEvent(controlEvents)
     }
 }
 

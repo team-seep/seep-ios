@@ -153,6 +153,10 @@ final class TextInputField: BaseView {
         }
     }
     
+    func setText(text: String) {
+        self.textField.text = text
+    }
+    
     fileprivate func showError(message: String?) {
         if let message = message {
             self.addSubViews(self.errorLabel)
@@ -223,5 +227,9 @@ extension Reactive where Base: TextInputField {
         return Binder(self.base) { view, isEnable in
             view.setDateEnable(isEnable: isEnable)
         }
+    }
+    
+    func controlEvent(_ controlEvents: UIControl.Event) -> ControlEvent<()> {
+        return base.textField.rx.controlEvent(controlEvents)
     }
 }

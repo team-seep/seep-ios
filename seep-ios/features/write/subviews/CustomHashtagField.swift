@@ -241,5 +241,9 @@ extension Reactive where Base: CustomHashtagField {
             base.textField.text = text
         }
     }
+    
+    func controlEvent(_ controlEvents: UIControl.Event) -> ControlEvent<()> {
+        return base.textField.rx.controlEvent(controlEvents)
+    }
 }
 

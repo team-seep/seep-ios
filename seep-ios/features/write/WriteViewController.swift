@@ -158,7 +158,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         self.writeView.memoField.rx.text.orEmpty
             .filter { $0 != "wrtie_placeholder_memo".localized }
             .map { Reactor.Action.inputMemo($0) }
-            .bind(to: self.writeReactor.action)
+            .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         self.writeView.hashtagCollectionView.rx.itemSelected
@@ -177,12 +177,12 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
                 }
             })
             .map { Reactor.Action.inputHashtag($0) }
-            .bind(to: self.writeReactor.action)
+            .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         self.writeView.writeButton.rx.tap
             .map { Reactor.Action.tapWriteButton }
-            .bind(to: self.writeReactor.action)
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         // MARK: State

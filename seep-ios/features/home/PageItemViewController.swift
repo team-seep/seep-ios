@@ -169,8 +169,8 @@ final class PageItemViewController: BaseVC, View, PageItemCoordinator {
     }
 }
 
-extension PageItemViewController: DetailDelegate {
-    func onDismiss() {
+extension PageItemViewController: WishDetailDelegate {
+    func onUpdateCategory(category: Category) {
         self.pageItemReactor.action.onNext(.viewWillAppear)
         self.delegate?.onDismiss()
     }

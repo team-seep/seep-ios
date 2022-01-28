@@ -4,9 +4,9 @@ protocol PageItemCoordinator: AnyObject, BaseCoordinator {
 
 extension PageItemCoordinator {
     func presentWishDetail(wish: Wish) {
-        let viewController = DetailVC.instance(wish: wish, mode: .fromHome)
+        let viewController = WishDetailViewController.instance(wish: wish, mode: .fromHome)
         
-        viewController.delegate = self as? DetailDelegate
-        self.presenter.present(viewController, animated: true, completion: nil)
+        viewController.delegate = self as? WishDetailDelegate
+        self.presenter.navigationController?.pushViewController(viewController, animated: true)
     }
 }
