@@ -264,7 +264,9 @@ class WriteReactor: Reactor {
             category: self.currentState.category,
             title: self.currentState.title,
             endDate: self.currentState.deadline,
-            notifications: self.currentState.notifications,
+            notifications: self.currentState.isNotificationEnable
+                ? self.currentState.notifications
+                : [],
             memo: self.currentState.memo,
             hashtag: hashtag
         )

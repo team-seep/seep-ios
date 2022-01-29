@@ -58,7 +58,6 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.coordinator = self
         self.setupKeyboardNotification()
         self.wishDetailView.dateField.inputView = self.datePicker
-        self.wishDetailView.bind(wish: wish, mode: mode)
     }
   
     override func bindEvent() {
@@ -131,6 +130,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
     
         self.wishDetailView.emojiInputView.rx.emoji
+            .skip(1)
             .map { Reactor.Action.inputEmoji($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -149,6 +149,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
     
         self.wishDetailView.titleField.rx.text.orEmpty
+            .skip(1)
             .map { Reactor.Action.inputTitle($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -185,7 +186,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
                 FeedbackUtils.feedbackInstance.impactOccurred()
             })
             .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
         
         self.wishDetailView.memoField.rx.text.orEmpty
             .filter { $0 != "wrtie_placeholder_memo".localized }
@@ -262,8 +263,11 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     
         reactor.state
             .map { $0.title }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "")
-            .drive(self.wishDetailView.titleField.rx.text)
+            .drive(onNext: { [weak self] title in
+                self?.wishDetailView.titleField.setText(text: title)
+            })
             .disposed(by: self.disposeBag)
 
         reactor.state
@@ -273,10 +277,19 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
 
         reactor.state
-            .compactMap { $0.deadline }
-            .map { DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: $0)}
-            .asDriver(onErrorJustReturn: "")
-            .drive(self.wishDetailView.dateField.rx.text)
+            .map { ($0.deadline, $0.isEditable) }
+            .asDriver(onErrorJustReturn: (nil, false))
+            .drive(onNext: { [weak self] (deadline, isEditable) in
+                if let deadline = deadline {
+                    let deadlineText = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: deadline)
+                    
+                    self?.wishDetailView.dateField.setText(text: deadlineText)
+                } else {
+                    self?.wishDetailView.dateField.placeholder = isEditable
+                        ? "write_placeholder_date_enable".localized
+                        : "write_placeholder_date_disable".localized
+                }
+            })
             .disposed(by: self.disposeBag)
         
         reactor.state

@@ -136,6 +136,7 @@ final class EmojiInputView: BaseView {
     
     func setEmoji(emoji: String) {
         self.emojiField.text = emoji
+        self.setEmojiBackground(isEmpty: emoji.isEmpty)
     }
     
     private func setEmojiBackground(isEmpty: Bool) {

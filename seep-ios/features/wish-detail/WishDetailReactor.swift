@@ -47,7 +47,7 @@ final class WishDetailReactor: Reactor {
         case updateNotification(index: Int, notification: SeepNotification)
         case deleteNotification(index: Int)
         case setNotificationEnable(Bool)
-        case pushNotificationDetail([SeepNotification], Int?)
+        case pushNotificationDetail([SeepNotification?], Int?)
         case setMemo(String)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
@@ -65,7 +65,7 @@ final class WishDetailReactor: Reactor {
         var deadline: Date?
         var deadlineError: String? = nil
         var isDeadlineEnable: Bool
-        var notifications: [SeepNotification]
+        var notifications: [SeepNotification?]
         var isNotificationEnable: Bool
         var memo: String
         var hashtags: [HashtagType] = HashtagType.array
@@ -77,7 +77,7 @@ final class WishDetailReactor: Reactor {
     let initialState: State
     var initialWish: Wish
     let popupWithCategoryPublisher = PublishRelay<Category>()
-    let pushNotificationPublisher = PublishRelay<([SeepNotification], Int?)>()
+    let pushNotificationPublisher = PublishRelay<([SeepNotification?], Int?)>()
     let presentSharePhotoPublisher = PublishRelay<Wish>()
     let showToastPublisher = PublishRelay<String>()
     private let wishService: WishServiceProtocol
@@ -87,8 +87,9 @@ final class WishDetailReactor: Reactor {
             emoji: wish.emoji,
             category: wish.category,
             title: wish.title,
+            deadline: wish.endDate,
             isDeadlineEnable: wish.endDate != nil,
-            notifications: wish.notifications,
+            notifications: wish.notifications.isEmpty ? [nil] : wish.notifications,
             isNotificationEnable: !wish.notifications.isEmpty,
             memo: wish.memo
         )
@@ -153,7 +154,10 @@ final class WishDetailReactor: Reactor {
             return .just(.pushNotificationDetail(self.currentState.notifications, nil))
             
         case .tapEditNotification(let index):
-            return .just(.pushNotificationDetail(self.currentState.notifications, index))
+            return .merge([
+                .just(.pushNotificationDetail(self.currentState.notifications, index)),
+                .just(.setEditable(isEditable: true))
+            ])
             
         case .updateNotification(let index, let notification):
             return .just(.updateNotification(index: index, notification: notification))
@@ -217,6 +221,10 @@ final class WishDetailReactor: Reactor {
         switch mutation {
         case .setEditable(let isEditable):
             newState.isEditable = isEditable
+            
+            if self.currentState.notifications == [nil] && isEditable {
+                newState.notifications = [SeepNotification()]
+            }
             
         case .presentSharePhoto:
             self.presentSharePhotoPublisher.accept(self.initialWish)
@@ -334,6 +342,7 @@ final class WishDetailReactor: Reactor {
             hashtag = self.currentState.customHashtag
         }
         
+        let notifications = self.currentState.notifications.compactMap { $0 }
         let wish = Wish(
             emoji: self.currentState.emoji.isEmpty
                 ? self.generateRandomEmoji()
@@ -341,7 +350,7 @@ final class WishDetailReactor: Reactor {
             category: self.currentState.category,
             title: self.currentState.title,
             endDate: self.currentState.deadline,
-            notifications: self.currentState.notifications,
+            notifications: notifications,
             memo: self.currentState.memo,
             hashtag: hashtag
         )

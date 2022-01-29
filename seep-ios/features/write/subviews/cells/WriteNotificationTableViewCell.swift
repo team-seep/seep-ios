@@ -63,22 +63,32 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
         }
     }
     
-    func bind(notification: SeepNotification, isEnable: Bool) {
-        self.titleLabel.text = "\(notification.type.toString), \(notification.time.toString(format: "a h시 mm분"))"
-        UIView.transition(
-            with: self,
-            duration: 0.3,
-            options: .transitionCrossDissolve
-        ) { [weak self] in
-            if isEnable {
-                self?.containerView.backgroundColor = .gray1
-                self?.titleLabel.textColor = .gray5
-                self?.rightArrowImage.tintColor = .gray5
-            } else {
-                self?.containerView.backgroundColor = .gray2
-                self?.titleLabel.textColor = .gray3
-                self?.rightArrowImage.tintColor = .gray3
+    func bind(notification: SeepNotification?, isEnable: Bool) {
+        if let notification = notification {
+            self.titleLabel.text = "\(notification.type.toString), \(notification.time.toString(format: "a h시 mm분"))"
+            UIView.transition(
+                with: self,
+                duration: 0.3,
+                options: .transitionCrossDissolve
+            ) { [weak self] in
+                if isEnable {
+                    self?.containerView.backgroundColor = .gray1
+                    self?.titleLabel.textColor = .gray5
+                    self?.rightArrowImage.tintColor = .gray5
+                } else {
+                    self?.containerView.backgroundColor = .gray2
+                    self?.titleLabel.textColor = .gray3
+                    self?.rightArrowImage.tintColor = .gray3
+                }
             }
+            self.containerView.layer.borderWidth = 1
+            self.rightArrowImage.isHidden = false
+        } else {
+            self.containerView.backgroundColor = .gray2
+            self.containerView.layer.borderWidth = 0
+            self.titleLabel.textColor = .gray3
+            self.titleLabel.text = "알림 없음"
+            self.rightArrowImage.isHidden = true
         }
     }
 }

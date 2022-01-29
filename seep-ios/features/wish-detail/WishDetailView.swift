@@ -49,7 +49,7 @@ final class WishDetailView: BaseView {
     let dateField = TextInputField(
         iconImage: UIImage(named: "ic_calendar"),
         title: "write_header_date".localized,
-        placeholder: "write_placeholder_date".localized
+        placeholder: "write_placeholder_date_enable".localized
     )
     
     private let dateSwitchLabel = UILabel().then {
@@ -371,12 +371,27 @@ final class WishDetailView: BaseView {
         self.editButton.alpha = isEditable ? 1.0 : 0.0
         self.cancelButton.alpha = isEditable ? 1.0 : 0.0
         self.moreButton.alpha = isEditable ? 0.0 : 1.0
+        self.dateSwitchLabel.alpha = isEditable ? 1.0 : 0.0
         self.dateSwitch.alpha = isEditable ? 1.0 : 0.0
+        self.notificationSwitchLabel.alpha = isEditable ? 1.0 : 0.0
+        self.notificationSwitch.alpha = isEditable ? 1.0 : 0.0
     }
     
-    func updateNotificationTableViewHeight(by notifications: [(SeepNotification, Bool)]) {
+    func updateNotificationTableViewHeight(by notifications: [(SeepNotification?, Bool)]) {
         self.notificationTableView.snp.updateConstraints { make in
             make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
+        }
+        
+        if notifications[0].0 == nil {
+            self.addNotificationButton.snp.updateConstraints { make in
+                make.height.equalTo(0)
+            }
+            self.addNotificationButton.isHidden = true
+        } else {
+            self.addNotificationButton.snp.updateConstraints { make in
+                make.height.equalTo(32)
+            }
+            self.addNotificationButton.isHidden = false
         }
     }
     
