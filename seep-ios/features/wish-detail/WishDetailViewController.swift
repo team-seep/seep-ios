@@ -171,6 +171,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
         
         self.wishDetailView.dateSwitch.rx.isOn
+            .skip(1)
             .map { Reactor.Action.tapDeadlineSwitch($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -181,6 +182,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
     
         self.wishDetailView.notificationSwitch.rx.isOn
+            .skip(1)
             .map { Reactor.Action.tapNotificationSwitch($0) }
             .do(onNext: { _ in
                 FeedbackUtils.feedbackInstance.impactOccurred()
@@ -299,8 +301,15 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         
         reactor.state
             .map { $0.isDeadlineEnable }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: false)
             .drive(self.wishDetailView.dateSwitch.rx.isOn)
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map { $0.isDeadlineEnable }
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.wishDetailView.dateField.rx.isDateEnable)
             .disposed(by: self.disposeBag)
         
         reactor.state

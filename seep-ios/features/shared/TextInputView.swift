@@ -9,8 +9,10 @@ final class TextInputView: BaseView {
             if self.isEditable {
                 if self.textView.text == "detail_memo_empty".localized {
                     self.textView.text = "wrtie_placeholder_memo".localized
+                    self.textView.textColor = .gray3
+                } else {
+                    self.textView.textColor = .gray5
                 }
-                self.textView.textColor = .gray5
                 self.textView.snp.updateConstraints { make in
                     make.height.equalTo(82)
                 }
