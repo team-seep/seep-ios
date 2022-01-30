@@ -29,16 +29,19 @@ final class PageItemReactor: Reactor {
     let endRefreshingPublisher = PublishRelay<Void>()
     private let wishService: WishServiceProtocol
     private let userDefaults: UserDefaultsUtils
+    private let notificationManager: NotificationManagerProtocol
     private let category: Category
     
     init(
         category: Category,
         wishService: WishServiceProtocol,
-        userDefaults: UserDefaultsUtils
+        userDefaults: UserDefaultsUtils,
+        notificationManager: NotificationManagerProtocol
     ) {
         self.category = category
         self.wishService = wishService
         self.userDefaults = userDefaults
+        self.notificationManager = notificationManager
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -63,7 +66,7 @@ final class PageItemReactor: Reactor {
             let tappedWish = self.currentState.wishList[index]
             
             self.wishService.finishWish(id: tappedWish.id)
-            self.cancelNotification(wish: tappedWish)
+            self.notificationManager.cancelNotifications(wish: tappedWish)
             
             let wishList = self.wishService.fetchAllWishes(category: self.category)
             
@@ -94,9 +97,5 @@ final class PageItemReactor: Reactor {
         }
         
         return newState
-    }
-    
-    private func cancelNotification(wish: Wish) {
-        NotificationManager.shared.cancel(wish: wish)
     }
 }

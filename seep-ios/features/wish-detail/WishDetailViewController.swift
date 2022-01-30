@@ -28,7 +28,8 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     init(wish: Wish, mode: DetailMode) {
         self.wishDetailReactor = WishDetailReactor(
             wish: wish,
-            wishService: WishService()
+            wishService: WishService(),
+            notificationManager: NotificationManager.shared
         )
         self.wish = wish
         self.mode = mode

@@ -92,15 +92,8 @@
 "finish_count_category_want_to_go_format" = "지금까지\n%02d곳 다녀왔어요!";
 
 // Notification
-"notification_two_day_before_title" = "🔔 여기보세요👀";
-"notification_two_day_before_category_want_to_do_body_format" = "'%@' 까지 2일 남았어요!";
-"notification_two_day_before_category_want_to_get_body_format" = "'%@' 갖기까지 2일 남았어요!";
-"notification_two_day_before_category_want_to_go_body_format" = "'%@' 가기까지 2일 남았어요!";
-"notification_day_before_title" = "🔔 잊지마세요!";
-"notification_day_before_category_want_to_do_body_foramt" = "내일은 '%@' 하는 날";
-"notification_day_before_category_want_to_get_body_foramt" = "내일은 '%@' 갖는 날";
-"notification_day_before_category_want_to_go_body_foramt" = "내일은 '%@' 가는 날";
-
+"notification_title" = "🔔 여기보세요👀";
+"notification_body_format" = "'%@' 하기로 한 것 잊지 않으셨나요?";
 
 // Share-photo
 "share_photo_title" = "공유하기";

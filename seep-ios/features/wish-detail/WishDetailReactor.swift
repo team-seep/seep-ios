@@ -81,8 +81,13 @@ final class WishDetailReactor: Reactor {
     let presentSharePhotoPublisher = PublishRelay<Wish>()
     let showToastPublisher = PublishRelay<String>()
     private let wishService: WishServiceProtocol
+    private let notificationManager: NotificationManagerProtocol
     
-    init(wish: Wish, wishService: WishServiceProtocol) {
+    init(
+        wish: Wish,
+        wishService: WishServiceProtocol,
+        notificationManager: NotificationManagerProtocol
+    ) {
         let hashtag = HashtagType(rawValue: wish.hashtag)
         
         self.initialState = State(
@@ -99,6 +104,7 @@ final class WishDetailReactor: Reactor {
         )
         self.initialWish = wish
         self.wishService = wishService
+        self.notificationManager = notificationManager
     }
   
     func mutate(action: Action) -> Observable<Mutation> {
@@ -361,10 +367,9 @@ final class WishDetailReactor: Reactor {
         )
         
         self.wishService.updateWish(id: self.initialWish.id, newWish: wish)
-        
-        NotificationManager.shared.cancel(wish: self.initialWish)
+        self.notificationManager.cancelNotifications(wish: self.initialWish)
         if self.currentState.isNotificationEnable {
-            NotificationManager.shared.reserve(wish: wish)
+            self.notificationManager.reserveNotifications(wish: wish)
         }
         self.initialWish = wish
         

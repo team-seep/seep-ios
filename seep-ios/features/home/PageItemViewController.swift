@@ -23,7 +23,8 @@ final class PageItemViewController: BaseVC, View, PageItemCoordinator {
         self.pageItemReactor = PageItemReactor(
             category: category,
             wishService: WishService(),
-            userDefaults: UserDefaultsUtils()
+            userDefaults: UserDefaultsUtils(),
+            notificationManager: NotificationManager.shared
         )
         super.init(nibName: nil, bundle: nil)
     }

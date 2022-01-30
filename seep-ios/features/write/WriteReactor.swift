@@ -70,11 +70,13 @@ class WriteReactor: Reactor {
     let showToastPublisher = PublishRelay<String>()
     private let wishService: WishServiceProtocol
     private let userDefaults: UserDefaultsUtils
+    private let notificationManager: NotificationManagerProtocol
     
     init(
         category: Category,
         wishService: WishServiceProtocol,
-        userDefaults: UserDefaultsUtils
+        userDefaults: UserDefaultsUtils,
+        notificationManager: NotificationManagerProtocol
     ) {
         self.initialState = State(
             isTooltipShown: userDefaults.getRandomEmojiTooltipIsShow(),
@@ -82,6 +84,7 @@ class WriteReactor: Reactor {
         )
         self.wishService = wishService
         self.userDefaults = userDefaults
+        self.notificationManager = notificationManager
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -272,8 +275,7 @@ class WriteReactor: Reactor {
         )
         
         self.wishService.addWish(wish: wish)
-        // TODO: 알림 설정 필요
-//        NotificationManager.shared.reserve(wish: wish)
+        self.notificationManager.reserveNotifications(wish: wish)
         return .just(.dismissWishCategory(wish.category))
     }
     

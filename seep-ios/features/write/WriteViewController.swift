@@ -25,7 +25,8 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         self.writeReactor = WriteReactor(
             category: category,
             wishService: WishService(),
-            userDefaults: UserDefaultsUtils()
+            userDefaults: UserDefaultsUtils(),
+            notificationManager: NotificationManager.shared
         )
         
         super.init(nibName: nil, bundle: nil)
