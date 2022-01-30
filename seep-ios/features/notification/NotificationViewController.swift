@@ -105,6 +105,13 @@ final class NotificationViewController: BaseVC, View, NotificationCoordinator {
                 self?.coordinator?.popup(animated: true)
             })
             .disposed(by: self.eventDisposeBag)
+        
+        self.notificationReactor.showToastPublisher
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] message in
+                self?.coordinator?.showToast(message: message)
+            })
+            .disposed(by: self.eventDisposeBag)
     }
     
     func bind(reactor: NotificationReactor) {

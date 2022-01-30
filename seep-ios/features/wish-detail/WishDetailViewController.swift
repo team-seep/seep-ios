@@ -426,9 +426,8 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
 }
 
 extension WishDetailViewController: SharePhotoDelegate {
-    
     func onSuccessSave() {
-        self.wishDetailView.showFinishToast()
+        self.coordinator?.showToast(message: "👏이미지를 앨범에 저장했어요!")
     }
 }
 

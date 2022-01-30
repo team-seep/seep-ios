@@ -4,7 +4,10 @@ protocol BaseCoordinator {
     var presenter: BaseVC { get }
     
     func popup(animated: Bool)
+    
     func dismiss(animated flag: Bool, completion: (() -> Void)?)
+    
+    func showToast(message: String)
 }
 
 extension BaseCoordinator where Self: BaseVC {
@@ -18,5 +21,9 @@ extension BaseCoordinator where Self: BaseVC {
     
     func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         self.presenter.dismiss(animated: true, completion: nil)
+    }
+    
+    func showToast(message: String) {
+        ToastManager.shared.show(message: message)
     }
 }
