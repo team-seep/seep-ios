@@ -80,6 +80,7 @@
 "detail_cancel_finish_description" = "취소시 다시 메인 홈에서\n확인할 수 있습니다!";
 "detail_cancel_finish_no" = "아니요";
 "detail_cancel_finish_ok" = "취소할래요";
+"detail_memo_empty" = "메모 없음";
 
 // Finish
 "finish_back_button" = "메인 홈으로 돌아가기";

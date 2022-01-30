@@ -181,7 +181,7 @@ final class WriteView: BaseView {
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
         self.dateField.inputAccessoryView = self.accessoryView
-        self.memoField.textView.inputAccessoryView = self.accessoryView
+        self.memoField.inputAccessoryView = self.accessoryView
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
         
         self.containerView.addSubViews([

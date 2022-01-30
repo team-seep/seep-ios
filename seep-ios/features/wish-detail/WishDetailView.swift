@@ -168,7 +168,7 @@ final class WishDetailView: BaseView {
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
         self.dateField.inputAccessoryView = self.accessoryView
-        self.memoField.textView.inputAccessoryView = self.accessoryView
+        self.memoField.inputAccessoryView = self.accessoryView
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
         
         self.containerView.addSubViews([
@@ -375,6 +375,7 @@ final class WishDetailView: BaseView {
         self.dateSwitch.alpha = isEditable ? 1.0 : 0.0
         self.notificationSwitchLabel.alpha = isEditable ? 1.0 : 0.0
         self.notificationSwitch.alpha = isEditable ? 1.0 : 0.0
+        self.memoField.isEditable = isEditable
     }
     
     func updateNotificationTableViewHeight(by notifications: [(SeepNotification?, Bool)]) {

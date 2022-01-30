@@ -189,7 +189,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
         
         self.wishDetailView.memoField.rx.text.orEmpty
-            .filter { $0 != "wrtie_placeholder_memo".localized }
+            .filter { $0 != "wrtie_placeholder_memo".localized && $0 != "detail_memo_empty".localized }
             .map { Reactor.Action.inputMemo($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -237,7 +237,6 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         reactor.state
             .map { $0.isEditable }
             .distinctUntilChanged()
-//            .delay(.milliseconds(10), scheduler: MainScheduler.instance) // 수정 취소시, 마지막에 editable이 변경되어야해서 딜레이 설정
             .asDriver(onErrorJustReturn: false)
             .drive(self.wishDetailView.rx.isEditable)
             .disposed(by: self.disposeBag)
@@ -358,9 +357,9 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         reactor.state
             .map { $0.memo }
             .distinctUntilChanged()
-            .filter { $0 != "wrtie_placeholder_memo".localized }
+            .filter { $0 != "wrtie_placeholder_memo".localized && $0 != "detail_memo_empty".localized }
             .asDriver(onErrorJustReturn: "")
-            .drive(self.wishDetailView.memoField.rx.text)
+            .drive(self.wishDetailView.memoField.rx.setText)
             .disposed(by: self.disposeBag)
     }
   
