@@ -58,6 +58,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.coordinator = self
         self.setupKeyboardNotification()
         self.wishDetailView.dateField.inputView = self.datePicker
+        self.wishDetailView.containerView.isUserInteractionEnabled = self.mode == .fromHome
     }
   
     override func bindEvent() {

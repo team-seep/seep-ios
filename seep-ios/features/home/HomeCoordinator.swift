@@ -21,7 +21,7 @@ extension HomeCoordinator {
     }
     
     func pushFinish(category: Category) {
-        let viewController = FinishedVC.instance(category: category)
+        let viewController = FinishedViewController.instance(category: category)
         
         self.presenter.navigationController?.pushViewController(viewController, animated: true)
     }

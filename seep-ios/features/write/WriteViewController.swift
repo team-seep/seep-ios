@@ -211,7 +211,6 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .map { $0.titleError }
             .distinctUntilChanged()
             .skip(1)
-            .debug()
             .asDriver(onErrorJustReturn: nil)
             .drive(self.writeView.titleField.rx.errorMessage)
             .disposed(by: self.disposeBag)
@@ -226,6 +225,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         
         reactor.state
             .map { $0.isDeadlineEnable }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: false)
             .drive(self.writeView.dateField.rx.isDateEnable)
             .disposed(by: self.disposeBag)
@@ -252,6 +252,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         
         reactor.state
             .map { $0.isNotificationEnable }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: false)
             .drive(self.writeView.rx.isNotificationEnable)
             .disposed(by: self.disposeBag)
@@ -277,6 +278,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         
         reactor.state
             .map { $0.writeButtonState }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: .initial)
             .drive(self.writeView.writeButton.rx.state)
             .disposed(by: self.disposeBag)
