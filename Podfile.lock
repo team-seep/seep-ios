@@ -1,38 +1,26 @@
 PODS:
   - ISEmojiView (0.2.6)
-  - ReactorKit (2.1.1):
-    - RxSwift (~> 5.0)
-    - WeakMapTable (~> 1.1)
   - Realm (10.5.2):
     - Realm/Headers (= 10.5.2)
   - Realm/Headers (10.5.2)
   - RealmSwift (10.5.2):
     - Realm (= 10.5.2)
-  - RxSwift (5.1.2)
-  - WeakMapTable (1.2.0)
 
 DEPENDENCIES:
   - ISEmojiView
-  - ReactorKit
   - RealmSwift (= 10.5.2)
 
 SPEC REPOS:
   trunk:
     - ISEmojiView
-    - ReactorKit
     - Realm
     - RealmSwift
-    - RxSwift
-    - WeakMapTable
 
 SPEC CHECKSUMS:
   ISEmojiView: f7cd94a6c93307f429ec5da001293d0b02247f03
-  ReactorKit: 6d894a20c3d508344320901cd8e386fde92df4b6
   Realm: 2e1bc0d28301006176692da234deff51f867d5ae
   RealmSwift: a522ad39715e8b4e491af4460059bc32b84f5a9b
-  RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
-  WeakMapTable: 05c694ce8439a7a9ebabb56187287a63c57673d6
 
-PODFILE CHECKSUM: 7cd1234cb1f7740603dbb26c824f0470a0fb7903
+PODFILE CHECKSUM: f9e983e6bafeb3a40394759414ea5b45ab8381bf
 
 COCOAPODS: 1.11.2

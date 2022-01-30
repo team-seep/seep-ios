@@ -1,115 +1,236 @@
 import UIKit
+
 import RxSwift
 import RxCocoa
 
-class TextInputField: BaseView {
-  
-  let containerView = UIView().then {
-    $0.backgroundColor = .gray2
-    $0.layer.cornerRadius = 6
-  }
-  
-  let titleLabel = PaddingLabel(
-    topInset: 0,
-    bottomInset: 0,
-    leftInset: 4,
-    rightInset: 4
-  ).then {
-    $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
-    $0.textColor = .seepBlue
-    $0.backgroundColor = .white
-    $0.alpha = 0.0
-  }
-  
-  let textField = UITextField().then {
-    $0.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
-    $0.textColor = .gray5
-  }
-  
-  let errorLabel = UILabel().then {
-    $0.textColor = .optionRed
-    $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
-  }
-  
-  
-  override func setup() {
-    self.backgroundColor = .clear
-    self.addSubViews(containerView, titleLabel, textField)
-    self.textField.rx.controlEvent(.editingDidBegin)
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        UIView.animate(withDuration: 0.3) {
-          self.containerView.backgroundColor = .white
-          self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
-          self.containerView.layer.borderWidth = 1
-          self.titleLabel.alpha = 1.0
+final class TextInputField: BaseView {
+    override var inputAccessoryView: UIView? {
+        set {
+            self.textField.inputAccessoryView = newValue
         }
-      }
-      .disposed(by: disposeBag)
-    self.textField.rx.controlEvent(.editingDidEnd)
-      .bind { [weak self] _ in
-        guard let self = self else { return }
-        UIView.animate(withDuration: 0.3) {
-          self.titleLabel.alpha = 0.0
-          self.containerView.layer.borderWidth = 0
-          self.containerView.backgroundColor = .gray2
+        get {
+            return self.textField.inputAccessoryView
         }
-      }
-      .disposed(by: disposeBag)
-  }
-  
-  override func bindConstraints() {
-    self.titleLabel.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(16)
-      make.top.equalToSuperview()
     }
     
-    self.containerView.snp.makeConstraints { make in
-      make.left.right.bottom.equalToSuperview()
-      make.bottom.equalTo(self.textField).offset(14)
-      make.top.equalTo(self.titleLabel).offset(8)
+    override var inputView: UIView? {
+        get {
+            return self.textField.inputView
+        }
+        set {
+            self.textField.inputView = newValue
+        }
     }
     
-    self.textField.snp.makeConstraints { make in
-      make.left.equalToSuperview().offset(16)
-      make.right.equalToSuperview().offset(-16)
-      make.top.equalTo(self.containerView).offset(16)
+    var placeholder: String? {
+        get {
+            return self.textField.placeholder
+        }
+        set {
+            self.setPlaceholder(placeholder: newValue)
+        }
     }
-  }
-  
-  func showError(message: String?) {
-    if let message = message {
-      self.addSubViews(self.errorLabel)
-      self.errorLabel.text = message
-      self.containerView.snp.remakeConstraints { make in
-        make.left.right.equalToSuperview()
-        make.bottom.equalTo(self.textField).offset(16)
-        make.top.equalTo(self.titleLabel).offset(8)
-      }
-      self.errorLabel.snp.makeConstraints { make in
-        make.left.bottom.equalToSuperview()
-        make.top.equalTo(self.containerView.snp.bottom).offset(8)
-      }
-    } else {
-      self.errorLabel.removeFromSuperview()
-      self.containerView.snp.remakeConstraints { make in
-        make.left.right.bottom.equalToSuperview()
-        make.bottom.equalTo(self.textField).offset(16)
-        make.top.equalTo(self.titleLabel).offset(8)
-      }
+    
+    private let containerView = UIView().then {
+        $0.backgroundColor = .gray2
+        $0.layer.cornerRadius = 6
     }
-  }
+    
+    private let iconImage = UIImageView().then {
+        $0.tintColor = .gray5
+    }
+    
+    private let titleLabel = UILabel().then {
+        $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
+        $0.textColor = .gray5
+    }
+    
+    let textField = UITextField().then {
+      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
+      $0.textColor = .gray5
+    }
+    
+    private let errorLabel = UILabel().then {
+        $0.textColor = .optionRed
+        $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 12)
+    }
+    
+    init(
+        iconImage: UIImage?,
+        title: String,
+        placeholder: String?
+    ) {
+        self.iconImage.image = iconImage?.withRenderingMode(.alwaysTemplate)
+        self.titleLabel.text = title
+        self.textField.placeholder = placeholder
+        
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setup() {
+        self.backgroundColor = .clear
+        self.addSubViews([
+            self.containerView,
+            self.iconImage,
+            self.titleLabel,
+            self.textField
+        ])
+        
+        self.textField.rx
+            .controlEvent(.editingDidBegin)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                
+                UIView.transition(
+                    with: self,
+                    duration: 0.3,
+                    options: .transitionCrossDissolve
+                ) { [weak self] in
+                    guard let self = self else { return }
+                    
+                    self.iconImage.tintColor = .seepBlue
+                    self.containerView.backgroundColor = .white
+                    self.containerView.layer.borderColor = UIColor.seepBlue.cgColor
+                    self.containerView.layer.borderWidth = 1
+                    self.titleLabel.textColor = .seepBlue
+                }
+            })
+            .disposed(by: self.disposeBag)
+        self.textField.rx
+            .controlEvent(.editingDidEnd)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                
+                UIView.transition(
+                    with: self,
+                    duration: 0.3,
+                    options: .transitionCrossDissolve
+                ) { [weak self] in
+                    guard let self = self else { return }
+                    
+                    self.iconImage.tintColor = .gray5
+                    self.titleLabel.textColor = .gray5
+                    self.containerView.layer.borderWidth = 0
+                    self.containerView.backgroundColor = .gray2
+                }
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    override func bindConstraints() {
+        self.iconImage.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.top.equalToSuperview()
+            make.width.height.equalTo(16)
+        }
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.left.equalTo(self.iconImage.snp.right).offset(4)
+            make.centerY.equalTo(self.iconImage)
+        }
+        
+        self.containerView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(self.textField).offset(14)
+            make.top.equalTo(self.iconImage.snp.bottom).offset(10)
+        }
+        
+        self.textField.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.top.equalTo(self.containerView).offset(16)
+        }
+        
+        self.snp.makeConstraints { make in
+            make.top.equalTo(self.iconImage).priority(.high)
+            make.bottom.equalTo(self.containerView).priority(.high)
+        }
+    }
+    
+    func setText(text: String) {
+        self.textField.text = text
+    }
+    
+    fileprivate func showError(message: String?) {
+        if let message = message {
+            self.addSubViews(self.errorLabel)
+            self.errorLabel.text = message
+            self.errorLabel.snp.makeConstraints { make in
+                make.left.equalToSuperview()
+                make.top.equalTo(self.containerView.snp.bottom).offset(8)
+            }
+            
+            self.snp.updateConstraints { make in
+                make.bottom.equalTo(self.containerView).offset(10).priority(.high)
+            }
+        } else {
+            self.errorLabel.removeFromSuperview()
+            self.snp.updateConstraints { make in
+                make.bottom.equalTo(self.containerView).priority(.high)
+            }
+        }
+    }
+    
+    fileprivate func setDateEnable(isEnable: Bool) {
+        self.isUserInteractionEnabled = isEnable
+        UIView.transition(
+            with: self,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) { [weak self] in
+            if isEnable {
+                self?.textField.attributedPlaceholder = NSAttributedString(
+                    string: "write_placeholder_date_enable".localized,
+                    attributes: [.foregroundColor: UIColor.gray3]
+                )
+            } else {
+                self?.textField.text = nil
+                self?.textField.attributedPlaceholder = NSAttributedString(
+                    string: "write_placeholder_date_disable".localized,
+                    attributes: [.foregroundColor: UIColor.gray5]
+                )
+            }
+            self?.textField.tintColor = .clear
+        }
+    }
+    
+    private func setPlaceholder(
+        placeholder: String?,
+        color: UIColor = .gray3
+    ) {
+        guard let placeholder = placeholder else { return }
+        self.textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [.foregroundColor: color]
+        )
+        self.textField.tintColor = .clear
+    }
 }
 
 extension Reactive where Base: TextInputField {
-  
-  var text: ControlProperty<String?> {
-    return base.textField.rx.text
-  }
-  
-  var errorMessage: Binder<String?> {
-    return Binder(self.base) { view, message in
-      view.showError(message: message)
+    var text: ControlProperty<String?> {
+        return base.textField.rx.text
     }
-  }
+    
+    var errorMessage: Binder<String?> {
+        return Binder(self.base) { view, message in
+            view.showError(message: message)
+        }
+    }
+    
+    var isDateEnable: Binder<Bool> {
+        return Binder(self.base) { view, isEnable in
+            view.setDateEnable(isEnable: isEnable)
+        }
+    }
+    
+    func controlEvent(_ controlEvents: UIControl.Event) -> ControlEvent<()> {
+        return base.textField.rx.controlEvent(controlEvents)
+    }
 }

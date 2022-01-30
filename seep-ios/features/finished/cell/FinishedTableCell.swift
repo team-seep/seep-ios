@@ -72,6 +72,5 @@ class FinishedTableCell: BaseTableViewCell {
     self.titleLabel.text = wish.title
     self.finishDateLabel.text = DateUtils.toString(format: "yyyy년 MM월 dd일", date: wish.finishDate!)
     self.tagLabel.text = wish.hashtag
-    self.tagLabel.isHidden = wish.hashtag.isEmpty
   }
 }
