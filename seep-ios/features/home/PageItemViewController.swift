@@ -106,7 +106,6 @@ final class PageItemViewController: BaseVC, View, PageItemCoordinator {
         // MARK: State
         self.pageItemReactor.state
             .map { $0.wishList }
-            .distinctUntilChanged()
             .bind(to: self.pageItemView.tableView.rx.items(
                 cellIdentifier: HomeWishTableViewCell.registerId,
                 cellType: HomeWishTableViewCell.self

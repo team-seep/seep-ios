@@ -9,6 +9,11 @@ protocol WishDetailCoordinator: AnyObject, BaseCoordinator {
     )
     
     func presentSharePhoto(wish: Wish)
+    
+    func pushNotification(
+        totalNotifications: [SeepNotification],
+        selectedIndex: Int?
+    )
 }
 
 extension WishDetailCoordinator where Self: WishDetailViewController {
@@ -66,6 +71,22 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
         
         viewController.delegate = self
         self.present(viewController, animated: true, completion: nil)
+    }
+    
+    func pushNotification(
+        totalNotifications: [SeepNotification],
+        selectedIndex: Int?
+    ) {
+        let viewController = NotificationViewController.instance(
+            totalNotifications: totalNotifications,
+            selectedIndex: selectedIndex
+        )
+        
+        viewController.delegate = self as? NotificationViewControllerDelegate
+        self.presenter.navigationController?.pushViewController(
+            viewController,
+            animated: true
+        )
     }
     
     private func showDeleteAlert(onTapDelete: @escaping () -> Void) {

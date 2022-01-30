@@ -396,6 +396,31 @@ final class WishDetailView: BaseView {
         }
     }
     
+    func selectHashTag(index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        
+        self.hashtagCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+    }
+    
+    fileprivate func setNotificationEnable(isEnable: Bool) {
+        self.addNotificationButton.isUserInteractionEnabled = isEnable
+        self.notificationTableView.isUserInteractionEnabled = isEnable
+        
+        UIView.transition(
+            with: self,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) { [weak self] in
+            if isEnable {
+                self?.addNotificationButton.tintColor = .seepBlue
+                self?.addNotificationButton.setTitleColor(.seepBlue, for: .normal)
+            } else {
+                self?.addNotificationButton.tintColor = .gray3
+                self?.addNotificationButton.setTitleColor(.gray3, for: .normal)
+            }
+        }
+    }
+    
     func showFinishToast() {
         let window = UIApplication.shared.windows[0]
         
@@ -422,6 +447,13 @@ extension Reactive where Base: WishDetailView{
     var isEditable: Binder<Bool> {
         return Binder(self.base) { view, isEditable in
             view.setEditable(isEditable: isEditable)
+        }
+    }
+    
+    var isNotificationEnable: Binder<Bool> {
+        return Binder(self.base) { view, isEnable in
+            view.setNotificationEnable(isEnable: isEnable)
+            view.notificationSwitch.setOn(isEnable, animated: true)
         }
     }
 }

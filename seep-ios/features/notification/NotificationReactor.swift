@@ -5,12 +5,14 @@ import RxCocoa
 
 final class NotificationReactor: Reactor {
     enum Action {
+        case tapDeleteButton
         case selectNotificationType(SeepNotification.NotificationType)
         case inputNotificationTime(Date)
         case tapAddButton
     }
     
     enum Mutation {
+        case deleteNotification(index: Int?)
         case setNotificationType(SeepNotification.NotificationType)
         case setNotificationTime(Date)
         case showToast(String)
@@ -20,10 +22,12 @@ final class NotificationReactor: Reactor {
     
     struct State {
         var notification: SeepNotification = SeepNotification()
+        var isDeletable: Bool
     }
     
     let addNotificationPublisher = PublishRelay<SeepNotification>()
     let editNotificationPublisher = PublishRelay<(SeepNotification, Int)>()
+    let deleteNotificationPublisher = PublishRelay<Int>()
     let showToastPublisher = PublishRelay<String>()
     
     let initialState: State
@@ -37,14 +41,20 @@ final class NotificationReactor: Reactor {
         self.totalNotifications = totalNotifications
         self.selectedIndex = selectedIndex
         if let selectedIndex = selectedIndex {
-            self.initialState = State(notification: totalNotifications[selectedIndex])
+            self.initialState = State(
+                notification: totalNotifications[selectedIndex],
+                isDeletable: totalNotifications.count != 1 || selectedIndex != 0
+            )
         } else {
-            self.initialState = State()
+            self.initialState = State(isDeletable: false)
         }
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
+        case .tapDeleteButton:
+            return .just(.deleteNotification(index: self.selectedIndex))
+            
         case .selectNotificationType(let type):
             return .just(.setNotificationType(type))
             
@@ -71,6 +81,10 @@ final class NotificationReactor: Reactor {
         var newState = state
         
         switch mutation {
+        case .deleteNotification(let index):
+            guard let deleteIndex = index else { return newState }
+            self.deleteNotificationPublisher.accept(deleteIndex)
+            
         case .setNotificationType(let type):
             newState.notification.type = type
             

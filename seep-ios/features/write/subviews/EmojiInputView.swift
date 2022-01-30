@@ -20,6 +20,8 @@ final class EmojiInputView: BaseView {
         }
     }
     
+    fileprivate let emojiPublisher = PublishSubject<String>()
+    
     private let emojiBackground = UIImageView().then {
         $0.image = UIImage(named: "img_emoji_empty")
         $0.layer.cornerRadius = 36
@@ -77,16 +79,19 @@ final class EmojiInputView: BaseView {
               FeedbackUtils.feedbackInstance.impactOccurred()
             })
             .drive(onNext: { [weak self] in
-                let randomEmoji = self?.generateRandomEmoji()
+                guard let self = self else { return }
+                let randomEmoji = self.generateRandomEmoji()
                 
-                self?.emojiField.text = randomEmoji
-                self?.setEmojiBackground(isEmpty: false)
+                self.emojiField.text = randomEmoji
+                self.emojiPublisher.onNext(randomEmoji)
+                self.setEmojiBackground(isEmpty: false)
             })
             .disposed(by: self.disposeBag)
         self.emojiField.rx.text.orEmpty
             .asDriver()
             .drive(onNext: { [weak self] emoji in
                 self?.setEmojiBackground(isEmpty: emoji.isEmpty)
+                self?.emojiPublisher.onNext(emoji)
             })
             .disposed(by: self.disposeBag)
     }
@@ -186,8 +191,8 @@ final class EmojiInputView: BaseView {
 }
 
 extension Reactive where Base: EmojiInputView {
-    var emoji: ControlProperty<String> {
-        return base.emojiField.rx.text.orEmpty
+    var emoji: ControlEvent<String> {
+        return ControlEvent(events: base.emojiPublisher)
     }
     
     func controlEvent(_ controlEvents: UIControl.Event) -> ControlEvent<()> {

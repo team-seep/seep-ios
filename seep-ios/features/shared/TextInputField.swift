@@ -190,6 +190,7 @@ final class TextInputField: BaseView {
                     attributes: [.foregroundColor: UIColor.gray3]
                 )
             } else {
+                self?.textField.text = nil
                 self?.textField.attributedPlaceholder = NSAttributedString(
                     string: "write_placeholder_date_disable".localized,
                     attributes: [.foregroundColor: UIColor.gray5]

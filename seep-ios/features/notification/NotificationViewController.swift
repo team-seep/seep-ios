@@ -6,6 +6,8 @@ protocol NotificationViewControllerDelegate: AnyObject {
     func onEditNotification(index: Int, notification: SeepNotification)
     
     func onAddNotification(notification: SeepNotification)
+    
+    func onDeleteNotification(index: Int)
 }
 
 final class NotificationViewController: BaseVC, View, NotificationCoordinator {
@@ -95,10 +97,23 @@ final class NotificationViewController: BaseVC, View, NotificationCoordinator {
                 self?.coordinator?.popup(animated: true)
             })
             .disposed(by: self.eventDisposeBag)
+        
+        self.notificationReactor.deleteNotificationPublisher
+            .asDriver(onErrorJustReturn: 0)
+            .drive(onNext: { [weak self] deletedIndex in
+                self?.delegate?.onDeleteNotification(index: deletedIndex)
+                self?.coordinator?.popup(animated: true)
+            })
+            .disposed(by: self.eventDisposeBag)
     }
     
     func bind(reactor: NotificationReactor) {
         // Bind Action
+        self.notificationView.deleteButton.rx.tap
+            .map { Reactor.Action.tapDeleteButton }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
         self.notificationView.notificationGroupView.rx.selectedType
             .map { Reactor.Action.selectNotificationType($0) }
             .bind(to: reactor.action)
@@ -116,6 +131,12 @@ final class NotificationViewController: BaseVC, View, NotificationCoordinator {
         self.notificationView.addButton.rx.tap
             .map { Reactor.Action.tapAddButton }
             .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map { !$0.isDeletable }
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.notificationView.deleteButton.rx.isHidden)
             .disposed(by: self.disposeBag)
     }
     

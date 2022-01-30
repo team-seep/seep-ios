@@ -253,7 +253,7 @@ class WriteReactor: Reactor {
         var hashtag = ""
         
         if let selectedHashtag = self.currentState.selectedHashtag {
-            hashtag = selectedHashtag.description
+            hashtag = selectedHashtag.rawValue
         }
         if !self.currentState.customHashtag.isEmpty {
             hashtag = self.currentState.customHashtag

@@ -315,6 +315,10 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
 }
 
 extension WriteViewController: NotificationViewControllerDelegate {
+    func onDeleteNotification(index: Int) {
+        self.writeReactor.action.onNext(.deleteNotification(index: index))
+    }
+    
     func onEditNotification(index: Int, notification: SeepNotification) {
         self.writeReactor.action.onNext(
             .updateNotification(index: index, notification: notification)

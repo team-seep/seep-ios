@@ -117,6 +117,17 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
                 self?.coordinator?.presentSharePhoto(wish: wish)
             })
             .disposed(by: self.eventDisposeBag)
+        
+        self.wishDetailReactor.pushNotificationPublisher
+            .asDriver(onErrorJustReturn: ([], nil))
+            .drive(onNext: { [weak self] (notifications, index)in
+                let notifications = notifications.compactMap { $0 }
+                
+                if !(notifications.isEmpty && index == 0) {
+                    self?.coordinator?.pushNotification(totalNotifications: notifications, selectedIndex: index)
+                }
+            })
+            .disposed(by: self.eventDisposeBag)
     }
     
     func bind(reactor: WishDetailReactor) {
@@ -202,19 +213,12 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .disposed(by: self.disposeBag)
         
         self.wishDetailView.hashtagCollectionView.rx.itemSelected
-            .map { Reactor.Action.tapHashtag(index: $0.row) }
-            .do(onNext: { [weak self] _ in
-                self?.wishDetailView.endEditing(true)
-            })
-            .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
-        
-        self.wishDetailView.hashtagCollectionView.rx.itemSelected
             .map { _ in Reactor.Action.tapEditButton }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         self.wishDetailView.hashtagField.rx.text.orEmpty
+            .skip(1)
             .distinctUntilChanged()
             .do(onNext: { [weak self] text in
                 if !text.isEmpty {
@@ -329,13 +333,21 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
                     .map { Reactor.Action.tapEditNotification(index: row) }
                     .bind(to: reactor.action)
                     .disposed(by: cell.disposeBag)
+                
+                cell.rx.tap
+                    .map { Reactor.Action.tapHashtag(index: row) }
+                    .do(onNext: { [weak self] _ in
+                        self?.wishDetailView.endEditing(true)
+                    })
+                    .bind(to: reactor.action)
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: self.disposeBag)
         
         reactor.state
             .map { $0.isNotificationEnable }
             .asDriver(onErrorJustReturn: false)
-            .drive(self.wishDetailView.notificationSwitch.rx.isOn)
+            .drive(self.wishDetailView.rx.isNotificationEnable)
             .disposed(by: self.disposeBag)
         
         reactor.state
@@ -348,6 +360,16 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             )) { row, hashtagType, cell in
                 cell.bind(type: hashtagType)
             }
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .compactMap { $0.selectedHashtag }
+            .distinctUntilChanged()
+            .compactMap { hashtag in HashtagType.array.firstIndex(of: hashtag) }
+            .asDriver(onErrorJustReturn: 0)
+            .drive(onNext: { [weak self] index in
+                self?.wishDetailView.selectHashTag(index: index)
+            })
             .disposed(by: self.disposeBag)
         
         reactor.state
@@ -406,5 +428,21 @@ extension WishDetailViewController: SharePhotoDelegate {
     
     func onSuccessSave() {
         self.wishDetailView.showFinishToast()
+    }
+}
+
+extension WishDetailViewController: NotificationViewControllerDelegate {
+    func onDeleteNotification(index: Int) {
+        self.wishDetailReactor.action.onNext(.deleteNotification(index: index))
+    }
+    
+    func onEditNotification(index: Int, notification: SeepNotification) {
+        self.wishDetailReactor.action.onNext(
+            .updateNotification(index: index, notification: notification)
+        )
+    }
+    
+    func onAddNotification(notification: SeepNotification) {
+        self.wishDetailReactor.action.onNext(.addNotification(notification))
     }
 }

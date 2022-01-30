@@ -83,6 +83,8 @@ final class WishDetailReactor: Reactor {
     private let wishService: WishServiceProtocol
     
     init(wish: Wish, wishService: WishServiceProtocol) {
+        let hashtag = HashtagType(rawValue: wish.hashtag)
+        
         self.initialState = State(
             emoji: wish.emoji,
             category: wish.category,
@@ -91,7 +93,9 @@ final class WishDetailReactor: Reactor {
             isDeadlineEnable: wish.endDate != nil,
             notifications: wish.notifications.isEmpty ? [nil] : wish.notifications,
             isNotificationEnable: !wish.notifications.isEmpty,
-            memo: wish.memo
+            memo: wish.memo,
+            selectedHashtag: hashtag,
+            customHashtag: hashtag == nil ? wish.hashtag : ""
         )
         self.initialWish = wish
         self.wishService = wishService
@@ -180,7 +184,6 @@ final class WishDetailReactor: Reactor {
                 self.currentState.notifications,
                 index
             ))
-            
             
         case .inputMemo(let memo):
             return .just(.setMemo(memo))
@@ -336,7 +339,7 @@ final class WishDetailReactor: Reactor {
         var hashtag = ""
         
         if let selectedHashtag = self.currentState.selectedHashtag {
-            hashtag = selectedHashtag.description
+            hashtag = selectedHashtag.rawValue
         }
         if !self.currentState.customHashtag.isEmpty {
             hashtag = self.currentState.customHashtag
@@ -349,7 +352,9 @@ final class WishDetailReactor: Reactor {
                 : self.currentState.emoji,
             category: self.currentState.category,
             title: self.currentState.title,
-            endDate: self.currentState.deadline,
+            endDate: self.currentState.isDeadlineEnable
+            ? self.currentState.deadline
+            : nil,
             notifications: notifications,
             memo: self.currentState.memo,
             hashtag: hashtag
