@@ -79,7 +79,7 @@ final class HomeWishTableViewCell: BaseTableViewCell {
         self.emojiLabel.text = wish.emoji
         self.titleLabel.text = wish.title
         self.ddayLabel.bind(dday: wish.endDate)
-        self.tagLabel.text = wish.hashtag
+        self.tagLabel.text = HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
         self.tagLabel.isHidden = wish.hashtag.isEmpty
     }
 }

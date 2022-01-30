@@ -78,7 +78,7 @@ final class HomeWishCollectionViewCell: BaseCollectionViewCell {
                 make.bottom.equalTo(self.checkButton)
             }
         } else {
-            self.tagLabel.text = wish.hashtag
+            self.tagLabel.text = HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
             
             self.ddayLabel.snp.removeConstraints()
             self.tagLabel.snp.removeConstraints()
