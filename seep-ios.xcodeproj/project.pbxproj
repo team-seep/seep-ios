@@ -1435,7 +1435,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = dev.realm;
@@ -1463,7 +1463,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = default.realm;
