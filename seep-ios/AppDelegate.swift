@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if oldSchemaVersion < 2 {
                 migration.enumerateObjects(ofType: "Wish") { oldObject, newObject in
                     guard let oldObject = oldObject,
-                          let id = oldObject["_id"] as? String,
+                          let id = oldObject["_id"] as? ObjectId,
                           let emoji = oldObject["emoji"] as? String,
                           let category = oldObject["category"] as? String,
                           let title = oldObject["title"] as? String,
@@ -96,11 +96,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           let memo = oldObject["memo"] as? String,
                           let hashtag = oldObject["hashtag"] as? String,
                           let isSuccess = oldObject["isSuccess"] as? Bool,
-                          let createdAt = oldObject["createdAt"] as? Date else { return }
+                          let createdAt = oldObject["createdAt"] as? Date else {
+                        return print("some field is nil")
+                    }
                     
                     let wishDTO: MigrationObject = migration.create("WishDTO")
                     
-                    wishDTO["_id"] = id
+                    wishDTO["_id"] = id.stringValue
                     wishDTO["emoji"] = emoji
                     wishDTO["category"] = category
                     wishDTO["title"] = title
@@ -118,10 +120,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     wishDTO["hashtag"] = hashtag
                     wishDTO["isSuccess"] = isSuccess
                     wishDTO["createdAt"] = createdAt
-                    
-                    migration.delete(oldObject)
                 }
             }
+            migration.deleteData(forType: "Wish")
         }
         
         Realm.Configuration.defaultConfiguration = config
