@@ -157,6 +157,16 @@ final class TextInputField: BaseView {
         self.textField.text = text
     }
     
+    func setDate(date: Date?) {
+        if let date = date {
+            let dateString = DateUtils.toString(format: "yyyy년 MM월 dd일 eeee 까지", date: date)
+            
+            self.setText(text: dateString)
+        } else {
+            self.placeholder = "write_placeholder_date_disable".localized
+        }
+    }
+    
     fileprivate func showError(message: String?) {
         if let message = message {
             self.addSubViews(self.errorLabel)
