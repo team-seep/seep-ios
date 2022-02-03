@@ -66,33 +66,6 @@ final class CustomHashtagField: BaseView {
         }
     }
     
-    func bind(hashtag: String) {
-        if hashtag.isEmpty {
-            self.textField.text = nil
-            self.textField.attributedPlaceholder = NSAttributedString(
-                string: "write_placeholder_hashtag".localized,
-                attributes: [
-                    .foregroundColor: UIColor.gray3,
-                    .font: UIFont.appleRegular(size: 14) as Any
-                ]
-            )
-            self.setPlaceHolderLayout()
-        } else {
-            self.textField.text = hashtag
-            self.textField.frame.size.width = self.textField.intrinsicContentSize.width
-            self.containerView.backgroundColor = .gray2
-            self.textField.attributedPlaceholder = nil
-            self.setContentsLayout()
-            
-            self.containerView.snp.remakeConstraints { make in
-                make.left.equalToSuperview()
-                make.top.equalToSuperview()
-                make.right.equalTo(self.textField).offset(8)
-                make.bottom.equalTo(self.textField).offset(6)
-            }
-        }
-    }
-    
     func setContentsLayout() {
         self.containerView.snp.remakeConstraints { make in
             make.left.equalToSuperview()
@@ -132,6 +105,7 @@ final class CustomHashtagField: BaseView {
         self.textField.text = text
         self.containerView.backgroundColor = .seepBlue
         self.textField.textColor = .gray1
+        self.textField.attributedPlaceholder = nil
     }
     
     private func setupBorder() {
@@ -185,24 +159,25 @@ final class CustomHashtagField: BaseView {
             .drive(onNext: { [weak self] text in
                 guard let self = self else { return }
                 
-                self.textField.frame.size.width = self.textField.intrinsicContentSize.width
+                self.setupPlaceholder(isEnable: text.isEmpty)
                 self.setContentsLayout()
             })
             .disposed(by: self.disposeBag)
     }
     
-    private func setPlaceHolderLayout() {
-        self.containerView.snp.remakeConstraints { make in
-            make.left.equalToSuperview()
-            make.top.equalToSuperview()
-            make.right.equalTo(self.textField).offset(8)
-            make.bottom.equalTo(self.textField).offset(4)
+    fileprivate func setupPlaceholder(isEnable: Bool) {
+        if isEnable {
+            self.textField.attributedPlaceholder = NSAttributedString(
+                string: "write_placeholder_hashtag".localized,
+                attributes: [
+                    .foregroundColor: UIColor.gray3,
+                    .font: UIFont.appleRegular(size: 14) as Any
+                ]
+            )
+        } else {
+            self.textField.attributedPlaceholder = nil
         }
         
-        self.textField.snp.remakeConstraints { make in
-            make.left.equalTo(self.containerView).offset(8)
-            make.top.equalTo(self.containerView).offset(6)
-        }
     }
 }
 
@@ -232,19 +207,8 @@ extension Reactive where Base: CustomHashtagField {
     
     var setText: Binder<String> {
         return Binder(self.base) { view, text in
-            if text.isEmpty {
-                UIView.transition(
-                    with: base,
-                    duration: 0.3,
-                    options: .transitionCrossDissolve
-                ) { [weak base] in
-                    guard let base = base else { return }
-                    
-                    base.containerView.layer.borderWidth = 0
-                    base.containerView.backgroundColor = .gray2
-                }
-            }
             base.textField.text = text
+            base.setupPlaceholder(isEnable: text.isEmpty)
         }
     }
     

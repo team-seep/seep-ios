@@ -219,7 +219,6 @@ final class TextInputField: BaseView {
             string: placeholder,
             attributes: [.foregroundColor: color]
         )
-        self.textField.tintColor = .clear
     }
 }
 

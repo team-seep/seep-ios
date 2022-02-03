@@ -57,7 +57,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .drive(onNext: { [weak self] mode in
                 guard let self = self else { return }
                 self.coordinator?.showActionSheet(
-                    wish: self.wishDetailReactor.initialState.wish,
+                    wish: self.wishDetailReactor.currentState.wish,
                     mode: self.mode,
                     onTapShare: {
                         self.wishDetailReactor.action.onNext(.tapSharePhoto)
