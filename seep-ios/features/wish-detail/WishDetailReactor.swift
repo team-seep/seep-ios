@@ -8,10 +8,13 @@ final class WishDetailReactor: Reactor {
     enum Action {
         case tapEditButton
         case tapDeleteButton
+        case tapCancelFinish
         case tapSharePhoto
+        case updateWish(wish: Wish)
     }
   
     enum Mutation {
+        case setWish(wish: Wish)
         case pushEdit(wish: Wish)
         case presentSharePhoto
         case popupWishCategory(Category)
@@ -45,14 +48,26 @@ final class WishDetailReactor: Reactor {
             
             return .just(.popupWishCategory(self.currentState.wish.category))
             
+        case .tapCancelFinish:
+            self.wishService.cancelFinishWish(id: self.currentState.wish.id)
+            
+            return .just(.popupWishCategory(self.currentState.wish.category))
+            
         case .tapSharePhoto:
             return .just(.presentSharePhoto)
+            
+        case .updateWish(let wish):
+            return .just(.setWish(wish: wish))
         }
     }
   
     func reduce(state: State, mutation: Mutation) -> State {
-        let newState = state
+        var newState = state
+        
         switch mutation {
+        case .setWish(let wish):
+            newState.wish = wish
+            
         case .pushEdit(let wish):
             self.pushWishEditPublisher.accept(wish)
             

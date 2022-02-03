@@ -118,21 +118,15 @@ final class TextInputView: BaseView {
         }
     }
     
-//    fileprivate func setText(text: String?) {
-//        if text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true {
-//            if self.isEditable {
-//                if !self.textView.isFirstResponder {
-//                    self.textView.text = "wrtie_placeholder_memo".localized
-//                }
-//            } else {
-//                self.textView.text = "detail_memo_empty".localized
-//            }
-//            self.textView.textColor = .gray3
-//        } else {
-//            self.textView.text = text
-//            self.textView.textColor = .gray5
-//        }
-//    }
+    func setEditableText(text: String) {
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            self.textView.text = "wrtie_placeholder_memo".localized
+            self.textView.textColor = .gray3
+        } else {
+            self.textView.text = text
+            self.textView.textColor = .gray5
+        }
+    }
 }
 
 extension Reactive where Base: TextInputView {

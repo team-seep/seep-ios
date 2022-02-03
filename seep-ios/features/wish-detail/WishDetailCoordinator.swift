@@ -2,6 +2,7 @@ import UIKit
 
 protocol WishDetailCoordinator: AnyObject, BaseCoordinator {
     func showActionSheet(
+        wish: Wish,
         mode: DetailMode,
         onTapShare: @escaping () -> Void,
         onTapDelete: @escaping () -> Void,
@@ -14,10 +15,13 @@ protocol WishDetailCoordinator: AnyObject, BaseCoordinator {
         totalNotifications: [SeepNotification],
         selectedIndex: Int?
     )
+    
+    func pushEdit(wish: Wish)
 }
 
 extension WishDetailCoordinator where Self: WishDetailViewController {
     func showActionSheet(
+        wish: Wish,
         mode: DetailMode,
         onTapShare: @escaping () -> Void,
         onTapDelete: @escaping () -> Void,
@@ -41,14 +45,22 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
         }
         
         if mode == .fromHome {
-          let deleteAction = UIAlertAction(
-            title: "detail_action_sheet_delete".localized,
-            style: .destructive
-          ) { [weak self] action in
-            self?.showDeleteAlert(onTapDelete: onTapDelete)
-          }
+            let deleteAction = UIAlertAction(
+                title: "detail_action_sheet_delete".localized,
+                style: .destructive
+            ) { [weak self] action in
+                self?.showDeleteAlert(onTapDelete: onTapDelete)
+            }
+            
+            let editAction = UIAlertAction(
+                title: "detail_action_sheet_edit".localized,
+                style: .default
+            ) { [weak self] action in
+                self?.pushEdit(wish: wish)
+            }
           
           alertController.addAction(deleteAction)
+            alertController.addAction(editAction)
         } else {
           let cancelFinishAction = UIAlertAction(
             title: "detail_action_sheet_cancel_finish".localized,
@@ -87,6 +99,13 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
             viewController,
             animated: true
         )
+    }
+    
+    func pushEdit(wish: Wish) {
+        let viewController = WishEditViewController.instance(wish: wish)
+        
+        viewController.delegate = self
+        self.presenter.navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func showDeleteAlert(onTapDelete: @escaping () -> Void) {

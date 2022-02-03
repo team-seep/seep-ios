@@ -57,6 +57,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .drive(onNext: { [weak self] mode in
                 guard let self = self else { return }
                 self.coordinator?.showActionSheet(
+                    wish: self.wishDetailReactor.initialState.wish,
                     mode: self.mode,
                     onTapShare: {
                         self.wishDetailReactor.action.onNext(.tapSharePhoto)
@@ -65,7 +66,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
                         self.wishDetailReactor.action.onNext(.tapDeleteButton)
                     },
                     onTapCancelFinish: {
-//                        self.wishDetailReactor.action.onNext(.tapCancelFinish)
+                        self.wishDetailReactor.action.onNext(.tapCancelFinish)
                     })
             })
             .disposed(by: self.eventDisposeBag)
@@ -97,7 +98,6 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         // MARK: State
         reactor.state
             .map { $0.wish }
-            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: Wish())
             .drive(self.wishDetailView.rx.wish)
             .disposed(by: self.disposeBag)
@@ -107,5 +107,11 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
 extension WishDetailViewController: SharePhotoDelegate {
     func onSuccessSave() {
         self.coordinator?.showToast(message: "👏이미지를 앨범에 저장했어요!")
+    }
+}
+
+extension WishDetailViewController: WishEditViewControllerDelegate {
+    func onUpdateWish(wish: Wish) {
+        self.wishDetailReactor.action.onNext(.updateWish(wish: wish))
     }
 }

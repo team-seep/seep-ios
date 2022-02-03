@@ -43,7 +43,7 @@ final class HashtagCollectionViewCell: BaseCollectionViewCell {
         
         self.textLabel.snp.makeConstraints { make in
             make.left.equalTo(self.containerView).offset(8)
-            make.top.equalTo(self.contentView).offset(6)
+            make.top.equalTo(self.containerView).offset(6)
         }
     }
     

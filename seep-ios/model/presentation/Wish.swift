@@ -37,6 +37,7 @@ struct Wish: Equatable {
     }()
     
     init(
+        id: String = UUID().uuidString,
         emoji: String = "",
         category: Category = .wantToDo,
         title: String = "",
@@ -48,7 +49,7 @@ struct Wish: Equatable {
         isSuccess: Bool = false,
         createdAt: Date = Date()
     ) {
-        self.id = UUID().uuidString
+        self.id = id
         self.emoji = emoji
         self.category = category
         self.title = title
