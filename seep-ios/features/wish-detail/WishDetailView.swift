@@ -94,7 +94,7 @@ final class WishDetailView: BaseView {
         
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
-        layout.estimatedItemSize = HashtagCollectionViewCell.estimatedSize
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         $0.collectionViewLayout = layout
         $0.register(
@@ -243,10 +243,22 @@ final class WishDetailView: BaseView {
         self.emojiInputView.setEmoji(emoji: wish.emoji)
         self.emojiInputView.isEditable = false
         self.categoryView.moveActiveButton(category: wish.category)
+        self.categoryView.isEditable = false
         self.titleField.setText(text: wish.title)
         self.dateField.setDate(date: wish.endDate)
-        
-        let notifications: [SeepNotification?] = wish.notifications.isEmpty ? [nil] : wish.notifications
+        self.setNotifications(notifications: wish.notifications)
+        self.memoField.setText(text: wish.memo)
+        self.setHashtag(hashtag: wish.hashtag)
+    }
+    
+    private func updateNotificationTableViewHeight(by notifications: [SeepNotification?]) {
+        self.notificationTableView.snp.updateConstraints { make in
+            make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
+        }
+    }
+    
+    private func setNotifications(notifications: [SeepNotification]) {
+        let notifications: [SeepNotification?] = notifications.isEmpty ? [nil] : notifications
         
         Observable.just(notifications)
             .do(onNext: { [weak self] notifications in
@@ -260,9 +272,9 @@ final class WishDetailView: BaseView {
                 cell.bind(notification: notification, isEnable: true)
             }
             .disposed(by: self.disposeBag)
-        
-        self.memoField.setText(text: wish.memo)
-        
+    }
+    
+    private func setHashtag(hashtag: String) {
         Observable.just(HashtagType.array)
             .asDriver(onErrorJustReturn: [])
             .drive(self.hashtagCollectionView.rx.items(
@@ -270,24 +282,16 @@ final class WishDetailView: BaseView {
                     cellType: HashtagCollectionViewCell.self
             )) { row, hashtagType, cell in
                 cell.bind(type: hashtagType)
+                cell.isSelected = (hashtagType == HashtagType(rawValue: hashtag))
             }
             .disposed(by: self.disposeBag)
-    }
-    
-    func updateNotificationTableViewHeight(by notifications: [SeepNotification?]) {
-        self.notificationTableView.snp.updateConstraints { make in
-            make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
-        }
-    }
-    
-    func selectHashTag(index: Int) {
-        let indexPath = IndexPath(row: index, section: 0)
         
-        self.hashtagCollectionView.selectItem(
-            at: indexPath,
-            animated: false,
-            scrollPosition: .centeredHorizontally
-        )
+        self.hashtagField.isHidden = HashtagType(rawValue: hashtag) != nil
+        if !hashtag.isEmpty {
+            self.hashtagField.setText(text: hashtag)
+        } else {
+            self.hashtagField.isHidden = true
+        }
     }
 }
 

@@ -8,18 +8,10 @@ final class CategoryView: BaseView {
     
     var isEditable: Bool = true {
         didSet {
-            UIView.transition(
-                with: self,
-                duration: 0.3,
-                options: .transitionCrossDissolve
-            ) { [weak self] in
-                guard let self = self else { return }
-                
-                if self.isEditable {
-                    self.containerView.backgroundColor = UIColor(r: 232, g: 246, b: 255)
-                } else {
-                    self.containerView.backgroundColor = .gray2
-                }
+            if self.isEditable {
+                self.containerView.backgroundColor = UIColor(r: 232, g: 246, b: 255)
+            } else {
+                self.containerView.backgroundColor = .gray2
             }
         }
     }

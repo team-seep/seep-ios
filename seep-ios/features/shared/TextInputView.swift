@@ -111,10 +111,10 @@ final class TextInputView: BaseView {
     func setText(text: String) {
         if !text.isEmpty {
             self.textView.text = text
-            self.textView.textColor = .gray3
+            self.textView.textColor = .gray5
         } else {
             self.textView.text = "detail_memo_empty".localized
-            self.textView.textColor = .gray5
+            self.textView.textColor = .gray3
         }
     }
     

@@ -128,6 +128,12 @@ final class CustomHashtagField: BaseView {
         }
     }
     
+    func setText(text: String) {
+        self.textField.text = text
+        self.containerView.backgroundColor = .seepBlue
+        self.textField.textColor = .gray1
+    }
+    
     private func setupBorder() {
         self.textField.rx
             .controlEvent(.editingDidBegin)
