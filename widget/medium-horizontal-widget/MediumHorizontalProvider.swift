@@ -31,7 +31,8 @@ struct MediumHorizontalProvider: IntentTimelineProvider {
         let realmPath = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        let realmConfig = Realm.Configuration(fileURL: realmPath)
+        var realmConfig = Realm.Configuration(fileURL: realmPath)
+        realmConfig.schemaVersion = 2
         
         if let realm = try? Realm(configuration: realmConfig) {
             let wishes = realm.objects(WishDTO.self)
