@@ -18,7 +18,7 @@ final class WriteNotificationTableViewCell: BaseTableViewCell {
         $0.textColor = .gray5
     }
     
-    private let rightArrowImage = UIImageView().then {
+    let rightArrowImage = UIImageView().then {
         $0.image = UIImage(named: "ic_arrow_right")?.withRenderingMode(.alwaysTemplate)
     }
     

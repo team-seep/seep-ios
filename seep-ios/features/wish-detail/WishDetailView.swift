@@ -272,6 +272,7 @@ final class WishDetailView: BaseView {
                 cellType: WriteNotificationTableViewCell.self
             )) { row, notification, cell in
                 cell.bind(notification: notification, isEnable: true)
+                cell.rightArrowImage.isHidden = true
             }
             .disposed(by: self.disposeBag)
     }

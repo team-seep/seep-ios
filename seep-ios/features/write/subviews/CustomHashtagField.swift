@@ -14,13 +14,13 @@ final class CustomHashtagField: BaseView {
     let textField = UITextField().then {
         $0.textAlignment = .left
         $0.returnKeyType = .done
-        $0.font = .appleRegular(size: 14)
+        $0.font = .appleExtraBold(size: 14)
         $0.textColor = .gray5
         $0.attributedPlaceholder = NSAttributedString(
             string: "write_placeholder_hashtag".localized,
             attributes: [
                 .foregroundColor: UIColor.gray3,
-                .font: UIFont.appleRegular(size: 14) as Any
+                .font: UIFont.appleExtraBold(size: 14) as Any
             ]
         )
     }
@@ -171,7 +171,7 @@ final class CustomHashtagField: BaseView {
                 string: "write_placeholder_hashtag".localized,
                 attributes: [
                     .foregroundColor: UIColor.gray3,
-                    .font: UIFont.appleRegular(size: 14) as Any
+                    .font: UIFont.appleExtraBold(size: 14) as Any
                 ]
             )
         } else {
