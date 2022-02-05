@@ -18,8 +18,18 @@ struct Wish: Equatable {
     }
     
     static func deadlineOrder(wish1: Wish, wish2: Wish) -> Bool {
-        // TODO: 정렬 순서 나오면 계산 필요
-        return true
+        if let endDate1 = wish1.endDate,
+           let endDate2 = wish2.endDate {
+            return endDate1 < endDate2
+        } else {
+            if wish1.endDate == nil && wish2.endDate == nil {
+                return true
+            } else if wish1.endDate == nil && wish2.endDate != nil {
+                return false
+            } else {
+                return true
+            }
+        }
     }
     
     static func finishOrder(wish1: Wish, wish2: Wish) -> Bool {
@@ -37,6 +47,7 @@ struct Wish: Equatable {
     }()
     
     init(
+        id: String = UUID().uuidString,
         emoji: String = "",
         category: Category = .wantToDo,
         title: String = "",
@@ -48,7 +59,7 @@ struct Wish: Equatable {
         isSuccess: Bool = false,
         createdAt: Date = Date()
     ) {
-        self.id = UUID().uuidString
+        self.id = id
         self.emoji = emoji
         self.category = category
         self.title = title

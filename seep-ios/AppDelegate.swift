@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 1
+        config.schemaVersion = 2
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 2 {

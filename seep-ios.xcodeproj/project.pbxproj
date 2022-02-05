@@ -161,6 +161,10 @@
 		6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7725FB301F00A737DF /* HomeReactor.swift */; };
 		6EEED44525F2227F0059DBE5 /* HomeWishTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED44425F2227F0059DBE5 /* HomeWishTableViewCell.swift */; };
 		6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */; };
+		6EFB350A27AB665F00CB45F7 /* WishEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350927AB665F00CB45F7 /* WishEditView.swift */; };
+		6EFB350C27AB6A5200CB45F7 /* WishEditReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */; };
+		6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */; };
+		6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */; };
 		70FB9CC3A1068DE443A92BF9 /* Pods_widgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBE8CBA27EB721434BA62F1A /* Pods_widgetExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -323,6 +327,10 @@
 		6EE5CE7725FB301F00A737DF /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
 		6EEED44425F2227F0059DBE5 /* HomeWishTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishTableViewCell.swift; sourceTree = "<group>"; };
 		6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidgetData.swift; sourceTree = "<group>"; };
+		6EFB350927AB665F00CB45F7 /* WishEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditView.swift; sourceTree = "<group>"; };
+		6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditReactor.swift; sourceTree = "<group>"; };
+		6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditViewController.swift; sourceTree = "<group>"; };
+		6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditCoordinator.swift; sourceTree = "<group>"; };
 		B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.release.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.release.xcconfig"; sourceTree = "<group>"; };
 		C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seep_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C5969ED35CA98059342290 /* Pods-widgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-widgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-widgetExtension/Pods-widgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -419,6 +427,7 @@
 		6E274E7C25F20F45007DC880 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				6EFB350827AB664F00CB45F7 /* wish-edit */,
 				6E875724279BD9A500BAA5BF /* notification */,
 				6E4F5D8C2657DF500061A13C /* splash */,
 				6EE1706A264E58D000C3E94B /* share-photo */,
@@ -835,6 +844,17 @@
 			path = cell;
 			sourceTree = "<group>";
 		};
+		6EFB350827AB664F00CB45F7 /* wish-edit */ = {
+			isa = PBXGroup;
+			children = (
+				6EFB350927AB665F00CB45F7 /* WishEditView.swift */,
+				6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */,
+				6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */,
+				6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */,
+			);
+			path = "wish-edit";
+			sourceTree = "<group>";
+		};
 		A59D84F56481B30FACF6A680 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1093,6 +1113,8 @@
 				6E41F28425FB916200CE1530 /* WriteReactor.swift in Sources */,
 				6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */,
 				6E43A5C12617192600FB1738 /* FinishedTableCell.swift in Sources */,
+				6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */,
+				6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */,
 				6E091579264FA94E0048EB79 /* CommonError.swift in Sources */,
 				6E4C32602789234200550BBB /* WriteNotificationTableViewCell.swift in Sources */,
 				6E274E7425F20EC6007DC880 /* StringExtension.swift in Sources */,
@@ -1125,6 +1147,7 @@
 				6EE1706C264E58E400C3E94B /* SharePhotoView.swift in Sources */,
 				6E43A5BD2616C8B500FB1738 /* FinishedReactor.swift in Sources */,
 				6EACBD5A2613034A0009AB6F /* PageItemViewController.swift in Sources */,
+				6EFB350A27AB665F00CB45F7 /* WishEditView.swift in Sources */,
 				6E091577264F99A50048EB79 /* SharePhotoReactor.swift in Sources */,
 				6E3B467D27A68AFE000A1D41 /* FinishedCoodinator.swift in Sources */,
 				6E69E619260D77200062CBFB /* CustomHashtagField.swift in Sources */,
@@ -1151,6 +1174,7 @@
 				6E274E8925F20FE5007DC880 /* BaseCollectionViewCell.swift in Sources */,
 				6E4F5D8E2657DF580061A13C /* SplashView.swift in Sources */,
 				6E36A48A278AE59500F6D3B5 /* BaseCoordinator.swift in Sources */,
+				6EFB350C27AB6A5200CB45F7 /* WishEditReactor.swift in Sources */,
 				6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */,
 				6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */,
 				6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */,
@@ -1378,7 +1402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1407,7 +1431,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1435,7 +1459,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = dev.realm;
@@ -1463,7 +1487,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = default.realm;

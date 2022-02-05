@@ -72,7 +72,7 @@
 "detail_cancel" = "취소";
 "detail_action_sheet_delete" = "삭제하기";
 "detail_action_sheet_cancel_finish" = "완료 취소하기";
-"detail_action_sheet_edit" = "수정";
+"detail_action_sheet_edit" = "수정하기";
 "detail_action_sheet_share" = "공유하기";
 "detail_action_sheet_cancel" = "취소하기";
 "detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
