@@ -81,6 +81,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
+        config.schemaVersion = 2
+        
+        config.migrationBlock = { migration, oldSchemaVersion in
+            if oldSchemaVersion < 2 {
+                migration.enumerateObjects(ofType: "Wish") { oldObject, newObject in
+                    guard let oldObject = oldObject,
+                          let id = oldObject["_id"] as? ObjectId,
+                          let emoji = oldObject["emoji"] as? String,
+                          let category = oldObject["category"] as? String,
+                          let title = oldObject["title"] as? String,
+                          let date = oldObject["date"] as? Date,
+                          let isPushEnable = oldObject["isPushEnable"] as? Bool,
+                          let memo = oldObject["memo"] as? String,
+                          let hashtag = oldObject["hashtag"] as? String,
+                          let isSuccess = oldObject["isSuccess"] as? Bool,
+                          let createdAt = oldObject["createdAt"] as? Date else {
+                        return print("some field is nil")
+                    }
+                    
+                    let wishDTO: MigrationObject = migration.create("WishDTO")
+                    
+                    wishDTO["_id"] = id.stringValue
+                    wishDTO["emoji"] = emoji
+                    wishDTO["category"] = category
+                    wishDTO["title"] = title
+                    wishDTO["date"] = date
+                    wishDTO["finishDate"] = oldObject["finishDate"] as? Date
+                    if isPushEnable {
+                        wishDTO["notifications"] = [
+                            NotificationDTO(seepNotification: SeepNotification(type: .dayAgo)),
+                            NotificationDTO(seepNotification: SeepNotification(type: .twoDayAgo))
+                        ]
+                    } else {
+                        wishDTO["notifications"] = []
+                    }
+                    wishDTO["memo"] = memo
+                    wishDTO["hashtag"] = hashtag
+                    wishDTO["isSuccess"] = isSuccess
+                    wishDTO["createdAt"] = createdAt
+                }
+            }
+            migration.deleteData(forType: "Wish")
+        }
         
         Realm.Configuration.defaultConfiguration = config
     }

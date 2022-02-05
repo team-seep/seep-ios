@@ -1,46 +1,101 @@
 import UserNotifications
+
 import RxSwift
 
-class NotificationManager {
+protocol NotificationManagerProtocol {
+    func reserveNotifications(wish: Wish)
     
+    func cancelNotifications(wish: Wish)
+}
+
+final class NotificationManager: NotificationManagerProtocol {
     static let shared = NotificationManager()
     
-    final let twoDay = 60 * 60 * 24 * 2
-    final let oneDay = 60 * 60 * 24
-    
-    func reserve(wish: Wish) {
-        let distance = Date().distance(to: wish.date.startOfDay)
-        
-        if distance >= TimeInterval(twoDay) {
-            self.reserveTwoDayBeforeNotification(wish: wish)
-        }
-        if distance >= TimeInterval(oneDay) {
-            self.reserveDayBeforeNotification(wish: wish)
+    func reserveNotifications(wish: Wish) {
+        guard let deadline = wish.endDate else { return }
+        for notification in wish.notifications {
+            self.reserveNotification(
+                title: wish.title,
+                deadline: deadline,
+                notification: notification
+            )
         }
     }
     
-    func cancel(wish: Wish) {
-        let ids = [wish._id.stringValue + "_day_before", wish._id.stringValue + "_two_day_before"]
-        
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
+    func cancelNotifications(wish: Wish) {
+        for notification in wish.notifications {
+            self.cancelNotification(notification: notification)
+        }
     }
     
-    private func reserveDayBeforeNotification(wish: Wish) {
+    private func reserveNotification(
+        title: String,
+        deadline: Date,
+        notification: SeepNotification
+    ) {
         let notificationContent = UNMutableNotificationContent().then {
-            $0.title = "notification_day_before_title".localized
-            $0.body = String(format: "notification_day_before_\(wish.category)_body_foramt".localized, wish.title)
+            $0.title = "notification_title".localized
+            $0.body = String(format: "notification_body_format".localized, title)
             $0.sound = .default
         }
+        var trigger: UNCalendarNotificationTrigger
         
-        var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: wish.date)
-        components.hour = 11
-        components.minute = 0
-        components.second = 0
-        components.day = (components.day ?? 0) - 1
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        switch notification.type {
+        case .targetDay:
+            let date = notification.time.setDay(date: deadline)
+            let components = Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: date
+            )
+            
+            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+            
+        case .dayAgo:
+            let date = notification.time
+                .setDay(date: deadline)
+                .addDay(day: 1)
+            let components = Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: date
+            )
+            
+            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+            
+        case .twoDayAgo:
+            let date = notification.time
+                .setDay(date: deadline)
+                .addDay(day: 2)
+            let components = Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: date
+            )
+            
+            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+            
+        case .weekAgo:
+            let date = notification.time
+                .setDay(date: deadline)
+                .addDay(day: -7)
+            let components = Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: date
+            )
+            
+            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+            
+        case .everyDay:
+            let date = notification.time
+                .setDay(date: deadline)
+            let components = Calendar.current.dateComponents(
+                [.hour, .minute, .second],
+                from: date
+            )
+            
+            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        }
+
         let request = UNNotificationRequest(
-            identifier: wish._id.stringValue + "_day_before",
+            identifier: notification.id,
             content: notificationContent,
             trigger: trigger
         )
@@ -52,29 +107,9 @@ class NotificationManager {
         }
     }
     
-    private func reserveTwoDayBeforeNotification(wish: Wish) {
-        let notificationContent = UNMutableNotificationContent().then {
-            $0.title = "notification_two_day_before_title".localized
-            $0.body = String(format: "notification_two_day_before_\(wish.category)_body_format".localized, wish.title)
-            $0.sound = .default
-        }
-        var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: wish.date)
-        components.hour = 11
-        components.minute = 0
-        components.second = 0
-        components.day = (components.day ?? 0) - 2
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        let request = UNNotificationRequest(
-            identifier: wish._id.stringValue + "_tow_day_before",
-            content: notificationContent,
-            trigger: trigger
-        )
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Notification error: \(error)")
-            }
-        }
+    private func cancelNotification(notification: SeepNotification) {
+        UNUserNotificationCenter
+            .current()
+            .removePendingNotificationRequests(withIdentifiers: [notification.id])
     }
 }

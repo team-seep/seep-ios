@@ -4,7 +4,7 @@ import SnapKit
 
 class BaseView: UIView {
   
-  let disposeBag = DisposeBag()
+  var disposeBag = DisposeBag()
   
   private lazy var dimView = UIView(frame: self.frame).then {
     $0.backgroundColor = .clear

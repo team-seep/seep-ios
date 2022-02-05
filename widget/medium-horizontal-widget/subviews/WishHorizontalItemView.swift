@@ -32,7 +32,9 @@ struct WishHorizontalItemView: View {
                 
                 Spacer()
                 
-                DdayView(date: self.wish.date)
+                if let deadline = self.wish.endDate {
+                    DdayView(date: deadline)
+                }
             })
             .padding(.init(top: 12, leading: 12, bottom: 14, trailing: 12))
             .frame(width: (UIScreen.mediumWidgetWidth - 30 - 16) / 3)

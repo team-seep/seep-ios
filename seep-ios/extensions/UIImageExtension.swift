@@ -1,8 +1,6 @@
 import UIKit
 
 extension UIImage {
-  
-  static let icBack = UIImage(named: "ic_back")
   static let icClose = UIImage(named: "ic_close")
   static let icGrid = UIImage(named: "ic_grid")
   static let icList = UIImage(named: "ic_list")

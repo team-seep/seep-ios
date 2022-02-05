@@ -31,11 +31,12 @@ struct MediumVerticalProvider: IntentTimelineProvider {
         let realmPath = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        let realmConfig = Realm.Configuration(fileURL: realmPath)
+        var realmConfig = Realm.Configuration(fileURL: realmPath)
+        realmConfig.schemaVersion = 2
         
         if let realm = try? Realm(configuration: realmConfig) {
-            let wishes = realm.objects(Wish.self)
-                .map { $0 }
+            let wishes = realm.objects(WishDTO.self)
+                .map { Wish(dto: $0) }
                 .filter { !$0.isSuccess }
                 .sorted(by: Wish.deadlineOrder)
             let wishSlice = wishes.count < 3 ? wishes : Array(wishes[..<3])

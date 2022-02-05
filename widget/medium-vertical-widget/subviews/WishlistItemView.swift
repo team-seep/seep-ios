@@ -9,7 +9,9 @@ struct WishlistItemView: View {
             alignment: .center,
             spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/,
             content: {
-                DdayView(date: self.wish.date)
+                if let endDate = self.wish.endDate {
+                    DdayView(date: endDate)
+                }
                 
                 Text(wish.emoji)
                     .font(.system(size: 18))
