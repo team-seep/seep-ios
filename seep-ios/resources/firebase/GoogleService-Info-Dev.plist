@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>633495205718-vcc57ubs712n58ghsngtnng4mvjg7og4.apps.googleusercontent.com</string>
+	<string>173251564429-prtn0u5m6d2olk1dtupt1vpg069iesqh.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.633495205718-vcc57ubs712n58ghsngtnng4mvjg7og4</string>
+	<string>com.googleusercontent.apps.173251564429-prtn0u5m6d2olk1dtupt1vpg069iesqh</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBvdDeuAfbjhsfCRsB5OR5eI6rXchzBitI</string>
+	<string>AIzaSyDBYiLrfWlUBrQN0hv3li6sCvexwzuAwo0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>633495205718</string>
+	<string>173251564429</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>macgongmon.seep-ios.dev</string>
 	<key>PROJECT_ID</key>
-	<string>seep-ios</string>
+	<string>seep-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>seep-ios.appspot.com</string>
+	<string>seep-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:633495205718:ios:00500b3cf6ed5e3c12c8f7</string>
+	<string>1:173251564429:ios:bcc5a85c9a1f67ffb563c4</string>
 </dict>
 </plist>
