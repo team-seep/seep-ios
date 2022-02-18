@@ -248,7 +248,7 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
         AlertUtils.show(
             viewController: self,
             title: "업데이트 공지",
-            message: "데이터 초기화 오류 안내",
+            message: "2.0.0 업데이트로 인한 데이터 초기화 오류에 대해 안내해드리겠습니다.",
             actions: [doNotShowAction, showMoreAction]
         )
     }
