@@ -1,11 +1,11 @@
 import Foundation
 
 struct UserDefaultsUtils {
-  
-  static let keyViewType = "keyViewType"
-  static let keySharePhotoTooltipIsShow = "keySharePhotoTooltipIsShow"
-  static let keyRandomEmojiTooltipIsShow = "keyRandomEmojiTooltipIsShow"
-  private let keyDeepLink = "keyDeepLink"
+    static let keyViewType = "keyViewType"
+    static let keySharePhotoTooltipIsShow = "keySharePhotoTooltipIsShow"
+    static let keyRandomEmojiTooltipIsShow = "keyRandomEmojiTooltipIsShow"
+    private let keyDeepLink = "keyDeepLink"
+    static let keyNoticeDate = "keyNoticeDate"
   
   let instance: UserDefaults
   
@@ -52,4 +52,12 @@ struct UserDefaultsUtils {
   func getDeepLink() -> String {
     return self.instance.string(forKey: self.keyDeepLink) ?? ""
   }
+    
+    func setNoticeDisableToday() {
+        self.instance.set(DateUtils.todayString() ,forKey: UserDefaultsUtils.keyNoticeDate)
+    }
+    
+    func getNoticeDisableToday() -> String {
+        return self.instance.string(forKey: UserDefaultsUtils.keyNoticeDate) ?? ""
+    }
 }

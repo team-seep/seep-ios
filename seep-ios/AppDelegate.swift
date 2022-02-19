@@ -81,10 +81,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 2
+        config.schemaVersion = 3
         
         config.migrationBlock = { migration, oldSchemaVersion in
-            if oldSchemaVersion < 2 {
+            if oldSchemaVersion < 3 {
                 migration.enumerateObjects(ofType: "Wish") { oldObject, newObject in
                     guard let oldObject = oldObject,
                           let id = oldObject["_id"] as? ObjectId,
