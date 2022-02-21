@@ -20,6 +20,7 @@ final class HomeReactor: Reactor {
         case setWishCount(Int)
         case pushFinish(category: Category)
         case presentWrite(Category)
+        case showNotice(url: String)
     }
     
     struct State {
@@ -32,13 +33,20 @@ final class HomeReactor: Reactor {
     let initialState = State()
     let presentWritePublisher = PublishRelay<Category>()
     let pushFinishPublisher = PublishRelay<Category>()
+    let showNoticePublisher = PublishRelay<String>()
     private let wishService: WishServiceProtocol
+    private let remoteConfigService: RemoteConfigServiceProtocol
     private let userDefaults: UserDefaultsUtils
     
     
-    init(wishService: WishServiceProtocol, userDefaults: UserDefaultsUtils) {
+    init(
+        wishService: WishServiceProtocol,
+        userDefaults: UserDefaultsUtils,
+        remoteConfigService: RemoteConfigServiceProtocol
+    ) {
         self.wishService = wishService
         self.userDefaults = userDefaults
+        self.remoteConfigService = remoteConfigService
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -48,6 +56,7 @@ final class HomeReactor: Reactor {
             let wishCount = self.wishService.getWishCount(category: self.currentState.category)
             
             return .merge([
+                self.fetchNotice(),
                 .just(.setWishCount(wishCount)),
                 .just(.setSuccessCount(successCount)),
                 .just(.setViewType(self.userDefaults.getViewType())),
@@ -98,6 +107,9 @@ final class HomeReactor: Reactor {
             
         case .presentWrite(let category):
             self.presentWritePublisher.accept(category)
+            
+        case .showNotice(let url):
+            self.showNoticePublisher.accept(url)
         }
         
         return newState
@@ -118,5 +130,10 @@ final class HomeReactor: Reactor {
             }
         }
         return .empty()
+    }
+    
+    private func fetchNotice() -> Observable<Mutation> {
+        return self.remoteConfigService.fetchNoticeLink()
+            .map { .showNotice(url: $0) }
     }
 }

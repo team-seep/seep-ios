@@ -7,7 +7,8 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
     private let homeView = HomeView()
     private let homeReactor = HomeReactor(
         wishService: WishService(),
-        userDefaults: UserDefaultsUtils()
+        userDefaults: UserDefaultsUtils(),
+        remoteConfigService: RemoteConfigService()
     )
     private weak var coordinator: HomeCoordinator?
     
@@ -63,6 +64,16 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
             .asDriver(onErrorJustReturn: Category.wantToDo)
             .drive(onNext: { [weak self] category in
                 self?.coordinator?.presentWrite(category: category)
+            })
+            .disposed(by: self.eventDisposeBag)
+        
+        self.homeReactor.showNoticePublisher
+            .asDriver(onErrorJustReturn: "")
+            .filter { !$0.isEmpty }
+            .drive(onNext: { [weak self] url in
+                if UserDefaultsUtils().getNoticeDisableToday() != DateUtils.todayString() {
+                    self?.showNoticeAlert(url: url)
+                }
             })
             .disposed(by: self.eventDisposeBag)
         
@@ -221,6 +232,24 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
             viewController: self,
             title: "home_finish_alert_title".localized,
             message: "home_finish_alert_description".localized
+        )
+    }
+    
+    private func showNoticeAlert(url: String) {
+        let doNotShowAction = UIAlertAction(title: "오늘 하루 보지 않기", style: .default) { _ in
+            UserDefaultsUtils().setNoticeDisableToday()
+        }
+        let showMoreAction = UIAlertAction(title: "자세히 보기", style: .default) { _ in
+            guard let url = URL(string: url) else { return }
+            
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        
+        AlertUtils.show(
+            viewController: self,
+            title: "업데이트 공지",
+            message: "2.0.0 업데이트로 인한 데이터 초기화 오류에 대해 안내해드리겠습니다.",
+            actions: [doNotShowAction, showMoreAction]
         )
     }
     
