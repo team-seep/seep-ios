@@ -20,7 +20,9 @@ class SharePhotoReactor: Reactor {
     case setShareType(ShareTypeSwitchView.ShareType)
     case fetchAllPhotos([PHAsset])
     case setSelectedPhoto(PHAsset)
+      case savePhotoToAlbum
     case setAlertMessage(String)
+      case showError(Error)
   }
   
   struct State {
@@ -34,6 +36,8 @@ class SharePhotoReactor: Reactor {
   let initialState: State
   let userDefaults: UserDefaultsUtils
   let alertPublisher = PublishRelay<String>()
+    let savePhotoToAlbumPublisher = PublishRelay<Void>()
+    let showErrorAlertPublisher = PublishRelay<Error>()
   
   init(userDefaults: UserDefaultsUtils) {
     self.userDefaults = userDefaults
@@ -51,8 +55,8 @@ class SharePhotoReactor: Reactor {
       return .just(.setShareType(.emoji))
     case .tapPhotoButton:
       return self.getCurrentPhotosPermission()
-        .flatMap { isGranged -> Observable<Mutation> in
-          if isGranged {
+        .flatMap { isGranted -> Observable<Mutation> in
+          if isGranted {
             return .concat([
               self.fetchPhotos().map { Mutation.fetchAllPhotos($0) },
               .just(.setShareType(.photo))
@@ -72,8 +76,20 @@ class SharePhotoReactor: Reactor {
       let selectedPhoto = self.currentState.photos[index]
       
       return .just(.setSelectedPhoto(selectedPhoto))
-    default:
-      return Observable.empty()
+    
+    case .tapShareButton:
+        return self.getCurrentPhotosPermission()
+            .flatMap { isGranted -> Observable<Mutation> in
+                if isGranted {
+                    return .just(.savePhotoToAlbum)
+                } else {
+                    return self.requestPhotoPermission()
+                        .flatMap { _ -> Observable<Mutation> in
+                            return .just(.savePhotoToAlbum)
+                        }
+                }
+            }
+            .catch { .just(.showError($0)) }
     }
   }
   
@@ -96,6 +112,12 @@ class SharePhotoReactor: Reactor {
       self.alertPublisher.accept(message)
     case .setSelectedPhoto(let asset):
       newState.selectedPhoto = asset
+        
+    case .savePhotoToAlbum:
+        self.savePhotoToAlbumPublisher.accept(())
+        
+    case .showError(let error):
+        self.showErrorAlertPublisher.accept(error)
     }
     
     return newState

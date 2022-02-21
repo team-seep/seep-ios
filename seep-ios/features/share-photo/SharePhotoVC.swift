@@ -40,6 +40,26 @@ class SharePhotoVC: BaseVC, View {
     }
     self.sharePhotoView.bind(wish: self.wish)
   }
+    
+    override func bindEvent() {
+        self.sharePhotoReactor.savePhotoToAlbumPublisher
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                self?.savePhotoToAlbum()
+            })
+            .disposed(by: self.eventDisposeBag)
+        
+        self.sharePhotoReactor.showErrorAlertPublisher
+            .asDriver(onErrorJustReturn: CommonError(desc: "unknown"))
+            .drive(onNext: { [weak self] error in
+                if let commonError = error as? CommonError {
+                    self?.showDeniedAlert(message: commonError.description)
+                } else {
+                    self?.showDeniedAlert(message: error.localizedDescription)
+                }
+            })
+            .disposed(by: self.eventDisposeBag)
+    }
   
   func bind(reactor: SharePhotoReactor) {
     // MARK: Bind event
@@ -53,11 +73,11 @@ class SharePhotoVC: BaseVC, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
-    self.sharePhotoView.shareButton.rx.tap
-      .observeOn(MainScheduler.instance)
-      .bind(onNext: self.savePhotoToAlbum)
-      .disposed(by: self.disposeBag)
-    
+      self.sharePhotoView.shareButton.rx.tap
+          .map { Reactor.Action.tapShareButton }
+          .bind(to: reactor.action)
+          .disposed(by: self.disposeBag)
+      
     // MARK: Bind action
     self.sharePhotoView.shareTypeSwitchButton.rx.tapEmojiButton
       .map { SharePhotoReactor.Action.tapEmojiButton }
@@ -133,15 +153,17 @@ class SharePhotoVC: BaseVC, View {
       .disposed(by: self.disposeBag)
   }
   
-  private func showDeniedAlert(message: String) {
-    AlertUtils.showWithCancel(
-      viewController: self,
-      title: nil,
-      message: message,
-      onTapOk: { [weak self] in
-        self?.gotoAppPrivacySettings()
-    })
-  }
+    private func showDeniedAlert(message: String) {
+        AlertUtils.showWithCancel(
+            viewController: self,
+            title: nil,
+            message: message,
+            okButton: "설정",
+            cancelButton: "취소"
+        ) { [weak self] in
+            self?.gotoAppPrivacySettings()
+        }
+    }
   
   private func dismiss() {
     self.dismiss(animated: true, completion: nil)

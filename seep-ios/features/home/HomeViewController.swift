@@ -236,7 +236,7 @@ final class HomeViewController: BaseVC, View, HomeCoordinator {
     }
     
     private func showNoticeAlert(url: String) {
-        let doNotShowAction = UIAlertAction(title: "오늘 하루 보지 않지", style: .default) { _ in
+        let doNotShowAction = UIAlertAction(title: "오늘 하루 보지 않기", style: .default) { _ in
             UserDefaultsUtils().setNoticeDisableToday()
         }
         let showMoreAction = UIAlertAction(title: "자세히 보기", style: .default) { _ in
