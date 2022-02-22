@@ -33,7 +33,7 @@ struct SmallRemainProvider: TimelineProvider {
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
         var realmConfig = Realm.Configuration(fileURL: realmPath)
-        realmConfig.schemaVersion = 2
+        realmConfig.schemaVersion = 3
         
         if let realm = try? Realm(configuration: realmConfig) {
             let searchTask = realm.objects(WishDTO.self)
