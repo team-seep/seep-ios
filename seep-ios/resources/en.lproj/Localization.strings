@@ -13,6 +13,11 @@
 "category_want_to_get" = "갖고 싶어요";
 "category_want_to_go" = "가고 싶어요";
 
+// Membership
+"membership_start_without_signin" = "가입없이 바로 시작하기";
+"membership_signin_with_kakao" = "카카오톡 로그인하기";
+"membership_signin_with_apple" = "애플 로그인하기";
+
 // Home
 "home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
 "home_write_category_want_to_get_button" = "📝 뭐 갖고 싶어요?";
