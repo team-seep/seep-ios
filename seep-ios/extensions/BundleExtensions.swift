@@ -16,4 +16,14 @@ extension Bundle {
         }
         return realmName
     }
+    
+    static var kakaoAppKey: String {
+        guard let kakaoAppKey = Self.main.object(
+            forInfoDictionaryKey: "KAKAO_APP_KEY"
+        ) as? String else {
+            fatalError("KAKAO_APP_KEY를 로드할 수 없습니다.")
+        }
+        
+        return kakaoAppKey
+    }
 }

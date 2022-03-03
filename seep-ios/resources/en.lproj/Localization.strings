@@ -8,6 +8,12 @@
 "common_category_want_to_get_unit" = "%02d개";
 "common_category_want_to_go_unit" = "%02d곳";
 
+// Error
+"error_unknown" = "알 수 없는 에러입니다.";
+"error_time_out" = "알 수 없는 에러입니다.\n잠시후 다시 시도해주세요.";
+"error_fail_decode" = "알 수 없는 형태의 데이터입니다.";
+"error_nil_value" = "값이 없습니다.";
+
 // Category
 "category_want_to_do" = "하고 싶어요";
 "category_want_to_get" = "갖고 싶어요";

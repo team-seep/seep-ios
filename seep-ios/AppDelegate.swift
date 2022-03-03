@@ -3,6 +3,7 @@ import UserNotifications
 
 import Firebase
 import RealmSwift
+import KakaoSDKCommon
 
 
 @main
@@ -13,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         self.initilizeFirebase()
+        self.initializeKakaoSDK()
         self.copyDefaultToAppGroup()
         self.setupRealmConfig()
         self.requestNotificationAuthorization()
@@ -40,6 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func initilizeFirebase() {
         FirebaseApp.configure()
+    }
+    
+    private func initializeKakaoSDK() {
+        KakaoSDK.initSDK(appKey: Bundle.kakaoAppKey)
     }
     
     private func requestNotificationAuthorization() {
