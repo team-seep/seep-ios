@@ -80,6 +80,8 @@
 		6E5BD775275CAFBE00DA14E6 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5BD774275CAFBE00DA14E6 /* EmptyView.swift */; };
 		6E5DECFE264263F70005487F /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFD264263F70005487F /* TagLabel.swift */; };
 		6E5DED002642D8FC0005487F /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DECFF2642D8FC0005487F /* CategoryView.swift */; };
+		6E5EC81427E0CAE200FA4C1A /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = 6E5EC81327E0CAE200FA4C1A /* Gifu */; };
+		6E5EC81727E0D10F00FA4C1A /* intro.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6E5EC81627E0D10F00FA4C1A /* intro.gif */; };
 		6E600149260831F1000065C8 /* GoogleService-Info-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E600148260831F0000065C8 /* GoogleService-Info-Prod.plist */; };
 		6E60018826084516000065C8 /* HomeWishCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60018726084516000065C8 /* HomeWishCollectionViewCell.swift */; };
 		6E6203562763878B006B8393 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6E6203552763878B006B8393 /* SnapKit */; };
@@ -269,6 +271,7 @@
 		6E5BD774275CAFBE00DA14E6 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		6E5DECFD264263F70005487F /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
 		6E5DECFF2642D8FC0005487F /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		6E5EC81627E0D10F00FA4C1A /* intro.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = intro.gif; sourceTree = "<group>"; };
 		6E600148260831F0000065C8 /* GoogleService-Info-Prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Prod.plist"; sourceTree = "<group>"; };
 		6E60018726084516000065C8 /* HomeWishCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishCollectionViewCell.swift; sourceTree = "<group>"; };
 		6E66A26E25FB40BD00C0C051 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -375,6 +378,7 @@
 				6E42CCEE27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				6E62035C2763889D006B8393 /* Then in Frameworks */,
 				6E74E20F2763844E00D872D5 /* Differentiator in Frameworks */,
+				6E5EC81427E0CAE200FA4C1A /* Gifu in Frameworks */,
 				6E16FB9727D0DDD700BB6AC7 /* KakaoSDKCommonCore in Frameworks */,
 				6E74E2082763834E00D872D5 /* RxCocoa in Frameworks */,
 				6E42CCEC27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta in Frameworks */,
@@ -451,6 +455,7 @@
 		6E274E6325F20E20007DC880 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				6E5EC81527E0D10800FA4C1A /* gif */,
 				6E6D610B27587F6D00A0BFD9 /* firebase */,
 				6E4F5D8F2657E0340061A13C /* lottie */,
 				6EE5CE6E25FB1EB500A737DF /* font */,
@@ -608,6 +613,14 @@
 				6E5882542658BE730050F0E0 /* splash3.json */,
 			);
 			path = lottie;
+			sourceTree = "<group>";
+		};
+		6E5EC81527E0D10800FA4C1A /* gif */ = {
+			isa = PBXGroup;
+			children = (
+				6E5EC81627E0D10F00FA4C1A /* intro.gif */,
+			);
+			path = gif;
 			sourceTree = "<group>";
 		};
 		6E66A26D25FB40B600C0C051 /* model */ = {
@@ -999,6 +1012,7 @@
 				6E16FB9427D0DDD700BB6AC7 /* KakaoSDKCommon */,
 				6E16FB9627D0DDD700BB6AC7 /* KakaoSDKCommonCore */,
 				6E16FB9827D0DDD700BB6AC7 /* KakaoSDKUser */,
+				6E5EC81327E0CAE200FA4C1A /* Gifu */,
 			);
 			productName = "seep-ios";
 			productReference = 6E283AF525F2047900955B57 /* seep-ios.app */;
@@ -1059,6 +1073,7 @@
 				6E7112CE2781870600396CC0 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6E16FB8F27D0DDD700BB6AC7 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				6E5EC81227E0CAE200FA4C1A /* XCRemoteSwiftPackageReference "Gifu" */,
 			);
 			productRefGroup = 6E283AF625F2047900955B57 /* Products */;
 			projectDirPath = "";
@@ -1078,6 +1093,7 @@
 				6E5882582658BE730050F0E0 /* splash1.json in Resources */,
 				6E6D610927587F4300A0BFD9 /* GoogleService-Info-Dev.plist in Resources */,
 				6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */,
+				6E5EC81727E0D10F00FA4C1A /* intro.gif in Resources */,
 				6E5882572658BE730050F0E0 /* splash3.json in Resources */,
 				6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */,
 				6E5882562658BE730050F0E0 /* splash2.json in Resources */,
@@ -1643,6 +1659,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		6E5EC81227E0CAE200FA4C1A /* XCRemoteSwiftPackageReference "Gifu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kaishin/Gifu.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		6E6203542763878B006B8393 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1774,6 +1798,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		6E5EC81327E0CAE200FA4C1A /* Gifu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E5EC81227E0CAE200FA4C1A /* XCRemoteSwiftPackageReference "Gifu" */;
+			productName = Gifu;
 		};
 		6E6203552763878B006B8393 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

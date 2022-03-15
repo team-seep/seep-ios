@@ -20,6 +20,8 @@
 "category_want_to_go" = "가고 싶어요";
 
 // Membership
+"membership_title" = "하고 싶었던 것들\n이제 미루지 않고\n할 수 있어요!";
+"membership_description" = "가입하면 친구들과 서로 ‘싶’을\n공유할 수 있어요.";
 "membership_start_without_signin" = "가입없이 바로 시작하기";
 "membership_signin_with_kakao" = "카카오톡 로그인하기";
 "membership_signin_with_apple" = "애플 로그인하기";
