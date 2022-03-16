@@ -26,6 +26,10 @@
 "membership_signin_with_kakao" = "카카오톡 로그인하기";
 "membership_signin_with_apple" = "애플 로그인하기";
 
+// Signup
+"signup_title" = "닉네임만 입력하면\n가입이 완료됩니다!";
+"signup_profile_title" = "프로필 이미지 표시";
+
 // Home
 "home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
 "home_write_category_want_to_get_button" = "📝 뭐 갖고 싶어요?";
