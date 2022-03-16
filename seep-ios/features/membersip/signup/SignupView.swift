@@ -10,13 +10,16 @@ final class SignupView: BaseView {
         $0.textColor = .gray5
         $0.text = "signup_title".localized
         $0.setLineHeight(lineHeight: 30)
+        $0.numberOfLines = 0
     }
     
     private let profileImage = UIImageView().then {
+        $0.backgroundColor = .gray2
         $0.layer.cornerRadius = 50
         $0.layer.borderColor = UIColor.gray2_5.cgColor
         $0.layer.borderWidth = 1
         $0.layer.masksToBounds = true
+        $0.image = UIImage(named: "img_profile_default")
     }
     
     let cameraButton = UIButton().then {
@@ -24,10 +27,126 @@ final class SignupView: BaseView {
     }
     
     private let profileLabel = UILabel().then {
-        $0.font = .appleRegular(size: 400)
+        $0.font = .appleRegular(size: 14)
         $0.textColor = .gray5
         $0.text = "signup_profile_title".localized
     }
     
+    private let profileSwitch = ProfileSwitch()
     
+    private let nicknameLabel = UILabel().then {
+        $0.textColor = .gray5
+        $0.text = "signup_nickname".localized
+        $0.font = .appleRegular(size: 14)
+    }
+    
+    private let nicknameBackground = UIView().then {
+        $0.layer.cornerRadius = 6
+        $0.backgroundColor = .gray2
+    }
+    
+    private let nicknameField = UITextField().then {
+        $0.font = .appleRegular(size: 16)
+        $0.textColor = .gray5
+        
+        let placeholder = NSMutableAttributedString(
+            string: "signup_nickname_placeholder".localized,
+            attributes: [.foregroundColor: UIColor.gray3 as Any]
+        )
+        $0.attributedPlaceholder = placeholder
+    }
+    
+    private let hintLabel = UILabel().then {
+        $0.textColor = .gray4
+        $0.font = .appleRegular(size: 14)
+        $0.text = "signup_nickname_hint".localized
+    }
+    
+    let signupButton = WriteButton()
+    
+    override func setup() {
+        self.backgroundColor = .gray1
+        self.addSubViews([
+            self.backButton,
+            self.titleLabel,
+            self.profileImage,
+            self.cameraButton,
+            self.profileLabel,
+            self.profileSwitch,
+            self.nicknameLabel,
+            self.nicknameBackground,
+            self.nicknameField,
+            self.hintLabel,
+            self.signupButton
+        ])
+    }
+    
+    override func bindConstraints() {
+        self.backButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(13)
+            make.width.equalTo(24)
+            make.height.equalTo(24)
+        }
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.backButton.snp.bottom).offset(29)
+        }
+        
+        self.profileImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(70)
+            make.width.equalTo(100)
+            make.height.equalTo(100)
+        }
+        
+        self.cameraButton.snp.makeConstraints { make in
+            make.right.equalTo(self.profileImage).offset(-4)
+            make.bottom.equalTo(self.profileImage).offset(-4)
+            make.width.equalTo(28)
+            make.height.equalTo(28)
+        }
+        
+        self.profileLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.profileImage.snp.bottom).offset(40)
+        }
+        
+        self.profileSwitch.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(self.profileLabel.snp.bottom).offset(8)
+        }
+        
+        self.nicknameLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.profileSwitch.snp.bottom).offset(24)
+        }
+        
+        self.nicknameBackground.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(self.nicknameLabel.snp.bottom).offset(8)
+            make.height.equalTo(56)
+        }
+        
+        self.nicknameField.snp.makeConstraints { make in
+            make.left.equalTo(self.nicknameBackground).offset(16)
+            make.right.equalTo(self.nicknameBackground).offset(-16)
+            make.centerY.equalTo(self.nicknameBackground)
+        }
+        
+        self.hintLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(self.nicknameBackground.snp.bottom).offset(8)
+        }
+        
+        self.signupButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-10)
+            make.height.equalTo(50)
+        }
+    }
 }

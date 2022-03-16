@@ -29,6 +29,11 @@
 // Signup
 "signup_title" = "닉네임만 입력하면\n가입이 완료됩니다!";
 "signup_profile_title" = "프로필 이미지 표시";
+"signup_nickname_first" = "닉네임 첫 글자까지";
+"signup_nickname_second" = "닉네임 두 글자까지";
+"signup_nickname" = "닉네임";
+"signup_nickname_placeholder" = "닉네임을 입력해주세요.";
+"signup_nickname_hint" = "💡한글, 영문을 1~8자 이내로 입력해주세요. (특수문자, 숫자 불가)";
 
 // Home
 "home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
