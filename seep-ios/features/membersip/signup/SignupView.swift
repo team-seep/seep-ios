@@ -13,24 +13,13 @@ final class SignupView: BaseView {
         $0.numberOfLines = 0
     }
     
-    private let profileImage = UIImageView().then {
-        $0.backgroundColor = .gray2
-        $0.layer.cornerRadius = 50
-        $0.layer.borderColor = UIColor.gray2_5.cgColor
-        $0.layer.borderWidth = 1
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "img_profile_default")
-    }
-    
-    let cameraButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_camera"), for: .normal)
-    }
-    
     private let profileLabel = UILabel().then {
         $0.font = .appleRegular(size: 14)
         $0.textColor = .gray5
         $0.text = "signup_profile_title".localized
     }
+    
+    let profileView = ProfileView()
     
     private let profileSwitch = ProfileSwitch()
     
@@ -49,8 +38,7 @@ final class SignupView: BaseView {
         self.addSubViews([
             self.backButton,
             self.titleLabel,
-            self.profileImage,
-            self.cameraButton,
+            self.profileView,
             self.profileLabel,
             self.profileSwitch,
             self.nicknameLabel,
@@ -72,23 +60,14 @@ final class SignupView: BaseView {
             make.top.equalTo(self.backButton.snp.bottom).offset(29)
         }
         
-        self.profileImage.snp.makeConstraints { make in
+        self.profileView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(self.titleLabel.snp.bottom).offset(70)
-            make.width.equalTo(100)
-            make.height.equalTo(100)
-        }
-        
-        self.cameraButton.snp.makeConstraints { make in
-            make.right.equalTo(self.profileImage).offset(-4)
-            make.bottom.equalTo(self.profileImage).offset(-4)
-            make.width.equalTo(28)
-            make.height.equalTo(28)
         }
         
         self.profileLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.profileImage.snp.bottom).offset(40)
+            make.top.equalTo(self.profileView.snp.bottom).offset(40)
         }
         
         self.profileSwitch.snp.makeConstraints { make in
