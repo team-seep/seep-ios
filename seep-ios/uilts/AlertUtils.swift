@@ -70,23 +70,40 @@ struct AlertUtils {
     )
   }
   
-  static func showImagePicker(controller: UIViewController, picker: UIImagePickerController) {
-    let alert = UIAlertController(title: "이미지 불러오기", message: nil, preferredStyle: .actionSheet)
-    let libraryAction = UIAlertAction(title: "앨범", style: .default) { ( _) in
-      picker.sourceType = .photoLibrary
-      controller.present(picker, animated: true)
+    static func showImagePicker(
+        controller: UIViewController,
+        picker: UIImagePickerController
+    ) {
+        let alert = UIAlertController(
+            title: "이미지 불러오기",
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        let cameraAction = UIAlertAction(
+            title: "카메라로 촬영하기",
+            style: .default
+        ) { (_ ) in
+            picker.sourceType = .camera
+            controller.present(picker, animated: true)
+        }
+        let libraryAction = UIAlertAction(
+            title: "앨범에서 사진 불러오기",
+            style: .default
+        ) { ( _) in
+            picker.sourceType = .photoLibrary
+            controller.present(picker, animated: true)
+        }
+        let cancelAction = UIAlertAction(
+            title: "common_cancel".localized,
+            style: .cancel,
+            handler: nil
+        )
+        
+        alert.addAction(libraryAction)
+        alert.addAction(cameraAction)
+        alert.addAction(cancelAction)
+        controller.present(alert, animated: true)
     }
-    let cameraAction = UIAlertAction(title: "카메라", style: .default) { (_ ) in
-      picker.sourceType = .camera
-      controller.present(picker, animated: true)
-    }
-    let cancelAction = UIAlertAction(title: "common_cancel".localized, style: .cancel, handler: nil)
-    
-    alert.addAction(libraryAction)
-    alert.addAction(cameraAction)
-    alert.addAction(cancelAction)
-    controller.present(alert, animated: true)
-  }
 }
 
 

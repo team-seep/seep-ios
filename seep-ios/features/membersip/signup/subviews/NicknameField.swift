@@ -19,7 +19,7 @@ final class NicknameField: BaseView {
     
     private let hintLabel = UILabel().then {
         $0.textColor = .gray4
-        $0.font = .appleRegular(size: 14)
+        $0.font = .appleRegular(size: 12)
         $0.text = "signup_nickname_hint".localized
     }
     
