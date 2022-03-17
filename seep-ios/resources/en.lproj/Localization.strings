@@ -34,6 +34,7 @@
 "signup_nickname" = "닉네임";
 "signup_nickname_placeholder" = "닉네임을 입력해주세요.";
 "signup_nickname_hint" = "💡한글, 영문을 1~8자 이내로 입력해주세요. (특수문자, 숫자 불가)";
+"signup_nickname_error" = "📍한글, 영문을 1~8자 이내로 입력해주세요. (특수문자, 숫자 불가)";
 
 // Home
 "home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
