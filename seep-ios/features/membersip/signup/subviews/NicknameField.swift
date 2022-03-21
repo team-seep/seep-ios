@@ -1,12 +1,15 @@
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 final class NicknameField: BaseView {
     private let nicknameBackground = UIView().then {
         $0.layer.cornerRadius = 6
         $0.backgroundColor = .gray2
     }
     
-    private let nicknameField = UITextField().then {
+    fileprivate let nicknameField = UITextField().then {
         $0.font = .appleRegular(size: 16)
         $0.textColor = .gray5
         
@@ -80,5 +83,11 @@ extension NicknameField: UITextFieldDelegate {
         }
         
         return newLength <= 8
+    }
+}
+
+extension Reactive where Base: NicknameField {
+    var text: ControlProperty<String> {
+        return base.nicknameField.rx.text.orEmpty
     }
 }

@@ -21,7 +21,7 @@ final class SignupView: BaseView {
     
     let profileView = ProfileView()
     
-    private let profileSwitch = ProfileSwitch()
+    let profileSwitch = ProfileSwitch()
     
     private let nicknameLabel = UILabel().then {
         $0.textColor = .gray5

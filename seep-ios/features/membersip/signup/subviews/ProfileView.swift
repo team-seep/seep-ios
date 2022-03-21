@@ -73,13 +73,20 @@ final class ProfileView: BaseView {
     }
     
     fileprivate func bind(name: String, type: NicknameProfileType) {
-//        switch type {
-//        case .first:
-//            self.textLabel.text = name[0..<1]
-//
-//        case .second:
-//            self.textLabel.text = name[0..<2]
-//        }
+        guard !name.isEmpty else { return }
+        switch type {
+        case .first:
+            guard name.count < 2 else { return }
+            let index = name.index(name.startIndex, offsetBy: 1)
+            
+            self.textLabel.text = String(name[..<index])
+
+        case .second:
+            guard name.count < 3 else { return }
+            let index = name.index(name.startIndex, offsetBy: 2)
+            
+            self.textLabel.text = String(name[..<index])
+        }
     }
 }
 
@@ -91,6 +98,12 @@ extension Reactive where Base: ProfileView {
     var image: Binder<UIImage?> {
         return Binder(self.base) { view, image in
             view.bind(image: image)
+        }
+    }
+    
+    var nickname: Binder<(String, NicknameProfileType)> {
+        return Binder(self.base) { view, nickname in
+            view.bind(name: nickname.0, type: nickname.1)
         }
     }
 }
