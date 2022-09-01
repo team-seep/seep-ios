@@ -26,4 +26,12 @@ extension Bundle {
         
         return kakaoAppKey
     }
+    
+    static var apiURL: String {
+        guard let apiURL = Self.main.object(forInfoDictionaryKey: "API_URL") as? String else {
+            fatalError("API_URL을 로드할 수 없습니다.")
+        }
+        
+        return apiURL
+    }
 }

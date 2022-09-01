@@ -142,11 +142,20 @@
 		6E80428E279D2D07008A0EB4 /* HashtagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80428D279D2D07008A0EB4 /* HashtagCollectionViewCell.swift */; };
 		6E804290279D3072008A0EB4 /* HashtagType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80428F279D3072008A0EB4 /* HashtagType.swift */; };
 		6E804292279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E804291279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift */; };
+		6E855FBA2861F35500F5091D /* SigninReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E855FB92861F35500F5091D /* SigninReactor.swift */; };
 		6E875726279BD9BC00BAA5BF /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E875725279BD9BC00BAA5BF /* NotificationView.swift */; };
 		6E875729279BDDFE00BAA5BF /* NotificationTypeRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E875728279BDDFE00BAA5BF /* NotificationTypeRadioButton.swift */; };
 		6E87572B279BE65300BAA5BF /* NotificationButtonGropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572A279BE65300BAA5BF /* NotificationButtonGropView.swift */; };
 		6E87572D279BEB0E00BAA5BF /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572C279BEB0E00BAA5BF /* NotificationViewController.swift */; };
 		6E87572F279BEB5B00BAA5BF /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572E279BEB5B00BAA5BF /* NotificationCoordinator.swift */; };
+		6E95C04C28C0CBED00EF300D /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C04B28C0CBED00EF300D /* AuthenticationService.swift */; };
+		6E95C04E28C0CD7B00EF300D /* AuthorizeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C04D28C0CD7B00EF300D /* AuthorizeDTO.swift */; };
+		6E95C05028C0CF6300EF300D /* HTTPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C04F28C0CF6300EF300D /* HTTPUtils.swift */; };
+		6E95C05328C0D1E500EF300D /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C05228C0D1E500EF300D /* NetworkManager.swift */; };
+		6E95C05528C0D32800EF300D /* ObserverExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C05428C0D32800EF300D /* ObserverExtensions.swift */; };
+		6E95C05728C0D39600EF300D /* JsonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C05628C0D39600EF300D /* JsonUtils.swift */; };
+		6E95C05928C0D45400EF300D /* AFDataResponseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C05828C0D45400EF300D /* AFDataResponseExtensions.swift */; };
+		6E95C05B28C0D4E600EF300D /* HTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95C05A28C0D4E600EF300D /* HTTPError.swift */; };
 		6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AB5352783226B00C6F825 /* EmojiInputView.swift */; };
 		6E9ACDF826501AA400ED39BF /* ShareTypeSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9ACDF726501AA400ED39BF /* ShareTypeSwitchView.swift */; };
 		6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */; };
@@ -325,11 +334,20 @@
 		6E80428D279D2D07008A0EB4 /* HashtagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagCollectionViewCell.swift; sourceTree = "<group>"; };
 		6E80428F279D3072008A0EB4 /* HashtagType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagType.swift; sourceTree = "<group>"; };
 		6E804291279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		6E855FB92861F35500F5091D /* SigninReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninReactor.swift; sourceTree = "<group>"; };
 		6E875725279BD9BC00BAA5BF /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		6E875728279BDDFE00BAA5BF /* NotificationTypeRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTypeRadioButton.swift; sourceTree = "<group>"; };
 		6E87572A279BE65300BAA5BF /* NotificationButtonGropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationButtonGropView.swift; sourceTree = "<group>"; };
 		6E87572C279BEB0E00BAA5BF /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		6E87572E279BEB5B00BAA5BF /* NotificationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCoordinator.swift; sourceTree = "<group>"; };
+		6E95C04B28C0CBED00EF300D /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		6E95C04D28C0CD7B00EF300D /* AuthorizeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeDTO.swift; sourceTree = "<group>"; };
+		6E95C04F28C0CF6300EF300D /* HTTPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPUtils.swift; sourceTree = "<group>"; };
+		6E95C05228C0D1E500EF300D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		6E95C05428C0D32800EF300D /* ObserverExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverExtensions.swift; sourceTree = "<group>"; };
+		6E95C05628C0D39600EF300D /* JsonUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonUtils.swift; sourceTree = "<group>"; };
+		6E95C05828C0D45400EF300D /* AFDataResponseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AFDataResponseExtensions.swift; sourceTree = "<group>"; };
+		6E95C05A28C0D4E600EF300D /* HTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPError.swift; sourceTree = "<group>"; };
 		6E9AB5352783226B00C6F825 /* EmojiInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputView.swift; sourceTree = "<group>"; };
 		6E9ACDF726501AA400ED39BF /* ShareTypeSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTypeSwitchView.swift; sourceTree = "<group>"; };
 		6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -450,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				6E16FB9B27D0DDF700BB6AC7 /* BaseError.swift */,
+				6E95C05A28C0D4E600EF300D /* HTTPError.swift */,
 			);
 			path = error;
 			sourceTree = "<group>";
@@ -462,6 +481,8 @@
 				6E274E5C25F20D5A007DC880 /* RatioUtils.swift */,
 				6E274E5F25F20D73007DC880 /* DateUtils.swift */,
 				6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */,
+				6E95C04F28C0CF6300EF300D /* HTTPUtils.swift */,
+				6E95C05628C0D39600EF300D /* JsonUtils.swift */,
 			);
 			path = uilts;
 			sourceTree = "<group>";
@@ -492,6 +513,8 @@
 				6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */,
 				6E6D610227587B8C00A0BFD9 /* BundleExtensions.swift */,
 				6E495EE827A0DC9E00323689 /* UICollectionViewExtension.swift */,
+				6E95C05428C0D32800EF300D /* ObserverExtensions.swift */,
+				6E95C05828C0D45400EF300D /* AFDataResponseExtensions.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -606,6 +629,7 @@
 			children = (
 				6E441CA426046F9D0010A625 /* WishServices.swift */,
 				6E42CCF927BF4162008C1F5F /* RemoteConfigService.swift */,
+				6E95C04B28C0CBED00EF300D /* AuthenticationService.swift */,
 			);
 			path = services;
 			sourceTree = "<group>";
@@ -635,6 +659,7 @@
 				6EB278CD27CF95CA00F63F19 /* subviews */,
 				6EB278CB27CF8FAC00F63F19 /* SigninView.swift */,
 				6EB278D227CFA51000F63F19 /* SigninViewController.swift */,
+				6E855FB92861F35500F5091D /* SigninReactor.swift */,
 			);
 			path = signin;
 			sourceTree = "<group>";
@@ -779,6 +804,7 @@
 			children = (
 				6E441CA02604549F0010A625 /* WishDTO.swift */,
 				6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */,
+				6E95C04D28C0CD7B00EF300D /* AuthorizeDTO.swift */,
 			);
 			path = dto;
 			sourceTree = "<group>";
@@ -825,6 +851,14 @@
 			path = subviews;
 			sourceTree = "<group>";
 		};
+		6E95C05128C0D1DC00EF300D /* network */ = {
+			isa = PBXGroup;
+			children = (
+				6E95C05228C0D1E500EF300D /* NetworkManager.swift */,
+			);
+			path = network;
+			sourceTree = "<group>";
+		};
 		6E9AB5342783223D00C6F825 /* subviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -848,6 +882,7 @@
 		6E9BFEA026453C9C0093CA89 /* manager */ = {
 			isa = PBXGroup;
 			children = (
+				6E95C05128C0D1DC00EF300D /* network */,
 				6E16FB8A27D0DD3200BB6AC7 /* social-signin */,
 				6E3B468027A6947A000A1D41 /* toast */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
@@ -1247,6 +1282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E95C05328C0D1E500EF300D /* NetworkManager.swift in Sources */,
 				6EB50EFC26BD549000F0096E /* widget.intentdefinition in Sources */,
 				6E5DECFE264263F70005487F /* TagLabel.swift in Sources */,
 				6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */,
@@ -1256,12 +1292,14 @@
 				6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */,
 				6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */,
 				6E80428E279D2D07008A0EB4 /* HashtagCollectionViewCell.swift in Sources */,
+				6E95C05528C0D32800EF300D /* ObserverExtensions.swift in Sources */,
 				6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */,
 				6E764AEC263FCAE500A99402 /* EmojiImageVIew.swift in Sources */,
 				6E274E7F25F20F58007DC880 /* BaseView.swift in Sources */,
 				6E41F28425FB916200CE1530 /* WriteReactor.swift in Sources */,
 				6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */,
 				6E43A5C12617192600FB1738 /* FinishedTableCell.swift in Sources */,
+				6E95C05028C0CF6300EF300D /* HTTPUtils.swift in Sources */,
 				6EB278CC27CF8FAD00F63F19 /* SigninView.swift in Sources */,
 				6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */,
 				6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */,
@@ -1278,6 +1316,7 @@
 				6E4CC47227E35C2300DF63BD /* ProfileView.swift in Sources */,
 				6E04C34D27E4BEB900F8359E /* SignupReactor.swift in Sources */,
 				6E441CA12604549F0010A625 /* WishDTO.swift in Sources */,
+				6E95C04E28C0CD7B00EF300D /* AuthorizeDTO.swift in Sources */,
 				6E875726279BD9BC00BAA5BF /* NotificationView.swift in Sources */,
 				6EACBD5D261303540009AB6F /* PageItemView.swift in Sources */,
 				6E804290279D3072008A0EB4 /* HashtagType.swift in Sources */,
@@ -1289,6 +1328,7 @@
 				6EB278D327CFA51000F63F19 /* SigninViewController.swift in Sources */,
 				6E69FD4826468BDC00F0AB60 /* DateExtensions.swift in Sources */,
 				6EB278D127CF980F00F63F19 /* SocialType.swift in Sources */,
+				6E855FBA2861F35500F5091D /* SigninReactor.swift in Sources */,
 				6E40F696279C2025007D529E /* NotificationReactor.swift in Sources */,
 				6E357217261AF273003E18EA /* InputAccessoryView.swift in Sources */,
 				6E66A27725FB45C500C0C051 /* WriteView.swift in Sources */,
@@ -1320,6 +1360,7 @@
 				6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */,
 				6E69E62E260DBACA0062CBFB /* WishDetailReactor.swift in Sources */,
 				6E69E620260D991B0062CBFB /* WishDetailView.swift in Sources */,
+				6E95C05B28C0D4E600EF300D /* HTTPError.swift in Sources */,
 				6E69E624260D9E630062CBFB /* WishDetailViewController.swift in Sources */,
 				6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */,
 				6E80428A279D260D008A0EB4 /* SeepNotification.swift in Sources */,
@@ -1334,6 +1375,7 @@
 				6E4F5D8E2657DF580061A13C /* SplashView.swift in Sources */,
 				6ECCE50D27E206EF005A5941 /* ProfileSwitch.swift in Sources */,
 				6E36A48A278AE59500F6D3B5 /* BaseCoordinator.swift in Sources */,
+				6E95C05928C0D45400EF300D /* AFDataResponseExtensions.swift in Sources */,
 				6E16FB8E27D0DD5500BB6AC7 /* AppleSigninManager.swift in Sources */,
 				6EFB350C27AB6A5200CB45F7 /* WishEditReactor.swift in Sources */,
 				6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */,
@@ -1342,6 +1384,8 @@
 				6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */,
 				6E3B467F27A69063000A1D41 /* ToastManager.swift in Sources */,
 				6E274E7125F20EB3007DC880 /* UIColorExtension.swift in Sources */,
+				6E95C04C28C0CBED00EF300D /* AuthenticationService.swift in Sources */,
+				6E95C05728C0D39600EF300D /* JsonUtils.swift in Sources */,
 				6E36A488278AE4F000F6D3B5 /* WriteCoordinator.swift in Sources */,
 				6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */,
 				6EE1706E264E590F00C3E94B /* SharePhotoVC.swift in Sources */,
@@ -1551,6 +1595,7 @@
 			baseConfigurationReference = F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				API_URL = "http://seep.co.kr";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
@@ -1581,6 +1626,7 @@
 			baseConfigurationReference = B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				API_URL = "http://seep.co.kr";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
