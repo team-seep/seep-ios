@@ -26,16 +26,19 @@ final class SigninReactor: BaseReactor, Reactor {
     private let appleSigninManager: AppleSignInManagerProtocol
     private let kakaoSigninManager: KakaoSignInManagerProtocol
     private let authenticationService: AuthenticationServiceType
+    private var userDefaults: UserDefaultsUtils
     
     init(
         appleSigninManager: AppleSignInManagerProtocol,
         kakaoSigninManager: KakaoSignInManager,
         authenticationService: AuthenticationServiceType,
-        state: State
+        userDefaults: UserDefaultsUtils,
+        state: State = State()
     ) {
         self.appleSigninManager = appleSigninManager
         self.kakaoSigninManager = kakaoSigninManager
         self.authenticationService = authenticationService
+        self.userDefaults = userDefaults
         self.initialState = state
     }
     
@@ -48,11 +51,18 @@ final class SigninReactor: BaseReactor, Reactor {
                     
                     return self.authenticationService.authorizeWithApple(token: token)
                         .do(onNext: { [weak self] response in
-                            // TODO: Token 저장
+                            self?.userDefaults.token = response.accessToken
                         })
                         .map { _ in .goToMain }
                 }
-                .catch { .just(.showError($0)) }
+                .catch { error in
+                    if let httpError = error as? HTTPError,
+                       httpError == .notFound {
+                        return .just(.pushSignup)
+                    } else {
+                        return .just(.showError(error))
+                    }
+                }
             
         case .tapKakaoButton:
             return self.kakaoSigninManager.signIn()
@@ -61,10 +71,17 @@ final class SigninReactor: BaseReactor, Reactor {
                     
                     return self.authenticationService.authorizeWithKakao(token: token)
                         .do(onNext: { [weak self] response in
-                            // TODO: Token 저장
+                            self?.userDefaults.token = response.accessToken
                         })
                         .map { _ in .goToMain }
-                        .catch { .just(.showError($0)) }
+                }
+                .catch { error in
+                    if let httpError = error as? HTTPError,
+                       httpError == .notFound {
+                        return .just(.pushSignup)
+                    } else {
+                        return .just(.showError(error))
+                    }
                 }
             
         case .tapContinueWithoutSignin:

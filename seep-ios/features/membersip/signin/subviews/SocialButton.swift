@@ -23,6 +23,7 @@ final class SocialButton: BaseView {
     }
     
     override func setup() {
+        self.addGestureRecognizer(self.tapGesture)
         self.layer.cornerRadius = 25
         self.addSubViews([
             self.iconImage,

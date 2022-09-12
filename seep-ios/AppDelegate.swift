@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         self.initilizeFirebase()
         self.initializeKakaoSDK()
+        self.initializeNetworkLogger()
         self.copyDefaultToAppGroup()
         self.setupRealmConfig()
         self.requestNotificationAuthorization()
@@ -46,6 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func initializeKakaoSDK() {
         KakaoSDK.initSDK(appKey: Bundle.kakaoAppKey)
+    }
+    
+    private func initializeNetworkLogger() {
+        NetworkActivityLogger.shared.startLogging()
+        NetworkActivityLogger.shared.level = .debug
     }
     
     private func requestNotificationAuthorization() {

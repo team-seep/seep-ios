@@ -6,9 +6,18 @@ struct UserDefaultsUtils {
     static let keyRandomEmojiTooltipIsShow = "keyRandomEmojiTooltipIsShow"
     static let keyNoticeDate = "keyNoticeDate"
     private let keyDeepLink = "keyDeepLink"
-    
+    private let keyToken = "keyToken"
     
     let instance: UserDefaults
+    
+    var token: String {
+        get {
+            return self.instance.string(forKey: self.keyToken) ?? ""
+        }
+        set {
+            self.instance.set(newValue, forKey: self.keyToken)
+        }
+    }
     
     
     init(name: String? = nil) {
@@ -60,5 +69,12 @@ struct UserDefaultsUtils {
     
     func getNoticeDisableToday() -> String {
         return self.instance.string(forKey: UserDefaultsUtils.keyNoticeDate) ?? ""
+    }
+    
+    func clear() {
+        self.instance.set("", forKey: self.keyToken)
+        self.setViewType(viewType: .grid)
+        self.setSharePhotoTooltipIsShow(isShown: false)
+        self.setRandomEmojiTooltipIsShow(isShown: false)
     }
 }

@@ -190,6 +190,8 @@
 		6ECF38C9275E46BA00E013C3 /* UIScreenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF38C8275E46BA00E013C3 /* UIScreenExtensions.swift */; };
 		6ED89715261579B80005FA29 /* FinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED89714261579B80005FA29 /* FinishedView.swift */; };
 		6ED89718261585E10005FA29 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED89717261585E10005FA29 /* FinishedViewController.swift */; };
+		6ED9801728CF30BA003EBE2A /* SigninCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9801628CF30BA003EBE2A /* SigninCoordinator.swift */; };
+		6ED9801928CF3B8B003EBE2A /* NetworkActivityLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9801828CF3B8B003EBE2A /* NetworkActivityLogger.swift */; };
 		6EE1706C264E58E400C3E94B /* SharePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE1706B264E58E400C3E94B /* SharePhotoView.swift */; };
 		6EE1706E264E590F00C3E94B /* SharePhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE1706D264E590F00C3E94B /* SharePhotoVC.swift */; };
 		6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */; };
@@ -381,6 +383,8 @@
 		6ECF38C8275E46BA00E013C3 /* UIScreenExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreenExtensions.swift; sourceTree = "<group>"; };
 		6ED89714261579B80005FA29 /* FinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedView.swift; sourceTree = "<group>"; };
 		6ED89717261585E10005FA29 /* FinishedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
+		6ED9801628CF30BA003EBE2A /* SigninCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninCoordinator.swift; sourceTree = "<group>"; };
+		6ED9801828CF3B8B003EBE2A /* NetworkActivityLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkActivityLogger.swift; sourceTree = "<group>"; };
 		6EE1706B264E58E400C3E94B /* SharePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoView.swift; sourceTree = "<group>"; };
 		6EE1706D264E590F00C3E94B /* SharePhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoVC.swift; sourceTree = "<group>"; };
 		6EE5A820275512280013B0D4 /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
@@ -485,6 +489,7 @@
 				6E7FDD9F26269C8C0066B8A9 /* FeedbackUtils.swift */,
 				6E95C04F28C0CF6300EF300D /* HTTPUtils.swift */,
 				6E95C05628C0D39600EF300D /* JsonUtils.swift */,
+				6ED9801828CF3B8B003EBE2A /* NetworkActivityLogger.swift */,
 			);
 			path = uilts;
 			sourceTree = "<group>";
@@ -593,6 +598,7 @@
 			isa = PBXGroup;
 			children = (
 				6E69FD49264698E900F0AB60 /* seep-ios.entitlements */,
+				6ED9801328CF2E6B003EBE2A /* context */,
 				6E9BFEA026453C9C0093CA89 /* manager */,
 				6E441CA326046F920010A625 /* services */,
 				6E66A26D25FB40B600C0C051 /* model */,
@@ -663,6 +669,7 @@
 				6EB278CB27CF8FAC00F63F19 /* SigninView.swift */,
 				6EB278D227CFA51000F63F19 /* SigninViewController.swift */,
 				6E855FB92861F35500F5091D /* SigninReactor.swift */,
+				6ED9801628CF30BA003EBE2A /* SigninCoordinator.swift */,
 			);
 			path = signin;
 			sourceTree = "<group>";
@@ -970,6 +977,13 @@
 				6E3B467C27A68AFE000A1D41 /* FinishedCoodinator.swift */,
 			);
 			path = finished;
+			sourceTree = "<group>";
+		};
+		6ED9801328CF2E6B003EBE2A /* context */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = context;
 			sourceTree = "<group>";
 		};
 		6EE1706A264E58D000C3E94B /* share-photo */ = {
@@ -1315,6 +1329,7 @@
 				6E274E8325F20F8D007DC880 /* BaseVC.swift in Sources */,
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
 				6E42CCFA27BF4162008C1F5F /* RemoteConfigService.swift in Sources */,
+				6ED9801728CF30BA003EBE2A /* SigninCoordinator.swift in Sources */,
 				6E274E7A25F20EF2007DC880 /* UILabelExtension.swift in Sources */,
 				6E4CC47227E35C2300DF63BD /* ProfileView.swift in Sources */,
 				6E04C34D27E4BEB900F8359E /* SignupReactor.swift in Sources */,
@@ -1402,6 +1417,7 @@
 				6ED89718261585E10005FA29 /* FinishedViewController.swift in Sources */,
 				6E4AD34C278AACCB00819C43 /* NotificationDTO.swift in Sources */,
 				6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */,
+				6ED9801928CF3B8B003EBE2A /* NetworkActivityLogger.swift in Sources */,
 				6E274E8E25F21506007DC880 /* HomeView.swift in Sources */,
 				6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */,
 			);

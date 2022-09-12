@@ -32,6 +32,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    func goToSignin() {
+        guard let window = self.window else { return }
+        
+        window.rootViewController = SigninViewController.instance()
+        UIView.transition(
+            with: window,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) { [weak window] in
+            window?.makeKeyAndVisible()
+        }
+    }
+    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         self.handleDeepLink(urlContexts: URLContexts)
     }
