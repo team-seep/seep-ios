@@ -1,5 +1,6 @@
 import UIKit
 import WidgetKit
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -46,7 +47,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        self.handleDeepLink(urlContexts: URLContexts)
+        if let url = URLContexts.first?.url,
+           AuthApi.isKakaoTalkLoginUrl(url) {
+            _ = AuthController.handleOpenUrl(url: url)
+        } else {
+            self.handleDeepLink(urlContexts: URLContexts)
+        }
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
