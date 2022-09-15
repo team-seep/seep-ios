@@ -278,10 +278,10 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             .disposed(by: self.disposeBag)
         
         reactor.state
-            .map { $0.writeButtonState }
+            .map { $0.writeButtonState == .active }
             .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: .initial)
-            .drive(self.writeView.writeButton.rx.state)
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.writeView.writeButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
     }
     

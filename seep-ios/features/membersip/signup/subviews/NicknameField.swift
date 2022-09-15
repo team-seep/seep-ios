@@ -4,8 +4,16 @@ import RxSwift
 import RxCocoa
 
 final class NicknameField: BaseView {
+    enum State {
+        case normal
+        case active
+    }
+    
+    fileprivate let statePublisher = PublishSubject<State>()
+    
     private let nicknameBackground = UIView().then {
         $0.layer.cornerRadius = 6
+        $0.layer.borderColor = UIColor.seepBlue.cgColor
         $0.backgroundColor = .gray2
     }
     
@@ -33,6 +41,20 @@ final class NicknameField: BaseView {
             self.hintLabel
         ])
         self.nicknameField.delegate = self
+        self.nicknameField.rx.controlEvent(.editingDidBegin)
+            .map { State.active }
+            .bind(to: self.statePublisher)
+            .disposed(by: self.disposeBag)
+        self.nicknameField.rx.controlEvent(.editingDidEnd)
+            .map { State.normal }
+            .bind(to: self.statePublisher)
+            .disposed(by: self.disposeBag)
+        self.statePublisher
+            .asDriver(onErrorJustReturn: .normal)
+            .drive(onNext: { [weak self] state in
+                self?.setState(state: state)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     override func bindConstraints() {
@@ -59,6 +81,22 @@ final class NicknameField: BaseView {
             make.top.equalTo(self.nicknameBackground).priority(.high)
             make.right.equalTo(self.nicknameBackground).priority(.high)
             make.bottom.equalTo(self.hintLabel).priority(.high)
+        }
+    }
+    
+    private func setState(state: State) {
+        switch state {
+        case .normal:
+            UIView.transition(with: self, duration: 0.3) { [weak self] in
+                self?.nicknameBackground.layer.borderWidth = 0
+                self?.nicknameBackground.backgroundColor = .gray2
+            }
+            
+        case .active:
+            UIView.transition(with: self, duration: 0.3) { [weak self] in
+                self?.nicknameBackground.layer.borderWidth = 1
+                self?.nicknameBackground.backgroundColor = .gray1
+            }
         }
     }
 }
@@ -89,5 +127,9 @@ extension NicknameField: UITextFieldDelegate {
 extension Reactive where Base: NicknameField {
     var text: ControlProperty<String> {
         return base.nicknameField.rx.text.orEmpty
+    }
+    
+    var state: ControlEvent<NicknameField.State> {
+        return ControlEvent(events: base.statePublisher)
     }
 }

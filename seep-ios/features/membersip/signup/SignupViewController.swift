@@ -21,10 +21,11 @@ final class SignupViewController: BaseVC, View {
     }
     
     override func bindEvent() {
-        self.signupView.profileView.rx.tapCameraButton
-            .asDriver()
-            .drive(onNext: { [weak self] in
+        self.signupReactor.presentPhotoBottomSheet
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isPhotoExisted in
                 guard let self = self else { return }
+                
                 AlertUtils.showImagePicker(controller: self, picker: UIImagePickerController())
             })
             .disposed(by: self.eventDisposeBag)
@@ -42,7 +43,14 @@ final class SignupViewController: BaseVC, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
+        self.signupView.profileView.rx.tapCameraButton
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map { Reactor.Action.tapCamera }
+            .bind(to: reactor.action)
+            .disposed(by: self.eventDisposeBag)
+        
         self.signupView.signupButton.rx.tap
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .map { Reactor.Action.tapSignup }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -62,10 +70,10 @@ final class SignupViewController: BaseVC, View {
             .disposed(by: self.disposeBag)
         
         reactor.state
-            .map { $0.signupButtonState }
+            .map { $0.isSignupButtonEnable }
             .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: .initial)
-            .drive(self.signupView.signupButton.rx.state)
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.signupView.signupButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
     }
 }

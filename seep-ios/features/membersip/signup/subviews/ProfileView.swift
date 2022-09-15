@@ -68,22 +68,21 @@ final class ProfileView: BaseView {
     }
     
     fileprivate func bind(image: UIImage?) {
-        self.profileImage.isHidden = image != nil
+        self.profileImage.isHidden = image == nil
         self.profileImage.image = image
     }
     
     fileprivate func bind(name: String, type: NicknameProfileType) {
-        guard !name.isEmpty else { return }
         switch type {
         case .first:
             guard name.count < 2 else { return }
-            let index = name.index(name.startIndex, offsetBy: 1)
+            let index = name.index(name.startIndex, offsetBy: name.count)
             
             self.textLabel.text = String(name[..<index])
 
         case .second:
             guard name.count < 3 else { return }
-            let index = name.index(name.startIndex, offsetBy: 2)
+            let index = name.index(name.startIndex, offsetBy: name.count)
             
             self.textLabel.text = String(name[..<index])
         }
