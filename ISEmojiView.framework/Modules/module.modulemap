@@ -1,0 +1,11 @@
+framework module ISEmojiView {
+  umbrella header "ISEmojiView.h"
+
+  export *
+  module * { export * }
+}
+
+module ISEmojiView.Swift {
+    header "ISEmojiView-Swift.h"
+    requires objc
+}

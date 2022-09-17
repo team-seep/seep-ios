@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */; };
 		6E04C34D27E4BEB900F8359E /* SignupReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E04C34C27E4BEB900F8359E /* SignupReactor.swift */; };
 		6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07528226136D8800041E7B /* PageItemReactor.swift */; };
 		6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091571264F80AB0048EB79 /* ShareTypeButton.swift */; };
@@ -180,6 +179,8 @@
 		6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */; };
 		6EB50F0E26BD6A6E00F0096E /* SmallWriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */; };
 		6EBF9BEB275912AF00C70B1A /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF9BEA275912AF00C70B1A /* ColorExtensions.swift */; };
+		6EC793CA28D6030F0085D70C /* ISEmojiView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */; };
+		6EC793CB28D6030F0085D70C /* ISEmojiView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6EC9BF9D26BE0456007C7708 /* MediumVerticalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9C26BE0456007C7708 /* MediumVerticalEntry.swift */; };
 		6EC9BF9F26BE05D8007C7708 /* MediumVerticalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9E26BE05D8007C7708 /* MediumVerticalWidget.swift */; };
 		6EC9BFA126BE073B007C7708 /* MediumVerticalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BFA026BE073B007C7708 /* MediumVerticalEntryView.swift */; };
@@ -200,12 +201,13 @@
 		6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7725FB301F00A737DF /* HomeReactor.swift */; };
 		6EEBC36C28D5AFBF00E67D69 /* SignupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEBC36B28D5AFBF00E67D69 /* SignupCoordinator.swift */; };
 		6EEED44525F2227F0059DBE5 /* HomeWishTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED44425F2227F0059DBE5 /* HomeWishTableViewCell.swift */; };
+		6EF81A1828D5FF8E00ED6216 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EF81A1728D5FF8E00ED6216 /* RealmSwift */; };
+		6EF81A1A28D5FFD900ED6216 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EF81A1928D5FFD900ED6216 /* RealmSwift */; };
 		6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */; };
 		6EFB350A27AB665F00CB45F7 /* WishEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350927AB665F00CB45F7 /* WishEditView.swift */; };
 		6EFB350C27AB6A5200CB45F7 /* WishEditReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */; };
 		6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */; };
 		6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */; };
-		70FB9CC3A1068DE443A92BF9 /* Pods_widgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBE8CBA27EB721434BA62F1A /* Pods_widgetExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,6 +230,17 @@
 				6EB50EFF26BD549000F0096E /* widgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EC793CC28D6030F0085D70C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6EC793CB28D6030F0085D70C /* ISEmojiView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -395,17 +408,12 @@
 		6EE5CE7725FB301F00A737DF /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
 		6EEBC36B28D5AFBF00E67D69 /* SignupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupCoordinator.swift; sourceTree = "<group>"; };
 		6EEED44425F2227F0059DBE5 /* HomeWishTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishTableViewCell.swift; sourceTree = "<group>"; };
+		6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ISEmojiView.framework; sourceTree = "<group>"; };
 		6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidgetData.swift; sourceTree = "<group>"; };
 		6EFB350927AB665F00CB45F7 /* WishEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditView.swift; sourceTree = "<group>"; };
 		6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditReactor.swift; sourceTree = "<group>"; };
 		6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditViewController.swift; sourceTree = "<group>"; };
 		6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditCoordinator.swift; sourceTree = "<group>"; };
-		B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.release.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.release.xcconfig"; sourceTree = "<group>"; };
-		C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seep_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6C5969ED35CA98059342290 /* Pods-widgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-widgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-widgetExtension/Pods-widgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		F2276600B1C0E60301A0D889 /* Pods-widgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-widgetExtension.release.xcconfig"; path = "Target Support Files/Pods-widgetExtension/Pods-widgetExtension.release.xcconfig"; sourceTree = "<group>"; };
-		F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seep-ios.debug.xcconfig"; path = "Target Support Files/Pods-seep-ios/Pods-seep-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		FBE8CBA27EB721434BA62F1A /* Pods_widgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_widgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -422,19 +430,20 @@
 				6E16FB9727D0DDD700BB6AC7 /* KakaoSDKCommonCore in Frameworks */,
 				6E74E2082763834E00D872D5 /* RxCocoa in Frameworks */,
 				6E42CCEC27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta in Frameworks */,
+				6EC793CA28D6030F0085D70C /* ISEmojiView.framework in Frameworks */,
 				6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */,
 				6E42CCF627BF39ED008C1F5F /* FirebaseMessaging in Frameworks */,
 				6E6203562763878B006B8393 /* SnapKit in Frameworks */,
 				6E62035927638846006B8393 /* Kingfisher in Frameworks */,
 				6E62036227638996006B8393 /* Lottie in Frameworks */,
 				6E74E2112763844E00D872D5 /* RxDataSources in Frameworks */,
+				6EF81A1828D5FF8E00ED6216 /* RealmSwift in Frameworks */,
 				6E62035F276388DE006B8393 /* SwiftyBeaver in Frameworks */,
 				6E74E20C2763834E00D872D5 /* RxSwift in Frameworks */,
 				6E42CCF227BF39ED008C1F5F /* FirebaseAppDistribution-Beta in Frameworks */,
 				6E42CCF427BF39ED008C1F5F /* FirebaseCrashlytics in Frameworks */,
 				6E16FB9327D0DDD700BB6AC7 /* KakaoSDKAuth in Frameworks */,
 				6E7112D02781870600396CC0 /* ReactorKit in Frameworks */,
-				57520E3E4D945BA16284EE99 /* Pods_seep_ios.framework in Frameworks */,
 				6E42CCF827BF39ED008C1F5F /* FirebaseRemoteConfig in Frameworks */,
 				6E16FB9527D0DDD700BB6AC7 /* KakaoSDKCommon in Frameworks */,
 				6E16FB9927D0DDD700BB6AC7 /* KakaoSDKUser in Frameworks */,
@@ -446,9 +455,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EF81A1A28D5FFD900ED6216 /* RealmSwift in Frameworks */,
 				6EB50EF326BD548F00F0096E /* SwiftUI.framework in Frameworks */,
 				6EB50EF126BD548F00F0096E /* WidgetKit.framework in Frameworks */,
-				70FB9CC3A1068DE443A92BF9 /* Pods_widgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,7 +591,6 @@
 				6E283AF725F2047900955B57 /* seep-ios */,
 				6EB50EF426BD548F00F0096E /* widget */,
 				6E283AF625F2047900955B57 /* Products */,
-				CE354C8B12BC6DA867D129DA /* Pods */,
 				A59D84F56481B30FACF6A680 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -1047,23 +1055,11 @@
 		A59D84F56481B30FACF6A680 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C5371AC00B457032AB7ECA28 /* Pods_seep_ios.framework */,
+				6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */,
 				6EB50EF026BD548F00F0096E /* WidgetKit.framework */,
 				6EB50EF226BD548F00F0096E /* SwiftUI.framework */,
-				FBE8CBA27EB721434BA62F1A /* Pods_widgetExtension.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CE354C8B12BC6DA867D129DA /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */,
-				B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */,
-				D6C5969ED35CA98059342290 /* Pods-widgetExtension.debug.xcconfig */,
-				F2276600B1C0E60301A0D889 /* Pods-widgetExtension.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1073,13 +1069,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6E283B0925F2047A00955B57 /* Build configuration list for PBXNativeTarget "seep-ios" */;
 			buildPhases = (
-				707DC633F71B0B56CCB4B569 /* [CP] Check Pods Manifest.lock */,
 				6E6D610A27587F4D00A0BFD9 /* Setup Firebase GoogleService-Info */,
 				6E283AF125F2047900955B57 /* Sources */,
 				6E283AF225F2047900955B57 /* Frameworks */,
 				6E283AF325F2047900955B57 /* Resources */,
-				F97342ADC6FF9B36E2C0A924 /* [CP] Embed Pods Frameworks */,
 				6EB50F0026BD549000F0096E /* Embed App Extensions */,
+				6EC793CC28D6030F0085D70C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1113,6 +1108,7 @@
 				6E16FB9627D0DDD700BB6AC7 /* KakaoSDKCommonCore */,
 				6E16FB9827D0DDD700BB6AC7 /* KakaoSDKUser */,
 				6E5EC81327E0CAE200FA4C1A /* Gifu */,
+				6EF81A1728D5FF8E00ED6216 /* RealmSwift */,
 			);
 			productName = "seep-ios";
 			productReference = 6E283AF525F2047900955B57 /* seep-ios.app */;
@@ -1122,7 +1118,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6EB50F0326BD549000F0096E /* Build configuration list for PBXNativeTarget "widgetExtension" */;
 			buildPhases = (
-				DD04B46ADFCA6C1832C964F8 /* [CP] Check Pods Manifest.lock */,
 				6EB50EEB26BD548F00F0096E /* Sources */,
 				6EB50EEC26BD548F00F0096E /* Frameworks */,
 				6EB50EED26BD548F00F0096E /* Resources */,
@@ -1132,6 +1127,9 @@
 			dependencies = (
 			);
 			name = widgetExtension;
+			packageProductDependencies = (
+				6EF81A1928D5FFD900ED6216 /* RealmSwift */,
+			);
 			productName = widgetExtension;
 			productReference = 6EB50EEF26BD548F00F0096E /* widgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1174,6 +1172,7 @@
 				6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6E16FB8F27D0DDD700BB6AC7 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				6E5EC81227E0CAE200FA4C1A /* XCRemoteSwiftPackageReference "Gifu" */,
+				6EF81A1628D5FF8E00ED6216 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 6E283AF625F2047900955B57 /* Products */;
 			projectDirPath = "";
@@ -1233,67 +1232,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncase \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/seep-ios/resources/firebase/GoogleService-Info-Dev.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/seep-ios/resources/firebase/GoogleService-Info-Prod.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
-		};
-		707DC633F71B0B56CCB4B569 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-seep-ios-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DD04B46ADFCA6C1832C964F8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-widgetExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F97342ADC6FF9B36E2C0A924 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-seep-ios/Pods-seep-ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-seep-ios/Pods-seep-ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-seep-ios/Pods-seep-ios-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1616,7 +1554,6 @@
 		};
 		6E283B0A25F2047A00955B57 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F35ABB390797877B295E73E8 /* Pods-seep-ios.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				API_URL = "http://seep.co.kr";
@@ -1628,6 +1565,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				DISPLAY_NAME = "싶Dev";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "seep-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				KAKAO_APP_KEY = 78828745b349d66f1ac7c2d19859a4bb;
@@ -1647,7 +1588,6 @@
 		};
 		6E283B0B25F2047A00955B57 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B55E8F409C2C6BD4663E990E /* Pods-seep-ios.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				API_URL = "http://seep.co.kr";
@@ -1659,6 +1599,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				DISPLAY_NAME = "싶";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "seep-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				KAKAO_APP_KEY = 997f966ad99ce6ce1f766b1f13b0da68;
@@ -1678,7 +1622,6 @@
 		};
 		6EB50F0126BD549000F0096E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6C5969ED35CA98059342290 /* Pods-widgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1706,7 +1649,6 @@
 		};
 		6EB50F0226BD549000F0096E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F2276600B1C0E60301A0D889 /* Pods-widgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1853,6 +1795,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		6EF81A1628D5FF8E00ED6216 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.5.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1980,6 +1930,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E74E20D2763844E00D872D5 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		6EF81A1728D5FF8E00ED6216 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EF81A1628D5FF8E00ED6216 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		6EF81A1928D5FFD900ED6216 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EF81A1628D5FF8E00ED6216 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
