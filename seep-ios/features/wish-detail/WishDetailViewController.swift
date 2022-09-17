@@ -12,7 +12,7 @@ enum DetailMode {
     case fromFinish
 }
 
-final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
+final class WishDetailViewController: BaseViewController, View, WishDetailCoordinator {
     weak var delegate: WishDetailDelegate?
     private let wishDetailView = WishDetailView()
     private let wishDetailReactor: WishDetailReactor

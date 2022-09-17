@@ -13,7 +13,7 @@ protocol PageItemDelegate: AnyObject {
     func scrollViewDidEndDragging()
 }
 
-final class PageItemViewController: BaseVC, View, PageItemCoordinator {
+final class PageItemViewController: BaseViewController, View, PageItemCoordinator {
     weak var delegate: PageItemDelegate?
     private weak var coordinator: PageItemCoordinator?
     private let pageItemView = PageItemView()

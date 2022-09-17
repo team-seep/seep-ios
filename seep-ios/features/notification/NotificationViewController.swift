@@ -10,7 +10,7 @@ protocol NotificationViewControllerDelegate: AnyObject {
     func onDeleteNotification(index: Int)
 }
 
-final class NotificationViewController: BaseVC, View, NotificationCoordinator {
+final class NotificationViewController: BaseViewController, View, NotificationCoordinator {
     weak var delegate: NotificationViewControllerDelegate?
     private let notificationView = NotificationView()
     private let notificationReactor: NotificationReactor

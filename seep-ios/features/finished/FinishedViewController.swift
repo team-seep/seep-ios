@@ -3,7 +3,7 @@ import UIKit
 import RxSwift
 import ReactorKit
 
-final class FinishedViewController: BaseVC, View, FinishedCoordinator {
+final class FinishedViewController: BaseViewController, View, FinishedCoordinator {
     private let finishedView = FinishedView()
     private let finishedReactor: FinishedReactor
     private weak var coordinator: FinishedCoordinator?

@@ -9,7 +9,7 @@ protocol SharePhotoDelegate: AnyObject {
   func onSuccessSave()
 }
 
-class SharePhotoVC: BaseVC, View {
+class SharePhotoViewController: BaseViewController, View {
   
   private let sharePhotoView = SharePhotoView()
   private let sharePhotoReactor: SharePhotoReactor
@@ -26,8 +26,8 @@ class SharePhotoVC: BaseVC, View {
     fatalError("init(coder:) has not been implemented")
   }
   
-  static func instance(wish: Wish) -> SharePhotoVC {
-    return SharePhotoVC(wish: wish)
+  static func instance(wish: Wish) -> SharePhotoViewController {
+    return SharePhotoViewController(wish: wish)
   }
   
   override func viewDidLoad() {

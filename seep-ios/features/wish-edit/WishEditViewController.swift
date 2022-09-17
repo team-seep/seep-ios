@@ -8,7 +8,7 @@ protocol WishEditViewControllerDelegate: AnyObject {
     func onUpdateWish(wish: Wish)
 }
 
-final class WishEditViewController: BaseVC, View, WishEditCoordinator {
+final class WishEditViewController: BaseViewController, View, WishEditCoordinator {
     weak var delegate: WishEditViewControllerDelegate?
     private let wishEditView = WishEditView()
     private let wishEditReactor: WishEditReactor

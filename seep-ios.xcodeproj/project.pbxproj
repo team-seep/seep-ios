@@ -33,7 +33,7 @@
 		6E274E7725F20EE4007DC880 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E7625F20EE4007DC880 /* UIImageViewExtension.swift */; };
 		6E274E7A25F20EF2007DC880 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E7925F20EF2007DC880 /* UILabelExtension.swift */; };
 		6E274E7F25F20F58007DC880 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E7E25F20F58007DC880 /* BaseView.swift */; };
-		6E274E8325F20F8D007DC880 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E8225F20F8D007DC880 /* BaseVC.swift */; };
+		6E274E8325F20F8D007DC880 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E8225F20F8D007DC880 /* BaseViewController.swift */; };
 		6E274E8625F20FC0007DC880 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E8525F20FBF007DC880 /* BaseTableViewCell.swift */; };
 		6E274E8925F20FE5007DC880 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E8825F20FE5007DC880 /* BaseCollectionViewCell.swift */; };
 		6E274E8E25F21506007DC880 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E8D25F21506007DC880 /* HomeView.swift */; };
@@ -77,7 +77,7 @@
 		6E4CC47027E3534000DF63BD /* NicknameField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4CC46F27E3534000DF63BD /* NicknameField.swift */; };
 		6E4CC47227E35C2300DF63BD /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4CC47127E35C2300DF63BD /* ProfileView.swift */; };
 		6E4F5D8E2657DF580061A13C /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D8D2657DF580061A13C /* SplashView.swift */; };
-		6E4F5D932657E0BA0061A13C /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D922657E0BA0061A13C /* SplashVC.swift */; };
+		6E4F5D932657E0BA0061A13C /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4F5D922657E0BA0061A13C /* SplashViewController.swift */; };
 		6E533E7B27E17B0800DB09CD /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E533E7A27E17B0800DB09CD /* SignupView.swift */; };
 		6E5882562658BE730050F0E0 /* splash2.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E5882532658BE730050F0E0 /* splash2.json */; };
 		6E5882572658BE730050F0E0 /* splash3.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E5882542658BE730050F0E0 /* splash3.json */; };
@@ -193,7 +193,7 @@
 		6ED9801728CF30BA003EBE2A /* SigninCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9801628CF30BA003EBE2A /* SigninCoordinator.swift */; };
 		6ED9801928CF3B8B003EBE2A /* NetworkActivityLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9801828CF3B8B003EBE2A /* NetworkActivityLogger.swift */; };
 		6EE1706C264E58E400C3E94B /* SharePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE1706B264E58E400C3E94B /* SharePhotoView.swift */; };
-		6EE1706E264E590F00C3E94B /* SharePhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE1706D264E590F00C3E94B /* SharePhotoVC.swift */; };
+		6EE1706E264E590F00C3E94B /* SharePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE1706D264E590F00C3E94B /* SharePhotoViewController.swift */; };
 		6EE5CE6C25FB191800A737DF /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */; };
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
 		6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */; };
@@ -253,7 +253,7 @@
 		6E274E7625F20EE4007DC880 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		6E274E7925F20EF2007DC880 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		6E274E7E25F20F58007DC880 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
-		6E274E8225F20F8D007DC880 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
+		6E274E8225F20F8D007DC880 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		6E274E8525F20FBF007DC880 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		6E274E8825F20FE5007DC880 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		6E274E8D25F21506007DC880 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -288,7 +288,7 @@
 		6E4CC46F27E3534000DF63BD /* NicknameField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameField.swift; sourceTree = "<group>"; };
 		6E4CC47127E35C2300DF63BD /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		6E4F5D8D2657DF580061A13C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
-		6E4F5D922657E0BA0061A13C /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
+		6E4F5D922657E0BA0061A13C /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		6E533E7A27E17B0800DB09CD /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		6E5882532658BE730050F0E0 /* splash2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = splash2.json; sourceTree = "<group>"; };
 		6E5882542658BE730050F0E0 /* splash3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = splash3.json; sourceTree = "<group>"; };
@@ -387,7 +387,7 @@
 		6ED9801628CF30BA003EBE2A /* SigninCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninCoordinator.swift; sourceTree = "<group>"; };
 		6ED9801828CF3B8B003EBE2A /* NetworkActivityLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkActivityLogger.swift; sourceTree = "<group>"; };
 		6EE1706B264E58E400C3E94B /* SharePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoView.swift; sourceTree = "<group>"; };
-		6EE1706D264E590F00C3E94B /* SharePhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoVC.swift; sourceTree = "<group>"; };
+		6EE1706D264E590F00C3E94B /* SharePhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoViewController.swift; sourceTree = "<group>"; };
 		6EE5A820275512280013B0D4 /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 		6EE5CE6B25FB191800A737DF /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
@@ -550,7 +550,7 @@
 			isa = PBXGroup;
 			children = (
 				6E274E7E25F20F58007DC880 /* BaseView.swift */,
-				6E274E8225F20F8D007DC880 /* BaseVC.swift */,
+				6E274E8225F20F8D007DC880 /* BaseViewController.swift */,
 				6E274E8525F20FBF007DC880 /* BaseTableViewCell.swift */,
 				6E274E8825F20FE5007DC880 /* BaseCollectionViewCell.swift */,
 				6E36A489278AE59500F6D3B5 /* BaseCoordinator.swift */,
@@ -649,7 +649,7 @@
 			isa = PBXGroup;
 			children = (
 				6E4F5D8D2657DF580061A13C /* SplashView.swift */,
-				6E4F5D922657E0BA0061A13C /* SplashVC.swift */,
+				6E4F5D922657E0BA0061A13C /* SplashViewController.swift */,
 			);
 			path = splash;
 			sourceTree = "<group>";
@@ -995,7 +995,7 @@
 				6E9ACDF626501A6D00ED39BF /* subviews */,
 				6E091573264F86F90048EB79 /* cell */,
 				6EE1706B264E58E400C3E94B /* SharePhotoView.swift */,
-				6EE1706D264E590F00C3E94B /* SharePhotoVC.swift */,
+				6EE1706D264E590F00C3E94B /* SharePhotoViewController.swift */,
 				6E091576264F99A50048EB79 /* SharePhotoReactor.swift */,
 			);
 			path = "share-photo";
@@ -1330,7 +1330,7 @@
 				6E4CC47027E3534000DF63BD /* NicknameField.swift in Sources */,
 				6E764AE8263FA96C00A99402 /* UIFontExtension.swift in Sources */,
 				6E283AFD25F2047900955B57 /* HomeViewController.swift in Sources */,
-				6E274E8325F20F8D007DC880 /* BaseVC.swift in Sources */,
+				6E274E8325F20F8D007DC880 /* BaseViewController.swift in Sources */,
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
 				6E42CCFA27BF4162008C1F5F /* RemoteConfigService.swift in Sources */,
 				6ED9801728CF30BA003EBE2A /* SigninCoordinator.swift in Sources */,
@@ -1344,7 +1344,7 @@
 				6E804290279D3072008A0EB4 /* HashtagType.swift in Sources */,
 				6E16FB9C27D0DDF700BB6AC7 /* BaseError.swift in Sources */,
 				6E9ACDF826501AA400ED39BF /* ShareTypeSwitchView.swift in Sources */,
-				6E4F5D932657E0BA0061A13C /* SplashVC.swift in Sources */,
+				6E4F5D932657E0BA0061A13C /* SplashViewController.swift in Sources */,
 				6E60018826084516000065C8 /* HomeWishCollectionViewCell.swift in Sources */,
 				6E441CA526046F9D0010A625 /* WishServices.swift in Sources */,
 				6EB278D327CFA51000F63F19 /* SigninViewController.swift in Sources */,
@@ -1411,7 +1411,7 @@
 				6E95C05728C0D39600EF300D /* JsonUtils.swift in Sources */,
 				6E36A488278AE4F000F6D3B5 /* WriteCoordinator.swift in Sources */,
 				6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */,
-				6EE1706E264E590F00C3E94B /* SharePhotoVC.swift in Sources */,
+				6EE1706E264E590F00C3E94B /* SharePhotoViewController.swift in Sources */,
 				6E66A27A25FB489000C0C051 /* WriteViewController.swift in Sources */,
 				6E533E7B27E17B0800DB09CD /* SignupView.swift in Sources */,
 				6E87572B279BE65300BAA5BF /* NotificationButtonGropView.swift in Sources */,

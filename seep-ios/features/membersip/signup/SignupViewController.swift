@@ -2,7 +2,7 @@ import UIKit
 
 import ReactorKit
 
-final class SignupViewController: BaseVC, View, SignupCoordinator {
+final class SignupViewController: BaseViewController, View, SignupCoordinator {
     private let signupView = SignupView()
     private let signupReactor = SignupReactor()
     private weak var coordinator: SignupCoordinator?

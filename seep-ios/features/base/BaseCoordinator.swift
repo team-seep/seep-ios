@@ -1,7 +1,7 @@
 import UIKit
 
 protocol BaseCoordinator {
-    var presenter: BaseVC { get }
+    var presenter: BaseViewController { get }
     
     func popup(animated: Bool)
     
@@ -14,8 +14,8 @@ protocol BaseCoordinator {
     func goToSignin()
 }
 
-extension BaseCoordinator where Self: BaseVC {
-    var presenter: BaseVC {
+extension BaseCoordinator where Self: BaseViewController {
+    var presenter: BaseViewController {
         return self
     }
     

@@ -8,7 +8,7 @@ protocol WriteDelegate: AnyObject {
     func onSuccessWrite(category: Category)
 }
 
-final class WriteViewController: BaseVC, View, WriteCoordinator {
+final class WriteViewController: BaseViewController, View, WriteCoordinator {
     weak var delegate: WriteDelegate?
     private let writeView = WriteView()
     private let writeReactor: WriteReactor

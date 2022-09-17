@@ -2,7 +2,7 @@ import UIKit
 
 import ReactorKit
 
-final class SigninViewController: BaseVC, View, SigninCoordinator {
+final class SigninViewController: BaseViewController, View, SigninCoordinator {
     private let signinView = SigninView()
     private let signinReactor = SigninReactor(
         appleSigninManager: AppleSigninManager.shared,

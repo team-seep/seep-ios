@@ -79,7 +79,7 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
     }
     
     func presentSharePhoto(wish: Wish) {
-        let viewController = SharePhotoVC.instance(wish: wish)
+        let viewController = SharePhotoViewController.instance(wish: wish)
         
         viewController.delegate = self
         self.present(viewController, animated: true, completion: nil)
