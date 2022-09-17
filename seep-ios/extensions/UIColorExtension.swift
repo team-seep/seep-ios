@@ -7,7 +7,7 @@ extension UIColor {
     
     static let gray1 = UIColor(r: 255, g: 255, b: 255)
     static let gray2 = UIColor(r: 246, g: 247, b: 249)
-    static let gray2_5 = UIColor(r: 246, g: 247, b: 249)
+    static let gray2_5 = UIColor(r: 224, g: 227, b: 229)
     static let gray3 = UIColor(r: 192, g: 197, b: 205)
     static let gray4 = UIColor(r: 130, g: 137, b: 147)
     static let gray5 = UIColor(r: 51, g: 51, b: 51)

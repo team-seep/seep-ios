@@ -7,7 +7,7 @@ final class SignupReactor: Reactor {
     enum Action {
         case tapNicknameProfileType(NicknameProfileType)
         case inputNickname(String)
-        case inputPhoto(UIImage)
+        case inputPhoto(UIImage?)
         case tapCamera
         case tapSignup
     }
@@ -15,7 +15,7 @@ final class SignupReactor: Reactor {
     enum Mutation {
         case setNicknameProfileType(NicknameProfileType)
         case setNickname(String)
-        case setPhoto(UIImage)
+        case setPhoto(UIImage?)
         case presentPhotoBottomSheet(isPhotoExisted: Bool)
         case setSignupButtonEnable(isEnable: Bool)
         case goToMain

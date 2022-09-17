@@ -2,9 +2,11 @@ import UIKit
 
 import ReactorKit
 
-final class SignupViewController: BaseVC, View {
+final class SignupViewController: BaseVC, View, SignupCoordinator {
     private let signupView = SignupView()
     private let signupReactor = SignupReactor()
+    private weak var coordinator: SignupCoordinator?
+    private let imagePicker = UIImagePickerController()
     
     static func instance() -> SignupViewController {
         return SignupViewController(nibName: nil, bundle: nil)
@@ -18,6 +20,8 @@ final class SignupViewController: BaseVC, View {
         super.viewDidLoad()
         
         self.reactor = self.signupReactor
+        self.coordinator = self
+        self.imagePicker.delegate = self
     }
     
     override func bindEvent() {
@@ -26,7 +30,10 @@ final class SignupViewController: BaseVC, View {
             .drive(onNext: { [weak self] isPhotoExisted in
                 guard let self = self else { return }
                 
-                AlertUtils.showImagePicker(controller: self, picker: UIImagePickerController())
+                self.coordinator?.showImagePicker(
+                    isPhotoNil: isPhotoExisted,
+                    picker: self.imagePicker
+                )
             })
             .disposed(by: self.eventDisposeBag)
     }
@@ -63,10 +70,16 @@ final class SignupViewController: BaseVC, View {
             .disposed(by: self.disposeBag)
         
         reactor.state
-            .map { $0.photo }
-            .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: nil)
+            .map { ($0.photo, $0.nickname.isEmpty) }
+            .asDriver(onErrorJustReturn: (nil, true))
             .drive(self.signupView.profileView.rx.image)
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map { $0.photo != nil }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: false)
+            .drive(self.signupView.profileSwitch.rx.isEnable)
             .disposed(by: self.disposeBag)
         
         reactor.state
@@ -75,5 +88,18 @@ final class SignupViewController: BaseVC, View {
             .asDriver(onErrorJustReturn: false)
             .drive(self.signupView.signupButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
+    }
+}
+
+extension SignupViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
+        if let photo = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.signupReactor.action.onNext(.inputPhoto(photo))
+        }
+        
+        picker.dismiss(animated: true)
     }
 }

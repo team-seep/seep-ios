@@ -14,14 +14,13 @@ final class ProfileView: BaseView {
     private let textLabel = UILabel().then {
         $0.font = .appleBold(size: 36)
         $0.textColor = .gray5
-        $0.text = "예나"
     }
     
     private let profileImage = UIImageView().then {
         $0.layer.cornerRadius = 50
         $0.layer.masksToBounds = true
         $0.image = UIImage(named: "img_profile_default")
-        $0.isHidden = true
+        $0.contentMode = .scaleAspectFill
     }
     
     fileprivate let cameraButton = UIButton().then {
@@ -67,24 +66,40 @@ final class ProfileView: BaseView {
         }
     }
     
-    fileprivate func bind(image: UIImage?) {
-        self.profileImage.isHidden = image == nil
-        self.profileImage.image = image
+    fileprivate func bind(image: UIImage?, isNameEmpty: Bool) {
+        if isNameEmpty {
+            if image == nil {
+                self.profileImage.image = UIImage(named: "img_profile_default")
+                self.containerView.layer.borderWidth = 1
+            } else {
+                self.profileImage.image = image
+                self.containerView.layer.borderWidth = 0
+            }
+        } else {
+            self.profileImage.image = image
+            self.containerView.layer.borderWidth = image == nil ? 1 : 0
+        }
     }
     
     fileprivate func bind(name: String, type: NicknameProfileType) {
         switch type {
         case .first:
-            guard name.count < 2 else { return }
-            let index = name.index(name.startIndex, offsetBy: name.count)
-            
-            self.textLabel.text = String(name[..<index])
-
+            if name.count < 2 {
+                self.textLabel.text = name
+                
+            } else {
+                let index = name.index(name.startIndex, offsetBy: 1)
+                
+                self.textLabel.text = String(name[..<index])
+            }
         case .second:
-            guard name.count < 3 else { return }
-            let index = name.index(name.startIndex, offsetBy: name.count)
-            
-            self.textLabel.text = String(name[..<index])
+            if name.count < 3 {
+                self.textLabel.text = name
+            } else {
+                let index = name.index(name.startIndex, offsetBy: 2)
+                
+                self.textLabel.text = String(name[..<index])
+            }
         }
     }
 }
@@ -94,9 +109,9 @@ extension Reactive where Base: ProfileView {
         return base.cameraButton.rx.tap
     }
     
-    var image: Binder<UIImage?> {
+    var image: Binder<(UIImage?, Bool)> {
         return Binder(self.base) { view, image in
-            view.bind(image: image)
+            view.bind(image: image.0, isNameEmpty: image.1)
         }
     }
     

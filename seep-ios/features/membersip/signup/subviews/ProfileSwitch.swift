@@ -131,6 +131,7 @@ final class ProfileSwitch: BaseView {
         self.indicatorView.backgroundColor = isEnable
         ? .seepBlue
         : .gray2_5
+        self.indicatorView.layer.shadowOpacity = isEnable ? 0.15 : 0
         self.isUserInteractionEnabled = isEnable
         self.firstButton.isEnabled = isEnable
         self.secondButton.isEnabled = isEnable

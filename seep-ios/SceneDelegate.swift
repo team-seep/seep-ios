@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         self.window?.windowScene = windowScene
-        self.window?.rootViewController = SigninViewController.instance()
+        self.window?.rootViewController = SignupViewController.instance()
         self.window?.makeKeyAndVisible()
         
         self.handleDeepLink(urlContexts: connectionOptions.urlContexts)
