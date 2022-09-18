@@ -179,8 +179,6 @@
 		6EB50F0C26BD65BF00F0096E /* SmallWriteEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */; };
 		6EB50F0E26BD6A6E00F0096E /* SmallWriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */; };
 		6EBF9BEB275912AF00C70B1A /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF9BEA275912AF00C70B1A /* ColorExtensions.swift */; };
-		6EC793CA28D6030F0085D70C /* ISEmojiView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */; };
-		6EC793CB28D6030F0085D70C /* ISEmojiView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6EC9BF9D26BE0456007C7708 /* MediumVerticalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9C26BE0456007C7708 /* MediumVerticalEntry.swift */; };
 		6EC9BF9F26BE05D8007C7708 /* MediumVerticalWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BF9E26BE05D8007C7708 /* MediumVerticalWidget.swift */; };
 		6EC9BFA126BE073B007C7708 /* MediumVerticalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BFA026BE073B007C7708 /* MediumVerticalEntryView.swift */; };
@@ -199,6 +197,8 @@
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
 		6EE5CE7425FB24CF00A737DF /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */; };
 		6EE5CE7825FB301F00A737DF /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5CE7725FB301F00A737DF /* HomeReactor.swift */; };
+		6EE9154E28D6B1D1000B4E4D /* ISEmojiView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE9154D28D6B13E000B4E4D /* ISEmojiView.framework */; };
+		6EE9154F28D6B1D1000B4E4D /* ISEmojiView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE9154D28D6B13E000B4E4D /* ISEmojiView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6EEBC36C28D5AFBF00E67D69 /* SignupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEBC36B28D5AFBF00E67D69 /* SignupCoordinator.swift */; };
 		6EEED44525F2227F0059DBE5 /* HomeWishTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEED44425F2227F0059DBE5 /* HomeWishTableViewCell.swift */; };
 		6EF81A1828D5FF8E00ED6216 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EF81A1728D5FF8E00ED6216 /* RealmSwift */; };
@@ -217,6 +217,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6EB50EEE26BD548F00F0096E;
 			remoteInfo = widgetExtension;
+		};
+		6EE9154C28D6B13E000B4E4D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6EE9154828D6B13E000B4E4D /* ISEmojiView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0B834BB71DD5CE12003F5D79;
+			remoteInfo = ISEmojiView;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -238,7 +245,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6EC793CB28D6030F0085D70C /* ISEmojiView.framework in Embed Frameworks */,
+				6EE9154F28D6B1D1000B4E4D /* ISEmojiView.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -406,9 +413,9 @@
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
 		6EE5CE7325FB24CF00A737DF /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		6EE5CE7725FB301F00A737DF /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
+		6EE9154828D6B13E000B4E4D /* ISEmojiView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ISEmojiView.xcodeproj; path = ISEmojiView/ISEmojiView.xcodeproj; sourceTree = "<group>"; };
 		6EEBC36B28D5AFBF00E67D69 /* SignupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupCoordinator.swift; sourceTree = "<group>"; };
 		6EEED44425F2227F0059DBE5 /* HomeWishTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWishTableViewCell.swift; sourceTree = "<group>"; };
-		6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ISEmojiView.framework; sourceTree = "<group>"; };
 		6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidgetData.swift; sourceTree = "<group>"; };
 		6EFB350927AB665F00CB45F7 /* WishEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditView.swift; sourceTree = "<group>"; };
 		6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditReactor.swift; sourceTree = "<group>"; };
@@ -430,7 +437,7 @@
 				6E16FB9727D0DDD700BB6AC7 /* KakaoSDKCommonCore in Frameworks */,
 				6E74E2082763834E00D872D5 /* RxCocoa in Frameworks */,
 				6E42CCEC27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta in Frameworks */,
-				6EC793CA28D6030F0085D70C /* ISEmojiView.framework in Frameworks */,
+				6EE9154E28D6B1D1000B4E4D /* ISEmojiView.framework in Frameworks */,
 				6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */,
 				6E42CCF627BF39ED008C1F5F /* FirebaseMessaging in Frameworks */,
 				6E6203562763878B006B8393 /* SnapKit in Frameworks */,
@@ -587,6 +594,7 @@
 		6E283AEC25F2047900955B57 = {
 			isa = PBXGroup;
 			children = (
+				6EE9154828D6B13E000B4E4D /* ISEmojiView.xcodeproj */,
 				6EE5A820275512280013B0D4 /* widgetExtension.entitlements */,
 				6E283AF725F2047900955B57 /* seep-ios */,
 				6EB50EF426BD548F00F0096E /* widget */,
@@ -1032,6 +1040,14 @@
 			path = shared;
 			sourceTree = "<group>";
 		};
+		6EE9154928D6B13E000B4E4D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6EE9154D28D6B13E000B4E4D /* ISEmojiView.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6EEED43D25F219000059DBE5 /* cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1055,7 +1071,6 @@
 		A59D84F56481B30FACF6A680 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6EF81A1428D5FE3000ED6216 /* ISEmojiView.framework */,
 				6EB50EF026BD548F00F0096E /* WidgetKit.framework */,
 				6EB50EF226BD548F00F0096E /* SwiftUI.framework */,
 			);
@@ -1176,6 +1191,12 @@
 			);
 			productRefGroup = 6E283AF625F2047900955B57 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 6EE9154928D6B13E000B4E4D /* Products */;
+					ProjectRef = 6EE9154828D6B13E000B4E4D /* ISEmojiView.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				6E283AF425F2047900955B57 /* seep-ios */,
@@ -1183,6 +1204,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		6EE9154D28D6B13E000B4E4D /* ISEmojiView.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ISEmojiView.framework;
+			remoteRef = 6EE9154C28D6B13E000B4E4D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6E283AF325F2047900955B57 /* Resources */ = {
@@ -1711,8 +1742,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				kind = exactVersion;
+				version = 2.11.1;
 			};
 		};
 		6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
