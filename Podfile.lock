@@ -1,5 +1,5 @@
 PODS:
-  - ISEmojiView (0.2.6)
+  - ISEmojiView (0.3.4)
   - Realm (10.5.2):
     - Realm/Headers (= 10.5.2)
   - Realm/Headers (10.5.2)
@@ -7,7 +7,7 @@ PODS:
     - Realm (= 10.5.2)
 
 DEPENDENCIES:
-  - ISEmojiView
+  - ISEmojiView (= 0.3.4)
   - RealmSwift (= 10.5.2)
 
 SPEC REPOS:
@@ -17,10 +17,10 @@ SPEC REPOS:
     - RealmSwift
 
 SPEC CHECKSUMS:
-  ISEmojiView: f7cd94a6c93307f429ec5da001293d0b02247f03
+  ISEmojiView: 6055d6e5453056b88edc17ab3bb40f5664cbd2b8
   Realm: 2e1bc0d28301006176692da234deff51f867d5ae
   RealmSwift: a522ad39715e8b4e491af4460059bc32b84f5a9b
 
-PODFILE CHECKSUM: f9e983e6bafeb3a40394759414ea5b45ab8381bf
+PODFILE CHECKSUM: 6b6fd6fe5bc1b431a02615216aa0ba0e53bead43
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.14.3
