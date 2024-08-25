@@ -10,21 +10,16 @@ final class HomeView: BaseView {
         $0.numberOfLines = 0
     }
     
-    private let greenLine = UIView().then {
-        $0.backgroundColor = .tennisGreen
-        $0.layer.cornerRadius = 1
-    }
-    
     let emojiView = EmojiImageView()
     
     let successCountButton = UIButton().then {
-        $0.titleLabel?.font = .appleSemiBold(size: 12)
+        $0.titleLabel?.font = .appleSemiBold(size: 13)
         $0.setTitleColor(.black, for: .normal)
         $0.setImage(UIImage(named: "ic_right_arrow"), for: .normal)
         $0.semanticContentAttribute = .forceRightToLeft
-        $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 4, right: 10)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 12)
         $0.backgroundColor = .white
-        $0.layer.cornerRadius = 12
+        $0.layer.cornerRadius = 15
         $0.layer.shadowColor = UIColor.black.cgColor
         $0.layer.shadowOffset = CGSize(width: 0, height: 1)
         $0.layer.shadowOpacity = 0.05
@@ -52,7 +47,6 @@ final class HomeView: BaseView {
         self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
         self.addSubViews([
             self.titleLabel,
-            self.greenLine,
             self.emojiView,
             self.successCountButton,
             self.categoryView,
@@ -68,26 +62,21 @@ final class HomeView: BaseView {
             make.top.equalTo(safeAreaLayoutGuide).offset(34 * RatioUtils.height)
         }
         
-        self.greenLine.snp.makeConstraints { make in
-            make.left.equalTo(self.titleLabel)
-            make.bottom.equalTo(self.titleLabel)
-            make.width.equalTo(44)
-            make.height.equalTo(2)
-        }
-        
         self.emojiView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide)
-            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(10)
+            make.right.equalToSuperview().offset(-30)
+            make.size.equalTo(100)
         }
         
         self.successCountButton.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(22)
             make.top.equalTo(self.titleLabel.snp.bottom).offset(20 * RatioUtils.height)
+            make.height.equalTo(30)
         }
         
         self.categoryView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
-            make.top.equalTo(self.successCountButton.snp.bottom).offset(42 * RatioUtils.height)
+            make.top.equalTo(self.successCountButton.snp.bottom).offset(24)
         }
         
         self.viewTypeButton.snp.makeConstraints { make in
@@ -122,7 +111,6 @@ final class HomeView: BaseView {
     }
     
     fileprivate func setWishCount(category: Category, count: Int) {
-        self.greenLine.isHidden = count == 0
         if count == 0 {
             self.titleLabel.attributedText = self.getEmptyTitle(by: category, count: count)
         } else{
@@ -136,9 +124,9 @@ final class HomeView: BaseView {
             duration: 2,
             options: [.autoreverse,.repeat]
         ) { [weak self] in
-            self?.emojiView.transform = .init(translationX: 0, y: 10)
+            self?.emojiView.transform = .init(translationX: 0, y: 10).rotated(by: CGFloat(10 * CGFloat.pi / 180))
         } completion: { [weak self] _ in
-            self?.emojiView.transform = .identity
+            self?.emojiView.transform = .identity.rotated(by: CGFloat(10 * CGFloat.pi / 180))
         }
     }
     
