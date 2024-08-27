@@ -63,7 +63,7 @@ final class HomeView: BaseView {
         }
         
         self.emojiView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(20)
             make.right.equalToSuperview().offset(-30)
             make.size.equalTo(100)
         }
