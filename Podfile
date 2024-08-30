@@ -4,7 +4,7 @@
 target 'seep-ios' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  pod 'ISEmojiView'
+  pod 'ISEmojiView', '0.3.4'
 
   pod 'RealmSwift', '=10.5.2'
   
