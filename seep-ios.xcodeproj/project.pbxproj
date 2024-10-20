@@ -46,10 +46,8 @@
 		6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41F28025FB873500CE1530 /* TextInputView.swift */; };
 		6E41F28425FB916200CE1530 /* WriteReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41F28325FB916200CE1530 /* WriteReactor.swift */; };
 		6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCE927BF39ED008C1F5F /* FirebaseAnalytics */; };
-		6E42CCEC27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCEB27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta */; };
 		6E42CCEE27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCED27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		6E42CCF027BF39ED008C1F5F /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCEF27BF39ED008C1F5F /* FirebaseAppCheck */; };
-		6E42CCF227BF39ED008C1F5F /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCF127BF39ED008C1F5F /* FirebaseAppDistribution-Beta */; };
 		6E42CCF427BF39ED008C1F5F /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCF327BF39ED008C1F5F /* FirebaseCrashlytics */; };
 		6E42CCF627BF39ED008C1F5F /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCF527BF39ED008C1F5F /* FirebaseMessaging */; };
 		6E42CCF827BF39ED008C1F5F /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCF727BF39ED008C1F5F /* FirebaseRemoteConfig */; };
@@ -362,7 +360,6 @@
 				6E62035C2763889D006B8393 /* Then in Frameworks */,
 				6E74E20F2763844E00D872D5 /* Differentiator in Frameworks */,
 				6E74E2082763834E00D872D5 /* RxCocoa in Frameworks */,
-				6E42CCEC27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta in Frameworks */,
 				6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */,
 				6E42CCF627BF39ED008C1F5F /* FirebaseMessaging in Frameworks */,
 				6E93A5BB2CC4C0420029DBE8 /* RealmSwift in Frameworks */,
@@ -373,7 +370,6 @@
 				6E74E2112763844E00D872D5 /* RxDataSources in Frameworks */,
 				6E62035F276388DE006B8393 /* SwiftyBeaver in Frameworks */,
 				6E74E20C2763834E00D872D5 /* RxSwift in Frameworks */,
-				6E42CCF227BF39ED008C1F5F /* FirebaseAppDistribution-Beta in Frameworks */,
 				6E42CCF427BF39ED008C1F5F /* FirebaseCrashlytics in Frameworks */,
 				6E7112D02781870600396CC0 /* ReactorKit in Frameworks */,
 				6E42CCF827BF39ED008C1F5F /* FirebaseRemoteConfig in Frameworks */,
@@ -914,10 +910,8 @@
 				6E62036127638996006B8393 /* Lottie */,
 				6E7112CF2781870600396CC0 /* ReactorKit */,
 				6E42CCE927BF39ED008C1F5F /* FirebaseAnalytics */,
-				6E42CCEB27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta */,
 				6E42CCED27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				6E42CCEF27BF39ED008C1F5F /* FirebaseAppCheck */,
-				6E42CCF127BF39ED008C1F5F /* FirebaseAppDistribution-Beta */,
 				6E42CCF327BF39ED008C1F5F /* FirebaseCrashlytics */,
 				6E42CCF527BF39ED008C1F5F /* FirebaseMessaging */,
 				6E42CCF727BF39ED008C1F5F /* FirebaseRemoteConfig */,
@@ -1482,8 +1476,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
+				kind = exactVersion;
+				version = 11.3.0;
 			};
 		};
 		6E45F6CF2CC4BDFD00BE6445 /* XCRemoteSwiftPackageReference "ISEmojiView" */ = {
@@ -1506,8 +1500,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
+				kind = exactVersion;
+				version = 5.7.1;
 			};
 		};
 		6E62035727638846006B8393 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -1515,55 +1509,55 @@
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = exactVersion;
-				version = 7.12.0;
+				version = 8.1.0;
 			};
 		};
 		6E62035A2763889D006B8393 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				kind = exactVersion;
+				version = 3.0.0;
 			};
 		};
 		6E62035D276388DE006B8393 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.9.0;
+				kind = exactVersion;
+				version = 2.1.1;
 			};
 		};
 		6E62036027638996006B8393 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
+				kind = exactVersion;
+				version = 4.5.0;
 			};
 		};
 		6E7112CE2781870600396CC0 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.0;
+				kind = exactVersion;
+				version = 3.2.0;
 			};
 		};
 		6E74E2062763834E00D872D5 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.2.0;
+				kind = exactVersion;
+				version = 6.8.0;
 			};
 		};
 		6E74E20D2763844E00D872D5 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
+				kind = exactVersion;
+				version = 5.0.2;
 			};
 		};
 		6E93A5B92CC4C0420029DBE8 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
@@ -1582,11 +1576,6 @@
 			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		6E42CCEB27BF39ED008C1F5F /* FirebaseAnalyticsSwift-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseAnalyticsSwift-Beta";
-		};
 		6E42CCED27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -1596,11 +1585,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAppCheck;
-		};
-		6E42CCF127BF39ED008C1F5F /* FirebaseAppDistribution-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseAppDistribution-Beta";
 		};
 		6E42CCF327BF39ED008C1F5F /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
