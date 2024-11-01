@@ -37,19 +37,22 @@
 "home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
 "home_no_deanline" = "일정없음";
-"home_empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
-"home_finish_alert_title" = "완료했어요!";
-"home_finish_alert_description" = "완료 후 완료 목록에서\n확인할 수 있습니다!";
 
 "home.empty_title.want_to_do" ="하고 싶은 것들을\n적어봐요!";
 "home.empty_title.want_to_get" ="갖고 싶은 것들을\n적어봐요!";
-"home.empty_title.want_to_go" ="가고 싶은 곳들을\n적어봐요!";
-"home.title_format.want_to_do" = "하고 싶은 것들이\n%02d개 남았어요!";
-"home.title_format.want_to_get" = "갖고 싶은 것들이\n%02d개 남았어요!";
-"home.title_format.want_to_go" = "가고 싶은 곳들이\n%02d곳 남았어요!";
+"home.empty_title.want_to_go" ="가고 싶은 장소를\n적어봐요!";
+"home.title_format.want_to_do" = "하고 싶은 것들이\n%d개 남았어요!";
+"home.title_format.want_to_get" = "갖고 싶은 것들이\n%d개 남았어요!";
+"home.title_format.want_to_go" = "가고 싶은 장소가\n%d개 남았어요!";
 "home.filter.sort.latest" = "최근 생성순";
 "home.filter.sort.deadline" = "완료일 가까운선";
 "home.filter.only_finished" = "완료된 위시만";
+"home.write_button.want_to_do" = "📝 뭐 하고 싶어요?";
+"home.write_button.want_to_go" = "📝 어디 가고 싶어요?";
+"home.write_button.want_to_get" = "📝 뭐 갖고 싶어요?";
+"home.toast.finish_wish" = "👏위시를 완료했어요!";
+"home.toast.success_write" = "👏등록이 완료됐어요!";
+"home.empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

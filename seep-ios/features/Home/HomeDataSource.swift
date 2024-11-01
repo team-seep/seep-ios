@@ -9,7 +9,8 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
         collectionView.register([
             HomeOverviewCell.self,
             HomeWishGridCell.self,
-            HomeWishListCell.self
+            HomeWishListCell.self,
+            HomeEmptyCell.self
         ])
         
         collectionView.registerSectionHeader([HomeFilterHeaderView.self])
@@ -31,6 +32,9 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
                     cell.bind(viewModel: viewModel)
                     return cell
                 }
+            case .empty:
+                let cell: HomeEmptyCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                return cell
             }
         }
         
@@ -46,7 +50,6 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
                 return headerView
             }
         }
-        collectionView.delegate = self
     }
     
     func reload(_ sections: [HomeSection]) {
@@ -61,14 +64,6 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
     }
 }
 
-extension HomeDataSource: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.input.didTapWish.send(indexPath.item)
-    }
-}
-
-
-
 struct HomeSection: Hashable {
     enum SectionType: Hashable {
         case overview
@@ -82,4 +77,5 @@ struct HomeSection: Hashable {
 enum HomeSectionItem: Hashable {
     case overview(category: Category, count: Int)
     case wish(HomeWishCellViewModel)
+    case empty
 }

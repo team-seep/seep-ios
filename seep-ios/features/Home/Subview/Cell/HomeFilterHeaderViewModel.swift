@@ -4,6 +4,7 @@ import Combine
 extension HomeFilterHeaderViewModel {
     struct Input {
         let didTapCategory = PassthroughSubject<Category, Never>()
+        let updateCategory = PassthroughSubject<Category, Never>()
         let didTapSortOrder = PassthroughSubject<Void, Never>()
         let selectSortOrder = PassthroughSubject<HomeSortOrder, Never>()
         let didTapOnlyFinished = PassthroughSubject<Void, Never>()
@@ -46,6 +47,10 @@ final class HomeFilterHeaderViewModel {
                 owner.output.category.send(category)
                 owner.output.updateCategory.send(category)
             })
+            .store(in: &cancellables)
+        
+        input.updateCategory
+            .subscribe(output.category)
             .store(in: &cancellables)
         
         input.didTapSortOrder

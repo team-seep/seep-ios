@@ -43,6 +43,6 @@ extension HomeSortOrder {
     }
     
     private func newestOrder(wish1: Wish, wish2: Wish) -> Bool {
-        return wish1.createdAt < wish2.createdAt
+        return wish1.createdAt > wish2.createdAt
     }
 }

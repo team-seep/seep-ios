@@ -6,7 +6,7 @@ struct Wish: Equatable, Hashable {
     var category: Category
     var title: String
     var endDate: Date?
-    let finishDate: Date?
+    var finishDate: Date?
     var notifications: [SeepNotification]
     var memo: String
     var hashtag: String

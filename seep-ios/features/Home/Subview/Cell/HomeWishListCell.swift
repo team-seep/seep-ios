@@ -1,5 +1,7 @@
 import UIKit
 
+import CombineCocoa
+
 final class HomeWishListCell: BaseCollectionViewCell {
     enum Layout {
         static let size = CGSize(width: UIUtils.windowBounds.width - 40, height: 70)
@@ -29,10 +31,10 @@ final class HomeWishListCell: BaseCollectionViewCell {
     
     private let tagLabel = TagLabel()
     
-    private let checkButton: UIButton = {
+    private let finishButton: UIButton = {
         let button = UIButton()
-        button.setImage(.icCheckOff, for: .normal)
-        button.setImage(.icCheckOn, for: .highlighted)
+        button.setImage(Assets.Icons.icCheckOff.image, for: .normal)
+        button.setImage(Assets.Icons.icCheckOn.image, for: .selected)
         return button
     }()
     
@@ -47,7 +49,7 @@ final class HomeWishListCell: BaseCollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(ddayLabel)
         contentView.addSubview(tagLabel)
-        contentView.addSubview(checkButton)
+        contentView.addSubview(finishButton)
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -73,7 +75,7 @@ final class HomeWishListCell: BaseCollectionViewCell {
             $0.centerY.height.equalTo(ddayLabel)
         }
         
-        checkButton.snp.makeConstraints {
+        finishButton.snp.makeConstraints {
             $0.centerY.equalTo(containerView)
             $0.trailing.equalTo(containerView).offset(-16)
         }
@@ -81,6 +83,10 @@ final class HomeWishListCell: BaseCollectionViewCell {
     
     func bind(viewModel: HomeWishCellViewModel) {
         setupWish(viewModel.output.wish)
+        
+        finishButton.tapPublisher
+            .subscribe(viewModel.input.didTapFinish)
+            .store(in: &cancellables)
     }
   
     private func setupWish(_ wish: Wish) {
@@ -89,5 +95,6 @@ final class HomeWishListCell: BaseCollectionViewCell {
         ddayLabel.bind(dday: wish.endDate)
         tagLabel.text = HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
         tagLabel.isHidden = wish.hashtag.isEmpty
+        finishButton.isSelected = wish.isSuccess
     }
 }

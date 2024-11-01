@@ -117,14 +117,6 @@ internal enum Strings {
   internal static let hashtagTrip = Strings.tr("Localization", "hashtag_trip", fallback: "여행")
   /// 성공
   internal static let homeCategorySuccess = Strings.tr("Localization", "home_category_success", fallback: "성공")
-  /// 아직 등록된 것이 없네요.
-  /// 👇🏻아래 버튼을 누르면 작성할 수 있어요!
-  internal static let homeEmpty = Strings.tr("Localization", "home_empty", fallback: "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!")
-  /// 완료 후 완료 목록에서
-  /// 확인할 수 있습니다!
-  internal static let homeFinishAlertDescription = Strings.tr("Localization", "home_finish_alert_description", fallback: "완료 후 완료 목록에서\n확인할 수 있습니다!")
-  /// 완료했어요!
-  internal static let homeFinishAlertTitle = Strings.tr("Localization", "home_finish_alert_title", fallback: "완료했어요!")
   /// 👏 지금까지 %d개를 이뤘어요
   internal static func homeFinishCountCategoryWantToDoFormat(_ p1: Int) -> String {
     return Strings.tr("Localization", "home_finish_count_category_want_to_do_format", p1, fallback: "👏 지금까지 %d개를 이뤘어요")
@@ -299,6 +291,9 @@ internal enum Strings {
     }
   }
   internal enum Home {
+    /// 아직 등록된 것이 없네요.
+    /// 👇🏻아래 버튼을 누르면 작성할 수 있어요!
+    internal static let empty = Strings.tr("Localization", "home.empty", fallback: "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!")
     internal enum EmptyTitle {
       /// 하고 싶은 것들을
       /// 적어봐요!
@@ -306,9 +301,9 @@ internal enum Strings {
       /// 갖고 싶은 것들을
       /// 적어봐요!
       internal static let wantToGet = Strings.tr("Localization", "home.empty_title.want_to_get", fallback: "갖고 싶은 것들을\n적어봐요!")
-      /// 가고 싶은 곳들을
+      /// 가고 싶은 장소를
       /// 적어봐요!
-      internal static let wantToGo = Strings.tr("Localization", "home.empty_title.want_to_go", fallback: "가고 싶은 곳들을\n적어봐요!")
+      internal static let wantToGo = Strings.tr("Localization", "home.empty_title.want_to_go", fallback: "가고 싶은 장소를\n적어봐요!")
     }
     internal enum Filter {
       /// 완료된 위시만
@@ -322,20 +317,34 @@ internal enum Strings {
     }
     internal enum TitleFormat {
       /// 하고 싶은 것들이
-      /// %02d개 남았어요!
+      /// %d개 남았어요!
       internal static func wantToDo(_ p1: Int) -> String {
-        return Strings.tr("Localization", "home.title_format.want_to_do", p1, fallback: "하고 싶은 것들이\n%02d개 남았어요!")
+        return Strings.tr("Localization", "home.title_format.want_to_do", p1, fallback: "하고 싶은 것들이\n%d개 남았어요!")
       }
       /// 갖고 싶은 것들이
-      /// %02d개 남았어요!
+      /// %d개 남았어요!
       internal static func wantToGet(_ p1: Int) -> String {
-        return Strings.tr("Localization", "home.title_format.want_to_get", p1, fallback: "갖고 싶은 것들이\n%02d개 남았어요!")
+        return Strings.tr("Localization", "home.title_format.want_to_get", p1, fallback: "갖고 싶은 것들이\n%d개 남았어요!")
       }
-      /// 가고 싶은 곳들이
-      /// %02d곳 남았어요!
+      /// 가고 싶은 장소가
+      /// %d개 남았어요!
       internal static func wantToGo(_ p1: Int) -> String {
-        return Strings.tr("Localization", "home.title_format.want_to_go", p1, fallback: "가고 싶은 곳들이\n%02d곳 남았어요!")
+        return Strings.tr("Localization", "home.title_format.want_to_go", p1, fallback: "가고 싶은 장소가\n%d개 남았어요!")
       }
+    }
+    internal enum Toast {
+      /// 👏위시를 완료했어요!
+      internal static let finishWish = Strings.tr("Localization", "home.toast.finish_wish", fallback: "👏위시를 완료했어요!")
+      /// 👏등록이 완료됐어요!
+      internal static let successWrite = Strings.tr("Localization", "home.toast.success_write", fallback: "👏등록이 완료됐어요!")
+    }
+    internal enum WriteButton {
+      /// 📝 뭐 하고 싶어요?
+      internal static let wantToDo = Strings.tr("Localization", "home.write_button.want_to_do", fallback: "📝 뭐 하고 싶어요?")
+      /// 📝 뭐 갖고 싶어요?
+      internal static let wantToGet = Strings.tr("Localization", "home.write_button.want_to_get", fallback: "📝 뭐 갖고 싶어요?")
+      /// 📝 어디 가고 싶어요?
+      internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
     }
   }
 }

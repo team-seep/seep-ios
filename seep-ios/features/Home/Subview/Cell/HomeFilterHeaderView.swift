@@ -12,7 +12,6 @@ final class HomeFilterHeaderView: UICollectionReusableView {
     
     private let sortButton: UIButton = {
         let button = UIButton()
-        button.setTitle(Strings.Home.Filter.Sort.deadline, for: .normal)
         button.setTitleColor(.gray4, for: .normal)
         button.titleLabel?.font = .appleMedium(size: 14)
         button.setKern(kern: -0.02)
@@ -46,10 +45,31 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         return button
     }()
     
-    let viewTypeButton: UIButton = {
+    private let viewTypeButton: UIButton = {
         let button = UIButton()
         button.setImage(Assets.Icons.icGrid.image, for: .normal)
         return button
+    }()
+    
+    private let backgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 246, g: 247, b: 249, a: 1)
+        return view
+    }()
+    
+    private lazy var gradientView: UIView = {
+        let view = UIView()
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        return view
+    }()
+    
+    private let gradientLayer: CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.colors = [UIColor(r: 246, g: 247, b: 249, a: 1).cgColor, UIColor(r: 246, g: 247, b: 249, a: 0).cgColor]
+        layer.startPoint = CGPoint(x: 0.5, y: 0)
+        layer.endPoint = CGPoint(x: 0.5, y: 1)
+        layer.frame = CGRect(x: 0, y: 0, width: UIUtils.windowBounds.width - 40, height: 10)
+        return layer
     }()
     
     private var cancellables = Set<AnyCancellable>()
@@ -69,11 +89,19 @@ final class HomeFilterHeaderView: UICollectionReusableView {
     }
     
     private func setupUI() {
-        backgroundColor = HomeViewController.Constant.backgroundColor
+        addSubViews(backgroundView)
         addSubview(categoryView)
         addSubview(sortButton)
         addSubview(onlyFinishedFilterButton)
         addSubview(viewTypeButton)
+        addSubview(gradientView)
+        
+        backgroundView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalTo(gradientView.snp.top)
+            $0.top.equalToSuperview()
+        }
         
         categoryView.snp.makeConstraints {
             $0.leading.equalToSuperview()
@@ -95,6 +123,13 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             $0.trailing.equalToSuperview()
             $0.size.equalTo(24)
             $0.centerY.equalTo(sortButton)
+        }
+        
+        gradientView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(10)
         }
     }
     

@@ -1,5 +1,7 @@
 import UIKit
 
+import CombineCocoa
+
 final class HomeWishGridCell: BaseCollectionViewCell {
     enum Layout {
         static let size = CGSize(
@@ -33,10 +35,10 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     
     private let tagLabel = TagLabel()
     
-    let checkButton: UIButton = {
+    private let finishButton: UIButton = {
         let button = UIButton()
-        button.setImage(.icCheckOff, for: .normal)
-        button.setImage(.icCheckOn, for: .highlighted)
+        button.setImage(Assets.Icons.icCheckOff.image, for: .normal)
+        button.setImage(Assets.Icons.icCheckOn.image, for: .selected)
         return button
     }()
     
@@ -51,7 +53,7 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(ddayLabel)
         contentView.addSubview(tagLabel)
-        contentView.addSubview(checkButton)
+        contentView.addSubview(finishButton)
         
         containerView.snp.makeConstraints {
             $0.edges.equalTo(0)
@@ -68,7 +70,7 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             $0.top.equalTo(emojiLabel.snp.bottom).offset(4)
         }
         
-        checkButton.snp.makeConstraints {
+        finishButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-14)
             $0.bottom.equalToSuperview().offset(-14)
         }
@@ -76,19 +78,24 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     
     func bind(viewModel: HomeWishCellViewModel) {
         setupWish(viewModel.output.wish)
+        
+        finishButton.tapPublisher
+            .subscribe(viewModel.input.didTapFinish)
+            .store(in: &cancellables)
     }
     
     func setupWish(_ wish: Wish) {
         emojiLabel.text = wish.emoji
         titleLabel.text = wish.title
         ddayLabel.bind(dday: wish.endDate)
+        finishButton.isSelected = wish.isSuccess
         
         tagLabel.isHidden = wish.hashtag.isEmpty
         if wish.hashtag.isEmpty {
             ddayLabel.snp.removeConstraints()
             ddayLabel.snp.makeConstraints {
                 $0.left.equalTo(titleLabel)
-                $0.bottom.equalTo(checkButton)
+                $0.bottom.equalTo(finishButton)
             }
         } else {
             tagLabel.text = HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
@@ -102,7 +109,7 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             
             tagLabel.snp.makeConstraints {
                 $0.left.height.equalTo(ddayLabel)
-                $0.bottom.equalTo(checkButton)
+                $0.bottom.equalTo(finishButton)
             }
         }
     }

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 import RxSwift
 import RxCocoa
@@ -28,8 +29,12 @@ final class WishDetailReactor: Reactor {
     let pushWishEditPublisher = PublishRelay<Wish>()
     let popupWithCategoryPublisher = PublishRelay<Category>()
     let presentSharePhotoPublisher = PublishRelay<Wish>()
+    let updateWishPublisher = PassthroughSubject<Wish, Never>()
+    let deleteWishPublisher = PassthroughSubject<Wish, Never>()
+    let cancelFinishPublisher = PassthroughSubject<Wish, Never>()
+    var cancellables = Set<AnyCancellable>()
     private let wishService: WishServiceProtocol
-    
+
     init(
         wish: Wish,
         wishService: WishServiceProtocol
@@ -45,11 +50,13 @@ final class WishDetailReactor: Reactor {
             
         case .tapDeleteButton:
             self.wishService.deleteWish(id: self.currentState.wish.id)
+            deleteWishPublisher.send(currentState.wish)
             
             return .just(.popupWishCategory(self.currentState.wish.category))
             
         case .tapCancelFinish:
             self.wishService.cancelFinishWish(id: self.currentState.wish.id)
+            cancelFinishPublisher.send(currentState.wish)
             
             return .just(.popupWishCategory(self.currentState.wish.category))
             
@@ -57,6 +64,7 @@ final class WishDetailReactor: Reactor {
             return .just(.presentSharePhoto)
             
         case .updateWish(let wish):
+            updateWishPublisher.send(wish)
             return .just(.setWish(wish: wish))
         }
     }

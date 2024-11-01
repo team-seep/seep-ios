@@ -24,4 +24,13 @@ final class Preference {
             return ViewType(rawValue: viewTypeRawValue) ?? .list
         }
     }
+    
+    var reservedDeepLink: String {
+        set {
+            instance.set(newValue, forKey: "reservedDeepLink")
+        }
+        get {
+            instance.string(forKey: "reservedDeepLink") ?? ""
+        }
+    }
 }

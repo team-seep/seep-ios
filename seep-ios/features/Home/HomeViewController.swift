@@ -10,11 +10,33 @@ final class HomeViewController: BaseViewController {
         collectionViewLayout: createCollectionViewLayout()
     )
     
+    private lazy var gradientView: UIView = {
+        let view = UIView()
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        return view
+    }()
+    
+    private let gradientLayer: CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.colors = [UIColor(r: 246, g: 247, b: 249, a: 0).cgColor, UIColor(r: 246, g: 247, b: 249, a: 1).cgColor]
+        layer.startPoint = CGPoint(x: 0.5, y: 0)
+        layer.endPoint = CGPoint(x: 0.5, y: 1)
+        return layer
+    }()
+    
+    private let writeButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.contentInsets = .init(top: 15, leading: 30, bottom: 15, trailing: 30)
+        let button = UIButton(configuration: config)
+        button.backgroundColor = .tennisGreen
+        button.layer.cornerRadius = 25
+        return button
+    }()
+    
     private lazy var dataSource = HomeDataSource(
         collectionView: collectionView,
         viewModel: viewModel
     )
-    
     private let viewModel: HomeViewModel
     
     deinit {
@@ -39,9 +61,17 @@ final class HomeViewController: BaseViewController {
         viewModel.input.firstLoad.send(())
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        gradientLayer.frame = gradientView.bounds
+    }
+    
     private func setupUI() {
         view.backgroundColor = Constant.backgroundColor
         view.addSubview(collectionView)
+        view.addSubview(gradientView)
+        view.addSubview(writeButton)
         collectionView.backgroundColor = Constant.backgroundColor
         collectionView.snp.makeConstraints {
             $0.leading.equalToSuperview()
@@ -49,9 +79,48 @@ final class HomeViewController: BaseViewController {
             $0.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        gradientView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(97)
+        }
+        
+        writeButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(50)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-24)
+        }
     }
     
     private func bind() {
+        writeButton.tapPublisher
+            .subscribe(viewModel.input.didTapWrite)
+            .store(in: &cancellables)
+        
+        collectionView.willBeginDraggingPublisher
+            .withUnretained(self)
+            .sink { (owner: HomeViewController, _) in
+                owner.hideWriteButton()
+            }
+            .store(in: &cancellables)
+        
+        collectionView.didEndDraggingPublisher
+            .withUnretained(self)
+            .sink { (owner: HomeViewController, _) in
+                owner.showWriteButton()
+            }
+            .store(in: &cancellables)
+        
+        collectionView.didSelectItemPublisher
+            .withUnretained(self)
+            .sink { (owner: HomeViewController, indexPath: IndexPath) in
+                guard owner.dataSource.sectionIdentifier(for: indexPath.section)?.type != .overview else { return }
+                owner.viewModel.input.didTapWish.send(indexPath.item)
+            }
+            .store(in: &cancellables)
+        
         viewModel.output.dataSource
             .main
             .withUnretained(self)
@@ -67,89 +136,22 @@ final class HomeViewController: BaseViewController {
                 owner.handleRoute(route)
             }
             .store(in: &cancellables)
+        
+        viewModel.output.category
+            .removeDuplicates()
+            .withUnretained(self)
+            .sink { (owner: HomeViewController, category: Category) in
+                owner.setWriteButtonTitle(category: category)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.output.toast
+            .main
+            .sink { (message: String) in
+                ToastManager.shared.show(message: message)
+            }
+            .store(in: &cancellables)
     }
-    
-//    func bind(reactor: HomeReactor) {
-//        // MARK: Action
-//        self.homeView.successCountButton.rx.tap
-//            .map { Reactor.Action.tapSuccessCountButton }
-//            .bind(to: reactor.action)
-//            .disposed(by: self.disposeBag)
-//        
-//        self.homeView.categoryView.rx.tapCategory
-//            .map { Reactor.Action.tapCategory($0)}
-//            .do(onNext: { _ in
-//                FeedbackUtils.feedbackInstance.impactOccurred()
-//            })
-//            .bind(to: reactor.action)
-//            .disposed(by: self.disposeBag)
-//        
-//        self.homeView.viewTypeButton.rx.tap
-//            .map { Reactor.Action.tapViewTypeButton }
-//            .do(onNext: { _ in
-//                FeedbackUtils.feedbackInstance.impactOccurred()
-//            })
-//            .bind(to: reactor.action)
-//            .disposed(by: self.disposeBag)
-//        
-//        self.homeView.writeButton.rx.tap
-//            .map { Reactor.Action.tapWriteButton }
-//            .bind(to: reactor.action)
-//            .disposed(by: self.disposeBag)
-//        
-//        // MARK: State
-//        reactor.state
-//            .map { ($0.category, $0.wishCount) }
-//            .asDriver(onErrorJustReturn: (.wantToDo, 0))
-//            .drive(self.homeView.rx.wishCount)
-//            .disposed(by: self.disposeBag)
-//        
-//        reactor.state
-//            .map { ($0.category, $0.successCount) }
-//            .asDriver(onErrorJustReturn: (.wantToDo, 0))
-//            .drive(self.homeView.rx.successCount)
-//            .disposed(by: self.disposeBag)
-//        
-//        reactor.state
-//            .map { $0.category }
-//            .skip(1)
-//            .distinctUntilChanged()
-//            .asDriver(onErrorJustReturn: .wantToDo)
-//            .do(onNext: { [weak self] category in
-//                self?.movePageView(category: category)
-//            })
-//            .drive(self.homeView.rx.category)
-//            .disposed(by: self.disposeBag)
-//        
-//        reactor.state
-//            .map { $0.viewType }
-//            .distinctUntilChanged()
-//            .asDriver(onErrorJustReturn: .grid)
-//            .do(onNext: { [weak self] viewType in
-//                self?.setViewType(viewType: viewType)
-//            })
-//            .drive(self.homeView.rx.viewType)
-//            .disposed(by: self.disposeBag)
-//    }
-//    
-//    private func setupPageViewController() {
-//        for viewController in self.pageViewControllers {
-//            viewController.delegate = self
-//        }
-//        self.addChild(self.pageViewController)
-//        self.pageViewController.delegate = self
-//        self.pageViewController.dataSource = self
-//        self.homeView.containerView.addSubview(self.pageViewController.view)
-//        self.pageViewController.view.snp.makeConstraints { make in
-//            make.edges.equalTo(self.homeView.containerView)
-//        }
-//        self.pageViewController.setViewControllers(
-//            [self.pageViewControllers[0]],
-//            direction: .forward,
-//            animated: false,
-//            completion: nil
-//        )
-//    }
     
     private func registerNotification() {
         NotificationCenter.default.addObserver(
@@ -160,70 +162,11 @@ final class HomeViewController: BaseViewController {
         )
     }
     
-//    private func movePageView(category: Category) {
-//        guard let currentPageViewController = self.pageViewController.viewControllers?[0] as? PageItemViewController,
-//              let currentIndex = self.pageViewControllers.firstIndex(of: currentPageViewController) else {
-//            return
-//        }
-//        
-//        switch category {
-//        case .wantToDo:
-//            self.pageViewController.setViewControllers(
-//                [self.pageViewControllers[0]],
-//                direction: .reverse,
-//                animated: true,
-//                completion: nil
-//            )
-//        case .wantToGet:
-//            self.pageViewController.setViewControllers(
-//                [self.pageViewControllers[1]],
-//                direction: currentIndex > 1 ? .reverse : .forward,
-//                animated: true,
-//                completion: nil
-//            )
-//        case .wantToGo:
-//            self.pageViewController.setViewControllers(
-//                [self.pageViewControllers[2]],
-//                direction: .forward,
-//                animated: true,
-//                completion: nil
-//            )
-//        }
-//    }
-//    
-//    private func setViewType(viewType: ViewType) {
-//        if let viewControllers = self.pageViewController.viewControllers {
-//            if !viewControllers.isEmpty {
-//                if let pageItemVC = viewControllers[0] as? PageItemViewController {
-//                    pageItemVC.setViewType(viewType: viewType)
-//                }
-//            }
-//        }
-//    }
-//    
-//    private func fetchPageVC() {
-//        if let viewControllers = self.pageViewController.viewControllers {
-//            if !viewControllers.isEmpty {
-//                if let pageItemVC = viewControllers[0] as? PageItemViewController {
-//                    pageItemVC.actionFetchData()
-//                }
-//            }
-//        }
-//    }
-    
-    private func showFinishAlert() {
-        AlertUtils.show(
-            viewController: self,
-            title: "home_finish_alert_title".localized,
-            message: "home_finish_alert_description".localized
-        )
-    }
-    
     @objc private func willEnterForeground() {
         
     }
     
-    func createCollectionViewLayout() -> UICollectionViewLayout {
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
             guard let self, let sectionType = dataSource.sectionIdentifier(for: sectionIndex)?.type else {
                 fatalError("정의되지 않은 섹션입니다.")
@@ -244,43 +187,15 @@ final class HomeViewController: BaseViewController {
                 
                 return section
             case .wish(let headerViewModel):
-                switch headerViewModel.output.viewType.value {
-                case .grid:
+                if dataSource.itemIdentifier(for: IndexPath(item: 0, section: sectionIndex)) == .empty {
                     let item = NSCollectionLayoutItem(layoutSize: .init(
-                        widthDimension: .absolute(HomeWishGridCell.Layout.size.width),
-                        heightDimension: .absolute(HomeWishGridCell.Layout.size.height)
+                        widthDimension: .absolute(HomeEmptyCell.Layout.size.width),
+                        heightDimension: .absolute(HomeEmptyCell.Layout.size.height)
                     ))
                     let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
-                        widthDimension: .absolute(HomeWishGridCell.Layout.size.width),
-                        heightDimension: .absolute(HomeWishGridCell.Layout.size.height)
+                        widthDimension: .absolute(HomeEmptyCell.Layout.size.width),
+                        heightDimension: .absolute(HomeEmptyCell.Layout.size.height)
                     ), subitems: [item])
-                    let section = NSCollectionLayoutSection(group: group)
-                    section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
-                    
-                    let headerSize = NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(1.0),
-                        heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
-                    )
-                    let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-                        layoutSize: headerSize,
-                        elementKind: UICollectionView.elementKindSectionHeader,
-                        alignment: .top
-                    )
-                    sectionHeader.contentInsets = .init(top: 0, leading: 0, bottom: 16, trailing: 0)
-                    sectionHeader.pinToVisibleBounds = true
-                    section.boundarySupplementaryItems = [sectionHeader]
-                    
-                    return section
-                case .list:
-                    let item = NSCollectionLayoutItem(layoutSize: .init(
-                        widthDimension: .absolute(HomeWishListCell.Layout.size.width),
-                        heightDimension: .absolute(HomeWishListCell.Layout.size.height)
-                    ))
-                    let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(
-                        widthDimension: .absolute(HomeWishListCell.Layout.size.width),
-                        heightDimension: .absolute(HomeWishListCell.Layout.size.height)
-                    ), subitems: [item])
-                    group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
                     let section = NSCollectionLayoutSection(group: group)
                     section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
                     
@@ -297,9 +212,96 @@ final class HomeViewController: BaseViewController {
                     section.boundarySupplementaryItems = [sectionHeader]
                     
                     return section
+                } else {
+                    switch headerViewModel.output.viewType.value {
+                    case .grid:
+                        let item = NSCollectionLayoutItem(layoutSize: .init(
+                            widthDimension: .absolute(HomeWishGridCell.Layout.size.width),
+                            heightDimension: .absolute(HomeWishGridCell.Layout.size.height)
+                        ))
+                        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
+                            widthDimension: .fractionalWidth(1.0),
+                            heightDimension: .absolute(HomeWishGridCell.Layout.size.height)
+                        ), subitems: [item])
+                        group.interItemSpacing = .fixed(15)
+                        let section = NSCollectionLayoutSection(group: group)
+                        section.interGroupSpacing = 15
+                        section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+                        
+                        let headerSize = NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(1.0),
+                            heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
+                        )
+                        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                            layoutSize: headerSize,
+                            elementKind: UICollectionView.elementKindSectionHeader,
+                            alignment: .top
+                        )
+                        sectionHeader.pinToVisibleBounds = true
+                        section.boundarySupplementaryItems = [sectionHeader]
+                        
+                        return section
+                    case .list:
+                        let item = NSCollectionLayoutItem(layoutSize: .init(
+                            widthDimension: .absolute(HomeWishListCell.Layout.size.width),
+                            heightDimension: .absolute(HomeWishListCell.Layout.size.height)
+                        ))
+                        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(
+                            widthDimension: .absolute(HomeWishListCell.Layout.size.width),
+                            heightDimension: .absolute(HomeWishListCell.Layout.size.height)
+                        ), subitems: [item])
+                        let section = NSCollectionLayoutSection(group: group)
+                        section.interGroupSpacing = 10
+                        section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+                        
+                        let headerSize = NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(1.0),
+                            heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
+                        )
+                        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                            layoutSize: headerSize,
+                            elementKind: UICollectionView.elementKindSectionHeader,
+                            alignment: .top
+                        )
+                        sectionHeader.pinToVisibleBounds = true
+                        section.boundarySupplementaryItems = [sectionHeader]
+                        
+                        return section
+                    }
                 }
             }
         }
+    }
+    
+    private func showWriteButton() {
+        UIView.transition(with: writeButton, duration: 0.3, options: .curveEaseInOut) { [weak self] in
+            self?.writeButton.alpha = 1.0
+            self?.writeButton.transform = .identity
+        }
+    }
+    
+    private func hideWriteButton() {
+        UIView.transition(with: writeButton, duration: 0.3, options: .curveEaseInOut) { [weak self] in
+            self?.writeButton.alpha = 0.0
+            self?.writeButton.transform = .init(translationX: 0, y: 100)
+        }
+    }
+    
+    private func setWriteButtonTitle(category: Category) {
+        let title: String
+        switch category {
+        case .wantToDo:
+            title = Strings.Home.WriteButton.wantToDo
+        case .wantToGet:
+            title = Strings.Home.WriteButton.wantToGet
+        case .wantToGo:
+            title = Strings.Home.WriteButton.wantToGo
+        }
+        
+        writeButton.configuration?.attributedTitle = AttributedString(title, attributes: .init([
+            .font: UIFont.appleExtraBold(size: 17) as Any,
+            .foregroundColor: UIColor.white
+        ]))
     }
 }
 
@@ -309,10 +311,12 @@ extension HomeViewController {
         switch route {
         case .presentWrite(let category):
             presentWrite(category: category)
-        case .presentSortBottomSheet:
-            presentSortBottomSheet()
-        case .pushWishDetail(let wish):
-            pushWishDetail(wish: wish)
+        case .presentSortBottomSheet(let viewModel):
+            presentSortBottomSheet(viewModel: viewModel)
+        case .pushWishDetail(let reactor):
+            pushWishDetail(reactor: reactor)
+        case .showErrorAlert(let error):
+            showErrorAlert(error)
         }
     }
     
@@ -328,117 +332,26 @@ extension HomeViewController {
         present(navigationViewController, animated: true)
     }
     
-    private func presentSortBottomSheet() {
-        // TODO: 채워야 함
+    private func presentSortBottomSheet(viewModel: SortOrderBottomSheetViewModel) {
+        let viewController = SortOrderBottomSheetViewController(viewModel: viewModel)
+        presentPanModal(viewController)
     }
     
-    private func pushWishDetail(wish: Wish) {
-        let viewController = WishDetailViewController.instance(wish: wish, mode: .fromHome)
+    private func pushWishDetail(reactor: WishDetailReactor) {
+        let mode: DetailMode
+        if reactor.initialState.wish.isSuccess {
+            mode = .fromFinish
+        } else {
+            mode = .fromHome
+        }
+        let viewController = WishDetailViewController(reactor: reactor, mode: mode)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
 extension HomeViewController: WriteDelegate {
     func onSuccessWrite(category: Category) {
-//        self.homeReactor.action.onNext(.viewWillAppear)
-//        self.homeReactor.action.onNext(.tapCategory(category))
-//        self.fetchPageVC()
+        viewModel.input.updateCategory.send(category)
+        ToastManager.shared.show(message: Strings.Home.Toast.successWrite)
     }
 }
-
-//extension HomeViewController: PageItemDelegate {
-//    func onDismiss() {
-//        self.homeReactor.action.onNext(.viewWillAppear)
-//    }
-//    
-//    func onFinishWish() {
-//        self.showFinishAlert()
-//        self.homeReactor.action.onNext(.viewWillAppear)
-//    }
-//    
-//    func scrollViewWillBeginDragging() {
-//        self.homeView.hideWriteButton()
-//    }
-//    
-//    func scrollViewDidEndDragging() {
-//        self.homeView.showWriteButton()
-//    }
-//}
-//
-//extension HomeViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
-//    func pageViewController(
-//        _ pageViewController: UIPageViewController,
-//        viewControllerBefore viewController: UIViewController
-//    ) -> UIViewController? {
-//        guard let pageItemViewController = viewController as? PageItemViewController,
-//              let index = self.pageViewControllers.firstIndex(of: pageItemViewController) else {
-//            return nil
-//        }
-//        let previousIndex = index - 1
-//        
-//        guard previousIndex >= 0 else {
-//            return nil
-//        }
-//        
-//        guard self.pageViewControllers.count > previousIndex else {
-//            return nil
-//        }
-//        
-//        return self.pageViewControllers[previousIndex]
-//    }
-//    
-//    func pageViewController(
-//        _ pageViewController: UIPageViewController,
-//        viewControllerAfter viewController: UIViewController
-//    ) -> UIViewController? {
-//        guard let pageItemViewController = viewController as? PageItemViewController,
-//              let index = self.pageViewControllers.firstIndex(of: pageItemViewController) else {
-//            return nil
-//        }
-//        let nextIndex = index + 1
-//        
-//        guard nextIndex < self.pageViewControllers.count else {
-//            return nil
-//        }
-//        
-//        guard self.pageViewControllers.count > nextIndex else {
-//            return nil
-//        }
-//        
-//        return self.pageViewControllers[nextIndex]
-//    }
-//    
-//    func pageViewController(
-//        _ pageViewController: UIPageViewController,
-//        didFinishAnimating finished: Bool,
-//        previousViewControllers: [UIViewController],
-//        transitionCompleted completed: Bool
-//    ) {
-//        if completed {
-//            guard let currentViewController = self.pageViewController.viewControllers?[0] as? PageItemViewController,
-//                  let currentIndex = self.pageViewControllers.firstIndex(of: currentViewController) else {
-//                return
-//            }
-//            
-//            switch currentIndex {
-//            case 0:
-//                self.homeView.categoryView.moveActiveButton(category: .wantToDo)
-//                Observable.just(HomeReactor.Action.tapCategory(.wantToDo))
-//                    .bind(to: self.homeReactor.action)
-//                    .disposed(by: self.disposeBag)
-//            case 1:
-//                self.homeView.categoryView.moveActiveButton(category: .wantToGet)
-//                Observable.just(HomeReactor.Action.tapCategory(.wantToGet))
-//                    .bind(to: self.homeReactor.action)
-//                    .disposed(by: self.disposeBag)
-//            case 2:
-//                self.homeView.categoryView.moveActiveButton(category: .wantToGo)
-//                Observable.just(HomeReactor.Action.tapCategory(.wantToGo))
-//                    .bind(to: self.homeReactor.action)
-//                    .disposed(by: self.disposeBag)
-//            default:
-//                break
-//            }
-//        }
-//    }
-//}
