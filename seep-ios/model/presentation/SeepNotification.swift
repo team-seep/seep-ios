@@ -1,6 +1,6 @@
 import Foundation
 
-struct SeepNotification: Equatable {
+struct SeepNotification: Equatable, Hashable {
     enum NotificationType: String {
         case targetDay
         case dayAgo

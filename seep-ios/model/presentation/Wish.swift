@@ -1,6 +1,6 @@
 import Foundation
 
-struct Wish: Equatable {
+struct Wish: Equatable, Hashable {
     let id: String
     var emoji: String
     var category: Category
