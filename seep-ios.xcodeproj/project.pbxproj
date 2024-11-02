@@ -12,6 +12,8 @@
 		6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091574264F87070048EB79 /* SharePhotoCell.swift */; };
 		6E091577264F99A50048EB79 /* SharePhotoReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091576264F99A50048EB79 /* SharePhotoReactor.swift */; };
 		6E091579264FA94E0048EB79 /* CommonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091578264FA94E0048EB79 /* CommonError.swift */; };
+		6E1E400A2CD65EE9008BCC77 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E1E40092CD65EE9008BCC77 /* RealmSwift */; };
+		6E1E400B2CD65F00008BCC77 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 6E1E40092CD65EE9008BCC77 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5425F20B31007DC880 /* AlertUtils.swift */; };
 		6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */; };
 		6E274E5D25F20D5A007DC880 /* RatioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5C25F20D5A007DC880 /* RatioUtils.swift */; };
@@ -152,7 +154,6 @@
 		6E87572B279BE65300BAA5BF /* NotificationButtonGropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572A279BE65300BAA5BF /* NotificationButtonGropView.swift */; };
 		6E87572D279BEB0E00BAA5BF /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572C279BEB0E00BAA5BF /* NotificationViewController.swift */; };
 		6E87572F279BEB5B00BAA5BF /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87572E279BEB5B00BAA5BF /* NotificationCoordinator.swift */; };
-		6E93A5BB2CC4C0420029DBE8 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E93A5BA2CC4C0420029DBE8 /* RealmSwift */; };
 		6E9AB5362783226B00C6F825 /* EmojiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AB5352783226B00C6F825 /* EmojiInputView.swift */; };
 		6E9ACDF826501AA400ED39BF /* ShareTypeSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9ACDF726501AA400ED39BF /* ShareTypeSwitchView.swift */; };
 		6E9BFEA226453CAC0093CA89 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */; };
@@ -207,6 +208,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		6E1E400C2CD65F00008BCC77 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6E1E400B2CD65F00008BCC77 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6E45F6DD2CC4BE9000BE6445 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -410,8 +422,8 @@
 				6E74E2082763834E00D872D5 /* RxCocoa in Frameworks */,
 				6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */,
 				6E42CCF627BF39ED008C1F5F /* FirebaseMessaging in Frameworks */,
-				6E93A5BB2CC4C0420029DBE8 /* RealmSwift in Frameworks */,
 				6E6203562763878B006B8393 /* SnapKit in Frameworks */,
+				6E1E400A2CD65EE9008BCC77 /* RealmSwift in Frameworks */,
 				6E62035927638846006B8393 /* Kingfisher in Frameworks */,
 				6E62036227638996006B8393 /* Lottie in Frameworks */,
 				6E45F6D12CC4BDFE00BE6445 /* ISEmojiView in Frameworks */,
@@ -978,6 +990,7 @@
 				6E283AF225F2047900955B57 /* Frameworks */,
 				6E283AF325F2047900955B57 /* Resources */,
 				6EB50F0026BD549000F0096E /* Embed App Extensions */,
+				6E1E400C2CD65F00008BCC77 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1007,9 +1020,9 @@
 				6E42CCF527BF39ED008C1F5F /* FirebaseMessaging */,
 				6E42CCF727BF39ED008C1F5F /* FirebaseRemoteConfig */,
 				6E45F6D02CC4BDFE00BE6445 /* ISEmojiView */,
-				6E93A5BA2CC4C0420029DBE8 /* RealmSwift */,
 				6E6D197E2CCDD87F008A460C /* CombineCocoa */,
 				6E59E93A2CD4A71E006AA02D /* PanModal */,
+				6E1E40092CD65EE9008BCC77 /* RealmSwift */,
 			);
 			productName = "seep-ios";
 			productReference = 6E283AF525F2047900955B57 /* seep-ios.app */;
@@ -1070,9 +1083,9 @@
 				6E7112CE2781870600396CC0 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6E45F6CF2CC4BDFD00BE6445 /* XCRemoteSwiftPackageReference "ISEmojiView" */,
-				6E93A5B92CC4C0420029DBE8 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				6E6D197D2CCDD87F008A460C /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				6E59E9392CD4A71E006AA02D /* XCRemoteSwiftPackageReference "PanModal" */,
+				6E1E40082CD65EE9008BCC77 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 6E283AF625F2047900955B57 /* Products */;
 			projectDirPath = "";
@@ -1463,7 +1476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1491,7 +1504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1588,6 +1601,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6E1E40082CD65EE9008BCC77 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.54.1;
+			};
+		};
 		6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -1692,17 +1713,14 @@
 				version = 5.0.2;
 			};
 		};
-		6E93A5B92CC4C0420029DBE8 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 10.54.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6E1E40092CD65EE9008BCC77 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E1E40082CD65EE9008BCC77 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		6E42CCE927BF39ED008C1F5F /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -1807,11 +1825,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E74E20D2763844E00D872D5 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
-		};
-		6E93A5BA2CC4C0420029DBE8 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6E93A5B92CC4C0420029DBE8 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
