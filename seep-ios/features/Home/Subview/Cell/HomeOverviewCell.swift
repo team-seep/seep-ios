@@ -26,13 +26,13 @@ final class HomeOverviewCell: BaseCollectionViewCell {
         contentView.addSubview(emojiView)
         
         titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(22)
+            $0.leading.equalToSuperview()
             $0.top.equalToSuperview().offset(28)
         }
         
         emojiView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-30)
+            $0.top.equalToSuperview().offset(8)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.size.equalTo(100)
         }
     }
