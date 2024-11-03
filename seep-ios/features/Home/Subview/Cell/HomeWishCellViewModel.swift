@@ -39,6 +39,9 @@ final class HomeWishCellViewModel {
     private func bind() {
         input.didTapFinish
             .withUnretained(self)
+            .filter({ (owner: HomeWishCellViewModel, _) in
+                return !owner.output.wish.isSuccess
+            })
             .sink(receiveValue: { (owner: HomeWishCellViewModel, _) in
                 owner.output.didTapFinish.send(owner.output.wish)
             })

@@ -42,6 +42,22 @@ final class HomeOverviewCell: BaseCollectionViewCell {
         setupTitle(category: category, count: count)
     }
     
+    func playEmojiAnimation() {
+        UIView.transition(
+            with: emojiView,
+            duration: 2,
+            options: [.autoreverse,.repeat]
+        ) { [weak self] in
+            self?.emojiView.transform = .init(translationX: 0, y: 5).rotated(by: CGFloat(10 * CGFloat.pi / 180))
+        } completion: { [weak self] _ in
+            self?.emojiView.transform = .identity.rotated(by: CGFloat(10 * CGFloat.pi / 180))
+        }
+    }
+    
+    func stopEmojiAnimation() {
+        emojiView.layer.removeAllAnimations()
+    }
+    
     private func setupTitle(category: Category, count: Int) {
         if count == 0 {
             titleLabel.attributedText = category.emptyText

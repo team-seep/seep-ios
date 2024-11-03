@@ -73,6 +73,7 @@ final class HomeViewController: BaseViewController {
         view.addSubview(gradientView)
         view.addSubview(writeButton)
         collectionView.backgroundColor = Constant.backgroundColor
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -121,6 +122,20 @@ final class HomeViewController: BaseViewController {
             }
             .store(in: &cancellables)
         
+        collectionView.willDisplayCellPublisher
+            .main
+            .sink { [weak self] (cell: UICollectionViewCell, _) in
+                self?.handleWillDisplay(cell: cell)
+            }
+            .store(in: &cancellables)
+        
+        collectionView.didEndDisplayingCellPublisher
+            .main
+            .sink { [weak self] (cell: UICollectionViewCell, _) in
+                self?.handleEndDisplay(cell: cell)
+            }
+            .store(in: &cancellables)
+        
         viewModel.output.dataSource
             .main
             .withUnretained(self)
@@ -163,7 +178,7 @@ final class HomeViewController: BaseViewController {
     }
     
     @objc private func willEnterForeground() {
-        
+        playEmojiAnimationIfCellVisible()
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
@@ -302,6 +317,26 @@ final class HomeViewController: BaseViewController {
             .font: UIFont.appleExtraBold(size: 17) as Any,
             .foregroundColor: UIColor.white
         ]))
+    }
+    
+    private func handleWillDisplay(cell: UICollectionViewCell) {
+        if let overviewCell = cell as? HomeOverviewCell {
+            overviewCell.playEmojiAnimation()
+        }
+    }
+    
+    private func handleEndDisplay(cell: UICollectionViewCell) {
+        if let overviewCell = cell as? HomeOverviewCell {
+            overviewCell.stopEmojiAnimation()
+        }
+    }
+    
+    private func playEmojiAnimationIfCellVisible() {
+        collectionView.visibleCells.compactMap {
+            $0 as? HomeOverviewCell
+        }.forEach {
+            $0.playEmojiAnimation()
+        }
     }
 }
 

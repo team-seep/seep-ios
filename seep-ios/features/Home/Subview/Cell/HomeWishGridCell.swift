@@ -37,13 +37,19 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     
     private let finishButton: UIButton = {
         let button = UIButton()
-        button.setImage(Assets.Icons.icCheckOff.image, for: .normal)
-        button.setImage(Assets.Icons.icCheckOn.image, for: .selected)
+        button.setImage(Assets.Icons.icCheckOff.image.resizeImage(scaledTo: 30), for: .normal)
+        button.setImage(Assets.Icons.icCheckOn.image.resizeImage(scaledTo: 30), for: .selected)
         return button
     }()
     
     override func setup() {
         setupUI()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        titleLabel.attributedText = nil
     }
     
     private func setupUI() {
@@ -73,6 +79,7 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         finishButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-14)
             $0.bottom.equalToSuperview().offset(-14)
+            $0.size.equalTo(30)
         }
     }
     
@@ -111,6 +118,26 @@ final class HomeWishGridCell: BaseCollectionViewCell {
                 $0.left.height.equalTo(ddayLabel)
                 $0.bottom.equalTo(finishButton)
             }
+        }
+        
+        if wish.isSuccess {
+            emojiLabel.alpha = 0.5
+            titleLabel.alpha = 0.5
+            
+            let attributedString = NSMutableAttributedString(string: wish.title)
+            attributedString.addAttributes([
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                .strikethroughColor: UIColor.gray4.copy()
+            ], range: NSRange(location: 0, length: wish.title.count))
+            titleLabel.attributedText = attributedString
+            
+            ddayLabel.alpha = 0.5
+            tagLabel.alpha = 0.5
+        } else {
+            emojiLabel.alpha = 1
+            titleLabel.alpha = 1
+            ddayLabel.alpha = 1
+            tagLabel.alpha = 1
         }
     }
 }
