@@ -263,7 +263,7 @@
 		6E274E8525F20FBF007DC880 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		6E274E8825F20FE5007DC880 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		6E274E8D25F21506007DC880 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		6E283AF525F2047900955B57 /* seep-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "seep-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E283AF525F2047900955B57 /* seep-ios-dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "seep-ios-dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E283AF825F2047900955B57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E283AFA25F2047900955B57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6E283AFC25F2047900955B57 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -571,7 +571,7 @@
 		6E283AF625F2047900955B57 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6E283AF525F2047900955B57 /* seep-ios.app */,
+				6E283AF525F2047900955B57 /* seep-ios-dev.app */,
 				6EB50EEF26BD548F00F0096E /* widgetExtension.appex */,
 			);
 			name = Products;
@@ -1025,7 +1025,7 @@
 				6E1E40092CD65EE9008BCC77 /* RealmSwift */,
 			);
 			productName = "seep-ios";
-			productReference = 6E283AF525F2047900955B57 /* seep-ios.app */;
+			productReference = 6E283AF525F2047900955B57 /* seep-ios-dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6EB50EEE26BD548F00F0096E /* widgetExtension */ = {
@@ -1478,7 +1478,7 @@
 				);
 				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "seep-ios-dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REALM_NAME = dev.realm;
 				SWIFT_VERSION = 5.0;
