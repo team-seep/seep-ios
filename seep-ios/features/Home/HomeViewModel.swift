@@ -119,7 +119,7 @@ final class HomeViewModel {
             .sink { (owner: HomeViewModel, viewType: ViewType) in
                 owner.state.viewType = viewType
                 owner.dependency.preference.viewType = viewType
-                owner.fetchWishDatas()
+                owner.updateDataSource()
             }
             .store(in: &cancellables)
         

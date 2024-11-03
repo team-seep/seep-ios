@@ -59,7 +59,6 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
             snapshot.appendSections([$0])
             snapshot.appendItems($0.items)
         }
-        
         apply(snapshot, animatingDifferences: false)
     }
 }

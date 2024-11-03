@@ -1467,7 +1467,7 @@
 				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				DISPLAY_NAME = "싶Dev";
 				INFOPLIST_FILE = "seep-ios/Info.plist";
@@ -1495,7 +1495,7 @@
 				CODE_SIGN_ENTITLEMENTS = "seep-ios/seep-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = X975A2HM62;
 				DISPLAY_NAME = "싶";
 				INFOPLIST_FILE = "seep-ios/Info.plist";

@@ -98,6 +98,7 @@ final class HomeCategoryView: BaseView {
         Publishers.Merge3(didTapWantToGo, didTapWantToDo, didTapWantToGet)
             .withUnretained(self)
             .sink { (owner: HomeCategoryView, category: Category) in
+                FeedbackUtils.feedbackInstance.impactOccurred()
                 owner.moveActiveButton(category: category)
                 owner.didTapCategory.send(category)
             }

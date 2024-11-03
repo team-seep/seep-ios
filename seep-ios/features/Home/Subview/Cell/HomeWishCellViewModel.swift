@@ -56,5 +56,6 @@ extension HomeWishCellViewModel: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(output.wish)
+        hasher.combine(output.viewType)
     }
 }

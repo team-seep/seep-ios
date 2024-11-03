@@ -42,6 +42,12 @@ final class HomeWishListCell: BaseCollectionViewCell {
         setupUI()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        titleLabel.attributedText = nil
+    }
+    
     private func setupUI() {
         backgroundColor = .clear
         contentView.addSubview(containerView)
@@ -96,5 +102,25 @@ final class HomeWishListCell: BaseCollectionViewCell {
         tagLabel.text = HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
         tagLabel.isHidden = wish.hashtag.isEmpty
         finishButton.isSelected = wish.isSuccess
+        
+        if wish.isSuccess {
+            emojiLabel.alpha = 0.5
+            titleLabel.alpha = 0.5
+            
+            let attributedString = NSMutableAttributedString(string: wish.title)
+            attributedString.addAttributes([
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                .strikethroughColor: UIColor.gray4.copy()
+            ], range: NSRange(location: 0, length: wish.title.count))
+            titleLabel.attributedText = attributedString
+            
+            ddayLabel.alpha = 0.5
+            tagLabel.alpha = 0.5
+        } else {
+            emojiLabel.alpha = 1
+            titleLabel.alpha = 1
+            ddayLabel.alpha = 1
+            tagLabel.alpha = 1
+        }
     }
 }
