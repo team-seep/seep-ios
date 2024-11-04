@@ -45,7 +45,7 @@
 "home.title_format.want_to_get" = "갖고 싶은 것들이\n%d개 남았어요!";
 "home.title_format.want_to_go" = "가고 싶은 장소가\n%d개 남았어요!";
 "home.filter.sort.latest" = "최근 생성순";
-"home.filter.sort.deadline" = "완료일 가까운선";
+"home.filter.sort.deadline" = "완료일 가까운순";
 "home.filter.only_finished" = "완료된 위시만";
 "home.write_button.want_to_do" = "📝 뭐 하고 싶어요?";
 "home.write_button.want_to_go" = "📝 어디 가고 싶어요?";

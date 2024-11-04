@@ -43,14 +43,17 @@ final class HomeOverviewCell: BaseCollectionViewCell {
     }
     
     func playEmojiAnimation() {
-        UIView.transition(
-            with: emojiView,
-            duration: 2,
-            options: [.autoreverse,.repeat]
-        ) { [weak self] in
-            self?.emojiView.transform = .init(translationX: 0, y: 5).rotated(by: CGFloat(10 * CGFloat.pi / 180))
-        } completion: { [weak self] _ in
-            self?.emojiView.transform = .identity.rotated(by: CGFloat(10 * CGFloat.pi / 180))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self else { return }
+            UIView.transition(
+                with: emojiView,
+                duration: 2,
+                options: [.autoreverse,.repeat]
+            ) { [weak self] in
+                self?.emojiView.transform = .init(translationX: 0, y: 5).rotated(by: CGFloat(10 * CGFloat.pi / 180))
+            } completion: { [weak self] _ in
+                self?.emojiView.transform = .identity.rotated(by: CGFloat(10 * CGFloat.pi / 180))
+            }
         }
     }
     

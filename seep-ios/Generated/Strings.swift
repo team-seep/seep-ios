@@ -309,8 +309,8 @@ internal enum Strings {
       /// 완료된 위시만
       internal static let onlyFinished = Strings.tr("Localization", "home.filter.only_finished", fallback: "완료된 위시만")
       internal enum Sort {
-        /// 완료일 가까운선
-        internal static let deadline = Strings.tr("Localization", "home.filter.sort.deadline", fallback: "완료일 가까운선")
+        /// 완료일 가까운순
+        internal static let deadline = Strings.tr("Localization", "home.filter.sort.deadline", fallback: "완료일 가까운순")
         /// 최근 생성순
         internal static let latest = Strings.tr("Localization", "home.filter.sort.latest", fallback: "최근 생성순")
       }

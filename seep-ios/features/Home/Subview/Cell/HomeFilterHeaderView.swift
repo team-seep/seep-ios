@@ -180,7 +180,7 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             .main
             .withUnretained(self)
             .sink { (owner: HomeFilterHeaderView, viewType: ViewType) in
-                owner.viewTypeButton.setImage(viewType.image, for: .normal)
+                owner.viewTypeButton.setImage(viewType.toggle().image, for: .normal)
             }
             .store(in: &cancellables)
     }
