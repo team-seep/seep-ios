@@ -28,6 +28,12 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         super.init(nibName: nil, bundle: nil)
     }
     
+    init(reactor: WishDetailReactor, mode: DetailMode) {
+        self.wishDetailReactor = reactor
+        self.mode = mode
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -1,0 +1,18 @@
+strings:
+  inputs: seep-ios/Resources/en.lproj/Localization.strings
+  outputs:
+    - templateName: structured-swift5
+      output: seep-ios/Generated/Strings.swift
+      params:
+          enumName: Strings
+
+xcassets:
+  inputs:
+    - seep-ios/Resources/Images.xcassets
+    - seep-ios/Resources/Assets.xcassets
+    - seep-ios/Resources/Icons.xcassets
+  outputs:
+    templateName: swift5
+    output: seep-ios/Generated/Assets.swift
+    params:
+        enumName: Assets
