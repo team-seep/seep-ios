@@ -61,6 +61,12 @@ final class HomeViewController: BaseViewController {
         viewModel.input.firstLoad.send(())
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        playEmojiAnimationIfCellVisible()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
