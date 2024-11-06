@@ -1,10 +1,13 @@
 import UIKit
+import Combine
+
 import RxSwift
 import SnapKit
 
 class BaseView: UIView {
   
   var disposeBag = DisposeBag()
+    var cancellables = Set<AnyCancellable>()
   
   private lazy var dimView = UIView(frame: self.frame).then {
     $0.backgroundColor = .clear

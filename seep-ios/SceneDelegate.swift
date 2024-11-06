@@ -22,7 +22,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func goToMain() {
         guard let window = self.window else { return }
         
-        window.rootViewController = HomeViewController.instance()
+        let viewModel = HomeViewModel()
+        let viewController = HomeViewController(viewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isNavigationBarHidden = true
+        window.rootViewController = navigationController
         UIView.transition(
             with: window,
             duration: 0.3,
@@ -51,7 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 if let navigationVC = self.window?.rootViewController as? UINavigationController,
                    let homeViewController = navigationVC.topViewController as? HomeViewController {
                     
-                    homeViewController.presentWrite(category: category)
+//                    homeViewController.presentWrite(category: category)
                 } else {
                     UserDefaultsUtils().setDeepLink(deepLink: widgetDeepLink.url.absoluteString)
                 }

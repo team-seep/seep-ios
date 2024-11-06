@@ -1,0 +1,146 @@
+// Shared
+"common_ok" = "확인";
+"common_cancel" = "취소";
+"common_category_want_to_do" = "하고 싶어요";
+"common_category_want_to_get" = "갖고 싶어요";
+"common_category_want_to_go" = "가고 싶어요";
+"common_category_want_to_do_unit" = "%02d개";
+"common_category_want_to_get_unit" = "%02d개";
+"common_category_want_to_go_unit" = "%02d곳";
+
+"common.want_to_do.unit" = "%02d개";
+"common.want_to_get.unit" = "%02d개";
+"common.want_to_go.unit" = "%02d곳";
+
+// Category
+"category_want_to_do" = "하고 싶어요";
+"category_want_to_get" = "갖고 싶어요";
+"category_want_to_go" = "가고 싶어요";
+
+// Home
+"home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
+"home_write_category_want_to_get_button" = "📝 뭐 갖고 싶어요?";
+"home_write_category_want_to_go_button" = "📝 어디 가고 싶어요?";
+"home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
+"home_write_category_want_to_get_count_empty" ="갖고 싶은 것들을\n적어봐요!";
+"home_write_category_want_to_go_count_empty" ="가고 싶은 곳들을\n적어봐요!";
+"home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
+"home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%02d개 남았어요!";
+"home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%02d개 남았어요!";
+"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%02d곳 남았어요!";
+"home_finish_count_category_want_to_do_format" = "👏 지금까지 %d개를 이뤘어요";
+"home_finish_count_category_want_to_do_format_empty" = "😱 지금까지 %d개를 이뤘어요";
+"home_finish_count_category_want_to_get_format" = "👏 지금까지 %d개를 겟했어요";
+"home_finish_count_category_want_to_get_format_empty" = "😱 지금까지 %d개를 겟했어요";
+"home_finish_count_category_want_to_go_format" = "👏 지금까지 %d곳을 다녀왔어요";
+"home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
+"home_category_success" = "성공";
+"home_in_far_furture" = "먼훗날";
+"home_no_deanline" = "일정없음";
+
+"home.empty_title.want_to_do" ="하고 싶은 것들을\n적어봐요!";
+"home.empty_title.want_to_get" ="갖고 싶은 것들을\n적어봐요!";
+"home.empty_title.want_to_go" ="가고 싶은 장소를\n적어봐요!";
+"home.title_format.want_to_do" = "하고 싶은 것들이\n%d개 남았어요!";
+"home.title_format.want_to_get" = "갖고 싶은 것들이\n%d개 남았어요!";
+"home.title_format.want_to_go" = "가고 싶은 장소가\n%d개 남았어요!";
+"home.filter.sort.latest" = "최근 생성순";
+"home.filter.sort.deadline" = "완료일 가까운순";
+"home.filter.only_finished" = "완료된 위시만";
+"home.write_button.want_to_do" = "📝 뭐 하고 싶어요?";
+"home.write_button.want_to_go" = "📝 어디 가고 싶어요?";
+"home.write_button.want_to_get" = "📝 뭐 갖고 싶어요?";
+"home.toast.finish_wish" = "👏위시를 완료했어요!";
+"home.toast.success_write" = "👏등록이 완료됐어요!";
+"home.empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
+
+// Write
+"write_title" = "작은 것부터\n차근차근 적어봐요!";
+"wrtie_title_bold" ="차근차근 적어봐요!";
+"write_header_title" = "제목";
+"write_header_date" = "날짜";
+"write_header_notification" = "알림";
+"write_header_memo" = "메모";
+"write_header_hashtag" = "해시태그";
+"write_placeholder_title_category_want_to_do" = "뭐 하고 싶어요?";
+"write_placeholder_title_category_want_to_get" = "뭐 갖고 싶어요?";
+"write_placeholder_title_category_want_to_go" = "어디 가고 싶어요?";
+"write_placeholder_date_enable" = "언제까지 하면 좋을까요?";
+"write_placeholder_date_disable" = "지정된 날짜 없음";
+"write_date_switch_title" = "날짜 지정";
+"write_notification_switch_title" = "알림 허용";
+"write_add_notification" = "알림 추가";
+"wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
+"write_button_off" = "🔥어서 채워봅시다!";
+"write_button_on" = "🎉등록해볼까요!";
+"write_button_more" = "😭 조금만...더!";
+"write_random_button" = "R";
+"write_error_max_length_title" = "📍제목은 18자내로 작성해주세요!";
+"write_error_max_length_memo" = "📍메모는 300자내로 작성해주세요!";
+"write_error_title_empty" = "📍제목을 작성해주세요!";
+"write_error_date_empty" = "📍날짜를 선택해주세요!";
+"write_placeholder_hashtag" = "+ 새로운 태그";
+"write_error_max_length_hashtag" = "📍해시태그는 7자내로 작성해주세요!";
+
+// Detail
+"detail_random_info" = "Random으로 이모지를\n골라드립니다!";
+"detail_button_more" = "😭 조금만...더!";
+"detail_button_on" = "✔️ 저장";
+"detail_cancel" = "취소";
+"detail_action_sheet_delete" = "삭제하기";
+"detail_action_sheet_cancel_finish" = "완료 취소하기";
+"detail_action_sheet_edit" = "수정하기";
+"detail_action_sheet_share" = "공유하기";
+"detail_action_sheet_cancel" = "취소하기";
+"detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
+"detail_cancel_finish_title" = "완료된 항목을 취소할까요?";
+"detail_cancel_finish_description" = "취소시 다시 메인 홈에서\n확인할 수 있습니다!";
+"detail_cancel_finish_no" = "아니요";
+"detail_cancel_finish_ok" = "취소할래요";
+"detail_memo_empty" = "메모 없음";
+
+// Finish
+"finish_back_button" = "메인 홈으로 돌아가기";
+"finish_title_empty" = "아직...\n완료된 것이 없지만";
+"finish_description_empty" = "하고 싶은게 많은 것만으로도\n반짝반짝 빛나는 사람인걸요.\n당신을 응원할게요!";
+"finish_empty_back_button" = "메인으로 돌아가기";
+"finish_count_category_want_to_do_format" = "지금까지\n%02d개 이뤘어요!";
+"finish_count_category_want_to_get_format" = "지금까지\n%02d개 겟했어요!";
+"finish_count_category_want_to_go_format" = "지금까지\n%02d곳 다녀왔어요!";
+
+// Notification
+"notification_title" = "🔔 여기보세요👀";
+"notification_body_format" = "'%@' 하기로 한 것 잊지 않으셨나요?";
+
+// Share-photo
+"share_photo_title" = "공유하기";
+"share_photo_dismiss" = "닫기";
+"share_photo_emoji" = "😀 이모지";
+"share_photo_album" = "🏞 사진";
+"share_photo_deny_message" = "원하는 사진으로 공유하기 위해 앨범 접근 권한이 필요해요.";
+"share_photo_tooltip" = "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요";
+"share_photo_button" = "👌 이렇게 공유할래요";
+"share_photo_success" = "👌 공유하기 완료! 앨범에서 확인해보세요";
+
+// Notification
+"notification_add_title" = "알림 추가";
+"notification_edit_title" = "알림 수정";
+"notification_date" = "알림 날짜";
+"notification_type_targat_day" = "당일";
+"notification_type_before_day" = "1일 전";
+"notification_type_before_two_day" = "2일 전";
+"notification_type_before_week" = "일주일 전";
+"notification_type_everyday" = "매일";
+"notification_time" = "알림 시간";
+"notification_add" = "✔️ 저장";
+
+// Hashtag
+"hashtag_trip" = "여행";
+"hashtag_shopping" = "쇼핑";
+"hashtag_sports" = "스포츠";
+"hashtag_career" = "커리어";
+"hashtag_life" = "일상";
+"hashtag_hobby" = "취미";
+"hashtag_date" = "데이트";
+"hashtag_stock" = "주식";
+"hashtag_leisure" = "여가생활";

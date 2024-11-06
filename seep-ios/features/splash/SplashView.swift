@@ -3,7 +3,7 @@ import Lottie
 
 class SplashView: BaseView {
   
-  let lottieView = AnimationView().then {
+  let lottieView = LottieAnimationView().then {
     $0.contentMode = .scaleAspectFit
   }
   
@@ -22,7 +22,7 @@ class SplashView: BaseView {
   func playRandomSplash(completion: @escaping ((Bool) -> Void)) {
     let randomInteger = Int.random(in: 1..<4)
     
-    self.lottieView.animation = Animation.named("splash\(randomInteger)")
+    self.lottieView.animation = LottieAnimation.named("splash\(randomInteger)")
     self.lottieView.play(completion: completion)
   }
 }

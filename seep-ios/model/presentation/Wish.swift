@@ -1,12 +1,12 @@
 import Foundation
 
-struct Wish: Equatable {
+struct Wish: Equatable, Hashable {
     let id: String
     var emoji: String
     var category: Category
     var title: String
     var endDate: Date?
-    let finishDate: Date?
+    var finishDate: Date?
     var notifications: [SeepNotification]
     var memo: String
     var hashtag: String
