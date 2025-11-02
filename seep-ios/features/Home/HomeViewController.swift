@@ -80,6 +80,12 @@ final class HomeViewController: BaseViewController {
         view.addSubview(writeButton)
         collectionView.backgroundColor = Constant.backgroundColor
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset = .init(
+            top: 0,
+            left: 0,
+            bottom: HomeWishListCell.Layout.size.height + UIUtils.bottomSafeAreaInset,
+            right: 0
+        )
         collectionView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide)
