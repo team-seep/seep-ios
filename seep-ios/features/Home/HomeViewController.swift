@@ -80,6 +80,12 @@ final class HomeViewController: BaseViewController {
         view.addSubview(writeButton)
         collectionView.backgroundColor = Constant.backgroundColor
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset = .init(
+            top: 0,
+            left: 0,
+            bottom: HomeWishListCell.Layout.size.height + UIUtils.bottomSafeAreaInset,
+            right: 0
+        )
         collectionView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -188,7 +194,7 @@ final class HomeViewController: BaseViewController {
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
+        return UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
             guard let self, let sectionType = dataSource.sectionIdentifier(for: sectionIndex)?.type else {
                 fatalError("정의되지 않은 섹션입니다.")
             }
@@ -263,18 +269,27 @@ final class HomeViewController: BaseViewController {
                         
                         return section
                     case .list:
-                        let item = NSCollectionLayoutItem(layoutSize: .init(
-                            widthDimension: .absolute(HomeWishListCell.Layout.size.width),
-                            heightDimension: .absolute(HomeWishListCell.Layout.size.height)
-                        ))
-                        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(
-                            widthDimension: .absolute(HomeWishListCell.Layout.size.width),
-                            heightDimension: .absolute(HomeWishListCell.Layout.size.height)
-                        ), subitems: [item])
-                        let section = NSCollectionLayoutSection(group: group)
+                        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+                        configuration.backgroundColor = .clear
+                        configuration.showsSeparators = false
+                        
+                        configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+                            let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, completion in
+                                self?.deleteItem(at: indexPath, completion: completion)
+                            }
+                            deleteAction.image = UIImage(systemName: "trash")
+                            
+                            return UISwipeActionsConfiguration(actions: [deleteAction])
+                        }
+                        
+                        let section = NSCollectionLayoutSection.list(
+                            using: configuration,
+                            layoutEnvironment: layoutEnvironment
+                        )
                         section.interGroupSpacing = 10
                         section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
                         
+                        // 헤더 추가
                         let headerSize = NSCollectionLayoutSize(
                             widthDimension: .fractionalWidth(1.0),
                             heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
@@ -284,8 +299,9 @@ final class HomeViewController: BaseViewController {
                             elementKind: UICollectionView.elementKindSectionHeader,
                             alignment: .top
                         )
-                        sectionHeader.pinToVisibleBounds = true
+                        sectionHeader.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
                         section.boundarySupplementaryItems = [sectionHeader]
+                        
                         
                         return section
                     }
@@ -343,6 +359,29 @@ final class HomeViewController: BaseViewController {
         }.forEach {
             $0.playEmojiAnimation()
         }
+    }
+    
+    private func deleteItem(at indexPath: IndexPath, completion: @escaping ((Bool) -> Void)) {
+        // 삭제 확인 알럿 표시
+        let alert = UIAlertController(
+            title: "삭제 확인",
+            message: "이 위시를 삭제하시겠습니까?",
+            preferredStyle: .alert
+        )
+        
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            self?.viewModel.input.didTapDelete.send(indexPath.item)
+            completion(true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+            completion(true)
+        }
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
 }
 

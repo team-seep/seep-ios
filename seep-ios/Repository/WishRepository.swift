@@ -6,6 +6,8 @@ protocol WishRepository {
     func fetchNotFinishCount(category: Category) -> Int
     
     func finishWish(wish: Wish) -> Result<Wish, RepositoryError>
+    
+    func deleteWish(id: String)
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -46,6 +48,16 @@ final class WishRepositoryImpl: WishRepository {
             return .success(finishedWish)
         } catch {
             return .failure(.writeFailed)
+        }
+    }
+    
+    func deleteWish(id: String) {
+        guard let realm = try? Realm() else { return }
+        let searchTask = realm.objects(WishDTO.self).filter { $0._id == id }
+        guard let targetObject = searchTask.first else { return }
+        
+        try! realm.write{
+            realm.delete(targetObject)
         }
     }
 }
