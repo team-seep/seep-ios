@@ -59,6 +59,7 @@ final class HomeWishListCell: BaseCollectionViewCell {
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(Layout.size.height)
         }
         
         emojiLabel.snp.makeConstraints {

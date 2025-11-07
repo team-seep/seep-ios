@@ -13,6 +13,7 @@ extension HomeViewModel {
         let didTapWish = PassthroughSubject<Int, Never>()
         let didTapFinish = PassthroughSubject<Wish, Never>()
         let didTapWrite = PassthroughSubject<Void, Never>()
+        let didTapDelete = PassthroughSubject<Int, Never>()
         
         // From WishDetail
         let updateWish = PassthroughSubject<Wish, Never>()
@@ -165,6 +166,16 @@ final class HomeViewModel {
             .withUnretained(self)
             .sink { (owner: HomeViewModel, wish: Wish) in
                 owner.cancelFinish(wish: wish)
+            }
+            .store(in: &cancellables)
+        
+        input.didTapDelete
+            .sink { [weak self] index in
+                guard let self,
+                      let targetWish = state.wish[safe: index] else { return }
+                
+                dependency.wishRepository.deleteWish(id: targetWish.id)
+                deleteWish(wish: targetWish)
             }
             .store(in: &cancellables)
     }
