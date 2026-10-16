@@ -1,5 +1,7 @@
 import UIKit
+import Combine
 
+import CombineCocoa
 import RxSwift
 import ReactorKit
 
@@ -18,6 +20,8 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private let wishDetailReactor: WishDetailReactor
     private weak var coordinator: WishDetailCoordinator?
     private let mode: DetailMode
+    private let stepsViewModel: WishStepsViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
         self.wishDetailReactor = WishDetailReactor(
@@ -25,12 +29,14 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             wishService: WishService()
         )
         self.mode = mode
+        self.stepsViewModel = WishStepsViewModel(config: .init(wish: wish))
         super.init(nibName: nil, bundle: nil)
     }
     
     init(reactor: WishDetailReactor, mode: DetailMode) {
         self.wishDetailReactor = reactor
         self.mode = mode
+        self.stepsViewModel = WishStepsViewModel(config: .init(wish: reactor.initialState.wish))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,7 +57,11 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        self.wishDetailView.containerView.isUserInteractionEnabled = false
+        // 상세는 읽기 전용이지만 단계 섹션만은 바로 체크·추가할 수 있다
+        self.wishDetailView.containerView.subviews
+            .filter { $0 !== self.wishDetailView.stepsView }
+            .forEach { $0.isUserInteractionEnabled = false }
+        self.bindSteps()
     }
   
     override func bindEvent() {
@@ -107,6 +117,103 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             .asDriver(onErrorJustReturn: Wish())
             .drive(self.wishDetailView.rx.wish)
             .disposed(by: self.disposeBag)
+    }
+}
+
+// MARK: Steps
+extension WishDetailViewController {
+    private func bindSteps() {
+        let stepsView = wishDetailView.stepsView
+        
+        stepsView.addButton.tapPublisher
+            .subscribe(stepsViewModel.input.didTapAdd)
+            .store(in: &cancellables)
+        
+        stepsView.didTapStepPublisher
+            .subscribe(stepsViewModel.input.didTapStep)
+            .store(in: &cancellables)
+        
+        stepsView.deleteStepPublisher
+            .subscribe(stepsViewModel.input.deleteStep)
+            .store(in: &cancellables)
+        
+        stepsViewModel.output.steps
+            .main
+            .sink { steps in
+                stepsView.bind(steps: steps)
+            }
+            .store(in: &cancellables)
+        
+        stepsViewModel.output.progress
+            .main
+            .sink { progress in
+                stepsView.bind(progress: progress)
+            }
+            .store(in: &cancellables)
+        
+        stepsViewModel.output.isAddEnabled
+            .main
+            .sink { isAddEnabled in
+                stepsView.bind(isAddEnabled: isAddEnabled)
+            }
+            .store(in: &cancellables)
+        
+        stepsViewModel.output.didUpdateSteps
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, steps: [WishStep]) in
+                owner.wishDetailReactor.action.onNext(.updateSteps(steps))
+            }
+            .store(in: &cancellables)
+        
+        stepsViewModel.output.toast
+            .main
+            .sink { message in
+                ToastManager.shared.show(message: message)
+            }
+            .store(in: &cancellables)
+        
+        stepsViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishStepsViewModel.Route) in
+                owner.handleStepsRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Route
+extension WishDetailViewController {
+    private func handleStepsRoute(_ route: WishStepsViewModel.Route) {
+        switch route {
+        case .presentAddStepInput:
+            presentAddStepInput()
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
+    }
+    
+    private func presentAddStepInput() {
+        let alertController = UIAlertController(
+            title: Strings.Detail.Step.AddAlert.title,
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.addTextField { textField in
+            textField.placeholder = Strings.Detail.Step.AddAlert.placeholder
+            textField.returnKeyType = .done
+        }
+        let cancelAction = UIAlertAction(title: Strings.commonCancel, style: .cancel)
+        let confirmAction = UIAlertAction(
+            title: Strings.Detail.Step.AddAlert.confirm,
+            style: .default
+        ) { [weak self, weak alertController] _ in
+            let title = alertController?.textFields?.first?.text ?? ""
+            self?.stepsViewModel.input.addStep.send(title)
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        present(alertController, animated: true)
     }
 }
 

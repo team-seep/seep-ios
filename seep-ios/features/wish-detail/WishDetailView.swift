@@ -43,6 +43,8 @@ final class WishDetailView: BaseView {
         placeholder: "write_placeholder_date_enable".localized
     )
     
+    let stepsView = WishStepsView()
+    
     private let notificationIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_notification_normal")
     }
@@ -113,6 +115,7 @@ final class WishDetailView: BaseView {
             self.categoryView,
             self.titleField,
             self.dateField,
+            self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
             self.notificationTableView,
@@ -179,9 +182,14 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.titleField.snp.bottom).offset(24)
         }
         
+        self.stepsView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+        }
+        
         self.notificationIcon.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.stepsView.snp.bottom).offset(16)
             make.width.height.equalTo(16)
         }
         

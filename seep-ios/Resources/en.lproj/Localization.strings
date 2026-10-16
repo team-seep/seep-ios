@@ -52,6 +52,7 @@
 "home.write_button.want_to_get" = "📝 뭐 갖고 싶어요?";
 "home.toast.finish_wish" = "👏위시를 완료했어요!";
 "home.toast.success_write" = "👏등록이 완료됐어요!";
+"home.step_progress_format" = "%d/%d";
 "home.empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 
 // Write
@@ -83,6 +84,15 @@
 "write_error_max_length_hashtag" = "📍해시태그는 7자내로 작성해주세요!";
 
 // Detail
+"detail.step.title" = "단계";
+"detail.step.add" = "단계 추가";
+"detail.step.progress_format" = "%d/%d 완료";
+"detail.step.add_alert.title" = "단계 추가";
+"detail.step.add_alert.placeholder" = "예) 날짜 정하기";
+"detail.step.add_alert.confirm" = "추가";
+"detail.step.delete" = "삭제";
+"detail.step.toast.max_length" = "📍단계는 30자내로 작성해주세요!";
+"detail.step.toast.max_count" = "📍단계는 10개까지 추가할 수 있어요!";
 "detail_random_info" = "Random으로 이모지를\n골라드립니다!";
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";

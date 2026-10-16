@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */; };
+		33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
 		485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269705858459DA909159F323 /* MockNotificationManager.swift */; };
 		4D6707DFD528EF1CAFA6EAF4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668C632E3284174D8A1FCA5 /* Foundation.framework */; };
+		582A5AA71ACAA592A4DFCC8C /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */; };
+		6183E1D0CA04784F739EDD28 /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */; };
+		6708B90CB2D3AA7CBADA1BA4 /* WishStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */; };
 		6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07528226136D8800041E7B /* PageItemReactor.swift */; };
 		6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091571264F80AB0048EB79 /* ShareTypeButton.swift */; };
 		6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091574264F87070048EB79 /* SharePhotoCell.swift */; };
@@ -198,7 +203,11 @@
 		6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */; };
 		6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */; };
 		7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */; };
+		9E10BE9381E274E0691DE230 /* WishStepsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */; };
 		A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */; };
+		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
+		C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */; };
+		D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -254,9 +263,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		212AB76829E69C76D8CFC27A /* StepProgressBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StepProgressBar.swift; sourceTree = "<group>"; };
 		269705858459DA909159F323 /* MockNotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockNotificationManager.swift; sourceTree = "<group>"; };
+		3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModelTests.swift; sourceTree = "<group>"; };
 		3C76D73EAF4C8C916AA05E07 /* seep-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "seep-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishRepository.swift; sourceTree = "<group>"; };
+		4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepDTO.swift; sourceTree = "<group>"; };
 		6E07528226136D8800041E7B /* PageItemReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemReactor.swift; sourceTree = "<group>"; };
 		6E091571264F80AB0048EB79 /* ShareTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTypeButton.swift; sourceTree = "<group>"; };
 		6E091574264F87070048EB79 /* SharePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
@@ -419,6 +431,10 @@
 		6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditCoordinator.swift; sourceTree = "<group>"; };
 		A668C632E3284174D8A1FCA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsView.swift; sourceTree = "<group>"; };
+		D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModel.swift; sourceTree = "<group>"; };
+		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
+		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -513,6 +529,8 @@
 				B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */,
 				8B296ED1CFDAAC15A58AEF24 /* Mock */,
 				C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */,
+				3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */,
+				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 			);
 			name = "seep-iosTests";
 			path = "seep-iosTests";
@@ -764,6 +782,7 @@
 				6E69E623260D9E630062CBFB /* WishDetailViewController.swift */,
 				6E69E62D260DBACA0062CBFB /* WishDetailReactor.swift */,
 				6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */,
+				74C39C6093BA273B7EE6A5CD /* steps */,
 			);
 			path = "wish-detail";
 			sourceTree = "<group>";
@@ -842,6 +861,7 @@
 			children = (
 				6E441CA02604549F0010A625 /* WishDTO.swift */,
 				6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */,
+				4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */,
 			);
 			path = dto;
 			sourceTree = "<group>";
@@ -852,6 +872,7 @@
 				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
 				6E80428F279D3072008A0EB4 /* HashtagType.swift */,
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
+				F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */,
 			);
 			path = presentation;
 			sourceTree = "<group>";
@@ -1010,6 +1031,7 @@
 				6E5DECFF2642D8FC0005487F /* CategoryView.swift */,
 				6E804291279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift */,
 				6E59E93E2CD4AFE4006AA02D /* BottomSheetIndicator.swift */,
+				212AB76829E69C76D8CFC27A /* StepProgressBar.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -1037,6 +1059,16 @@
 				6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */,
 			);
 			path = "wish-edit";
+			sourceTree = "<group>";
+		};
+		74C39C6093BA273B7EE6A5CD /* steps */ = {
+			isa = PBXGroup;
+			children = (
+				D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */,
+				C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */,
+			);
+			name = steps;
+			path = steps;
 			sourceTree = "<group>";
 		};
 		77A835D24905877700C2E8A1 /* iOS */ = {
@@ -1276,6 +1308,8 @@
 				A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */,
 				7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */,
 				485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */,
+				9E10BE9381E274E0691DE230 /* WishStepsViewModelTests.swift in Sources */,
+				050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1397,6 +1431,11 @@
 				6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */,
 				6E274E8E25F21506007DC880 /* HomeView.swift in Sources */,
 				6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */,
+				6183E1D0CA04784F739EDD28 /* WishStepDTO.swift in Sources */,
+				33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */,
+				B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */,
+				C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */,
+				6708B90CB2D3AA7CBADA1BA4 /* WishStepsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1438,6 +1477,8 @@
 				6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */,
 				6E7206D4275B4801009C7AFC /* MediumHorizontalEntryView.swift in Sources */,
 				6E7206CE275B4588009C7AFC /* MediumHorizontalProvider.swift in Sources */,
+				582A5AA71ACAA592A4DFCC8C /* WishStepDTO.swift in Sources */,
+				D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

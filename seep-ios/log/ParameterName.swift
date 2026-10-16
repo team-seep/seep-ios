@@ -17,4 +17,5 @@ extension ParameterName {
     static let count = ParameterName(rawValue: "count")
     static let category = ParameterName(rawValue: "category")
     static let wishId = ParameterName(rawValue: "wish_id")
+    static let isDone = ParameterName(rawValue: "is_done")
 }

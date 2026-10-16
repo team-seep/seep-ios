@@ -8,6 +8,8 @@ struct Wish: Equatable, Hashable {
     var endDate: Date?
     var finishDate: Date?
     var notifications: [SeepNotification]
+    /// 추가한 순서(order) 오름차순
+    var steps: [WishStep]
     var memo: String
     var hashtag: String
     var isSuccess: Bool
@@ -54,6 +56,7 @@ struct Wish: Equatable, Hashable {
         endDate: Date? = nil,
         finishDate: Date? = nil,
         notifications: [SeepNotification] = [],
+        steps: [WishStep] = [],
         memo: String = "",
         hashtag: String = "",
         isSuccess: Bool = false,
@@ -66,6 +69,7 @@ struct Wish: Equatable, Hashable {
         self.endDate = endDate
         self.finishDate = finishDate
         self.notifications = notifications
+        self.steps = steps
         self.memo = memo
         self.hashtag = hashtag
         self.isSuccess = isSuccess
@@ -80,6 +84,7 @@ struct Wish: Equatable, Hashable {
         self.endDate = dto.date
         self.finishDate = dto.finishDate
         self.notifications = Array(dto.notifications).map(SeepNotification.init)
+        self.steps = Array(dto.steps).map(WishStep.init(dto:)).sorted { $0.order < $1.order }
         self.memo = dto.memo
         self.hashtag = dto.hashtag
         self.isSuccess = dto.isSuccess
