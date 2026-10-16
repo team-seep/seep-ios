@@ -433,6 +433,28 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* log */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = log;
+			sourceTree = "<group>";
+		};
+		B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Log;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -488,6 +510,7 @@
 		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
 			isa = PBXGroup;
 			children = (
+				B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */,
 				8B296ED1CFDAAC15A58AEF24 /* Mock */,
 				C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */,
 			);
@@ -629,6 +652,7 @@
 				6E489D9A2CCE25CB00965995 /* Repository */,
 				6E489D902CCDEF2D00965995 /* Generated */,
 				6E69FD49264698E900F0AB60 /* seep-ios.entitlements */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* log */,
 				6E9BFEA026453C9C0093CA89 /* manager */,
 				6E441CA326046F920010A625 /* services */,
 				6E66A26D25FB40B600C0C051 /* model */,
@@ -1064,6 +1088,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				6E59E9422CD500A8006AA02D /* Error */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* log */,
 			);
 			name = "seep-ios";
 			packageProductDependencies = (
@@ -1123,6 +1148,9 @@
 			);
 			dependencies = (
 				989A8776A6A6A143B91BD4F6 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */,
 			);
 			name = "seep-iosTests";
 			productName = "seep-iosTests";

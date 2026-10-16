@@ -60,7 +60,7 @@ seep-iosTests/
 └── Mock/Mock{Protocol}.swift         # MockWishRepository, MockNotificationManager
 ```
 
-- 새 테스트·목 파일은 `project.pbxproj`의 `seep-iosTests` 타깃에 등록해야 실행된다(동기화 폴더가 아니다). 추가 후 `make test` 결과의 통과 수가 늘었는지 확인한다.
+- 새 테스트·목 파일은 `project.pbxproj`의 `seep-iosTests` 타깃에 등록해야 실행된다(동기화 폴더는 `seep-iosTests/Log`뿐이다). 추가 후 `make test` 결과의 통과 수가 늘었는지 확인한다.
 - 테스트 타깃은 `@testable import seep_ios_dev`로 앱 모듈에 접근한다 (Debug 구성의 PRODUCT_NAME이 `seep-ios-dev`).
 - 메서드명: **`test_GH{이슈번호}_TC{n}_{조건}_{기대결과}()`** — 한글 허용.
   - `test_GH12_TC1_위시를완료하면_예약된알림이취소된다()`

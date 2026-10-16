@@ -14,7 +14,7 @@ GitHub Issue #12  (team-seep/seep-ios)          ← 단일 진실 소스
 ```
 
 - **이슈 번호가 곧 티켓 키다.** 표기: 문서·커밋·브랜치는 `GH-12`, 테스트 메서드는 하이픈 없이 `GH12`.
-- 이슈 템플릿: `.github/ISSUE_TEMPLATE/feature.yml`(기능), `bug.yml`(버그). 새 이슈 화면에서 고르면 섹션이 채워진다.
+- 이슈 템플릿: `.github/ISSUE_TEMPLATE/idea.yml`(AI 추천·직접 기획안 → 승인 후 테크스펙으로 구체화, `docs/process/planning.md`), `feature.yml`(기능), `bug.yml`(버그). 새 이슈 화면에서 고르면 섹션이 채워진다.
 
 ## 이슈 본문 템플릿
 

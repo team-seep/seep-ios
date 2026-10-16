@@ -31,7 +31,7 @@ xcodebuild build \
 ```
 - 시뮬레이터는 `xcrun simctl list devices available | grep iPhone`으로 먼저 확인한다. 기기명은 머신마다 다르다.
 - 스킴은 `seep-ios` 하나(Debug = dev 번들 `macgongmon.seep-ios.dev`, 모듈명 `seep_ios_dev` / Release = `macgongmon.seep-ios`). 위젯은 `widgetExtension` 스킴.
-- 일반 그룹 구조라(동기화 폴더는 `seep-ios/model/Error` 하나뿐) **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
+- 일반 그룹 구조라(동기화 폴더는 `seep-ios/model/Error`, `seep-ios/log`, `seep-iosTests/Log`뿐) **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
 - Realm은 20.0.6(Xcode 26.1~27 지원). CI는 `macos-26` 러너.
 - 서명 없이 빌드할 때 `CODE_SIGNING_ALLOWED=NO`를 쓰지 않는다 — App Group 엔타이틀먼트가 빠져 실행 직후 크래시한다. 대신 `CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=`.
 
@@ -41,6 +41,7 @@ xcodebuild build \
 
 | 문서 | 내용 |
 |---|---|
+| [docs/process/planning.md](docs/process/planning.md) | AI 기획 추천(격일) → `approved` 승인 → 자동 개발(매일) → 출시 2주 뒤 사용량(매주). 서버리스 조건, 트래킹 이벤트 형식 |
 | [docs/process/pr-process.md](docs/process/pr-process.md) | 전체 흐름 한 장 요약, 위험도(경량/풀코스), "PR 만들어줘" 시 Claude가 하는 일 |
 | [docs/process/tech-spec-process.md](docs/process/tech-spec-process.md) | GitHub Issue = 테크스펙(요약·요구사항·TC). 이슈 번호가 티켓 키 (`GH-12`) |
 | [docs/process/testing.md](docs/process/testing.md) | 테스트 3계층(유닛/자동화/수동), 네이밍 `test_GH{n}_TC{m}_{조건}_{기대결과}()`, 목 규칙 |
@@ -54,6 +55,8 @@ xcodebuild build \
 - **테스트 계층 배정은 승인받는다.** TC별로 유닛/자동화/수동 표를 먼저 보여주고, 승인 후 유닛 테스트 코드만 작성한다.
 - **PR**: `.github/PULL_REQUEST_TEMPLATE.md`를 채워 `gh pr create --base develop`. 본문(위험도·커버리지 표·드리프트·설명이 필요한 결정)은 pr-process.md 절차대로 만들고, **생성 전에 본문을 보여주고 확인받는다.**
 - 이슈 생성·수정, push, PR 생성은 외부에 보이는 작업이라 매번 확인받는다.
+- **`approved` 라벨이 붙은 이슈**는 사람 승인이 끝난 것이다. `seep-run-approved` 스킬로 진행할 때는 브랜치·커밋·push·PR까지 확인 없이 한다(머지는 안 함).
+- 프로젝트 스킬(`.claude/skills/`): `seep-idea-scout`(기획 추천), `seep-run-approved`(승인 기획 자동 개발), `seep-usage-report`(출시 후 사용량).
 - 가슴속 3천원용 `3dollars:*` 플러그인 스킬(pr-body, test-cases, drift 등)은 지라·노션 전제라 이 레포에서 쓰지 않는다. 같은 단계를 위 문서대로 수행한다. 예외: `3dollars:simulator-test`는 레포의 `docs/process/testing.md`를 읽고 동작하므로 자동화 TC 실행에 쓴다.
 
 ## 아키텍처 규칙 요약
@@ -70,6 +73,15 @@ xcodebuild build \
 - **R8** `print`·`try!`·`as!` 금지
 - **R9** ViewModel 구조 Input/Output/Route/Config/Dependency/State, Route 처리는 VC `// MARK: Route` extension
 
+## 로그 (트래킹 이벤트)
+
+가슴속 3천원 iOS Log 모듈과 같은 형식이다 (`seep-ios/log/`).
+- 이벤트: `ClickEvent`(GA `click`) / `ImpressionEvent`(`impression`) / `CustomEvent` — 공통 파라미터 `screen`, 클릭·노출은 `object_type`·`object_id`
+- 전송: ViewModel `Dependency.logManager: LogManagerProtocol = LogManager.shared` → `sendEvent(event:)`. 화면명은 `Output.screenName`
+- 페이지뷰: VC에서 `override var screenName: ScreenName { viewModel.output.screenName }` (BaseViewController가 viewDidLoad에서 전송)
+- 테스트: `seep-iosTests/Log/MockLogManager.swift`의 `sentEvents`로 단언
+- 새 값은 snake_case로 `LogObjectId`·`ScreenName`·`EventName`·`ParameterName`에 추가
+
 ## 디렉터리 구조
 
 ```
@@ -85,6 +97,7 @@ seep-ios/
 ├── services/                 # WishServices (레거시, Reactor 화면용)
 ├── model/dto/                # Realm Object (WishDTO, NotificationDTO) — 바꾸면 R4
 ├── model/presentation/       # 도메인 모델 (Wish, SeepNotification, HashtagType)
+├── log/                      # LogManager(Firebase Analytics), ClickEvent·ImpressionEvent·CustomEvent, ScreenName …
 ├── manager/                  # NotificationManager(로컬 알림), ToastManager
 ├── uilts/                    # Preference(UserDefaults), DateUtils, AlertUtils …
 ├── extensions/               # UIColorExtension(색 토큰), UIFontExtension(폰트) …

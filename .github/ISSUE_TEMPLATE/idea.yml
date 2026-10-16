@@ -1,0 +1,63 @@
+name: 기획안
+description: AI(seep-idea-scout)가 추천하거나 직접 적는 기획안. approved 라벨을 달면 자동 개발이 시작됩니다 — docs/process/planning.md
+labels: ["idea"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 한 줄 요약
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: 어디서 왔나
+      description: 경쟁 앱 분석 / 이종 융합(분야) / 멀티소스 리서치 / 직접. 출처 링크
+  - type: textarea
+    id: why
+    attributes:
+      label: 왜 seep에 어울리나
+  - type: textarea
+    id: serverless
+    attributes:
+      label: 서버리스 근거
+      description: 서버 없이 무엇으로 구현하나 (로컬 Realm, 위젯, 로컬 알림, CloudKit …)
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 크기 · 영향 영역
+      value: |
+        - 크기: S / M / L
+        - 영향: [ ] Realm 스키마(R4) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
+  - type: textarea
+    id: requirements
+    attributes:
+      label: 요구사항
+      value: |
+        - 
+  - type: textarea
+    id: tc
+    attributes:
+      label: 테스트 케이스 (TC) 초안
+      value: |
+        - TC-1: 
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: 디자인
+      description: 미리보기 이미지 + Design 링크(Before/After). 싶 디자인 시스템 기준 — docs/process/planning.md "디자인 제안"
+  - type: textarea
+    id: tracking
+    attributes:
+      label: 트래킹 이벤트
+      description: 가슴속 3천원 형식(click / impression + screen · object_type · object_id). 필요한 만큼
+      value: |
+        | 이벤트 | screen | object_type | object_id / name | 언제 |
+        |---|---|---|---|---|
+        | click |  | button |  |  |
+    validations:
+      required: true

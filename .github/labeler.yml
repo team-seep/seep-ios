@@ -13,6 +13,7 @@ verification-change:
           - "seep-iosTests/**"
           - "docs/architecture/RULES.md"
           - "CLAUDE.md"
+          - ".claude/skills/**"
 
 baseline-change:
   - changed-files:

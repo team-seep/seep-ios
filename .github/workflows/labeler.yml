@@ -26,7 +26,7 @@ jobs:
         run: |
           LABELS="$(gh pr view "$PR" --repo "$REPO" --json labels --jq '[.labels[].name] | join(" ")')"
           case " $LABELS " in *" verification-change "*) ;; *) echo "검증 장치 변경 없음"; exit 0;; esac
-          FILES="$(gh pr diff "$PR" --repo "$REPO" --name-only | grep -E '^(\.github/|\.swiftlint|scripts/|makefile|seep-iosTests/|docs/architecture/RULES\.md|CLAUDE\.md$)' | grep -v -E '^seep-iosTests/Mock/[^/]*\.swift$' || true)"
+          FILES="$(gh pr diff "$PR" --repo "$REPO" --name-only | grep -E '^(\.github/|\.swiftlint|scripts/|makefile|seep-iosTests/|docs/architecture/RULES\.md|CLAUDE\.md$|\.claude/skills/)' | grep -v -E '^seep-iosTests/(Mock/[^/]*|Log/Mock[^/]*)\.swift$' || true)"
           [ -n "$FILES" ] || FILES="(목 파일만 변경)"
           MARK="<!-- verification-change -->"
           { echo "$MARK"; echo "### 🔍 검증 장치 변경"; echo; echo "이 PR은 린트·테스트·CI·규칙 같은 **검증 장치**를 바꿉니다. 바뀐 검증 장치가 왜 필요한지 본문 \"설명이 필요한 결정\"에 적어주세요. 리뷰어는 코드보다 이 파일들을 먼저 봅니다."; echo; printf '%s\n' "$FILES" | sed '/^(/!{s/^/- `/; s/$/`/;}'; } > comment.md
