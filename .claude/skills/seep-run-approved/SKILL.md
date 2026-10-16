@@ -37,6 +37,7 @@ git worktree add -b feature/GH-{n}-{영문-slug} "$WT" origin/develop
 cd "$WT"
 ```
 이후 모든 명령은 `$WT`에서 실행한다. PR을 올린 뒤 worktree는 그대로 둔다(리뷰 수정 때 재사용). 머지 후 정리는 `git worktree remove`.
+- 이슈의 **"디자인" 섹션이 UI 기준**이다. Design 링크를 Artifact `read`로 열어 After 아트보드를 확인하고, 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)의 토큰·컴포넌트 README에 적힌 원본 Swift 컴포넌트(`DdayLabel`, `HomeWishListCell` 등)를 재사용한다. "새 토큰"이 있으면 `UIColorExtension`/`UIFontExtension`에 먼저 추가한다.
 - `CLAUDE.md`의 규칙(R1~R9)을 지킨다: Combine ViewModel, Repository로만 Realm 접근, 토큰·SwiftGen, Base 클래스 상속.
 - Realm 모델을 바꾸면 R4: schemaVersion을 앱과 위젯 3곳에서 모두 올리고 migrationBlock에 분기를 추가한다.
 - **트래킹 이벤트**: `seep-ios/log/`의 `LogObjectId`·`ScreenName`·`EventName`에 케이스를 추가하고, ViewModel에서 `dependency.logManager.sendEvent(event: ClickEvent(...))`로 보낸다. 형식은 기존 `HomeViewModel.sendClickLog` 참고.
@@ -47,7 +48,7 @@ cd "$WT"
 
 1. `make lint` 통과
 2. 유닛 TC 테스트 작성(`test_GH{n}_TC{m}_…`, 목 주입) → `make test` 통과. 결과 수가 늘었는지 확인
-3. 자동화 TC는 `3dollars:simulator-test`로 실행하고 스크린샷·영상을 확보한다. UI 변경이면 Before/After를 남긴다
+3. 자동화 TC는 `3dollars:simulator-test`로 실행하고 스크린샷·영상을 확보한다. UI 변경이면 Before/After를 남기고, **이슈의 디자인 미리보기와 실제 After를 나란히** 둔다(차이가 있으면 이유를 PR "설명이 필요한 결정"에)
 4. 실패하면 고쳐서 다시 돌린다. 세 번 시도해도 안 되면 그 상태로 PR을 Draft로 올리고 실패 내용을 본문에 적는다
 
 ## 4. PR
@@ -58,6 +59,7 @@ cd "$WT"
   - **트래킹 이벤트 표**: 이슈의 표와 실제 구현이 같은지
   - 스펙 밖 변경, 설명이 필요한 결정(최대 3개, 스스로 답한다)
   - 위험도는 `docs/process/pr-process.md` 기준
+- PR이 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸면 PR 본문 "기타"에 "디자인 시스템 갱신 필요"를 적는다(머지 후 디자인 시스템 artifact를 코드에 맞춰 갱신).
 - 이슈에서 `in-progress`를 떼고 PR 링크를 코멘트로 남긴다: "🤖 PR #{pr} — 리뷰·머지 부탁드려요. 수동 TC: …"
 
 ## 5. 결과

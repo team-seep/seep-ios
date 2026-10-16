@@ -85,7 +85,26 @@ seep은 서버가 없다. 아래 **허용 수단만으로** 구현되는 기획�
 - 그 외: `CustomEvent(screen:, name: .새이름)` (EventName에 추가)
 - 새 `objectId`·`screen` 값은 snake_case. 기존 값(`LogObjectId`, `ScreenName`)과 겹치지 않게 한다.
 
-## 7. 이슈 작성
+## 7. 디자인 (같은 테마로 제안 화면 그리기)
+
+기획안마다 **핵심 화면 1~3장**을 그린다. 지금 앱과 구분되지 않아야 한다.
+
+1. **디자인 시스템 읽기** — 싶 디자인 시스템 `https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`
+   - Artifact `read`(`url` 위 링크, `path`)로 `project/README.md`를 먼저 읽고, 필요한 `project/tokens.json`, `project/components/bundle.css`, 쓰려는 컴포넌트의 `project/components/<Comp>/README.md`·`preview.html`을 읽는다.
+   - 바뀌는 화면의 현재 스크린샷은 디자인 시스템 에셋 `Screens` 그룹(home-list / home-grid / write / wish-detail)에 있다.
+   - README의 "화면을 그릴 때" 규칙을 지킨다: 402×874pt, 토큰·컴포넌트만, UIKit으로 구현 가능한 것만, 서버 화면 금지. 새 토큰이 꼭 필요하면 "새 토큰: 이름 = 값, 이유"로 따로 적는다.
+2. **Design 아티팩트 만들기** — Artifact `publish`, `type_url` = `https://claude.ai/artifact/QKN21svewxgyPb6SYRqWnd`(Design), `title` = `[기획] {제목}`, 디자인 시스템은 위 링크. 생성 결과가 주는 타입 지침대로 채운다.
+   - 아트보드: **Before**(현재 화면 스크린샷을 디자인 시스템에서 `from_url` + `asset_ids`로 복사) → **After 1~3**(새 화면·상태). 각 아트보드 아래 한 줄 설명.
+   - 결과 링크를 기록한다. 비공개 링크라 이슈에서는 소유자만 열 수 있다.
+3. **미리보기 PNG** — 이슈 본문에서 바로 보이도록 After 화면을 이미지로 만든다.
+   - 같은 화면을 디자인 시스템의 `tokens.json` 값(CSS 변수)과 `bundle.css`로 HTML 한 장에 그린다(`/tmp/seep-design/GH-new/after.html`, 402px 폭, 화면 여러 장이면 가로로 나란히).
+   - 렌더: `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --user-data-dir=/tmp/seep-design/chrome-profile --hide-scrollbars --force-device-scale-factor=2 --window-size={402×장수 + 간격},874 --screenshot=/tmp/seep-design/GH-new/after.png file:///tmp/seep-design/GH-new/after.html` (사용자 Chrome이 켜져 있어도 되도록 별도 `--user-data-dir`를 쓴다. 렌더한 PNG는 Read로 열어 깨짐 여부를 확인한다)
+   - 업로드: 레포의 `design-previews` prerelease에 올린다(없으면 `gh release create design-previews --prerelease --title "design previews" --notes "기획안 디자인 미리보기 이미지 (코드 아님)"` 로 한 번 만든다).
+     `gh release upload design-previews /tmp/seep-design/GH-new/after.png#idea-{yyyymmdd}-{slug}.png --clobber -R team-seep/seep-ios` → 다운로드 URL `https://github.com/team-seep/seep-ios/releases/download/design-previews/idea-{yyyymmdd}-{slug}.png`
+   - git 브랜치에 이미지를 커밋하지 않는다.
+4. 디자인을 그리다 기획이 UIKit·서버리스로 어렵다는 게 드러나면 기획을 고치거나 버린다.
+
+## 8. 이슈 작성
 
 `.github/ISSUE_TEMPLATE/idea.yml` 형식을 따른다. 본문을 파일로 만들고 올린다.
 
@@ -122,6 +141,11 @@ gh issue create -R team-seep/seep-ios \
 - TC-1: Given … When … Then …
 - TC-2: …
 
+## 디자인
+![after](https://github.com/team-seep/seep-ios/releases/download/design-previews/idea-…png)
+- Design(편집·코멘트): https://claude.ai/artifact/… (Before / After)
+- 새 토큰: 없음 (또는 이름 = 값, 이유)
+
 ## 트래킹 이벤트
 | 이벤트 | screen | object_type | object_id / name | 언제 |
 |---|---|---|---|---|
@@ -131,6 +155,6 @@ gh issue create -R team-seep/seep-ios \
 `approved` 라벨을 달면 자동 개발이 시작됩니다. 조정할 점은 코멘트로 남겨주세요. 반려하려면 사유 한 줄과 함께 닫아주세요.
 ```
 
-## 8. 결과
+## 9. 결과
 
-마지막 메시지에 이슈 링크와 한 줄 요약만 남긴다. 실패하면(조사 실패, 서버리스 후보 없음) 이슈를 만들지 말고 이유를 보고한다.
+마지막 메시지에 이슈 링크, Design 링크, 한 줄 요약만 남긴다. 실패하면(조사 실패, 서버리스 후보 없음) 이슈를 만들지 말고 이유를 보고한다.

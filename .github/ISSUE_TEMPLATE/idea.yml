@@ -46,6 +46,11 @@ body:
     validations:
       required: true
   - type: textarea
+    id: design
+    attributes:
+      label: 디자인
+      description: 미리보기 이미지 + Design 링크(Before/After). 싶 디자인 시스템 기준 — docs/process/planning.md "디자인 제안"
+  - type: textarea
     id: tracking
     attributes:
       label: 트래킹 이벤트
