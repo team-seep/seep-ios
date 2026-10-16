@@ -61,6 +61,14 @@ final class WishEditView: BaseView {
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
     
+    let stepsView: WishStepsView = {
+        let view = WishStepsView()
+        view.isCheckable = false
+        view.isEditable = true
+        view.setTitle(Strings.Write.Step.title)
+        return view
+    }()
+    
     private let notificationIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_notification_normal")
     }
@@ -171,6 +179,7 @@ final class WishEditView: BaseView {
             self.dateField,
             self.dateSwitchLabel,
             self.dateSwitch,
+            self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
             self.notificationSwitchLabel,
@@ -248,9 +257,14 @@ final class WishEditView: BaseView {
             make.centerY.equalTo(self.dateSwitch)
         }
         
+        self.stepsView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+        }
+        
         self.notificationIcon.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.stepsView.snp.bottom).offset(16)
             make.width.height.equalTo(16)
         }
         

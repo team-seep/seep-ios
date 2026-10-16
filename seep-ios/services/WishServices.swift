@@ -65,6 +65,9 @@ struct WishService: WishServiceProtocol {
             item?.notifications.append(objectsIn: newWish.notifications.map(NotificationDTO.init(seepNotification:)))
             item?.memo = newWish.memo
             item?.hashtag = newWish.hashtag
+            // 수정 화면에서 바꾼 단계로 교체한다. 남은 단계는 id·isDone 을 그대로 가진다 (GH-5 R-19)
+            item?.steps.removeAll()
+            item?.steps.append(objectsIn: newWish.steps.map(WishStepDTO.init(step:)))
         }
   }
   

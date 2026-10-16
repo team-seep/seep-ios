@@ -85,6 +85,7 @@ final class WriteView: BaseView {
     let stepsView: WishStepsView = {
         let view = WishStepsView()
         view.isCheckable = false
+        view.isEditable = true
         view.setTitle(Strings.Write.Step.title)
         return view
     }()

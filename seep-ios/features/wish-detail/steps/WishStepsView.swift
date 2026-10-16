@@ -8,8 +8,13 @@ final class WishStepsView: BaseView {
     let didTapStepPublisher = PassthroughSubject<Int, Never>()
     let deleteStepPublisher = PassthroughSubject<Int, Never>()
 
-    /// false 면 작성 화면용: 체크 아이콘을 비활성으로 보여주고 탭해도 토글하지 않는다. 행 오른쪽에 삭제 버튼을 보여준다.
+    /// true 면 행 탭으로 체크/해제한다 (상세). false 면 체크 아이콘을 비활성으로 보여준다 (작성·수정).
     var isCheckable = true
+
+    /// true 면 "단계 추가" 버튼·행 삭제(X)·길게 눌러 삭제를 보여준다 (작성·수정). 상세는 false (GH-5 R-1).
+    var isEditable = false {
+        didSet { addButton.isHidden = !isEditable }
+    }
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -77,6 +82,7 @@ final class WishStepsView: BaseView {
         stackView.addArrangedSubview(addButton)
         stackView.setCustomSpacing(0, after: stepBoxView)
         addSubview(stackView)
+        addButton.isHidden = !isEditable
     }
 
     override func bindConstraints() {
@@ -124,13 +130,22 @@ final class WishStepsView: BaseView {
     func bind(steps: [WishStep]) {
         stepStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         steps.enumerated().forEach { index, step in
-            let rowView = WishStepRowView(step: step, isFirst: index == 0, isCheckable: isCheckable)
+            let rowView = WishStepRowView(
+                step: step,
+                isFirst: index == 0,
+                isCheckable: isCheckable,
+                showsDeleteButton: isEditable
+            )
             rowView.tag = index
             rowView.onTapDelete = { [weak self] in
                 self?.deleteStepPublisher.send(index)
             }
-            rowView.addTarget(self, action: #selector(didTapRow(_:)), for: .touchUpInside)
-            rowView.addInteraction(UIContextMenuInteraction(delegate: self))
+            if isCheckable {
+                rowView.addTarget(self, action: #selector(didTapRow(_:)), for: .touchUpInside)
+            }
+            if isEditable {
+                rowView.addInteraction(UIContextMenuInteraction(delegate: self))
+            }
             stepStackView.addArrangedSubview(rowView)
         }
         stepBoxView.isHidden = steps.isEmpty
@@ -175,7 +190,7 @@ extension WishStepsView: UIContextMenuInteractionDelegate {
     }
 }
 
-/// 단계 한 줄: 체크 아이콘 22 + 제목 16. 완료면 gray4 + 취소선. 체크할 수 없는 행(작성 화면)은 오른쪽에 삭제 버튼.
+/// 단계 한 줄: 체크 아이콘 22 + 제목 16. 완료면 gray4 + 취소선. 편집할 수 있는 행(작성·수정 화면)은 오른쪽에 삭제 버튼.
 private final class WishStepRowView: UIControl {
     var onTapDelete: (() -> Void)?
 
@@ -201,9 +216,9 @@ private final class WishStepRowView: UIControl {
         return button
     }()
 
-    init(step: WishStep, isFirst: Bool, isCheckable: Bool) {
+    init(step: WishStep, isFirst: Bool, isCheckable: Bool, showsDeleteButton: Bool) {
         super.init(frame: .zero)
-        setup(isFirst: isFirst, showsDeleteButton: !isCheckable)
+        setup(isFirst: isFirst, showsDeleteButton: showsDeleteButton)
         bind(step: step, isCheckable: isCheckable)
     }
 

@@ -125,22 +125,16 @@ extension WishDetailViewController {
     private func bindSteps() {
         let stepsView = wishDetailView.stepsView
         
-        stepsView.addButton.tapPublisher
-            .subscribe(stepsViewModel.input.didTapAdd)
-            .store(in: &cancellables)
-        
         stepsView.didTapStepPublisher
             .subscribe(stepsViewModel.input.didTapStep)
             .store(in: &cancellables)
         
-        stepsView.deleteStepPublisher
-            .subscribe(stepsViewModel.input.deleteStep)
-            .store(in: &cancellables)
-        
         stepsViewModel.output.steps
             .main
-            .sink { steps in
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, steps: [WishStep]) in
                 stepsView.bind(steps: steps)
+                owner.wishDetailView.setStepsHidden(steps.isEmpty)
             }
             .store(in: &cancellables)
         
@@ -187,15 +181,9 @@ extension WishDetailViewController {
     private func handleStepsRoute(_ route: WishStepsViewModel.Route) {
         switch route {
         case .presentAddStepInput:
-            presentAddStepInput()
+            break // 상세에서는 단계를 추가하지 않는다 (R-1). 추가는 수정 화면에서.
         case .showErrorAlert(let error):
             AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
-        }
-    }
-    
-    private func presentAddStepInput() {
-        presentAddWishStepAlert { [weak self] title in
-            self?.stepsViewModel.input.addStep.send(title)
         }
     }
 }
@@ -209,5 +197,6 @@ extension WishDetailViewController: SharePhotoDelegate {
 extension WishDetailViewController: WishEditViewControllerDelegate {
     func onUpdateWish(wish: Wish) {
         self.wishDetailReactor.action.onNext(.updateWish(wish: wish))
+        self.stepsViewModel.input.reloadSteps.send(wish.steps)
     }
 }

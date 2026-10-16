@@ -65,9 +65,7 @@ final class WishDetailReactor: Reactor {
             return .just(.presentSharePhoto)
             
         case .updateWish(let wish):
-            // 편집 화면은 단계를 모르므로 지금 단계를 유지한다
-            var wish = wish
-            wish.steps = currentState.wish.steps
+            // 수정 화면이 단계까지 담아 돌려준다 (R-19, R-20)
             updateWishPublisher.send(wish)
             return .just(.setWish(wish: wish))
             

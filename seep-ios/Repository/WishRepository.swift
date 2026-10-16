@@ -9,12 +9,8 @@ protocol WishRepository {
     
     func deleteWish(id: String)
     
-    /// 단계를 맨 뒤(order 최대 + 1)에 추가하고, 갱신된 단계 목록(order 오름차순)을 돌려준다.
-    func addStep(wishId: String, title: String) -> Result<[WishStep], RepositoryError>
-    
+    /// 단계의 완료 여부를 뒤집고, 갱신된 단계 목록(order 오름차순)을 돌려준다. 상세 화면 체크/해제용.
     func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError>
-    
-    func deleteStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -68,24 +64,10 @@ final class WishRepositoryImpl: WishRepository {
         }
     }
     
-    func addStep(wishId: String, title: String) -> Result<[WishStep], RepositoryError> {
-        return updateSteps(wishId: wishId) { steps in
-            let nextOrder = (steps.map(\.order).max() ?? -1) + 1
-            steps.append(WishStepDTO(step: WishStep(title: title, order: nextOrder)))
-        }
-    }
-    
     func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
         return updateSteps(wishId: wishId) { steps in
             guard let step = steps.first(where: { $0._id == stepId }) else { return }
             step.isDone.toggle()
-        }
-    }
-    
-    func deleteStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
-        return updateSteps(wishId: wishId) { steps in
-            guard let index = steps.firstIndex(where: { $0._id == stepId }) else { return }
-            steps.remove(at: index)
         }
     }
     

@@ -3,6 +3,7 @@
 /// WishServiceProtocol 스파이. 저장 호출만 기록하고 나머지는 빈 값을 돌려준다.
 final class MockWishService: WishServiceProtocol {
     private(set) var addedWishes: [Wish] = []
+    private(set) var updatedWishes: [(id: String, wish: Wish)] = []
 
     func addWish(wish: Wish) {
         addedWishes.append(wish)
@@ -14,7 +15,9 @@ final class MockWishService: WishServiceProtocol {
         return nil
     }
 
-    func updateWish(id: String, newWish: Wish) { }
+    func updateWish(id: String, newWish: Wish) {
+        updatedWishes.append((id, newWish))
+    }
 
     func cancelFinishWish(id: String) { }
 

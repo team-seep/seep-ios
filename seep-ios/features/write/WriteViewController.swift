@@ -14,7 +14,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     weak var delegate: WriteDelegate?
     private let writeView = WriteView()
     private let writeReactor: WriteReactor
-    private let stepsViewModel = WishStepsViewModel(config: .init(mode: .draft))
+    private let stepsViewModel = WishStepsViewModel(config: .init(mode: .draft(steps: [], screenName: .write)))
     private var cancellables = Set<AnyCancellable>()
     private weak var coordinator: WriteCoordinator?
     private var isKeyboardShown = false
