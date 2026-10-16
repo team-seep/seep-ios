@@ -103,6 +103,14 @@ iOSInjectionProject/
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
+# SPM 버전 고정 파일은 커밋한다 (Xcode Cloud는 자동 의존성 해석이 꺼져 있어 이 파일이 필수)
+!*.xcodeproj/project.xcworkspace/
+*.xcodeproj/project.xcworkspace/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/
+*.xcodeproj/project.xcworkspace/xcshareddata/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 
