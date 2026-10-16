@@ -18,7 +18,7 @@ gh issue list -R team-seep/seep-ios --label idea --state closed --limit 100 --js
 
 각 이슈에 대해:
 1. 이슈를 닫은 PR의 머지 커밋을 찾는다: `gh issue view {n} --json closedByPullRequestsReferences` → `gh pr view {pr} --json mergeCommit`
-2. 그 커밋이 들어간 **첫 릴리즈 태그**를 찾는다: `git tag --contains {sha} --sort=creatordate | head -1` (태그 형식 `vX.Y.Z`)
+2. 그 커밋이 들어간 **첫 릴리즈 태그**를 찾는다: `git tag --contains {sha} --sort=creatordate | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1` (`vX.Y.Z`만. `design-previews` 같은 다른 태그는 릴리즈가 아니다)
 3. 태그가 없으면 아직 출시 전 → 건너뛴다
 4. 태그 날짜 + 14일이 오늘보다 뒤면 → 아직 2주가 안 됐으니 건너뛴다
 
