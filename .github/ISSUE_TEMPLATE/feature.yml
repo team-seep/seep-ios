@@ -1,0 +1,35 @@
+name: 기능 (테크스펙)
+description: 새 기능·개선. 이 이슈 본문이 테크스펙(의도 문서)이 됩니다 — docs/process/tech-spec-process.md
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 1. 요약
+      description: 배경 · 목표 · 디자인(피그마 링크, 있으면)
+    validations:
+      required: true
+  - type: textarea
+    id: requirements
+    attributes:
+      label: 2. 요구사항
+      description: 이 이슈를 처리하기 위한 요구사항. PR 드리프트 확인이 이 목록과 diff를 대조합니다
+      value: |
+        - 
+    validations:
+      required: true
+  - type: textarea
+    id: tc
+    attributes:
+      label: 3. 테스트 케이스 (TC)
+      description: 사용자 관점 케이스를 한 줄씩. ID는 바꾸지 않습니다. 테스트 메서드가 test_GH{이슈번호}_TC{n}_ 으로 이 번호를 씁니다. 케이스가 늘면 여기에 먼저 추가하세요
+      value: |
+        - TC-1: 
+        - TC-2: 
+    validations:
+      required: true
+  - type: textarea
+    id: etc
+    attributes:
+      label: 기타
+      description: 범위 밖, 참고 링크, 열린 질문
