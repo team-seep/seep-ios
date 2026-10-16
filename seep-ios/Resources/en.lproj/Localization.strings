@@ -93,6 +93,7 @@
 "detail.step.delete" = "삭제";
 "detail.step.toast.max_length" = "📍단계는 30자내로 작성해주세요!";
 "detail.step.toast.max_count" = "📍단계는 10개까지 추가할 수 있어요!";
+"write.step.title" = "단계 (선택)";
 "detail_random_info" = "Random으로 이모지를\n골라드립니다!";
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";

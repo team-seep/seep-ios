@@ -29,14 +29,14 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
             wishService: WishService()
         )
         self.mode = mode
-        self.stepsViewModel = WishStepsViewModel(config: .init(wish: wish))
+        self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(wish)))
         super.init(nibName: nil, bundle: nil)
     }
     
     init(reactor: WishDetailReactor, mode: DetailMode) {
         self.wishDetailReactor = reactor
         self.mode = mode
-        self.stepsViewModel = WishStepsViewModel(config: .init(wish: reactor.initialState.wish))
+        self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -194,26 +194,9 @@ extension WishDetailViewController {
     }
     
     private func presentAddStepInput() {
-        let alertController = UIAlertController(
-            title: Strings.Detail.Step.AddAlert.title,
-            message: nil,
-            preferredStyle: .alert
-        )
-        alertController.addTextField { textField in
-            textField.placeholder = Strings.Detail.Step.AddAlert.placeholder
-            textField.returnKeyType = .done
-        }
-        let cancelAction = UIAlertAction(title: Strings.commonCancel, style: .cancel)
-        let confirmAction = UIAlertAction(
-            title: Strings.Detail.Step.AddAlert.confirm,
-            style: .default
-        ) { [weak self, weak alertController] _ in
-            let title = alertController?.textFields?.first?.text ?? ""
+        presentAddWishStepAlert { [weak self] title in
             self?.stepsViewModel.input.addStep.send(title)
         }
-        alertController.addAction(cancelAction)
-        alertController.addAction(confirmAction)
-        present(alertController, animated: true)
     }
 }
 

@@ -379,6 +379,12 @@ internal enum Strings {
       internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
     }
   }
+  internal enum Write {
+    internal enum Step {
+      /// 단계 (선택)
+      internal static let title = Strings.tr("Localization", "write.step.title", fallback: "단계 (선택)")
+    }
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

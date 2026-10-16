@@ -25,7 +25,7 @@ final class WishStepsViewModelTests: XCTestCase {
     private func makeViewModel(steps: [WishStep]) -> WishStepsViewModel {
         let wish = Wish(id: "wish-1", emoji: "🏝️", title: "제주도 한 달 살기", steps: steps)
         return WishStepsViewModel(
-            config: .init(wish: wish),
+            config: .init(mode: .persisted(wish)),
             dependency: .init(wishRepository: mockRepository, logManager: mockLogManager)
         )
     }
@@ -274,5 +274,91 @@ final class WishStepsViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(mockLogManager.sentEvents.count, 1)
         XCTAssertEqual(mockLogManager.sentEvents.first?.parameters["is_done"] as? Bool, false)
+    }
+
+    // MARK: 작성 화면(draft) — GH-5 R-13~R-17
+
+    private func makeDraftViewModel() -> WishStepsViewModel {
+        return WishStepsViewModel(
+            config: .init(mode: .draft),
+            dependency: .init(wishRepository: mockRepository, logManager: mockLogManager)
+        )
+    }
+
+    // MARK: GH-5 TC15
+
+    func test_GH5_TC15_작성화면에서_단계를추가삭제하면_저장소를부르지않고_Output만바뀐다() {
+        // Given
+        let viewModel = makeDraftViewModel()
+        var updated: [[WishStep]] = []
+        viewModel.output.didUpdateSteps
+            .sink { updated.append($0) }
+            .store(in: &cancellables)
+
+        // When
+        viewModel.input.addStep.send("항공권 예약")
+        viewModel.input.addStep.send("숙소 예약")
+        viewModel.input.deleteStep.send(0)
+        viewModel.input.didTapStep.send(0)
+
+        // Then
+        XCTAssertTrue(mockRepository.addStepCalls.isEmpty)
+        XCTAssertTrue(mockRepository.deleteStepCalls.isEmpty)
+        XCTAssertTrue(mockRepository.toggleStepCalls.isEmpty)
+        XCTAssertEqual(viewModel.output.steps.value.map(\.title), ["숙소 예약"])
+        XCTAssertEqual(viewModel.output.steps.value.map(\.isDone), [false])
+        XCTAssertEqual(updated.count, 3)
+        XCTAssertNil(viewModel.output.progress.value)
+    }
+
+    // MARK: GH-5 TC16
+
+    func test_GH5_TC16_작성화면에서_3개중가운데를삭제하면_남은단계의순서가0과1로다시매겨진다() {
+        // Given
+        let viewModel = makeDraftViewModel()
+        ["날짜 정하기", "항공권 예약", "숙소 예약"].forEach { viewModel.input.addStep.send($0) }
+
+        // When
+        viewModel.input.deleteStep.send(1)
+
+        // Then
+        XCTAssertEqual(viewModel.output.steps.value.map(\.title), ["날짜 정하기", "숙소 예약"])
+        XCTAssertEqual(viewModel.output.steps.value.map(\.order), [0, 1])
+    }
+
+    // MARK: GH-5 TC17
+
+    func test_GH5_TC17_작성화면에서_10개를넘거나_공백이나30자초과면_추가되지않는다() {
+        // Given
+        let viewModel = makeDraftViewModel()
+        let toasts = collectToasts(viewModel)
+
+        // When
+        viewModel.input.addStep.send("   ")
+        viewModel.input.addStep.send(String(repeating: "가", count: 31))
+        (0..<11).forEach { viewModel.input.addStep.send("단계 \($0)") }
+
+        // Then
+        XCTAssertEqual(viewModel.output.steps.value.count, 10)
+        XCTAssertFalse(viewModel.output.isAddEnabled.value)
+        XCTAssertEqual(toasts(), [Strings.Detail.Step.Toast.maxLength, Strings.Detail.Step.Toast.maxCount])
+    }
+
+    // MARK: GH-5 TC20
+
+    func test_GH5_TC20_작성화면에서_단계를추가하면_write화면_add_step로그가1건전송된다() {
+        // Given
+        let viewModel = makeDraftViewModel()
+
+        // When
+        viewModel.input.addStep.send("항공권 예약")
+
+        // Then
+        XCTAssertEqual(mockLogManager.sentEvents.count, 1)
+        let event = mockLogManager.sentEvents.first
+        XCTAssertEqual(event?.name, .click)
+        XCTAssertEqual(event?.parameters["screen"] as? String, "write")
+        XCTAssertEqual(event?.parameters["object_type"] as? String, "button")
+        XCTAssertEqual(event?.parameters["object_id"] as? String, "add_step")
     }
 }

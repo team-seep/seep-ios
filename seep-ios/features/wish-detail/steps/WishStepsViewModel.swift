@@ -10,7 +10,7 @@ extension WishStepsViewModel {
     }
 
     struct Output {
-        let screenName: ScreenName = .wishDetail
+        let screenName: ScreenName
         let steps: CurrentValueSubject<[WishStep], Never>
         let progress: CurrentValueSubject<WishStepProgress?, Never>
         let isAddEnabled: CurrentValueSubject<Bool, Never>
@@ -26,7 +26,14 @@ extension WishStepsViewModel {
     }
 
     struct Config {
-        let wish: Wish
+        let mode: Mode
+    }
+
+    enum Mode {
+        /// 위시 상세: 바뀔 때마다 Repository 에 바로 저장한다.
+        case persisted(Wish)
+        /// 위시 작성: 저장하지 않고 화면 상태로만 들고 있다가, 작성 완료 때 위시와 함께 저장된다.
+        case draft
     }
 
     struct State {
@@ -47,7 +54,7 @@ extension WishStepsViewModel {
     }
 }
 
-/// 위시 상세의 "단계" 섹션. 상세 화면은 레거시 Reactor 라 이 섹션만 Combine ViewModel 로 붙인다.
+/// 위시 상세·작성의 "단계" 섹션. 두 화면 모두 레거시 Reactor 라 이 섹션만 Combine ViewModel 로 붙인다.
 final class WishStepsViewModel {
     let input = Input()
     let output: Output
@@ -59,11 +66,13 @@ final class WishStepsViewModel {
     init(config: Config, dependency: Dependency = Dependency()) {
         self.config = config
         self.dependency = dependency
-        self.state = State(steps: config.wish.steps)
+        let steps = config.mode.initialSteps
+        self.state = State(steps: steps)
         self.output = Output(
-            steps: .init(config.wish.steps),
-            progress: .init(WishStepProgress(steps: config.wish.steps)),
-            isAddEnabled: .init(config.wish.steps.count < WishStep.maxCount)
+            screenName: config.mode.screenName,
+            steps: .init(steps),
+            progress: .init(config.mode.showsProgress ? WishStepProgress(steps: steps) : nil),
+            isAddEnabled: .init(steps.count < WishStep.maxCount)
         )
 
         bind()
@@ -120,17 +129,26 @@ final class WishStepsViewModel {
             return
         }
 
-        let result = dependency.wishRepository.addStep(wishId: config.wish.id, title: trimmedTitle)
+        let result: Result<[WishStep], RepositoryError>
+        switch config.mode {
+        case .persisted(let wish):
+            result = dependency.wishRepository.addStep(wishId: wish.id, title: trimmedTitle)
+        case .draft:
+            result = .success(state.steps + [WishStep(title: trimmedTitle, order: state.steps.count)])
+        }
+
         if handleResult(result) {
             sendClickLog(objectId: .addStep)
         }
     }
 
     private func toggleStep(index: Int) {
-        guard state.steps.indices.contains(index) else { return }
+        // 작성 중에는 체크하지 않는다 (R-13). 모든 단계는 미완료로 만들어진다.
+        guard case .persisted(let wish) = config.mode,
+              state.steps.indices.contains(index) else { return }
         let step = state.steps[index]
 
-        let result = dependency.wishRepository.toggleStep(wishId: config.wish.id, stepId: step.id)
+        let result = dependency.wishRepository.toggleStep(wishId: wish.id, stepId: step.id)
         if handleResult(result),
            let toggledStep = state.steps.first(where: { $0.id == step.id }) {
             sendClickLog(objectId: .checkStep, extraParameters: [.isDone: toggledStep.isDone])
@@ -141,7 +159,16 @@ final class WishStepsViewModel {
         guard state.steps.indices.contains(index) else { return }
         let step = state.steps[index]
 
-        let result = dependency.wishRepository.deleteStep(wishId: config.wish.id, stepId: step.id)
+        let result: Result<[WishStep], RepositoryError>
+        switch config.mode {
+        case .persisted(let wish):
+            result = dependency.wishRepository.deleteStep(wishId: wish.id, stepId: step.id)
+        case .draft:
+            let remainingSteps = state.steps.filter { $0.id != step.id }
+            result = .success(remainingSteps.enumerated().map { order, step in
+                WishStep(id: step.id, title: step.title, isDone: step.isDone, order: order)
+            })
+        }
         handleResult(result)
     }
 
@@ -152,7 +179,7 @@ final class WishStepsViewModel {
         case .success(let steps):
             state.steps = steps
             output.steps.send(steps)
-            output.progress.send(WishStepProgress(steps: steps))
+            output.progress.send(config.mode.showsProgress ? WishStepProgress(steps: steps) : nil)
             output.isAddEnabled.send(steps.count < WishStep.maxCount)
             output.didUpdateSteps.send(steps)
             return true
@@ -169,5 +196,31 @@ final class WishStepsViewModel {
             objectId: objectId,
             extraParameters: extraParameters
         ))
+    }
+}
+
+private extension WishStepsViewModel.Mode {
+    var initialSteps: [WishStep] {
+        switch self {
+        case .persisted(let wish):
+            return wish.steps
+        case .draft:
+            return []
+        }
+    }
+
+    var screenName: ScreenName {
+        switch self {
+        case .persisted:
+            return .wishDetail
+        case .draft:
+            return .write
+        }
+    }
+
+    /// 작성 화면에서는 진행도를 숨긴다 (R-13).
+    var showsProgress: Bool {
+        if case .persisted = self { return true }
+        return false
     }
 }

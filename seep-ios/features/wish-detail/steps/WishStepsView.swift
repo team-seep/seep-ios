@@ -3,10 +3,13 @@ import Combine
 
 import SnapKit
 
-/// 위시 상세의 "단계" 섹션. 헤더(아이콘·라벨·진행도) + 단계 목록 상자 + "단계 추가" 버튼.
+/// 위시 상세·작성의 "단계" 섹션. 헤더(아이콘·라벨·진행도) + 단계 목록 상자 + "단계 추가" 버튼.
 final class WishStepsView: BaseView {
     let didTapStepPublisher = PassthroughSubject<Int, Never>()
     let deleteStepPublisher = PassthroughSubject<Int, Never>()
+
+    /// false 면 작성 화면용: 체크 아이콘을 비활성으로 보여주고 탭해도 토글하지 않는다 (길게 눌러 삭제만).
+    var isCheckable = true
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -114,10 +117,14 @@ final class WishStepsView: BaseView {
         }
     }
 
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+
     func bind(steps: [WishStep]) {
         stepStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         steps.enumerated().forEach { index, step in
-            let rowView = WishStepRowView(step: step, isFirst: index == 0)
+            let rowView = WishStepRowView(step: step, isFirst: index == 0, isCheckable: isCheckable)
             rowView.tag = index
             rowView.addTarget(self, action: #selector(didTapRow(_:)), for: .touchUpInside)
             rowView.addInteraction(UIContextMenuInteraction(delegate: self))
@@ -181,10 +188,10 @@ private final class WishStepRowView: UIControl {
         return label
     }()
 
-    init(step: WishStep, isFirst: Bool) {
+    init(step: WishStep, isFirst: Bool, isCheckable: Bool) {
         super.init(frame: .zero)
         setup(isFirst: isFirst)
-        bind(step: step)
+        bind(step: step, isCheckable: isCheckable)
     }
 
     required init?(coder: NSCoder) {
@@ -218,8 +225,9 @@ private final class WishStepRowView: UIControl {
         }
     }
 
-    private func bind(step: WishStep) {
+    private func bind(step: WishStep, isCheckable: Bool) {
         checkImageView.image = step.isDone ? Assets.Icons.icCheckOn.image : Assets.Icons.icCheckOff.image
+        checkImageView.alpha = isCheckable ? 1 : 0.4
 
         if step.isDone {
             titleLabel.attributedText = NSAttributedString(string: step.title, attributes: [
@@ -234,7 +242,36 @@ private final class WishStepRowView: UIControl {
         }
 
         accessibilityLabel = step.title
-        accessibilityTraits = step.isDone ? [.button, .selected] : .button
+        if isCheckable {
+            accessibilityTraits = step.isDone ? [.button, .selected] : .button
+        } else {
+            accessibilityTraits = .staticText
+        }
         isAccessibilityElement = true
+    }
+}
+
+extension UIViewController {
+    /// 단계 제목 입력 알럿. 위시 상세·작성 화면이 같이 쓴다.
+    func presentAddWishStepAlert(onConfirm: @escaping (String) -> Void) {
+        let alertController = UIAlertController(
+            title: Strings.Detail.Step.AddAlert.title,
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.addTextField { textField in
+            textField.placeholder = Strings.Detail.Step.AddAlert.placeholder
+            textField.returnKeyType = .done
+        }
+        let cancelAction = UIAlertAction(title: Strings.commonCancel, style: .cancel)
+        let confirmAction = UIAlertAction(
+            title: Strings.Detail.Step.AddAlert.confirm,
+            style: .default
+        ) { [weak alertController] _ in
+            onConfirm(alertController?.textFields?.first?.text ?? "")
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        present(alertController, animated: true)
     }
 }

@@ -208,6 +208,8 @@
 		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
 		C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */; };
 		D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
+		A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */; };
+		A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -435,6 +437,8 @@
 		D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModel.swift; sourceTree = "<group>"; };
 		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
 		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
+		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
+		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -526,6 +530,7 @@
 		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
 			isa = PBXGroup;
 			children = (
+				B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */,
 				B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */,
 				8B296ED1CFDAAC15A58AEF24 /* Mock */,
 				C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */,
@@ -1082,6 +1087,7 @@
 		8B296ED1CFDAAC15A58AEF24 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
+				B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */,
 				43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */,
 				269705858459DA909159F323 /* MockNotificationManager.swift */,
 			);
@@ -1305,6 +1311,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */,
+				A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */,
 				A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */,
 				7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */,
 				485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */,
