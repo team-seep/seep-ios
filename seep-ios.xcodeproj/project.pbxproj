@@ -1759,7 +1759,7 @@
 			repositoryURL = "https://github.com/realm/realm-swift.git";
 			requirement = {
 				kind = exactVersion;
-				version = 10.54.1;
+				version = 20.0.6;
 			};
 		};
 		6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -1783,7 +1783,7 @@
 			repositoryURL = "https://github.com/realm/realm-swift.git";
 			requirement = {
 				kind = exactVersion;
-				version = 10.54.0;
+				version = 20.0.6;
 			};
 		};
 		6E59E9392CD4A71E006AA02D /* XCRemoteSwiftPackageReference "PanModal" */ = {
