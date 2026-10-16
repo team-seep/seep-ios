@@ -11,7 +11,7 @@ AI가 코드를 많이 쓰는 환경에서 사람 리뷰어는 **diff 전체가 
 | 2. 브랜치 | git-flow, develop 기반 | `feature/GH-12-{설명}` / `bugfix/GH-12-…` / `hotfix/…` | — |
 | 3. 코드 작성 | 규칙 9개(R1~R9) 안에서 구현 | `docs/architecture/RULES.md`, `CLAUDE.md`, `make lint` | 로컬 + `lint.yml` |
 | 4. 테스트 | TC를 세 계층(유닛/자동화/수동)에 배정 → 승인 → 유닛만 코드 | "GH-12 테스트 케이스 도출해줘", `docs/process/testing.md`, `make test` | `seep-iosTests/`, 메서드명 `test_GH12_TC{n}_` |
-| 5. 동작 증거 | TC 커버리지 표 / 유닛 실행 결과 / 자동화 TC 스크린샷·영상 | `test.yml` + `scripts/test-summary.sh`, `3dollars:simulator-test` | PR 코멘트(자동), 본문 "TC"·"증거" |
+| 5. 동작 증거 | TC 커버리지 표(본문) / 유닛 실행 결과·실패 목록(CI 코멘트) / 자동화 TC 스크린샷·영상 | `test.yml` + `scripts/test-summary.sh`, `3dollars:simulator-test` | PR 코멘트(자동), 본문 "TC"·"증거" |
 | 6. 스코프 드리프트 | 이슈 요구사항 ↔ diff 대조, 스펙 밖 변경 목록 | "GH-12 드리프트 확인해줘" | 본문 "스펙 밖 변경" |
 | 7. 자동화·수동 범위 | 유닛으로 안 덮이는 TC를 자동화/수동으로 가르고 UI 공통·영역 체크 추가 | `docs/process/e2e-and-manual-tests.md` | 본문 "TC" 체크리스트 |
 | 8. 검증 장치 변경 | 린트·CI·규칙·스키마 파일을 건드린 PR 표시 | `.github/labeler.yml` + `labeler.yml`, `docs/process/verification-change.md` | 라벨 + 파일 목록 코멘트 |

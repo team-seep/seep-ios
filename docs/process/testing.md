@@ -15,14 +15,14 @@ TC별 계층 배정 (유닛 / 자동화 / 수동)  ──▶ 사람 승인
 유닛 테스트 코드   simulator-test     PR 본문 체크박스
    │              │                  │
    ▼              ▼                  ▼
-CI 커버리지 표    스크린샷·영상 증거    작성자 체크
+CI 결과 코멘트    스크린샷·영상 증거    작성자 체크
 ```
 
 ## 테스트의 세 계층
 
 | 계층 | 무엇을 검증 | 실행 주체·시점 | 증거 |
 |---|---|---|---|
-| **1. 유닛 테스트 코드** | ViewModel Input→Output/Route, Repository 로직(정렬·필터·완료), 모델 변환(DTO↔도메인) | `xcodebuild test` — CI가 PR마다 | CI 코멘트의 TC 커버리지 표 |
+| **1. 유닛 테스트 코드** | ViewModel Input→Output/Route, Repository 로직(정렬·필터·완료), 모델 변환(DTO↔도메인) | `xcodebuild test` — CI가 PR마다 | CI 결과 코멘트(통과 수·실패 목록) |
 | **2. 자동화 테스트 TC** | 시뮬레이터를 에이전트가 조작해 화면을 실제로 거치는 E2E. 탭·스와이프·딥링크·위젯을 넣고 스크린샷·영상으로 판정 | `3dollars:simulator-test` 스킬 — PR 올리기 전, 이번 이슈 TC만 | PR 본문 "증거" 섹션 |
 | **3. 수동 테스트 TC** | 시뮬레이터로 상황 자체를 만들 수 없어 실기기·사람이 필요한 것 | 작성자 — PR 올리기 전 | PR 본문 체크박스 |
 
@@ -60,6 +60,7 @@ seep-iosTests/
 └── Mock/Mock{Protocol}.swift         # MockWishRepository, MockNotificationManager
 ```
 
+- 새 테스트·목 파일은 `project.pbxproj`의 `seep-iosTests` 타깃에 등록해야 실행된다(동기화 폴더가 아니다). 추가 후 `make test` 결과의 통과 수가 늘었는지 확인한다.
 - 테스트 타깃은 `@testable import seep_ios_dev`로 앱 모듈에 접근한다 (Debug 구성의 PRODUCT_NAME이 `seep-ios-dev`).
 - 메서드명: **`test_GH{이슈번호}_TC{n}_{조건}_{기대결과}()`** — 한글 허용.
   - `test_GH12_TC1_위시를완료하면_예약된알림이취소된다()`
@@ -92,11 +93,11 @@ xcodebuild test \
 ### CI (PR 증거)
 
 `.github/workflows/test.yml`이 PR마다 macOS 러너에서 전체 테스트를 돌리고:
-- `scripts/test-summary.sh`로 결과를 마크다운(전체 결과 / 실패 목록 / **TC 커버리지 표** / 전체 목록)으로 만들어 **PR 코멘트(갱신형)** 와 Job Summary에 붙인다
+- `scripts/test-summary.sh`로 결과를 마크다운(통과/실패/스킵 수 + **실패한 테스트와 실패 메시지만**)으로 만들어 **PR 코멘트(갱신형)** 와 Job Summary에 붙인다. 통과한 테스트는 나열하지 않는다
 - `tests.xcresult`를 아티팩트로 올린다(14일)
 - 실패한 테스트가 있으면 체크가 빨간불
 
-TC 커버리지 표는 메서드명 `test_GH{n}_TC{n}_` 접두로 뽑는다. 그래서 **네이밍 규칙이 곧 증거 규칙**이다.
+이슈 TC 대비 커버리지는 CI가 아니라 PR 본문 "TC" 표에서 본다(아래 "PR에 남기는 것"). 메서드명 `test_GH{n}_TC{n}_` 접두로 TC와 테스트를 잇기 때문에 **네이밍 규칙이 곧 증거 규칙**이다.
 
 ### ViewModel 테스트 작성법
 

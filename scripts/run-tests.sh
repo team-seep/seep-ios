@@ -31,3 +31,6 @@ if [ ! -d build/tests.xcresult ]; then
     exit 1
 fi
 scripts/test-summary.sh build/tests.xcresult | tee build/summary.md
+
+# 실패가 있으면 0 이 아닌 코드로 끝낸다 (요약 첫 줄 아이콘 기준)
+head -1 build/summary.md | grep -q '✅'

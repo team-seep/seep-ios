@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 make lint            # SwiftLint(새 위반만) + scripts/check-realm-schema.sh — 코드 작성 후 반드시
 make lint-fix        # SwiftLint 자동 수정
-make test            # 유닛 테스트 + build/summary.md (TC 커버리지 표)
+make test            # 유닛 테스트 + build/summary.md (결과 수·실패 목록)
 make swiftgen        # Localization.strings / xcassets 변경 후 Generated/ 갱신
 make lint-baseline   # 베이스라인 재생성 (custom_rules 메시지를 바꿨을 때만)
 ```
@@ -31,7 +31,7 @@ xcodebuild build \
 ```
 - 시뮬레이터는 `xcrun simctl list devices available | grep iPhone`으로 먼저 확인한다. 기기명은 머신마다 다르다.
 - 스킴은 `seep-ios` 하나(Debug = dev 번들 `macgongmon.seep-ios.dev`, 모듈명 `seep_ios_dev` / Release = `macgongmon.seep-ios`). 위젯은 `widgetExtension` 스킴.
-- `seep-ios/` 아래는 Xcode 동기화 폴더라 파일 추가·삭제 시 `project.pbxproj`를 손으로 고치지 않는다.
+- 일반 그룹 구조라(동기화 폴더는 `seep-ios/model/Error` 하나뿐) **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
 - Realm은 20.0.6(Xcode 26.1~27 지원). CI는 `macos-26` 러너.
 - 서명 없이 빌드할 때 `CODE_SIGNING_ALLOWED=NO`를 쓰지 않는다 — App Group 엔타이틀먼트가 빠져 실행 직후 크래시한다. 대신 `CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=`.
 

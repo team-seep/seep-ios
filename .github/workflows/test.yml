@@ -64,7 +64,7 @@ jobs:
           test -d build/tests.xcresult
 
       - name: 결과 요약 (Job Summary)
-        if: always()
+        if: always() && !cancelled()   # 새 푸시로 취소된 실행은 결과 코멘트를 덮어쓰지 않는다
         run: |
           mkdir -p build
           if [ -d build/tests.xcresult ]; then
@@ -75,7 +75,7 @@ jobs:
           cat build/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: 결과 코멘트 (PR, 갱신형)
-        if: always()
+        if: always() && !cancelled()
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.pull_request.number }}
@@ -90,7 +90,7 @@ jobs:
           fi
 
       - name: xcresult 아티팩트
-        if: always()
+        if: always() && !cancelled()
         uses: actions/upload-artifact@v4
         with:
           name: tests.xcresult
@@ -99,7 +99,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: 실패 판정
-        if: always()
+        if: always() && !cancelled()
         run: |
           if [ ! -d build/tests.xcresult ]; then
             echo "::error::테스트가 실행되지 않았습니다 (빌드 실패 또는 이전 스텝 실패). 위 스텝 로그를 확인하세요."
