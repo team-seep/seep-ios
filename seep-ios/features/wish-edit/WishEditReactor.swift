@@ -18,6 +18,7 @@ final class WishEditReactor: Reactor {
         case deleteNotification(index: Int)
         case tapNotificationSwitch(Bool)
         case inputMemo(String)
+        case updateSteps([WishStep])
         case tapHashtag(index: Int)
         case inputHashtag(String)
         case tapEditButton
@@ -37,6 +38,7 @@ final class WishEditReactor: Reactor {
         case setNotificationEnable(Bool)
         case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
+        case setSteps([WishStep])
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setEditButtonState(EditButton.EditButtonState)
@@ -55,6 +57,8 @@ final class WishEditReactor: Reactor {
         var notifications: [SeepNotification]
         var isNotificationEnable: Bool
         var memo: String
+        /// 수정 중인 단계. 수정 완료 때 위시와 함께 저장된다 (GH-5 R-19).
+        var steps: [WishStep]
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String
@@ -83,6 +87,7 @@ final class WishEditReactor: Reactor {
             notifications: wish.notifications.isEmpty ? [SeepNotification()] : wish.notifications,
             isNotificationEnable: !wish.notifications.isEmpty,
             memo: wish.memo,
+            steps: wish.steps,
             selectedHashtag: HashtagType(rawValue: wish.hashtag),
             customHashtag: HashtagType(rawValue: wish.hashtag) == nil ? wish.hashtag : ""
         )
@@ -146,6 +151,9 @@ final class WishEditReactor: Reactor {
             
         case .inputMemo(let memo):
             return .just(.setMemo(memo))
+
+        case .updateSteps(let steps):
+            return .just(.setSteps(steps))
             
         case .tapHashtag(let index):
             return .merge([
@@ -220,6 +228,9 @@ final class WishEditReactor: Reactor {
             
         case .setMemo(let memo):
             newState.memo = memo
+
+        case .setSteps(let steps):
+            newState.steps = steps
             
         case .selectHashtag(let index):
             if let index = index {
@@ -269,6 +280,7 @@ final class WishEditReactor: Reactor {
             notifications: self.currentState.isNotificationEnable
                 ? self.currentState.notifications
                 : [],
+            steps: self.currentState.steps,
             memo: self.currentState.memo,
             hashtag: hashtag
         )

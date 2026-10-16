@@ -8,6 +8,9 @@ protocol WishRepository {
     func finishWish(wish: Wish) -> Result<Wish, RepositoryError>
     
     func deleteWish(id: String)
+    
+    /// 단계의 완료 여부를 뒤집고, 갱신된 단계 목록(order 오름차순)을 돌려준다. 상세 화면 체크/해제용.
+    func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -59,5 +62,35 @@ final class WishRepositoryImpl: WishRepository {
         try! realm.write{
             realm.delete(targetObject)
         }
+    }
+    
+    func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
+        return updateSteps(wishId: wishId) { steps in
+            guard let step = steps.first(where: { $0._id == stepId }) else { return }
+            step.isDone.toggle()
+        }
+    }
+    
+    private func updateSteps(
+        wishId: String,
+        update: (List<WishStepDTO>) -> Void
+    ) -> Result<[WishStep], RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                update(targetObject.steps)
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        let steps = Array(targetObject.steps)
+            .map(WishStep.init(dto:))
+            .sorted { $0.order < $1.order }
+        return .success(steps)
     }
 }

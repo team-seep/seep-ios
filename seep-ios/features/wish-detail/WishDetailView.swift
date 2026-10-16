@@ -43,6 +43,8 @@ final class WishDetailView: BaseView {
         placeholder: "write_placeholder_date_enable".localized
     )
     
+    let stepsView = WishStepsView()
+    
     private let notificationIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_notification_normal")
     }
@@ -113,6 +115,7 @@ final class WishDetailView: BaseView {
             self.categoryView,
             self.titleField,
             self.dateField,
+            self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
             self.notificationTableView,
@@ -179,11 +182,17 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.titleField.snp.bottom).offset(24)
         }
         
+        self.stepsView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+        }
+        
         self.notificationIcon.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.stepsView.snp.bottom).offset(16)
             make.width.height.equalTo(16)
         }
+
         
         self.notificationLabel.snp.makeConstraints { make in
             make.left.equalTo(self.notificationIcon.snp.right).offset(4)
@@ -302,6 +311,22 @@ extension Reactive where Base: WishDetailView{
     var wish: Binder<Wish> {
         return Binder(self.base) { view, wish in
             view.bind(wish: wish)
+        }
+    }
+}
+
+extension WishDetailView {
+    /// 상세에서는 단계를 추가할 수 없어, 단계가 0개면 섹션을 접는다 (GH-5 R-1).
+    func setStepsHidden(_ isHidden: Bool) {
+        stepsView.isHidden = isHidden
+        notificationIcon.snp.remakeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            if isHidden {
+                make.top.equalTo(dateField.snp.bottom).offset(26)
+            } else {
+                make.top.equalTo(stepsView.snp.bottom).offset(16)
+            }
+            make.width.height.equalTo(16)
         }
     }
 }

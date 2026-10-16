@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 3
+        config.schemaVersion = 4
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {
@@ -123,6 +123,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
             migration.deleteData(forType: "Wish")
+            
+            // 4: WishDTO.steps(List<WishStepDTO>) 추가 — 기존 위시는 단계 0개로 시작한다
+            if oldSchemaVersion < 4 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["steps"] = [WishStepDTO]()
+                }
+            }
         }
         
         Realm.Configuration.defaultConfiguration = config

@@ -31,6 +31,15 @@ final class HomeWishListCell: BaseCollectionViewCell {
     
     private let tagLabel = TagLabel()
     
+    private let stepProgressBar = StepProgressBar(width: 32)
+    
+    private let stepProgressLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray4
+        label.font = .appleBold(size: 11)
+        return label
+    }()
+    
     private let finishButton: UIButton = {
         let button = UIButton()
         button.setImage(Assets.Icons.icCheckOff.image, for: .normal)
@@ -55,6 +64,8 @@ final class HomeWishListCell: BaseCollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(ddayLabel)
         contentView.addSubview(tagLabel)
+        contentView.addSubview(stepProgressBar)
+        contentView.addSubview(stepProgressLabel)
         contentView.addSubview(finishButton)
         
         containerView.snp.makeConstraints {
@@ -86,10 +97,21 @@ final class HomeWishListCell: BaseCollectionViewCell {
             $0.centerY.equalTo(containerView)
             $0.trailing.equalTo(containerView).offset(-16)
         }
+        
+        stepProgressBar.snp.makeConstraints {
+            $0.leading.equalTo(tagLabel.snp.trailing).offset(9)
+            $0.centerY.equalTo(ddayLabel)
+        }
+        
+        stepProgressLabel.snp.makeConstraints {
+            $0.leading.equalTo(stepProgressBar.snp.trailing).offset(4)
+            $0.centerY.equalTo(ddayLabel)
+        }
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
         setupWish(viewModel.output.wish)
+        setupStepProgress(viewModel.output.stepProgress, isTagHidden: viewModel.output.wish.hashtag.isEmpty)
         
         finishButton.tapPublisher
             .subscribe(viewModel.input.didTapFinish)
@@ -122,6 +144,19 @@ final class HomeWishListCell: BaseCollectionViewCell {
             titleLabel.alpha = 1
             ddayLabel.alpha = 1
             tagLabel.alpha = 1
+        }
+    }
+    
+    private func setupStepProgress(_ progress: WishStepProgress?, isTagHidden: Bool) {
+        stepProgressBar.isHidden = progress == nil
+        stepProgressLabel.isHidden = progress == nil
+        guard let progress else { return }
+        
+        stepProgressBar.bind(progress: progress)
+        stepProgressLabel.text = Strings.Home.stepProgressFormat(progress.doneCount, progress.totalCount)
+        stepProgressBar.snp.remakeConstraints {
+            $0.leading.equalTo(isTagHidden ? ddayLabel.snp.trailing : tagLabel.snp.trailing).offset(9)
+            $0.centerY.equalTo(ddayLabel)
         }
     }
 }

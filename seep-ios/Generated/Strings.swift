@@ -290,10 +290,42 @@ internal enum Strings {
       }
     }
   }
+  internal enum Detail {
+    internal enum Step {
+      /// 단계 추가
+      internal static let add = Strings.tr("Localization", "detail.step.add", fallback: "단계 추가")
+      /// 삭제
+      internal static let delete = Strings.tr("Localization", "detail.step.delete", fallback: "삭제")
+      /// %d/%d 완료
+      internal static func progressFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.step.progress_format", p1, p2, fallback: "%d/%d 완료")
+      }
+      /// 단계
+      internal static let title = Strings.tr("Localization", "detail.step.title", fallback: "단계")
+      internal enum AddAlert {
+        /// 추가
+        internal static let confirm = Strings.tr("Localization", "detail.step.add_alert.confirm", fallback: "추가")
+        /// 예) 날짜 정하기
+        internal static let placeholder = Strings.tr("Localization", "detail.step.add_alert.placeholder", fallback: "예) 날짜 정하기")
+        /// 단계 추가
+        internal static let title = Strings.tr("Localization", "detail.step.add_alert.title", fallback: "단계 추가")
+      }
+      internal enum Toast {
+        /// 📍단계는 10개까지 추가할 수 있어요!
+        internal static let maxCount = Strings.tr("Localization", "detail.step.toast.max_count", fallback: "📍단계는 10개까지 추가할 수 있어요!")
+        /// 📍단계는 30자내로 작성해주세요!
+        internal static let maxLength = Strings.tr("Localization", "detail.step.toast.max_length", fallback: "📍단계는 30자내로 작성해주세요!")
+      }
+    }
+  }
   internal enum Home {
     /// 아직 등록된 것이 없네요.
     /// 👇🏻아래 버튼을 누르면 작성할 수 있어요!
     internal static let empty = Strings.tr("Localization", "home.empty", fallback: "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!")
+    /// %d/%d
+    internal static func stepProgressFormat(_ p1: Int, _ p2: Int) -> String {
+      return Strings.tr("Localization", "home.step_progress_format", p1, p2, fallback: "%d/%d")
+    }
     internal enum EmptyTitle {
       /// 하고 싶은 것들을
       /// 적어봐요!
@@ -345,6 +377,12 @@ internal enum Strings {
       internal static let wantToGet = Strings.tr("Localization", "home.write_button.want_to_get", fallback: "📝 뭐 갖고 싶어요?")
       /// 📝 어디 가고 싶어요?
       internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
+    }
+  }
+  internal enum Write {
+    internal enum Step {
+      /// 단계 (선택)
+      internal static let title = Strings.tr("Localization", "write.step.title", fallback: "단계 (선택)")
     }
   }
 }

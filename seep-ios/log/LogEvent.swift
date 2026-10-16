@@ -118,4 +118,6 @@ enum LogObjectId: String {
     case onlyFinished = "only_finished"
     case viewType = "view_type"
     case category
+    case addStep = "add_step"
+    case checkStep = "check_step"
 }

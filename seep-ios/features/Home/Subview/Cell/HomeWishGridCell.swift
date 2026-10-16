@@ -35,6 +35,15 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     
     private let tagLabel = TagLabel()
     
+    private let stepProgressBar = StepProgressBar(width: 32)
+    
+    private let stepProgressLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray4
+        label.font = .appleBold(size: 11)
+        return label
+    }()
+    
     private let finishButton: UIButton = {
         let button = UIButton()
         button.setImage(Assets.Icons.icCheckOff.image.resizeImage(scaledTo: 30), for: .normal)
@@ -59,6 +68,8 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(ddayLabel)
         contentView.addSubview(tagLabel)
+        contentView.addSubview(stepProgressBar)
+        contentView.addSubview(stepProgressLabel)
         contentView.addSubview(finishButton)
         
         containerView.snp.makeConstraints {
@@ -81,10 +92,22 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             $0.bottom.equalToSuperview().offset(-14)
             $0.size.equalTo(30)
         }
+        
+        // 그리드는 뱃지가 세로로 쌓이므로, 오른쪽이 비어 있는 D-day 줄에 진행도를 붙인다
+        stepProgressBar.snp.makeConstraints {
+            $0.leading.equalTo(ddayLabel.snp.trailing).offset(6)
+            $0.centerY.equalTo(ddayLabel)
+        }
+        
+        stepProgressLabel.snp.makeConstraints {
+            $0.leading.equalTo(stepProgressBar.snp.trailing).offset(4)
+            $0.centerY.equalTo(ddayLabel)
+        }
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
         setupWish(viewModel.output.wish)
+        setupStepProgress(viewModel.output.stepProgress)
         
         finishButton.tapPublisher
             .subscribe(viewModel.input.didTapFinish)
@@ -139,5 +162,14 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             ddayLabel.alpha = 1
             tagLabel.alpha = 1
         }
+    }
+    
+    private func setupStepProgress(_ progress: WishStepProgress?) {
+        stepProgressBar.isHidden = progress == nil
+        stepProgressLabel.isHidden = progress == nil
+        guard let progress else { return }
+        
+        stepProgressBar.bind(progress: progress)
+        stepProgressLabel.text = Strings.Home.stepProgressFormat(progress.doneCount, progress.totalCount)
     }
 }

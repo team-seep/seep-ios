@@ -1,6 +1,8 @@
 import Foundation
 import UIKit
+import Combine
 
+import CombineCocoa
 import RxSwift
 import ReactorKit
 
@@ -12,6 +14,8 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     weak var delegate: WishEditViewControllerDelegate?
     private let wishEditView = WishEditView()
     private let wishEditReactor: WishEditReactor
+    private let stepsViewModel: WishStepsViewModel
+    private var cancellables = Set<AnyCancellable>()
     private weak var coordinator: WishEditCoordinator?
     private var isKeyboardShown = false
     
@@ -27,6 +31,7 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
             wishService: WishService(),
             notificationManager: NotificationManager.shared
         )
+        self.stepsViewModel = WishStepsViewModel(config: .init(mode: .draft(steps: wish.steps, screenName: .wishEdit)))
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,6 +61,7 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
         self.wishEditView.dateField.inputView = self.datePicker
         
         self.wishEditView.memoField.setEditableText(text: self.wishEditReactor.initialState.memo)
+        self.bindSteps()
     }
     
     override func bindEvent() {
@@ -352,6 +358,76 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.wishEditView.scrollView.contentInset.bottom = .zero
         self.isKeyboardShown = false
+    }
+}
+
+// MARK: Steps
+extension WishEditViewController {
+    /// 수정 화면의 단계 섹션 (GH-5 R-18~R-21). 바뀐 단계는 Reactor 상태로만 넘기고, 수정 완료 때 위시와 함께 저장된다.
+    private func bindSteps() {
+        let stepsView = wishEditView.stepsView
+
+        stepsView.addButton.tapPublisher
+            .subscribe(stepsViewModel.input.didTapAdd)
+            .store(in: &cancellables)
+
+        stepsView.deleteStepPublisher
+            .subscribe(stepsViewModel.input.deleteStep)
+            .store(in: &cancellables)
+
+        stepsViewModel.output.steps
+            .main
+            .sink { steps in
+                stepsView.bind(steps: steps)
+            }
+            .store(in: &cancellables)
+
+        stepsViewModel.output.progress
+            .main
+            .sink { progress in
+                stepsView.bind(progress: progress)
+            }
+            .store(in: &cancellables)
+
+        stepsViewModel.output.isAddEnabled
+            .main
+            .sink { isAddEnabled in
+                stepsView.bind(isAddEnabled: isAddEnabled)
+            }
+            .store(in: &cancellables)
+
+        stepsViewModel.output.didUpdateSteps
+            .withUnretained(self)
+            .sink { (owner: WishEditViewController, steps: [WishStep]) in
+                owner.wishEditReactor.action.onNext(.updateSteps(steps))
+            }
+            .store(in: &cancellables)
+
+        stepsViewModel.output.toast
+            .main
+            .sink { message in
+                ToastManager.shared.show(message: message)
+            }
+            .store(in: &cancellables)
+
+        stepsViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishEditViewController, route: WishStepsViewModel.Route) in
+                owner.handleStepsRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleStepsRoute(_ route: WishStepsViewModel.Route) {
+        switch route {
+        case .presentAddStepInput:
+            presentAddWishStepAlert { [weak self] title in
+                self?.stepsViewModel.input.addStep.send(title)
+            }
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
     }
 }
 
