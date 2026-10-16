@@ -3,7 +3,7 @@
 seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안을 추천하고, 사람은 승인만 한다.** 승인한 기획은 기존 개발 프로세스(`docs/process/pr-process.md`)를 자동으로 타고, 출시 후에는 쓰는지만 확인한다.
 
 ```
-[seep-idea-scout]  격일 1개 ──▶ Issue (idea, src:*, size:*)
+[seep-idea-scout]  매일 1개 ──▶ Issue (idea, src:*, size:*)
                                    │
                     사람: approved 라벨 / 코멘트로 조정 / 사유 남기고 닫기(반려)
                                    │
@@ -16,7 +16,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 
 ## 1. 기획 추천 (`.claude/skills/seep-idea-scout`)
 
-- **주기**: 격일 1개 (로컬 스케줄, 오전 10시).
+- **주기**: 매일 1개 (로컬 스케줄, 오전 10시).
 - **방식** (회차마다 순환):
   | 라벨 | 방식 |
   |---|---|
@@ -95,7 +95,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 
 | 작업 | 주기 |
 |---|---|
-| `seep-idea-scout` | 격일 10:00 |
+| `seep-idea-scout` | 매일 10:00 |
 | `seep-run-approved` | 매일 14:00 |
 | `seep-usage-report` | 매주 월 11:00 |
 
