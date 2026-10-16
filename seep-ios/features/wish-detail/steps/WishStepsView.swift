@@ -8,7 +8,7 @@ final class WishStepsView: BaseView {
     let didTapStepPublisher = PassthroughSubject<Int, Never>()
     let deleteStepPublisher = PassthroughSubject<Int, Never>()
 
-    /// false 면 작성 화면용: 체크 아이콘을 비활성으로 보여주고 탭해도 토글하지 않는다 (길게 눌러 삭제만).
+    /// false 면 작성 화면용: 체크 아이콘을 비활성으로 보여주고 탭해도 토글하지 않는다. 행 오른쪽에 삭제 버튼을 보여준다.
     var isCheckable = true
 
     private let stackView: UIStackView = {
@@ -126,6 +126,9 @@ final class WishStepsView: BaseView {
         steps.enumerated().forEach { index, step in
             let rowView = WishStepRowView(step: step, isFirst: index == 0, isCheckable: isCheckable)
             rowView.tag = index
+            rowView.onTapDelete = { [weak self] in
+                self?.deleteStepPublisher.send(index)
+            }
             rowView.addTarget(self, action: #selector(didTapRow(_:)), for: .touchUpInside)
             rowView.addInteraction(UIContextMenuInteraction(delegate: self))
             stepStackView.addArrangedSubview(rowView)
@@ -172,8 +175,10 @@ extension WishStepsView: UIContextMenuInteractionDelegate {
     }
 }
 
-/// 단계 한 줄: 체크 아이콘 22 + 제목 16. 완료면 gray4 + 취소선.
+/// 단계 한 줄: 체크 아이콘 22 + 제목 16. 완료면 gray4 + 취소선. 체크할 수 없는 행(작성 화면)은 오른쪽에 삭제 버튼.
 private final class WishStepRowView: UIControl {
+    var onTapDelete: (() -> Void)?
+
     private let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray2_5
@@ -188,9 +193,17 @@ private final class WishStepRowView: UIControl {
         return label
     }()
 
+    private let deleteButton: UIButton = {
+        let button = UIButton()
+        button.setImage(Assets.Icons.icClose.image.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .gray3
+        button.accessibilityLabel = Strings.Detail.Step.delete
+        return button
+    }()
+
     init(step: WishStep, isFirst: Bool, isCheckable: Bool) {
         super.init(frame: .zero)
-        setup(isFirst: isFirst)
+        setup(isFirst: isFirst, showsDeleteButton: !isCheckable)
         bind(step: step, isCheckable: isCheckable)
     }
 
@@ -198,11 +211,14 @@ private final class WishStepRowView: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup(isFirst: Bool) {
+    private func setup(isFirst: Bool, showsDeleteButton: Bool) {
         addSubview(separatorView)
         addSubview(checkImageView)
         addSubview(titleLabel)
+        addSubview(deleteButton)
         separatorView.isHidden = isFirst
+        deleteButton.isHidden = !showsDeleteButton
+        deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
 
         snp.makeConstraints {
             $0.height.equalTo(44)
@@ -218,11 +234,25 @@ private final class WishStepRowView: UIControl {
             $0.size.equalTo(22)
         }
 
+        deleteButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(12)
+            $0.centerY.equalToSuperview()
+            $0.size.equalTo(44)
+        }
+
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(checkImageView.snp.trailing).offset(12)
-            $0.trailing.lessThanOrEqualToSuperview()
+            if showsDeleteButton {
+                $0.trailing.lessThanOrEqualTo(deleteButton.snp.leading)
+            } else {
+                $0.trailing.lessThanOrEqualToSuperview()
+            }
             $0.centerY.equalToSuperview()
         }
+    }
+
+    @objc private func didTapDelete() {
+        onTapDelete?()
     }
 
     private func bind(step: WishStep, isCheckable: Bool) {
