@@ -47,13 +47,16 @@ extension HomeViewModel {
     struct Dependency {
         let wishRepository: WishRepository
         let preference: Preference
-        
+        let notificationManager: NotificationManagerProtocol
+
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
-            preference: Preference = .shared
+            preference: Preference = .shared,
+            notificationManager: NotificationManagerProtocol = NotificationManager.shared
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
+            self.notificationManager = notificationManager
         }
     }
 }
@@ -275,9 +278,10 @@ final class HomeViewModel {
     private func finishWish(wish: Wish) {
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         let result = dependency.wishRepository.finishWish(wish: wish)
-        
+
         switch result {
         case .success(let wish):
+            dependency.notificationManager.cancelNotifications(wish: wish)
             state.wish[targetIndex] = wish
             updateDataSource()
             output.toast.send(Strings.Home.Toast.finishWish)

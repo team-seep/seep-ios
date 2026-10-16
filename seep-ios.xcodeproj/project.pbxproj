@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269705858459DA909159F323 /* MockNotificationManager.swift */; };
+		4D6707DFD528EF1CAFA6EAF4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668C632E3284174D8A1FCA5 /* Foundation.framework */; };
 		6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07528226136D8800041E7B /* PageItemReactor.swift */; };
 		6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091571264F80AB0048EB79 /* ShareTypeButton.swift */; };
 		6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091574264F87070048EB79 /* SharePhotoCell.swift */; };
@@ -195,6 +197,8 @@
 		6EFB350C27AB6A5200CB45F7 /* WishEditReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */; };
 		6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */; };
 		6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */; };
+		7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */; };
+		A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +208,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6EB50EEE26BD548F00F0096E;
 			remoteInfo = widgetExtension;
+		};
+		C553788C6398016BCB9D3817 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E283AED25F2047900955B57 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E283AF425F2047900955B57;
+			remoteInfo = "seep-ios";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -243,6 +254,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		269705858459DA909159F323 /* MockNotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockNotificationManager.swift; sourceTree = "<group>"; };
+		3C76D73EAF4C8C916AA05E07 /* seep-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "seep-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishRepository.swift; sourceTree = "<group>"; };
 		6E07528226136D8800041E7B /* PageItemReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemReactor.swift; sourceTree = "<group>"; };
 		6E091571264F80AB0048EB79 /* ShareTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTypeButton.swift; sourceTree = "<group>"; };
 		6E091574264F87070048EB79 /* SharePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
@@ -403,10 +417,22 @@
 		6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditReactor.swift; sourceTree = "<group>"; };
 		6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditViewController.swift; sourceTree = "<group>"; };
 		6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditCoordinator.swift; sourceTree = "<group>"; };
+		A668C632E3284174D8A1FCA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6E59E9422CD500A8006AA02D /* Error */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Error; sourceTree = "<group>"; };
+		6E59E9422CD500A8006AA02D /* Error */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,9 +474,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EED88FDE087845B357F30292 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4D6707DFD528EF1CAFA6EAF4 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
+			isa = PBXGroup;
+			children = (
+				8B296ED1CFDAAC15A58AEF24 /* Mock */,
+				C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */,
+			);
+			name = "seep-iosTests";
+			path = "seep-iosTests";
+			sourceTree = "<group>";
+		};
 		6E091573264F86F90048EB79 /* cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,6 +609,7 @@
 				6EB50EF426BD548F00F0096E /* widget */,
 				6E283AF625F2047900955B57 /* Products */,
 				A59D84F56481B30FACF6A680 /* Frameworks */,
+				1D3D26FFFCA9B558B88AF544 /* seep-iosTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -573,6 +618,7 @@
 			children = (
 				6E283AF525F2047900955B57 /* seep-ios-dev.app */,
 				6EB50EEF26BD548F00F0096E /* widgetExtension.appex */,
+				3C76D73EAF4C8C916AA05E07 /* seep-iosTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -969,11 +1015,30 @@
 			path = "wish-edit";
 			sourceTree = "<group>";
 		};
+		77A835D24905877700C2E8A1 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A668C632E3284174D8A1FCA5 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		8B296ED1CFDAAC15A58AEF24 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */,
+				269705858459DA909159F323 /* MockNotificationManager.swift */,
+			);
+			name = Mock;
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		A59D84F56481B30FACF6A680 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				6EB50EF026BD548F00F0096E /* WidgetKit.framework */,
 				6EB50EF226BD548F00F0096E /* SwiftUI.framework */,
+				77A835D24905877700C2E8A1 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1046,6 +1111,24 @@
 			productReference = 6EB50EEF26BD548F00F0096E /* widgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		FDCA90E37B373394AE629A42 /* seep-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 190AE17BB77C68A38ECAB016 /* Build configuration list for PBXNativeTarget "seep-iosTests" */;
+			buildPhases = (
+				018AA18E1EACBC78BA0570E5 /* Sources */,
+				EED88FDE087845B357F30292 /* Frameworks */,
+				F3EBB737AC67107FF2E05909 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				989A8776A6A6A143B91BD4F6 /* PBXTargetDependency */,
+			);
+			name = "seep-iosTests";
+			productName = "seep-iosTests";
+			productReference = 3C76D73EAF4C8C916AA05E07 /* seep-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1093,6 +1176,7 @@
 			targets = (
 				6E283AF425F2047900955B57 /* seep-ios */,
 				6EB50EEE26BD548F00F0096E /* widgetExtension */,
+				FDCA90E37B373394AE629A42 /* seep-iosTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1126,6 +1210,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F3EBB737AC67107FF2E05909 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1150,6 +1241,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		018AA18E1EACBC78BA0570E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */,
+				7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */,
+				485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6E283AF125F2047900955B57 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1320,6 +1421,12 @@
 			target = 6EB50EEE26BD548F00F0096E /* widgetExtension */;
 			targetProxy = 6EB50EFD26BD549000F0096E /* PBXContainerItemProxy */;
 		};
+		989A8776A6A6A143B91BD4F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "seep-ios";
+			target = 6E283AF425F2047900955B57 /* seep-ios */;
+			targetProxy = C553788C6398016BCB9D3817 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1342,6 +1449,25 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		29810096FC016550632B3A2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X975A2HM62;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.macgongmon.seep-iosTests";
+				PRODUCT_MODULE_NAME = seep_iosTests;
+				PRODUCT_NAME = "seep-iosTests";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/seep-ios-dev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/seep-ios-dev";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		6E283B0725F2047A00955B57 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1476,7 +1602,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev";
 				PRODUCT_NAME = "seep-ios-dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1504,7 +1630,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1531,7 +1657,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = dev.realm;
@@ -1558,7 +1684,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = default.realm;
@@ -1568,9 +1694,36 @@
 			};
 			name = Release;
 		};
+		C8AD6C3E2DE3980107974EFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X975A2HM62;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.macgongmon.seep-iosTests";
+				PRODUCT_MODULE_NAME = seep_iosTests;
+				PRODUCT_NAME = "seep-iosTests";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/seep-ios-dev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/seep-ios-dev";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		190AE17BB77C68A38ECAB016 /* Build configuration list for PBXNativeTarget "seep-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29810096FC016550632B3A2F /* Release */,
+				C8AD6C3E2DE3980107974EFD /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6E283AF025F2047900955B57 /* Build configuration list for PBXProject "seep-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
