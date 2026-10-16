@@ -7,6 +7,7 @@ AI가 코드를 많이 쓰는 환경에서 사람 리뷰어는 **diff 전체가 
 
 | 단계 | 하는 일 | 도구 / Claude에게 | 산출물이 가는 곳 |
 |---|---|---|---|
+| 0. 기획 | AI가 격일로 기획안 추천 → 사람이 `approved` 라벨로 승인 | `seep-idea-scout` → `seep-run-approved`, `docs/process/planning.md` | GitHub Issue (`idea`) |
 | 1. 의도 정의 | 이슈에 요약·요구사항·TC 작성 | `.github/ISSUE_TEMPLATE/feature.yml` · "GH-12 테크스펙 써줘" | GitHub Issue 본문 (단일 진실 소스) |
 | 2. 브랜치 | git-flow, develop 기반 | `feature/GH-12-{설명}` / `bugfix/GH-12-…` / `hotfix/…` | — |
 | 3. 코드 작성 | 규칙 9개(R1~R9) 안에서 구현 | `docs/architecture/RULES.md`, `CLAUDE.md`, `make lint` | 로컬 + `lint.yml` |

@@ -22,6 +22,7 @@ extension HomeViewModel {
     }
     
     struct Output {
+        let screenName: ScreenName = .home
         let category = CurrentValueSubject<Category, Never>(.wantToDo)
         let dataSource = CurrentValueSubject<[HomeSection], Never>([])
         let toast = PassthroughSubject<String, Never>()
@@ -48,15 +49,18 @@ extension HomeViewModel {
         let wishRepository: WishRepository
         let preference: Preference
         let notificationManager: NotificationManagerProtocol
+        let logManager: LogManagerProtocol
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
             preference: Preference = .shared,
-            notificationManager: NotificationManagerProtocol = NotificationManager.shared
+            notificationManager: NotificationManagerProtocol = NotificationManager.shared,
+            logManager: LogManagerProtocol = LogManager.shared
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
             self.notificationManager = notificationManager
+            self.logManager = logManager
         }
     }
 }
@@ -139,6 +143,7 @@ final class HomeViewModel {
         input.didTapFinish
             .withUnretained(self)
             .sink { (owner: HomeViewModel, wish: Wish) in
+                owner.sendClickLog(objectId: .finish, extraParameters: [.category: owner.state.category.rawValue])
                 owner.finishWish(wish: wish)
             }
             .store(in: &cancellables)
@@ -147,6 +152,7 @@ final class HomeViewModel {
             .withUnretained(self)
             .sink { (owner: HomeViewModel, _) in
                 let category = owner.state.category
+                owner.sendClickLog(objectId: .write, extraParameters: [.category: category.rawValue])
                 owner.output.route.send(.presentWrite(category))
             }
             .store(in: &cancellables)
@@ -275,6 +281,15 @@ final class HomeViewModel {
         output.route.send(.presentSortBottomSheet(viewModel))
     }
     
+    private func sendClickLog(objectId: LogObjectId, extraParameters: [ParameterName: Any]? = nil) {
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: output.screenName,
+            objectType: .button,
+            objectId: objectId,
+            extraParameters: extraParameters
+        ))
+    }
+
     private func finishWish(wish: Wish) {
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         let result = dependency.wishRepository.finishWish(wish: wish)

@@ -1,6 +1,8 @@
 import UIKit
 
 final class HomeViewController: BaseViewController {
+    override var screenName: ScreenName { viewModel.output.screenName }
+
     enum Constant {
         static let backgroundColor = UIColor(red: 246/255, green: 247/255, blue: 249/255, alpha: 1)
     }

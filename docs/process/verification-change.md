@@ -7,7 +7,7 @@
 
 | 라벨 | 붙는 조건 (경로) | 리뷰어가 볼 것 |
 |---|---|---|
-| `verification-change` | `.github/**`, `.swiftlint.yml`, 베이스라인, `scripts/**`, `makefile`, `seep-iosTests/**`, `docs/architecture/RULES.md`, `CLAUDE.md` | 코드보다 **이 파일들을 먼저** 본다. 왜 바꿨는지가 본문 "설명이 필요한 결정"에 있어야 한다 |
+| `verification-change` | `.github/**`, `.swiftlint.yml`, 베이스라인, `scripts/**`, `makefile`, `seep-iosTests/**`, `docs/architecture/RULES.md`, `CLAUDE.md`, `.claude/skills/**`(자동화 스킬) | 코드보다 **이 파일들을 먼저** 본다. 왜 바꿨는지가 본문 "설명이 필요한 결정"에 있어야 한다 |
 | `baseline-change` | `.swiftlint-baseline.json` | 베이스라인은 **줄어들기만** 해야 한다. 항목이 늘었으면 사유 확인 (RULES.md "베이스라인 운영") |
 | `schema-change` | `seep-ios/model/dto/**`, `seep-ios/AppDelegate.swift`, `widget/**/*Provider.swift` | R4. `schemaVersion`이 앱·위젯 모두 올랐는지, `migrationBlock`에 분기가 있는지, 마이그레이션 TC가 있는지 |
 
