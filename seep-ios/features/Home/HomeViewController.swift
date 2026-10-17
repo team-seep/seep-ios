@@ -74,7 +74,16 @@ final class HomeViewController: BaseViewController {
         
         gradientLayer.frame = gradientView.bounds
     }
-    
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // 폴더블 접기/펴기·회전으로 창 크기가 바뀌면 섹션 provider를 새 폭으로 다시 돌린다
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.collectionView.collectionViewLayout.invalidateLayout()
+        })
+    }
+
     private func setupUI() {
         view.backgroundColor = Constant.backgroundColor
         view.addSubview(collectionView)
@@ -85,7 +94,7 @@ final class HomeViewController: BaseViewController {
         collectionView.contentInset = .init(
             top: 0,
             left: 0,
-            bottom: HomeWishListCell.Layout.size.height + UIUtils.bottomSafeAreaInset,
+            bottom: HomeWishListCell.Layout.height + UIUtils.bottomSafeAreaInset,
             right: 0
         )
         collectionView.snp.makeConstraints {
@@ -217,13 +226,14 @@ final class HomeViewController: BaseViewController {
                 return section
             case .wish(let headerViewModel):
                 if dataSource.itemIdentifier(for: IndexPath(item: 0, section: sectionIndex)) == .empty {
+                    // 셀 폭 = 컨테이너 폭 - 섹션 inset(20 * 2). 화면이 아니라 컬렉션뷰 폭 기준이라 창 크기가 바뀌어도 맞는다
                     let item = NSCollectionLayoutItem(layoutSize: .init(
-                        widthDimension: .absolute(HomeEmptyCell.Layout.size.width),
-                        heightDimension: .absolute(HomeEmptyCell.Layout.size.height)
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .absolute(HomeEmptyCell.Layout.height)
                     ))
                     let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
-                        widthDimension: .absolute(HomeEmptyCell.Layout.size.width),
-                        heightDimension: .absolute(HomeEmptyCell.Layout.size.height)
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .absolute(HomeEmptyCell.Layout.height)
                     ), subitems: [item])
                     let section = NSCollectionLayoutSection(group: group)
                     section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)

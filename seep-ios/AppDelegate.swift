@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 4
+        config.schemaVersion = 5
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {
@@ -128,6 +128,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if oldSchemaVersion < 4 {
                 migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
                     newObject?["steps"] = [WishStepDTO]()
+                }
+            }
+            
+            // 5: WishDTO.targetAmount(Int) + savings(List<SavingDTO>) 추가 — 기존 위시는 목표 금액 0, 기록 없음 (GH-16 R-8)
+            if oldSchemaVersion < 5 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["targetAmount"] = 0
+                    newObject?["savings"] = [SavingDTO]()
                 }
             }
         }

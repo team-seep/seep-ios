@@ -52,6 +52,15 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
         self.view = self.wishEditView
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // 폴더블 접기/펴기·회전으로 창 폭이 바뀌면 해시태그 줄바꿈을 새 폭으로 다시 계산한다
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.wishEditView.hashtagCollectionView.collectionViewLayout.invalidateLayout()
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,6 +71,7 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
         
         self.wishEditView.memoField.setEditableText(text: self.wishEditReactor.initialState.memo)
         self.bindSteps()
+        self.bindTargetAmount()
     }
     
     override func bindEvent() {
@@ -358,6 +368,31 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.wishEditView.scrollView.contentInset.bottom = .zero
         self.isKeyboardShown = false
+    }
+}
+
+// MARK: Target amount
+extension WishEditViewController {
+    /// 목표 금액 입력 (GH-16 R-1·R-2). 갖고 싶어요일 때만 펼치고, 금액은 Reactor 상태로만 넘겨 저장 때 함께 저장된다.
+    private func bindTargetAmount() {
+        let targetAmountView = wishEditView.targetAmountView
+        targetAmountView.setAmount(wishEditReactor.initialState.targetAmount)
+
+        targetAmountView.amountPublisher
+            .withUnretained(self)
+            .sink { (owner: WishEditViewController, amount: Int) in
+                owner.wishEditReactor.action.onNext(.inputTargetAmount(amount))
+            }
+            .store(in: &cancellables)
+
+        wishEditReactor.state
+            .map { $0.category }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: .wantToDo)
+            .drive(onNext: { category in
+                targetAmountView.setCollapsed(category != .wantToGet)
+            })
+            .disposed(by: eventDisposeBag)
     }
 }
 

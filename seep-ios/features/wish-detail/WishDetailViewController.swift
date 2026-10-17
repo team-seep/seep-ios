@@ -2,6 +2,7 @@ import UIKit
 import Combine
 
 import CombineCocoa
+import PanModal
 import RxSwift
 import ReactorKit
 
@@ -21,6 +22,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private weak var coordinator: WishDetailCoordinator?
     private let mode: DetailMode
     private let stepsViewModel: WishStepsViewModel
+    private let savingsViewModel: WishSavingsViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
@@ -30,6 +32,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         )
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(wish)))
+        self.savingsViewModel = WishSavingsViewModel(config: .init(wish: wish))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,6 +40,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.wishDetailReactor = reactor
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
+        self.savingsViewModel = WishSavingsViewModel(config: .init(wish: reactor.initialState.wish))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,16 +56,26 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.view = self.wishDetailView
     }
   
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // 폴더블 접기/펴기·회전으로 창 폭이 바뀌면 해시태그 줄바꿈을 새 폭으로 다시 계산한다
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.wishDetailView.hashtagCollectionView.collectionViewLayout.invalidateLayout()
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        // 상세는 읽기 전용이지만 단계 섹션만은 바로 체크·추가할 수 있다
+        // 상세는 읽기 전용이지만 단계 섹션(체크)과 모으기 섹션(기록)은 바로 쓸 수 있다
         self.wishDetailView.containerView.subviews
-            .filter { $0 !== self.wishDetailView.stepsView }
+            .filter { $0 !== self.wishDetailView.stepsView && $0 !== self.wishDetailView.savingsView }
             .forEach { $0.isUserInteractionEnabled = false }
         self.bindSteps()
+        self.bindSavings()
     }
   
     override func bindEvent() {
@@ -176,8 +190,83 @@ extension WishDetailViewController {
     }
 }
 
+// MARK: Savings
+extension WishDetailViewController {
+    private func bindSavings() {
+        let savingsView = wishDetailView.savingsView
+        
+        savingsView.addButton.tapPublisher
+            .subscribe(savingsViewModel.input.didTapAdd)
+            .store(in: &cancellables)
+        
+        savingsView.deleteSavingPublisher
+            .subscribe(savingsViewModel.input.didTapDelete)
+            .store(in: &cancellables)
+        
+        savingsViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                savingsView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+        
+        savingsViewModel.output.progress
+            .main
+            .sink { progress in
+                savingsView.bind(progress: progress)
+            }
+            .store(in: &cancellables)
+        
+        savingsViewModel.output.savings
+            .main
+            .sink { savings in
+                savingsView.bind(savings: savings)
+            }
+            .store(in: &cancellables)
+        
+        savingsViewModel.output.didUpdateSavings
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, savings: [WishSaving]) in
+                owner.wishDetailReactor.action.onNext(.updateSavings(savings))
+            }
+            .store(in: &cancellables)
+        
+        savingsViewModel.output.toast
+            .main
+            .sink { message in
+                ToastManager.shared.show(message: message)
+            }
+            .store(in: &cancellables)
+        
+        savingsViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishSavingsViewModel.Route) in
+                owner.handleSavingsRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+}
+
 // MARK: Route
 extension WishDetailViewController {
+    private func handleSavingsRoute(_ route: WishSavingsViewModel.Route) {
+        switch route {
+        case .presentSavingInput(let viewModel):
+            presentPanModal(SavingInputBottomSheetViewController(viewModel: viewModel))
+        case .showDeleteAlert(let savingId):
+            AlertUtils.showWithCancel(
+                viewController: self,
+                title: Strings.Detail.Saving.DeleteAlert.title,
+                okButton: Strings.Detail.Saving.DeleteAlert.confirm
+            ) { [weak self] in
+                self?.savingsViewModel.input.confirmDelete.send(savingId)
+            }
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
+    }
+    
     private func handleStepsRoute(_ route: WishStepsViewModel.Route) {
         switch route {
         case .presentAddStepInput:
@@ -198,5 +287,6 @@ extension WishDetailViewController: WishEditViewControllerDelegate {
     func onUpdateWish(wish: Wish) {
         self.wishDetailReactor.action.onNext(.updateWish(wish: wish))
         self.stepsViewModel.input.reloadSteps.send(wish.steps)
+        self.savingsViewModel.input.reloadWish.send(wish)
     }
 }

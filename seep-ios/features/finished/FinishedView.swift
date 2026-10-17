@@ -1,5 +1,7 @@
 import UIKit
 
+import SnapKit
+
 final class FinishedView: BaseView {
     let titleLabel = UILabel().then {
         $0.font = .appleLight(size: 22)
@@ -81,18 +83,9 @@ final class FinishedView: BaseView {
         collectionViewLayout: UICollectionViewLayout()
     ).then {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(
-            width: (UIScreen.main.bounds.width - 40 - 15) / 2,
-            height: ((UIScreen.main.bounds.width - 40 - 15) / 2) * 1.09
-        )
+        // itemSize·하단 inset은 layoutSubviews에서 실제 폭으로 계산한다
         layout.minimumInteritemSpacing = 15
         layout.minimumLineSpacing = 16
-        layout.sectionInset = UIEdgeInsets(
-            top: 0,
-            left: 20,
-            bottom: (UIScreen.main.bounds.width - 40 - 15) / 2,
-            right: 20
-        )
         
         $0.collectionViewLayout = layout
         $0.backgroundColor = .clear
@@ -104,6 +97,27 @@ final class FinishedView: BaseView {
         )
     }
     
+    
+    private var titleTopConstraint: Constraint?
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 화면(UIScreen)이 아니라 이 뷰의 실제 크기로 계산해 창 크기가 바뀌어도 맞춘다
+        titleTopConstraint?.update(offset: 34 * bounds.height / 812)
+        updateGridLayout()
+    }
+    
+    private func updateGridLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        let itemWidth = (bounds.width - 40 - 15) / 2
+        let itemSize = CGSize(width: itemWidth, height: itemWidth * 1.09)
+        guard itemWidth > 0, layout.itemSize != itemSize else { return }
+        
+        layout.itemSize = itemSize
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: itemWidth, right: 20)
+        layout.invalidateLayout()
+    }
     
     override func setup() {
         self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
@@ -118,7 +132,7 @@ final class FinishedView: BaseView {
     override func bindConstraints() {
         self.titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(22)
-            make.top.equalTo(safeAreaLayoutGuide).offset(34 * RatioUtils.height)
+            self.titleTopConstraint = make.top.equalTo(safeAreaLayoutGuide).offset(34).constraint
         }
         
         self.greenLine.snp.makeConstraints { make in
