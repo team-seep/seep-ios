@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */; };
+		13A0B31AF2FDAB9358477F01 /* SharePhotoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */; };
 		33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
 		485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269705858459DA909159F323 /* MockNotificationManager.swift */; };
 		4D6707DFD528EF1CAFA6EAF4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668C632E3284174D8A1FCA5 /* Foundation.framework */; };
@@ -440,6 +441,7 @@
 		D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModel.swift; sourceTree = "<group>"; };
 		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
 		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
+		13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharePhotoLayoutTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorStepsTests.swift; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				A10C0F1E2D3C4B5A69788711 /* ToastManagerTests.swift */,
 				3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */,
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
+				13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */,
 			);
 			name = "seep-iosTests";
 			path = "seep-iosTests";
@@ -1326,6 +1329,7 @@
 				485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */,
 				9E10BE9381E274E0691DE230 /* WishStepsViewModelTests.swift in Sources */,
 				050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */,
+				13A0B31AF2FDAB9358477F01 /* SharePhotoLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
