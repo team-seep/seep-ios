@@ -129,6 +129,13 @@ custom_rules:
     message: "R6: then 대신 클로저 초기화를 사용한다 (let v: UILabel = { ... }())."
     severity: error
 
+  no_screen_size:                           # R6
+    name: "R6 화면 크기 고정 계산 금지"
+    excluded: "seep-ios/uilts/(RatioUtils|UIUtils)\\.swift"   # 헬퍼 정의 자체 (사용처 정리 후 삭제 예정)
+    regex: "UIScreen\\.main\\b|UIUtils\\.windowBounds\\b|RatioUtils\\.(width|height)\\b"
+    message: "R6: 화면 크기(UIScreen.main·UIUtils.windowBounds·RatioUtils)로 레이아웃을 고정하지 않는다. 뷰·컬렉션뷰의 bounds, layoutEnvironment.container, .fractionalWidth 로 계산한다 (폴더블 창 크기 변경 대응)."
+    severity: error
+
   length_disable_reason:                    # R7
     name: "R7 길이 예외는 사유 필수"
     regex: "swiftlint:disable(:next|:this|:previous)?\\s+(type_body_length|file_length)\\s*$"

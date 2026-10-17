@@ -21,7 +21,7 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 | R3 | Realm 읽기/쓰기는 Repository에서만 | 린트 `realm_only_in_repository` | 0건 |
 | R4 | Realm 모델을 바꾸면 schemaVersion(앱+위젯)과 마이그레이션을 같이 바꾼다 | 스크립트 `check-realm-schema.sh` + 라벨 `schema-change` | 0건 |
 | R5 | ViewController/Cell은 Base 클래스를 상속 | 린트 `vc_inherits_base`, `cell_inherits_base` | 0건 |
-| R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·leading/trailing·클로저 초기화 | 린트 `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then` | 521건 동결 |
+| R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·leading/trailing·클로저 초기화·화면 크기 고정 금지 | 린트 `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`, `no_screen_size` | 529건 동결 |
 | R7 | 타입은 책임 하나만 진다 (타입 400·파일 600줄 초과는 사유 필수) | 린트 `type_body_length`·`file_length` + `length_disable_reason` | 0건 |
 | R8 | `print`·`try!`·`as!` 금지 | 린트 `no_print`, `force_try`, `force_cast` | 15건 동결 |
 | R9 | ViewModel 구조(Input/Output/Route/Config/Dependency/State)·Route는 VC extension | 문서 + AI 리뷰 | — |
@@ -163,8 +163,9 @@ config.migrationBlock = { migration, oldSchemaVersion in
 - 문자열은 SwiftGen `Strings.xxx`, 이미지는 `Assets.xxx`. `"key".localized` 금지 (키 오타가 런타임에야 드러난다).
 - SnapKit은 `left/right` 대신 `leading/trailing`.
 - 신규 코드에서 `then` 금지 — 클로저 초기화를 쓴다.
+- 레이아웃 크기를 화면(`UIScreen.main`·`UIUtils.windowBounds`·`RatioUtils`)으로 고정하지 않는다. 뷰·컬렉션뷰의 `bounds`, `layoutEnvironment.container`, `.fractionalWidth`로 계산하고, 창 크기가 바뀌면(`viewWillTransition`) 레이아웃을 무효화한다.
 
-**이유** — 디자인 토큰을 거치지 않은 값은 리뷰에서 눈으로 잡을 수 없고, 다크모드·디자인 변경 때 전수 검색이 필요해진다. SwiftGen은 키 오타를 컴파일 에러로 바꾼다.
+**이유** — 디자인 토큰을 거치지 않은 값은 리뷰에서 눈으로 잡을 수 없고, 다크모드·디자인 변경 때 전수 검색이 필요해진다. SwiftGen은 키 오타를 컴파일 에러로 바꾼다. 화면 크기로 고정한 값은 폴더블(아이폰 듀오)처럼 실행 중에 창 크기가 바뀌면 틀어진다 (GH-9).
 
 **좋은 예**
 ```swift
@@ -191,9 +192,9 @@ let label = UILabel().then {                    // ❌ then
 make.left.equalToSuperview()                    // ❌ left
 ```
 
-**강제 수단** — SwiftLint `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`.
+**강제 수단** — SwiftLint `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`, `no_screen_size`.
 
-**예외(베이스라인)** — 기존 코드 521건 동결 (`snapkit` 189, `then` 159, `localized` 107, 색 45, 폰트 21). 위젯(SwiftUI)은 색·폰트·문자열 규칙에서 제외 (`widget/extensions/ColorExtensions.swift` 사용). 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
+**예외(베이스라인)** — 기존 코드 529건 동결 (`snapkit` 189, `then` 159, `localized` 107, 색 45, 폰트 21, 화면 크기 8). `RatioUtils.swift`·`UIUtils.swift`(헬퍼 정의)는 `no_screen_size`에서 제외 — 남은 사용처가 정리되면 헬퍼를 지운다. 위젯(SwiftUI)은 색·폰트·문자열 규칙에서 제외 (`widget/extensions/ColorExtensions.swift` 사용). 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
 
 ---
 

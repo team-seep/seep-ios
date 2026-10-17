@@ -4,7 +4,7 @@ import CombineCocoa
 
 final class HomeWishListCell: BaseCollectionViewCell {
     enum Layout {
-        static let size = CGSize(width: UIUtils.windowBounds.width - 40, height: 70)
+        static let height: CGFloat = 70
     }
     
     private let containerView: UIView = {
@@ -70,7 +70,7 @@ final class HomeWishListCell: BaseCollectionViewCell {
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(Layout.size.height)
+            $0.height.equalTo(Layout.height)
         }
         
         emojiLabel.snp.makeConstraints {
