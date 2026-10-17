@@ -53,7 +53,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     }
     
     override func loadView() {
-        self.view = self.wishDetailView
+        self.view = WideScreenContainerView(contentView: self.wishDetailView)
     }
   
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

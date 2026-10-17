@@ -70,8 +70,11 @@ final class HomeCategoryView: BaseView {
         addSubview(activeButton)
         addSubview(stackView)
         
+        // 넓은 화면에서 .equalSpacing이 탭 간격을 벌리지 않도록 탭 줄 폭을 묶고 왼쪽 정렬한다. 아이폰 폭에서는 그대로다
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.bottom.leading.equalToSuperview()
+            $0.trailing.equalToSuperview().priority(.high)
+            $0.width.lessThanOrEqualTo(WideScreenLayout.maxCategoryTabWidth)
         }
         
         activeButton.snp.makeConstraints {
