@@ -10,6 +10,8 @@ import WidgetKit
 
 struct WishHorizontalItemView: View {
     let wish: Wish
+    /// 위젯 실제 폭에서 계산한 아이템 폭. 기기별 표로 정하면 표에 없는 기기(듀오 등)에서 어긋난다.
+    let width: CGFloat
     
     var body: some View {
         VStack(
@@ -37,7 +39,7 @@ struct WishHorizontalItemView: View {
                 }
             })
             .padding(.init(top: 12, leading: 12, bottom: 14, trailing: 12))
-            .frame(width: (UIScreen.mediumWidgetWidth - 30 - 16) / 3)
+            .frame(width: width)
             .background(Color.white)
             .cornerRadius(12)
             
@@ -46,7 +48,7 @@ struct WishHorizontalItemView: View {
 
 struct WishHorizontalItemView_Previews: PreviewProvider {
     static var previews: some View {
-        WishHorizontalItemView(wish: Wish.mockData)
+        WishHorizontalItemView(wish: Wish.mockData, width: 100)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
