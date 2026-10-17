@@ -1,8 +1,21 @@
 import UIKit
 import Photos
 
+import SnapKit
+
 class SharePhotoView: BaseView {
-  
+
+  private enum Layout {
+    static let emojiFontSize: CGFloat = 150
+    /// 기존 아이폰 카드(375pt)에서 이모지 150pt 비율. 카드가 줄어들 때 이모지가 D-day·제목을 덮지 않게 같이 줄인다.
+    static let emojiFontRatio: CGFloat = 150 / 375
+    static let shareButtonHeight: CGFloat = 50
+    static let shareButtonBottomOffset: CGFloat = 24
+    static let shareButtonTopSpacing: CGFloat = 12
+  }
+
+  private var photoListMinHeightConstraint: Constraint?
+
   let doubleTapGesture = UITapGestureRecognizer().then {
     $0.numberOfTapsRequired = 2
   }
@@ -49,7 +62,7 @@ class SharePhotoView: BaseView {
   }
   
   let emojiLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 150)
+    $0.font = .systemFont(ofSize: Layout.emojiFontSize)
   }
   
   let photoTitleLabel = UILabel().then {
@@ -108,9 +121,9 @@ class SharePhotoView: BaseView {
   ).then {
     let layout = UICollectionViewFlowLayout()
     
-    layout.itemSize = SharePhotoCell.size
-    layout.minimumInteritemSpacing = 1
-    layout.minimumLineSpacing = 1
+    layout.itemSize = .zero
+    layout.minimumInteritemSpacing = SharePhotoCell.spacing
+    layout.minimumLineSpacing = SharePhotoCell.spacing
     $0.collectionViewLayout = layout
     $0.backgroundColor = UIColor(r: 246, g: 246, b: 246)
     $0.register(SharePhotoCell.self, forCellWithReuseIdentifier: SharePhotoCell.registerId)
@@ -164,10 +177,13 @@ class SharePhotoView: BaseView {
       make.height.equalTo(1)
     }
     
+    // 카드는 시트 폭 기준 정사각형. 시트가 낮으면(듀오 안쪽 등) 사진 목록 최소 높이를 지키도록 줄어든다.
     self.photoContainer.snp.makeConstraints { make in
-      make.left.right.equalToSuperview()
+      make.centerX.equalToSuperview()
       make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
-      make.height.equalTo(UIScreen.main.bounds.width).priority(.high)
+      make.height.equalTo(self.photoContainer.snp.width)
+      make.width.lessThanOrEqualToSuperview()
+      make.width.equalToSuperview().priority(.medium)
     }
     
     self.imageView.snp.makeConstraints { make in
@@ -219,8 +235,9 @@ class SharePhotoView: BaseView {
     }
     
     self.collectionView.snp.makeConstraints { make in
-      make.left.right.bottom.equalToSuperview()
+      make.leading.trailing.bottom.equalToSuperview()
       make.top.equalTo(self.shareTypeSwitchButton.snp.bottom)
+      self.photoListMinHeightConstraint = make.height.greaterThanOrEqualTo(0).priority(999).constraint
     }
     
     self.emojiCollectionView.snp.makeConstraints { make in
@@ -229,9 +246,15 @@ class SharePhotoView: BaseView {
     
     self.shareButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.height.equalTo(50)
-      make.bottom.equalTo(safeAreaLayoutGuide).offset(-24)
+      make.height.equalTo(Layout.shareButtonHeight)
+      make.bottom.equalTo(safeAreaLayoutGuide).offset(-Layout.shareButtonBottomOffset)
     }
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.updatePhotoListLayout()
+    self.updateEmojiFontSize()
   }
   
   func bind(wish: Wish) {
@@ -296,6 +319,39 @@ class SharePhotoView: BaseView {
     }
   }
   
+  /// 셀 크기는 시트 폭 기준으로 계산하고, 공유 버튼에 가리지 않는 사진 목록이 최소 한 줄은 남게 한다.
+  private func updatePhotoListLayout() {
+    guard let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+    let itemSize = SharePhotoCell.size(containerWidth: self.bounds.width)
+    if layout.itemSize != itemSize {
+      layout.itemSize = itemSize
+      layout.invalidateLayout()
+    }
+
+    let shareButtonArea = Layout.shareButtonHeight
+      + Layout.shareButtonBottomOffset
+      + Layout.shareButtonTopSpacing
+      + self.safeAreaInsets.bottom
+    let bottomInset = shareButtonArea - self.safeAreaInsets.bottom
+    if self.collectionView.contentInset.bottom != bottomInset {
+      self.collectionView.contentInset.bottom = bottomInset
+    }
+
+    let minHeight = itemSize.height + shareButtonArea
+    if self.photoListMinHeightConstraint?.layoutConstraints.first?.constant != minHeight {
+      self.photoListMinHeightConstraint?.update(offset: minHeight)
+    }
+  }
+
+  private func updateEmojiFontSize() {
+    let cardWidth = self.photoContainer.bounds.width
+    guard cardWidth > 0 else { return }
+    let fontSize = min(Layout.emojiFontSize, floor(cardWidth * Layout.emojiFontRatio))
+    if self.emojiLabel.font.pointSize != fontSize {
+      self.emojiLabel.font = .systemFont(ofSize: fontSize)
+    }
+  }
+
   func setPhotoTextColor(isBlack: Bool) {
     self.dateLabel.textColor = isBlack ? .gray5 : .white
     self.photoTitleLabel.textColor = isBlack ? .gray5 : .white
