@@ -19,6 +19,7 @@ final class WishEditReactor: Reactor {
         case tapNotificationSwitch(Bool)
         case inputMemo(String)
         case updateSteps([WishStep])
+        case inputTargetAmount(Int)
         case tapHashtag(index: Int)
         case inputHashtag(String)
         case tapEditButton
@@ -39,6 +40,7 @@ final class WishEditReactor: Reactor {
         case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
         case setSteps([WishStep])
+        case setTargetAmount(Int)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setEditButtonState(EditButton.EditButtonState)
@@ -59,6 +61,8 @@ final class WishEditReactor: Reactor {
         var memo: String
         /// 수정 중인 단계. 수정 완료 때 위시와 함께 저장된다 (GH-5 R-19).
         var steps: [WishStep]
+        /// 목표 금액(원). 갖고 싶어요일 때만 저장하고, 0 이면 상세 모으기 섹션을 숨긴다 (GH-16 R-7)
+        var targetAmount: Int
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String
@@ -70,6 +74,8 @@ final class WishEditReactor: Reactor {
     let popupWithWishPublisher = PublishRelay<Wish>()
     let showToastPublisher = PublishRelay<String>()
     private let wishID: String
+    /// 수정 화면은 기록을 바꾸지 않는다. 상세로 돌려줄 위시에 그대로 담는다 (GH-16 R-7)
+    private let savings: [WishSaving]
     private let wishService: WishServiceProtocol
     private let notificationManager: NotificationManagerProtocol
     
@@ -88,10 +94,12 @@ final class WishEditReactor: Reactor {
             isNotificationEnable: !wish.notifications.isEmpty,
             memo: wish.memo,
             steps: wish.steps,
+            targetAmount: wish.targetAmount,
             selectedHashtag: HashtagType(rawValue: wish.hashtag),
             customHashtag: HashtagType(rawValue: wish.hashtag) == nil ? wish.hashtag : ""
         )
         self.wishID = wish.id
+        self.savings = wish.savings
         self.wishService = wishService
         self.notificationManager = notificationManager
     }
@@ -154,6 +162,9 @@ final class WishEditReactor: Reactor {
 
         case .updateSteps(let steps):
             return .just(.setSteps(steps))
+
+        case .inputTargetAmount(let amount):
+            return .just(.setTargetAmount(min(max(amount, 0), WishSaving.maxAmount)))
             
         case .tapHashtag(let index):
             return .merge([
@@ -231,6 +242,9 @@ final class WishEditReactor: Reactor {
 
         case .setSteps(let steps):
             newState.steps = steps
+
+        case .setTargetAmount(let amount):
+            newState.targetAmount = amount
             
         case .selectHashtag(let index):
             if let index = index {
@@ -281,6 +295,9 @@ final class WishEditReactor: Reactor {
                 ? self.currentState.notifications
                 : [],
             steps: self.currentState.steps,
+            // 다른 카테고리로 바꿨으면 목표 금액은 0 으로 저장하고 기록은 남긴다 (GH-16 R-1)
+            targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
+            savings: self.savings,
             memo: self.currentState.memo,
             hashtag: hashtag
         )

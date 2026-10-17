@@ -71,6 +71,7 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
         
         self.wishEditView.memoField.setEditableText(text: self.wishEditReactor.initialState.memo)
         self.bindSteps()
+        self.bindTargetAmount()
     }
     
     override func bindEvent() {
@@ -367,6 +368,31 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.wishEditView.scrollView.contentInset.bottom = .zero
         self.isKeyboardShown = false
+    }
+}
+
+// MARK: Target amount
+extension WishEditViewController {
+    /// 목표 금액 입력 (GH-16 R-1·R-2). 갖고 싶어요일 때만 펼치고, 금액은 Reactor 상태로만 넘겨 저장 때 함께 저장된다.
+    private func bindTargetAmount() {
+        let targetAmountView = wishEditView.targetAmountView
+        targetAmountView.setAmount(wishEditReactor.initialState.targetAmount)
+
+        targetAmountView.amountPublisher
+            .withUnretained(self)
+            .sink { (owner: WishEditViewController, amount: Int) in
+                owner.wishEditReactor.action.onNext(.inputTargetAmount(amount))
+            }
+            .store(in: &cancellables)
+
+        wishEditReactor.state
+            .map { $0.category }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: .wantToDo)
+            .drive(onNext: { category in
+                targetAmountView.setCollapsed(category != .wantToGet)
+            })
+            .disposed(by: eventDisposeBag)
     }
 }
 

@@ -82,6 +82,8 @@ final class WriteView: BaseView {
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
     
+    let targetAmountView = TargetAmountInputView()
+    
     let stepsView: WishStepsView = {
         let view = WishStepsView()
         view.isCheckable = false
@@ -189,6 +191,7 @@ final class WriteView: BaseView {
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
         self.dateField.inputAccessoryView = self.accessoryView
+        self.targetAmountView.inputAccessoryView = self.accessoryView
         self.memoField.inputAccessoryView = self.accessoryView
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
         
@@ -201,6 +204,7 @@ final class WriteView: BaseView {
             self.dateField,
             self.dateSwitchLabel,
             self.dateSwitch,
+            self.targetAmountView,
             self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
@@ -287,9 +291,15 @@ final class WriteView: BaseView {
             make.centerY.equalTo(self.dateSwitch)
         }
         
+        // 목표 금액은 위쪽 간격(26)을 스스로 가져, 갖고 싶어요가 아니면 높이 0 이 된다 (GH-16 R-1)
+        self.targetAmountView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom)
+        }
+        
         self.stepsView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.targetAmountView.snp.bottom).offset(26)
         }
         
         self.notificationIcon.snp.makeConstraints { make in

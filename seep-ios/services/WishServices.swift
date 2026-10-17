@@ -68,6 +68,8 @@ struct WishService: WishServiceProtocol {
             // 수정 화면에서 바꾼 단계로 교체한다. 남은 단계는 id·isDone 을 그대로 가진다 (GH-5 R-19)
             item?.steps.removeAll()
             item?.steps.append(objectsIn: newWish.steps.map(WishStepDTO.init(step:)))
+            // 목표 금액만 바꾸고 모은 돈 기록(savings)은 건드리지 않는다 (GH-16 R-7)
+            item?.targetAmount = newWish.targetAmount
         }
   }
   
