@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 extension View {
     @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
@@ -13,6 +14,26 @@ extension View {
             transform(self)
         } else {
             self
+        }
+    }
+
+    /// iOS 17+ 는 containerBackground가 없으면 위젯 대신 "Please adopt containerBackground API"를 그린다.
+    @ViewBuilder func widgetBackground(_ color: Color) -> some View {
+        if #available(iOS 17.0, *) {
+            containerBackground(color, for: .widget)
+        } else {
+            background(color)
+        }
+    }
+}
+
+extension WidgetConfiguration {
+    /// iOS 17+ 기본 content margin(약 16pt)을 끈다. 각 위젯 뷰가 자체 여백을 갖고 있어 겹치면 잘린다.
+    func contentMarginsDisabledIfAvailable() -> some WidgetConfiguration {
+        if #available(iOS 17.0, *) {
+            return contentMarginsDisabled()
+        } else {
+            return self
         }
     }
 }

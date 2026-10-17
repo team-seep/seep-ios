@@ -34,5 +34,6 @@ struct SmallWriteWidget: Widget {
     .configurationDisplayName("빠르게 등록하기")
     .description("누구보다 빠르게 나의 위시 리스트를 등록해보는건 어때요?")
     .supportedFamilies([.systemSmall])
+    .contentMarginsDisabledIfAvailable()
   }
 }
