@@ -43,6 +43,8 @@ final class WishDetailView: BaseView {
         placeholder: "write_placeholder_date_enable".localized
     )
     
+    let savingsView = WishSavingsView()
+    
     let stepsView = WishStepsView()
     
     private let notificationIcon = UIImageView().then {
@@ -115,6 +117,7 @@ final class WishDetailView: BaseView {
             self.categoryView,
             self.titleField,
             self.dateField,
+            self.savingsView,
             self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
@@ -182,9 +185,15 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.titleField.snp.bottom).offset(24)
         }
         
+        // 모으기 섹션은 위쪽 간격(26)을 스스로 가져, 접히면 높이 0 이 된다 (GH-16)
+        self.savingsView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom)
+        }
+        
         self.stepsView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.savingsView.snp.bottom).offset(26)
         }
         
         self.notificationIcon.snp.makeConstraints { make in
@@ -322,7 +331,7 @@ extension WishDetailView {
         notificationIcon.snp.remakeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             if isHidden {
-                make.top.equalTo(dateField.snp.bottom).offset(26)
+                make.top.equalTo(savingsView.snp.bottom).offset(26)
             } else {
                 make.top.equalTo(stepsView.snp.bottom).offset(16)
             }
