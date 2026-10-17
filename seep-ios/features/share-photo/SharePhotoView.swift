@@ -166,9 +166,10 @@ class SharePhotoView: BaseView {
       make.top.equalTo(self.topIndicator.snp.bottom).offset(12)
     }
     
+    // 듀오 바깥 화면처럼 오른쪽 safe area inset(센서 영역)이 있으면 그 안쪽에 둔다. 일반 아이폰 세로는 inset 0이라 위치 동일.
     self.cancelButton.snp.makeConstraints { make in
       make.centerY.equalTo(self.titleLabel)
-      make.right.equalToSuperview().offset(-20)
+      make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-20)
     }
     
     self.topDividor.snp.makeConstraints { make in
@@ -177,15 +178,20 @@ class SharePhotoView: BaseView {
       make.height.equalTo(1)
     }
     
-    // 카드는 시트 폭 기준 정사각형. 시트가 낮으면(듀오 안쪽 등) 사진 목록 최소 높이를 지키도록 줄어든다.
+    // 카드는 시트(safe area) 폭 기준 정사각형. 시트가 낮으면(듀오 안쪽 등) 사진 목록 최소 높이를 지키도록 줄어든다.
     self.photoContainer.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
+      make.centerX.equalTo(self.safeAreaLayoutGuide)
       make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
       make.height.equalTo(self.photoContainer.snp.width)
-      make.width.lessThanOrEqualToSuperview()
-      make.width.equalToSuperview().priority(.medium)
+      make.width.lessThanOrEqualTo(self.safeAreaLayoutGuide)
+      make.width.equalTo(self.safeAreaLayoutGuide).priority(.medium)
     }
     
+    // 고른 사진의 고유 크기가 카드 크기를 밀어내지 않게 한다(카드 크기는 시트 폭·남은 높이로만 정한다).
+    self.imageView.setContentHuggingPriority(.defaultLow - 1, for: .horizontal)
+    self.imageView.setContentHuggingPriority(.defaultLow - 1, for: .vertical)
+    self.imageView.setContentCompressionResistancePriority(.defaultLow - 1, for: .horizontal)
+    self.imageView.setContentCompressionResistancePriority(.defaultLow - 1, for: .vertical)
     self.imageView.snp.makeConstraints { make in
       make.edges.equalTo(self.photoContainer)
     }
