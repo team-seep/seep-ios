@@ -29,7 +29,7 @@ struct MediumVerticalEntryView: View {
             .padding(.init(top: 12, leading: 15, bottom: 12, trailing: 15))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(r: 246, g: 247, b: 249))
+        .widgetBackground(Color(r: 246, g: 247, b: 249))
     }
 }
 

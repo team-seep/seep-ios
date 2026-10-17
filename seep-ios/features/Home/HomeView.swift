@@ -2,6 +2,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import SnapKit
 
 final class HomeView: BaseView {
     let titleLabel = UILabel().then {
@@ -43,6 +44,18 @@ final class HomeView: BaseView {
         $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
     }
     
+    private var titleTopConstraint: Constraint?
+    private var successCountTopConstraint: Constraint?
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 화면(UIScreen)이 아니라 이 뷰의 실제 높이로 비율을 계산해 창 크기가 바뀌어도 맞춘다
+        let heightRatio = bounds.height / 812
+        titleTopConstraint?.update(offset: 34 * heightRatio)
+        successCountTopConstraint?.update(offset: 20 * heightRatio)
+    }
+    
     override func setup() {
         self.backgroundColor = UIColor(r: 246, g: 246, b: 246)
         self.addSubViews([
@@ -59,7 +72,7 @@ final class HomeView: BaseView {
     override func bindConstraints() {
         self.titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(22)
-            make.top.equalTo(safeAreaLayoutGuide).offset(34 * RatioUtils.height)
+            self.titleTopConstraint = make.top.equalTo(safeAreaLayoutGuide).offset(34).constraint
         }
         
         self.emojiView.snp.makeConstraints { make in
@@ -70,7 +83,7 @@ final class HomeView: BaseView {
         
         self.successCountButton.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(22)
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(20 * RatioUtils.height)
+            self.successCountTopConstraint = make.top.equalTo(self.titleLabel.snp.bottom).offset(20).constraint
             make.height.equalTo(30)
         }
         

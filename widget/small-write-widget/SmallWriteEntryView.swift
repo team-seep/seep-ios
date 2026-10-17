@@ -41,7 +41,7 @@ struct SmallWriteEntryView : View {
         Spacer()
       })
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(
+      .widgetBackground(Color(
         .sRGB,
         red: 102/255,
         green: 223/255,

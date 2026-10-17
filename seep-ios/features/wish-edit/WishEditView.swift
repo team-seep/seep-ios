@@ -9,7 +9,7 @@ final class WishEditView: BaseView {
     let accessoryView = InputAccessoryView(frame: CGRect(
         x: 0,
         y: 0,
-        width: UIScreen.main.bounds.width,
+        width: 0, // 폭은 시스템이 키보드 폭에 맞춘다 (화면 폭 고정 금지)
         height: 45
     ))
     
@@ -60,6 +60,8 @@ final class WishEditView: BaseView {
         $0.onTintColor = .tennisGreen
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
+    
+    let targetAmountView = TargetAmountInputView()
     
     let stepsView: WishStepsView = {
         let view = WishStepsView()
@@ -168,6 +170,7 @@ final class WishEditView: BaseView {
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
         self.dateField.inputAccessoryView = self.accessoryView
+        self.targetAmountView.inputAccessoryView = self.accessoryView
         self.memoField.inputAccessoryView = self.accessoryView
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
         
@@ -179,6 +182,7 @@ final class WishEditView: BaseView {
             self.dateField,
             self.dateSwitchLabel,
             self.dateSwitch,
+            self.targetAmountView,
             self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
@@ -203,15 +207,18 @@ final class WishEditView: BaseView {
     }
     
     override func bindConstraints() {
+        // 듀오 바깥 화면은 오른쪽 위에 센서·상태 표시 영역(safe area 오른쪽 inset)이 있어 safe area 기준으로 둔다.
+        // 아이콘(24pt) 위치는 그대로 두고 터치 영역만 44pt로 넓힌다.
         self.backButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(13)
-            make.width.height.equalTo(24)
+            make.leading.equalTo(self.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(3)
+            make.width.height.equalTo(44)
         }
         
         self.scrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(self.backButton.snp.bottom).offset(13)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
+            make.top.equalTo(self.backButton.snp.bottom).offset(3)
         }
         
         self.containerView.snp.makeConstraints { make in
@@ -257,9 +264,15 @@ final class WishEditView: BaseView {
             make.centerY.equalTo(self.dateSwitch)
         }
         
+        // 목표 금액은 위쪽 간격(26)을 스스로 가져, 갖고 싶어요가 아니면 높이 0 이 된다 (GH-16 R-1)
+        self.targetAmountView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom)
+        }
+        
         self.stepsView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.targetAmountView.snp.bottom).offset(26)
         }
         
         self.notificationIcon.snp.makeConstraints { make in

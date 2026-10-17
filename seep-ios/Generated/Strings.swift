@@ -271,6 +271,12 @@ internal enum Strings {
   /// 차근차근 적어봐요!
   internal static let wrtieTitleBold = Strings.tr("Localization", "wrtie_title_bold", fallback: "차근차근 적어봐요!")
   internal enum Common {
+    /// %@원
+    internal static func wonFormat(_ p1: Any) -> String {
+      return Strings.tr("Localization", "common.won_format", String(describing: p1), fallback: "%@원")
+    }
+    /// 원
+    internal static let wonUnit = Strings.tr("Localization", "common.won_unit", fallback: "원")
     internal enum WantToDo {
       /// %02d개
       internal static func unit(_ p1: Int) -> String {
@@ -291,6 +297,69 @@ internal enum Strings {
     }
   }
   internal enum Detail {
+    internal enum Saving {
+      /// 모은 돈 기록
+      internal static let add = Strings.tr("Localization", "detail.saving.add", fallback: "모은 돈 기록")
+      /// 다 모았어요! 이제 겟할 시간이에요
+      internal static let completed = Strings.tr("Localization", "detail.saving.completed", fallback: "다 모았어요! 이제 겟할 시간이에요")
+      /// 기록 삭제
+      internal static let delete = Strings.tr("Localization", "detail.saving.delete", fallback: "기록 삭제")
+      /// %d%%
+      internal static func percentFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.saving.percent_format", p1, fallback: "%d%%")
+      }
+      /// +%@원
+      internal static func recordFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.saving.record_format", String(describing: p1), fallback: "+%@원")
+      }
+      /// %@원 더 모으면 돼요!
+      internal static func remainingFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.saving.remaining_format", String(describing: p1), fallback: "%@원 더 모으면 돼요!")
+      }
+      /// / %@원
+      internal static func targetFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.saving.target_format", String(describing: p1), fallback: "/ %@원")
+      }
+      /// 모으기
+      internal static let title = Strings.tr("Localization", "detail.saving.title", fallback: "모으기")
+      internal enum DeleteAlert {
+        /// 삭제
+        internal static let confirm = Strings.tr("Localization", "detail.saving.delete_alert.confirm", fallback: "삭제")
+        /// 이 기록을 삭제할까요?
+        internal static let title = Strings.tr("Localization", "detail.saving.delete_alert.title", fallback: "이 기록을 삭제할까요?")
+      }
+      internal enum Sheet {
+        /// 모은 금액
+        internal static let amount = Strings.tr("Localization", "detail.saving.sheet.amount", fallback: "모은 금액")
+        /// +10만
+        internal static let plus100k = Strings.tr("Localization", "detail.saving.sheet.plus_100k", fallback: "+10만")
+        /// +1만
+        internal static let plus10k = Strings.tr("Localization", "detail.saving.sheet.plus_10k", fallback: "+1만")
+        /// +5만
+        internal static let plus50k = Strings.tr("Localization", "detail.saving.sheet.plus_50k", fallback: "+5만")
+        /// %@원 / %@원
+        internal static func previewAmountFormat(_ p1: Any, _ p2: Any) -> String {
+          return Strings.tr("Localization", "detail.saving.sheet.preview_amount_format", String(describing: p1), String(describing: p2), fallback: "%@원 / %@원")
+        }
+        /// 기록하면 %@ (%d%%)
+        internal static func previewFormat(_ p1: Any, _ p2: Int) -> String {
+          return Strings.tr("Localization", "detail.saving.sheet.preview_format", String(describing: p1), p2, fallback: "기록하면 %@ (%d%%)")
+        }
+        /// 남은 금액 전부
+        internal static let remainingAll = Strings.tr("Localization", "detail.saving.sheet.remaining_all", fallback: "남은 금액 전부")
+        /// 기록하기
+        internal static let save = Strings.tr("Localization", "detail.saving.sheet.save", fallback: "기록하기")
+        /// 얼마나
+        /// 모았어요?
+        internal static let title = Strings.tr("Localization", "detail.saving.sheet.title", fallback: "얼마나\n모았어요?")
+        /// 모았어요?
+        internal static let titleBold = Strings.tr("Localization", "detail.saving.sheet.title_bold", fallback: "모았어요?")
+      }
+      internal enum Toast {
+        /// 👏 목표 금액을 다 모았어요!
+        internal static let completed = Strings.tr("Localization", "detail.saving.toast.completed", fallback: "👏 목표 금액을 다 모았어요!")
+      }
+    }
     internal enum Step {
       /// 단계 추가
       internal static let add = Strings.tr("Localization", "detail.step.add", fallback: "단계 추가")
@@ -383,6 +452,16 @@ internal enum Strings {
     internal enum Step {
       /// 단계 (선택)
       internal static let title = Strings.tr("Localization", "write.step.title", fallback: "단계 (선택)")
+    }
+    internal enum TargetAmount {
+      /// 상세 화면에서 모은 돈을 기록할 수 있어요
+      internal static let caption = Strings.tr("Localization", "write.target_amount.caption", fallback: "상세 화면에서 모은 돈을 기록할 수 있어요")
+      ///  (선택)
+      internal static let `optional` = Strings.tr("Localization", "write.target_amount.optional", fallback: " (선택)")
+      /// 0
+      internal static let placeholder = Strings.tr("Localization", "write.target_amount.placeholder", fallback: "0")
+      /// 목표 금액
+      internal static let title = Strings.tr("Localization", "write.target_amount.title", fallback: "목표 금액")
     }
   }
 }
