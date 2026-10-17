@@ -9,7 +9,7 @@ final class WishEditView: BaseView {
     let accessoryView = InputAccessoryView(frame: CGRect(
         x: 0,
         y: 0,
-        width: UIScreen.main.bounds.width,
+        width: 0, // 폭은 시스템이 키보드 폭에 맞춘다 (화면 폭 고정 금지)
         height: 45
     ))
     
