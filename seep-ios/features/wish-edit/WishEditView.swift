@@ -203,15 +203,18 @@ final class WishEditView: BaseView {
     }
     
     override func bindConstraints() {
+        // 듀오 바깥 화면은 오른쪽 위에 센서·상태 표시 영역(safe area 오른쪽 inset)이 있어 safe area 기준으로 둔다.
+        // 아이콘(24pt) 위치는 그대로 두고 터치 영역만 44pt로 넓힌다.
         self.backButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(13)
-            make.width.height.equalTo(24)
+            make.leading.equalTo(self.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(3)
+            make.width.height.equalTo(44)
         }
         
         self.scrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(self.backButton.snp.bottom).offset(13)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
+            make.top.equalTo(self.backButton.snp.bottom).offset(3)
         }
         
         self.containerView.snp.makeConstraints { make in

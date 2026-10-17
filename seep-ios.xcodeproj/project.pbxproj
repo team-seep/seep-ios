@@ -205,6 +205,7 @@
 		7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */; };
 		9E10BE9381E274E0691DE230 /* WishStepsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */; };
 		A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */; };
+		A10C0F1E2D3C4B5A69788710 /* ToastManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10C0F1E2D3C4B5A69788711 /* ToastManagerTests.swift */; };
 		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
 		C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */; };
 		D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
@@ -434,6 +435,7 @@
 		6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditCoordinator.swift; sourceTree = "<group>"; };
 		A668C632E3284174D8A1FCA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		A10C0F1E2D3C4B5A69788711 /* ToastManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ToastManagerTests.swift; sourceTree = "<group>"; };
 		C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsView.swift; sourceTree = "<group>"; };
 		D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModel.swift; sourceTree = "<group>"; };
 		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 				B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */,
 				8B296ED1CFDAAC15A58AEF24 /* Mock */,
 				C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */,
+				A10C0F1E2D3C4B5A69788711 /* ToastManagerTests.swift */,
 				3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */,
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 			);
@@ -1318,6 +1321,7 @@
 				A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */,
 				A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */,
+				A10C0F1E2D3C4B5A69788710 /* ToastManagerTests.swift in Sources */,
 				7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */,
 				485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */,
 				9E10BE9381E274E0691DE230 /* WishStepsViewModelTests.swift in Sources */,

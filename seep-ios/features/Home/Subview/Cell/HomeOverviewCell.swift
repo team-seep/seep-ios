@@ -32,7 +32,8 @@ final class HomeOverviewCell: BaseCollectionViewCell {
         
         emojiView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(8)
-            $0.trailing.equalToSuperview().offset(-20)
+            // 듀오 바깥 화면의 오른쪽 위 센서·상태 표시 영역과 겹치지 않게 safe area 기준
+            $0.trailing.equalTo(contentView.safeAreaLayoutGuide).offset(-20)
             $0.size.equalTo(100)
         }
     }
