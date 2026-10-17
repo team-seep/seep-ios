@@ -52,6 +52,15 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.view = self.wishDetailView
     }
   
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // 폴더블 접기/펴기·회전으로 창 폭이 바뀌면 해시태그 줄바꿈을 새 폭으로 다시 계산한다
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.wishDetailView.hashtagCollectionView.collectionViewLayout.invalidateLayout()
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

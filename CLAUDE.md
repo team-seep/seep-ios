@@ -68,7 +68,7 @@ xcodebuild build \
 - **R3** `Realm()`·`realm.write/objects/...`는 `seep-ios/Repository/`에서만 (예외: AppDelegate 설정, widget Provider, 레거시 `WishServices`)
 - **R4** `model/dto/` 저장 프로퍼티를 바꾸면 `schemaVersion`을 **앱(AppDelegate) + 위젯 Provider 3곳 모두** 올리고 `migrationBlock`에 분기 추가
 - **R5** VC는 `BaseViewController`, Cell은 `BaseCollectionViewCell`/`BaseTableViewCell` 상속
-- **R6** 색은 `UIColorExtension` 토큰(`.gray5`, `.seepBlue`…), 폰트는 `UIFontExtension`(`.appleBold(size:)`…), 문자열은 SwiftGen `Strings.xxx`, 이미지는 `Assets.xxx`. SnapKit `leading/trailing`. `then` 금지
+- **R6** 색은 `UIColorExtension` 토큰(`.gray5`, `.seepBlue`…), 폰트는 `UIFontExtension`(`.appleBold(size:)`…), 문자열은 SwiftGen `Strings.xxx`, 이미지는 `Assets.xxx`. SnapKit `leading/trailing`. `then` 금지. 레이아웃 크기는 `UIScreen.main`·`UIUtils.windowBounds`·`RatioUtils`가 아니라 뷰 `bounds`로
 - **R7** 타입은 책임 하나. 타입 400·파일 600줄 초과는 `// swiftlint:disable:next type_body_length - {사유}`
 - **R8** `print`·`try!`·`as!` 금지
 - **R9** ViewModel 구조 Input/Output/Route/Config/Dependency/State, Route 처리는 VC `// MARK: Route` extension
