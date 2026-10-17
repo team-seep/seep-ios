@@ -20,6 +20,7 @@ class WriteReactor: Reactor {
         case tapNotificationSwitch(Bool)
         case inputMemo(String)
         case updateSteps([WishStep])
+        case inputTargetAmount(Int)
         case tapHashtag(index: Int)
         case inputHashtag(String)
         case tapWriteButton
@@ -41,6 +42,7 @@ class WriteReactor: Reactor {
         case pushNotificationDetail([SeepNotification], Int?)
         case setMemo(String)
         case setSteps([WishStep])
+        case setTargetAmount(Int)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
@@ -62,6 +64,8 @@ class WriteReactor: Reactor {
         var memo: String = ""
         /// 작성 중인 단계. 작성 완료 때 위시와 함께 저장된다 (GH-5 R-14).
         var steps: [WishStep] = []
+        /// 목표 금액(원). 갖고 싶어요일 때만 저장한다 (GH-16 R-1)
+        var targetAmount: Int = 0
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String = ""
@@ -75,12 +79,14 @@ class WriteReactor: Reactor {
     private let wishService: WishServiceProtocol
     private let userDefaults: UserDefaultsUtils
     private let notificationManager: NotificationManagerProtocol
+    private let logManager: LogManagerProtocol
     
     init(
         category: Category,
         wishService: WishServiceProtocol,
         userDefaults: UserDefaultsUtils,
-        notificationManager: NotificationManagerProtocol
+        notificationManager: NotificationManagerProtocol,
+        logManager: LogManagerProtocol = LogManager.shared
     ) {
         self.initialState = State(
             isTooltipShown: userDefaults.getRandomEmojiTooltipIsShow(),
@@ -89,6 +95,7 @@ class WriteReactor: Reactor {
         self.wishService = wishService
         self.userDefaults = userDefaults
         self.notificationManager = notificationManager
+        self.logManager = logManager
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -154,6 +161,9 @@ class WriteReactor: Reactor {
 
         case .updateSteps(let steps):
             return .just(.setSteps(steps))
+
+        case .inputTargetAmount(let amount):
+            return .just(.setTargetAmount(min(max(amount, 0), WishSaving.maxAmount)))
             
         case .tapHashtag(let index):
             return .merge([
@@ -234,6 +244,9 @@ class WriteReactor: Reactor {
 
         case .setSteps(let steps):
             newState.steps = steps
+
+        case .setTargetAmount(let amount):
+            newState.targetAmount = amount
             
         case .selectHashtag(let index):
             if let index = index {
@@ -283,12 +296,20 @@ class WriteReactor: Reactor {
                 ? self.currentState.notifications
                 : [],
             steps: self.currentState.steps,
+            // 다른 카테고리로 바꿨으면 입력했던 목표 금액은 버린다 (GH-16 R-1)
+            targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             memo: self.currentState.memo,
             hashtag: hashtag
         )
         
         self.wishService.addWish(wish: wish)
         self.notificationManager.reserveNotifications(wish: wish)
+        self.logManager.sendEvent(event: ClickEvent(
+            screen: .write,
+            objectType: .button,
+            objectId: .write,
+            extraParameters: [.hasTargetAmount: wish.targetAmount > 0]
+        ))
         return .just(.dismissWishCategory(wish.category))
     }
     

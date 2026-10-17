@@ -120,4 +120,6 @@ enum LogObjectId: String {
     case category
     case addStep = "add_step"
     case checkStep = "check_step"
+    case addSaving = "add_saving"
+    case saveSaving = "save_saving"
 }
