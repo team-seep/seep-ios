@@ -49,7 +49,7 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     }
     
     override func loadView() {
-        self.view = self.wishEditView
+        self.view = WideScreenContainerView(contentView: self.wishEditView)
     }
     
     override func viewDidLoad() {
