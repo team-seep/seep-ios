@@ -230,7 +230,7 @@ final class HomeViewController: BaseViewController {
                     
                     let headerSize = NSCollectionLayoutSize(
                         widthDimension: .fractionalWidth(1.0),
-                        heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
+                        heightDimension: .absolute(HomeFilterHeaderView.Layout.height)
                     )
                     let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
                         layoutSize: headerSize,
@@ -244,22 +244,33 @@ final class HomeViewController: BaseViewController {
                 } else {
                     switch headerViewModel.output.viewType.value {
                     case .grid:
+                        // 리스트와 같은 기준(컬렉션뷰 전체 폭 - 좌우 20)으로 열 수·셀 크기를 계산한다.
+                        // safe area 기준이면 듀오처럼 측면 safe area가 있는 기기에서 헤더 아이콘이 리스트와 어긋난다
+                        let horizontalInset: CGFloat = 20
+                        let availableWidth = layoutEnvironment.container.contentSize.width - horizontalInset * 2
+                        let columnCount = HomeWishGridCell.Layout.columnCount(availableWidth: availableWidth)
+                        let itemSize = HomeWishGridCell.Layout.itemSize(availableWidth: availableWidth)
                         let item = NSCollectionLayoutItem(layoutSize: .init(
-                            widthDimension: .absolute(HomeWishGridCell.Layout.size.width),
-                            heightDimension: .absolute(HomeWishGridCell.Layout.size.height)
+                            widthDimension: .absolute(itemSize.width),
+                            heightDimension: .absolute(itemSize.height)
                         ))
-                        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
-                            widthDimension: .fractionalWidth(1.0),
-                            heightDimension: .absolute(HomeWishGridCell.Layout.size.height)
-                        ), subitems: [item])
-                        group.interItemSpacing = .fixed(15)
+                        // 한 그룹 = 한 줄. 서브아이템을 열 수만큼 명시해 소수점 오차로 줄이 넘어가 1열이 되는 일을 막는다
+                        let group = NSCollectionLayoutGroup.horizontal(
+                            layoutSize: .init(
+                                widthDimension: .fractionalWidth(1.0),
+                                heightDimension: .absolute(itemSize.height)
+                            ),
+                            subitems: Array(repeating: item, count: columnCount)
+                        )
+                        group.interItemSpacing = .fixed(HomeWishGridCell.Layout.spacing)
                         let section = NSCollectionLayoutSection(group: group)
-                        section.interGroupSpacing = 15
-                        section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+                        section.contentInsetsReference = .none
+                        section.interGroupSpacing = HomeWishGridCell.Layout.spacing
+                        section.contentInsets = .init(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
                         
                         let headerSize = NSCollectionLayoutSize(
                             widthDimension: .fractionalWidth(1.0),
-                            heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
+                            heightDimension: .absolute(HomeFilterHeaderView.Layout.height)
                         )
                         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
                             layoutSize: headerSize,
@@ -294,7 +305,7 @@ final class HomeViewController: BaseViewController {
                         // 헤더 추가
                         let headerSize = NSCollectionLayoutSize(
                             widthDimension: .fractionalWidth(1.0),
-                            heightDimension: .absolute(HomeFilterHeaderView.Layout.size.height)
+                            heightDimension: .absolute(HomeFilterHeaderView.Layout.height)
                         )
                         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
                             layoutSize: headerSize,

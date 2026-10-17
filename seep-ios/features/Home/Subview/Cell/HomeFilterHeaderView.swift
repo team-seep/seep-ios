@@ -5,7 +5,7 @@ import CombineCocoa
 
 final class HomeFilterHeaderView: UICollectionReusableView {
     enum Layout {
-        static let size = CGSize(width: UIUtils.windowBounds.width, height: 86)
+        static let height: CGFloat = 86
     }
     
     private let categoryView = HomeCategoryView()
@@ -68,7 +68,6 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         layer.colors = [UIColor(r: 246, g: 247, b: 249, a: 1).cgColor, UIColor(r: 246, g: 247, b: 249, a: 0).cgColor]
         layer.startPoint = CGPoint(x: 0.5, y: 0)
         layer.endPoint = CGPoint(x: 0.5, y: 1)
-        layer.frame = CGRect(x: 0, y: 0, width: UIUtils.windowBounds.width - 40, height: 10)
         return layer
     }()
     
@@ -83,6 +82,13 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // 헤더 폭은 섹션(컬렉션뷰) 폭을 따르므로 그라데이션도 실제 bounds로 맞춘다
+        gradientLayer.frame = gradientView.bounds
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         cancellables = Set<AnyCancellable>()
