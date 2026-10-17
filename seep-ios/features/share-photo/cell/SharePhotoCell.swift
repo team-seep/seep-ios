@@ -4,10 +4,22 @@ import Photos
 class SharePhotoCell: BaseCollectionViewCell {
   
   static let registerId = "\(SharePhotoCell.self)"
-  static let size = CGSize(
-    width: (UIScreen.main.bounds.width - 2) / 3,
-    height: (UIScreen.main.bounds.width - 2) / 3
-  )
+  static let spacing: CGFloat = 1
+
+  /// 화면 폭이 아니라 사진 목록(컬렉션뷰) 폭 기준. 넓은 시트(듀오 안쪽 등)에서는 열을 늘려 셀이 과하게 커지지 않게 한다.
+  static func size(containerWidth: CGFloat) -> CGSize {
+    let columnCount: CGFloat
+    switch containerWidth {
+    case ..<600:
+      columnCount = 3
+    case ..<800:
+      columnCount = 4
+    default:
+      columnCount = 5
+    }
+    let length = floor((containerWidth - spacing * (columnCount - 1)) / columnCount)
+    return CGSize(width: max(length, 0), height: max(length, 0))
+  }
   var imageRequestId: PHImageRequestID?
   
   let photo = UIImageView().then {
