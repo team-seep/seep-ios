@@ -98,9 +98,9 @@ final class HomeViewController: BaseViewController {
             right: 0
         )
         collectionView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+            // 넓은 화면(듀오 안쪽)에서는 최대 폭 기둥으로 가운데 둔다. 아이폰에서는 화면 폭 그대로다
+            WideScreenLayout.makeColumnConstraints($0)
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         

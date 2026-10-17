@@ -51,7 +51,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     }
     
     override func loadView() {
-        self.view = self.writeView
+        self.view = WideScreenContainerView(contentView: self.writeView)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
