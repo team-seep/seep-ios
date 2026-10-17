@@ -8,6 +8,8 @@ extension HomeWishCellViewModel {
     struct Output {
         let wish: Wish
         let viewType: ViewType
+        /// 단계가 없으면 nil — 셀에서 진행도를 숨긴다
+        let stepProgress: WishStepProgress?
         let didTapFinish = PassthroughSubject<Wish, Never>()
     }
     
@@ -30,7 +32,11 @@ final class HomeWishCellViewModel {
     private let dependency: Dependency
     
     init(config: Config, dependency: Dependency = Dependency()) {
-        self.output = Output(wish: config.wish, viewType: config.viewType)
+        self.output = Output(
+            wish: config.wish,
+            viewType: config.viewType,
+            stepProgress: WishStepProgress(steps: config.wish.steps)
+        )
         self.dependency = dependency
         
         bind()

@@ -8,6 +8,15 @@ protocol WishRepository {
     func finishWish(wish: Wish) -> Result<Wish, RepositoryError>
     
     func deleteWish(id: String)
+    
+    /// 단계의 완료 여부를 뒤집고, 갱신된 단계 목록(order 오름차순)을 돌려준다. 상세 화면 체크/해제용.
+    func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError>
+    
+    /// 모은 돈 기록을 추가하고, 갱신된 기록 목록(최신순)을 돌려준다 (GH-16 R-4).
+    func addSaving(wishId: String, amount: Int) -> Result<[WishSaving], RepositoryError>
+    
+    /// 모은 돈 기록을 지우고, 갱신된 기록 목록(최신순)을 돌려준다 (GH-16 R-5).
+    func deleteSaving(wishId: String, savingId: String) -> Result<[WishSaving], RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -59,5 +68,68 @@ final class WishRepositoryImpl: WishRepository {
         try! realm.write{
             realm.delete(targetObject)
         }
+    }
+    
+    func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
+        return updateSteps(wishId: wishId) { steps in
+            guard let step = steps.first(where: { $0._id == stepId }) else { return }
+            step.isDone.toggle()
+        }
+    }
+    
+    func addSaving(wishId: String, amount: Int) -> Result<[WishSaving], RepositoryError> {
+        return updateSavings(wishId: wishId) { savings in
+            savings.append(SavingDTO(saving: WishSaving(amount: amount, createdAt: DateUtils.now())))
+        }
+    }
+    
+    func deleteSaving(wishId: String, savingId: String) -> Result<[WishSaving], RepositoryError> {
+        return updateSavings(wishId: wishId) { savings in
+            guard let index = savings.firstIndex(where: { $0._id == savingId }) else { return }
+            savings.remove(at: index)
+        }
+    }
+    
+    private func updateSavings(
+        wishId: String,
+        update: (List<SavingDTO>) -> Void
+    ) -> Result<[WishSaving], RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                update(targetObject.savings)
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        return .success(WishSaving.latestFirst(Array(targetObject.savings).map(WishSaving.init(dto:))))
+    }
+    
+    private func updateSteps(
+        wishId: String,
+        update: (List<WishStepDTO>) -> Void
+    ) -> Result<[WishStep], RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                update(targetObject.steps)
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        let steps = Array(targetObject.steps)
+            .map(WishStep.init(dto:))
+            .sorted { $0.order < $1.order }
+        return .success(steps)
     }
 }

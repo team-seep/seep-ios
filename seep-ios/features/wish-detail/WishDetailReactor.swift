@@ -12,6 +12,8 @@ final class WishDetailReactor: Reactor {
         case tapCancelFinish
         case tapSharePhoto
         case updateWish(wish: Wish)
+        case updateSteps([WishStep])
+        case updateSavings([WishSaving])
     }
   
     enum Mutation {
@@ -64,6 +66,20 @@ final class WishDetailReactor: Reactor {
             return .just(.presentSharePhoto)
             
         case .updateWish(let wish):
+            // 수정 화면이 단계까지 담아 돌려준다 (R-19, R-20)
+            updateWishPublisher.send(wish)
+            return .just(.setWish(wish: wish))
+            
+        case .updateSteps(let steps):
+            var wish = currentState.wish
+            wish.steps = steps
+            updateWishPublisher.send(wish)
+            return .just(.setWish(wish: wish))
+            
+        case .updateSavings(let savings):
+            // 수정 화면으로 넘길 위시가 최신 기록을 갖도록 (GH-16 R-7)
+            var wish = currentState.wish
+            wish.savings = savings
             updateWishPublisher.send(wish)
             return .just(.setWish(wish: wish))
         }

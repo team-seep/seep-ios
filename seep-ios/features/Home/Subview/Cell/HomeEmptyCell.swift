@@ -2,7 +2,7 @@ import UIKit
 
 final class HomeEmptyCell: BaseCollectionViewCell {
     enum Layout {
-        static let size = CGSize(width: UIUtils.windowBounds.width - 40, height: 246)
+        static let height: CGFloat = 246
     }
     
     let emptyLabel: UILabel = {

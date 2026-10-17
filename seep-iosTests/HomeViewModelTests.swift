@@ -18,7 +18,8 @@ final class HomeViewModelTests: XCTestCase {
         let dependency = HomeViewModel.Dependency(
             wishRepository: mockRepository,
             preference: Preference(name: "test"),
-            notificationManager: mockNotificationManager
+            notificationManager: mockNotificationManager,
+            logManager: MockLogManager()
         )
         sut = HomeViewModel(dependency: dependency)
     }

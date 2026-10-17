@@ -35,7 +35,7 @@ struct SmallRemainEntryView: View {
     })
     .padding(.init(top: 16, leading: 16, bottom: 0, trailing: 0))
     .widgetURL(URL(string: self.entry.deepLink))
-    .background(Color.white)
+    .widgetBackground(Color.white)
   }
 }
 

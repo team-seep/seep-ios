@@ -1,0 +1,35 @@
+name: 버그
+description: 버그 리포트. 재현 경로가 TC-1 이 됩니다 — docs/process/tech-spec-process.md
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 1. 요약
+      description: 어떤 문제인지, 영향 범위(앱/위젯, 버전)
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 재현 경로
+      description: 단계별로. 스크린샷·영상이 있으면 첨부
+      value: |
+        1. 
+        2. 
+    validations:
+      required: true
+  - type: textarea
+    id: tc
+    attributes:
+      label: 3. 테스트 케이스 (TC)
+      description: 기대 동작을 TC로. 최소 TC-1 은 "재현 경로대로 했을 때 기대 결과"
+      value: |
+        - TC-1: 
+    validations:
+      required: true
+  - type: textarea
+    id: etc
+    attributes:
+      label: 기타
+      description: 원인 추정, 참고 링크

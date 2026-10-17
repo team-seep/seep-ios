@@ -12,6 +12,10 @@ class WishDTO: Object, Identifiable {
     @objc dynamic var date: Date?
     @objc dynamic var finishDate: Date?
     var notifications = List<NotificationDTO>()
+    var steps = List<WishStepDTO>()
+    /// 목표 금액(원). 0 이면 저금통 없음 (GH-16 R-8)
+    @objc dynamic var targetAmount: Int = 0
+    var savings = List<SavingDTO>()
     @objc dynamic var memo: String = ""
     @objc dynamic var hashtag: String = ""
     @objc dynamic var isSuccess: Bool = false
@@ -37,6 +41,9 @@ class WishDTO: Object, Identifiable {
         
         let notificationDTOs = wish.notifications.map { NotificationDTO(seepNotification: $0) }
         self.notifications.append(objectsIn: notificationDTOs)
+        self.steps.append(objectsIn: wish.steps.map(WishStepDTO.init(step:)))
+        self.targetAmount = wish.targetAmount
+        self.savings.append(objectsIn: wish.savings.map(SavingDTO.init(saving:)))
         self.memo = wish.memo
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess

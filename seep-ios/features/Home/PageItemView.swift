@@ -25,15 +25,9 @@ final class PageItemView: BaseView {
         collectionViewLayout: UICollectionViewLayout()
     ).then {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = HomeWishListCell.Layout.size
+        // itemSize·하단 inset은 layoutSubviews에서 실제 폭으로 계산한다
         layout.minimumInteritemSpacing = 15
         layout.minimumLineSpacing = 16
-        layout.sectionInset = UIEdgeInsets(
-            top: 0,
-            left: 20,
-            bottom: (UIScreen.main.bounds.width - 40 - 15) / 2,
-            right: 20
-        )
         $0.collectionViewLayout = layout
         $0.backgroundColor = .clear
         $0.showsVerticalScrollIndicator = false
@@ -67,8 +61,25 @@ final class PageItemView: BaseView {
         
         gradientLayer.colors = [topColor, bottomColor]
         gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 150)
         $0.layer.addSublayer(gradientLayer)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 화면(UIScreen)이 아니라 이 뷰의 실제 크기로 계산해 창 크기가 바뀌어도 맞춘다
+        gradientView.layer.sublayers?.forEach { $0.frame = gradientView.bounds }
+        updateListLayout()
+    }
+    
+    private func updateListLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        let itemSize = CGSize(width: bounds.width - 40, height: HomeWishListCell.Layout.height)
+        guard itemSize.width > 0, layout.itemSize != itemSize else { return }
+        
+        layout.itemSize = itemSize
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: (bounds.width - 40 - 15) / 2, right: 20)
+        layout.invalidateLayout()
     }
     
     override func setup() {

@@ -52,6 +52,7 @@
 "home.write_button.want_to_get" = "📝 뭐 갖고 싶어요?";
 "home.toast.finish_wish" = "👏위시를 완료했어요!";
 "home.toast.success_write" = "👏등록이 완료됐어요!";
+"home.step_progress_format" = "%d/%d";
 "home.empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 
 // Write
@@ -83,6 +84,43 @@
 "write_error_max_length_hashtag" = "📍해시태그는 7자내로 작성해주세요!";
 
 // Detail
+"detail.step.title" = "단계";
+"detail.step.add" = "단계 추가";
+"detail.step.progress_format" = "%d/%d 완료";
+"detail.step.add_alert.title" = "단계 추가";
+"detail.step.add_alert.placeholder" = "예) 날짜 정하기";
+"detail.step.add_alert.confirm" = "추가";
+"detail.step.delete" = "삭제";
+"detail.step.toast.max_length" = "📍단계는 30자내로 작성해주세요!";
+"detail.step.toast.max_count" = "📍단계는 10개까지 추가할 수 있어요!";
+"write.step.title" = "단계 (선택)";
+"write.target_amount.title" = "목표 금액";
+"write.target_amount.optional" = " (선택)";
+"write.target_amount.placeholder" = "0";
+"write.target_amount.caption" = "상세 화면에서 모은 돈을 기록할 수 있어요";
+"common.won_unit" = "원";
+"common.won_format" = "%@원";
+"detail.saving.title" = "모으기";
+"detail.saving.percent_format" = "%d%%";
+"detail.saving.target_format" = "/ %@원";
+"detail.saving.remaining_format" = "%@원 더 모으면 돼요!";
+"detail.saving.completed" = "다 모았어요! 이제 겟할 시간이에요";
+"detail.saving.record_format" = "+%@원";
+"detail.saving.add" = "모은 돈 기록";
+"detail.saving.delete" = "기록 삭제";
+"detail.saving.delete_alert.title" = "이 기록을 삭제할까요?";
+"detail.saving.delete_alert.confirm" = "삭제";
+"detail.saving.toast.completed" = "👏 목표 금액을 다 모았어요!";
+"detail.saving.sheet.title" = "얼마나\n모았어요?";
+"detail.saving.sheet.title_bold" = "모았어요?";
+"detail.saving.sheet.amount" = "모은 금액";
+"detail.saving.sheet.plus_10k" = "+1만";
+"detail.saving.sheet.plus_50k" = "+5만";
+"detail.saving.sheet.plus_100k" = "+10만";
+"detail.saving.sheet.remaining_all" = "남은 금액 전부";
+"detail.saving.sheet.preview_format" = "기록하면 %@ (%d%%)";
+"detail.saving.sheet.preview_amount_format" = "%@원 / %@원";
+"detail.saving.sheet.save" = "기록하기";
 "detail_random_info" = "Random으로 이모지를\n골라드립니다!";
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";

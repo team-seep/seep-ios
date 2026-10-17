@@ -1,0 +1,152 @@
+# SwiftLint 설정
+# 아키텍처 규칙(R1~R8)의 강제 수단. 규칙의 이유·예외는 docs/architecture/RULES.md 참고.
+# 기존 위반은 .swiftlint-baseline.json 에 동결되어 있다 (make lint-baseline 로 재생성). 새 위반만 보고된다.
+
+baseline: .swiftlint-baseline.json
+
+included:
+  - seep-ios
+  - seep-iosTests
+  - widget
+
+excluded:
+  - build
+  - seep-ios/Generated        # SwiftGen 산출물
+
+# 레거시 스타일(2칸 들여쓰기·공백 등)까지 잡으면 신호가 묻힌다. 규칙 번호가 있는 것만 켠다.
+only_rules:
+  - force_cast                # R8
+  - force_try                 # R8
+  - type_body_length          # R7
+  - file_length               # R7
+  - custom_rules
+
+# ---- 기본 룰 임계값 ----
+type_body_length:             # R7 — 줄 수는 신호일 뿐. 초과는 disable:next + 사유
+  warning: 400
+  error: 400
+
+file_length:                  # R7 — 같은 파일 extension 으로 옮겨 type_body_length 를 피하는 우회를 막는다
+  warning: 600
+  error: 600
+
+force_cast: error
+force_try: error
+
+# ---- 아키텍처 custom rules (RULES.md 번호와 1:1) ----
+custom_rules:
+
+  no_new_rx:                                # R1
+    name: "R1 RxSwift·ReactorKit 신규 사용 금지"
+    excluded: "seep-ios/features/base/.*"
+    regex: "^import (RxSwift|RxCocoa|ReactorKit|RxDataSources)\\b"
+    message: "R1: 새 코드는 Combine + ViewModel(Input/Output) 로 쓴다. ReactorKit 화면을 크게 고칠 땐 ViewModel 로 옮긴다."
+    severity: error
+
+  no_base_vc:                               # R1
+    name: "R1 BaseVC 신규 상속 금지"
+    regex: "class\\s+\\w+\\s*:\\s*BaseVC\\b"
+    message: "R1: 새 ViewController 는 BaseVC(Rx) 가 아니라 BaseViewController(Combine) 를 상속한다."
+    severity: error
+
+  viewmodel_no_uikit_import:                # R2
+    name: "R2 ViewModel 에서 UIKit import 금지"
+    included: ".*ViewModel\\.swift"
+    regex: "^import UIKit\\b"
+    message: "R2: ViewModel 은 UI 를 모른다. UI 동작은 Route/Output 으로 ViewController 에 넘긴다."
+    severity: error
+
+  viewmodel_no_uiapplication:               # R2
+    name: "R2 ViewModel 에서 UIApplication 금지"
+    included: ".*ViewModel\\.swift"
+    regex: "UIApplication\\.shared"
+    message: "R2: URL 열기·알럿 등 UI 동작은 Route 로 ViewController 에서 처리한다."
+    severity: error
+
+  realm_only_in_repository:                 # R3
+    name: "R3 Realm 접근은 Repository 에서만"
+    excluded:
+      - "widget/.*"                # 위젯은 앱 Repository 를 못 쓰는 별도 타깃 (RULES.md R3 예외)
+      - "seep-ios/Repository/.*"
+      - "seep-ios/services/.*"
+      - "seep-ios/AppDelegate\\.swift"
+    regex: "\\bRealm\\(|realm\\.(write|beginWrite|objects|add|delete)\\b"
+    message: "R3: Realm 읽기/쓰기는 Repository(Protocol+Impl) 에서만. ViewModel 은 Dependency 로 Repository 를 주입받는다."
+    severity: error
+
+  vc_inherits_base:                         # R5
+    name: "R5 ViewController 는 BaseViewController 상속"
+    excluded:
+      - "widget/.*"
+      - "seep-ios/features/base/.*"
+    regex: "class\\s+\\w+\\s*:\\s*UIViewController\\b"
+    message: "R5: ViewController 는 BaseViewController 를 상속한다."
+    severity: error
+
+  cell_inherits_base:                       # R5
+    name: "R5 Cell 은 Base*Cell 상속"
+    excluded:
+      - "widget/.*"
+      - "seep-ios/features/base/.*"
+    regex: "class\\s+\\w+\\s*:\\s*(UICollectionViewCell|UITableViewCell)\\b"
+    message: "R5: Cell 은 BaseCollectionViewCell / BaseTableViewCell 을 상속한다 (setup / bindConstraints / prepareForReuse 공통 관리)."
+    severity: error
+
+  no_uicolor_literal:                       # R6
+    name: "R6 UIColor 리터럴 금지"
+    excluded:
+      - "widget/.*"                # 위젯(SwiftUI)은 자체 ColorExtensions 사용
+      - "seep-ios/extensions/UIColorExtension\\.swift"
+    regex: "UIColor\\((r|red|white|hex):"
+    message: "R6: 색은 UIColorExtension 의 토큰(.gray1~5, .seepBlue …)만 쓴다. 새 색은 토큰부터 추가한다."
+    severity: error
+
+  no_uifont_name:                           # R6
+    name: "R6 UIFont(name:) 금지"
+    excluded:
+      - "widget/.*"
+      - "seep-ios/extensions/UIFontExtension\\.swift"
+    regex: "UIFont\\(name:"
+    message: "R6: 폰트는 UIFontExtension(.appleBold(size:) …)만 쓴다."
+    severity: error
+
+  no_localized_literal:                     # R6
+    name: "R6 \"key\".localized 금지"
+    excluded: "widget/.*"
+    regex: "\"[A-Za-z0-9_]+\"\\.localized\\b"
+    message: "R6: 문자열은 SwiftGen 의 Strings.xxx 를 쓴다 (키 오타가 컴파일 에러로 잡힌다). 새 키는 Localization.strings 에 추가 후 swiftgen."
+    severity: error
+
+  snapkit_leading_trailing:                 # R6
+    name: "R6 SnapKit left/right 금지"
+    regex: "(\\$0|make)\\.([a-zA-Z]+\\.)*(left|right)\\b"
+    message: "R6: SnapKit 제약은 left/right 대신 leading/trailing 을 사용한다."
+    severity: error
+
+  no_then:                                  # R6
+    name: "R6 then 금지"
+    regex: "^import Then\\b|\\.then\\s*\\{"
+    message: "R6: then 대신 클로저 초기화를 사용한다 (let v: UILabel = { ... }())."
+    severity: error
+
+  no_screen_size:                           # R6
+    name: "R6 화면 크기 고정 계산 금지"
+    excluded: "seep-ios/uilts/(RatioUtils|UIUtils)\\.swift"   # 헬퍼 정의 자체 (사용처 정리 후 삭제 예정)
+    regex: "UIScreen\\.main\\b|UIUtils\\.windowBounds\\b|RatioUtils\\.(width|height)\\b"
+    message: "R6: 화면 크기(UIScreen.main·UIUtils.windowBounds·RatioUtils)로 레이아웃을 고정하지 않는다. 뷰·컬렉션뷰의 bounds, layoutEnvironment.container, .fractionalWidth 로 계산한다 (폴더블 창 크기 변경 대응)."
+    severity: error
+
+  length_disable_reason:                    # R7
+    name: "R7 길이 예외는 사유 필수"
+    regex: "swiftlint:disable(:next|:this|:previous)?\\s+(type_body_length|file_length)\\s*$"
+    match_kinds: comment
+    message: "R7: 길이 예외는 책임이 하나인 이유를 적는다. 예) // swiftlint:disable:next type_body_length - 셀 레이아웃만 담당"
+    severity: error
+
+  no_print:                                 # R8
+    name: "R8 print 금지"
+    regex: "(^|[^.\\w])print\\("
+    message: "R8: print 를 남기지 않는다. 에러는 Result / Output.route(.showErrorAlert) 로 전파한다."
+    severity: error
+
+reporter: "xcode"

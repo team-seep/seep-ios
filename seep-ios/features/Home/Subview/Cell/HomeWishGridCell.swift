@@ -4,10 +4,24 @@ import CombineCocoa
 
 final class HomeWishGridCell: BaseCollectionViewCell {
     enum Layout {
-        static let size = CGSize(
-            width: (UIUtils.windowBounds.width - 40 - 15) / 2,
-            height: ((UIScreen.main.bounds.width - 40 - 15) / 2) * 1.09
-        )
+        static let spacing: CGFloat = 15
+        static let heightRatio: CGFloat = 1.09
+        /// 한 열에 이 폭이 확보될 때마다 열을 늘린다. 셀 폭이 아이폰(약 174pt)과 비슷하게 유지되는 값.
+        /// 사용 가능 폭 540pt(컬렉션뷰 580pt)부터 3열 — 아이폰·듀오 바깥은 2열, 듀오 안쪽(폭 600 제한 시 560)은 3열
+        static let columnWidthUnit: CGFloat = 180
+        static let minimumColumnCount = 2
+
+        /// availableWidth: 섹션 좌우 inset을 뺀 폭
+        static func columnCount(availableWidth: CGFloat) -> Int {
+            guard availableWidth > 0 else { return minimumColumnCount }
+            return max(minimumColumnCount, Int(availableWidth / columnWidthUnit))
+        }
+
+        static func itemSize(availableWidth: CGFloat) -> CGSize {
+            let columnCount = CGFloat(columnCount(availableWidth: availableWidth))
+            let width = max(0, (availableWidth - spacing * (columnCount - 1)) / columnCount)
+            return CGSize(width: width, height: width * heightRatio)
+        }
     }
     
     private let containerView: UIView = {
@@ -35,6 +49,15 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     
     private let tagLabel = TagLabel()
     
+    private let stepProgressBar = StepProgressBar(width: 32)
+    
+    private let stepProgressLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray4
+        label.font = .appleBold(size: 11)
+        return label
+    }()
+    
     private let finishButton: UIButton = {
         let button = UIButton()
         button.setImage(Assets.Icons.icCheckOff.image.resizeImage(scaledTo: 30), for: .normal)
@@ -59,6 +82,8 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(ddayLabel)
         contentView.addSubview(tagLabel)
+        contentView.addSubview(stepProgressBar)
+        contentView.addSubview(stepProgressLabel)
         contentView.addSubview(finishButton)
         
         containerView.snp.makeConstraints {
@@ -81,10 +106,22 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             $0.bottom.equalToSuperview().offset(-14)
             $0.size.equalTo(30)
         }
+        
+        // 그리드는 뱃지가 세로로 쌓이므로, 오른쪽이 비어 있는 D-day 줄에 진행도를 붙인다
+        stepProgressBar.snp.makeConstraints {
+            $0.leading.equalTo(ddayLabel.snp.trailing).offset(6)
+            $0.centerY.equalTo(ddayLabel)
+        }
+        
+        stepProgressLabel.snp.makeConstraints {
+            $0.leading.equalTo(stepProgressBar.snp.trailing).offset(4)
+            $0.centerY.equalTo(ddayLabel)
+        }
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
         setupWish(viewModel.output.wish)
+        setupStepProgress(viewModel.output.stepProgress)
         
         finishButton.tapPublisher
             .subscribe(viewModel.input.didTapFinish)
@@ -139,5 +176,14 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             ddayLabel.alpha = 1
             tagLabel.alpha = 1
         }
+    }
+    
+    private func setupStepProgress(_ progress: WishStepProgress?) {
+        stepProgressBar.isHidden = progress == nil
+        stepProgressLabel.isHidden = progress == nil
+        guard let progress else { return }
+        
+        stepProgressBar.bind(progress: progress)
+        stepProgressLabel.text = Strings.Home.stepProgressFormat(progress.doneCount, progress.totalCount)
     }
 }

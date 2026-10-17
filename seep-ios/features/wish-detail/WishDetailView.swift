@@ -43,6 +43,10 @@ final class WishDetailView: BaseView {
         placeholder: "write_placeholder_date_enable".localized
     )
     
+    let savingsView = WishSavingsView()
+    
+    let stepsView = WishStepsView()
+    
     private let notificationIcon = UIImageView().then {
         $0.image = UIImage(named: "ic_notification_normal")
     }
@@ -113,6 +117,8 @@ final class WishDetailView: BaseView {
             self.categoryView,
             self.titleField,
             self.dateField,
+            self.savingsView,
+            self.stepsView,
             self.notificationIcon,
             self.notificationLabel,
             self.notificationTableView,
@@ -134,20 +140,24 @@ final class WishDetailView: BaseView {
     }
     
     override func bindConstraints() {
+        // 듀오 바깥 화면은 오른쪽 위에 센서·상태 표시 영역(safe area 오른쪽 inset)이 있어 safe area 기준으로 둔다.
+        // 아이콘(24pt) 위치는 그대로 두고 터치 영역만 44pt로 넓힌다.
         self.backButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(13)
-            make.width.height.equalTo(24)
+            make.leading.equalTo(self.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(3)
+            make.width.height.equalTo(44)
         }
         
         self.moreButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-20)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-10)
             make.centerY.equalTo(self.backButton)
+            make.width.height.equalTo(44)
         }
         
         self.scrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(self.backButton.snp.bottom).offset(13)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
+            make.top.equalTo(self.backButton.snp.bottom).offset(3)
         }
         
         self.containerView.snp.makeConstraints { make in
@@ -179,11 +189,23 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.titleField.snp.bottom).offset(24)
         }
         
+        // 모으기 섹션은 위쪽 간격(26)을 스스로 가져, 접히면 높이 0 이 된다 (GH-16)
+        self.savingsView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom)
+        }
+        
+        self.stepsView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.savingsView.snp.bottom).offset(26)
+        }
+        
         self.notificationIcon.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.dateField.snp.bottom).offset(26)
+            make.top.equalTo(self.stepsView.snp.bottom).offset(16)
             make.width.height.equalTo(16)
         }
+
         
         self.notificationLabel.snp.makeConstraints { make in
             make.left.equalTo(self.notificationIcon.snp.right).offset(4)
@@ -302,6 +324,22 @@ extension Reactive where Base: WishDetailView{
     var wish: Binder<Wish> {
         return Binder(self.base) { view, wish in
             view.bind(wish: wish)
+        }
+    }
+}
+
+extension WishDetailView {
+    /// 상세에서는 단계를 추가할 수 없어, 단계가 0개면 섹션을 접는다 (GH-5 R-1).
+    func setStepsHidden(_ isHidden: Bool) {
+        stepsView.isHidden = isHidden
+        notificationIcon.snp.remakeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            if isHidden {
+                make.top.equalTo(savingsView.snp.bottom).offset(26)
+            } else {
+                make.top.equalTo(stepsView.snp.bottom).offset(16)
+            }
+            make.width.height.equalTo(16)
         }
     }
 }
