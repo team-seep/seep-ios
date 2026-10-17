@@ -4,10 +4,24 @@ import CombineCocoa
 
 final class HomeWishGridCell: BaseCollectionViewCell {
     enum Layout {
-        static let size = CGSize(
-            width: (UIUtils.windowBounds.width - 40 - 15) / 2,
-            height: ((UIScreen.main.bounds.width - 40 - 15) / 2) * 1.09
-        )
+        static let spacing: CGFloat = 15
+        static let heightRatio: CGFloat = 1.09
+        /// 한 열에 이 폭이 확보될 때마다 열을 늘린다. 셀 폭이 아이폰(약 174pt)과 비슷하게 유지되는 값.
+        /// 사용 가능 폭 540pt(컬렉션뷰 580pt)부터 3열 — 아이폰·듀오 바깥은 2열, 듀오 안쪽(폭 600 제한 시 560)은 3열
+        static let columnWidthUnit: CGFloat = 180
+        static let minimumColumnCount = 2
+
+        /// availableWidth: 섹션 좌우 inset을 뺀 폭
+        static func columnCount(availableWidth: CGFloat) -> Int {
+            guard availableWidth > 0 else { return minimumColumnCount }
+            return max(minimumColumnCount, Int(availableWidth / columnWidthUnit))
+        }
+
+        static func itemSize(availableWidth: CGFloat) -> CGSize {
+            let columnCount = CGFloat(columnCount(availableWidth: availableWidth))
+            let width = max(0, (availableWidth - spacing * (columnCount - 1)) / columnCount)
+            return CGSize(width: width, height: width * heightRatio)
+        }
     }
     
     private let containerView: UIView = {
