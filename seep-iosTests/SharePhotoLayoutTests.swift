@@ -1,5 +1,7 @@
 import XCTest
 
+import ISEmojiView
+
 @testable import seep_ios_dev
 
 final class SharePhotoLayoutTests: XCTestCase {
@@ -93,5 +95,34 @@ final class SharePhotoLayoutTests: XCTestCase {
         XCTAssertEqual(card.width, 402, accuracy: 0.5)
         XCTAssertEqual(card.height, 402, accuracy: 0.5)
         XCTAssertEqual(card.minX, 0, accuracy: 0.5)
+    }
+
+    // MARK: 공유 이모지 탭 키보드 (NO-ISSUE)
+
+    func test_공유이모지탭_키보드가공유버튼위를채우고_카드는기존폭을유지한다() {
+        // Given / When
+        let view = layoutView(size: CGSize(width: 402, height: 780))
+        let keyboard = view.emojiCollectionView.subviews.first { $0 is EmojiView }
+
+        // Then
+        XCTAssertNotNil(keyboard)
+        XCTAssertEqual(view.photoContainer.frame.width, 402)
+        let keyboardBottom = view.emojiCollectionView.convert(keyboard?.frame ?? .zero, to: view).maxY
+        XCTAssertEqual(keyboardBottom, view.shareButton.frame.minY - 12, accuracy: 0.5)
+        XCTAssertGreaterThan(keyboard?.frame.height ?? 0, 0)
+    }
+
+    func test_공유이모지탭_이모지를고르면_카드이모지가바뀐다() {
+        // Given
+        let view = layoutView(size: CGSize(width: 402, height: 780))
+        guard let keyboard = view.emojiCollectionView.subviews.first(where: { $0 is EmojiView }) as? EmojiView else {
+            return XCTFail("이모지 키보드가 없다")
+        }
+
+        // When
+        view.emojiViewDidSelectEmoji("😍", emojiView: keyboard)
+
+        // Then
+        XCTAssertEqual(view.emojiLabel.text, "😍")
     }
 }
