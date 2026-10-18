@@ -12,6 +12,9 @@ final class MockWishRepository: WishRepository {
     var deleteSavingResult: Result<[WishSaving], RepositoryError> = .success([])
     private(set) var addSavingCalls: [(wishId: String, amount: Int)] = []
     private(set) var deleteSavingCalls: [(wishId: String, savingId: String)] = []
+    /// nil 이면 호출된 위시 id·소감으로 만든 위시를 성공으로 돌려준다
+    var updateFinishNoteResult: Result<Wish, RepositoryError>?
+    private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
@@ -43,5 +46,10 @@ final class MockWishRepository: WishRepository {
     func deleteSaving(wishId: String, savingId: String) -> Result<[WishSaving], RepositoryError> {
         deleteSavingCalls.append((wishId, savingId))
         return deleteSavingResult
+    }
+
+    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
+        updateFinishNoteCalls.append((wishId, note))
+        return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note))
     }
 }

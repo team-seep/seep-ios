@@ -83,6 +83,8 @@ struct WishService: WishServiceProtocol {
         realm.beginWrite()
         targetObject.isSuccess = false
         targetObject.finishDate = nil
+        // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
+        targetObject.finishNote = ""
         try! realm.commitWrite()
     }
   
