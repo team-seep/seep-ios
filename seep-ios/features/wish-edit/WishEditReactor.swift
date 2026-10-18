@@ -76,6 +76,9 @@ final class WishEditReactor: Reactor {
     private let wishID: String
     /// 수정 화면은 기록을 바꾸지 않는다. 상세로 돌려줄 위시에 그대로 담는다 (GH-16 R-7)
     private let savings: [WishSaving]
+    /// 카테고리를 바꾸지 않으면 고정을 그대로 둔다 (GH-33 R-9)
+    private let originalCategory: Category
+    private let originalPinnedAt: Date?
     private let wishService: WishServiceProtocol
     private let notificationManager: NotificationManagerProtocol
     
@@ -100,6 +103,8 @@ final class WishEditReactor: Reactor {
         )
         self.wishID = wish.id
         self.savings = wish.savings
+        self.originalCategory = wish.category
+        self.originalPinnedAt = wish.pinnedAt
         self.wishService = wishService
         self.notificationManager = notificationManager
     }
@@ -299,7 +304,9 @@ final class WishEditReactor: Reactor {
             targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             savings: self.savings,
             memo: self.currentState.memo,
-            hashtag: hashtag
+            hashtag: hashtag,
+            // 옮겨 간 카테고리의 고정 3개 제한을 넘지 않도록, 카테고리를 바꾸면 고정을 푼다 (GH-33 R-9)
+            pinnedAt: self.currentState.category == self.originalCategory ? self.originalPinnedAt : nil
         )
         
         self.wishService.updateWish(id: self.wishID, newWish: wish)

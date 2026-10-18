@@ -45,6 +45,8 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         return label
     }()
     
+    private let pinImageView = HomeWishPinMenu.makePinImageView()
+    
     private let ddayLabel = DdayLabel()
     
     private let tagLabel = TagLabel()
@@ -65,8 +67,11 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         return button
     }()
     
+    private var viewModel: HomeWishCellViewModel?
+    
     override func setup() {
         setupUI()
+        contentView.addInteraction(UIContextMenuInteraction(delegate: self))
     }
     
     override func prepareForReuse() {
@@ -85,6 +90,7 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         contentView.addSubview(stepProgressBar)
         contentView.addSubview(stepProgressLabel)
         contentView.addSubview(finishButton)
+        contentView.addSubview(pinImageView)
         
         containerView.snp.makeConstraints {
             $0.edges.equalTo(0)
@@ -93,6 +99,12 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         emojiLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(14)
             $0.top.equalToSuperview().offset(14)
+        }
+        
+        // 그리드는 오른쪽 위, 이모지 줄에 핀을 둔다 (GH-33 R-7)
+        pinImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-14)
+            $0.centerY.equalTo(emojiLabel)
         }
         
         titleLabel.snp.makeConstraints {
@@ -120,6 +132,8 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
+        self.viewModel = viewModel
+        pinImageView.isHidden = !viewModel.output.isPinned
         setupWish(viewModel.output.wish)
         setupStepProgress(viewModel.output.stepProgress)
         
@@ -185,5 +199,22 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         
         stepProgressBar.bind(progress: progress)
         stepProgressLabel.text = Strings.Home.stepProgressFormat(progress.doneCount, progress.totalCount)
+    }
+}
+
+// MARK: Pin (GH-33)
+extension HomeWishGridCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return HomeWishPinMenu.configuration(viewModel: viewModel)
+    }
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return HomeWishPinMenu.preview(view: contentView)
     }
 }

@@ -27,6 +27,17 @@ final class HomeWishListCell: BaseCollectionViewCell {
         return label
     }()
     
+    private let pinImageView = HomeWishPinMenu.makePinImageView()
+    
+    /// 제목 + 핀. 핀이 숨으면 스택에서 빠져 제목이 그 자리까지 쓴다 (GH-33 R-7)
+    private lazy var titleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, pinImageView])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 4
+        return stackView
+    }()
+    
     private let ddayLabel = DdayLabel()
     
     private let tagLabel = TagLabel()
@@ -56,8 +67,11 @@ final class HomeWishListCell: BaseCollectionViewCell {
         return button
     }()
     
+    private var viewModel: HomeWishCellViewModel?
+    
     override func setup() {
         setupUI()
+        contentView.addInteraction(UIContextMenuInteraction(delegate: self))
     }
     
     override func prepareForReuse() {
@@ -70,7 +84,7 @@ final class HomeWishListCell: BaseCollectionViewCell {
         backgroundColor = .clear
         contentView.addSubview(containerView)
         contentView.addSubview(emojiLabel)
-        contentView.addSubview(titleLabel)
+        contentView.addSubview(titleStackView)
         contentView.addSubview(ddayLabel)
         contentView.addSubview(tagLabel)
         contentView.addSubview(stepProgressBar)
@@ -88,10 +102,13 @@ final class HomeWishListCell: BaseCollectionViewCell {
             $0.centerY.equalToSuperview()
         }
         
-        titleLabel.snp.makeConstraints {
+        titleStackView.snp.makeConstraints {
             $0.top.equalTo(emojiLabel).offset(3)
             $0.leading.equalTo(emojiLabel.snp.trailing).offset(14)
+            $0.trailing.lessThanOrEqualTo(finishButton.snp.leading).offset(-12)
         }
+        // 제목이 길면 제목이 말줄임되고 핀은 남는다 (GH-33 R-7)
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         ddayLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel)
@@ -129,6 +146,8 @@ final class HomeWishListCell: BaseCollectionViewCell {
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
+        self.viewModel = viewModel
+        pinImageView.isHidden = !viewModel.output.isPinned
         setupWish(viewModel.output.wish)
         setupStepProgress(viewModel.output.stepProgress, isTagHidden: viewModel.output.wish.hashtag.isEmpty)
         setupFinishNote(viewModel.output.finishNote)
@@ -192,5 +211,59 @@ final class HomeWishListCell: BaseCollectionViewCell {
         tagLabel.isHidden = true
         stepProgressBar.isHidden = true
         stepProgressLabel.isHidden = true
+    }
+}
+
+// MARK: Pin (GH-33)
+extension HomeWishListCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return HomeWishPinMenu.configuration(viewModel: viewModel)
+    }
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return HomeWishPinMenu.preview(view: contentView)
+    }
+}
+
+/// 홈 위시 셀(리스트·그리드)이 같이 쓰는 고정 메뉴와 핀 아이콘 (GH-33 R-2, R-7)
+enum HomeWishPinMenu {
+    static func makePinImageView() -> UIImageView {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 14)
+        let imageView = UIImageView(image: UIImage(systemName: "pin.fill", withConfiguration: configuration))
+        imageView.tintColor = .gray4
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        return imageView
+    }
+    
+    static func configuration(viewModel: HomeWishCellViewModel?) -> UIContextMenuConfiguration? {
+        guard let viewModel, viewModel.output.canShowPinMenu else { return nil }
+        
+        let isPinned = viewModel.output.isPinned
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak viewModel] _ in
+            let action = UIAction(
+                title: isPinned ? Strings.Home.Pin.unpin : Strings.Home.Pin.pin,
+                image: UIImage(systemName: isPinned ? "pin.slash" : "pin")
+            ) { _ in
+                viewModel?.input.didTapPinMenu.send(())
+            }
+            return UIMenu(children: [action])
+        }
+    }
+    
+    /// 셀 카드 모양(모서리 12) 그대로 띄운다
+    static func preview(view: UIView) -> UITargetedPreview {
+        let parameters = UIPreviewParameters()
+        parameters.visiblePath = UIBezierPath(roundedRect: view.bounds, cornerRadius: 12)
+        parameters.backgroundColor = .clear
+        return UITargetedPreview(view: view, parameters: parameters)
     }
 }

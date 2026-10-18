@@ -19,7 +19,16 @@ struct Wish: Equatable, Hashable {
     var isSuccess: Bool
     /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
     var finishNote: String
+    /// 홈 맨 위에 고정한 시각. nil 이면 고정 아님 (GH-33)
+    var pinnedAt: Date?
     let createdAt: Date
+    
+    /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
+    static let maxPinCountPerCategory = 3
+    
+    var isPinned: Bool {
+        return pinnedAt != nil
+    }
     
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
@@ -69,6 +78,7 @@ struct Wish: Equatable, Hashable {
         hashtag: String = "",
         isSuccess: Bool = false,
         finishNote: String = "",
+        pinnedAt: Date? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -85,6 +95,7 @@ struct Wish: Equatable, Hashable {
         self.hashtag = hashtag
         self.isSuccess = isSuccess
         self.finishNote = finishNote
+        self.pinnedAt = pinnedAt
         self.createdAt = createdAt
     }
     
@@ -103,6 +114,7 @@ struct Wish: Equatable, Hashable {
         self.hashtag = dto.hashtag
         self.isSuccess = dto.isSuccess
         self.finishNote = dto.finishNote
+        self.pinnedAt = dto.pinnedAt
         self.createdAt = dto.createdAt
     }
 }

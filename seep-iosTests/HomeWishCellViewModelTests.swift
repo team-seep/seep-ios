@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 
 @testable import seep_ios_dev
 
@@ -64,5 +65,55 @@ final class HomeWishCellViewModelTests: XCTestCase {
         // Then
         XCTAssertNil(finishedViewModel.output.finishNote)
         XCTAssertNil(notFinishedViewModel.output.finishNote)
+    }
+
+    // MARK: GH-33 TC1
+
+    func test_GH33_TC1_고정된위시는_셀에핀이보인다() {
+        // Given
+        let pinned = Wish(id: "wish-1", title: "고정", pinnedAt: Date())
+        let notPinned = Wish(id: "wish-2", title: "미고정")
+
+        // When
+        let pinnedViewModel = HomeWishCellViewModel(config: .init(wish: pinned, viewType: .list))
+        let notPinnedViewModel = HomeWishCellViewModel(config: .init(wish: notPinned, viewType: .grid))
+
+        // Then
+        XCTAssertTrue(pinnedViewModel.output.isPinned)
+        XCTAssertFalse(notPinnedViewModel.output.isPinned)
+    }
+
+    // MARK: GH-33 TC7
+
+    func test_GH33_TC7_완료된위시는_고정메뉴를띄우지않고_메뉴입력도전달하지않는다() {
+        // Given
+        let finished = Wish(id: "wish-1", title: "완료", isSuccess: true)
+        let viewModel = HomeWishCellViewModel(config: .init(wish: finished, viewType: .list))
+        var forwarded: [Wish] = []
+        let cancellable = viewModel.output.didTapPinMenu.sink { forwarded.append($0) }
+
+        // When
+        viewModel.input.didTapPinMenu.send(())
+
+        // Then
+        XCTAssertFalse(viewModel.output.canShowPinMenu)
+        XCTAssertTrue(forwarded.isEmpty)
+        cancellable.cancel()
+    }
+
+    func test_GH33_TC7_미완료위시는_고정메뉴를띄우고_메뉴입력을위시와함께전달한다() {
+        // Given
+        let wish = Wish(id: "wish-1", title: "미완료")
+        let viewModel = HomeWishCellViewModel(config: .init(wish: wish, viewType: .list))
+        var forwarded: [Wish] = []
+        let cancellable = viewModel.output.didTapPinMenu.sink { forwarded.append($0) }
+
+        // When
+        viewModel.input.didTapPinMenu.send(())
+
+        // Then
+        XCTAssertTrue(viewModel.output.canShowPinMenu)
+        XCTAssertEqual(forwarded.map(\.id), ["wish-1"])
+        cancellable.cancel()
     }
 }

@@ -14,6 +14,8 @@ extension HomeViewModel {
         let didTapFinish = PassthroughSubject<Wish, Never>()
         let didTapWrite = PassthroughSubject<Void, Never>()
         let didTapDelete = PassthroughSubject<Int, Never>()
+        /// 셀 메뉴의 "맨 위에 고정" / "고정 해제" (GH-33)
+        let didTapPinMenu = PassthroughSubject<Wish, Never>()
         
         // From WishDetail
         let updateWish = PassthroughSubject<Wish, Never>()
@@ -179,6 +181,13 @@ final class HomeViewModel {
             }
             .store(in: &cancellables)
         
+        input.didTapPinMenu
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, wish: Wish) in
+                owner.togglePin(wish: wish)
+            }
+            .store(in: &cancellables)
+        
         input.didTapDelete
             .sink { [weak self] index in
                 guard let self,
@@ -269,6 +278,9 @@ final class HomeViewModel {
         viewModel.output.didTapFinish
             .subscribe(input.didTapFinish)
             .store(in: &viewModel.cancellables)
+        viewModel.output.didTapPinMenu
+            .subscribe(input.didTapPinMenu)
+            .store(in: &viewModel.cancellables)
         
         return viewModel
     }
@@ -291,6 +303,41 @@ final class HomeViewModel {
         ))
     }
 
+    private func togglePin(wish: Wish) {
+        guard !wish.isSuccess else { return }
+        let category = state.category
+        let shouldPin = !wish.isPinned
+        // 메뉴는 완료 아닌 위시에만 뜨므로 state.wish 에 이 카테고리의 고정 위시가 모두 있다
+        let otherPinnedCount = state.wish.filter { $0.isPinned && $0.id != wish.id }.count
+        
+        if shouldPin, otherPinnedCount >= Wish.maxPinCountPerCategory {
+            output.toast.send(Strings.Home.Pin.limitToast)
+            dependency.logManager.sendEvent(event: ImpressionEvent(
+                screen: output.screenName,
+                objectType: .banner,
+                objectId: .pinLimitToast,
+                extraParameters: [.category: category.rawValue]
+            ))
+            return
+        }
+        
+        switch dependency.wishRepository.updatePin(wishId: wish.id, isPinned: shouldPin) {
+        case .success:
+            if shouldPin {
+                sendClickLog(objectId: .pinWish, extraParameters: [
+                    .category: category.rawValue,
+                    .count: otherPinnedCount + 1
+                ])
+            } else {
+                sendClickLog(objectId: .unpinWish, extraParameters: [.category: category.rawValue])
+            }
+            // 고정 순서가 바뀌므로 정렬을 다시 적용한다 (R-4)
+            fetchWishDatas()
+        case .failure(let error):
+            output.route.send(.showErrorAlert(error))
+        }
+    }
+    
     private func finishWish(wish: Wish) {
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         let result = dependency.wishRepository.finishWish(wish: wish)

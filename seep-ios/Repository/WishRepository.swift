@@ -20,6 +20,9 @@ protocol WishRepository {
     
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    
+    /// 홈 맨 위 고정/해제. 고정이면 지금 시각을 pinnedAt 에 넣고, 해제면 nil 로 비운다 (GH-33 R-8)
+    func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -29,7 +32,7 @@ final class WishRepositoryImpl: WishRepository {
             .filter { (isOnlyFinished ? ($0.isSuccess == isOnlyFinished) : true) && ($0.category == category.rawValue) }
             .map { Wish(dto: $0) }
         
-        return searchTask.sorted(by: sort.orderFunction())
+        return sort.sorted(Array(searchTask))
     }
     
     func fetchNotFinishCount(category: Category) -> Int {
@@ -51,12 +54,15 @@ final class WishRepositoryImpl: WishRepository {
         realm.beginWrite()
         targetObject.isSuccess = true
         targetObject.finishDate = finishDate
+        // 완료하면 고정을 푼다. 완료를 취소해도 돌아오지 않는다 (GH-33 R-6)
+        targetObject.pinnedAt = nil
         
         do {
             try realm.commitWrite()
             var finishedWish = wish
             finishedWish.isSuccess = true
             finishedWish.finishDate = finishDate
+            finishedWish.pinnedAt = nil
             return .success(finishedWish)
         } catch {
             return .failure(.writeFailed)
@@ -102,6 +108,23 @@ final class WishRepositoryImpl: WishRepository {
         do {
             try realm.write {
                 targetObject.finishNote = note
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        return .success(Wish(dto: targetObject))
+    }
+    
+    func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                targetObject.pinnedAt = isPinned ? DateUtils.now() : nil
             }
         } catch {
             return .failure(.writeFailed)

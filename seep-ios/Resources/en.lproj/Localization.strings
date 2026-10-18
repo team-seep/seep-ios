@@ -63,6 +63,9 @@
 "home.finish_note.save" = "남기기";
 "home.finish_note.skip" = "다음에 할게요";
 "home.finish_note.cell_format" = "“%@”";
+"home.pin.pin" = "맨 위에 고정";
+"home.pin.unpin" = "고정 해제";
+"home.pin.limit_toast" = "고정은 3개까지 할 수 있어요";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

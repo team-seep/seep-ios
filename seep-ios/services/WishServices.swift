@@ -70,6 +70,8 @@ struct WishService: WishServiceProtocol {
             item?.steps.append(objectsIn: newWish.steps.map(WishStepDTO.init(step:)))
             // 목표 금액만 바꾸고 모은 돈 기록(savings)은 건드리지 않는다 (GH-16 R-7)
             item?.targetAmount = newWish.targetAmount
+            // 수정 화면이 고정 여부를 정해 넘긴다. 카테고리를 바꾸면 nil 이다 (GH-33 R-9)
+            item?.pinnedAt = newWish.pinnedAt
         }
   }
   
@@ -98,6 +100,8 @@ struct WishService: WishServiceProtocol {
         realm.beginWrite()
         targetObject.isSuccess = true
         targetObject.finishDate = DateUtils.now()
+        // 완료하면 고정을 푼다 (GH-33 R-6)
+        targetObject.pinnedAt = nil
         try! realm.commitWrite()
     }
   

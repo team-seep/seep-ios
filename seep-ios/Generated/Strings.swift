@@ -443,6 +443,14 @@ internal enum Strings {
         return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
       }
     }
+    internal enum Pin {
+      /// 고정은 3개까지 할 수 있어요
+      internal static let limitToast = Strings.tr("Localization", "home.pin.limit_toast", fallback: "고정은 3개까지 할 수 있어요")
+      /// 맨 위에 고정
+      internal static let pin = Strings.tr("Localization", "home.pin.pin", fallback: "맨 위에 고정")
+      /// 고정 해제
+      internal static let unpin = Strings.tr("Localization", "home.pin.unpin", fallback: "고정 해제")
+    }
     internal enum TitleFormat {
       /// 하고 싶은 것들이
       /// %d개 남았어요!

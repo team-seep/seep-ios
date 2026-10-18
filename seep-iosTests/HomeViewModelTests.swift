@@ -269,3 +269,249 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "최고!")
     }
 }
+
+// MARK: - GH-33 위시 맨 위 고정
+
+extension HomeViewModelTests {
+    private struct PinFixture {
+        let viewModel: HomeViewModel
+        let repository: MockWishRepository
+        let logManager: MockLogManager
+    }
+
+    private func makePinFixture(wishes: [Wish]) -> PinFixture {
+        let repository = MockWishRepository()
+        let logManager = MockLogManager()
+        repository.fetchWishesResult = wishes
+        let viewModel = HomeViewModel(dependency: .init(
+            wishRepository: repository,
+            preference: Preference(name: "test"),
+            notificationManager: MockNotificationManager(),
+            logManager: logManager
+        ))
+        viewModel.input.firstLoad.send()
+        return PinFixture(viewModel: viewModel, repository: repository, logManager: logManager)
+    }
+
+    private func cellViewModels(of viewModel: HomeViewModel) -> [HomeWishCellViewModel] {
+        return viewModel.output.dataSource.value.flatMap(\.items).compactMap {
+            if case .wish(let cellViewModel) = $0 { return cellViewModel }
+            return nil
+        }
+    }
+
+    private func objectId(_ event: (any LogEventType)?) -> String? {
+        return event?.parameters[ParameterName.objectId.rawValue] as? String
+    }
+
+    private func date(daysFromNow days: Double) -> Date {
+        return Date().addingTimeInterval(days * 86400)
+    }
+
+    // MARK: GH-33 TC1
+
+    func test_GH33_TC1_마감순에서_일정없는위시를고정하면_맨위로온다() {
+        // Given
+        let soon = Wish(id: "soon", title: "D-1", endDate: date(daysFromNow: 1))
+        let later = Wish(id: "later", title: "D-23", endDate: date(daysFromNow: 23))
+        var noDate = Wish(id: "no-date", title: "일정없음")
+        XCTAssertEqual(HomeSortOrder.deadlineOrder.sorted([noDate, later, soon]).map(\.id), ["soon", "later", "no-date"])
+
+        // When
+        noDate.pinnedAt = Date()
+        let sorted = HomeSortOrder.deadlineOrder.sorted([soon, later, noDate])
+
+        // Then
+        XCTAssertEqual(sorted.map(\.id), ["no-date", "soon", "later"])
+    }
+
+    func test_GH33_TC1_고정메뉴를탭하면_저장후목록을다시불러와_핀이보인다() {
+        // Given
+        let wish = Wish(id: "wish-1", title: "기타로 노래 한 곡 치기")
+        let fixture = makePinFixture(wishes: [wish])
+        var pinned = wish
+        pinned.pinnedAt = Date()
+        fixture.repository.fetchWishesResult = [pinned]
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(wish)
+
+        // Then
+        XCTAssertEqual(fixture.repository.updatePinCalls.map(\.wishId), ["wish-1"])
+        XCTAssertEqual(fixture.repository.updatePinCalls.map(\.isPinned), [true])
+        XCTAssertEqual(cellViewModels(of: fixture.viewModel).first?.output.isPinned, true)
+    }
+
+    // MARK: GH-33 TC2
+
+    func test_GH33_TC2_고정2개는_나중에고정한것부터맨위에오고_나머지는마감순이다() {
+        // Given
+        let pinnedA = Wish(id: "A", title: "A", endDate: date(daysFromNow: 30), pinnedAt: date(daysFromNow: -2))
+        let pinnedB = Wish(id: "B", title: "B", pinnedAt: date(daysFromNow: -1))
+        let soon = Wish(id: "soon", title: "D-1", endDate: date(daysFromNow: 1))
+        let later = Wish(id: "later", title: "D-23", endDate: date(daysFromNow: 23))
+
+        // When
+        let sorted = HomeSortOrder.deadlineOrder.sorted([later, pinnedA, soon, pinnedB])
+
+        // Then
+        XCTAssertEqual(sorted.map(\.id), ["B", "A", "soon", "later"])
+    }
+
+    func test_GH33_TC2_최신순에서도_고정이맨위고_나머지는최신순이다() {
+        // Given
+        let pinnedOld = Wish(id: "pinned-old", title: "오래된 고정", pinnedAt: Date(), createdAt: date(daysFromNow: -10))
+        let older = Wish(id: "older", title: "예전 위시", createdAt: date(daysFromNow: -5))
+        let newer = Wish(id: "newer", title: "최근 위시", createdAt: date(daysFromNow: -1))
+
+        // When
+        let sorted = HomeSortOrder.latestOrder.sorted([older, pinnedOld, newer])
+
+        // Then
+        XCTAssertEqual(sorted.map(\.id), ["pinned-old", "newer", "older"])
+    }
+
+    // MARK: GH-33 TC3
+
+    func test_GH33_TC3_고정3개인카테고리에서_네번째고정은_저장하지않고_토스트를띄운다() {
+        // Given
+        let pinnedWishes = (1...3).map { Wish(id: "pinned-\($0)", title: "고정 \($0)", pinnedAt: date(daysFromNow: -Double($0))) }
+        let target = Wish(id: "target", title: "네 번째")
+        let fixture = makePinFixture(wishes: pinnedWishes + [target])
+        var toasts: [String] = []
+        fixture.viewModel.output.toast
+            .sink { toasts.append($0) }
+            .store(in: &cancellables)
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(target)
+
+        // Then
+        XCTAssertTrue(fixture.repository.updatePinCalls.isEmpty)
+        XCTAssertEqual(toasts, ["고정은 3개까지 할 수 있어요"])
+    }
+
+    // MARK: GH-33 TC4
+
+    func test_GH33_TC4_다른카테고리에고정3개가있어도_이카테고리에서는_고정된다() {
+        // Given
+        let wantToDoPinned = (1...3).map {
+            Wish(id: "do-\($0)", category: .wantToDo, title: "하고 싶은 \($0)", pinnedAt: date(daysFromNow: -Double($0)))
+        }
+        let fixture = makePinFixture(wishes: wantToDoPinned)
+        let wantToGet = Wish(id: "get-1", category: .wantToGet, title: "갖고 싶은 것")
+        fixture.repository.fetchWishesResult = [wantToGet]
+        fixture.viewModel.input.updateCategory.send(.wantToGet)
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(wantToGet)
+
+        // Then
+        XCTAssertEqual(fixture.repository.updatePinCalls.map(\.wishId), ["get-1"])
+        XCTAssertEqual(fixture.repository.updatePinCalls.map(\.isPinned), [true])
+    }
+
+    // MARK: GH-33 TC5
+
+    func test_GH33_TC5_고정을해제하면_원래정렬위치로돌아간다() {
+        // Given
+        let soon = Wish(id: "soon", title: "D-1", endDate: date(daysFromNow: 1))
+        var target = Wish(id: "target", title: "D-23", endDate: date(daysFromNow: 23), pinnedAt: Date())
+        let noDate = Wish(id: "no-date", title: "일정없음")
+        XCTAssertEqual(HomeSortOrder.deadlineOrder.sorted([soon, noDate, target]).map(\.id).first, "target")
+
+        // When
+        target.pinnedAt = nil
+        let sorted = HomeSortOrder.deadlineOrder.sorted([soon, noDate, target])
+
+        // Then
+        XCTAssertEqual(sorted.map(\.id), ["soon", "target", "no-date"])
+    }
+
+    func test_GH33_TC5_고정된위시의메뉴를탭하면_해제로저장하고_핀이사라진다() {
+        // Given
+        let pinned = Wish(id: "wish-1", title: "고정된 위시", pinnedAt: Date())
+        let fixture = makePinFixture(wishes: [pinned])
+        var unpinned = pinned
+        unpinned.pinnedAt = nil
+        fixture.repository.fetchWishesResult = [unpinned]
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(pinned)
+
+        // Then
+        XCTAssertEqual(fixture.repository.updatePinCalls.map(\.isPinned), [false])
+        XCTAssertEqual(cellViewModels(of: fixture.viewModel).first?.output.isPinned, false)
+    }
+
+    // MARK: GH-33 TC7
+
+    func test_GH33_TC7_완료된위시는_고정요청이와도_저장하지않는다() {
+        // Given
+        let finished = Wish(id: "finished", title: "완료된 위시", finishDate: Date(), isSuccess: true)
+        let fixture = makePinFixture(wishes: [finished])
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(finished)
+
+        // Then
+        XCTAssertTrue(fixture.repository.updatePinCalls.isEmpty)
+        XCTAssertTrue(fixture.logManager.sentEvents.isEmpty)
+    }
+
+    // MARK: GH-33 TC9
+
+    func test_GH33_TC9_고정하면_pin_wish클릭로그가_카테고리와고정후개수와함께1건전송된다() {
+        // Given
+        let alreadyPinned = Wish(id: "pinned", title: "이미 고정", pinnedAt: Date())
+        let target = Wish(id: "target", title: "새로 고정")
+        let fixture = makePinFixture(wishes: [alreadyPinned, target])
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(target)
+
+        // Then
+        XCTAssertEqual(fixture.logManager.sentEvents.count, 1)
+        let event = fixture.logManager.sentEvents.first
+        XCTAssertEqual(event?.name, .click)
+        XCTAssertEqual(event?.parameters[ParameterName.screen.rawValue] as? String, "home")
+        XCTAssertEqual(event?.parameters[ParameterName.objectType.rawValue] as? String, "button")
+        XCTAssertEqual(objectId(event), "pin_wish")
+        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+        XCTAssertEqual(event?.parameters[ParameterName.count.rawValue] as? Int, 2)
+    }
+
+    func test_GH33_TC9_고정해제하면_unpin_wish클릭로그가1건전송된다() {
+        // Given
+        let pinned = Wish(id: "pinned", title: "고정된 위시", pinnedAt: Date())
+        let fixture = makePinFixture(wishes: [pinned])
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(pinned)
+
+        // Then
+        XCTAssertEqual(fixture.logManager.sentEvents.count, 1)
+        let event = fixture.logManager.sentEvents.first
+        XCTAssertEqual(event?.name, .click)
+        XCTAssertEqual(objectId(event), "unpin_wish")
+        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+    }
+
+    func test_GH33_TC9_3개초과로토스트가뜨면_pin_limit_toast노출로그가1건전송된다() {
+        // Given
+        let pinnedWishes = (1...3).map { Wish(id: "pinned-\($0)", title: "고정 \($0)", pinnedAt: Date()) }
+        let target = Wish(id: "target", title: "네 번째")
+        let fixture = makePinFixture(wishes: pinnedWishes + [target])
+
+        // When
+        fixture.viewModel.input.didTapPinMenu.send(target)
+
+        // Then
+        XCTAssertEqual(fixture.logManager.sentEvents.count, 1)
+        let event = fixture.logManager.sentEvents.first
+        XCTAssertEqual(event?.name, .impression)
+        XCTAssertEqual(event?.parameters[ParameterName.objectType.rawValue] as? String, "banner")
+        XCTAssertEqual(objectId(event), "pin_limit_toast")
+        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+    }
+}
