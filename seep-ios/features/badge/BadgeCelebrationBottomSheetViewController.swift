@@ -83,7 +83,9 @@ final class BadgeCelebrationBottomSheetViewController: BaseViewController {
         let fittedHeight = ceil(viewBadgesButton.frame.maxY + Layout.bottomInset)
         guard fittedHeight > 0, abs(fittedHeight - contentHeight) > 0.5 else { return }
         contentHeight = fittedHeight
+        // 높이만 바꾸면 시트 위치는 그대로라 콘텐츠가 화면 아래로 잘린다. 새 높이의 shortForm 위치로 옮긴다
         panModalSetNeedsLayoutUpdate()
+        panModalTransition(to: .shortForm)
     }
 
     private func setupUI() {
