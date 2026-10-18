@@ -2,6 +2,7 @@ import UIKit
 import Photos
 
 import SnapKit
+import ISEmojiView
 
 class SharePhotoView: BaseView {
 
@@ -114,6 +115,17 @@ class SharePhotoView: BaseView {
   let emojiCollectionView = UIView().then {
     $0.backgroundColor = UIColor(r: 246, g: 246, b: 246)
   }
+
+  /// 이모지 탭에서 카드 이모지를 바꾸는 키보드. 공유 이미지에만 쓰고 위시의 이모지는 바꾸지 않는다.
+  private lazy var emojiKeyboardView: EmojiView = {
+    let settings = KeyboardSettings(bottomType: .categories)
+    settings.needToShowDeleteButton = false
+    let view = EmojiView(keyboardSettings: settings)
+    // 키보드 고유 높이가 카드 크기를 밀지 않게 제약 대신 남은 공간에 frame 으로 맞춘다(updateEmojiKeyboardFrame).
+    view.translatesAutoresizingMaskIntoConstraints = true
+    view.delegate = self
+    return view
+  }()
   
   let collectionView = UICollectionView(
     frame: .zero,
@@ -151,6 +163,7 @@ class SharePhotoView: BaseView {
       topDividor, shareTypeSwitchButton, collectionView, emojiCollectionView,
       bottomDividorView, shareButton
     )
+    self.emojiCollectionView.addSubview(self.emojiKeyboardView)
   }
   
   override func bindConstraints() {
@@ -261,6 +274,7 @@ class SharePhotoView: BaseView {
     super.layoutSubviews()
     self.updatePhotoListLayout()
     self.updateEmojiFontSize()
+    self.updateEmojiKeyboardFrame()
   }
   
   func bind(wish: Wish) {
@@ -349,6 +363,21 @@ class SharePhotoView: BaseView {
     }
   }
 
+  /// 이모지 탭 영역 중 공유 버튼 위까지만 키보드로 채운다(카테고리 바가 버튼에 가리지 않게).
+  private func updateEmojiKeyboardFrame() {
+    let area = self.emojiCollectionView.frame
+    let bottom = self.shareButton.frame.minY - Layout.shareButtonTopSpacing
+    let frame = CGRect(
+      x: self.safeAreaInsets.left,
+      y: 0,
+      width: max(0, area.width - self.safeAreaInsets.left - self.safeAreaInsets.right),
+      height: max(0, bottom - area.minY)
+    )
+    if self.emojiKeyboardView.frame != frame {
+      self.emojiKeyboardView.frame = frame
+    }
+  }
+
   private func updateEmojiFontSize() {
     let cardWidth = self.photoContainer.bounds.width
     guard cardWidth > 0 else { return }
@@ -362,5 +391,12 @@ class SharePhotoView: BaseView {
     self.dateLabel.textColor = isBlack ? .gray5 : .white
     self.photoTitleLabel.textColor = isBlack ? .gray5 : .white
     self.logoImage.image = isBlack ? .icLogoBlack : .icLogoWhite
+  }
+}
+
+extension SharePhotoView: EmojiViewDelegate {
+  func emojiViewDidSelectEmoji(_ emoji: String, emojiView: EmojiView) {
+    self.emojiLabel.text = emoji
+    self.photoContainer.backgroundColor = emoji.image()?.averageColor
   }
 }
