@@ -84,7 +84,8 @@ final class WishLinkInputView: BaseView {
     /// 클립보드에 링크가 있을 때만 보인다. 사용자가 직접 눌러 붙여넣으니 권한 알림이 뜨지 않는다 (R-6)
     private lazy var pasteControl: UIPasteControl = {
         let configuration = UIPasteControl.Configuration()
-        configuration.displayMode = .labelOnly
+        // 앱이 en 로컬라이즈만 있어 라벨은 시스템이 "Paste"로 그린다. 한글 화면에 영어가 섞이지 않게 아이콘만 쓴다
+        configuration.displayMode = .iconOnly
         configuration.cornerStyle = .capsule
         configuration.baseForegroundColor = .seepBlue
         configuration.baseBackgroundColor = .gray1
@@ -159,7 +160,7 @@ final class WishLinkInputView: BaseView {
         pasteControl.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-10)
             $0.centerY.equalToSuperview()
-            $0.height.equalTo(32)
+            $0.size.equalTo(32)
         }
 
         textField.snp.makeConstraints {
@@ -172,15 +173,16 @@ final class WishLinkInputView: BaseView {
     override func paste(itemProviders: [NSItemProvider]) {
         guard let provider = itemProviders.first else { return }
 
-        if provider.canLoadObject(ofClass: URL.self) {
-            _ = provider.loadObject(ofClass: URL.self) { [weak self] url, _ in
-                guard let url else { return }
-                self?.sendPasted(text: url.absoluteString)
-            }
-        } else if provider.canLoadObject(ofClass: String.self) {
+        // 문자열을 먼저 본다. 텍스트로 복사한 링크도 URL 로 읽히는데, 그 경우 URL 로드가 실패할 수 있다
+        if provider.canLoadObject(ofClass: String.self) {
             _ = provider.loadObject(ofClass: String.self) { [weak self] text, _ in
                 guard let text else { return }
                 self?.sendPasted(text: text)
+            }
+        } else if provider.canLoadObject(ofClass: URL.self) {
+            _ = provider.loadObject(ofClass: URL.self) { [weak self] url, _ in
+                guard let url else { return }
+                self?.sendPasted(text: url.absoluteString)
             }
         }
     }
@@ -296,7 +298,7 @@ final class WishLinkInputView: BaseView {
         let isEmpty = (textField.text ?? "").isEmpty
         pasteControl.isHidden = !(canPaste && isEmpty)
         textField.snp.updateConstraints {
-            $0.trailing.equalToSuperview().offset(pasteControl.isHidden ? -12 : -100)
+            $0.trailing.equalToSuperview().offset(pasteControl.isHidden ? -12 : -52)
         }
     }
 
