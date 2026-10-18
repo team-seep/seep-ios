@@ -17,6 +17,9 @@ protocol WishRepository {
     
     /// 모은 돈 기록을 지우고, 갱신된 기록 목록(최신순)을 돌려준다 (GH-16 R-5).
     func deleteSaving(wishId: String, savingId: String) -> Result<[WishSaving], RepositoryError>
+    
+    /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
+    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -88,6 +91,23 @@ final class WishRepositoryImpl: WishRepository {
             guard let index = savings.firstIndex(where: { $0._id == savingId }) else { return }
             savings.remove(at: index)
         }
+    }
+    
+    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                targetObject.finishNote = note
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        return .success(Wish(dto: targetObject))
     }
     
     private func updateSavings(

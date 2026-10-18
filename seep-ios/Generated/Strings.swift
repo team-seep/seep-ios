@@ -416,6 +416,33 @@ internal enum Strings {
         internal static let latest = Strings.tr("Localization", "home.filter.sort.latest", fallback: "최근 생성순")
       }
     }
+    internal enum FinishNote {
+      /// “%@”
+      internal static func cellFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.finish_note.cell_format", String(describing: p1), fallback: "“%@”")
+      }
+      /// %d/%d
+      internal static func countFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "home.finish_note.count_format", p1, p2, fallback: "%d/%d")
+      }
+      /// 지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.
+      internal static let description = Strings.tr("Localization", "home.finish_note.description", fallback: "지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.")
+      /// 완료 소감
+      internal static let field = Strings.tr("Localization", "home.finish_note.field", fallback: "완료 소감")
+      /// 예) 생각보다 훨씬 좋았어요!
+      internal static let placeholder = Strings.tr("Localization", "home.finish_note.placeholder", fallback: "예) 생각보다 훨씬 좋았어요!")
+      /// 남기기
+      internal static let save = Strings.tr("Localization", "home.finish_note.save", fallback: "남기기")
+      /// 다음에 할게요
+      internal static let skip = Strings.tr("Localization", "home.finish_note.skip", fallback: "다음에 할게요")
+      /// 이루고 나니 어때요?
+      internal static let titleBold = Strings.tr("Localization", "home.finish_note.title_bold", fallback: "이루고 나니 어때요?")
+      /// %@,
+      /// 이루고 나니 어때요?
+      internal static func titleFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
+      }
+    }
     internal enum TitleFormat {
       /// 하고 싶은 것들이
       /// %d개 남았어요!

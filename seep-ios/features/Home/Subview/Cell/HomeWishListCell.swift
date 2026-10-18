@@ -40,6 +40,15 @@ final class HomeWishListCell: BaseCollectionViewCell {
         return label
     }()
     
+    private let finishNoteLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray4
+        label.font = .appleMedium(size: 12)
+        label.lineBreakMode = .byTruncatingTail
+        label.isHidden = true
+        return label
+    }()
+    
     private let finishButton: UIButton = {
         let button = UIButton()
         button.setImage(Assets.Icons.icCheckOff.image, for: .normal)
@@ -66,6 +75,7 @@ final class HomeWishListCell: BaseCollectionViewCell {
         contentView.addSubview(tagLabel)
         contentView.addSubview(stepProgressBar)
         contentView.addSubview(stepProgressLabel)
+        contentView.addSubview(finishNoteLabel)
         contentView.addSubview(finishButton)
         
         containerView.snp.makeConstraints {
@@ -107,11 +117,21 @@ final class HomeWishListCell: BaseCollectionViewCell {
             $0.leading.equalTo(stepProgressBar.snp.trailing).offset(4)
             $0.centerY.equalTo(ddayLabel)
         }
+        
+        // 뱃지 줄 자리에 한 줄로 둔다. 체크 버튼 앞에서 말줄임해 셀 높이 70을 유지한다 (GH-25 R-5)
+        finishNoteLabel.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel)
+            $0.trailing.lessThanOrEqualTo(finishButton.snp.leading).offset(-12)
+            $0.centerY.equalTo(ddayLabel)
+        }
+        // 긴 소감이 이모지를 밀어내지 않고 스스로 말줄임되도록 가로 압축 저항을 낮춘다
+        finishNoteLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
         setupWish(viewModel.output.wish)
         setupStepProgress(viewModel.output.stepProgress, isTagHidden: viewModel.output.wish.hashtag.isEmpty)
+        setupFinishNote(viewModel.output.finishNote)
         
         finishButton.tapPublisher
             .subscribe(viewModel.input.didTapFinish)
@@ -158,5 +178,19 @@ final class HomeWishListCell: BaseCollectionViewCell {
             $0.leading.equalTo(isTagHidden ? ddayLabel.snp.trailing : tagLabel.snp.trailing).offset(9)
             $0.centerY.equalTo(ddayLabel)
         }
+    }
+    
+    /// 소감이 있으면 뱃지 줄(D-day·해시태그·단계 진행도)을 숨기고 소감 한 줄을 보여준다
+    private func setupFinishNote(_ finishNote: String?) {
+        let hasNote = finishNote != nil
+        finishNoteLabel.isHidden = !hasNote
+        finishNoteLabel.text = finishNote.map { Strings.Home.FinishNote.cellFormat($0) }
+        // 셀 재사용 때 다시 보이도록 D-day 는 매번 정한다. 해시태그·진행도는 앞 단계에서 이미 정했다
+        ddayLabel.isHidden = hasNote
+        guard hasNote else { return }
+        
+        tagLabel.isHidden = true
+        stepProgressBar.isHidden = true
+        stepProgressLabel.isHidden = true
     }
 }

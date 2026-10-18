@@ -122,4 +122,7 @@ enum LogObjectId: String {
     case checkStep = "check_step"
     case addSaving = "add_saving"
     case saveSaving = "save_saving"
+    case finishNoteSheet = "finish_note_sheet"
+    case saveFinishNote = "save_finish_note"
+    case skipFinishNote = "skip_finish_note"
 }
