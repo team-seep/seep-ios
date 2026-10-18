@@ -1,3 +1,5 @@
+import Foundation
+
 import RealmSwift
 
 protocol WishRepository {
@@ -124,7 +126,8 @@ final class WishRepositoryImpl: WishRepository {
         
         do {
             try realm.write {
-                targetObject.pinnedAt = isPinned ? DateUtils.now() : nil
+                // 고정끼리 순서를 가르므로 시각까지 남긴다 (DateUtils.now()는 자정으로 잘라 쓰지 않는다)
+                targetObject.pinnedAt = isPinned ? Date() : nil
             }
         } catch {
             return .failure(.writeFailed)
