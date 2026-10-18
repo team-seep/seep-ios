@@ -1,6 +1,6 @@
 ---
 name: seep-run-approved
-description: seep(싶)에서 머지된 design-system-update PR을 디자인 시스템에 먼저 반영한 뒤, 사람이 승인(approved 라벨)한 기획 이슈를 하나 골라 테크스펙 구체화 → 브랜치 → 구현 → 린트·테스트 → 시뮬레이터 검증 → PR(develop)까지 자동으로 진행한다. "승인된 기획 진행해줘", "approved 이슈 처리", 매일 스케줄 실행에서 사용.
+description: seep(싶)에서 사람이 승인(approved 라벨)한 기획 이슈를 하나 골라 테크스펙 구체화 → 브랜치 → 구현 → 린트·테스트 → 시뮬레이터 검증 → (필요하면) 싶 디자인 시스템 갱신 → PR(develop)까지 자동으로 진행한다. 반영이 밀린 머지 PR이 있으면 개발 전에 디자인 시스템에 먼저 반영한다. "승인된 기획 진행해줘", "approved 이슈 처리", 매일 스케줄 실행에서 사용.
 ---
 
 # 승인된 기획 실행
@@ -8,9 +8,9 @@ description: seep(싶)에서 머지된 design-system-update PR을 디자인 시�
 **`approved` 라벨이 사람의 승인이다.** 이 라벨이 붙은 이슈에 한해 브랜치 생성, 커밋, push, PR 생성까지 사용자 확인 없이 진행한다. **머지는 하지 않는다** (머지는 사람).
 한 번 실행에 이슈 **1개**만 처리한다. 프로세스 전체는 `docs/process/planning.md`, 개발 절차는 `docs/process/pr-process.md`.
 
-## 0. 디자인 시스템 동기화 (개발보다 먼저)
+## 0. 밀린 디자인 시스템 동기화 (개발보다 먼저, 예비 단계)
 
-머지된 PR 중 디자인 시스템 반영이 밀린 것이 있으면 **이번 실행의 개발 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)에 먼저 반영한다. 다음 기획·개발이 최신 토큰·컴포넌트를 기준으로 삼게 하기 위해서다. 승인 이슈가 없는 날에도 이 단계는 수행한다.
+디자인 시스템은 원칙적으로 **개발하는 PR 안에서 바로 반영**한다(4-1단계). 이 단계는 그때 반영하지 못했거나 사람이 직접 올린 PR처럼, 머지된 PR 중 디자인 시스템 반영이 밀린 것이 있으면 **이번 실행의 개발 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)에 먼저 반영한다. 다음 기획·개발이 최신 토큰·컴포넌트를 기준으로 삼게 하기 위해서다. 승인 이슈가 없는 날에도 이 단계는 수행한다.
 
 ```bash
 gh pr list -R team-seep/seep-ios --state merged --label design-system-update \
@@ -70,6 +70,13 @@ cd "$WT"
 3. 자동화 TC는 `3dollars:simulator-test`로 실행하고 스크린샷·영상을 확보한다. UI 변경이면 Before/After를 남기고, **이슈의 디자인 미리보기와 실제 After를 나란히** 둔다(차이가 있으면 이유를 PR "설명이 필요한 결정"에)
 4. 실패하면 고쳐서 다시 돌린다. 세 번 시도해도 안 되면 그 상태로 PR을 Draft로 올리고 실패 내용을 본문에 적는다
 
+## 4-1. 디자인 시스템 반영 (해당하면, PR 전에)
+
+이번 변경이 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸거나, 화면을 그리는 규칙(레이아웃·간격·넓은 화면 등)을 새로 정했다면 **PR을 올리기 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)을 같이 갱신한다. 다음 기획·디자인이 바로 최신 기준을 쓰게 하기 위해서다.
+- 방법은 0단계 2번과 같다: Artifact `read` → 타입 지침의 "Revising" 절차로 **바뀐 것만** 고친다(토큰 → `project/tokens.json`, 공용 컴포넌트 → `project/components/{Name}/README.md`·`preview.html`·`bundle.css`, 아이콘 → 에셋 업로드 + `assetGroups`, 규칙 → `project/README.md`). 인덱스 `lastChange`: `via` "seep-run-approved", `note` "GH-{n} {바뀐 것}".
+- 기준은 이 브랜치의 코드다. PR이 리뷰에서 바뀌면 같은 방식으로 다시 맞춘다.
+- 해당 없으면 건너뛴다(대부분의 기능 PR).
+
 ## 5. PR
 
 - `.github/PULL_REQUEST_TEMPLATE.md`를 채워 `gh pr create -R team-seep/seep-ios --base develop`.
@@ -78,9 +85,9 @@ cd "$WT"
   - **트래킹 이벤트 표**: 이슈의 표와 실제 구현이 같은지
   - 스펙 밖 변경, 설명이 필요한 결정(최대 3개, 스스로 답한다)
   - 위험도는 `docs/process/pr-process.md` 기준
-- PR이 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸면 PR 본문 "기타"에 "디자인 시스템 갱신 필요: {바뀐 것}"을 적고 **`design-system-update` 라벨**을 단다. 머지된 뒤 다음 실행의 0단계가 이 라벨로 찾아 디자인 시스템에 반영한다.
+- 4-1단계에서 디자인 시스템을 반영했으면 PR 본문 "기타"에 "🎨 디자인 시스템 반영: {바뀐 토큰·컴포넌트·아이콘·규칙}"을 적고 **`design-system-synced` 라벨**을 단다. 반영에 실패했으면 "디자인 시스템 갱신 필요: {바뀐 것} (실패 이유)"를 적고 **`design-system-update` 라벨**을 단다 — 머지된 뒤 다음 실행의 0단계가 재시도한다.
 - 이슈에서 `in-progress`를 떼고 PR 링크를 코멘트로 남긴다: "🤖 PR #{pr} — 리뷰·머지 부탁드려요. 수동 TC: …"
 
 ## 6. 결과
 
-마지막 메시지: 디자인 시스템 반영 결과(반영한 PR 번호·바뀐 것, 실패 시 이유 — 없으면 "반영할 PR 없음"), 이슈 번호, PR 링크, 테스트 결과 한 줄, 남은 수동 TC.
+마지막 메시지: 디자인 시스템 반영 결과(이번 PR에서 반영한 것 + 0단계에서 반영한 밀린 PR, 실패 시 이유 — 없으면 "반영할 것 없음"), 이슈 번호, PR 링크, 테스트 결과 한 줄, 남은 수동 TC.
