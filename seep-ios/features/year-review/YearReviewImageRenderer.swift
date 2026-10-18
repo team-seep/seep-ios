@@ -21,6 +21,14 @@ enum YearReviewImageRenderer {
         format.scale = scale
         format.opaque = true
 
+        // 카드의 둥근 모서리 밖이 검게 칠해지지 않도록 카드는 투명 배경으로 먼저 그린 뒤 캔버스에 얹는다
+        let cardFormat = UIGraphicsImageRendererFormat()
+        cardFormat.scale = scale
+        cardFormat.opaque = false
+        let cardImage = UIGraphicsImageRenderer(size: cardSize, format: cardFormat).image { _ in
+            cardView.drawHierarchy(in: CGRect(origin: .zero, size: cardSize), afterScreenUpdates: true)
+        }
+
         return UIGraphicsImageRenderer(size: canvasSize, format: format).image { context in
             UIColor.gray2.setFill()
             context.fill(CGRect(origin: .zero, size: canvasSize))
@@ -28,7 +36,7 @@ enum YearReviewImageRenderer {
                 x: (canvasSize.width - cardSize.width) / 2,
                 y: (canvasSize.height - cardSize.height) / 2
             )
-            cardView.drawHierarchy(in: CGRect(origin: cardOrigin, size: cardSize), afterScreenUpdates: true)
+            cardImage.draw(in: CGRect(origin: cardOrigin, size: cardSize))
         }
     }
 }
