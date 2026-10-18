@@ -41,6 +41,7 @@ extension HomeViewModel {
     enum Route {
         case presentWrite(Category)
         case presentSortBottomSheet(SortOrderBottomSheetViewModel)
+        case presentFinishNoteBottomSheet(FinishNoteViewModel)
         case pushWishDetail(WishDetailReactor)
         case showErrorAlert(Error)
     }
@@ -300,9 +301,22 @@ final class HomeViewModel {
             state.wish[targetIndex] = wish
             updateDataSource()
             output.toast.send(Strings.Home.Toast.finishWish)
+            presentFinishNoteBottomSheet(wish: wish)
         case .failure(let error):
             output.route.send(.showErrorAlert(error))
         }
+    }
+    
+    private func presentFinishNoteBottomSheet(wish: Wish) {
+        let viewModel = FinishNoteViewModel(
+            config: .init(wish: wish),
+            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+        )
+        viewModel.output.didSaveNote
+            .subscribe(input.updateWish)
+            .store(in: &viewModel.cancellables)
+        
+        output.route.send(.presentFinishNoteBottomSheet(viewModel))
     }
     
     private func pushWishDetail(wish: Wish) {
@@ -338,6 +352,7 @@ final class HomeViewModel {
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         state.wish[targetIndex].isSuccess = false
         state.wish[targetIndex].finishDate = nil
+        state.wish[targetIndex].finishNote = ""
         updateDataSource()
     }
 }

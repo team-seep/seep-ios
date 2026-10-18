@@ -153,4 +153,119 @@ final class HomeViewModelTests: XCTestCase {
             XCTFail("Expected showErrorAlert route, got \(String(describing: receivedRoute))")
         }
     }
+
+    // MARK: - GH-25 완료 소감
+
+    private func wishCellViewModels() -> [HomeWishCellViewModel] {
+        return sut.output.dataSource.value.flatMap(\.items).compactMap {
+            if case .wish(let viewModel) = $0 { return viewModel }
+            return nil
+        }
+    }
+
+    private func makeFinishNoteWishes() -> (wish: Wish, finished: Wish) {
+        let wish = Wish(id: "finish-note-1", emoji: "🏃", title: "하프 마라톤 완주하기")
+        var finished = wish
+        finished.isSuccess = true
+        finished.finishDate = Date()
+        return (wish, finished)
+    }
+
+    // MARK: GH-25 TC1
+
+    func test_GH25_TC1_완료체크에성공하면_토스트후_소감시트route가_해당위시로1회전달된다() {
+        // Given
+        let (wish, finished) = makeFinishNoteWishes()
+        mockRepository.fetchWishesResult = [wish]
+        mockRepository.finishWishResult = .success(finished)
+        sut.input.firstLoad.send()
+        var events: [String] = []
+        var sheetWishIds: [String] = []
+        sut.output.toast
+            .sink { _ in events.append("toast") }
+            .store(in: &cancellables)
+        sut.output.route
+            .sink { route in
+                if case .presentFinishNoteBottomSheet(let viewModel) = route {
+                    events.append("sheet")
+                    sheetWishIds.append(viewModel.output.wish.id)
+                }
+            }
+            .store(in: &cancellables)
+
+        // When
+        sut.input.didTapFinish.send(wish)
+
+        // Then
+        XCTAssertEqual(events, ["toast", "sheet"])
+        XCTAssertEqual(sheetWishIds, [wish.id])
+    }
+
+    func test_GH25_TC1_완료저장에실패하면_소감시트를띄우지않는다() {
+        // Given
+        let (wish, _) = makeFinishNoteWishes()
+        mockRepository.fetchWishesResult = [wish]
+        mockRepository.finishWishResult = .failure(.writeFailed)
+        sut.input.firstLoad.send()
+        var sheetCount = 0
+        sut.output.route
+            .sink { route in
+                if case .presentFinishNoteBottomSheet = route { sheetCount += 1 }
+            }
+            .store(in: &cancellables)
+
+        // When
+        sut.input.didTapFinish.send(wish)
+
+        // Then
+        XCTAssertEqual(sheetCount, 0)
+    }
+
+    // MARK: GH-25 TC6
+
+    func test_GH25_TC6_소감이있는완료위시를_완료취소하면_소감이빈문자열이된다() {
+        // Given
+        var (_, finished) = makeFinishNoteWishes()
+        finished.finishNote = "끝까지 뛰었다!"
+        mockRepository.fetchWishesResult = [finished]
+        sut.input.firstLoad.send()
+        XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "끝까지 뛰었다!")
+
+        // When
+        sut.input.cancelFinish.send(finished)
+
+        // Then
+        let cellWish = wishCellViewModels().first?.output.wish
+        XCTAssertEqual(cellWish?.isSuccess, false)
+        XCTAssertEqual(cellWish?.finishNote, "")
+        XCTAssertNil(wishCellViewModels().first?.output.finishNote)
+    }
+
+    // MARK: GH-25 TC11
+
+    func test_GH25_TC11_소감을저장하면_홈목록셀에바로반영된다() {
+        // Given
+        let (wish, finished) = makeFinishNoteWishes()
+        mockRepository.fetchWishesResult = [wish]
+        mockRepository.finishWishResult = .success(finished)
+        var updatedFinished = finished
+        updatedFinished.finishNote = "최고!"
+        mockRepository.updateFinishNoteResult = .success(updatedFinished)
+        sut.input.firstLoad.send()
+        var sheetViewModel: FinishNoteViewModel?
+        sut.output.route
+            .sink { route in
+                if case .presentFinishNoteBottomSheet(let viewModel) = route { sheetViewModel = viewModel }
+            }
+            .store(in: &cancellables)
+        sut.input.didTapFinish.send(wish)
+
+        // When
+        sheetViewModel?.input.inputNote.send("최고!")
+        sheetViewModel?.input.didTapSave.send(())
+
+        // Then
+        XCTAssertEqual(mockRepository.updateFinishNoteCalls.map(\.note), ["최고!"])
+        XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "최고!")
+    }
 }

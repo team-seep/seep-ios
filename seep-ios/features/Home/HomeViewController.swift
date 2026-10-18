@@ -416,6 +416,8 @@ extension HomeViewController {
             presentWrite(category: category)
         case .presentSortBottomSheet(let viewModel):
             presentSortBottomSheet(viewModel: viewModel)
+        case .presentFinishNoteBottomSheet(let viewModel):
+            presentFinishNoteBottomSheet(viewModel: viewModel)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
         case .showErrorAlert(let error):
@@ -437,6 +439,11 @@ extension HomeViewController {
     
     private func presentSortBottomSheet(viewModel: SortOrderBottomSheetViewModel) {
         let viewController = SortOrderBottomSheetViewController(viewModel: viewModel)
+        presentPanModal(viewController)
+    }
+    
+    private func presentFinishNoteBottomSheet(viewModel: FinishNoteViewModel) {
+        let viewController = FinishNoteBottomSheetViewController(viewModel: viewModel)
         presentPanModal(viewController)
     }
     
