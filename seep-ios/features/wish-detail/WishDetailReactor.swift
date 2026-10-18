@@ -14,6 +14,7 @@ final class WishDetailReactor: Reactor {
         case updateWish(wish: Wish)
         case updateSteps([WishStep])
         case updateSavings([WishSaving])
+        case updatePhoto(fileName: String)
     }
   
     enum Mutation {
@@ -80,6 +81,13 @@ final class WishDetailReactor: Reactor {
             // 수정 화면으로 넘길 위시가 최신 기록을 갖도록 (GH-16 R-7)
             var wish = currentState.wish
             wish.savings = savings
+            updateWishPublisher.send(wish)
+            return .just(.setWish(wish: wish))
+            
+        case .updatePhoto(let fileName):
+            // 홈 그리드 셀과 수정 화면으로 넘길 위시가 최신 사진을 갖도록 (GH-36 R-6)
+            var wish = currentState.wish
+            wish.photoFileName = fileName
             updateWishPublisher.send(wish)
             return .just(.setWish(wish: wish))
         }

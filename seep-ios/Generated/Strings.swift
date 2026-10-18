@@ -297,6 +297,26 @@ internal enum Strings {
     }
   }
   internal enum Detail {
+    internal enum Photo {
+      /// ＋ 사진 붙이기
+      internal static let add = Strings.tr("Localization", "detail.photo.add", fallback: "＋ 사진 붙이기")
+      /// 이루고 싶은 장면을 한 장 붙여둬요
+      internal static let addDescription = Strings.tr("Localization", "detail.photo.add_description", fallback: "이루고 싶은 장면을 한 장 붙여둬요")
+      /// 사진은 이 기기에만 저장돼요.
+      internal static let caption = Strings.tr("Localization", "detail.photo.caption", fallback: "사진은 이 기기에만 저장돼요.")
+      /// 바꾸기
+      internal static let change = Strings.tr("Localization", "detail.photo.change", fallback: "바꾸기")
+      /// 사진 지우기
+      internal static let delete = Strings.tr("Localization", "detail.photo.delete", fallback: "사진 지우기")
+      /// 사진
+      internal static let title = Strings.tr("Localization", "detail.photo.title", fallback: "사진")
+      internal enum Error {
+        /// 사진을 불러오지 못했어요. 다른 사진을 골라주세요.
+        internal static let invalidImage = Strings.tr("Localization", "detail.photo.error.invalid_image", fallback: "사진을 불러오지 못했어요. 다른 사진을 골라주세요.")
+        /// 사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.
+        internal static let writeFailed = Strings.tr("Localization", "detail.photo.error.write_failed", fallback: "사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.")
+      }
+    }
     internal enum Saving {
       /// 모은 돈 기록
       internal static let add = Strings.tr("Localization", "detail.saving.add", fallback: "모은 돈 기록")

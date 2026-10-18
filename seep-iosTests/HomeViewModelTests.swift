@@ -7,19 +7,22 @@ final class HomeViewModelTests: XCTestCase {
     private var sut: HomeViewModel!
     private var mockRepository: MockWishRepository!
     private var mockNotificationManager: MockNotificationManager!
+    private var mockPhotoStorage: MockWishPhotoStorage!
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
         mockRepository = MockWishRepository()
         mockNotificationManager = MockNotificationManager()
+        mockPhotoStorage = MockWishPhotoStorage()
         cancellables = []
 
         let dependency = HomeViewModel.Dependency(
             wishRepository: mockRepository,
             preference: Preference(name: "test"),
             notificationManager: mockNotificationManager,
-            logManager: MockLogManager()
+            logManager: MockLogManager(),
+            photoStorage: mockPhotoStorage
         )
         sut = HomeViewModel(dependency: dependency)
     }
@@ -28,6 +31,7 @@ final class HomeViewModelTests: XCTestCase {
         sut = nil
         mockRepository = nil
         mockNotificationManager = nil
+        mockPhotoStorage = nil
         cancellables = nil
         super.tearDown()
     }
@@ -267,5 +271,34 @@ final class HomeViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(mockRepository.updateFinishNoteCalls.map(\.note), ["최고!"])
         XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "최고!")
+    }
+
+    // MARK: GH-36 TC5
+
+    func test_GH36_TC5_홈에서위시를삭제하면_위시삭제와함께사진파일삭제가호출된다() {
+        // Given
+        let wish = Wish(id: "wish-1", category: .wantToGo, title: "제주도 한 달 살기", photoFileName: "wish-1-a.jpg")
+        mockRepository.fetchWishesResult = [wish]
+        sut.input.firstLoad.send(())
+
+        // When
+        sut.input.didTapDelete.send(0)
+
+        // Then
+        XCTAssertEqual(mockRepository.deleteWishCalledIds, ["wish-1"])
+        XCTAssertEqual(mockPhotoStorage.deletePhotosCalledWishIds, ["wish-1"])
+    }
+
+    func test_GH36_TC5_상세에서위시를삭제하면_사진파일삭제가호출된다() {
+        // Given
+        let wish = Wish(id: "wish-1", category: .wantToGo, title: "제주도 한 달 살기", photoFileName: "wish-1-a.jpg")
+        mockRepository.fetchWishesResult = [wish]
+        sut.input.firstLoad.send(())
+
+        // When
+        sut.input.deleteWish.send(wish)
+
+        // Then
+        XCTAssertEqual(mockPhotoStorage.deletePhotosCalledWishIds, ["wish-1"])
     }
 }

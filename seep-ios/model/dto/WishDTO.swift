@@ -21,6 +21,8 @@ class WishDTO: Object, Identifiable {
     @objc dynamic var isSuccess: Bool = false
     /// 완료 소감 한 줄(최대 40자). 비어 있으면 소감 없음 (GH-25 R-4)
     @objc dynamic var finishNote: String = ""
+    /// 붙인 사진 파일 이름(`Application Support/WishPhotos/` 안). 비어 있으면 사진 없음 (GH-36 R-9)
+    @objc dynamic var photoFileName: String = ""
     @objc dynamic var createdAt: Date = Date()
     
     
@@ -50,6 +52,7 @@ class WishDTO: Object, Identifiable {
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
         self.finishNote = wish.finishNote
+        self.photoFileName = wish.photoFileName
         self.createdAt = wish.createdAt
     }
     

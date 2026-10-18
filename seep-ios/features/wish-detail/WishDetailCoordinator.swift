@@ -6,7 +6,8 @@ protocol WishDetailCoordinator: AnyObject, BaseCoordinator {
         mode: DetailMode,
         onTapShare: @escaping () -> Void,
         onTapDelete: @escaping () -> Void,
-        onTapCancelFinish: @escaping () -> Void
+        onTapCancelFinish: @escaping () -> Void,
+        onTapDeletePhoto: (() -> Void)?
     )
     
     func presentSharePhoto(wish: Wish)
@@ -25,7 +26,8 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
         mode: DetailMode,
         onTapShare: @escaping () -> Void,
         onTapDelete: @escaping () -> Void,
-        onTapCancelFinish: @escaping () -> Void
+        onTapCancelFinish: @escaping () -> Void,
+        onTapDeletePhoto: (() -> Void)?
     ) {
         let alertController = UIAlertController(
             title: nil,
@@ -70,6 +72,17 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
           }
           
           alertController.addAction(cancelFinishAction)
+        }
+        
+        // 사진이 있을 때만 (GH-36 R-4)
+        if let onTapDeletePhoto {
+            let deletePhotoAction = UIAlertAction(
+                title: Strings.Detail.Photo.delete,
+                style: .default
+            ) { _ in
+                onTapDeletePhoto()
+            }
+            alertController.addAction(deletePhotoAction)
         }
         
         alertController.addAction(shereAction)

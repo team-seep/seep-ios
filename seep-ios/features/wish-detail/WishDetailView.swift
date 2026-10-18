@@ -31,6 +31,8 @@ final class WishDetailView: BaseView {
     
     let categoryView = CategoryView()
     
+    let photoView = WishPhotoView()
+    
     let titleField = TextInputField(
         iconImage: UIImage(named: "ic_title"),
         title: "write_header_title".localized,
@@ -115,6 +117,7 @@ final class WishDetailView: BaseView {
         self.containerView.addSubViews([
             self.emojiInputView,
             self.categoryView,
+            self.photoView,
             self.titleField,
             self.dateField,
             self.savingsView,
@@ -178,10 +181,17 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.emojiInputView.snp.bottom).offset(32)
         }
         
+        // 사진 섹션은 카테고리 트랙 아래, 제목 위 (GH-36 R-1)
+        self.photoView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(self.categoryView.snp.bottom).offset(31)
+        }
+        
         self.titleField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(self.categoryView.snp.bottom).offset(31)
+            make.top.equalTo(self.photoView.snp.bottom).offset(26)
         }
         
         self.dateField.snp.makeConstraints { make in

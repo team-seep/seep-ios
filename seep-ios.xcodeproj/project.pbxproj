@@ -16,6 +16,12 @@
 		75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
 		83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */; };
 		B0042A5CED4B6AF6998B8313 /* WishSavingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */; };
+		36A000000000000000000011 /* WishPhotoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000001 /* WishPhotoStorage.swift */; };
+		36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000002 /* WishPhotoViewModel.swift */; };
+		36A000000000000000000013 /* WishPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000003 /* WishPhotoView.swift */; };
+		36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000004 /* WishPhotoViewModelTests.swift */; };
+		36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000005 /* WishPhotoStorageTests.swift */; };
+		36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000006 /* MockWishPhotoStorage.swift */; };
 		DA446742E6E9F66ACF5480BE /* WishSavingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */; };
 		13853757B38631E0B58E5F81 /* SavingInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */; };
 		C4B7663D705D81FCE6767CE7 /* SavingInputBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */; };
@@ -295,6 +301,12 @@
 		76EC49270480D77773B034E4 /* WishSaving.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSaving.swift; sourceTree = "<group>"; };
 		E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
 		DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsViewModel.swift; sourceTree = "<group>"; };
+		36A000000000000000000001 /* WishPhotoStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoStorage.swift; sourceTree = "<group>"; };
+		36A000000000000000000002 /* WishPhotoViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoViewModel.swift; sourceTree = "<group>"; };
+		36A000000000000000000003 /* WishPhotoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoView.swift; sourceTree = "<group>"; };
+		36A000000000000000000004 /* WishPhotoViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoViewModelTests.swift; sourceTree = "<group>"; };
+		36A000000000000000000005 /* WishPhotoStorageTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoStorageTests.swift; sourceTree = "<group>"; };
+		36A000000000000000000006 /* MockWishPhotoStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishPhotoStorage.swift; sourceTree = "<group>"; };
 		9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsView.swift; sourceTree = "<group>"; };
 		0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModel.swift; sourceTree = "<group>"; };
 		0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputBottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -580,6 +592,15 @@
 			path = FinishNote;
 			sourceTree = "<group>";
 		};
+		36A000000000000000000020 /* photo */ = {
+			isa = PBXGroup;
+			children = (
+				36A000000000000000000002 /* WishPhotoViewModel.swift */,
+				36A000000000000000000003 /* WishPhotoView.swift */,
+			);
+			path = photo;
+			sourceTree = "<group>";
+		};
 		87A58DA3E871B741FF607C5D /* savings */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,6 +631,8 @@
 				FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */,
 				A25F00010000000000000005 /* FinishNoteViewModelTests.swift */,
 				2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */,
+				36A000000000000000000004 /* WishPhotoViewModelTests.swift */,
+				36A000000000000000000005 /* WishPhotoStorageTests.swift */,
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 				A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */,
 				13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */,
@@ -869,6 +892,7 @@
 				6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */,
 				74C39C6093BA273B7EE6A5CD /* steps */,
 				87A58DA3E871B741FF607C5D /* savings */,
+				36A000000000000000000020 /* photo */,
 			);
 			path = "wish-detail";
 			sourceTree = "<group>";
@@ -1020,6 +1044,7 @@
 			children = (
 				6E3B468027A6947A000A1D41 /* toast */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
+				36A000000000000000000001 /* WishPhotoStorage.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
@@ -1171,6 +1196,7 @@
 			children = (
 				B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */,
 				43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */,
+				36A000000000000000000006 /* MockWishPhotoStorage.swift */,
 				269705858459DA909159F323 /* MockNotificationManager.swift */,
 			);
 			name = Mock;
@@ -1408,6 +1434,9 @@
 				042777C6C45215367A054571 /* SavingInputViewModelTests.swift in Sources */,
 				A25F00010000000000000006 /* FinishNoteViewModelTests.swift in Sources */,
 				99B938686802C41D8298407D /* WishSavingsViewModelTests.swift in Sources */,
+				36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */,
+				36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */,
+				36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */,
 				050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */,
 				A1B2C3D4E5F60718293A4B11 /* HomeWishGridLayoutTests.swift in Sources */,
 				13A0B31AF2FDAB9358477F01 /* SharePhotoLayoutTests.swift in Sources */,
@@ -1545,6 +1574,9 @@
 				13853757B38631E0B58E5F81 /* SavingInputViewModel.swift in Sources */,
 				DA446742E6E9F66ACF5480BE /* WishSavingsView.swift in Sources */,
 				B0042A5CED4B6AF6998B8313 /* WishSavingsViewModel.swift in Sources */,
+				36A000000000000000000011 /* WishPhotoStorage.swift in Sources */,
+				36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */,
+				36A000000000000000000013 /* WishPhotoView.swift in Sources */,
 				83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */,
 				7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */,
 				050C71F5903092578149F737 /* SavingDTO.swift in Sources */,

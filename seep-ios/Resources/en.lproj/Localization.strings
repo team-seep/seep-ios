@@ -109,6 +109,14 @@
 "write.target_amount.caption" = "상세 화면에서 모은 돈을 기록할 수 있어요";
 "common.won_unit" = "원";
 "common.won_format" = "%@원";
+"detail.photo.title" = "사진";
+"detail.photo.add" = "＋ 사진 붙이기";
+"detail.photo.add_description" = "이루고 싶은 장면을 한 장 붙여둬요";
+"detail.photo.change" = "바꾸기";
+"detail.photo.caption" = "사진은 이 기기에만 저장돼요.";
+"detail.photo.delete" = "사진 지우기";
+"detail.photo.error.invalid_image" = "사진을 불러오지 못했어요. 다른 사진을 골라주세요.";
+"detail.photo.error.write_failed" = "사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.";
 "detail.saving.title" = "모으기";
 "detail.saving.percent_format" = "%d%%";
 "detail.saving.target_format" = "/ %@원";

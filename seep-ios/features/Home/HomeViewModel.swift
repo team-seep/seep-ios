@@ -51,17 +51,20 @@ extension HomeViewModel {
         let preference: Preference
         let notificationManager: NotificationManagerProtocol
         let logManager: LogManagerProtocol
+        let photoStorage: WishPhotoStorage
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
             preference: Preference = .shared,
             notificationManager: NotificationManagerProtocol = NotificationManager.shared,
-            logManager: LogManagerProtocol = LogManager.shared
+            logManager: LogManagerProtocol = LogManager.shared,
+            photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
             self.notificationManager = notificationManager
             self.logManager = logManager
+            self.photoStorage = photoStorage
         }
     }
 }
@@ -265,7 +268,7 @@ final class HomeViewModel {
     
     private func createWishCellViewModels(wish: Wish) -> HomeWishCellViewModel {
         let config = HomeWishCellViewModel.Config(wish: wish, viewType: dependency.preference.viewType)
-        let viewModel = HomeWishCellViewModel(config: config)
+        let viewModel = HomeWishCellViewModel(config: config, dependency: .init(photoStorage: dependency.photoStorage))
         viewModel.output.didTapFinish
             .subscribe(input.didTapFinish)
             .store(in: &viewModel.cancellables)
@@ -343,6 +346,8 @@ final class HomeViewModel {
     }
     
     private func deleteWish(wish: Wish) {
+        // 홈 스와이프 삭제·상세 삭제 모두 여기로 온다. 상세에서 방금 바꾼 사진까지 지우도록 위시 id 로 지운다 (GH-36 R-5)
+        dependency.photoStorage.deletePhotos(wishId: wish.id)
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         state.wish.remove(at: targetIndex)
         updateDataSource()

@@ -1,5 +1,7 @@
 import UIKit
 import Combine
+import PhotosUI
+import UniformTypeIdentifiers
 
 import CombineCocoa
 import PanModal
@@ -23,6 +25,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private let mode: DetailMode
     private let stepsViewModel: WishStepsViewModel
     private let savingsViewModel: WishSavingsViewModel
+    private let photoViewModel: WishPhotoViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
@@ -33,6 +36,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: wish))
+        self.photoViewModel = WishPhotoViewModel(config: .init(wish: wish))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,6 +45,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: reactor.initialState.wish))
+        self.photoViewModel = WishPhotoViewModel(config: .init(wish: reactor.initialState.wish))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,12 +75,18 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        // 상세는 읽기 전용이지만 단계 섹션(체크)과 모으기 섹션(기록)은 바로 쓸 수 있다
+        // 상세는 읽기 전용이지만 단계 섹션(체크)·모으기 섹션(기록)·사진 섹션은 바로 쓸 수 있다
+        let interactiveViews: [UIView] = [
+            self.wishDetailView.stepsView,
+            self.wishDetailView.savingsView,
+            self.wishDetailView.photoView
+        ]
         self.wishDetailView.containerView.subviews
-            .filter { $0 !== self.wishDetailView.stepsView && $0 !== self.wishDetailView.savingsView }
+            .filter { subview in !interactiveViews.contains { $0 === subview } }
             .forEach { $0.isUserInteractionEnabled = false }
         self.bindSteps()
         self.bindSavings()
+        self.bindPhoto()
     }
   
     override func bindEvent() {
@@ -97,7 +108,10 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
                     },
                     onTapCancelFinish: {
                         self.wishDetailReactor.action.onNext(.tapCancelFinish)
-                    })
+                    },
+                    onTapDeletePhoto: self.photoViewModel.hasPhoto ? { [weak self] in
+                        self?.photoViewModel.input.didTapDelete.send(())
+                    } : nil)
             })
             .disposed(by: self.eventDisposeBag)
         
@@ -248,8 +262,85 @@ extension WishDetailViewController {
     }
 }
 
+// MARK: Photo
+extension WishDetailViewController {
+    private func bindPhoto() {
+        let photoView = wishDetailView.photoView
+        
+        photoView.emptyButton.tapPublisher
+            .subscribe(photoViewModel.input.didTapAdd)
+            .store(in: &cancellables)
+        
+        photoView.changeButton.tapPublisher
+            .subscribe(photoViewModel.input.didTapChange)
+            .store(in: &cancellables)
+        
+        photoViewModel.output.photoURL
+            .main
+            .sink { photoURL in
+                photoView.bind(photoURL: photoURL)
+            }
+            .store(in: &cancellables)
+        
+        photoViewModel.output.didUpdatePhoto
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, fileName: String) in
+                owner.wishDetailReactor.action.onNext(.updatePhoto(fileName: fileName))
+            }
+            .store(in: &cancellables)
+        
+        photoViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishPhotoViewModel.Route) in
+                owner.handlePhotoRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func presentPhotoPicker() {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .images
+        configuration.selectionLimit = 1
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+}
+
+extension WishDetailViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        guard let itemProvider = results.first?.itemProvider,
+              itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) else { return }
+        
+        // 원본 데이터(HEIC·JPEG 등)를 넘기고, 줄이기·저장은 저장소가 메인 스레드 밖에서 한다 (R-3)
+        itemProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { [weak self] data, _ in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                guard let data else {
+                    self.handlePhotoRoute(.showErrorAlert(WishPhotoStorageError.invalidImage))
+                    return
+                }
+                self.photoViewModel.input.didPickPhoto.send(data)
+            }
+        }
+    }
+}
+
 // MARK: Route
 extension WishDetailViewController {
+    private func handlePhotoRoute(_ route: WishPhotoViewModel.Route) {
+        switch route {
+        case .presentPhotoPicker:
+            presentPhotoPicker()
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
+    }
+    
     private func handleSavingsRoute(_ route: WishSavingsViewModel.Route) {
         switch route {
         case .presentSavingInput(let viewModel):

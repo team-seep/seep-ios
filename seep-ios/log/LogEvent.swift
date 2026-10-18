@@ -125,4 +125,7 @@ enum LogObjectId: String {
     case finishNoteSheet = "finish_note_sheet"
     case saveFinishNote = "save_finish_note"
     case skipFinishNote = "skip_finish_note"
+    case addPhoto = "add_photo"
+    case changePhoto = "change_photo"
+    case deletePhoto = "delete_photo"
 }

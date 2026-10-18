@@ -76,6 +76,8 @@ final class WishEditReactor: Reactor {
     private let wishID: String
     /// 수정 화면은 기록을 바꾸지 않는다. 상세로 돌려줄 위시에 그대로 담는다 (GH-16 R-7)
     private let savings: [WishSaving]
+    /// 수정 화면은 사진을 바꾸지 않는다. 상세·홈으로 돌려줄 위시에 그대로 담는다 (GH-36 R-10)
+    private let photoFileName: String
     private let wishService: WishServiceProtocol
     private let notificationManager: NotificationManagerProtocol
     
@@ -100,6 +102,7 @@ final class WishEditReactor: Reactor {
         )
         self.wishID = wish.id
         self.savings = wish.savings
+        self.photoFileName = wish.photoFileName
         self.wishService = wishService
         self.notificationManager = notificationManager
     }
@@ -299,7 +302,8 @@ final class WishEditReactor: Reactor {
             targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             savings: self.savings,
             memo: self.currentState.memo,
-            hashtag: hashtag
+            hashtag: hashtag,
+            photoFileName: self.photoFileName
         )
         
         self.wishService.updateWish(id: self.wishID, newWish: wish)
