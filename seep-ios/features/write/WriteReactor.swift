@@ -21,6 +21,7 @@ class WriteReactor: Reactor {
         case inputMemo(String)
         case updateSteps([WishStep])
         case inputTargetAmount(Int)
+        case inputPlace(WishPlace?)
         case tapHashtag(index: Int)
         case inputHashtag(String)
         case tapWriteButton
@@ -43,6 +44,7 @@ class WriteReactor: Reactor {
         case setMemo(String)
         case setSteps([WishStep])
         case setTargetAmount(Int)
+        case setPlace(WishPlace?)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
@@ -66,6 +68,8 @@ class WriteReactor: Reactor {
         var steps: [WishStep] = []
         /// 목표 금액(원). 갖고 싶어요일 때만 저장한다 (GH-16 R-1)
         var targetAmount: Int = 0
+        /// 붙인 장소. 가고 싶어요일 때만 저장한다 (GH-31 R-1)
+        var place: WishPlace?
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String = ""
@@ -165,6 +169,9 @@ class WriteReactor: Reactor {
         case .inputTargetAmount(let amount):
             return .just(.setTargetAmount(min(max(amount, 0), WishSaving.maxAmount)))
             
+        case .inputPlace(let place):
+            return .just(.setPlace(place))
+            
         case .tapHashtag(let index):
             return .merge([
                 .just(.setCustomHashtag("")),
@@ -248,6 +255,9 @@ class WriteReactor: Reactor {
         case .setTargetAmount(let amount):
             newState.targetAmount = amount
             
+        case .setPlace(let place):
+            newState.place = place
+            
         case .selectHashtag(let index):
             if let index = index {
                 newState.selectedHashtag = newState.hashtags[index]
@@ -299,7 +309,9 @@ class WriteReactor: Reactor {
             // 다른 카테고리로 바꿨으면 입력했던 목표 금액은 버린다 (GH-16 R-1)
             targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             memo: self.currentState.memo,
-            hashtag: hashtag
+            hashtag: hashtag,
+            // 다른 카테고리로 바꿨으면 골랐던 장소는 버린다 (GH-31 R-1)
+            place: self.currentState.category == .wantToGo ? self.currentState.place : nil
         )
         
         self.wishService.addWish(wish: wish)

@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 6
+        config.schemaVersion = 7
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {
@@ -143,6 +143,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if oldSchemaVersion < 6 {
                 migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
                     newObject?["finishNote"] = ""
+                }
+            }
+            
+            // 7: WishDTO.placeName·placeAddress(String) + latitude·longitude(Double) 추가 — 기존 위시는 장소 없음 (GH-31)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["placeName"] = ""
+                    newObject?["placeAddress"] = ""
+                    newObject?["latitude"] = 0.0
+                    newObject?["longitude"] = 0.0
                 }
             }
         }

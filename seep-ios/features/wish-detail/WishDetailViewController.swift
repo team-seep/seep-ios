@@ -23,6 +23,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private let mode: DetailMode
     private let stepsViewModel: WishStepsViewModel
     private let savingsViewModel: WishSavingsViewModel
+    private let placeViewModel: WishPlaceViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
@@ -33,6 +34,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: wish))
+        self.placeViewModel = WishPlaceViewModel(config: .init(mode: .persisted(wish)))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,6 +43,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: reactor.initialState.wish))
+        self.placeViewModel = WishPlaceViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,12 +73,18 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        // 상세는 읽기 전용이지만 단계 섹션(체크)과 모으기 섹션(기록)은 바로 쓸 수 있다
+        // 상세는 읽기 전용이지만 단계 섹션(체크)·모으기 섹션(기록)·장소 섹션(검색·지우기)은 바로 쓸 수 있다
+        let editableSections: [UIView] = [
+            self.wishDetailView.stepsView,
+            self.wishDetailView.savingsView,
+            self.wishDetailView.placeView
+        ]
         self.wishDetailView.containerView.subviews
-            .filter { $0 !== self.wishDetailView.stepsView && $0 !== self.wishDetailView.savingsView }
+            .filter { subview in !editableSections.contains { $0 === subview } }
             .forEach { $0.isUserInteractionEnabled = false }
         self.bindSteps()
         self.bindSavings()
+        self.bindPlace()
     }
   
     override func bindEvent() {
@@ -248,8 +257,68 @@ extension WishDetailViewController {
     }
 }
 
+// MARK: Place
+extension WishDetailViewController {
+    private func bindPlace() {
+        let placeView = wishDetailView.placeView
+        
+        placeView.tapPlacePublisher
+            .subscribe(placeViewModel.input.didTapPlace)
+            .store(in: &cancellables)
+        
+        placeView.deletePlacePublisher
+            .subscribe(placeViewModel.input.didTapDelete)
+            .store(in: &cancellables)
+        
+        placeViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                placeView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+        
+        placeViewModel.output.emoji
+            .main
+            .sink { emoji in
+                placeView.bind(emoji: emoji)
+            }
+            .store(in: &cancellables)
+        
+        placeViewModel.output.place
+            .main
+            .sink { place in
+                placeView.bind(place: place)
+            }
+            .store(in: &cancellables)
+        
+        placeViewModel.output.didUpdatePlace
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, place: WishPlace?) in
+                owner.wishDetailReactor.action.onNext(.updatePlace(place))
+            }
+            .store(in: &cancellables)
+        
+        placeViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishPlaceViewModel.Route) in
+                owner.handlePlaceRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+}
+
 // MARK: Route
 extension WishDetailViewController {
+    private func handlePlaceRoute(_ route: WishPlaceViewModel.Route) {
+        switch route {
+        case .presentPlaceSearch(let viewModel):
+            presentPanModal(PlaceSearchBottomSheetViewController(viewModel: viewModel))
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
+    }
+    
     private func handleSavingsRoute(_ route: WishSavingsViewModel.Route) {
         switch route {
         case .presentSavingInput(let viewModel):
@@ -288,5 +357,6 @@ extension WishDetailViewController: WishEditViewControllerDelegate {
         self.wishDetailReactor.action.onNext(.updateWish(wish: wish))
         self.stepsViewModel.input.reloadSteps.send(wish.steps)
         self.savingsViewModel.input.reloadWish.send(wish)
+        self.placeViewModel.input.reloadWish.send(wish)
     }
 }

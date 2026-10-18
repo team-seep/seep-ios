@@ -21,6 +21,11 @@ class WishDTO: Object, Identifiable {
     @objc dynamic var isSuccess: Bool = false
     /// 완료 소감 한 줄(최대 40자). 비어 있으면 소감 없음 (GH-25 R-4)
     @objc dynamic var finishNote: String = ""
+    /// 붙인 장소 이름. 비어 있으면 장소 없음 (GH-31 R-4)
+    @objc dynamic var placeName: String = ""
+    @objc dynamic var placeAddress: String = ""
+    @objc dynamic var latitude: Double = 0
+    @objc dynamic var longitude: Double = 0
     @objc dynamic var createdAt: Date = Date()
     
     
@@ -50,6 +55,10 @@ class WishDTO: Object, Identifiable {
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
         self.finishNote = wish.finishNote
+        self.placeName = wish.place?.name ?? ""
+        self.placeAddress = wish.place?.address ?? ""
+        self.latitude = wish.place?.latitude ?? 0
+        self.longitude = wish.place?.longitude ?? 0
         self.createdAt = wish.createdAt
     }
     

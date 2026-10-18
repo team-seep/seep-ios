@@ -420,6 +420,8 @@ extension HomeViewController {
             presentFinishNoteBottomSheet(viewModel: viewModel)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
+        case .pushPlaceMap(let viewModel):
+            navigationController?.pushViewController(PlaceMapViewController(viewModel: viewModel), animated: true)
         case .showErrorAlert(let error):
             showErrorAlert(error)
         }

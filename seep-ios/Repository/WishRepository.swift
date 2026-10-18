@@ -20,6 +20,9 @@ protocol WishRepository {
     
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    
+    /// 장소를 저장(nil 이면 지우기)하고, 장소가 반영된 위시를 돌려준다 (GH-31 R-4).
+    func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -102,6 +105,26 @@ final class WishRepositoryImpl: WishRepository {
         do {
             try realm.write {
                 targetObject.finishNote = note
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        return .success(Wish(dto: targetObject))
+    }
+    
+    func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                targetObject.placeName = place?.name ?? ""
+                targetObject.placeAddress = place?.address ?? ""
+                targetObject.latitude = place?.latitude ?? 0
+                targetObject.longitude = place?.longitude ?? 0
             }
         } catch {
             return .failure(.writeFailed)

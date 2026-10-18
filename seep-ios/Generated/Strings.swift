@@ -297,6 +297,31 @@ internal enum Strings {
     }
   }
   internal enum Detail {
+    internal enum Place {
+      /// 바꾸기
+      internal static let change = Strings.tr("Localization", "detail.place.change", fallback: "바꾸기")
+      /// 장소 지우기
+      internal static let delete = Strings.tr("Localization", "detail.place.delete", fallback: "장소 지우기")
+      /// 어디로 가고 싶어요?
+      internal static let placeholder = Strings.tr("Localization", "detail.place.placeholder", fallback: "어디로 가고 싶어요?")
+      /// 장소
+      internal static let title = Strings.tr("Localization", "detail.place.title", fallback: "장소")
+      internal enum Search {
+        /// 장소 이름이나 주소로 찾아봐요. 위치 권한은 필요 없어요.
+        internal static let caption = Strings.tr("Localization", "detail.place.search.caption", fallback: "장소 이름이나 주소로 찾아봐요. 위치 권한은 필요 없어요.")
+        /// 검색어 지우기
+        internal static let clear = Strings.tr("Localization", "detail.place.search.clear", fallback: "검색어 지우기")
+        /// 찾는 장소가 없어요
+        internal static let empty = Strings.tr("Localization", "detail.place.search.empty", fallback: "찾는 장소가 없어요")
+        /// 장소 이름이나 주소
+        internal static let placeholder = Strings.tr("Localization", "detail.place.search.placeholder", fallback: "장소 이름이나 주소")
+        /// 어디로
+        /// 가고 싶어요?
+        internal static let title = Strings.tr("Localization", "detail.place.search.title", fallback: "어디로\n가고 싶어요?")
+        /// 가고 싶어요?
+        internal static let titleBold = Strings.tr("Localization", "detail.place.search.title_bold", fallback: "가고 싶어요?")
+      }
+    }
     internal enum Saving {
       /// 모은 돈 기록
       internal static let add = Strings.tr("Localization", "detail.saving.add", fallback: "모은 돈 기록")
@@ -409,6 +434,8 @@ internal enum Strings {
     internal enum Filter {
       /// 완료된 위시만
       internal static let onlyFinished = Strings.tr("Localization", "home.filter.only_finished", fallback: "완료된 위시만")
+      /// 가고 싶은 곳 지도
+      internal static let placeMap = Strings.tr("Localization", "home.filter.place_map", fallback: "가고 싶은 곳 지도")
       internal enum Sort {
         /// 완료일 가까운순
         internal static let deadline = Strings.tr("Localization", "home.filter.sort.deadline", fallback: "완료일 가까운순")
@@ -474,6 +501,22 @@ internal enum Strings {
       /// 📝 어디 가고 싶어요?
       internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
     }
+  }
+  internal enum PlaceMap {
+    /// 뒤로
+    internal static let back = Strings.tr("Localization", "place_map.back", fallback: "뒤로")
+    /// %@ · %@
+    internal static func cardSubtitleFormat(_ p1: Any, _ p2: Any) -> String {
+      return Strings.tr("Localization", "place_map.card_subtitle_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@")
+    }
+    /// 장소를 붙인 곳 %d곳
+    internal static func countFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "place_map.count_format", p1, fallback: "장소를 붙인 곳 %d곳")
+    }
+    /// 아직 장소를 붙인 곳이 없어요.
+    internal static let empty = Strings.tr("Localization", "place_map.empty", fallback: "아직 장소를 붙인 곳이 없어요.")
+    /// 가고 싶은 곳 지도
+    internal static let title = Strings.tr("Localization", "place_map.title", fallback: "가고 싶은 곳 지도")
   }
   internal enum Write {
     internal enum Step {

@@ -14,6 +14,7 @@ extension HomeViewModel {
         let didTapFinish = PassthroughSubject<Wish, Never>()
         let didTapWrite = PassthroughSubject<Void, Never>()
         let didTapDelete = PassthroughSubject<Int, Never>()
+        let didTapPlaceMap = PassthroughSubject<Void, Never>()
         
         // From WishDetail
         let updateWish = PassthroughSubject<Wish, Never>()
@@ -43,6 +44,7 @@ extension HomeViewModel {
         case presentSortBottomSheet(SortOrderBottomSheetViewModel)
         case presentFinishNoteBottomSheet(FinishNoteViewModel)
         case pushWishDetail(WishDetailReactor)
+        case pushPlaceMap(PlaceMapViewModel)
         case showErrorAlert(Error)
     }
     
@@ -179,6 +181,13 @@ final class HomeViewModel {
             }
             .store(in: &cancellables)
         
+        input.didTapPlaceMap
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.pushPlaceMap()
+            }
+            .store(in: &cancellables)
+        
         input.didTapDelete
             .sink { [weak self] index in
                 guard let self,
@@ -205,6 +214,10 @@ final class HomeViewModel {
         
         headerViewModel.output.updateViewType
             .subscribe(input.updateViewType)
+            .store(in: &headerViewModel.cancellables)
+        
+        headerViewModel.output.didTapPlaceMap
+            .subscribe(input.didTapPlaceMap)
             .store(in: &headerViewModel.cancellables)
         
         input.updateSortOrder
@@ -334,6 +347,24 @@ final class HomeViewModel {
             .store(in: &reactor.cancellables)
         
         output.route.send(.pushWishDetail(reactor))
+    }
+    
+    private func pushPlaceMap() {
+        sendClickLog(objectId: .placeMap)
+        
+        let viewModel = PlaceMapViewModel(dependency: .init(
+            wishRepository: dependency.wishRepository,
+            logManager: dependency.logManager
+        ))
+        // 지도에서 들어간 상세에서 바뀐 것(장소·삭제·완료 취소)을 홈 목록에도 반영한다
+        viewModel.output.didChangeWishes
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.fetchWishDatas()
+            }
+            .store(in: &viewModel.cancellables)
+        
+        output.route.send(.pushPlaceMap(viewModel))
     }
     
     private func updateWish(wish: Wish) {

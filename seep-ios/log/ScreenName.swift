@@ -21,4 +21,6 @@ extension ScreenName {
     static let finished = ScreenName(rawValue: "finished")
     static let notification = ScreenName(rawValue: "notification")
     static let sharePhoto = ScreenName(rawValue: "share_photo")
+    static let placeSearchBottomSheet = ScreenName(rawValue: "place_search_bottom_sheet")
+    static let placeMap = ScreenName(rawValue: "place_map")
 }

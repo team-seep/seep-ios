@@ -9,6 +9,7 @@ extension HomeFilterHeaderViewModel {
         let selectSortOrder = PassthroughSubject<HomeSortOrder, Never>()
         let didTapOnlyFinished = PassthroughSubject<Void, Never>()
         let didTapViewType = PassthroughSubject<Void, Never>()
+        let didTapPlaceMap = PassthroughSubject<Void, Never>()
     }
     
     struct Output {
@@ -16,12 +17,15 @@ extension HomeFilterHeaderViewModel {
         let sortOrder = CurrentValueSubject<HomeSortOrder, Never>(.deadlineOrder)
         let onlyFinished = CurrentValueSubject<Bool, Never>(false)
         let viewType: CurrentValueSubject<ViewType, Never>
+        /// 가고 싶어요 탭에서만 지도 버튼을 보인다 (GH-31 R-5)
+        let isPlaceMapVisible = CurrentValueSubject<Bool, Never>(false)
         
         // Relay
         let updateCategory = PassthroughSubject<Category, Never>()
         let didTapSortOrder = PassthroughSubject<Void, Never>()
         let updateOnlyFinished = PassthroughSubject<Bool, Never>()
         let updateViewType = PassthroughSubject<ViewType, Never>()
+        let didTapPlaceMap = PassthroughSubject<Void, Never>()
     }
     
     struct Config {
@@ -51,6 +55,16 @@ final class HomeFilterHeaderViewModel {
         
         input.updateCategory
             .subscribe(output.category)
+            .store(in: &cancellables)
+        
+        output.category
+            .map { $0 == .wantToGo }
+            .removeDuplicates()
+            .subscribe(output.isPlaceMapVisible)
+            .store(in: &cancellables)
+        
+        input.didTapPlaceMap
+            .subscribe(output.didTapPlaceMap)
             .store(in: &cancellables)
         
         input.didTapSortOrder

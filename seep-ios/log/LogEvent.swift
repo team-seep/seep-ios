@@ -125,4 +125,8 @@ enum LogObjectId: String {
     case finishNoteSheet = "finish_note_sheet"
     case saveFinishNote = "save_finish_note"
     case skipFinishNote = "skip_finish_note"
+    case addPlace = "add_place"
+    case selectPlace = "select_place"
+    case placeMap = "place_map"
+    case placeMapWish = "place_map_wish"
 }

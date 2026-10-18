@@ -82,6 +82,8 @@ final class WriteView: BaseView {
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
     
+    let placeView = WishPlaceView()
+    
     let targetAmountView = TargetAmountInputView()
     
     let stepsView: WishStepsView = {
@@ -204,6 +206,7 @@ final class WriteView: BaseView {
             self.dateField,
             self.dateSwitchLabel,
             self.dateSwitch,
+            self.placeView,
             self.targetAmountView,
             self.stepsView,
             self.notificationIcon,
@@ -291,10 +294,16 @@ final class WriteView: BaseView {
             make.centerY.equalTo(self.dateSwitch)
         }
         
+        // 장소는 위쪽 간격(26)을 스스로 가져, 가고 싶어요가 아니면 높이 0 이 된다 (GH-31 R-1)
+        self.placeView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom)
+        }
+        
         // 목표 금액은 위쪽 간격(26)을 스스로 가져, 갖고 싶어요가 아니면 높이 0 이 된다 (GH-16 R-1)
         self.targetAmountView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom)
+            make.top.equalTo(self.placeView.snp.bottom)
         }
         
         self.stepsView.snp.makeConstraints { make in
