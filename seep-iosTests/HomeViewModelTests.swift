@@ -7,19 +7,22 @@ final class HomeViewModelTests: XCTestCase {
     private var sut: HomeViewModel!
     private var mockRepository: MockWishRepository!
     private var mockNotificationManager: MockNotificationManager!
+    private var mockLinkPreviewCache: MockLinkPreviewCache!
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
         mockRepository = MockWishRepository()
         mockNotificationManager = MockNotificationManager()
+        mockLinkPreviewCache = MockLinkPreviewCache()
         cancellables = []
 
         let dependency = HomeViewModel.Dependency(
             wishRepository: mockRepository,
             preference: Preference(name: "test"),
             notificationManager: mockNotificationManager,
-            logManager: MockLogManager()
+            logManager: MockLogManager(),
+            linkPreviewCache: mockLinkPreviewCache
         )
         sut = HomeViewModel(dependency: dependency)
     }
@@ -28,6 +31,7 @@ final class HomeViewModelTests: XCTestCase {
         sut = nil
         mockRepository = nil
         mockNotificationManager = nil
+        mockLinkPreviewCache = nil
         cancellables = nil
         super.tearDown()
     }
@@ -267,5 +271,36 @@ final class HomeViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(mockRepository.updateFinishNoteCalls.map(\.note), ["최고!"])
         XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "최고!")
+    }
+
+    // MARK: GH-29 TC13
+
+    func test_GH29_TC13_홈에서위시를스와이프삭제하면_그위시의링크미리보기캐시가지워진다() {
+        // Given
+        let wish = Wish(id: "wish-link", category: .wantToGet, title: "헤드폰", link: "https://store.example.com/p/1")
+        mockLinkPreviewCache.previews[wish.id] = LinkPreview(link: wish.link, title: "헤드폰", imageData: nil)
+        mockRepository.fetchWishesResult = [wish]
+        sut.input.updateCategory.send(.wantToGet)
+
+        // When
+        sut.input.didTapDelete.send(0)
+
+        // Then
+        XCTAssertEqual(mockLinkPreviewCache.removedWishIds, ["wish-link"])
+        XCTAssertNil(mockLinkPreviewCache.previews["wish-link"])
+    }
+
+    func test_GH29_TC13_상세에서위시를삭제하고돌아오면_그위시의링크미리보기캐시가지워진다() {
+        // Given
+        let wish = Wish(id: "wish-link", category: .wantToGet, title: "헤드폰", link: "https://store.example.com/p/1")
+        mockLinkPreviewCache.previews[wish.id] = LinkPreview(link: wish.link, title: "헤드폰", imageData: nil)
+        mockRepository.fetchWishesResult = [wish]
+        sut.input.updateCategory.send(.wantToGet)
+
+        // When
+        sut.input.deleteWish.send(wish)
+
+        // Then
+        XCTAssertEqual(mockLinkPreviewCache.removedWishIds, ["wish-link"])
     }
 }

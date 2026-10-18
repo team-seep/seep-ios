@@ -21,6 +21,8 @@ class WishDTO: Object, Identifiable {
     @objc dynamic var isSuccess: Bool = false
     /// 완료 소감 한 줄(최대 40자). 비어 있으면 소감 없음 (GH-25 R-4)
     @objc dynamic var finishNote: String = ""
+    /// 갖고 싶어요의 상품 링크. 비어 있으면 링크 없음. 썸네일은 저장하지 않는다 (GH-29 R-7)
+    @objc dynamic var link: String = ""
     @objc dynamic var createdAt: Date = Date()
     
     
@@ -50,6 +52,7 @@ class WishDTO: Object, Identifiable {
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
         self.finishNote = wish.finishNote
+        self.link = wish.link
         self.createdAt = wish.createdAt
     }
     

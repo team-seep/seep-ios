@@ -70,6 +70,8 @@ struct WishService: WishServiceProtocol {
             item?.steps.append(objectsIn: newWish.steps.map(WishStepDTO.init(step:)))
             // 목표 금액만 바꾸고 모은 돈 기록(savings)은 건드리지 않는다 (GH-16 R-7)
             item?.targetAmount = newWish.targetAmount
+            // 링크는 문자열만 저장한다 (GH-29 R-7)
+            item?.link = newWish.link
         }
   }
   

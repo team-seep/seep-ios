@@ -297,6 +297,14 @@ internal enum Strings {
     }
   }
   internal enum Detail {
+    internal enum Link {
+      /// 상품 링크 열기
+      internal static let openAccessibility = Strings.tr("Localization", "detail.link.open_accessibility", fallback: "상품 링크 열기")
+      /// 미리보기를 불러오지 못했어요. 탭하면 열 수 있어요
+      internal static let previewFailed = Strings.tr("Localization", "detail.link.preview_failed", fallback: "미리보기를 불러오지 못했어요. 탭하면 열 수 있어요")
+      /// 링크
+      internal static let title = Strings.tr("Localization", "detail.link.title", fallback: "링크")
+    }
     internal enum Saving {
       /// 모은 돈 기록
       internal static let add = Strings.tr("Localization", "detail.saving.add", fallback: "모은 돈 기록")
@@ -476,6 +484,18 @@ internal enum Strings {
     }
   }
   internal enum Write {
+    internal enum Link {
+      /// http:// 또는 https:// 로 시작하는 링크를 넣어주세요
+      internal static let errorInvalid = Strings.tr("Localization", "write.link.error_invalid", fallback: "http:// 또는 https:// 로 시작하는 링크를 넣어주세요")
+      ///  (선택)
+      internal static let `optional` = Strings.tr("Localization", "write.link.optional", fallback: " (선택)")
+      /// 상품 페이지 링크를 붙여넣어요
+      internal static let placeholder = Strings.tr("Localization", "write.link.placeholder", fallback: "상품 페이지 링크를 붙여넣어요")
+      /// 미리보기를 불러오지 못했어요
+      internal static let previewFailed = Strings.tr("Localization", "write.link.preview_failed", fallback: "미리보기를 불러오지 못했어요")
+      /// 링크
+      internal static let title = Strings.tr("Localization", "write.link.title", fallback: "링크")
+    }
     internal enum Step {
       /// 단계 (선택)
       internal static let title = Strings.tr("Localization", "write.step.title", fallback: "단계 (선택)")

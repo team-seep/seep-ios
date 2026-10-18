@@ -15,6 +15,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     private let writeView = WriteView()
     private let writeReactor: WriteReactor
     private let stepsViewModel = WishStepsViewModel(config: .init(mode: .draft(steps: [], screenName: .write)))
+    private let linkViewModel: WishLinkViewModel
     private var cancellables = Set<AnyCancellable>()
     private weak var coordinator: WriteCoordinator?
     private var isKeyboardShown = false
@@ -32,6 +33,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             userDefaults: UserDefaultsUtils(),
             notificationManager: NotificationManager.shared
         )
+        self.linkViewModel = WishLinkViewModel(config: .init(mode: .write, category: category))
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,6 +75,7 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         self.writeView.categoryView.moveActiveButton(category: self.writeReactor.currentState.category)
         self.bindSteps()
         self.bindTargetAmount()
+        self.bindLink()
     }
     
     override func bindEvent() {
@@ -329,6 +332,67 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.writeView.scrollView.contentInset.bottom = .zero
         self.isKeyboardShown = false
+    }
+}
+
+// MARK: Link
+extension WriteViewController {
+    /// 링크 칸 (GH-29 R-1~R-3, R-6). 링크는 Reactor 상태로만 넘겨 작성 완료 때 함께 저장된다.
+    private func bindLink() {
+        let linkView = writeView.linkView
+
+        linkView.textPublisher
+            .subscribe(linkViewModel.input.inputText)
+            .store(in: &cancellables)
+
+        linkView.pastePublisher
+            .subscribe(linkViewModel.input.paste)
+            .store(in: &cancellables)
+
+        writeReactor.state
+            .map { $0.category }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] category in
+                self?.linkViewModel.input.changeCategory.send(category)
+            })
+            .disposed(by: eventDisposeBag)
+
+        linkViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                linkView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.text
+            .main
+            .sink { text in
+                linkView.setText(text)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.errorMessage
+            .main
+            .sink { errorMessage in
+                linkView.bind(errorMessage: errorMessage)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.preview
+            .main
+            .sink { preview in
+                linkView.bind(preview: preview)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.linkInput
+            .withUnretained(self)
+            .sink { (owner: WriteViewController, link: WishLinkInput) in
+                owner.writeReactor.action.onNext(.inputLink(link))
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.input.viewDidLoad.send(())
     }
 }
 

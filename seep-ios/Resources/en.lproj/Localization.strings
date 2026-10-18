@@ -107,6 +107,14 @@
 "write.target_amount.optional" = " (선택)";
 "write.target_amount.placeholder" = "0";
 "write.target_amount.caption" = "상세 화면에서 모은 돈을 기록할 수 있어요";
+"write.link.title" = "링크";
+"write.link.optional" = " (선택)";
+"write.link.placeholder" = "상품 페이지 링크를 붙여넣어요";
+"write.link.error_invalid" = "http:// 또는 https:// 로 시작하는 링크를 넣어주세요";
+"write.link.preview_failed" = "미리보기를 불러오지 못했어요";
+"detail.link.title" = "링크";
+"detail.link.preview_failed" = "미리보기를 불러오지 못했어요. 탭하면 열 수 있어요";
+"detail.link.open_accessibility" = "상품 링크 열기";
 "common.won_unit" = "원";
 "common.won_format" = "%@원";
 "detail.saving.title" = "모으기";

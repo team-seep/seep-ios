@@ -82,6 +82,8 @@ final class WriteView: BaseView {
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }
     
+    let linkView = WishLinkInputView()
+    
     let targetAmountView = TargetAmountInputView()
     
     let stepsView: WishStepsView = {
@@ -191,6 +193,7 @@ final class WriteView: BaseView {
         self.emojiInputView.inputAccessoryView = self.accessoryView
         self.titleField.inputAccessoryView = self.accessoryView
         self.dateField.inputAccessoryView = self.accessoryView
+        self.linkView.inputAccessoryView = self.accessoryView
         self.targetAmountView.inputAccessoryView = self.accessoryView
         self.memoField.inputAccessoryView = self.accessoryView
         self.hashtagField.textField.inputAccessoryView = self.accessoryView
@@ -201,6 +204,7 @@ final class WriteView: BaseView {
             self.emojiInputView,
             self.categoryView,
             self.titleField,
+            self.linkView,
             self.dateField,
             self.dateSwitchLabel,
             self.dateSwitch,
@@ -276,9 +280,15 @@ final class WriteView: BaseView {
             make.top.equalTo(self.categoryView.snp.bottom).offset(31)
         }
         
+        // 링크 칸은 위쪽 간격(24)을 스스로 가져, 갖고 싶어요가 아니면 높이 0 이 된다 (GH-29 R-1)
+        self.linkView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.titleField.snp.bottom)
+        }
+        
         self.dateField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.titleField.snp.bottom).offset(24)
+            make.top.equalTo(self.linkView.snp.bottom).offset(24)
         }
         
         self.dateSwitch.snp.makeConstraints { make in

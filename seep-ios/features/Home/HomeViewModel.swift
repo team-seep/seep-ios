@@ -51,17 +51,20 @@ extension HomeViewModel {
         let preference: Preference
         let notificationManager: NotificationManagerProtocol
         let logManager: LogManagerProtocol
+        let linkPreviewCache: LinkPreviewCaching
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
             preference: Preference = .shared,
             notificationManager: NotificationManagerProtocol = NotificationManager.shared,
-            logManager: LogManagerProtocol = LogManager.shared
+            logManager: LogManagerProtocol = LogManager.shared,
+            linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
             self.notificationManager = notificationManager
             self.logManager = logManager
+            self.linkPreviewCache = linkPreviewCache
         }
     }
 }
@@ -343,6 +346,8 @@ final class HomeViewModel {
     }
     
     private func deleteWish(wish: Wish) {
+        // 홈 스와이프 삭제·상세 삭제 모두 여기로 모인다. 링크 미리보기 캐시도 같이 지운다 (GH-29 R-5)
+        dependency.linkPreviewCache.remove(wishId: wish.id)
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         state.wish.remove(at: targetIndex)
         updateDataSource()

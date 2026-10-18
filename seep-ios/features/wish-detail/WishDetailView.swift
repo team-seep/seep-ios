@@ -43,6 +43,8 @@ final class WishDetailView: BaseView {
         placeholder: "write_placeholder_date_enable".localized
     )
     
+    let linkSectionView = WishLinkSectionView()
+    
     let savingsView = WishSavingsView()
     
     let stepsView = WishStepsView()
@@ -116,6 +118,7 @@ final class WishDetailView: BaseView {
             self.emojiInputView,
             self.categoryView,
             self.titleField,
+            self.linkSectionView,
             self.dateField,
             self.savingsView,
             self.stepsView,
@@ -184,9 +187,15 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.categoryView.snp.bottom).offset(31)
         }
         
+        // 링크 섹션은 위쪽 간격(24)을 스스로 가져, 링크가 없으면 높이 0 이 된다 (GH-29 R-4)
+        self.linkSectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.titleField.snp.bottom)
+        }
+        
         self.dateField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.titleField.snp.bottom).offset(24)
+            make.top.equalTo(self.linkSectionView.snp.bottom).offset(24)
         }
         
         // 모으기 섹션은 위쪽 간격(26)을 스스로 가져, 접히면 높이 0 이 된다 (GH-16)

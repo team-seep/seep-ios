@@ -3,6 +3,7 @@ import Combine
 
 import CombineCocoa
 import PanModal
+import SafariServices
 import RxSwift
 import ReactorKit
 
@@ -23,6 +24,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private let mode: DetailMode
     private let stepsViewModel: WishStepsViewModel
     private let savingsViewModel: WishSavingsViewModel
+    private let linkViewModel: WishLinkViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
@@ -33,6 +35,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: wish))
+        self.linkViewModel = Self.makeLinkViewModel(wish: wish)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,6 +44,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: reactor.initialState.wish))
+        self.linkViewModel = Self.makeLinkViewModel(wish: reactor.initialState.wish)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,12 +74,18 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        // 상세는 읽기 전용이지만 단계 섹션(체크)과 모으기 섹션(기록)은 바로 쓸 수 있다
+        // 상세는 읽기 전용이지만 단계 섹션(체크)·모으기 섹션(기록)·링크 카드(열기)는 바로 쓸 수 있다
+        let interactiveViews: [UIView] = [
+            self.wishDetailView.stepsView,
+            self.wishDetailView.savingsView,
+            self.wishDetailView.linkSectionView
+        ]
         self.wishDetailView.containerView.subviews
-            .filter { $0 !== self.wishDetailView.stepsView && $0 !== self.wishDetailView.savingsView }
+            .filter { subview in !interactiveViews.contains { $0 === subview } }
             .forEach { $0.isUserInteractionEnabled = false }
         self.bindSteps()
         self.bindSavings()
+        self.bindLink()
     }
   
     override func bindEvent() {
@@ -248,8 +258,60 @@ extension WishDetailViewController {
     }
 }
 
+// MARK: Link
+extension WishDetailViewController {
+    private static func makeLinkViewModel(wish: Wish) -> WishLinkViewModel {
+        return WishLinkViewModel(config: .init(
+            mode: .detail,
+            category: wish.category,
+            wishId: wish.id,
+            link: wish.link
+        ))
+    }
+
+    /// 링크 카드 (GH-29 R-4, R-5)
+    private func bindLink() {
+        let linkSectionView = wishDetailView.linkSectionView
+
+        linkSectionView.didTapCardPublisher
+            .subscribe(linkViewModel.input.didTapCard)
+            .store(in: &cancellables)
+
+        linkViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                linkSectionView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.preview
+            .main
+            .sink { preview in
+                linkSectionView.bind(preview: preview)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishLinkViewModel.Route) in
+                owner.handleLinkRoute(route)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.input.viewDidLoad.send(())
+    }
+}
+
 // MARK: Route
 extension WishDetailViewController {
+    private func handleLinkRoute(_ route: WishLinkViewModel.Route) {
+        switch route {
+        case .openSafari(let url):
+            present(SFSafariViewController(url: url), animated: true)
+        }
+    }
+    
     private func handleSavingsRoute(_ route: WishSavingsViewModel.Route) {
         switch route {
         case .presentSavingInput(let viewModel):
@@ -288,5 +350,6 @@ extension WishDetailViewController: WishEditViewControllerDelegate {
         self.wishDetailReactor.action.onNext(.updateWish(wish: wish))
         self.stepsViewModel.input.reloadSteps.send(wish.steps)
         self.savingsViewModel.input.reloadWish.send(wish)
+        self.linkViewModel.input.reloadWish.send(wish)
     }
 }

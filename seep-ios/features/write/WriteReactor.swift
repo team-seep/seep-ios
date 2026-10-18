@@ -21,6 +21,7 @@ class WriteReactor: Reactor {
         case inputMemo(String)
         case updateSteps([WishStep])
         case inputTargetAmount(Int)
+        case inputLink(WishLinkInput)
         case tapHashtag(index: Int)
         case inputHashtag(String)
         case tapWriteButton
@@ -43,6 +44,7 @@ class WriteReactor: Reactor {
         case setMemo(String)
         case setSteps([WishStep])
         case setTargetAmount(Int)
+        case setLink(WishLinkInput)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setWriteButtonState(WriteButton.WriteButtonState)
@@ -66,6 +68,8 @@ class WriteReactor: Reactor {
         var steps: [WishStep] = []
         /// 목표 금액(원). 갖고 싶어요일 때만 저장한다 (GH-16 R-1)
         var targetAmount: Int = 0
+        /// 링크 칸 값. 갖고 싶어요일 때만 저장하고, 형식이 아니면 작성을 막는다 (GH-29 R-1, R-2)
+        var link: WishLinkInput = .empty
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String = ""
@@ -109,7 +113,10 @@ class WriteReactor: Reactor {
             return .just(.setEmoji(emoji))
             
         case .tapCategory(let category):
-            return .just(.setCategory(category))
+            return .merge([
+                .just(.setCategory(category)),
+                .just(.setWriteButtonState(self.validateForEnable(category: category)))
+            ])
             
         case .inputTitle(let title):
             return .merge([
@@ -165,6 +172,12 @@ class WriteReactor: Reactor {
         case .inputTargetAmount(let amount):
             return .just(.setTargetAmount(min(max(amount, 0), WishSaving.maxAmount)))
             
+        case .inputLink(let link):
+            return .merge([
+                .just(.setLink(link)),
+                .just(.setWriteButtonState(self.validateForEnable(link: link)))
+            ])
+            
         case .tapHashtag(let index):
             return .merge([
                 .just(.setCustomHashtag("")),
@@ -188,7 +201,10 @@ class WriteReactor: Reactor {
                 observables.append(.just(.setDeadlineError("write_error_date_empty".localized)))
             }
             
-            if observables.isEmpty {
+            // 링크 형식 안내는 링크 칸이 이미 보여준다 (GH-29 R-2)
+            let isLinkBlocking = self.currentState.link.blocksSave(category: self.currentState.category)
+            
+            if observables.isEmpty && !isLinkBlocking {
                 return self.writeWish()
             } else {
                 return .merge(observables)
@@ -248,6 +264,9 @@ class WriteReactor: Reactor {
         case .setTargetAmount(let amount):
             newState.targetAmount = amount
             
+        case .setLink(let link):
+            newState.link = link
+            
         case .selectHashtag(let index):
             if let index = index {
                 newState.selectedHashtag = newState.hashtags[index]
@@ -271,8 +290,15 @@ class WriteReactor: Reactor {
         return newState
     }
     
-    private func validateForEnable(title: String) -> WriteButton.WriteButtonState {
-        return title.isEmpty ? .initial : .active
+    private func validateForEnable(
+        title: String? = nil,
+        category: Category? = nil,
+        link: WishLinkInput? = nil
+    ) -> WriteButton.WriteButtonState {
+        let title = title ?? self.currentState.title
+        let category = category ?? self.currentState.category
+        let link = link ?? self.currentState.link
+        return (title.isEmpty || link.blocksSave(category: category)) ? .initial : .active
     }
     
     private func writeWish() -> Observable<Mutation> {
@@ -299,7 +325,9 @@ class WriteReactor: Reactor {
             // 다른 카테고리로 바꿨으면 입력했던 목표 금액은 버린다 (GH-16 R-1)
             targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             memo: self.currentState.memo,
-            hashtag: hashtag
+            hashtag: hashtag,
+            // 다른 카테고리로 바꿨으면 링크도 버린다 (GH-29 R-1)
+            link: self.currentState.link.storedLink(category: self.currentState.category)
         )
         
         self.wishService.addWish(wish: wish)

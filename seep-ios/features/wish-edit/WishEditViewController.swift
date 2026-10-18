@@ -15,6 +15,7 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     private let wishEditView = WishEditView()
     private let wishEditReactor: WishEditReactor
     private let stepsViewModel: WishStepsViewModel
+    private let linkViewModel: WishLinkViewModel
     private var cancellables = Set<AnyCancellable>()
     private weak var coordinator: WishEditCoordinator?
     private var isKeyboardShown = false
@@ -32,6 +33,12 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
             notificationManager: NotificationManager.shared
         )
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .draft(steps: wish.steps, screenName: .wishEdit)))
+        self.linkViewModel = WishLinkViewModel(config: .init(
+            mode: .edit,
+            category: wish.category,
+            wishId: wish.id,
+            link: wish.link
+        ))
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -70,8 +77,10 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
         self.wishEditView.dateField.inputView = self.datePicker
         
         self.wishEditView.memoField.setEditableText(text: self.wishEditReactor.initialState.memo)
+        self.wishEditView.linkView.setText(self.wishEditReactor.initialState.link.link ?? "")
         self.bindSteps()
         self.bindTargetAmount()
+        self.bindLink()
     }
     
     override func bindEvent() {
@@ -368,6 +377,67 @@ final class WishEditViewController: BaseVC, View, WishEditCoordinator {
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.wishEditView.scrollView.contentInset.bottom = .zero
         self.isKeyboardShown = false
+    }
+}
+
+// MARK: Link
+extension WishEditViewController {
+    /// 링크 칸 (GH-29 R-1~R-3, R-6). 링크는 Reactor 상태로만 넘겨 수정 완료 때 함께 저장된다.
+    private func bindLink() {
+        let linkView = wishEditView.linkView
+
+        linkView.textPublisher
+            .subscribe(linkViewModel.input.inputText)
+            .store(in: &cancellables)
+
+        linkView.pastePublisher
+            .subscribe(linkViewModel.input.paste)
+            .store(in: &cancellables)
+
+        wishEditReactor.state
+            .map { $0.category }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] category in
+                self?.linkViewModel.input.changeCategory.send(category)
+            })
+            .disposed(by: eventDisposeBag)
+
+        linkViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                linkView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.text
+            .main
+            .sink { text in
+                linkView.setText(text)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.errorMessage
+            .main
+            .sink { errorMessage in
+                linkView.bind(errorMessage: errorMessage)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.preview
+            .main
+            .sink { preview in
+                linkView.bind(preview: preview)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.linkInput
+            .withUnretained(self)
+            .sink { (owner: WishEditViewController, link: WishLinkInput) in
+                owner.wishEditReactor.action.onNext(.inputLink(link))
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.input.viewDidLoad.send(())
     }
 }
 
