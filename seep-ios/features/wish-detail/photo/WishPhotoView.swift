@@ -10,12 +10,6 @@ final class WishPhotoView: BaseView {
         static let cornerRadius: CGFloat = 12
     }
 
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        return stackView
-    }()
-
     private let headerView = UIView()
 
     private let iconImageView: UIImageView = {
@@ -46,6 +40,7 @@ final class WishPhotoView: BaseView {
         let button = UIButton()
         button.backgroundColor = .gray2
         button.layer.cornerRadius = Layout.cornerRadius
+        button.accessibilityLabel = Strings.Detail.Photo.add
         return button
     }()
 
@@ -81,6 +76,11 @@ final class WishPhotoView: BaseView {
         imageView.layer.cornerRadius = Layout.cornerRadius
         imageView.backgroundColor = .gray2
         imageView.accessibilityIgnoresInvertColors = true
+        // 사진 원본 크기(intrinsic size)가 섹션 폭을 밀어내지 않게 한다
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        imageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        imageView.setContentHuggingPriority(.defaultLow, for: .vertical)
         return imageView
     }()
 
@@ -96,21 +96,14 @@ final class WishPhotoView: BaseView {
         headerView.addSubViews([iconImageView, titleLabel, changeButton])
         [emptyTitleLabel, emptyDescriptionLabel].forEach(emptyStackView.addArrangedSubview)
         emptyButton.addSubview(emptyStackView)
-
-        [headerView, emptyButton, photoImageView, captionLabel].forEach(stackView.addArrangedSubview)
-        stackView.setCustomSpacing(10, after: headerView)
-        stackView.setCustomSpacing(8, after: photoImageView)
-        addSubview(stackView)
+        addSubViews([headerView, emptyButton, photoImageView, captionLabel])
 
         bind(image: nil)
     }
 
     override func bindConstraints() {
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-
         headerView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(20)
         }
 
@@ -129,18 +122,10 @@ final class WishPhotoView: BaseView {
             $0.height.equalTo(44)
         }
 
-        emptyButton.snp.makeConstraints {
-            $0.height.equalTo(Layout.emptyHeight)
-        }
-
         emptyStackView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.leading.greaterThanOrEqualToSuperview().offset(16)
             $0.trailing.lessThanOrEqualToSuperview().offset(-16)
-        }
-
-        photoImageView.snp.makeConstraints {
-            $0.height.equalTo(photoImageView.snp.width).multipliedBy(Layout.photoAspectRatio)
         }
     }
 
@@ -149,6 +134,7 @@ final class WishPhotoView: BaseView {
         bind(image: photoURL.flatMap { UIImage(contentsOfFile: $0.path) })
     }
 
+    /// 빈 자리와 사진 중 보이는 쪽만 제약을 건다. 숨긴 뷰에 높이·비율 제약이 남으면 섹션 폭이 무너질 수 있어 지운다.
     private func bind(image: UIImage?) {
         let hasPhoto = image != nil
         photoImageView.image = image
@@ -156,5 +142,26 @@ final class WishPhotoView: BaseView {
         captionLabel.isHidden = !hasPhoto
         changeButton.isHidden = !hasPhoto
         emptyButton.isHidden = hasPhoto
+
+        if hasPhoto {
+            emptyButton.snp.removeConstraints()
+            photoImageView.snp.remakeConstraints {
+                $0.top.equalTo(headerView.snp.bottom).offset(10)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(photoImageView.snp.width).multipliedBy(Layout.photoAspectRatio)
+            }
+            captionLabel.snp.remakeConstraints {
+                $0.top.equalTo(photoImageView.snp.bottom).offset(8)
+                $0.leading.trailing.bottom.equalToSuperview()
+            }
+        } else {
+            photoImageView.snp.removeConstraints()
+            captionLabel.snp.removeConstraints()
+            emptyButton.snp.remakeConstraints {
+                $0.top.equalTo(headerView.snp.bottom).offset(10)
+                $0.leading.trailing.bottom.equalToSuperview()
+                $0.height.equalTo(Layout.emptyHeight)
+            }
+        }
     }
 }
