@@ -63,6 +63,15 @@
 "home.finish_note.save" = "남기기";
 "home.finish_note.skip" = "다음에 할게요";
 "home.finish_note.cell_format" = "“%@”";
+"home.search.accessibility" = "위시 검색";
+
+// WishSearch (GH-32)
+"wish_search.placeholder" = "제목·메모·해시태그로 찾기";
+"wish_search.result_count_format" = "위시 %d개를 찾았어요";
+"wish_search.result_count_highlight_format" = "%d개";
+"wish_search.memo_format" = "메모 · %@";
+"wish_search.empty_title_format" = "‘%@’ 위시는 아직 없네요.";
+"wish_search.empty_description" = "제목·메모·해시태그에서 찾아봤어요";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

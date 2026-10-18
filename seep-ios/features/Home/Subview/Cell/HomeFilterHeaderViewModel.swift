@@ -9,6 +9,7 @@ extension HomeFilterHeaderViewModel {
         let selectSortOrder = PassthroughSubject<HomeSortOrder, Never>()
         let didTapOnlyFinished = PassthroughSubject<Void, Never>()
         let didTapViewType = PassthroughSubject<Void, Never>()
+        let didTapSearch = PassthroughSubject<Void, Never>()
     }
     
     struct Output {
@@ -22,6 +23,7 @@ extension HomeFilterHeaderViewModel {
         let didTapSortOrder = PassthroughSubject<Void, Never>()
         let updateOnlyFinished = PassthroughSubject<Bool, Never>()
         let updateViewType = PassthroughSubject<ViewType, Never>()
+        let didTapSearch = PassthroughSubject<Void, Never>()
     }
     
     struct Config {
@@ -68,6 +70,10 @@ final class HomeFilterHeaderViewModel {
                 owner.output.onlyFinished.send(isOnlyFinished)
                 owner.output.updateOnlyFinished.send(isOnlyFinished)
             })
+            .store(in: &cancellables)
+        
+        input.didTapSearch
+            .subscribe(output.didTapSearch)
             .store(in: &cancellables)
         
         input.didTapViewType

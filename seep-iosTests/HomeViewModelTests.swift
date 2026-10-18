@@ -268,4 +268,46 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(mockRepository.updateFinishNoteCalls.map(\.note), ["최고!"])
         XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "최고!")
     }
+
+    // MARK: GH-32 TC10
+
+    func test_GH32_TC10_돋보기버튼을탭하면_검색화면으로이동한다() {
+        // Given
+        var pushedSearch = false
+        sut.output.route
+            .sink { route in
+                if case .pushWishSearch = route { pushedSearch = true }
+            }
+            .store(in: &cancellables)
+
+        // When
+        sut.headerViewModel.input.didTapSearch.send(())
+
+        // Then
+        XCTAssertTrue(pushedSearch)
+    }
+
+    // MARK: GH-32 TC11
+
+    func test_GH32_TC11_돋보기버튼을탭하면_search클릭로그가1건전송된다() {
+        // Given
+        let logManager = MockLogManager()
+        let viewModel = HomeViewModel(dependency: .init(
+            wishRepository: mockRepository,
+            preference: Preference(name: "test"),
+            notificationManager: mockNotificationManager,
+            logManager: logManager
+        ))
+
+        // When
+        viewModel.headerViewModel.input.didTapSearch.send(())
+
+        // Then
+        XCTAssertEqual(logManager.sentEvents.count, 1)
+        let parameters = logManager.sentEvents.first?.parameters
+        XCTAssertEqual(logManager.sentEvents.first?.name, .click)
+        XCTAssertEqual(parameters?[ParameterName.screen.rawValue] as? String, "home")
+        XCTAssertEqual(parameters?[ParameterName.objectType.rawValue] as? String, "button")
+        XCTAssertEqual(parameters?[ParameterName.objectId.rawValue] as? String, "search")
+    }
 }

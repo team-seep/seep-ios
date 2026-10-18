@@ -14,6 +14,7 @@ extension HomeViewModel {
         let didTapFinish = PassthroughSubject<Wish, Never>()
         let didTapWrite = PassthroughSubject<Void, Never>()
         let didTapDelete = PassthroughSubject<Int, Never>()
+        let didTapSearch = PassthroughSubject<Void, Never>()
         
         // From WishDetail
         let updateWish = PassthroughSubject<Wish, Never>()
@@ -43,6 +44,7 @@ extension HomeViewModel {
         case presentSortBottomSheet(SortOrderBottomSheetViewModel)
         case presentFinishNoteBottomSheet(FinishNoteViewModel)
         case pushWishDetail(WishDetailReactor)
+        case pushWishSearch(WishSearchViewModel)
         case showErrorAlert(Error)
     }
     
@@ -179,6 +181,14 @@ final class HomeViewModel {
             }
             .store(in: &cancellables)
         
+        input.didTapSearch
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.sendClickLog(objectId: .search)
+                owner.pushWishSearch()
+            }
+            .store(in: &cancellables)
+        
         input.didTapDelete
             .sink { [weak self] index in
                 guard let self,
@@ -205,6 +215,10 @@ final class HomeViewModel {
         
         headerViewModel.output.updateViewType
             .subscribe(input.updateViewType)
+            .store(in: &headerViewModel.cancellables)
+        
+        headerViewModel.output.didTapSearch
+            .subscribe(input.didTapSearch)
             .store(in: &headerViewModel.cancellables)
         
         input.updateSortOrder
@@ -334,6 +348,22 @@ final class HomeViewModel {
             .store(in: &reactor.cancellables)
         
         output.route.send(.pushWishDetail(reactor))
+    }
+    
+    private func pushWishSearch() {
+        let viewModel = WishSearchViewModel(dependency: .init(
+            wishRepository: dependency.wishRepository,
+            logManager: dependency.logManager
+        ))
+        // 검색 화면에서 들어간 상세에서 고치거나 지우면 홈 목록도 다시 불러온다 (GH-32 R-8)
+        viewModel.output.didChangeWishes
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.fetchWishDatas()
+            }
+            .store(in: &viewModel.cancellables)
+        
+        output.route.send(.pushWishSearch(viewModel))
     }
     
     private func updateWish(wish: Wish) {

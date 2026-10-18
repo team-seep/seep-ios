@@ -233,6 +233,14 @@
 		A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */; };
+		A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000001 /* WishSearchMatcher.swift */; };
+		A32F00000000000000000004 /* WishSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000003 /* WishSearchViewModel.swift */; };
+		A32F00000000000000000006 /* WishSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000005 /* WishSearchViewController.swift */; };
+		A32F00000000000000000008 /* WishSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000007 /* WishSearchResultCell.swift */; };
+		A32F0000000000000000000A /* WishSearchSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */; };
+		A32F0000000000000000000C /* WishSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000B /* WishSearchEmptyView.swift */; };
+		A32F0000000000000000000E /* WishSearchMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000D /* WishSearchMatcherTests.swift */; };
+		A32F00000000000000000010 /* WishSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000F /* WishSearchViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,6 +491,14 @@
 		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorStepsTests.swift; sourceTree = "<group>"; };
+		A32F00000000000000000001 /* WishSearchMatcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchMatcher.swift; sourceTree = "<group>"; };
+		A32F00000000000000000003 /* WishSearchViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewModel.swift; sourceTree = "<group>"; };
+		A32F00000000000000000005 /* WishSearchViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewController.swift; sourceTree = "<group>"; };
+		A32F00000000000000000007 /* WishSearchResultCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchResultCell.swift; sourceTree = "<group>"; };
+		A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchSectionHeaderView.swift; sourceTree = "<group>"; };
+		A32F0000000000000000000B /* WishSearchEmptyView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchEmptyView.swift; sourceTree = "<group>"; };
+		A32F0000000000000000000D /* WishSearchMatcherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchMatcherTests.swift; sourceTree = "<group>"; };
+		A32F0000000000000000000F /* WishSearchViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -571,6 +587,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A32F00000000000000000011 /* wish-search */ = {
+			isa = PBXGroup;
+			children = (
+				A32F00000000000000000003 /* WishSearchViewModel.swift */,
+				A32F00000000000000000005 /* WishSearchViewController.swift */,
+				A32F00000000000000000007 /* WishSearchResultCell.swift */,
+				A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */,
+				A32F0000000000000000000B /* WishSearchEmptyView.swift */,
+			);
+			path = "wish-search";
+			sourceTree = "<group>";
+		};
 		A25F00010000000000000007 /* FinishNote */ = {
 			isa = PBXGroup;
 			children = (
@@ -609,6 +637,8 @@
 				820431309D9DE5D0DCA8238D /* WriteReactorTargetAmountTests.swift */,
 				FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */,
 				A25F00010000000000000005 /* FinishNoteViewModelTests.swift */,
+				A32F0000000000000000000D /* WishSearchMatcherTests.swift */,
+				A32F0000000000000000000F /* WishSearchViewModelTests.swift */,
 				2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */,
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 				A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */,
@@ -688,6 +718,7 @@
 				6E66A27525FB45C000C0C051 /* write */,
 				6EE5CE7225FB24C900A737DF /* shared */,
 				6E274E8C25F214FB007DC880 /* Home */,
+				A32F00000000000000000011 /* wish-search */,
 				6E274E7D25F20F4C007DC880 /* base */,
 			);
 			path = features;
@@ -959,6 +990,7 @@
 				6E80428F279D3072008A0EB4 /* HashtagType.swift */,
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
 				F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */,
+				A32F00000000000000000001 /* WishSearchMatcher.swift */,
 				76EC49270480D77773B034E4 /* WishSaving.swift */,
 			);
 			path = presentation;
@@ -1397,6 +1429,8 @@
 				A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */,
 				A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */,
+				A32F0000000000000000000E /* WishSearchMatcherTests.swift in Sources */,
+				A32F00000000000000000010 /* WishSearchViewModelTests.swift in Sources */,
 				6E120012AA00000000000003 /* WideScreenLayoutTests.swift in Sources */,
 				A10C0F1E2D3C4B5A69788710 /* ToastManagerTests.swift in Sources */,
 				7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */,
@@ -1537,6 +1571,12 @@
 				6E66A26F25FB40BD00C0C051 /* Category.swift in Sources */,
 				6183E1D0CA04784F739EDD28 /* WishStepDTO.swift in Sources */,
 				33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */,
+				A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */,
+				A32F00000000000000000004 /* WishSearchViewModel.swift in Sources */,
+				A32F00000000000000000006 /* WishSearchViewController.swift in Sources */,
+				A32F00000000000000000008 /* WishSearchResultCell.swift in Sources */,
+				A32F0000000000000000000A /* WishSearchSectionHeaderView.swift in Sources */,
+				A32F0000000000000000000C /* WishSearchEmptyView.swift in Sources */,
 				B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */,
 				C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */,
 				6708B90CB2D3AA7CBADA1BA4 /* WishStepsView.swift in Sources */,

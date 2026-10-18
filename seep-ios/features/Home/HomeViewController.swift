@@ -420,6 +420,8 @@ extension HomeViewController {
             presentFinishNoteBottomSheet(viewModel: viewModel)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
+        case .pushWishSearch(let viewModel):
+            pushWishSearch(viewModel: viewModel)
         case .showErrorAlert(let error):
             showErrorAlert(error)
         }
@@ -455,6 +457,11 @@ extension HomeViewController {
             mode = .fromHome
         }
         let viewController = WishDetailViewController(reactor: reactor, mode: mode)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    private func pushWishSearch(viewModel: WishSearchViewModel) {
+        let viewController = WishSearchViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

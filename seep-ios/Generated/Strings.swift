@@ -443,6 +443,10 @@ internal enum Strings {
         return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
       }
     }
+    internal enum Search {
+      /// 위시 검색
+      internal static let accessibility = Strings.tr("Localization", "home.search.accessibility", fallback: "위시 검색")
+    }
     internal enum TitleFormat {
       /// 하고 싶은 것들이
       /// %d개 남았어요!
@@ -473,6 +477,28 @@ internal enum Strings {
       internal static let wantToGet = Strings.tr("Localization", "home.write_button.want_to_get", fallback: "📝 뭐 갖고 싶어요?")
       /// 📝 어디 가고 싶어요?
       internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
+    }
+  }
+  internal enum WishSearch {
+    /// 제목·메모·해시태그에서 찾아봤어요
+    internal static let emptyDescription = Strings.tr("Localization", "wish_search.empty_description", fallback: "제목·메모·해시태그에서 찾아봤어요")
+    /// ‘%@’ 위시는 아직 없네요.
+    internal static func emptyTitleFormat(_ p1: Any) -> String {
+      return Strings.tr("Localization", "wish_search.empty_title_format", String(describing: p1), fallback: "‘%@’ 위시는 아직 없네요.")
+    }
+    /// 메모 · %@
+    internal static func memoFormat(_ p1: Any) -> String {
+      return Strings.tr("Localization", "wish_search.memo_format", String(describing: p1), fallback: "메모 · %@")
+    }
+    /// 제목·메모·해시태그로 찾기
+    internal static let placeholder = Strings.tr("Localization", "wish_search.placeholder", fallback: "제목·메모·해시태그로 찾기")
+    /// 위시 %d개를 찾았어요
+    internal static func resultCountFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "wish_search.result_count_format", p1, fallback: "위시 %d개를 찾았어요")
+    }
+    /// %d개
+    internal static func resultCountHighlightFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "wish_search.result_count_highlight_format", p1, fallback: "%d개")
     }
   }
   internal enum Write {

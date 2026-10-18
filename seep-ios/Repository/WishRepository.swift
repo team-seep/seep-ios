@@ -20,6 +20,9 @@ protocol WishRepository {
     
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    
+    /// 세 카테고리 전체에서 제목·메모·해시태그에 검색어가 들어간 위시를 돌려준다. 정렬·묶음은 화면이 정한다 (GH-32 R-3).
+    func searchWishes(keyword: String) -> [Wish]
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -108,6 +111,16 @@ final class WishRepositoryImpl: WishRepository {
         }
         
         return .success(Wish(dto: targetObject))
+    }
+    
+    func searchWishes(keyword: String) -> [Wish] {
+        guard let keyword = WishSearchMatcher.normalize(keyword),
+              let realm = try? Realm() else { return [] }
+        
+        // 해시태그 표시 이름(예: trip → 여행)까지 봐야 해서 Realm 쿼리 대신 도메인 모델에서 거른다
+        return realm.objects(WishDTO.self)
+            .map { Wish(dto: $0) }
+            .filter { WishSearchMatcher.matches(wish: $0, keyword: keyword) }
     }
     
     private func updateSavings(
