@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4C358AA2D714E019784ADE /* CalendarManager.swift */; };
+		23F50BC3FF985CF5955FD358 /* WishCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EC803FE877E21B5FFDB6D8 /* WishCalendarViewModel.swift */; };
+		EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */; };
+		021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */; };
+		C024800893918CED18532155 /* WishCalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */; };
 		A25F00010000000000000002 /* FinishNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000001 /* FinishNoteViewModel.swift */; };
 		A25F00010000000000000004 /* FinishNoteBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */; };
 		A25F00010000000000000006 /* FinishNoteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000005 /* FinishNoteViewModelTests.swift */; };
@@ -288,6 +293,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB4C358AA2D714E019784ADE /* CalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		C8EC803FE877E21B5FFDB6D8 /* WishCalendarViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishCalendarViewModel.swift; sourceTree = "<group>"; };
+		6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddCalendarButton.swift; sourceTree = "<group>"; };
+		82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCalendarManager.swift; sourceTree = "<group>"; };
+		54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishCalendarViewModelTests.swift; sourceTree = "<group>"; };
 		A25F00010000000000000001 /* FinishNoteViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteViewModel.swift; sourceTree = "<group>"; };
 		A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteBottomSheetViewController.swift; sourceTree = "<group>"; };
 		A25F00010000000000000005 /* FinishNoteViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteViewModelTests.swift; sourceTree = "<group>"; };
@@ -571,6 +581,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A28C0A1E2D3C4B5A69788001 /* calendar */ = {
+			isa = PBXGroup;
+			children = (
+				C8EC803FE877E21B5FFDB6D8 /* WishCalendarViewModel.swift */,
+				6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */,
+			);
+			path = calendar;
+			sourceTree = "<group>";
+		};
 		A25F00010000000000000007 /* FinishNote */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,6 +629,7 @@
 				FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */,
 				A25F00010000000000000005 /* FinishNoteViewModelTests.swift */,
 				2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */,
+				54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */,
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 				A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */,
 				13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */,
@@ -869,6 +889,7 @@
 				6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */,
 				74C39C6093BA273B7EE6A5CD /* steps */,
 				87A58DA3E871B741FF607C5D /* savings */,
+				A28C0A1E2D3C4B5A69788001 /* calendar */,
 			);
 			path = "wish-detail";
 			sourceTree = "<group>";
@@ -1020,6 +1041,7 @@
 			children = (
 				6E3B468027A6947A000A1D41 /* toast */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
+				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
@@ -1172,6 +1194,7 @@
 				B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */,
 				43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */,
 				269705858459DA909159F323 /* MockNotificationManager.swift */,
+				82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */,
 			);
 			name = Mock;
 			path = Mock;
@@ -1408,6 +1431,8 @@
 				042777C6C45215367A054571 /* SavingInputViewModelTests.swift in Sources */,
 				A25F00010000000000000006 /* FinishNoteViewModelTests.swift in Sources */,
 				99B938686802C41D8298407D /* WishSavingsViewModelTests.swift in Sources */,
+				021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */,
+				C024800893918CED18532155 /* WishCalendarViewModelTests.swift in Sources */,
 				050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */,
 				A1B2C3D4E5F60718293A4B11 /* HomeWishGridLayoutTests.swift in Sources */,
 				13A0B31AF2FDAB9358477F01 /* SharePhotoLayoutTests.swift in Sources */,
@@ -1545,6 +1570,9 @@
 				13853757B38631E0B58E5F81 /* SavingInputViewModel.swift in Sources */,
 				DA446742E6E9F66ACF5480BE /* WishSavingsView.swift in Sources */,
 				B0042A5CED4B6AF6998B8313 /* WishSavingsViewModel.swift in Sources */,
+				759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */,
+				23F50BC3FF985CF5955FD358 /* WishCalendarViewModel.swift in Sources */,
+				EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */,
 				83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */,
 				7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */,
 				050C71F5903092578149F737 /* SavingDTO.swift in Sources */,

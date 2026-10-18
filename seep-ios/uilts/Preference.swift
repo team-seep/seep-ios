@@ -33,4 +33,16 @@ final class Preference {
             instance.string(forKey: "reservedDeepLink") ?? ""
         }
     }
+    
+    /// 위시 id → 캘린더에 추가한 이벤트 id (GH-28 R-4). "캘린더에 추가됨" 표시에만 쓴다.
+    func calendarEventId(wishId: String) -> String? {
+        let eventIds = instance.dictionary(forKey: "calendarEventIds") as? [String: String]
+        return eventIds?[wishId]
+    }
+    
+    func setCalendarEventId(_ eventId: String?, wishId: String) {
+        var eventIds = instance.dictionary(forKey: "calendarEventIds") as? [String: String] ?? [:]
+        eventIds[wishId] = eventId
+        instance.set(eventIds, forKey: "calendarEventIds")
+    }
 }

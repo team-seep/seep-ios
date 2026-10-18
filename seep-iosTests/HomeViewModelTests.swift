@@ -268,4 +268,34 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(mockRepository.updateFinishNoteCalls.map(\.note), ["최고!"])
         XCTAssertEqual(wishCellViewModels().first?.output.finishNote, "최고!")
     }
+
+    // MARK: GH-28 TC9
+
+    func test_GH28_TC9_위시를삭제하면_캘린더추가기록이지워진다() {
+        // Given
+        let preference = Preference(name: "test-gh28")
+        let wishes = [
+            Wish(id: "wish-detail-delete", emoji: "🏝️", title: "상세에서 삭제", endDate: Date()),
+            Wish(id: "wish-swipe-delete", emoji: "🎧", title: "스와이프 삭제", endDate: Date())
+        ]
+        wishes.forEach { preference.setCalendarEventId("event-\($0.id)", wishId: $0.id) }
+        mockRepository.fetchWishesResult = wishes
+        mockRepository.fetchNotFinishCountResult = wishes.count
+        let viewModel = HomeViewModel(dependency: .init(
+            wishRepository: mockRepository,
+            preference: preference,
+            notificationManager: mockNotificationManager,
+            logManager: MockLogManager()
+        ))
+        viewModel.input.firstLoad.send()
+
+        // When
+        viewModel.input.deleteWish.send(wishes[0])
+        viewModel.input.didTapDelete.send(0)
+
+        // Then
+        XCTAssertNil(preference.calendarEventId(wishId: "wish-detail-delete"))
+        XCTAssertNil(preference.calendarEventId(wishId: "wish-swipe-delete"))
+        XCTAssertEqual(mockRepository.deleteWishCalledIds, ["wish-swipe-delete"])
+    }
 }

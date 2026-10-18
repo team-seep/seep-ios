@@ -343,6 +343,8 @@ final class HomeViewModel {
     }
     
     private func deleteWish(wish: Wish) {
+        // 캘린더 이벤트는 쓰기 전용 권한이라 지울 수 없고, "추가됨" 기록만 지운다 (GH-28 R-8)
+        dependency.preference.setCalendarEventId(nil, wishId: wish.id)
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         state.wish.remove(at: targetIndex)
         updateDataSource()

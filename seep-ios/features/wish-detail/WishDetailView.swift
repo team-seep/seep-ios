@@ -43,6 +43,13 @@ final class WishDetailView: BaseView {
         placeholder: "write_placeholder_date_enable".localized
     )
     
+    /// "날짜" 라벨 줄 오른쪽 (GH-28)
+    let calendarButton: AddCalendarButton = {
+        let button = AddCalendarButton()
+        button.isHidden = true
+        return button
+    }()
+    
     let savingsView = WishSavingsView()
     
     let stepsView = WishStepsView()
@@ -117,6 +124,7 @@ final class WishDetailView: BaseView {
             self.categoryView,
             self.titleField,
             self.dateField,
+            self.calendarButton,
             self.savingsView,
             self.stepsView,
             self.notificationIcon,
@@ -187,6 +195,13 @@ final class WishDetailView: BaseView {
         self.dateField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
             make.top.equalTo(self.titleField.snp.bottom).offset(24)
+        }
+        
+        // 버튼 글자를 "날짜" 라벨(16pt 줄)과 같은 줄에 두고, 터치 영역만 위아래로 넓힌다
+        self.calendarButton.snp.makeConstraints { make in
+            make.trailing.equalTo(self.dateField)
+            make.centerY.equalTo(self.dateField.snp.top).offset(8)
+            make.height.equalTo(AddCalendarButton.height)
         }
         
         // 모으기 섹션은 위쪽 간격(26)을 스스로 가져, 접히면 높이 0 이 된다 (GH-16)

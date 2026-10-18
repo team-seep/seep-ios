@@ -297,6 +297,39 @@ internal enum Strings {
     }
   }
   internal enum Detail {
+    internal enum Calendar {
+      /// 캘린더에 추가
+      internal static let add = Strings.tr("Localization", "detail.calendar.add", fallback: "캘린더에 추가")
+      /// 캘린더에 추가됨
+      internal static let added = Strings.tr("Localization", "detail.calendar.added", fallback: "캘린더에 추가됨")
+      internal enum AgainAlert {
+        /// 추가하기
+        internal static let confirm = Strings.tr("Localization", "detail.calendar.again_alert.confirm", fallback: "추가하기")
+        /// 한 번 더 추가할까요?
+        /// 캘린더에 같은 일정이 하나 더 생겨요.
+        internal static let message = Strings.tr("Localization", "detail.calendar.again_alert.message", fallback: "한 번 더 추가할까요?\n캘린더에 같은 일정이 하나 더 생겨요.")
+        /// 이미 캘린더에 추가했어요
+        internal static let title = Strings.tr("Localization", "detail.calendar.again_alert.title", fallback: "이미 캘린더에 추가했어요")
+      }
+      internal enum DeniedAlert {
+        /// 설정에서 캘린더 접근을 허용해주세요.
+        internal static let message = Strings.tr("Localization", "detail.calendar.denied_alert.message", fallback: "설정에서 캘린더 접근을 허용해주세요.")
+        /// 설정으로 이동
+        internal static let settings = Strings.tr("Localization", "detail.calendar.denied_alert.settings", fallback: "설정으로 이동")
+        /// 캘린더 접근을 허용하면 추가할 수 있어요
+        internal static let title = Strings.tr("Localization", "detail.calendar.denied_alert.title", fallback: "캘린더 접근을 허용하면 추가할 수 있어요")
+      }
+      internal enum Error {
+        /// 일정을 추가할 캘린더가 없어요.
+        internal static let noDefaultCalendar = Strings.tr("Localization", "detail.calendar.error.no_default_calendar", fallback: "일정을 추가할 캘린더가 없어요.")
+      }
+      internal enum Toast {
+        /// 👏 %@ 캘린더에 추가했어요!
+        internal static func addedFormat(_ p1: Any) -> String {
+          return Strings.tr("Localization", "detail.calendar.toast.added_format", String(describing: p1), fallback: "👏 %@ 캘린더에 추가했어요!")
+        }
+      }
+    }
     internal enum Saving {
       /// 모은 돈 기록
       internal static let add = Strings.tr("Localization", "detail.saving.add", fallback: "모은 돈 기록")

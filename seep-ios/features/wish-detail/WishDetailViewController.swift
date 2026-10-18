@@ -23,6 +23,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private let mode: DetailMode
     private let stepsViewModel: WishStepsViewModel
     private let savingsViewModel: WishSavingsViewModel
+    private let calendarViewModel: WishCalendarViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
@@ -33,6 +34,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: wish))
+        self.calendarViewModel = WishCalendarViewModel(config: .init(wish: wish, isAddable: mode == .fromHome))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,6 +43,10 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.mode = mode
         self.stepsViewModel = WishStepsViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         self.savingsViewModel = WishSavingsViewModel(config: .init(wish: reactor.initialState.wish))
+        self.calendarViewModel = WishCalendarViewModel(config: .init(
+            wish: reactor.initialState.wish,
+            isAddable: mode == .fromHome
+        ))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,12 +76,18 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        // 상세는 읽기 전용이지만 단계 섹션(체크)과 모으기 섹션(기록)은 바로 쓸 수 있다
+        // 상세는 읽기 전용이지만 단계 섹션(체크)·모으기 섹션(기록)·캘린더 버튼은 바로 쓸 수 있다
+        let interactiveViews: [UIView] = [
+            self.wishDetailView.stepsView,
+            self.wishDetailView.savingsView,
+            self.wishDetailView.calendarButton
+        ]
         self.wishDetailView.containerView.subviews
-            .filter { $0 !== self.wishDetailView.stepsView && $0 !== self.wishDetailView.savingsView }
+            .filter { subview in !interactiveViews.contains { $0 === subview } }
             .forEach { $0.isUserInteractionEnabled = false }
         self.bindSteps()
         self.bindSavings()
+        self.bindCalendar()
     }
   
     override func bindEvent() {
@@ -248,8 +260,75 @@ extension WishDetailViewController {
     }
 }
 
+// MARK: Calendar
+extension WishDetailViewController {
+    private func bindCalendar() {
+        let calendarButton = wishDetailView.calendarButton
+        
+        calendarButton.tapPublisher
+            .subscribe(calendarViewModel.input.didTapButton)
+            .store(in: &cancellables)
+        
+        calendarViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                calendarButton.isHidden = !isVisible
+            }
+            .store(in: &cancellables)
+        
+        calendarViewModel.output.isAdded
+            .main
+            .sink { isAdded in
+                calendarButton.bind(isAdded: isAdded)
+            }
+            .store(in: &cancellables)
+        
+        calendarViewModel.output.toast
+            .main
+            .sink { message in
+                ToastManager.shared.show(message: message)
+            }
+            .store(in: &cancellables)
+        
+        calendarViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishCalendarViewModel.Route) in
+                owner.handleCalendarRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+}
+
 // MARK: Route
 extension WishDetailViewController {
+    private func handleCalendarRoute(_ route: WishCalendarViewModel.Route) {
+        switch route {
+        case .showAddAgainAlert:
+            AlertUtils.showWithCancel(
+                viewController: self,
+                title: Strings.Detail.Calendar.AgainAlert.title,
+                message: Strings.Detail.Calendar.AgainAlert.message,
+                okButton: Strings.Detail.Calendar.AgainAlert.confirm
+            ) { [weak self] in
+                self?.calendarViewModel.input.confirmAddAgain.send(())
+            }
+        case .showPermissionDeniedAlert:
+            AlertUtils.showWithCancel(
+                viewController: self,
+                title: Strings.Detail.Calendar.DeniedAlert.title,
+                message: Strings.Detail.Calendar.DeniedAlert.message,
+                okButton: Strings.Detail.Calendar.DeniedAlert.settings
+            ) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                UIApplication.shared.open(url)
+            }
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
+    }
+    
+
     private func handleSavingsRoute(_ route: WishSavingsViewModel.Route) {
         switch route {
         case .presentSavingInput(let viewModel):
@@ -288,5 +367,6 @@ extension WishDetailViewController: WishEditViewControllerDelegate {
         self.wishDetailReactor.action.onNext(.updateWish(wish: wish))
         self.stepsViewModel.input.reloadSteps.send(wish.steps)
         self.savingsViewModel.input.reloadWish.send(wish)
+        self.calendarViewModel.input.reloadWish.send(wish)
     }
 }

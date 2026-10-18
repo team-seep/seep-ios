@@ -130,6 +130,16 @@
 "detail.saving.sheet.preview_format" = "기록하면 %@ (%d%%)";
 "detail.saving.sheet.preview_amount_format" = "%@원 / %@원";
 "detail.saving.sheet.save" = "기록하기";
+"detail.calendar.add" = "캘린더에 추가";
+"detail.calendar.added" = "캘린더에 추가됨";
+"detail.calendar.toast.added_format" = "👏 %@ 캘린더에 추가했어요!";
+"detail.calendar.again_alert.title" = "이미 캘린더에 추가했어요";
+"detail.calendar.again_alert.message" = "한 번 더 추가할까요?\n캘린더에 같은 일정이 하나 더 생겨요.";
+"detail.calendar.again_alert.confirm" = "추가하기";
+"detail.calendar.denied_alert.title" = "캘린더 접근을 허용하면 추가할 수 있어요";
+"detail.calendar.denied_alert.message" = "설정에서 캘린더 접근을 허용해주세요.";
+"detail.calendar.denied_alert.settings" = "설정으로 이동";
+"detail.calendar.error.no_default_calendar" = "일정을 추가할 캘린더가 없어요.";
 "detail_random_info" = "Random으로 이모지를\n골라드립니다!";
 "detail_button_more" = "😭 조금만...더!";
 "detail_button_on" = "✔️ 저장";
