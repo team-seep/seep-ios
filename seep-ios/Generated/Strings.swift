@@ -475,9 +475,9 @@ internal enum Strings {
       internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
     }
     internal enum YearReview {
-      /// %d년 돌아보기
-      internal static func captionFormat(_ p1: Int) -> String {
-        return Strings.tr("Localization", "home.year_review.caption_format", p1, fallback: "%d년 돌아보기")
+      /// %@년 돌아보기
+      internal static func captionFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.year_review.caption_format", String(describing: p1), fallback: "%@년 돌아보기")
       }
       /// 올해 배너 닫기
       internal static let close = Strings.tr("Localization", "home.year_review.close", fallback: "올해 배너 닫기")
@@ -542,10 +542,10 @@ internal enum Strings {
       internal static func headlineBoldFormat(_ p1: Int) -> String {
         return Strings.tr("Localization", "year_review.list.headline_bold_format", p1, fallback: "%d개 모두 모아봤어요")
       }
-      /// %d년에 이룬 싶
+      /// %@년에 이룬 싶
       /// %d개 모두 모아봤어요
-      internal static func headlineFormat(_ p1: Int, _ p2: Int) -> String {
-        return Strings.tr("Localization", "year_review.list.headline_format", p1, p2, fallback: "%d년에 이룬 싶\n%d개 모두 모아봤어요")
+      internal static func headlineFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "year_review.list.headline_format", String(describing: p1), p2, fallback: "%@년에 이룬 싶\n%d개 모두 모아봤어요")
       }
       /// %d월
       internal static func monthFormat(_ p1: Int) -> String {

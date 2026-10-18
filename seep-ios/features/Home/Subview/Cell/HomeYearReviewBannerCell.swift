@@ -95,7 +95,7 @@ final class HomeYearReviewBannerCell: BaseCollectionViewCell {
     }
 
     func bind(year: Int, count: Int) {
-        captionLabel.text = Strings.Home.YearReview.captionFormat(year)
+        captionLabel.text = Strings.Home.YearReview.captionFormat(String(year))
 
         let text = Strings.Home.YearReview.titleFormat(count)
         let attributedText = NSMutableAttributedString(string: text)

@@ -227,6 +227,22 @@ final class YearReviewSummaryTests: XCTestCase {
     }
 }
 
+/// 연도 문구 (시뮬레이터 검증에서 "2,026년"으로 보인 문제)
+final class YearReviewStringsTests: XCTestCase {
+    func test_회귀_연도문구에_천단위구분기호가붙지않는다() {
+        // Given
+        let year = 2026
+
+        // When
+        let caption = Strings.Home.YearReview.captionFormat(String(year))
+        let headline = Strings.YearReview.List.headlineFormat(String(year), 12)
+
+        // Then
+        XCTAssertEqual(caption, "2026년 돌아보기")
+        XCTAssertTrue(headline.hasPrefix("2026년에 이룬 싶"))
+    }
+}
+
 /// 4:5 공유 이미지 캔버스 크기 (R-5)
 final class YearReviewImageRendererTests: XCTestCase {
     // MARK: GH-34 TC10 (이미지 비율)

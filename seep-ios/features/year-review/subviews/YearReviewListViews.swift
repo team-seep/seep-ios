@@ -27,7 +27,7 @@ final class YearReviewListHeaderView: UICollectionReusableView {
     }
 
     func bind(year: Int, count: Int) {
-        let text = Strings.YearReview.List.headlineFormat(year, count)
+        let text = Strings.YearReview.List.headlineFormat(String(year), count)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = 31
         let attributedText = NSMutableAttributedString(string: text, attributes: [
