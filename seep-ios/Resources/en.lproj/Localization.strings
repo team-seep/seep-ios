@@ -63,6 +63,20 @@
 "home.finish_note.save" = "남기기";
 "home.finish_note.skip" = "다음에 할게요";
 "home.finish_note.cell_format" = "“%@”";
+"home.sleeping_wish.caption_format" = "%d일째 그대로예요";
+"home.sleeping_wish.question.want_to_do" = "아직 하고 싶어요?";
+"home.sleeping_wish.question.want_to_get" = "아직 갖고 싶어요?";
+"home.sleeping_wish.question.want_to_go" = "아직 가고 싶어요?";
+"home.sleeping_wish.keep.want_to_do" = "여전히 하고 싶어요";
+"home.sleeping_wish.keep.want_to_get" = "여전히 갖고 싶어요";
+"home.sleeping_wish.keep.want_to_go" = "여전히 가고 싶어요";
+"home.sleeping_wish.release" = "이제 됐어요";
+"home.sleeping_wish.alert.title" = "이 위시를 보내줄까요?";
+"home.sleeping_wish.alert.message" = "목록에서 지워지고 예약된 알림도 함께 사라져요.";
+"home.sleeping_wish.alert.cancel" = "취소";
+"home.sleeping_wish.alert.release" = "보내주기";
+"home.sleeping_wish.toast.keep" = "좋아요! 두 달 뒤에 다시 물어볼게요";
+"home.sleeping_wish.toast.release" = "위시를 보내줬어요";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

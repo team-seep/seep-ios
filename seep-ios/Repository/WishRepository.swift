@@ -1,3 +1,5 @@
+import Foundation
+
 import RealmSwift
 
 protocol WishRepository {
@@ -20,6 +22,9 @@ protocol WishRepository {
     
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    
+    /// "여전히 하고 싶어요"로 점검 시각(lastCheckedAt)을 지금으로 저장하고, 반영된 위시를 돌려준다 (GH-30 R-7, R-10).
+    func markChecked(wishId: String) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -102,6 +107,23 @@ final class WishRepositoryImpl: WishRepository {
         do {
             try realm.write {
                 targetObject.finishNote = note
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        return .success(Wish(dto: targetObject))
+    }
+    
+    func markChecked(wishId: String) -> Result<Wish, RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                targetObject.lastCheckedAt = Date()
             }
         } catch {
             return .failure(.writeFailed)

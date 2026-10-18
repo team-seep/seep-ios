@@ -19,6 +19,8 @@ struct Wish: Equatable, Hashable {
     var isSuccess: Bool
     /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
     var finishNote: String
+    /// 마지막으로 점검(여전히 하고 싶어요·수정 저장)한 시각. nil 이면 점검한 적 없음 (GH-30)
+    var lastCheckedAt: Date?
     let createdAt: Date
     
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -69,6 +71,7 @@ struct Wish: Equatable, Hashable {
         hashtag: String = "",
         isSuccess: Bool = false,
         finishNote: String = "",
+        lastCheckedAt: Date? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -85,6 +88,7 @@ struct Wish: Equatable, Hashable {
         self.hashtag = hashtag
         self.isSuccess = isSuccess
         self.finishNote = finishNote
+        self.lastCheckedAt = lastCheckedAt
         self.createdAt = createdAt
     }
     
@@ -103,6 +107,7 @@ struct Wish: Equatable, Hashable {
         self.hashtag = dto.hashtag
         self.isSuccess = dto.isSuccess
         self.finishNote = dto.finishNote
+        self.lastCheckedAt = dto.lastCheckedAt
         self.createdAt = dto.createdAt
     }
 }

@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 6
+        config.schemaVersion = 7
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {
@@ -143,6 +143,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if oldSchemaVersion < 6 {
                 migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
                     newObject?["finishNote"] = ""
+                }
+            }
+            
+            // 7: WishDTO.lastCheckedAt(Date?) 추가 — 기존 위시는 점검한 적 없음(nil), 만든 날을 기준으로 잠든 위시를 판정한다 (GH-30 R-1)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["lastCheckedAt"] = nil
                 }
             }
         }

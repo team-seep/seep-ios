@@ -1,3 +1,5 @@
+import Foundation
+
 import RealmSwift
 
 protocol WishServiceProtocol {
@@ -70,6 +72,8 @@ struct WishService: WishServiceProtocol {
             item?.steps.append(objectsIn: newWish.steps.map(WishStepDTO.init(step:)))
             // 목표 금액만 바꾸고 모은 돈 기록(savings)은 건드리지 않는다 (GH-16 R-7)
             item?.targetAmount = newWish.targetAmount
+            // 수정해 저장하면 손댄 것으로 보고 잠든 위시 판정 기준을 갱신한다 (GH-30 R-2)
+            item?.lastCheckedAt = newWish.lastCheckedAt ?? Date()
         }
   }
   

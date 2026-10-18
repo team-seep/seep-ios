@@ -265,7 +265,7 @@ final class HomeViewController: BaseViewController {
                             heightDimension: .absolute(itemSize.height)
                         ))
                         // 한 그룹 = 한 줄. 서브아이템을 열 수만큼 명시해 소수점 오차로 줄이 넘어가 1열이 되는 일을 막는다
-                        let group = NSCollectionLayoutGroup.horizontal(
+                        var group: NSCollectionLayoutGroup = NSCollectionLayoutGroup.horizontal(
                             layoutSize: .init(
                                 widthDimension: .fractionalWidth(1.0),
                                 heightDimension: .absolute(itemSize.height)
@@ -273,6 +273,11 @@ final class HomeViewController: BaseViewController {
                             subitems: Array(repeating: item, count: columnCount)
                         )
                         group.interItemSpacing = .fixed(HomeWishGridCell.Layout.spacing)
+                        if case .sleepingWish = dataSource.itemIdentifier(for: IndexPath(item: 0, section: sectionIndex)) {
+                            let snapshot = dataSource.snapshot()
+                            let itemCount = snapshot.numberOfItems(inSection: snapshot.sectionIdentifiers[sectionIndex])
+                            group = HomeSleepingWishCell.Layout.gridGroupWithCard(availableWidth: availableWidth, wishCount: itemCount - 1)
+                        }
                         let section = NSCollectionLayoutSection(group: group)
                         section.contentInsetsReference = .none
                         section.interGroupSpacing = HomeWishGridCell.Layout.spacing
@@ -297,6 +302,8 @@ final class HomeViewController: BaseViewController {
                         configuration.showsSeparators = false
                         
                         configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+                            // 잠든 위시 카드는 스와이프 삭제 대상이 아니다 (GH-30 R-6)
+                            if case .sleepingWish = self?.dataSource.itemIdentifier(for: indexPath) { return nil }
                             let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, completion in
                                 self?.deleteItem(at: indexPath, completion: completion)
                             }
@@ -418,6 +425,8 @@ extension HomeViewController {
             presentSortBottomSheet(viewModel: viewModel)
         case .presentFinishNoteBottomSheet(let viewModel):
             presentFinishNoteBottomSheet(viewModel: viewModel)
+        case .showReleaseSleepingWishAlert(let wish):
+            showReleaseSleepingWishAlert(wish: wish)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
         case .showErrorAlert(let error):
@@ -445,6 +454,19 @@ extension HomeViewController {
     private func presentFinishNoteBottomSheet(viewModel: FinishNoteViewModel) {
         let viewController = FinishNoteBottomSheetViewController(viewModel: viewModel)
         presentPanModal(viewController)
+    }
+    
+    private func showReleaseSleepingWishAlert(wish: Wish) {
+        let alert = UIAlertController(
+            title: Strings.Home.SleepingWish.Alert.title,
+            message: Strings.Home.SleepingWish.Alert.message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: Strings.Home.SleepingWish.Alert.cancel, style: .cancel))
+        alert.addAction(UIAlertAction(title: Strings.Home.SleepingWish.Alert.release, style: .destructive) { [weak self] _ in
+            self?.viewModel.input.didConfirmReleaseSleepingWish.send(wish)
+        })
+        present(alert, animated: true)
     }
     
     private func pushWishDetail(reactor: WishDetailReactor) {

@@ -299,7 +299,9 @@ final class WishEditReactor: Reactor {
             targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             savings: self.savings,
             memo: self.currentState.memo,
-            hashtag: hashtag
+            hashtag: hashtag,
+            // 홈이 돌려받은 위시로 잠든 위시 카드를 다시 판단한다 (GH-30 R-2, TC-9)
+            lastCheckedAt: Date()
         )
         
         self.wishService.updateWish(id: self.wishID, newWish: wish)

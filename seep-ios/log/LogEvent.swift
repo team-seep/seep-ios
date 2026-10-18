@@ -125,4 +125,7 @@ enum LogObjectId: String {
     case finishNoteSheet = "finish_note_sheet"
     case saveFinishNote = "save_finish_note"
     case skipFinishNote = "skip_finish_note"
+    case sleepingWishCard = "sleeping_wish_card"
+    case keepSleepingWish = "keep_sleeping_wish"
+    case releaseSleepingWish = "release_sleeping_wish"
 }

@@ -10,7 +10,8 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
             HomeOverviewCell.self,
             HomeWishGridCell.self,
             HomeWishListCell.self,
-            HomeEmptyCell.self
+            HomeEmptyCell.self,
+            HomeSleepingWishCell.self
         ])
         
         collectionView.registerSectionHeader([HomeFilterHeaderView.self])
@@ -32,6 +33,10 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
                     cell.bind(viewModel: viewModel)
                     return cell
                 }
+            case .sleepingWish(let viewModel):
+                let cell: HomeSleepingWishCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.bind(viewModel: viewModel)
+                return cell
             case .empty:
                 let cell: HomeEmptyCell = collectionView.dequeueReusableCell(indexPath: indexPath)
                 return cell
@@ -76,5 +81,7 @@ struct HomeSection: Hashable {
 enum HomeSectionItem: Hashable {
     case overview(category: Category, count: Int)
     case wish(HomeWishCellViewModel)
+    /// 위시 섹션 맨 위의 잠든 위시 카드 (GH-30)
+    case sleepingWish(HomeSleepingWishCardViewModel)
     case empty
 }

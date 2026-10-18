@@ -443,6 +443,46 @@ internal enum Strings {
         return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
       }
     }
+    internal enum SleepingWish {
+      /// %d일째 그대로예요
+      internal static func captionFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.sleeping_wish.caption_format", p1, fallback: "%d일째 그대로예요")
+      }
+      /// 이제 됐어요
+      internal static let release = Strings.tr("Localization", "home.sleeping_wish.release", fallback: "이제 됐어요")
+      internal enum Alert {
+        /// 취소
+        internal static let cancel = Strings.tr("Localization", "home.sleeping_wish.alert.cancel", fallback: "취소")
+        /// 목록에서 지워지고 예약된 알림도 함께 사라져요.
+        internal static let message = Strings.tr("Localization", "home.sleeping_wish.alert.message", fallback: "목록에서 지워지고 예약된 알림도 함께 사라져요.")
+        /// 보내주기
+        internal static let release = Strings.tr("Localization", "home.sleeping_wish.alert.release", fallback: "보내주기")
+        /// 이 위시를 보내줄까요?
+        internal static let title = Strings.tr("Localization", "home.sleeping_wish.alert.title", fallback: "이 위시를 보내줄까요?")
+      }
+      internal enum Keep {
+        /// 여전히 하고 싶어요
+        internal static let wantToDo = Strings.tr("Localization", "home.sleeping_wish.keep.want_to_do", fallback: "여전히 하고 싶어요")
+        /// 여전히 갖고 싶어요
+        internal static let wantToGet = Strings.tr("Localization", "home.sleeping_wish.keep.want_to_get", fallback: "여전히 갖고 싶어요")
+        /// 여전히 가고 싶어요
+        internal static let wantToGo = Strings.tr("Localization", "home.sleeping_wish.keep.want_to_go", fallback: "여전히 가고 싶어요")
+      }
+      internal enum Question {
+        /// 아직 하고 싶어요?
+        internal static let wantToDo = Strings.tr("Localization", "home.sleeping_wish.question.want_to_do", fallback: "아직 하고 싶어요?")
+        /// 아직 갖고 싶어요?
+        internal static let wantToGet = Strings.tr("Localization", "home.sleeping_wish.question.want_to_get", fallback: "아직 갖고 싶어요?")
+        /// 아직 가고 싶어요?
+        internal static let wantToGo = Strings.tr("Localization", "home.sleeping_wish.question.want_to_go", fallback: "아직 가고 싶어요?")
+      }
+      internal enum Toast {
+        /// 좋아요! 두 달 뒤에 다시 물어볼게요
+        internal static let keep = Strings.tr("Localization", "home.sleeping_wish.toast.keep", fallback: "좋아요! 두 달 뒤에 다시 물어볼게요")
+        /// 위시를 보내줬어요
+        internal static let release = Strings.tr("Localization", "home.sleeping_wish.toast.release", fallback: "위시를 보내줬어요")
+      }
+    }
     internal enum TitleFormat {
       /// 하고 싶은 것들이
       /// %d개 남았어요!

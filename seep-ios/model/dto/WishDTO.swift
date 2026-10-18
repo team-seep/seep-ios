@@ -21,6 +21,8 @@ class WishDTO: Object, Identifiable {
     @objc dynamic var isSuccess: Bool = false
     /// 완료 소감 한 줄(최대 40자). 비어 있으면 소감 없음 (GH-25 R-4)
     @objc dynamic var finishNote: String = ""
+    /// "아직 하고 싶어요?"에 답했거나 수정해 저장한 시각. nil 이면 createdAt 을 기준으로 잠든 위시를 판정한다 (GH-30 R-1)
+    @objc dynamic var lastCheckedAt: Date?
     @objc dynamic var createdAt: Date = Date()
     
     
@@ -50,6 +52,7 @@ class WishDTO: Object, Identifiable {
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
         self.finishNote = wish.finishNote
+        self.lastCheckedAt = wish.lastCheckedAt
         self.createdAt = wish.createdAt
     }
     
