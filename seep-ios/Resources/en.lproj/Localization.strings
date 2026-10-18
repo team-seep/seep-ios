@@ -63,6 +63,34 @@
 "home.finish_note.save" = "남기기";
 "home.finish_note.skip" = "다음에 할게요";
 "home.finish_note.cell_format" = "“%@”";
+"home.badge_link_format" = "배지 %d/%d 모아보기";
+
+// Badge (GH-35)
+"badge.name.finish_1" = "첫 싶";
+"badge.name.finish_5" = "다섯 번째 싶";
+"badge.name.finish_10" = "열 번째 싶";
+"badge.name.finish_30" = "서른 번째 싶";
+"badge.name.first_want_to_do" = "첫 하고 싶어요";
+"badge.name.first_want_to_get" = "첫 갖고 싶어요";
+"badge.name.first_want_to_go" = "첫 가고 싶어요";
+"badge.name.on_time" = "약속 지킴이";
+"badge.condition.finish_format" = "위시 %d개 이루기";
+"badge.condition.first_want_to_do" = "하고 싶은 것 1개 이루기";
+"badge.condition.first_want_to_get" = "갖고 싶은 것 1개 이루기";
+"badge.condition.first_want_to_go" = "가고 싶은 곳 1개 이루기";
+"badge.condition.on_time" = "마감일까지 이루기";
+"badge.progress_format" = "%d / %d";
+"badge.dday" = "D-day";
+"badge.collection.title_format" = "이룬 싶이 모여\n배지 %d개를 모았어요!";
+"badge.collection.title_highlight_format" = "%d개";
+"badge.collection.title_bold" = "를 모았어요!";
+"badge.collection.description" = "위시를 이룰 때마다 하나씩 열려요";
+"badge.collection.back" = "뒤로";
+"badge.celebration.title_format" = "위시를 %d개나 이뤘어요!\n새 배지를 받았어요";
+"badge.celebration.title_bold" = "새 배지를 받았어요";
+"badge.celebration.card_description_format" = "%@ · %@";
+"badge.celebration.confirm" = "좋아요";
+"badge.celebration.view_badges" = "배지 모아보기";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

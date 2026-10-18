@@ -16,6 +16,8 @@ final class MockWishRepository: WishRepository {
     var updateFinishNoteResult: Result<Wish, RepositoryError>?
     private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
 
+    var fetchAllFinishedWishesResult: [Wish] = []
+
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
     }
@@ -51,5 +53,9 @@ final class MockWishRepository: WishRepository {
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
         updateFinishNoteCalls.append((wishId, note))
         return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note))
+    }
+
+    func fetchAllFinishedWishes() -> [Wish] {
+        return fetchAllFinishedWishesResult
     }
 }

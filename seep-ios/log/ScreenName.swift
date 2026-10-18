@@ -21,4 +21,6 @@ extension ScreenName {
     static let finished = ScreenName(rawValue: "finished")
     static let notification = ScreenName(rawValue: "notification")
     static let sharePhoto = ScreenName(rawValue: "share_photo")
+    static let badgeBottomSheet = ScreenName(rawValue: "badge_bottom_sheet")
+    static let badgeCollection = ScreenName(rawValue: "badge_collection")
 }

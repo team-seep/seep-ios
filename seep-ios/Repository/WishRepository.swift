@@ -20,6 +20,9 @@ protocol WishRepository {
     
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    
+    /// 카테고리와 무관하게 완료한 위시 전체. 배지 계산용 (GH-35 R-3)
+    func fetchAllFinishedWishes() -> [Wish]
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -108,6 +111,12 @@ final class WishRepositoryImpl: WishRepository {
         }
         
         return .success(Wish(dto: targetObject))
+    }
+    
+    func fetchAllFinishedWishes() -> [Wish] {
+        guard let realm = try? Realm() else { return [] }
+        let finished = realm.objects(WishDTO.self).filter("isSuccess == true")
+        return Array(finished).map { Wish(dto: $0) }
     }
     
     private func updateSavings(

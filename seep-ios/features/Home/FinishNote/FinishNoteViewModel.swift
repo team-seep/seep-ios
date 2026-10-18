@@ -7,6 +7,8 @@ extension FinishNoteViewModel {
         let inputNote = PassthroughSubject<String, Never>()
         let didTapSave = PassthroughSubject<Void, Never>()
         let didTapSkip = PassthroughSubject<Void, Never>()
+        /// 시트가 닫힘(저장·건너뛰기·끌어 닫기 모두)
+        let didDismiss = PassthroughSubject<Void, Never>()
     }
 
     struct Output {
@@ -18,6 +20,8 @@ extension FinishNoteViewModel {
         let isSaveEnabled = CurrentValueSubject<Bool, Never>(false)
         /// 저장에 성공한 위시. 홈 목록이 받아서 셀을 갱신한다.
         let didSaveNote = PassthroughSubject<Wish, Never>()
+        /// 시트가 완전히 닫힌 뒤. 홈이 새 배지 축하 시트를 띄운다 (GH-35 R-7)
+        let dismissed = PassthroughSubject<Void, Never>()
         let route = PassthroughSubject<Route, Never>()
     }
 
@@ -93,6 +97,10 @@ final class FinishNoteViewModel {
                 owner.sendClickLog(objectId: .skipFinishNote)
                 owner.output.route.send(.dismiss)
             }
+            .store(in: &cancellables)
+
+        input.didDismiss
+            .subscribe(output.dismissed)
             .store(in: &cancellables)
     }
 

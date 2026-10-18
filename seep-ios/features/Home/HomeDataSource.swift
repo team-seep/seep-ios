@@ -17,9 +17,12 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
         
         super.init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
-            case .overview(let category, let count):
+            case .overview(let category, let count, let badgeCount):
                 let cell: HomeOverviewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-                cell.bind(category: category, count: count)
+                cell.bind(category: category, count: count, badgeCount: badgeCount)
+                cell.badgeLinkButton.controlEventPublisher(for: .touchUpInside)
+                    .subscribe(viewModel.input.didTapBadgeCollection)
+                    .store(in: &cell.cancellables)
                 return cell
             case .wish(let viewModel):
                 switch viewModel.output.viewType {
@@ -74,7 +77,7 @@ struct HomeSection: Hashable {
 }
 
 enum HomeSectionItem: Hashable {
-    case overview(category: Category, count: Int)
+    case overview(category: Category, count: Int, badgeCount: Int)
     case wish(HomeWishCellViewModel)
     case empty
 }

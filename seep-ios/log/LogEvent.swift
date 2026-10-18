@@ -125,4 +125,7 @@ enum LogObjectId: String {
     case finishNoteSheet = "finish_note_sheet"
     case saveFinishNote = "save_finish_note"
     case skipFinishNote = "skip_finish_note"
+    case badgeCollection = "badge_collection"
+    case newBadge = "new_badge"
+    case viewBadges = "view_badges"
 }

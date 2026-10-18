@@ -418,6 +418,10 @@ extension HomeViewController {
             presentSortBottomSheet(viewModel: viewModel)
         case .presentFinishNoteBottomSheet(let viewModel):
             presentFinishNoteBottomSheet(viewModel: viewModel)
+        case .presentBadgeCelebration(let viewModel):
+            presentBadgeCelebration(viewModel: viewModel)
+        case .pushBadgeCollection(let viewModel):
+            pushBadgeCollection(viewModel: viewModel)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
         case .showErrorAlert(let error):
@@ -445,6 +449,23 @@ extension HomeViewController {
     private func presentFinishNoteBottomSheet(viewModel: FinishNoteViewModel) {
         let viewController = FinishNoteBottomSheetViewController(viewModel: viewModel)
         presentPanModal(viewController)
+    }
+    
+    private func presentBadgeCelebration(viewModel: BadgeCelebrationViewModel) {
+        let viewController = BadgeCelebrationBottomSheetViewController(viewModel: viewModel)
+        presentPanModal(viewController)
+    }
+    
+    /// 축하 시트에서 왔으면 시트를 먼저 닫고 push 한다 (GH-35 R-10)
+    private func pushBadgeCollection(viewModel: BadgeCollectionViewModel) {
+        let viewController = BadgeCollectionViewController(viewModel: viewModel)
+        guard let presentedViewController else {
+            navigationController?.pushViewController(viewController, animated: true)
+            return
+        }
+        presentedViewController.dismiss(animated: true) { [weak self] in
+            self?.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     private func pushWishDetail(reactor: WishDetailReactor) {

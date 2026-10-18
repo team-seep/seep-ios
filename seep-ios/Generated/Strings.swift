@@ -270,6 +270,80 @@ internal enum Strings {
   internal static let wrtiePlaceholderMemo = Strings.tr("Localization", "wrtie_placeholder_memo", fallback: "필요한 정보가 또 있나요? (선택)")
   /// 차근차근 적어봐요!
   internal static let wrtieTitleBold = Strings.tr("Localization", "wrtie_title_bold", fallback: "차근차근 적어봐요!")
+  internal enum Badge {
+    /// D-day
+    internal static let dday = Strings.tr("Localization", "badge.dday", fallback: "D-day")
+    /// %d / %d
+    internal static func progressFormat(_ p1: Int, _ p2: Int) -> String {
+      return Strings.tr("Localization", "badge.progress_format", p1, p2, fallback: "%d / %d")
+    }
+    internal enum Celebration {
+      /// %@ · %@
+      internal static func cardDescriptionFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "badge.celebration.card_description_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@")
+      }
+      /// 좋아요
+      internal static let confirm = Strings.tr("Localization", "badge.celebration.confirm", fallback: "좋아요")
+      /// 새 배지를 받았어요
+      internal static let titleBold = Strings.tr("Localization", "badge.celebration.title_bold", fallback: "새 배지를 받았어요")
+      /// 위시를 %d개나 이뤘어요!
+      /// 새 배지를 받았어요
+      internal static func titleFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "badge.celebration.title_format", p1, fallback: "위시를 %d개나 이뤘어요!\n새 배지를 받았어요")
+      }
+      /// 배지 모아보기
+      internal static let viewBadges = Strings.tr("Localization", "badge.celebration.view_badges", fallback: "배지 모아보기")
+    }
+    internal enum Collection {
+      /// 뒤로
+      internal static let back = Strings.tr("Localization", "badge.collection.back", fallback: "뒤로")
+      /// 위시를 이룰 때마다 하나씩 열려요
+      internal static let description = Strings.tr("Localization", "badge.collection.description", fallback: "위시를 이룰 때마다 하나씩 열려요")
+      /// 를 모았어요!
+      internal static let titleBold = Strings.tr("Localization", "badge.collection.title_bold", fallback: "를 모았어요!")
+      /// 이룬 싶이 모여
+      /// 배지 %d개를 모았어요!
+      internal static func titleFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "badge.collection.title_format", p1, fallback: "이룬 싶이 모여\n배지 %d개를 모았어요!")
+      }
+      /// %d개
+      internal static func titleHighlightFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "badge.collection.title_highlight_format", p1, fallback: "%d개")
+      }
+    }
+    internal enum Condition {
+      /// 위시 %d개 이루기
+      internal static func finishFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "badge.condition.finish_format", p1, fallback: "위시 %d개 이루기")
+      }
+      /// 하고 싶은 것 1개 이루기
+      internal static let firstWantToDo = Strings.tr("Localization", "badge.condition.first_want_to_do", fallback: "하고 싶은 것 1개 이루기")
+      /// 갖고 싶은 것 1개 이루기
+      internal static let firstWantToGet = Strings.tr("Localization", "badge.condition.first_want_to_get", fallback: "갖고 싶은 것 1개 이루기")
+      /// 가고 싶은 곳 1개 이루기
+      internal static let firstWantToGo = Strings.tr("Localization", "badge.condition.first_want_to_go", fallback: "가고 싶은 곳 1개 이루기")
+      /// 마감일까지 이루기
+      internal static let onTime = Strings.tr("Localization", "badge.condition.on_time", fallback: "마감일까지 이루기")
+    }
+    internal enum Name {
+      /// 첫 싶
+      internal static let finish1 = Strings.tr("Localization", "badge.name.finish_1", fallback: "첫 싶")
+      /// 열 번째 싶
+      internal static let finish10 = Strings.tr("Localization", "badge.name.finish_10", fallback: "열 번째 싶")
+      /// 서른 번째 싶
+      internal static let finish30 = Strings.tr("Localization", "badge.name.finish_30", fallback: "서른 번째 싶")
+      /// 다섯 번째 싶
+      internal static let finish5 = Strings.tr("Localization", "badge.name.finish_5", fallback: "다섯 번째 싶")
+      /// 첫 하고 싶어요
+      internal static let firstWantToDo = Strings.tr("Localization", "badge.name.first_want_to_do", fallback: "첫 하고 싶어요")
+      /// 첫 갖고 싶어요
+      internal static let firstWantToGet = Strings.tr("Localization", "badge.name.first_want_to_get", fallback: "첫 갖고 싶어요")
+      /// 첫 가고 싶어요
+      internal static let firstWantToGo = Strings.tr("Localization", "badge.name.first_want_to_go", fallback: "첫 가고 싶어요")
+      /// 약속 지킴이
+      internal static let onTime = Strings.tr("Localization", "badge.name.on_time", fallback: "약속 지킴이")
+    }
+  }
   internal enum Common {
     /// %@원
     internal static func wonFormat(_ p1: Any) -> String {
@@ -388,6 +462,10 @@ internal enum Strings {
     }
   }
   internal enum Home {
+    /// 배지 %d/%d 모아보기
+    internal static func badgeLinkFormat(_ p1: Int, _ p2: Int) -> String {
+      return Strings.tr("Localization", "home.badge_link_format", p1, p2, fallback: "배지 %d/%d 모아보기")
+    }
     /// 아직 등록된 것이 없네요.
     /// 👇🏻아래 버튼을 누르면 작성할 수 있어요!
     internal static let empty = Strings.tr("Localization", "home.empty", fallback: "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!")

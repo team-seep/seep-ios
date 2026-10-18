@@ -4,7 +4,8 @@ import ISEmojiView
 
 final class HomeOverviewCell: BaseCollectionViewCell {
     enum Layout {
-        static let height: CGFloat = 132
+        /// 헤드라인 2줄 + "배지 n/8 모아보기" 링크 (GH-35 R-4)
+        static let height: CGFloat = 160
     }
     
     let titleLabel: UILabel = {
@@ -17,6 +18,8 @@ final class HomeOverviewCell: BaseCollectionViewCell {
     
     let emojiView = EmojiImageView()
     
+    let badgeLinkButton = BadgeLinkButton()
+    
     override func setup() {
         setupUI()
     }
@@ -24,6 +27,7 @@ final class HomeOverviewCell: BaseCollectionViewCell {
     private func setupUI() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(emojiView)
+        contentView.addSubview(badgeLinkButton)
         
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
@@ -36,11 +40,19 @@ final class HomeOverviewCell: BaseCollectionViewCell {
             $0.trailing.equalTo(contentView.safeAreaLayoutGuide).offset(-20)
             $0.size.equalTo(100)
         }
+        
+        badgeLinkButton.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            // 글자는 헤드라인 아래 8pt, 버튼 높이는 탭하기 쉽게 32
+            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
+            $0.height.equalTo(32)
+        }
     }
     
-    func bind(category: Category, count: Int) {
+    func bind(category: Category, count: Int, badgeCount: Int) {
         emojiView.bind(category: category)
         setupTitle(category: category, count: count)
+        badgeLinkButton.setTitle(Strings.Home.badgeLinkFormat(badgeCount, BadgeType.allCases.count))
     }
     
     func playEmojiAnimation() {

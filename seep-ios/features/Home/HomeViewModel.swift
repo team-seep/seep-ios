@@ -14,6 +14,10 @@ extension HomeViewModel {
         let didTapFinish = PassthroughSubject<Wish, Never>()
         let didTapWrite = PassthroughSubject<Void, Never>()
         let didTapDelete = PassthroughSubject<Int, Never>()
+        let didTapBadgeCollection = PassthroughSubject<Void, Never>()
+        
+        // From FinishNote
+        let finishNoteDismissed = PassthroughSubject<Void, Never>()
         
         // From WishDetail
         let updateWish = PassthroughSubject<Wish, Never>()
@@ -36,12 +40,15 @@ extension HomeViewModel {
         var isOnlyFinished: Bool = false
         var viewType: ViewType
         var wish: [Wish] = []
+        var badges: [Badge] = []
     }
     
     enum Route {
         case presentWrite(Category)
         case presentSortBottomSheet(SortOrderBottomSheetViewModel)
         case presentFinishNoteBottomSheet(FinishNoteViewModel)
+        case presentBadgeCelebration(BadgeCelebrationViewModel)
+        case pushBadgeCollection(BadgeCollectionViewModel)
         case pushWishDetail(WishDetailReactor)
         case showErrorAlert(Error)
     }
@@ -86,6 +93,7 @@ final class HomeViewModel {
         input.firstLoad
             .withUnretained(self)
             .sink { (owner: HomeViewModel, _) in
+                owner.initializeBadgesIfNeeded()
                 owner.fetchWishDatas()
                 owner.handleDeepLinkIfExisted()
             }
@@ -179,6 +187,21 @@ final class HomeViewModel {
             }
             .store(in: &cancellables)
         
+        input.didTapBadgeCollection
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.sendClickLog(objectId: .badgeCollection)
+                owner.pushBadgeCollection()
+            }
+            .store(in: &cancellables)
+        
+        input.finishNoteDismissed
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.presentBadgeCelebrationIfNeeded()
+            }
+            .store(in: &cancellables)
+        
         input.didTapDelete
             .sink { [weak self] index in
                 guard let self,
@@ -226,6 +249,7 @@ final class HomeViewModel {
         
         state.wishCount = notFinishCount
         state.wish = wishes
+        state.badges = calculateBadges()
         updateDataSource()
     }
     
@@ -233,7 +257,10 @@ final class HomeViewModel {
         var sections: [HomeSection] = []
         
         if let wishCount = state.wishCount {
-            sections.append(.init(type: .overview, items: [.overview(category: state.category, count: wishCount)]))
+            let badgeCount = state.badges.filter(\.isEarned).count
+            sections.append(.init(type: .overview, items: [
+                .overview(category: state.category, count: wishCount, badgeCount: badgeCount)
+            ]))
         }
         
         let wishItems = state.wish.map {
@@ -299,6 +326,7 @@ final class HomeViewModel {
         case .success(let wish):
             dependency.notificationManager.cancelNotifications(wish: wish)
             state.wish[targetIndex] = wish
+            state.badges = calculateBadges()
             updateDataSource()
             output.toast.send(Strings.Home.Toast.finishWish)
             presentFinishNoteBottomSheet(wish: wish)
@@ -314,6 +342,9 @@ final class HomeViewModel {
         )
         viewModel.output.didSaveNote
             .subscribe(input.updateWish)
+            .store(in: &viewModel.cancellables)
+        viewModel.output.dismissed
+            .subscribe(input.finishNoteDismissed)
             .store(in: &viewModel.cancellables)
         
         output.route.send(.presentFinishNoteBottomSheet(viewModel))
@@ -343,16 +374,68 @@ final class HomeViewModel {
     }
     
     private func deleteWish(wish: Wish) {
-        guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
+        state.badges = calculateBadges()
+        guard let targetIndex = state.wish.firstIndex(of: wish) else {
+            updateDataSource()
+            return
+        }
         state.wish.remove(at: targetIndex)
         updateDataSource()
     }
     
     private func cancelFinish(wish: Wish) {
-        guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
+        state.badges = calculateBadges()
+        guard let targetIndex = state.wish.firstIndex(of: wish) else {
+            updateDataSource()
+            return
+        }
         state.wish[targetIndex].isSuccess = false
         state.wish[targetIndex].finishDate = nil
         state.wish[targetIndex].finishNote = ""
         updateDataSource()
+    }
+}
+
+// MARK: Badge (GH-35)
+extension HomeViewModel {
+    private func calculateBadges() -> [Badge] {
+        return BadgeCalculator.calculate(finishedWishes: dependency.wishRepository.fetchAllFinishedWishes())
+    }
+    
+    /// 업데이트 직후 첫 진입: 이미 얻은 배지는 축하 없이 축하함으로 넘긴다 (R-8)
+    private func initializeBadgesIfNeeded() {
+        guard !dependency.preference.isBadgeInitialized else { return }
+        let earnedIds = calculateBadges().filter(\.isEarned).map(\.type.rawValue)
+        dependency.preference.celebratedBadgeIds.formUnion(earnedIds)
+        dependency.preference.isBadgeInitialized = true
+    }
+    
+    /// 소감 시트가 닫힌 뒤, 아직 축하하지 않은 배지가 있으면 축하 시트를 띄우고 바로 축하함에 넣는다 (R-6, R-7, R-9)
+    private func presentBadgeCelebrationIfNeeded() {
+        let badges = calculateBadges()
+        state.badges = badges
+        let celebratedIds = dependency.preference.celebratedBadgeIds
+        let newBadges = badges.filter { $0.isEarned && !celebratedIds.contains($0.type.rawValue) }
+        guard newBadges.isNotEmpty else { return }
+        
+        dependency.preference.celebratedBadgeIds.formUnion(newBadges.map(\.type.rawValue))
+        
+        let viewModel = BadgeCelebrationViewModel(
+            config: .init(badges: newBadges, finishedCount: newBadges[0].finishedCount),
+            dependency: .init(logManager: dependency.logManager)
+        )
+        viewModel.output.didTapViewBadges
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.pushBadgeCollection()
+            }
+            .store(in: &viewModel.cancellables)
+        
+        output.route.send(.presentBadgeCelebration(viewModel))
+    }
+    
+    private func pushBadgeCollection() {
+        let viewModel = BadgeCollectionViewModel(dependency: .init(wishRepository: dependency.wishRepository))
+        output.route.send(.pushBadgeCollection(viewModel))
     }
 }

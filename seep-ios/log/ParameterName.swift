@@ -19,4 +19,5 @@ extension ParameterName {
     static let wishId = ParameterName(rawValue: "wish_id")
     static let isDone = ParameterName(rawValue: "is_done")
     static let hasTargetAmount = ParameterName(rawValue: "has_target_amount")
+    static let badgeId = ParameterName(rawValue: "badge_id")
 }
