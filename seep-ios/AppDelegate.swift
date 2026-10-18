@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 5
+        config.schemaVersion = 6
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {
@@ -136,6 +136,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
                     newObject?["targetAmount"] = 0
                     newObject?["savings"] = [SavingDTO]()
+                }
+            }
+            
+            // 6: WishDTO.finishNote(String) 추가 — 기존 위시는 소감 없음(빈 문자열) (GH-25 R-4)
+            if oldSchemaVersion < 6 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["finishNote"] = ""
                 }
             }
         }

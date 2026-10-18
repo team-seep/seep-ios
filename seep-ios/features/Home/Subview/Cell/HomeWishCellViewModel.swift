@@ -10,6 +10,8 @@ extension HomeWishCellViewModel {
         let viewType: ViewType
         /// 단계가 없으면 nil — 셀에서 진행도를 숨긴다
         let stepProgress: WishStepProgress?
+        /// 완료됐고 소감이 있을 때만 값이 있다 — 셀에서 뱃지 줄 대신 보여준다 (GH-25 R-5)
+        let finishNote: String?
         let didTapFinish = PassthroughSubject<Wish, Never>()
     }
     
@@ -35,11 +37,17 @@ final class HomeWishCellViewModel {
         self.output = Output(
             wish: config.wish,
             viewType: config.viewType,
-            stepProgress: WishStepProgress(steps: config.wish.steps)
+            stepProgress: WishStepProgress(steps: config.wish.steps),
+            finishNote: Self.finishNote(wish: config.wish)
         )
         self.dependency = dependency
         
         bind()
+    }
+    
+    private static func finishNote(wish: Wish) -> String? {
+        guard wish.isSuccess, !wish.finishNote.isEmpty else { return nil }
+        return wish.finishNote
     }
     
     private func bind() {

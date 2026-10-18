@@ -17,6 +17,8 @@ struct Wish: Equatable, Hashable {
     var memo: String
     var hashtag: String
     var isSuccess: Bool
+    /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
+    var finishNote: String
     let createdAt: Date
     
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -66,6 +68,7 @@ struct Wish: Equatable, Hashable {
         memo: String = "",
         hashtag: String = "",
         isSuccess: Bool = false,
+        finishNote: String = "",
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -81,6 +84,7 @@ struct Wish: Equatable, Hashable {
         self.memo = memo
         self.hashtag = hashtag
         self.isSuccess = isSuccess
+        self.finishNote = finishNote
         self.createdAt = createdAt
     }
     
@@ -98,6 +102,7 @@ struct Wish: Equatable, Hashable {
         self.memo = dto.memo
         self.hashtag = dto.hashtag
         self.isSuccess = dto.isSuccess
+        self.finishNote = dto.finishNote
         self.createdAt = dto.createdAt
     }
 }

@@ -54,6 +54,15 @@
 "home.toast.success_write" = "👏등록이 완료됐어요!";
 "home.step_progress_format" = "%d/%d";
 "home.empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
+"home.finish_note.title_format" = "%@,\n이루고 나니 어때요?";
+"home.finish_note.title_bold" = "이루고 나니 어때요?";
+"home.finish_note.description" = "지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.";
+"home.finish_note.placeholder" = "예) 생각보다 훨씬 좋았어요!";
+"home.finish_note.field" = "완료 소감";
+"home.finish_note.count_format" = "%d/%d";
+"home.finish_note.save" = "남기기";
+"home.finish_note.skip" = "다음에 할게요";
+"home.finish_note.cell_format" = "“%@”";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";
