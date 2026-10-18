@@ -124,6 +124,8 @@ final class HomeWishListCell: BaseCollectionViewCell {
             $0.trailing.lessThanOrEqualTo(finishButton.snp.leading).offset(-12)
             $0.centerY.equalTo(ddayLabel)
         }
+        // 긴 소감이 이모지를 밀어내지 않고 스스로 말줄임되도록 가로 압축 저항을 낮춘다
+        finishNoteLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
