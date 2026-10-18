@@ -57,11 +57,13 @@ final class WishPlaceView: BaseView {
 
     private let placeholderButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .gray2
-        button.layer.cornerRadius = 6
         button.contentHorizontalAlignment = .leading
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+        // 날짜·제목 입력칸(TextInputField)과 같은 모양
+        configuration.background.backgroundColor = .gray2
+        configuration.background.cornerRadius = 6
+        configuration.cornerStyle = .fixed
         button.configuration = configuration
         button.configuration?.attributedTitle = AttributedString(
             Strings.Detail.Place.placeholder,
@@ -228,7 +230,7 @@ final class WishPlaceView: BaseView {
         snapshotter?.cancel()
         let snapshotter = MKMapSnapshotter(options: options)
         self.snapshotter = snapshotter
-        let pinImage = EmojiPinView(emoji: emoji, isSelected: true).asImage()
+        let pinImage = EmojiPinImage.make(emoji: emoji, isSelected: true)
         snapshotter.start(with: .main) { [weak self] snapshot, _ in
             guard let self, let snapshot, self.snapshotKey == key else { return }
             self.mapImageView.image = Self.draw(pin: pinImage, at: snapshot.point(for: coordinate), on: snapshot.image)

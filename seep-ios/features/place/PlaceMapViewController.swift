@@ -304,12 +304,13 @@ final class WishAnnotation: NSObject, MKAnnotation {
 final class EmojiAnnotationView: MKAnnotationView {
     static let reuseId = "\(EmojiAnnotationView.self)"
 
-    private var pinView = EmojiPinView(emoji: "")
+    private var emoji = ""
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         canShowCallout = false
         collisionMode = .circle
+        displayPriority = .required
     }
 
     required init?(coder: NSCoder) {
@@ -317,9 +318,7 @@ final class EmojiAnnotationView: MKAnnotationView {
     }
 
     func bind(annotation: WishAnnotation) {
-        pinView.removeFromSuperview()
-        pinView = EmojiPinView(emoji: annotation.emoji, isSelected: isSelected)
-        addSubview(pinView)
+        emoji = annotation.emoji
         accessibilityLabel = annotation.title
         isAccessibilityElement = true
         updatePin()
@@ -331,12 +330,10 @@ final class EmojiAnnotationView: MKAnnotationView {
     }
 
     private func updatePin() {
-        pinView.setSelected(isSelected)
-        frame.size = pinView.frame.size
-        pinView.frame.origin = .zero
+        let pinImage = EmojiPinImage.make(emoji: emoji, isSelected: isSelected)
+        image = pinImage
         // 핀 꼬리 끝이 좌표에 오도록
-        centerOffset = CGPoint(x: 0, y: -pinView.frame.height / 2)
-        displayPriority = .required
+        centerOffset = CGPoint(x: 0, y: -pinImage.size.height / 2)
         zPriority = isSelected ? .max : .defaultUnselected
     }
 }

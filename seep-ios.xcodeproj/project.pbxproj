@@ -237,7 +237,7 @@
 		A7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */; };
 		B0042A5CED4B6AF6998B8313 /* WishSavingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */; };
 		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
-		B89A3D37506E9BE4C1E36C49 /* EmojiPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5441C1DE7B7877B40DEDF83A /* EmojiPinView.swift */; };
+		B89A3D37506E9BE4C1E36C49 /* EmojiPinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */; };
 		BABC0A9A71B1F3DCC53A8FCB /* WishPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */; };
 		C3D8AD70BB8D652B921763D5 /* WishPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */; };
 		C4B7663D705D81FCE6767CE7 /* SavingInputBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */; };
@@ -321,7 +321,7 @@
 		463E7E1E33AA8096B6DD898B /* WishPlaceView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceView.swift; sourceTree = "<group>"; };
 		4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepDTO.swift; sourceTree = "<group>"; };
 		5355B6BC7B23A66CE2A079C1 /* PlaceSearchBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceSearchBottomSheetViewController.swift; sourceTree = "<group>"; };
-		5441C1DE7B7877B40DEDF83A /* EmojiPinView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmojiPinView.swift; sourceTree = "<group>"; };
+		5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmojiPinImage.swift; sourceTree = "<group>"; };
 		5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceMapViewModelTests.swift; sourceTree = "<group>"; };
 		632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		6E07528226136D8800041E7B /* PageItemReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemReactor.swift; sourceTree = "<group>"; };
@@ -1239,7 +1239,7 @@
 				21E129F563CEA3484ED850B3 /* PlaceSearchResultCell.swift */,
 				B257F3D74F4512EDB7D18D92 /* WishPlaceViewModel.swift */,
 				463E7E1E33AA8096B6DD898B /* WishPlaceView.swift */,
-				5441C1DE7B7877B40DEDF83A /* EmojiPinView.swift */,
+				5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */,
 				E717D8AFD880C37EA56903FF /* PlaceMapViewModel.swift */,
 				CD807FF9E1D992CE176B9616 /* PlaceMapViewController.swift */,
 				AD815F881A394AC0835EFBFB /* PlaceMapWishCardView.swift */,
@@ -1621,7 +1621,7 @@
 				401171A7B86AFD636626E0FD /* PlaceSearchResultCell.swift in Sources */,
 				164F650323BA46FD48E482C2 /* WishPlaceViewModel.swift in Sources */,
 				E12993B2A75900FDF3DEE37F /* WishPlaceView.swift in Sources */,
-				B89A3D37506E9BE4C1E36C49 /* EmojiPinView.swift in Sources */,
+				B89A3D37506E9BE4C1E36C49 /* EmojiPinImage.swift in Sources */,
 				267E846F50CC07AACD19C526 /* PlaceMapViewModel.swift in Sources */,
 				951DE527BFA402D0FEC1AA4C /* PlaceMapViewController.swift in Sources */,
 				F7638EF80298FAC76DCE7374 /* PlaceMapWishCardView.swift in Sources */,
