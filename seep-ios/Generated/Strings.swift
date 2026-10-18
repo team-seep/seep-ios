@@ -474,6 +474,22 @@ internal enum Strings {
       /// 📝 어디 가고 싶어요?
       internal static let wantToGo = Strings.tr("Localization", "home.write_button.want_to_go", fallback: "📝 어디 가고 싶어요?")
     }
+    internal enum YearReview {
+      /// %d년 돌아보기
+      internal static func captionFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.year_review.caption_format", p1, fallback: "%d년 돌아보기")
+      }
+      /// 올해 배너 닫기
+      internal static let close = Strings.tr("Localization", "home.year_review.close", fallback: "올해 배너 닫기")
+      /// %d개
+      internal static func countFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.year_review.count_format", p1, fallback: "%d개")
+      }
+      /// 올해 싶 %d개를 이뤘어요!
+      internal static func titleFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.year_review.title_format", p1, fallback: "올해 싶 %d개를 이뤘어요!")
+      }
+    }
   }
   internal enum Write {
     internal enum Step {
@@ -489,6 +505,68 @@ internal enum Strings {
       internal static let placeholder = Strings.tr("Localization", "write.target_amount.placeholder", fallback: "0")
       /// 목표 금액
       internal static let title = Strings.tr("Localization", "write.target_amount.title", fallback: "목표 금액")
+    }
+  }
+  internal enum YearReview {
+    /// 닫기
+    internal static let close = Strings.tr("Localization", "year_review.close", fallback: "닫기")
+    /// %d개
+    internal static func countFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "year_review.count_format", p1, fallback: "%d개")
+    }
+    /// 싶 %d개를 이뤘어요!
+    internal static func headlineBoldFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "year_review.headline_bold_format", p1, fallback: "싶 %d개를 이뤘어요!")
+    }
+    /// 올해 나는
+    /// 싶 %d개를 이뤘어요!
+    internal static func headlineFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "year_review.headline_format", p1, fallback: "올해 나는\n싶 %d개를 이뤘어요!")
+    }
+    /// 이미지로 공유하기
+    internal static let share = Strings.tr("Localization", "year_review.share", fallback: "이미지로 공유하기")
+    /// 올해 이룬 싶 모두 보기
+    internal static let showAll = Strings.tr("Localization", "year_review.show_all", fallback: "올해 이룬 싶 모두 보기")
+    internal enum BusiestMonth {
+      /// %d월 · %d개
+      internal static func format(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "year_review.busiest_month.format", p1, p2, fallback: "%d월 · %d개")
+      }
+      /// 가장 많이 이룬 달
+      internal static let title = Strings.tr("Localization", "year_review.busiest_month.title", fallback: "가장 많이 이룬 달")
+    }
+    internal enum List {
+      /// 뒤로
+      internal static let back = Strings.tr("Localization", "year_review.list.back", fallback: "뒤로")
+      /// %d개 모두 모아봤어요
+      internal static func headlineBoldFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "year_review.list.headline_bold_format", p1, fallback: "%d개 모두 모아봤어요")
+      }
+      /// %d년에 이룬 싶
+      /// %d개 모두 모아봤어요
+      internal static func headlineFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "year_review.list.headline_format", p1, p2, fallback: "%d년에 이룬 싶\n%d개 모두 모아봤어요")
+      }
+      /// %d월
+      internal static func monthFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "year_review.list.month_format", p1, fallback: "%d월")
+      }
+    }
+    internal enum LongestHeld {
+      /// %d일
+      internal static func daysBoldFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "year_review.longest_held.days_bold_format", p1, fallback: "%d일")
+      }
+      /// 적고 나서 %d일 만에 이뤘어요
+      internal static func daysFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "year_review.longest_held.days_format", p1, fallback: "적고 나서 %d일 만에 이뤘어요")
+      }
+      /// 가장 오래 품고 이룬 싶
+      internal static let title = Strings.tr("Localization", "year_review.longest_held.title", fallback: "가장 오래 품고 이룬 싶")
+    }
+    internal enum NoteOfYear {
+      /// 올해의 한 줄
+      internal static let title = Strings.tr("Localization", "year_review.note_of_year.title", fallback: "올해의 한 줄")
     }
   }
 }

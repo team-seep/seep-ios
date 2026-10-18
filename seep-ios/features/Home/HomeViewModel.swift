@@ -19,6 +19,11 @@ extension HomeViewModel {
         let updateWish = PassthroughSubject<Wish, Never>()
         let deleteWish = PassthroughSubject<Wish, Never>()
         let cancelFinish = PassthroughSubject<Wish, Never>()
+        
+        // 연말 회고 배너 (GH-34)
+        let didTapYearReviewBanner = PassthroughSubject<Void, Never>()
+        let didTapCloseYearReviewBanner = PassthroughSubject<Void, Never>()
+        let yearReviewDismissed = PassthroughSubject<Void, Never>()
     }
     
     struct Output {
@@ -36,6 +41,13 @@ extension HomeViewModel {
         var isOnlyFinished: Bool = false
         var viewType: ViewType
         var wish: [Wish] = []
+        var yearReviewBanner: YearReviewBanner?
+        var didSendYearReviewImpression = false
+    }
+    
+    struct YearReviewBanner: Hashable {
+        let year: Int
+        let count: Int
     }
     
     enum Route {
@@ -43,6 +55,7 @@ extension HomeViewModel {
         case presentSortBottomSheet(SortOrderBottomSheetViewModel)
         case presentFinishNoteBottomSheet(FinishNoteViewModel)
         case pushWishDetail(WishDetailReactor)
+        case presentYearReview(YearReviewViewModel)
         case showErrorAlert(Error)
     }
     
@@ -51,17 +64,24 @@ extension HomeViewModel {
         let preference: Preference
         let notificationManager: NotificationManagerProtocol
         let logManager: LogManagerProtocol
+        /// 오늘. 회고 배너 노출 기간 판정용 (GH-34 R-8)
+        let now: () -> Date
+        let calendar: Calendar
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
             preference: Preference = .shared,
             notificationManager: NotificationManagerProtocol = NotificationManager.shared,
-            logManager: LogManagerProtocol = LogManager.shared
+            logManager: LogManagerProtocol = LogManager.shared,
+            now: @escaping () -> Date = Date.init,
+            calendar: Calendar = .current
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
             self.notificationManager = notificationManager
             self.logManager = logManager
+            self.now = now
+            self.calendar = calendar
         }
     }
 }
@@ -188,6 +208,28 @@ final class HomeViewModel {
                 deleteWish(wish: targetWish)
             }
             .store(in: &cancellables)
+        
+        input.didTapYearReviewBanner
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.presentYearReview()
+            }
+            .store(in: &cancellables)
+        
+        input.didTapCloseYearReviewBanner
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.closeYearReviewBanner()
+            }
+            .store(in: &cancellables)
+        
+        input.yearReviewDismissed
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                // 회고·목록에서 상세로 들어가 완료 취소·삭제했을 수 있어 다시 읽는다 (R-7)
+                owner.fetchWishDatas()
+            }
+            .store(in: &cancellables)
     }
     
     private func bindHeaderViewModel() {
@@ -226,6 +268,7 @@ final class HomeViewModel {
         
         state.wishCount = notFinishCount
         state.wish = wishes
+        state.yearReviewBanner = makeYearReviewBanner()
         updateDataSource()
     }
     
@@ -234,6 +277,11 @@ final class HomeViewModel {
         
         if let wishCount = state.wishCount {
             sections.append(.init(type: .overview, items: [.overview(category: state.category, count: wishCount)]))
+        }
+        
+        if let banner = state.yearReviewBanner {
+            sections.append(.init(type: .yearReview, items: [.yearReviewBanner(year: banner.year, count: banner.count)]))
+            sendYearReviewImpressionIfNeeded(banner: banner)
         }
         
         let wishItems = state.wish.map {
@@ -299,6 +347,7 @@ final class HomeViewModel {
         case .success(let wish):
             dependency.notificationManager.cancelNotifications(wish: wish)
             state.wish[targetIndex] = wish
+            state.yearReviewBanner = makeYearReviewBanner()
             updateDataSource()
             output.toast.send(Strings.Home.Toast.finishWish)
             presentFinishNoteBottomSheet(wish: wish)
@@ -345,6 +394,7 @@ final class HomeViewModel {
     private func deleteWish(wish: Wish) {
         guard let targetIndex = state.wish.firstIndex(of: wish) else { return }
         state.wish.remove(at: targetIndex)
+        state.yearReviewBanner = makeYearReviewBanner()
         updateDataSource()
     }
     
@@ -353,6 +403,65 @@ final class HomeViewModel {
         state.wish[targetIndex].isSuccess = false
         state.wish[targetIndex].finishDate = nil
         state.wish[targetIndex].finishNote = ""
+        state.yearReviewBanner = makeYearReviewBanner()
+        updateDataSource()
+    }
+}
+
+// MARK: 연말 회고 배너 (GH-34)
+extension HomeViewModel {
+    /// 노출 기간(12/1~1/31)이고, 그 해 배너를 닫지 않았고, 대상 연도 완료가 1개 이상이면 배너를 만든다 (R-1, R-2)
+    private func makeYearReviewBanner() -> YearReviewBanner? {
+        let calendar = dependency.calendar
+        guard let year = YearReviewSummary.targetYear(now: dependency.now(), calendar: calendar),
+              !dependency.preference.closedYearReviewYears.contains(year),
+              let range = YearReviewSummary.dateRange(year: year, calendar: calendar) else { return nil }
+        
+        let count = dependency.wishRepository.fetchFinishedWishes(from: range.from, to: range.to).count
+        guard count > 0 else { return nil }
+        return YearReviewBanner(year: year, count: count)
+    }
+    
+    private func sendYearReviewImpressionIfNeeded(banner: YearReviewBanner) {
+        guard !state.didSendYearReviewImpression else { return }
+        state.didSendYearReviewImpression = true
+        dependency.logManager.sendEvent(event: ImpressionEvent(
+            screen: output.screenName,
+            objectType: .banner,
+            objectId: .yearReviewBanner,
+            extraParameters: [.year: banner.year]
+        ))
+    }
+    
+    private func presentYearReview() {
+        guard let banner = state.yearReviewBanner else { return }
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: output.screenName,
+            objectType: .banner,
+            objectId: .yearReviewBanner,
+            extraParameters: [.year: banner.year]
+        ))
+        
+        let viewModel = YearReviewViewModel(
+            config: .init(year: banner.year),
+            dependency: .init(
+                wishRepository: dependency.wishRepository,
+                logManager: dependency.logManager,
+                calendar: dependency.calendar
+            )
+        )
+        viewModel.output.dismissed
+            .subscribe(input.yearReviewDismissed)
+            .store(in: &viewModel.cancellables)
+        
+        output.route.send(.presentYearReview(viewModel))
+    }
+    
+    private func closeYearReviewBanner() {
+        guard let banner = state.yearReviewBanner else { return }
+        sendClickLog(objectId: .closeYearReviewBanner, extraParameters: [.year: banner.year])
+        dependency.preference.closedYearReviewYears.append(banner.year)
+        state.yearReviewBanner = nil
         updateDataSource()
     }
 }

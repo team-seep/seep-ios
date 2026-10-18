@@ -8,6 +8,7 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
         
         collectionView.register([
             HomeOverviewCell.self,
+            HomeYearReviewBannerCell.self,
             HomeWishGridCell.self,
             HomeWishListCell.self,
             HomeEmptyCell.self
@@ -20,6 +21,13 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
             case .overview(let category, let count):
                 let cell: HomeOverviewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
                 cell.bind(category: category, count: count)
+                return cell
+            case .yearReviewBanner(let year, let count):
+                let cell: HomeYearReviewBannerCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.bind(year: year, count: count)
+                cell.closeButton.tapPublisher
+                    .subscribe(viewModel.input.didTapCloseYearReviewBanner)
+                    .store(in: &cell.cancellables)
                 return cell
             case .wish(let viewModel):
                 switch viewModel.output.viewType {
@@ -42,7 +50,7 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
             guard let section = self?.sectionIdentifier(for: indexPath.section) else { return nil }
             
             switch section.type {
-            case .overview:
+            case .overview, .yearReview:
                 return nil
             case .wish(let headerViewModel):
                 let headerView: HomeFilterHeaderView = collectionView.dequeueReusableSupplementaryView(ofkind: kind, indexPath: indexPath)
@@ -66,6 +74,7 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
 struct HomeSection: Hashable {
     enum SectionType: Hashable {
         case overview
+        case yearReview
         case wish(HomeFilterHeaderViewModel)
     }
     
@@ -75,6 +84,7 @@ struct HomeSection: Hashable {
 
 enum HomeSectionItem: Hashable {
     case overview(category: Category, count: Int)
+    case yearReviewBanner(year: Int, count: Int)
     case wish(HomeWishCellViewModel)
     case empty
 }

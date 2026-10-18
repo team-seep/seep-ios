@@ -1,3 +1,5 @@
+import Foundation
+
 import RealmSwift
 
 protocol WishRepository {
@@ -20,6 +22,9 @@ protocol WishRepository {
     
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    
+    /// 카테고리와 무관하게 `finishDate`가 [from, to) 안인 완료 위시를 돌려준다 (GH-34 R-3).
+    func fetchFinishedWishes(from: Date, to: Date) -> [Wish]
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -108,6 +113,13 @@ final class WishRepositoryImpl: WishRepository {
         }
         
         return .success(Wish(dto: targetObject))
+    }
+    
+    func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {
+        guard let realm = try? Realm() else { return [] }
+        return realm.objects(WishDTO.self)
+            .filter("isSuccess == true AND finishDate >= %@ AND finishDate < %@", from, to)
+            .map { Wish(dto: $0) }
     }
     
     private func updateSavings(

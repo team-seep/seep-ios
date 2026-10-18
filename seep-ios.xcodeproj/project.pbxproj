@@ -233,6 +233,19 @@
 		A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */; };
+		A34000010000000000000002 /* YearReviewSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000001 /* YearReviewSummary.swift */; };
+		A34000010000000000000004 /* HomeYearReviewBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000003 /* HomeYearReviewBannerCell.swift */; };
+		A34000010000000000000006 /* YearReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000005 /* YearReviewViewModel.swift */; };
+		A34000010000000000000008 /* YearReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000007 /* YearReviewViewController.swift */; };
+		A3400001000000000000000A /* YearReviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000009 /* YearReviewListViewModel.swift */; };
+		A3400001000000000000000C /* YearReviewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000B /* YearReviewListViewController.swift */; };
+		A3400001000000000000000E /* YearReviewImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000D /* YearReviewImageRenderer.swift */; };
+		A34000010000000000000010 /* YearReviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000F /* YearReviewCardView.swift */; };
+		A34000010000000000000012 /* YearReviewListViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000011 /* YearReviewListViews.swift */; };
+		A34000010000000000000014 /* YearReviewSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000013 /* YearReviewSummaryTests.swift */; };
+		A34000010000000000000016 /* YearReviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000015 /* YearReviewViewModelTests.swift */; };
+		A34000010000000000000018 /* YearReviewListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000017 /* YearReviewListViewModelTests.swift */; };
+		A3400001000000000000001A /* HomeViewModelYearReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,6 +496,19 @@
 		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorStepsTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000001 /* YearReviewSummary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewSummary.swift; sourceTree = "<group>"; };
+		A34000010000000000000003 /* HomeYearReviewBannerCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeYearReviewBannerCell.swift; sourceTree = "<group>"; };
+		A34000010000000000000005 /* YearReviewViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewModel.swift; sourceTree = "<group>"; };
+		A34000010000000000000007 /* YearReviewViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewController.swift; sourceTree = "<group>"; };
+		A34000010000000000000009 /* YearReviewListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewModel.swift; sourceTree = "<group>"; };
+		A3400001000000000000000B /* YearReviewListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewController.swift; sourceTree = "<group>"; };
+		A3400001000000000000000D /* YearReviewImageRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewImageRenderer.swift; sourceTree = "<group>"; };
+		A3400001000000000000000F /* YearReviewCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewCardView.swift; sourceTree = "<group>"; };
+		A34000010000000000000011 /* YearReviewListViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViews.swift; sourceTree = "<group>"; };
+		A34000010000000000000013 /* YearReviewSummaryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewSummaryTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000015 /* YearReviewViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewModelTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000017 /* YearReviewListViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewModelTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelYearReviewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -609,6 +635,10 @@
 				820431309D9DE5D0DCA8238D /* WriteReactorTargetAmountTests.swift */,
 				FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */,
 				A25F00010000000000000005 /* FinishNoteViewModelTests.swift */,
+				A34000010000000000000013 /* YearReviewSummaryTests.swift */,
+				A34000010000000000000015 /* YearReviewViewModelTests.swift */,
+				A34000010000000000000017 /* YearReviewListViewModelTests.swift */,
+				A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */,
 				2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */,
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 				A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */,
@@ -684,6 +714,7 @@
 				6E4F5D8C2657DF500061A13C /* splash */,
 				6EE1706A264E58D000C3E94B /* share-photo */,
 				6ED89713261579AA0005FA29 /* finished */,
+				A3400001000000000000001B /* year-review */,
 				6E69E61E260D990E0062CBFB /* wish-detail */,
 				6E66A27525FB45C000C0C051 /* write */,
 				6EE5CE7225FB24C900A737DF /* shared */,
@@ -958,6 +989,7 @@
 				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
 				6E80428F279D3072008A0EB4 /* HashtagType.swift */,
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
+				A34000010000000000000001 /* YearReviewSummary.swift */,
 				F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */,
 				76EC49270480D77773B034E4 /* WishSaving.swift */,
 			);
@@ -1127,6 +1159,7 @@
 			isa = PBXGroup;
 			children = (
 				6EECDCA42CC4F4A2006D3A29 /* HomeOverviewCell.swift */,
+				A34000010000000000000003 /* HomeYearReviewBannerCell.swift */,
 				6EEED44425F2227F0059DBE5 /* HomeWishListCell.swift */,
 				6E60018726084516000065C8 /* HomeWishGridCell.swift */,
 				6E6D19772CCDCEEE008A460C /* HomeFilterHeaderView.swift */,
@@ -1185,6 +1218,28 @@
 				77A835D24905877700C2E8A1 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3400001000000000000001B /* year-review */ = {
+			isa = PBXGroup;
+			children = (
+				A34000010000000000000005 /* YearReviewViewModel.swift */,
+				A34000010000000000000007 /* YearReviewViewController.swift */,
+				A34000010000000000000009 /* YearReviewListViewModel.swift */,
+				A3400001000000000000000B /* YearReviewListViewController.swift */,
+				A3400001000000000000000D /* YearReviewImageRenderer.swift */,
+				A3400001000000000000001C /* subviews */,
+			);
+			path = "year-review";
+			sourceTree = "<group>";
+		};
+		A3400001000000000000001C /* subviews */ = {
+			isa = PBXGroup;
+			children = (
+				A3400001000000000000000F /* YearReviewCardView.swift */,
+				A34000010000000000000011 /* YearReviewListViews.swift */,
+			);
+			path = subviews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1407,6 +1462,10 @@
 				DEA3B9B0C6E1656ECAD3F7C5 /* WriteReactorTargetAmountTests.swift in Sources */,
 				042777C6C45215367A054571 /* SavingInputViewModelTests.swift in Sources */,
 				A25F00010000000000000006 /* FinishNoteViewModelTests.swift in Sources */,
+				A34000010000000000000014 /* YearReviewSummaryTests.swift in Sources */,
+				A34000010000000000000016 /* YearReviewViewModelTests.swift in Sources */,
+				A34000010000000000000018 /* YearReviewListViewModelTests.swift in Sources */,
+				A3400001000000000000001A /* HomeViewModelYearReviewTests.swift in Sources */,
 				99B938686802C41D8298407D /* WishSavingsViewModelTests.swift in Sources */,
 				050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */,
 				A1B2C3D4E5F60718293A4B11 /* HomeWishGridLayoutTests.swift in Sources */,
@@ -1531,6 +1590,15 @@
 				6EEED44525F2227F0059DBE5 /* HomeWishListCell.swift in Sources */,
 				6ED89718261585E10005FA29 /* FinishedViewController.swift in Sources */,
 				6E489D962CCE21FD00965995 /* HomeViewModel.swift in Sources */,
+				A34000010000000000000002 /* YearReviewSummary.swift in Sources */,
+				A34000010000000000000004 /* HomeYearReviewBannerCell.swift in Sources */,
+				A34000010000000000000006 /* YearReviewViewModel.swift in Sources */,
+				A34000010000000000000008 /* YearReviewViewController.swift in Sources */,
+				A3400001000000000000000A /* YearReviewListViewModel.swift in Sources */,
+				A3400001000000000000000C /* YearReviewListViewController.swift in Sources */,
+				A3400001000000000000000E /* YearReviewImageRenderer.swift in Sources */,
+				A34000010000000000000010 /* YearReviewCardView.swift in Sources */,
+				A34000010000000000000012 /* YearReviewListViews.swift in Sources */,
 				6E4AD34C278AACCB00819C43 /* NotificationDTO.swift in Sources */,
 				6E283AFB25F2047900955B57 /* SceneDelegate.swift in Sources */,
 				6E274E8E25F21506007DC880 /* HomeView.swift in Sources */,

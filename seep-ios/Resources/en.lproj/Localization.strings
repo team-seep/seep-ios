@@ -63,6 +63,28 @@
 "home.finish_note.save" = "남기기";
 "home.finish_note.skip" = "다음에 할게요";
 "home.finish_note.cell_format" = "“%@”";
+"home.year_review.caption_format" = "%d년 돌아보기";
+"home.year_review.title_format" = "올해 싶 %d개를 이뤘어요!";
+"home.year_review.count_format" = "%d개";
+"home.year_review.close" = "올해 배너 닫기";
+
+// Year Review (GH-34)
+"year_review.headline_format" = "올해 나는\n싶 %d개를 이뤘어요!";
+"year_review.headline_bold_format" = "싶 %d개를 이뤘어요!";
+"year_review.count_format" = "%d개";
+"year_review.longest_held.title" = "가장 오래 품고 이룬 싶";
+"year_review.longest_held.days_format" = "적고 나서 %d일 만에 이뤘어요";
+"year_review.longest_held.days_bold_format" = "%d일";
+"year_review.busiest_month.title" = "가장 많이 이룬 달";
+"year_review.busiest_month.format" = "%d월 · %d개";
+"year_review.note_of_year.title" = "올해의 한 줄";
+"year_review.show_all" = "올해 이룬 싶 모두 보기";
+"year_review.share" = "이미지로 공유하기";
+"year_review.close" = "닫기";
+"year_review.list.headline_format" = "%d년에 이룬 싶\n%d개 모두 모아봤어요";
+"year_review.list.headline_bold_format" = "%d개 모두 모아봤어요";
+"year_review.list.month_format" = "%d월";
+"year_review.list.back" = "뒤로";
 
 // Write
 "write_title" = "작은 것부터\n차근차근 적어봐요!";

@@ -140,8 +140,14 @@ final class HomeViewController: BaseViewController {
         collectionView.didSelectItemPublisher
             .withUnretained(self)
             .sink { (owner: HomeViewController, indexPath: IndexPath) in
-                guard owner.dataSource.sectionIdentifier(for: indexPath.section)?.type != .overview else { return }
-                owner.viewModel.input.didTapWish.send(indexPath.item)
+                switch owner.dataSource.sectionIdentifier(for: indexPath.section)?.type {
+                case .yearReview:
+                    owner.viewModel.input.didTapYearReviewBanner.send(())
+                case .wish:
+                    owner.viewModel.input.didTapWish.send(indexPath.item)
+                case .overview, .none:
+                    break
+                }
             }
             .store(in: &cancellables)
         
@@ -222,6 +228,17 @@ final class HomeViewController: BaseViewController {
                 ), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = .init(top: 0, leading: 22, bottom: 0, trailing: 22)
+                
+                return section
+            case .yearReview:
+                let size = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(HomeYearReviewBannerCell.Layout.height)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: size)
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: size, subitems: [item])
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = .init(top: 0, leading: 20, bottom: 8, trailing: 20)
                 
                 return section
             case .wish(let headerViewModel):
@@ -420,6 +437,8 @@ extension HomeViewController {
             presentFinishNoteBottomSheet(viewModel: viewModel)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
+        case .presentYearReview(let viewModel):
+            presentYearReview(viewModel: viewModel)
         case .showErrorAlert(let error):
             showErrorAlert(error)
         }
@@ -456,6 +475,14 @@ extension HomeViewController {
         }
         let viewController = WishDetailViewController(reactor: reactor, mode: mode)
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    private func presentYearReview(viewModel: YearReviewViewModel) {
+        // 목록·상세로 push 하려고 내비게이션으로 감싼다. 바는 각 화면이 직접 그린다
+        let navigationController = UINavigationController(rootViewController: YearReviewViewController(viewModel: viewModel))
+        navigationController.isNavigationBarHidden = true
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
     }
 }
 

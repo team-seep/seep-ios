@@ -33,4 +33,14 @@ final class Preference {
             instance.string(forKey: "reservedDeepLink") ?? ""
         }
     }
+    
+    /// 홈 연말 회고 배너를 X로 닫은 대상 연도들 (GH-34 R-2)
+    var closedYearReviewYears: [Int] {
+        set {
+            instance.set(newValue, forKey: "closedYearReviewYears")
+        }
+        get {
+            instance.array(forKey: "closedYearReviewYears") as? [Int] ?? []
+        }
+    }
 }

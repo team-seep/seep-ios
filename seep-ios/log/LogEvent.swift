@@ -125,4 +125,7 @@ enum LogObjectId: String {
     case finishNoteSheet = "finish_note_sheet"
     case saveFinishNote = "save_finish_note"
     case skipFinishNote = "skip_finish_note"
+    case yearReviewBanner = "year_review_banner"
+    case closeYearReviewBanner = "close_year_review_banner"
+    case shareYearReview = "share_year_review"
 }

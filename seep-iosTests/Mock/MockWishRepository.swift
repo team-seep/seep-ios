@@ -1,3 +1,5 @@
+import struct Foundation.Date
+
 @testable import seep_ios_dev
 
 final class MockWishRepository: WishRepository {
@@ -15,6 +17,9 @@ final class MockWishRepository: WishRepository {
     /// nil 이면 호출된 위시 id·소감으로 만든 위시를 성공으로 돌려준다
     var updateFinishNoteResult: Result<Wish, RepositoryError>?
     private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
+    /// 실제 구현처럼 [from, to) 안의 완료 위시만 골라 돌려준다
+    var fetchFinishedWishesResult: [Wish] = []
+    private(set) var fetchFinishedWishesCalls: [(from: Date, to: Date)] = []
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
@@ -51,5 +56,13 @@ final class MockWishRepository: WishRepository {
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
         updateFinishNoteCalls.append((wishId, note))
         return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note))
+    }
+
+    func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {
+        fetchFinishedWishesCalls.append((from, to))
+        return fetchFinishedWishesResult.filter { wish in
+            guard wish.isSuccess, let finishDate = wish.finishDate else { return false }
+            return from <= finishDate && finishDate < to
+        }
     }
 }
