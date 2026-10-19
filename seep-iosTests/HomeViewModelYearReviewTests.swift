@@ -33,14 +33,15 @@ final class HomeViewModelYearReviewTests: XCTestCase {
         Wish(id: id, title: id, finishDate: finishDate, isSuccess: true, createdAt: finishDate)
     }
 
-    private func makeViewModel(now: Date) -> HomeViewModel {
+    private func makeViewModel(now: Date, period: YearReviewPeriod = .default) -> HomeViewModel {
         HomeViewModel(dependency: .init(
             wishRepository: repository,
             preference: preference,
             notificationManager: MockNotificationManager(),
             logManager: logManager,
             now: { now },
-            calendar: calendar
+            calendar: calendar,
+            remoteConfigRepository: StubRemoteConfigRepository(period: period)
         ))
     }
 
@@ -263,5 +264,54 @@ final class HomeViewModelYearReviewTests: XCTestCase {
 
         // Then
         XCTAssertEqual(banner(of: viewModel)?.count, 1)
+    }
+
+    // MARK: GH-34 TC19
+
+    func test_GH34_TC19_RemoteConfig에서꺼져있으면_12월에도배너가없다() {
+        // Given
+        repository.fetchFinishedWishesResult = [finished("a", at: date(2026, 5, 1))]
+        let disabled = YearReviewPeriod(isEnabled: false, start: .init(month: 12, day: 1), end: .init(month: 1, day: 31))
+        let viewModel = makeViewModel(now: date(2026, 12, 5), period: disabled)
+
+        // When
+        viewModel.input.firstLoad.send(())
+
+        // Then
+        XCTAssertNil(banner(of: viewModel))
+    }
+
+    // MARK: GH-34 TC21
+
+    func test_GH34_TC21_RemoteConfig기간이11월이면_11월에배너가보인다() {
+        // Given
+        repository.fetchFinishedWishesResult = [
+            finished("a", at: date(2026, 3, 1)),
+            finished("b", at: date(2026, 10, 1))
+        ]
+        let november = YearReviewPeriod(isEnabled: true, start: .init(month: 11, day: 1), end: .init(month: 11, day: 30))
+        let viewModel = makeViewModel(now: date(2026, 11, 10), period: november)
+
+        // When
+        viewModel.input.firstLoad.send(())
+
+        // Then
+        XCTAssertEqual(banner(of: viewModel)?.year, 2026)
+        XCTAssertEqual(banner(of: viewModel)?.count, 2)
+    }
+}
+
+/// 연말 회고 기간만 돌려주는 Remote Config 대역 (GH-34 R-9)
+private struct StubRemoteConfigRepository: RemoteConfigRepository {
+    let period: YearReviewPeriod
+
+    func fetchForceUpdateVersion() async -> Result<String, Error> {
+        return .success("")
+    }
+
+    func fetchAndActivate() async {}
+
+    func fetchYearReviewPeriod() -> YearReviewPeriod {
+        return period
     }
 }

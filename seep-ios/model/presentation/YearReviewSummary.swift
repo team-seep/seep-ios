@@ -75,19 +75,9 @@ extension YearReviewSummary {
         return (from, to)
     }
 
-    /// 회고 배너를 띄우는 기간이면 대상 연도를 돌려준다 (R-1). 12월이면 그 해, 1월이면 지난해, 그 밖엔 nil
-    static func targetYear(now: Date, calendar: Calendar) -> Int? {
-        let components = calendar.dateComponents([.year, .month], from: now)
-        guard let year = components.year, let month = components.month else { return nil }
-
-        switch month {
-        case 12:
-            return year
-        case 1:
-            return year - 1
-        default:
-            return nil
-        }
+    /// 회고 배너를 띄우는 기간이면 대상 연도를 돌려준다 (R-1, R-9). 기간은 Remote Config 값, 없으면 12/1~1/31
+    static func targetYear(now: Date, calendar: Calendar, period: YearReviewPeriod = .default) -> Int? {
+        return period.targetYear(now: now, calendar: calendar)
     }
 
     private static func longestHeld(_ finished: [(wish: Wish, finishDate: Date)], calendar: Calendar) -> LongestHeld? {

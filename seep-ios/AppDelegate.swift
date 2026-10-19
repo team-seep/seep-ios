@@ -40,6 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func initilizeFirebase() {
         FirebaseApp.configure()
+        
+        // 연말 회고 노출 기간 등 Remote Config 최신 값을 받아 둔다 (GH-34 R-9).
+        // 유닛 테스트가 콘솔 값에 흔들리지 않도록 테스트 호스트로 뜰 때는 받지 않는다
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
+        Task {
+            await RemoteConfigRepositoryImpl().fetchAndActivate()
+        }
     }
     
     private func requestNotificationAuthorization() {

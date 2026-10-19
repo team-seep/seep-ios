@@ -225,6 +225,65 @@ final class YearReviewSummaryTests: XCTestCase {
         XCTAssertEqual(summary.monthGroups.map(\.month), [12, 8])
         XCTAssertEqual(summary.monthGroups.last?.wishes.map(\.id), ["aug31", "aug2"])
     }
+
+    // MARK: GH-34 TC17 · TC18 · TC20 (Remote Config 노출 기간)
+
+    private func period(_ json: String) -> YearReviewPeriod {
+        YearReviewPeriod.parse(json)
+    }
+
+    func test_GH34_TC17_해를넘기는기간이면_1월쪽은기간이시작한해가대상연도다() {
+        // Given
+        let period = period(#"{"enabled":true,"start":"11-15","end":"01-10"}"#)
+
+        // When
+        let november = period.targetYear(now: date(2026, 11, 20), calendar: calendar)
+        let january = period.targetYear(now: date(2027, 1, 5), calendar: calendar)
+        let afterEnd = period.targetYear(now: date(2027, 1, 11), calendar: calendar)
+
+        // Then
+        XCTAssertEqual(november, 2026)
+        XCTAssertEqual(january, 2026)
+        XCTAssertNil(afterEnd)
+        XCTAssertNil(period.targetYear(now: date(2026, 11, 14, 23, 59), calendar: calendar))
+    }
+
+    func test_GH34_TC18_해를넘기지않는기간이면_그안에서만그해가대상연도다() {
+        // Given
+        let period = period(#"{"enabled":true,"start":"12-20","end":"12-31"}"#)
+
+        // When
+        let inside = period.targetYear(now: date(2026, 12, 25), calendar: calendar)
+        let nextYear = period.targetYear(now: date(2027, 1, 2), calendar: calendar)
+
+        // Then
+        XCTAssertEqual(inside, 2026)
+        XCTAssertNil(nextYear)
+        XCTAssertEqual(period.targetYear(now: date(2026, 12, 31, 23, 59), calendar: calendar), 2026)
+        XCTAssertNil(period.targetYear(now: date(2026, 12, 19, 23, 59), calendar: calendar))
+    }
+
+    func test_GH34_TC20_RemoteConfig값이비었거나형식이틀리면_기본기간이다() {
+        // Given
+        let invalidValues = [
+            "",
+            "{not json",
+            #"{"enabled":true,"start":"12/01","end":"01-31"}"#,
+            #"{"enabled":true,"start":"13-01","end":"01-31"}"#,
+            #"{"enabled":true,"start":"12-01","end":"02-30"}"#,
+            #"{"start":"12-01","end":"01-31"}"#
+        ]
+
+        // When
+        let periods = invalidValues.map(YearReviewPeriod.parse)
+
+        // Then
+        periods.forEach { XCTAssertEqual($0, .default) }
+        XCTAssertEqual(YearReviewPeriod.default.start, .init(month: 12, day: 1))
+        XCTAssertEqual(YearReviewPeriod.default.end, .init(month: 1, day: 31))
+        XCTAssertTrue(YearReviewPeriod.default.isEnabled)
+        XCTAssertEqual(period(#"{"enabled":true,"start":"02-29","end":"03-01"}"#).start, .init(month: 2, day: 29))
+    }
 }
 
 /// 연도 문구 (시뮬레이터 검증에서 "2,026년"으로 보인 문제)

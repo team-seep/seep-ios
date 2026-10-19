@@ -67,6 +67,8 @@ extension HomeViewModel {
         /// 오늘. 회고 배너 노출 기간 판정용 (GH-34 R-8)
         let now: () -> Date
         let calendar: Calendar
+        /// 회고 배너 노출 기간 (GH-34 R-9)
+        let remoteConfigRepository: RemoteConfigRepository
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
@@ -74,7 +76,8 @@ extension HomeViewModel {
             notificationManager: NotificationManagerProtocol = NotificationManager.shared,
             logManager: LogManagerProtocol = LogManager.shared,
             now: @escaping () -> Date = Date.init,
-            calendar: Calendar = .current
+            calendar: Calendar = .current,
+            remoteConfigRepository: RemoteConfigRepository = RemoteConfigRepositoryImpl()
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
@@ -82,6 +85,7 @@ extension HomeViewModel {
             self.logManager = logManager
             self.now = now
             self.calendar = calendar
+            self.remoteConfigRepository = remoteConfigRepository
         }
     }
 }
@@ -410,10 +414,11 @@ final class HomeViewModel {
 
 // MARK: 연말 회고 배너 (GH-34)
 extension HomeViewModel {
-    /// 노출 기간(12/1~1/31)이고, 그 해 배너를 닫지 않았고, 대상 연도 완료가 1개 이상이면 배너를 만든다 (R-1, R-2)
+    /// 노출 기간(Remote Config, 기본 12/1~1/31)이고, 그 해 배너를 닫지 않았고, 대상 연도 완료가 1개 이상이면 배너를 만든다 (R-1, R-2, R-9)
     private func makeYearReviewBanner() -> YearReviewBanner? {
         let calendar = dependency.calendar
-        guard let year = YearReviewSummary.targetYear(now: dependency.now(), calendar: calendar),
+        let period = dependency.remoteConfigRepository.fetchYearReviewPeriod()
+        guard let year = YearReviewSummary.targetYear(now: dependency.now(), calendar: calendar, period: period),
               !dependency.preference.closedYearReviewYears.contains(year),
               let range = YearReviewSummary.dateRange(year: year, calendar: calendar) else { return nil }
         
