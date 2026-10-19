@@ -9,7 +9,7 @@
 |---|---|---|
 | `verification-change` | `.github/**`, `.swiftlint.yml`, 베이스라인, `scripts/**`, `makefile`, `seep-iosTests/**`, `docs/architecture/RULES.md`, `CLAUDE.md`, `.claude/skills/**`(자동화 스킬) | 코드보다 **이 파일들을 먼저** 본다. 왜 바꿨는지가 본문 "설명이 필요한 결정"에 있어야 한다 |
 | `baseline-change` | `.swiftlint-baseline.json` | 베이스라인은 **줄어들기만** 해야 한다. 항목이 늘었으면 사유 확인 (RULES.md "베이스라인 운영") |
-| `schema-change` | `seep-ios/model/dto/**`, `seep-ios/AppDelegate.swift`, `widget/**/*Provider.swift` | R4. `schemaVersion`이 앱·위젯 모두 올랐는지, `migrationBlock`에 분기가 있는지, 마이그레이션 TC가 있는지 |
+| `schema-change` | `seep-ios/model/dto/**`, `seep-ios/AppDelegate.swift`, `seep-ios/Repository/RealmConfiguration.swift`, `widget/**/*Provider.swift` | R4. `schemaVersion`이 앱·위젯 공용 설정(`RealmConfiguration`)에서 올랐는지, `migrationBlock`에 분기가 있는지, 마이그레이션 TC가 있는지 |
 
 라벨은 **표시**일 뿐 검증을 실행하지 않는다. 린트·테스트(`lint.yml`, `test.yml`)는 라벨과 무관하게 모든 PR에서 돈다.
 
