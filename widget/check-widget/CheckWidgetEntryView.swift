@@ -72,8 +72,14 @@ struct CheckWishRowView: View {
                 Text(wish.title)
                     .font(.custom("AppleSDGothicNeo-SemiBold", size: 13))
                     .foregroundColor(wish.isSuccess ? .gray4 : .gray5)
-                    .strikethrough(wish.isSuccess, color: .gray4)
                     .lineLimit(1)
+                    // 위젯 렌더러가 커스텀 폰트의 strikethrough 를 그리지 않아 선을 직접 얹는다 (R-4)
+                    .overlay(
+                        Rectangle()
+                            .fill(Color.gray4)
+                            .frame(height: 1)
+                            .opacity(wish.isSuccess ? 1 : 0)
+                    )
 
                 Text(WidgetCheckAction.caption(wish: wish))
                     .font(.custom("AppleSDGothicNeo-Medium", size: 11))
@@ -86,6 +92,8 @@ struct CheckWishRowView: View {
         .padding(.leading, 10)
         // 완료한 줄은 흐리게 남긴다 (R-4, 앱 셀 규칙과 같은 0.4)
         .opacity(wish.isSuccess ? 0.4 : 1)
+        // 완료·취소 때 흐림과 문구가 같이 바뀌면 이전 문구가 남은 채 보간돼, 상태마다 새 뷰로 그린다
+        .id("\(wish.id)-\(wish.isSuccess)")
     }
 
     @available(iOSApplicationExtension 17.0, *)

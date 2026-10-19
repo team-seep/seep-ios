@@ -137,4 +137,18 @@ final class WidgetCheckRepositoryTests: XCTestCase {
         // Then
         XCTAssertTrue(wishes.isEmpty)
     }
+
+    // MARK: 회귀 (GH-48 R-7, R-13 의 알림 취소 전제)
+
+    func test_회귀_저장된위시를다시읽어도_예약때쓴알림id가유지된다() throws {
+        // Given
+        let notification = SeepNotification(type: .dayAgo)
+        try save(Wish(id: "wish-1", title: "위시", endDate: now, notifications: [notification]))
+
+        // When
+        let wish = sut.fetchWish(id: "wish-1")
+
+        // Then
+        XCTAssertEqual(wish?.notifications.map(\.id), [notification.id])
+    }
 }
