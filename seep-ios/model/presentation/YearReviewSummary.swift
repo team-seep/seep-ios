@@ -75,11 +75,6 @@ extension YearReviewSummary {
         return (from, to)
     }
 
-    /// 회고 배너를 띄우는 기간이면 대상 연도를 돌려준다 (R-1, R-9). 기간은 Remote Config 값, 없으면 12/1~1/31
-    static func targetYear(now: Date, calendar: Calendar, period: YearReviewPeriod = .default) -> Int? {
-        return period.targetYear(now: now, calendar: calendar)
-    }
-
     private static func longestHeld(_ finished: [(wish: Wish, finishDate: Date)], calendar: Calendar) -> LongestHeld? {
         // 완료일 오름차순으로 훑어 "더 클 때만" 바꾸면 동률은 먼저 완료한 것이 남는다
         var result: LongestHeld?

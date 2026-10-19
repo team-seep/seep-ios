@@ -1,6 +1,6 @@
 import Foundation
 
-/// 연말 회고 배너를 띄우는 기간 (GH-34 R-9). 출시 없이 바꾸도록 Remote Config `year_review_period` 로 받는다.
+/// 연말 회고 배너를 띄우는 기간 (GH-34 R-9). Remote Config `year_review_period` 로만 받고, 앱에는 기본값을 두지 않는다.
 struct YearReviewPeriod: Equatable {
     struct MonthDay: Equatable, Comparable {
         let month: Int
@@ -31,27 +31,21 @@ struct YearReviewPeriod: Equatable {
     let start: MonthDay
     let end: MonthDay
 
-    static let `default` = YearReviewPeriod(
-        isEnabled: true,
-        start: MonthDay(month: 12, day: 1),
-        end: MonthDay(month: 1, day: 31)
-    )
-
-    /// `{"enabled":true,"start":"12-01","end":"01-31"}`. 비었거나 형식이 틀리면 기본값을 쓴다
-    static func parse(_ json: String) -> YearReviewPeriod {
+    /// `{"enabled":true,"start":"12-01","end":"01-31"}`. 비었거나 형식이 틀리면 nil — 배너를 띄우지 않는다
+    static func parse(_ json: String) -> YearReviewPeriod? {
         struct Payload: Decodable {
             let enabled: Bool
             let start: String
             let end: String
         }
-
+        
         guard let data = json.data(using: .utf8),
               let payload = try? JSONDecoder().decode(Payload.self, from: data),
               let start = MonthDay(text: payload.start),
-              let end = MonthDay(text: payload.end) else { return .default }
+              let end = MonthDay(text: payload.end) else { return nil }
         return YearReviewPeriod(isEnabled: payload.enabled, start: start, end: end)
     }
-
+    
     /// 노출 기간이면 대상 연도를 돌려준다. 대상 연도는 기간이 시작한 해라서, 해를 넘긴 기간의 1월 쪽이면 지난해다
     func targetYear(now: Date, calendar: Calendar) -> Int? {
         let components = calendar.dateComponents([.year, .month, .day], from: now)

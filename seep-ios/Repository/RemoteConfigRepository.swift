@@ -4,8 +4,8 @@ protocol RemoteConfigRepository {
     func fetchForceUpdateVersion() async -> Result<String, Error>
     /// 최신 값을 받아 적용한다. 실패하면 마지막으로 적용된 값이 그대로 남는다 (GH-34 R-9)
     func fetchAndActivate() async
-    /// 마지막으로 적용된 연말 회고 노출 기간. 값이 없거나 틀리면 기본값 (GH-34 R-9)
-    func fetchYearReviewPeriod() -> YearReviewPeriod
+    /// 마지막으로 적용된 연말 회고 노출 기간. 값이 없거나 틀리면 nil (GH-34 R-9)
+    func fetchYearReviewPeriod() -> YearReviewPeriod?
 }
 
 struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
@@ -38,7 +38,7 @@ struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
         _ = try? await instance.activate()
     }
     
-    func fetchYearReviewPeriod() -> YearReviewPeriod {
+    func fetchYearReviewPeriod() -> YearReviewPeriod? {
         return YearReviewPeriod.parse(instance[Constant.yearReviewPeriodKey].stringValue)
     }
 }

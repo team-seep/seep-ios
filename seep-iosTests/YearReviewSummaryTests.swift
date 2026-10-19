@@ -4,6 +4,8 @@ import XCTest
 
 final class YearReviewSummaryTests: XCTestCase {
     private var calendar: Calendar!
+    /// 콘솔에 넣을 기본 운영 값과 같은 기간 (12/1~1/31)
+    private let decemberToJanuary = YearReviewPeriod(isEnabled: true, start: .init(month: 12, day: 1), end: .init(month: 1, day: 31))
 
     override func setUp() {
         super.setUp()
@@ -40,7 +42,7 @@ final class YearReviewSummaryTests: XCTestCase {
         let now = date(2026, 12, 5)
 
         // When
-        let year = YearReviewSummary.targetYear(now: now, calendar: calendar)
+        let year = decemberToJanuary.targetYear(now: now, calendar: calendar)
 
         // Then
         XCTAssertEqual(year, 2026)
@@ -51,7 +53,7 @@ final class YearReviewSummaryTests: XCTestCase {
         let now = date(2027, 1, 20)
 
         // When
-        let year = YearReviewSummary.targetYear(now: now, calendar: calendar)
+        let year = decemberToJanuary.targetYear(now: now, calendar: calendar)
 
         // Then
         XCTAssertEqual(year, 2026)
@@ -63,14 +65,14 @@ final class YearReviewSummaryTests: XCTestCase {
         let firstDayAfter = date(2027, 2, 1)
 
         // When
-        let before = YearReviewSummary.targetYear(now: lastDayBefore, calendar: calendar)
-        let after = YearReviewSummary.targetYear(now: firstDayAfter, calendar: calendar)
+        let before = decemberToJanuary.targetYear(now: lastDayBefore, calendar: calendar)
+        let after = decemberToJanuary.targetYear(now: firstDayAfter, calendar: calendar)
 
         // Then
         XCTAssertNil(before)
         XCTAssertNil(after)
-        XCTAssertEqual(YearReviewSummary.targetYear(now: date(2026, 12, 1), calendar: calendar), 2026)
-        XCTAssertEqual(YearReviewSummary.targetYear(now: date(2027, 1, 31, 23, 59), calendar: calendar), 2026)
+        XCTAssertEqual(decemberToJanuary.targetYear(now: date(2026, 12, 1), calendar: calendar), 2026)
+        XCTAssertEqual(decemberToJanuary.targetYear(now: date(2027, 1, 31, 23, 59), calendar: calendar), 2026)
     }
 
     // MARK: GH-34 TC6
@@ -229,7 +231,11 @@ final class YearReviewSummaryTests: XCTestCase {
     // MARK: GH-34 TC17 · TC18 · TC20 (Remote Config 노출 기간)
 
     private func period(_ json: String) -> YearReviewPeriod {
-        YearReviewPeriod.parse(json)
+        guard let period = YearReviewPeriod.parse(json) else {
+            XCTFail("파싱 실패: \(json)")
+            return decemberToJanuary
+        }
+        return period
     }
 
     func test_GH34_TC17_해를넘기는기간이면_1월쪽은기간이시작한해가대상연도다() {
@@ -263,7 +269,7 @@ final class YearReviewSummaryTests: XCTestCase {
         XCTAssertNil(period.targetYear(now: date(2026, 12, 19, 23, 59), calendar: calendar))
     }
 
-    func test_GH34_TC20_RemoteConfig값이비었거나형식이틀리면_기본기간이다() {
+    func test_GH34_TC20_RemoteConfig값이비었거나형식이틀리면_기간이없다() {
         // Given
         let invalidValues = [
             "",
@@ -278,10 +284,8 @@ final class YearReviewSummaryTests: XCTestCase {
         let periods = invalidValues.map(YearReviewPeriod.parse)
 
         // Then
-        periods.forEach { XCTAssertEqual($0, .default) }
-        XCTAssertEqual(YearReviewPeriod.default.start, .init(month: 12, day: 1))
-        XCTAssertEqual(YearReviewPeriod.default.end, .init(month: 1, day: 31))
-        XCTAssertTrue(YearReviewPeriod.default.isEnabled)
+        periods.forEach { XCTAssertNil($0) }
+        XCTAssertEqual(period(#"{"enabled":true,"start":"12-01","end":"01-31"}"#), decemberToJanuary)
         XCTAssertEqual(period(#"{"enabled":true,"start":"02-29","end":"03-01"}"#).start, .init(month: 2, day: 29))
     }
 }

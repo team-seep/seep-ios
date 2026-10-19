@@ -33,7 +33,10 @@ final class HomeViewModelYearReviewTests: XCTestCase {
         Wish(id: id, title: id, finishDate: finishDate, isSuccess: true, createdAt: finishDate)
     }
 
-    private func makeViewModel(now: Date, period: YearReviewPeriod = .default) -> HomeViewModel {
+    /// 콘솔에 넣을 기본 운영 값과 같은 기간 (12/1~1/31)
+    private static let decemberToJanuary = YearReviewPeriod(isEnabled: true, start: .init(month: 12, day: 1), end: .init(month: 1, day: 31))
+
+    private func makeViewModel(now: Date, period: YearReviewPeriod? = decemberToJanuary) -> HomeViewModel {
         HomeViewModel(dependency: .init(
             wishRepository: repository,
             preference: preference,
@@ -299,11 +302,25 @@ final class HomeViewModelYearReviewTests: XCTestCase {
         XCTAssertEqual(banner(of: viewModel)?.year, 2026)
         XCTAssertEqual(banner(of: viewModel)?.count, 2)
     }
+
+    // MARK: GH-34 TC22
+
+    func test_GH34_TC22_RemoteConfig기간값이없으면_12월에도배너가없다() {
+        // Given
+        repository.fetchFinishedWishesResult = [finished("a", at: date(2026, 5, 1))]
+        let viewModel = makeViewModel(now: date(2026, 12, 5), period: nil)
+
+        // When
+        viewModel.input.firstLoad.send(())
+
+        // Then
+        XCTAssertNil(banner(of: viewModel))
+    }
 }
 
 /// 연말 회고 기간만 돌려주는 Remote Config 대역 (GH-34 R-9)
 private struct StubRemoteConfigRepository: RemoteConfigRepository {
-    let period: YearReviewPeriod
+    let period: YearReviewPeriod?
 
     func fetchForceUpdateVersion() async -> Result<String, Error> {
         return .success("")
@@ -311,7 +328,7 @@ private struct StubRemoteConfigRepository: RemoteConfigRepository {
 
     func fetchAndActivate() async {}
 
-    func fetchYearReviewPeriod() -> YearReviewPeriod {
+    func fetchYearReviewPeriod() -> YearReviewPeriod? {
         return period
     }
 }
