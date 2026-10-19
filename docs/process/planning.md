@@ -7,7 +7,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
                                    │
                     사람: approved 라벨 / 코멘트로 조정 / 사유 남기고 닫기(반려)
                                    │
-[seep-run-approved] 매일 ──▶ (머지된 design-system-update PR → 디자인 시스템 반영) → 테크스펙 구체화 → worktree 브랜치 → 구현 → lint·test·simulator-test → PR
+[seep-run-approved] 매일 ──▶ (밀린 design-system-update PR → 디자인 시스템 반영) → 테크스펙 구체화 → worktree 브랜치 → 구현 → lint·test·simulator-test → PR
                                    │
                     사람: 리뷰·머지 → release 태그(vX.Y.Z)
                                    │
@@ -36,7 +36,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
   - 규칙: 402×874pt, 토큰·컴포넌트만, UIKit으로 구현 가능한 것만, 새 토큰은 이유와 함께 따로 표시
 - 산출물: **Design 아티팩트**(Before/After 아트보드, 편집·코멘트 가능) + 이슈 본문 **미리보기 PNG**(레포 `design-previews` prerelease에 업로드, 브랜치에 커밋하지 않음)
 - 승인 후 자동 개발은 이 디자인을 UI 기준으로 삼고, PR에서 디자인 미리보기와 실제 After 스크린샷을 나란히 비교한다.
-- 디자인 시스템 갱신: 색·폰트·공용 컴포넌트·아이콘을 바꾼 PR에는 `design-system-update` 라벨을 단다. 머지되면 다음 `seep-run-approved` 실행이 **개발보다 먼저** 디자인 시스템에 반영하고 라벨을 `design-system-synced`로 바꾼다. 바로 반영하고 싶으면 "싶 디자인 시스템 코드랑 다시 맞춰줘".
+- 디자인 시스템 갱신: 색·폰트·공용 컴포넌트·아이콘·화면 규칙을 바꾸는 개발은 **그 PR 안에서 디자인 시스템도 같이 갱신**하고 `design-system-synced` 라벨을 단다. 그때 반영하지 못했으면 `design-system-update` 라벨을 남기고, 머지 후 다음 `seep-run-approved` 실행이 **개발보다 먼저** 반영한다. 바로 맞추고 싶으면 "싶 디자인 시스템 코드랑 다시 맞춰줘".
 
 ## 2. 승인
 
@@ -54,7 +54,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 - **주기**: 매일 1회 (오후 2시), 승인된 이슈 중 가장 오래된 것 **1개**.
 - 사용자 checkout은 건드리지 않고 `~/Documents/Github/seep-ios-worktrees/GH-{n}` worktree에서 작업한다.
 - 진행 라벨: `in-progress`(작업 중) → PR 생성 후 해제. 결정할 수 없으면 질문 코멘트 + `needs-input`(답하면 라벨을 떼고 `approved`가 남아 있으면 다음 실행에 재개).
-- 개발 전에 머지된 `design-system-update` PR을 디자인 시스템에 먼저 반영한다(실패해도 개발은 진행, 라벨을 남겨 다음 실행에 재시도).
+- 구현 중 디자인 시스템에 영향이 있으면 PR 전에 디자인 시스템도 갱신한다(스킬 4-1단계). 개발 전에는 반영이 밀린 `design-system-update` PR을 먼저 반영한다(실패해도 개발은 진행, 라벨을 남겨 다음 실행에 재시도).
 - 절차는 기존과 같다: 테크스펙(TC) 구체화 → 규칙 R1~R9 안에서 구현 → `make lint` → `make test` → `simulator-test` → PR(`Closes #n`).
 
 ## 4. 트래킹 이벤트
@@ -91,8 +91,8 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 | `in-progress` | 자동 개발 진행 중 |
 | `needs-input` | 자동 개발이 사람 답을 기다림 |
 | `tracked` | 출시 후 사용량 리포트 완료 |
-| `design-system-update` | (PR) 색·폰트·공용 컴포넌트·아이콘 변경 — 머지 후 디자인 시스템 반영 대기 |
-| `design-system-synced` | (PR) 디자인 시스템 반영 완료 |
+| `design-system-update` | (PR) 디자인 시스템 반영이 필요한데 PR에서 못 함 — 머지 후 다음 실행이 반영 |
+| `design-system-synced` | (PR) 디자인 시스템 반영 완료 (PR 안에서 또는 머지 후) |
 
 ## 스케줄 (로컬, Claude 데스크톱 앱)
 

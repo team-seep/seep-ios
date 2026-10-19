@@ -100,7 +100,8 @@ seep은 서버가 없다. 아래 **허용 수단만으로** 구현되는 기획�
    - 같은 화면을 디자인 시스템의 `tokens.json` 값(CSS 변수)과 `bundle.css`로 HTML 한 장에 그린다(`/tmp/seep-design/GH-new/after.html`, 402px 폭, 화면 여러 장이면 가로로 나란히).
    - 렌더: `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --user-data-dir=/tmp/seep-design/chrome-profile --hide-scrollbars --force-device-scale-factor=2 --window-size={402×장수 + 간격},874 --screenshot=/tmp/seep-design/GH-new/after.png file:///tmp/seep-design/GH-new/after.html` (사용자 Chrome이 켜져 있어도 되도록 별도 `--user-data-dir`를 쓴다. 렌더한 PNG는 Read로 열어 깨짐 여부를 확인한다)
    - 업로드: 레포의 `design-previews` prerelease에 올린다(없으면 `gh release create design-previews --prerelease --title "design previews" --notes "기획안 디자인 미리보기 이미지 (코드 아님)"` 로 한 번 만든다).
-     `gh release upload design-previews /tmp/seep-design/GH-new/after.png#idea-{yyyymmdd}-{slug}.png --clobber -R team-seep/seep-ios` → 다운로드 URL `https://github.com/team-seep/seep-ios/releases/download/design-previews/idea-{yyyymmdd}-{slug}.png`
+     `cp /tmp/seep-design/GH-new/after.png /tmp/seep-design/GH-new/idea-{yyyymmdd}-{slug}.png && gh release upload design-previews /tmp/seep-design/GH-new/idea-{yyyymmdd}-{slug}.png --clobber -R team-seep/seep-ios` → 다운로드 URL `https://github.com/team-seep/seep-ios/releases/download/design-previews/idea-{yyyymmdd}-{slug}.png`
+     업로드되는 에셋 이름은 로컬 파일명이다. `after.png#이름.png`의 `#` 뒤는 표시 라벨일 뿐이라 `after.png`로 올라가 다른 기획의 이미지를 `--clobber`로 덮어쓴다. 올린 뒤 `curl -sIL -o /dev/null -w '%{http_code}' {URL}`이 200인지 확인한다.
    - git 브랜치에 이미지를 커밋하지 않는다.
 4. 디자인을 그리다 기획이 UIKit·서버리스로 어렵다는 게 드러나면 기획을 고치거나 버린다.
 

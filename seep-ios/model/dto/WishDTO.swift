@@ -21,6 +21,19 @@ class WishDTO: Object, Identifiable {
     @objc dynamic var isSuccess: Bool = false
     /// 완료 소감 한 줄(최대 40자). 비어 있으면 소감 없음 (GH-25 R-4)
     @objc dynamic var finishNote: String = ""
+    /// 홈 맨 위에 고정한 시각. nil 이면 고정 아님, 고정끼리는 최신순 (GH-33 R-1)
+    @objc dynamic var pinnedAt: Date?
+    /// 갖고 싶어요의 상품 링크. 비어 있으면 링크 없음. 썸네일은 저장하지 않는다 (GH-29 R-7)
+    @objc dynamic var link: String = ""
+    /// "아직 하고 싶어요?"에 답했거나 수정해 저장한 시각. nil 이면 createdAt 을 기준으로 잠든 위시를 판정한다 (GH-30 R-1)
+    @objc dynamic var lastCheckedAt: Date?
+    /// 붙인 장소 이름. 비어 있으면 장소 없음 (GH-31 R-4)
+    @objc dynamic var placeName: String = ""
+    @objc dynamic var placeAddress: String = ""
+    @objc dynamic var latitude: Double = 0
+    @objc dynamic var longitude: Double = 0
+    /// 붙인 사진 파일 이름(`Application Support/WishPhotos/` 안). 비어 있으면 사진 없음 (GH-36 R-9)
+    @objc dynamic var photoFileName: String = ""
     @objc dynamic var createdAt: Date = Date()
     
     
@@ -50,6 +63,14 @@ class WishDTO: Object, Identifiable {
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
         self.finishNote = wish.finishNote
+        self.pinnedAt = wish.pinnedAt
+        self.link = wish.link
+        self.lastCheckedAt = wish.lastCheckedAt
+        self.placeName = wish.place?.name ?? ""
+        self.placeAddress = wish.place?.address ?? ""
+        self.latitude = wish.place?.latitude ?? 0
+        self.longitude = wish.place?.longitude ?? 0
+        self.photoFileName = wish.photoFileName
         self.createdAt = wish.createdAt
     }
     

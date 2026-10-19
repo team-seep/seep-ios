@@ -31,6 +31,8 @@ final class WishDetailView: BaseView {
     
     let categoryView = CategoryView()
     
+    let photoView = WishPhotoView()
+    
     let titleField = TextInputField(
         iconImage: UIImage(named: "ic_title"),
         title: "write_header_title".localized,
@@ -42,6 +44,17 @@ final class WishDetailView: BaseView {
         title: "write_header_date".localized,
         placeholder: "write_placeholder_date_enable".localized
     )
+    
+    /// "날짜" 라벨 줄 오른쪽 (GH-28)
+    let calendarButton: AddCalendarButton = {
+        let button = AddCalendarButton()
+        button.isHidden = true
+        return button
+    }()
+    
+    let linkSectionView = WishLinkSectionView()
+    
+    let placeView = WishPlaceView()
     
     let savingsView = WishSavingsView()
     
@@ -115,8 +128,12 @@ final class WishDetailView: BaseView {
         self.containerView.addSubViews([
             self.emojiInputView,
             self.categoryView,
+            self.photoView,
             self.titleField,
+            self.linkSectionView,
             self.dateField,
+            self.calendarButton,
+            self.placeView,
             self.savingsView,
             self.stepsView,
             self.notificationIcon,
@@ -178,21 +195,47 @@ final class WishDetailView: BaseView {
             make.top.equalTo(self.emojiInputView.snp.bottom).offset(32)
         }
         
+        // 사진 섹션은 카테고리 트랙 아래, 제목 위 (GH-36 R-1)
+        self.photoView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(self.categoryView.snp.bottom).offset(31)
+        }
+        
         self.titleField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(self.categoryView.snp.bottom).offset(31)
+            make.top.equalTo(self.photoView.snp.bottom).offset(26)
+        }
+        
+        // 링크 섹션은 위쪽 간격(24)을 스스로 가져, 링크가 없으면 높이 0 이 된다 (GH-29 R-4)
+        self.linkSectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.titleField.snp.bottom)
         }
         
         self.dateField.snp.makeConstraints { make in
             make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.titleField.snp.bottom).offset(24)
+            make.top.equalTo(self.linkSectionView.snp.bottom).offset(24)
+        }
+        
+        // 버튼 글자를 "날짜" 라벨(16pt 줄)과 같은 줄에 두고, 터치 영역만 위아래로 넓힌다
+        self.calendarButton.snp.makeConstraints { make in
+            make.trailing.equalTo(self.dateField)
+            make.centerY.equalTo(self.dateField.snp.top).offset(8)
+            make.height.equalTo(AddCalendarButton.height)
+        }
+        
+        // 장소 섹션은 위쪽 간격(26)을 스스로 가져, 가고 싶어요가 아니면 높이 0 이 된다 (GH-31 R-1)
+        self.placeView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.titleField)
+            make.top.equalTo(self.dateField.snp.bottom)
         }
         
         // 모으기 섹션은 위쪽 간격(26)을 스스로 가져, 접히면 높이 0 이 된다 (GH-16)
         self.savingsView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom)
+            make.top.equalTo(self.placeView.snp.bottom)
         }
         
         self.stepsView.snp.makeConstraints { make in

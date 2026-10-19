@@ -51,6 +51,26 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         return button
     }()
     
+    /// 세 카테고리 전체 검색 진입 (GH-32 R-1). 아이콘은 작아도 터치 영역은 44pt
+    private let searchButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 18, weight: .regular)
+        button.setImage(UIImage(systemName: "magnifyingglass", withConfiguration: configuration), for: .normal)
+        button.tintColor = .gray4
+        button.accessibilityLabel = Strings.Home.Search.accessibility
+        return button
+    }()
+    
+    private let placeMapButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular)
+        button.setImage(UIImage(systemName: "map", withConfiguration: configuration), for: .normal)
+        button.tintColor = .gray4
+        button.accessibilityLabel = Strings.Home.Filter.placeMap
+        button.isHidden = true
+        return button
+    }()
+    
     private let backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(r: 246, g: 247, b: 249, a: 1)
@@ -100,6 +120,8 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         addSubview(sortButton)
         addSubview(onlyFinishedFilterButton)
         addSubview(viewTypeButton)
+        addSubview(searchButton)
+        addSubview(placeMapButton)
         addSubview(gradientView)
         
         backgroundView.snp.makeConstraints {
@@ -131,6 +153,18 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             $0.centerY.equalTo(sortButton)
         }
         
+        searchButton.snp.makeConstraints {
+            $0.trailing.equalTo(viewTypeButton.snp.leading).offset(-6)
+            $0.size.equalTo(44)
+            $0.centerY.equalTo(sortButton)
+        }
+        
+        placeMapButton.snp.makeConstraints {
+            $0.trailing.equalTo(viewTypeButton.snp.leading).offset(-12)
+            $0.size.equalTo(24)
+            $0.centerY.equalTo(sortButton)
+        }
+        
         gradientView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
@@ -155,6 +189,14 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         
         viewTypeButton.tapPublisher
             .subscribe(viewModel.input.didTapViewType)
+            .store(in: &cancellables)
+        
+        searchButton.tapPublisher
+            .subscribe(viewModel.input.didTapSearch)
+            .store(in: &cancellables)
+        
+        placeMapButton.tapPublisher
+            .subscribe(viewModel.input.didTapPlaceMap)
             .store(in: &cancellables)
         
         // Output
@@ -187,6 +229,14 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             .withUnretained(self)
             .sink { (owner: HomeFilterHeaderView, viewType: ViewType) in
                 owner.viewTypeButton.setImage(viewType.toggle().image, for: .normal)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.output.isPlaceMapVisible
+            .main
+            .withUnretained(self)
+            .sink { (owner: HomeFilterHeaderView, isVisible: Bool) in
+                owner.placeMapButton.isHidden = !isVisible
             }
             .store(in: &cancellables)
     }

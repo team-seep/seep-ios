@@ -40,6 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func initilizeFirebase() {
         FirebaseApp.configure()
+        
+        // 연말 회고 노출 기간 등 Remote Config 최신 값을 받아 둔다 (GH-34 R-9).
+        // 유닛 테스트가 콘솔 값에 흔들리지 않도록 테스트 호스트로 뜰 때는 받지 않는다
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
+        Task {
+            await RemoteConfigRepositoryImpl().fetchAndActivate()
+        }
     }
     
     private func requestNotificationAuthorization() {
@@ -81,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.fileURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
             .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 6
+        config.schemaVersion = 7
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {
@@ -143,6 +150,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if oldSchemaVersion < 6 {
                 migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
                     newObject?["finishNote"] = ""
+                }
+            }
+            
+            // 7: WishDTO.pinnedAt(Date?) 추가 — 기존 위시는 모두 고정 아님 (GH-33 R-1)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["pinnedAt"] = nil
+                }
+            }
+            
+            // 7: WishDTO.link(String) 추가 — 기존 위시는 링크 없음(빈 문자열) (GH-29 R-7)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["link"] = ""
+                }
+            }
+            
+            // 7: WishDTO.lastCheckedAt(Date?) 추가 — 기존 위시는 점검한 적 없음(nil), 만든 날을 기준으로 잠든 위시를 판정한다 (GH-30 R-1)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["lastCheckedAt"] = nil
+                }
+            }
+            
+            // 7: WishDTO.placeName·placeAddress(String) + latitude·longitude(Double) 추가 — 기존 위시는 장소 없음 (GH-31)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["placeName"] = ""
+                    newObject?["placeAddress"] = ""
+                    newObject?["latitude"] = 0.0
+                    newObject?["longitude"] = 0.0
+                }
+            }
+            
+            // 7: WishDTO.photoFileName(String) 추가 — 기존 위시는 사진 없음(빈 문자열) (GH-36 R-9)
+            if oldSchemaVersion < 7 {
+                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
+                    newObject?["photoFileName"] = ""
                 }
             }
         }

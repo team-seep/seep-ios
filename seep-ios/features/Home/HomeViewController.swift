@@ -140,8 +140,14 @@ final class HomeViewController: BaseViewController {
         collectionView.didSelectItemPublisher
             .withUnretained(self)
             .sink { (owner: HomeViewController, indexPath: IndexPath) in
-                guard owner.dataSource.sectionIdentifier(for: indexPath.section)?.type != .overview else { return }
-                owner.viewModel.input.didTapWish.send(indexPath.item)
+                switch owner.dataSource.sectionIdentifier(for: indexPath.section)?.type {
+                case .yearReview:
+                    owner.viewModel.input.didTapYearReviewBanner.send(())
+                case .wish:
+                    owner.viewModel.input.didTapWish.send(indexPath.item)
+                case .overview, .none:
+                    break
+                }
             }
             .store(in: &cancellables)
         
@@ -224,6 +230,17 @@ final class HomeViewController: BaseViewController {
                 section.contentInsets = .init(top: 0, leading: 22, bottom: 0, trailing: 22)
                 
                 return section
+            case .yearReview:
+                let size = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(HomeYearReviewBannerCell.Layout.height)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: size)
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: size, subitems: [item])
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = .init(top: 0, leading: 20, bottom: 8, trailing: 20)
+                
+                return section
             case .wish(let headerViewModel):
                 if dataSource.itemIdentifier(for: IndexPath(item: 0, section: sectionIndex)) == .empty {
                     // 셀 폭 = 컨테이너 폭 - 섹션 inset(20 * 2). 화면이 아니라 컬렉션뷰 폭 기준이라 창 크기가 바뀌어도 맞는다
@@ -265,7 +282,7 @@ final class HomeViewController: BaseViewController {
                             heightDimension: .absolute(itemSize.height)
                         ))
                         // 한 그룹 = 한 줄. 서브아이템을 열 수만큼 명시해 소수점 오차로 줄이 넘어가 1열이 되는 일을 막는다
-                        let group = NSCollectionLayoutGroup.horizontal(
+                        var group: NSCollectionLayoutGroup = NSCollectionLayoutGroup.horizontal(
                             layoutSize: .init(
                                 widthDimension: .fractionalWidth(1.0),
                                 heightDimension: .absolute(itemSize.height)
@@ -273,6 +290,11 @@ final class HomeViewController: BaseViewController {
                             subitems: Array(repeating: item, count: columnCount)
                         )
                         group.interItemSpacing = .fixed(HomeWishGridCell.Layout.spacing)
+                        if case .sleepingWish = dataSource.itemIdentifier(for: IndexPath(item: 0, section: sectionIndex)) {
+                            let snapshot = dataSource.snapshot()
+                            let itemCount = snapshot.numberOfItems(inSection: snapshot.sectionIdentifiers[sectionIndex])
+                            group = HomeSleepingWishCell.Layout.gridGroupWithCard(availableWidth: availableWidth, wishCount: itemCount - 1)
+                        }
                         let section = NSCollectionLayoutSection(group: group)
                         section.contentInsetsReference = .none
                         section.interGroupSpacing = HomeWishGridCell.Layout.spacing
@@ -297,6 +319,8 @@ final class HomeViewController: BaseViewController {
                         configuration.showsSeparators = false
                         
                         configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+                            // 잠든 위시 카드는 스와이프 삭제 대상이 아니다 (GH-30 R-6)
+                            if case .sleepingWish = self?.dataSource.itemIdentifier(for: indexPath) { return nil }
                             let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, completion in
                                 self?.deleteItem(at: indexPath, completion: completion)
                             }
@@ -418,8 +442,20 @@ extension HomeViewController {
             presentSortBottomSheet(viewModel: viewModel)
         case .presentFinishNoteBottomSheet(let viewModel):
             presentFinishNoteBottomSheet(viewModel: viewModel)
+        case .presentBadgeCelebration(let viewModel):
+            presentBadgeCelebration(viewModel: viewModel)
+        case .pushBadgeCollection(let viewModel):
+            pushBadgeCollection(viewModel: viewModel)
+        case .showReleaseSleepingWishAlert(let wish):
+            showReleaseSleepingWishAlert(wish: wish)
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)
+        case .pushWishSearch(let viewModel):
+            pushWishSearch(viewModel: viewModel)
+        case .presentYearReview(let viewModel):
+            presentYearReview(viewModel: viewModel)
+        case .pushPlaceMap(let viewModel):
+            navigationController?.pushViewController(PlaceMapViewController(viewModel: viewModel), animated: true)
         case .showErrorAlert(let error):
             showErrorAlert(error)
         }
@@ -447,6 +483,36 @@ extension HomeViewController {
         presentPanModal(viewController)
     }
     
+    private func presentBadgeCelebration(viewModel: BadgeCelebrationViewModel) {
+        let viewController = BadgeCelebrationBottomSheetViewController(viewModel: viewModel)
+        presentPanModal(viewController)
+    }
+    
+    /// 축하 시트에서 왔으면 시트를 먼저 닫고 push 한다 (GH-35 R-10)
+    private func pushBadgeCollection(viewModel: BadgeCollectionViewModel) {
+        let viewController = BadgeCollectionViewController(viewModel: viewModel)
+        guard let presentedViewController else {
+            navigationController?.pushViewController(viewController, animated: true)
+            return
+        }
+        presentedViewController.dismiss(animated: true) { [weak self] in
+            self?.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    private func showReleaseSleepingWishAlert(wish: Wish) {
+        let alert = UIAlertController(
+            title: Strings.Home.SleepingWish.Alert.title,
+            message: Strings.Home.SleepingWish.Alert.message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: Strings.Home.SleepingWish.Alert.cancel, style: .cancel))
+        alert.addAction(UIAlertAction(title: Strings.Home.SleepingWish.Alert.release, style: .destructive) { [weak self] _ in
+            self?.viewModel.input.didConfirmReleaseSleepingWish.send(wish)
+        })
+        present(alert, animated: true)
+    }
+    
     private func pushWishDetail(reactor: WishDetailReactor) {
         let mode: DetailMode
         if reactor.initialState.wish.isSuccess {
@@ -456,6 +522,19 @@ extension HomeViewController {
         }
         let viewController = WishDetailViewController(reactor: reactor, mode: mode)
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    private func pushWishSearch(viewModel: WishSearchViewModel) {
+        let viewController = WishSearchViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    private func presentYearReview(viewModel: YearReviewViewModel) {
+        // 목록·상세로 push 하려고 내비게이션으로 감싼다. 바는 각 화면이 직접 그린다
+        let navigationController = UINavigationController(rootViewController: YearReviewViewController(viewModel: viewModel))
+        navigationController.isNavigationBarHidden = true
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
     }
 }
 

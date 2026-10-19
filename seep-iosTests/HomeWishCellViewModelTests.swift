@@ -1,4 +1,7 @@
 import XCTest
+import Combine
+import Combine
+import CoreGraphics
 
 @testable import seep_ios_dev
 
@@ -64,5 +67,98 @@ final class HomeWishCellViewModelTests: XCTestCase {
         // Then
         XCTAssertNil(finishedViewModel.output.finishNote)
         XCTAssertNil(notFinishedViewModel.output.finishNote)
+    }
+
+    // MARK: GH-33 TC1
+
+    func test_GH33_TC1_고정된위시는_셀에핀이보인다() {
+        // Given
+        let pinned = Wish(id: "wish-1", title: "고정", pinnedAt: Date())
+        let notPinned = Wish(id: "wish-2", title: "미고정")
+
+        // When
+        let pinnedViewModel = HomeWishCellViewModel(config: .init(wish: pinned, viewType: .list))
+        let notPinnedViewModel = HomeWishCellViewModel(config: .init(wish: notPinned, viewType: .grid))
+
+        // Then
+        XCTAssertTrue(pinnedViewModel.output.isPinned)
+        XCTAssertFalse(notPinnedViewModel.output.isPinned)
+    }
+
+    // MARK: GH-33 TC7
+
+    func test_GH33_TC7_완료된위시는_고정메뉴를띄우지않고_메뉴입력도전달하지않는다() {
+        // Given
+        let finished = Wish(id: "wish-1", title: "완료", isSuccess: true)
+        let viewModel = HomeWishCellViewModel(config: .init(wish: finished, viewType: .list))
+        var forwarded: [Wish] = []
+        let cancellable = viewModel.output.didTapPinMenu.sink { forwarded.append($0) }
+
+        // When
+        viewModel.input.didTapPinMenu.send(())
+
+        // Then
+        XCTAssertFalse(viewModel.output.canShowPinMenu)
+        XCTAssertTrue(forwarded.isEmpty)
+        cancellable.cancel()
+    }
+
+    func test_GH33_TC7_미완료위시는_고정메뉴를띄우고_메뉴입력을위시와함께전달한다() {
+        // Given
+        let wish = Wish(id: "wish-1", title: "미완료")
+        let viewModel = HomeWishCellViewModel(config: .init(wish: wish, viewType: .list))
+        var forwarded: [Wish] = []
+        let cancellable = viewModel.output.didTapPinMenu.sink { forwarded.append($0) }
+
+        // When
+        viewModel.input.didTapPinMenu.send(())
+
+        // Then
+        XCTAssertTrue(viewModel.output.canShowPinMenu)
+        XCTAssertEqual(forwarded.map(\.id), ["wish-1"])
+        cancellable.cancel()
+    }
+
+    // MARK: GH-36 TC6
+
+    func test_GH36_TC6_파일이름은있지만파일이없으면_그리드셀은사진없는상태다() {
+        // Given
+        let storage = MockWishPhotoStorage()
+        storage.existingFileNames = []
+        let wish = Wish(id: "wish-1", title: "제주도 한 달 살기", photoFileName: "wish-1-restored.jpg")
+
+        // When
+        let viewModel = HomeWishCellViewModel(config: .init(wish: wish, viewType: .grid), dependency: .init(photoStorage: storage))
+        viewModel.input.loadThumbnail.send(600)
+
+        // Then
+        XCTAssertNil(viewModel.output.photoFileName)
+        XCTAssertTrue(storage.loadThumbnailCalls.isEmpty)
+    }
+
+    // MARK: GH-36 TC7
+
+    func test_GH36_TC7_사진있는위시만_사진파일이름을가지고_셀크기썸네일을요청한다() {
+        // Given
+        let storage = MockWishPhotoStorage()
+        storage.existingFileNames = ["wish-1-a.jpg"]
+        let withPhoto = Wish(id: "wish-1", title: "제주도 한 달 살기", photoFileName: "wish-1-a.jpg")
+        let withoutPhoto = Wish(id: "wish-2", title: "도쿄타워 야경 보기")
+        let photoViewModel = HomeWishCellViewModel(config: .init(wish: withPhoto, viewType: .grid), dependency: .init(photoStorage: storage))
+        let plainViewModel = HomeWishCellViewModel(config: .init(wish: withoutPhoto, viewType: .grid), dependency: .init(photoStorage: storage))
+        var thumbnails: [CGImage?] = []
+        let cancellable = photoViewModel.output.thumbnail.sink { thumbnails.append($0) }
+
+        // When
+        photoViewModel.input.loadThumbnail.send(696)
+        plainViewModel.input.loadThumbnail.send(696)
+
+        // Then
+        XCTAssertEqual(photoViewModel.output.photoFileName, "wish-1-a.jpg")
+        XCTAssertNil(plainViewModel.output.photoFileName)
+        XCTAssertEqual(storage.loadThumbnailCalls.map(\.fileName), ["wish-1-a.jpg"])
+        XCTAssertEqual(storage.loadThumbnailCalls.map(\.maxPixelSize), [696])
+        XCTAssertEqual(thumbnails.count, 1)
+        cancellable.cancel()
     }
 }
