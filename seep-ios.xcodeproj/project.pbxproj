@@ -314,6 +314,17 @@
 		EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */; };
 		F08E650BB4343D5016548B9C /* AmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */; };
 		F7638EF80298FAC76DCE7374 /* PlaceMapWishCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD815F881A394AC0835EFBFB /* PlaceMapWishCardView.swift */; };
+		A47000010000000000000002 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
+		A47000010000000000000003 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
+		A47000010000000000000005 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
+		A47000010000000000000006 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
+		A47000010000000000000008 /* LockScreenEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000007 /* LockScreenEntry.swift */; };
+		A4700001000000000000000A /* LockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000009 /* LockScreenProvider.swift */; };
+		A4700001000000000000000C /* LockScreenDdayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4700001000000000000000B /* LockScreenDdayWidget.swift */; };
+		A4700001000000000000000E /* LockScreenRemainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4700001000000000000000D /* LockScreenRemainWidget.swift */; };
+		A47000010000000000000010 /* LockScreenDdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4700001000000000000000F /* LockScreenDdayTests.swift */; };
+		A47000010000000000000012 /* WidgetDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000011 /* WidgetDeepLinkTests.swift */; };
+		A47000010000000000000014 /* HomeViewModelLockScreenDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -644,6 +655,15 @@
 		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
 		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
 		FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModelTests.swift; sourceTree = "<group>"; };
+		A47000010000000000000001 /* LockScreenDday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDday.swift; sourceTree = "<group>"; };
+		A47000010000000000000004 /* WidgetDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLink.swift; sourceTree = "<group>"; };
+		A47000010000000000000007 /* LockScreenEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenEntry.swift; sourceTree = "<group>"; };
+		A47000010000000000000009 /* LockScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenProvider.swift; sourceTree = "<group>"; };
+		A4700001000000000000000B /* LockScreenDdayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDdayWidget.swift; sourceTree = "<group>"; };
+		A4700001000000000000000D /* LockScreenRemainWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenRemainWidget.swift; sourceTree = "<group>"; };
+		A4700001000000000000000F /* LockScreenDdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDdayTests.swift; sourceTree = "<group>"; };
+		A47000010000000000000011 /* WidgetDeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLinkTests.swift; sourceTree = "<group>"; };
+		A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelLockScreenDeepLinkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -764,6 +784,9 @@
 				B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */,
 				B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */,
 				A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */,
+				A4700001000000000000000F /* LockScreenDdayTests.swift */,
+				A47000010000000000000011 /* WidgetDeepLinkTests.swift */,
+				A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */,
 				8A3B02FBB10244E7A686280A /* WishLinkReactorTests.swift */,
 				9875DC27FAAB3A86BE095530 /* WishLinkViewModelTests.swift */,
 				A30E00010000000000000007 /* SleepingWishPolicyTests.swift */,
@@ -1134,6 +1157,8 @@
 		6E804288279D2578008A0EB4 /* presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A47000010000000000000001 /* LockScreenDday.swift */,
+				A47000010000000000000004 /* WidgetDeepLink.swift */,
 				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
 				6E80428F279D3072008A0EB4 /* HashtagType.swift */,
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
@@ -1220,6 +1245,7 @@
 				6EB50EF826BD549000F0096E /* Assets.xcassets */,
 				6E6D610427587C6000A0BFD9 /* extensions */,
 				6E7206CC275B455F009C7AFC /* medium-horizontal-widget */,
+				A47000010000000000000015 /* lockscreen-widget */,
 				6EC9BF9B26BE0432007C7708 /* medium-vertical-widget */,
 				6E6CBE30274A0088005D7BFE /* small-remain-widget */,
 				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
@@ -1509,6 +1535,17 @@
 			path = place;
 			sourceTree = "<group>";
 		};
+		A47000010000000000000015 /* lockscreen-widget */ = {
+			isa = PBXGroup;
+			children = (
+				A47000010000000000000007 /* LockScreenEntry.swift */,
+				A47000010000000000000009 /* LockScreenProvider.swift */,
+				A4700001000000000000000B /* LockScreenDdayWidget.swift */,
+				A4700001000000000000000D /* LockScreenRemainWidget.swift */,
+			);
+			path = "lockscreen-widget";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1715,6 +1752,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A47000010000000000000010 /* LockScreenDdayTests.swift in Sources */,
+				A47000010000000000000012 /* WidgetDeepLinkTests.swift in Sources */,
+				A47000010000000000000014 /* HomeViewModelLockScreenDeepLinkTests.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */,
@@ -1768,6 +1808,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A47000010000000000000002 /* LockScreenDday.swift in Sources */,
+				A47000010000000000000005 /* WidgetDeepLink.swift in Sources */,
 				6EB50EFC26BD549000F0096E /* widget.intentdefinition in Sources */,
 				6E5DECFE264263F70005487F /* TagLabel.swift in Sources */,
 				6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */,
@@ -1957,6 +1999,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A47000010000000000000003 /* LockScreenDday.swift in Sources */,
+				A47000010000000000000006 /* WidgetDeepLink.swift in Sources */,
+				A47000010000000000000008 /* LockScreenEntry.swift in Sources */,
+				A4700001000000000000000A /* LockScreenProvider.swift in Sources */,
+				A4700001000000000000000C /* LockScreenDdayWidget.swift in Sources */,
+				A4700001000000000000000E /* LockScreenRemainWidget.swift in Sources */,
 				6E7206CB275B3696009C7AFC /* DateExtensions.swift in Sources */,
 				6E7206CA275B3374009C7AFC /* ViewExtensions.swift in Sources */,
 				6E7206D7275B48C6009C7AFC /* WishHorizontalItemView.swift in Sources */,

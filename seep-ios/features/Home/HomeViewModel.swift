@@ -519,12 +519,21 @@ final class HomeViewModel {
         guard !reservedDeepLink.isEmpty else { return }
         dependency.preference.reservedDeepLink = ""
         
-        guard let urlComponents = URLComponents(string: reservedDeepLink),
-              urlComponents.host == "add",
-              let categoryValue = urlComponents.queryItems?.first(where: { $0.name == "category" })?.value,
-              let category = Category(rawValue: categoryValue) else { return }
+        guard let deepLink = WidgetDeepLink(string: reservedDeepLink) else { return }
+        if let source = deepLink.source {
+            dependency.logManager.sendEvent(event: source.clickEvent)
+        }
         
-        output.route.send(.presentWrite(category))
+        switch deepLink {
+        case .add(let category):
+            output.route.send(.presentWrite(category))
+        case .wish(let id, _):
+            // 위젯이 갱신되기 전에 위시가 지워졌으면 홈만 보여준다 (GH-47 R-10)
+            guard let wish = dependency.wishRepository.fetchWish(id: id) else { return }
+            pushWishDetail(wish: wish)
+        case .home:
+            break
+        }
     }
     
     private func createWishCellViewModels(wish: Wish) -> HomeWishCellViewModel {

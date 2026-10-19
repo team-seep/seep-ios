@@ -11,5 +11,7 @@ struct widgets: WidgetBundle {
         SmallRemainWidget()
         MediumVerticalWidget()
         MediumHorizontalWidget()
+        LockScreenDdayWidget()
+        LockScreenRemainWidget()
     }
 }

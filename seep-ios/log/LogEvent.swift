@@ -152,4 +152,6 @@ enum LogObjectId: String {
     case addPhoto = "add_photo"
     case changePhoto = "change_photo"
     case deletePhoto = "delete_photo"
+    case lockscreenDdayWidget = "lockscreen_dday_widget"
+    case lockscreenRemainWidget = "lockscreen_remain_widget"
 }
