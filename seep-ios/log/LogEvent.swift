@@ -152,4 +152,7 @@ enum LogObjectId: String {
     case addPhoto = "add_photo"
     case changePhoto = "change_photo"
     case deletePhoto = "delete_photo"
+    case widgetCheckStep = "widget_check_step"
+    case widgetFinishWish = "widget_finish_wish"
+    case widgetUnfinishWish = "widget_unfinish_wish"
 }

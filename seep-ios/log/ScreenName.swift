@@ -28,4 +28,5 @@ extension ScreenName {
     static let badgeCollection = ScreenName(rawValue: "badge_collection")
     static let placeSearchBottomSheet = ScreenName(rawValue: "place_search_bottom_sheet")
     static let placeMap = ScreenName(rawValue: "place_map")
+    static let checkWidget = ScreenName(rawValue: "check_widget")
 }

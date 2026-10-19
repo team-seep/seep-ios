@@ -19,6 +19,8 @@ extension HomeViewModel {
         let didTapBadgeCollection = PassthroughSubject<Void, Never>()
         /// 앱이 떠 있을 때 위젯 링크가 저장되면 SceneDelegate 가 보낸다 (GH-50 R-2)
         let handleReservedDeepLink = PassthroughSubject<Void, Never>()
+        /// 체크 위젯이 남긴 기록 처리. 홈이 맨 위일 때 첫 로드 직후·앱 활성화마다 VC 가 보낸다 (GH-48 R-7, R-8)
+        let syncWidgetChanges = PassthroughSubject<Void, Never>()
         
         // From FinishNote
         let finishNoteDismissed = PassthroughSubject<Void, Never>()
@@ -66,6 +68,8 @@ extension HomeViewModel {
         var sleepingWishIds: [Category: String] = [:]
         /// 이번 실행에서 카드를 처리한 카테고리 — 다음 잠든 위시를 이어서 띄우지 않는다
         var resolvedSleepingCategories: Set<Category> = []
+        /// 홈이 위젯 변경을 마지막으로 반영한 시각 (GH-48 R-8)
+        var widgetSyncedAt: Date?
     }
     
     struct YearReviewBanner: Hashable {
@@ -101,6 +105,8 @@ extension HomeViewModel {
         /// 잠든 위시 판정의 "오늘". 테스트에서 날짜를 고정한다 (GH-30 R-10)
         let dateProvider: () -> Date
         let photoStorage: WishPhotoStorage
+        /// 체크 위젯이 App Group 에 남긴 기록 (GH-48)
+        let widgetCheckStore: WidgetCheckStore
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
@@ -112,7 +118,8 @@ extension HomeViewModel {
             remoteConfigRepository: RemoteConfigRepository = RemoteConfigRepositoryImpl(),
             linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared,
             dateProvider: @escaping () -> Date = Date.init,
-            photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared
+            photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
+            widgetCheckStore: WidgetCheckStore = .shared
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
@@ -124,6 +131,7 @@ extension HomeViewModel {
             self.linkPreviewCache = linkPreviewCache
             self.dateProvider = dateProvider
             self.photoStorage = photoStorage
+            self.widgetCheckStore = widgetCheckStore
         }
     }
 }
@@ -153,6 +161,7 @@ final class HomeViewModel {
             .sink { (owner: HomeViewModel, _) in
                 owner.initializeBadgesIfNeeded()
                 owner.fetchWishDatas()
+                owner.state.widgetSyncedAt = owner.dependency.now()
                 owner.handleDeepLinkIfExisted()
             }
             .store(in: &cancellables)
@@ -161,6 +170,13 @@ final class HomeViewModel {
             .withUnretained(self)
             .sink { (owner: HomeViewModel, _) in
                 owner.handleDeepLinkIfExisted()
+            }
+            .store(in: &cancellables)
+        
+        input.syncWidgetChanges
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.syncWidgetChanges()
             }
             .store(in: &cancellables)
         
@@ -519,12 +535,18 @@ final class HomeViewModel {
         guard !reservedDeepLink.isEmpty else { return }
         dependency.preference.reservedDeepLink = ""
         
-        guard let urlComponents = URLComponents(string: reservedDeepLink),
-              urlComponents.host == "add",
-              let categoryValue = urlComponents.queryItems?.first(where: { $0.name == "category" })?.value,
-              let category = Category(rawValue: categoryValue) else { return }
+        guard let deepLink = WidgetDeepLink(string: reservedDeepLink) else { return }
         
-        output.route.send(.presentWrite(category))
+        switch deepLink {
+        case .add(let category):
+            output.route.send(.presentWrite(category))
+        case .wish(let id, _):
+            // 위젯이 갱신되기 전에 위시가 지워졌으면 홈만 보여준다 (GH-47 R-10, GH-48 R-9)
+            guard let wish = dependency.wishRepository.fetchWish(id: id) else { return }
+            pushWishDetail(wish: wish)
+        case .home:
+            break
+        }
     }
     
     private func createWishCellViewModels(wish: Wish) -> HomeWishCellViewModel {
@@ -815,5 +837,27 @@ extension HomeViewModel {
     private func pushBadgeCollection() {
         let viewModel = BadgeCollectionViewModel(dependency: .init(wishRepository: dependency.wishRepository))
         output.route.send(.pushBadgeCollection(viewModel))
+    }
+}
+
+// MARK: 체크 위젯 (GH-48)
+extension HomeViewModel {
+    /// 위젯에서 완료한 위시의 알림을 지우고, 홈을 다시 읽고, 가장 최근 하나로 소감 시트를 띄운다 (R-7, R-8)
+    private func syncWidgetChanges() {
+        let sync = HomeWidgetCheckSync(
+            store: dependency.widgetCheckStore,
+            wishRepository: dependency.wishRepository,
+            notificationManager: dependency.notificationManager,
+            logManager: dependency.logManager
+        )
+        let result = sync.consume(lastSyncedAt: state.widgetSyncedAt)
+        state.widgetSyncedAt = dependency.now()
+        
+        if result.needsReload {
+            fetchWishDatas()
+        }
+        if let wish = result.finishNoteWish {
+            presentFinishNoteBottomSheet(wish: wish)
+        }
     }
 }
