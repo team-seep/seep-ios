@@ -293,6 +293,7 @@
 		B35A00000000000000000016 /* BadgeCelebrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */; };
 		B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */; };
 		B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */; };
+		A50000010000000000000002 /* HomeViewModelDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */; };
 		B564CB2B6158D9460D8A98EF /* LinkPreviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87263216EFA8B155F202128 /* LinkPreviewCardView.swift */; };
 		B89A3D37506E9BE4C1E36C49 /* EmojiPinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */; };
 		BABC0A9A71B1F3DCC53A8FCB /* WishPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */; };
@@ -621,6 +622,7 @@
 		B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationViewModelTests.swift; sourceTree = "<group>"; };
 		B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelBadgeTests.swift; sourceTree = "<group>"; };
+		A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelDeepLinkTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorStepsTests.swift; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 				B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */,
 				B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */,
 				B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */,
+				A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */,
 				8A3B02FBB10244E7A686280A /* WishLinkReactorTests.swift */,
 				9875DC27FAAB3A86BE095530 /* WishLinkViewModelTests.swift */,
 				A30E00010000000000000007 /* SleepingWishPolicyTests.swift */,
@@ -1742,6 +1745,7 @@
 				B35A00000000000000000016 /* BadgeCelebrationViewModelTests.swift in Sources */,
 				B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */,
 				B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */,
+				A50000010000000000000002 /* HomeViewModelDeepLinkTests.swift in Sources */,
 				CCC3836F2EE224C064144B11 /* MockLinkPreviewCache.swift in Sources */,
 				57E695FB3BAABE14B3BC8C83 /* MockLinkMetadataProvider.swift in Sources */,
 				C3E7D618FABB8D780895AC8C /* WishLinkReactorTests.swift in Sources */,
