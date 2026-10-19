@@ -38,6 +38,8 @@ final class AuthenticationManager: AuthenticationManagerProtocol {
     static let shared = AuthenticationManager()
 
     private(set) var isAuthenticating = false
+    /// 인증하는 동안 컨텍스트를 붙잡아 둔다. 먼저 해제되면 인증 창이 취소될 수 있다
+    private var evaluatingContext: LAContext?
 
     func canAuthenticate() -> Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
@@ -63,10 +65,13 @@ final class AuthenticationManager: AuthenticationManagerProtocol {
     }
 
     func authenticate(reason: String, completion: @escaping (Bool) -> Void) {
+        let context = LAContext()
+        evaluatingContext = context
         isAuthenticating = true
-        LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] isSuccess, _ in
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] isSuccess, _ in
             DispatchQueue.main.async {
                 self?.isAuthenticating = false
+                self?.evaluatingContext = nil
                 completion(isSuccess)
             }
         }

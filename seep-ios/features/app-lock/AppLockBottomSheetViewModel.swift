@@ -88,6 +88,8 @@ final class AppLockBottomSheetViewModel {
         input.didTapConfirm
             .withUnretained(self)
             .sink { (owner: AppLockBottomSheetViewModel, _) in
+                // 인증 창이 뜨기 전 버튼을 한 번 더 눌러도 인증을 겹쳐 요청하지 않는다
+                guard !owner.dependency.authenticationManager.isAuthenticating else { return }
                 if owner.output.isEnabled {
                     owner.disableAppLock()
                 } else {

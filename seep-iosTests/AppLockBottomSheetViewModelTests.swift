@@ -108,6 +108,19 @@ final class AppLockBottomSheetViewModelTests: XCTestCase {
         XCTAssertEqual(dismissCount, 0)
     }
 
+    func test_GH46_TC2_인증창이떠있는동안다시탭하면_인증을겹쳐요청하지않는다() {
+        // Given
+        makeSut(isEnabled: false)
+        authenticationManager.isAuthenticating = true
+
+        // When
+        sut.input.didTapConfirm.send(())
+
+        // Then
+        XCTAssertEqual(authenticationManager.authenticateCallCount, 0)
+        XCTAssertFalse(preference.isAppLockEnabled)
+    }
+
     // MARK: GH-46 TC3
 
     func test_GH46_TC3_기기암호가없으면_인증없이토스트를띄우고_꺼진채로둔다() {
