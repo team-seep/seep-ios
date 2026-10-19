@@ -11,6 +11,9 @@ extension HomeFilterHeaderViewModel {
         let didTapViewType = PassthroughSubject<Void, Never>()
         let didTapSearch = PassthroughSubject<Void, Never>()
         let didTapPlaceMap = PassthroughSubject<Void, Never>()
+        let didTapAppLock = PassthroughSubject<Void, Never>()
+        /// 잠금 시트에서 잠금을 켜고 끄면 아이콘을 바꾼다 (GH-46 R-1)
+        let updateAppLock = PassthroughSubject<Bool, Never>()
     }
     
     struct Output {
@@ -20,6 +23,8 @@ extension HomeFilterHeaderViewModel {
         let viewType: CurrentValueSubject<ViewType, Never>
         /// 가고 싶어요 탭에서만 지도 버튼을 보인다 (GH-31 R-5)
         let isPlaceMapVisible = CurrentValueSubject<Bool, Never>(false)
+        /// 켜져 있으면 자물쇠를 `lock.fill` `seepBlue` 로 그린다 (GH-46 R-1)
+        let isAppLockEnabled: CurrentValueSubject<Bool, Never>
         
         // Relay
         let updateCategory = PassthroughSubject<Category, Never>()
@@ -28,10 +33,12 @@ extension HomeFilterHeaderViewModel {
         let updateViewType = PassthroughSubject<ViewType, Never>()
         let didTapSearch = PassthroughSubject<Void, Never>()
         let didTapPlaceMap = PassthroughSubject<Void, Never>()
+        let didTapAppLock = PassthroughSubject<Void, Never>()
     }
     
     struct Config {
         let viewType: ViewType
+        let isAppLockEnabled: Bool
     }
 }
 
@@ -42,7 +49,7 @@ final class HomeFilterHeaderViewModel {
     var cancellables = Set<AnyCancellable>()
     
     init(config: Config) {
-        self.output = Output(viewType: .init(config.viewType))
+        self.output = Output(viewType: .init(config.viewType), isAppLockEnabled: .init(config.isAppLockEnabled))
         bind()
     }
     
@@ -67,6 +74,14 @@ final class HomeFilterHeaderViewModel {
         
         input.didTapPlaceMap
             .subscribe(output.didTapPlaceMap)
+            .store(in: &cancellables)
+        
+        input.didTapAppLock
+            .subscribe(output.didTapAppLock)
+            .store(in: &cancellables)
+        
+        input.updateAppLock
+            .subscribe(output.isAppLockEnabled)
             .store(in: &cancellables)
         
         input.didTapSortOrder
