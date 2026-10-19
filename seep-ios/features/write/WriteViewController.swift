@@ -15,6 +15,8 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     private let writeView = WriteView()
     private let writeReactor: WriteReactor
     private let stepsViewModel = WishStepsViewModel(config: .init(mode: .draft(steps: [], screenName: .write)))
+    private let linkViewModel: WishLinkViewModel
+    private let placeViewModel: WishPlaceViewModel
     private var cancellables = Set<AnyCancellable>()
     private weak var coordinator: WriteCoordinator?
     private var isKeyboardShown = false
@@ -32,6 +34,8 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
             userDefaults: UserDefaultsUtils(),
             notificationManager: NotificationManager.shared
         )
+        self.linkViewModel = WishLinkViewModel(config: .init(mode: .write, category: category))
+        self.placeViewModel = WishPlaceViewModel(config: .init(mode: .draft(category: category, screenName: .write)))
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,6 +77,8 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         self.writeView.categoryView.moveActiveButton(category: self.writeReactor.currentState.category)
         self.bindSteps()
         self.bindTargetAmount()
+        self.bindLink()
+        self.bindPlace()
     }
     
     override func bindEvent() {
@@ -332,6 +338,67 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
     }
 }
 
+// MARK: Link
+extension WriteViewController {
+    /// 링크 칸 (GH-29 R-1~R-3, R-6). 링크는 Reactor 상태로만 넘겨 작성 완료 때 함께 저장된다.
+    private func bindLink() {
+        let linkView = writeView.linkView
+
+        linkView.textPublisher
+            .subscribe(linkViewModel.input.inputText)
+            .store(in: &cancellables)
+
+        linkView.pastePublisher
+            .subscribe(linkViewModel.input.paste)
+            .store(in: &cancellables)
+
+        writeReactor.state
+            .map { $0.category }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] category in
+                self?.linkViewModel.input.changeCategory.send(category)
+            })
+            .disposed(by: eventDisposeBag)
+
+        linkViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                linkView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.text
+            .main
+            .sink { text in
+                linkView.setText(text)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.errorMessage
+            .main
+            .sink { errorMessage in
+                linkView.bind(errorMessage: errorMessage)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.preview
+            .main
+            .sink { preview in
+                linkView.bind(preview: preview)
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.output.linkInput
+            .withUnretained(self)
+            .sink { (owner: WriteViewController, link: WishLinkInput) in
+                owner.writeReactor.action.onNext(.inputLink(link))
+            }
+            .store(in: &cancellables)
+
+        linkViewModel.input.viewDidLoad.send(())
+    }
+}
+
 // MARK: Target amount
 extension WriteViewController {
     /// 목표 금액 입력 (GH-16 R-1·R-2). 갖고 싶어요일 때만 펼치고, 금액은 Reactor 상태로만 넘겨 저장 때 함께 저장된다.
@@ -352,6 +419,87 @@ extension WriteViewController {
                 targetAmountView.setCollapsed(category != .wantToGet)
             })
             .disposed(by: eventDisposeBag)
+    }
+}
+
+// MARK: Place
+extension WriteViewController {
+    /// 장소 (GH-31 R-1·R-4). 가고 싶어요일 때만 펼치고, 장소는 Reactor 상태로만 넘겨 작성 완료 때 위시와 함께 저장된다.
+    private func bindPlace() {
+        let placeView = writeView.placeView
+
+        placeView.tapPlacePublisher
+            .withUnretained(self)
+            .sink { (owner: WriteViewController, _) in
+                owner.writeView.endEditing(true)
+                owner.placeViewModel.input.didTapPlace.send(())
+            }
+            .store(in: &cancellables)
+
+        placeView.deletePlacePublisher
+            .subscribe(placeViewModel.input.didTapDelete)
+            .store(in: &cancellables)
+
+        placeViewModel.output.isVisible
+            .main
+            .sink { isVisible in
+                placeView.setCollapsed(!isVisible)
+            }
+            .store(in: &cancellables)
+
+        placeViewModel.output.emoji
+            .main
+            .sink { emoji in
+                placeView.bind(emoji: emoji)
+            }
+            .store(in: &cancellables)
+
+        placeViewModel.output.place
+            .main
+            .sink { place in
+                placeView.bind(place: place)
+            }
+            .store(in: &cancellables)
+
+        placeViewModel.output.didUpdatePlace
+            .withUnretained(self)
+            .sink { (owner: WriteViewController, place: WishPlace?) in
+                owner.writeReactor.action.onNext(.inputPlace(place))
+            }
+            .store(in: &cancellables)
+
+        placeViewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WriteViewController, route: WishPlaceViewModel.Route) in
+                owner.handlePlaceRoute(route)
+            }
+            .store(in: &cancellables)
+
+        writeReactor.state
+            .map { $0.category }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] category in
+                self?.placeViewModel.input.updateCategory.send(category)
+            })
+            .disposed(by: eventDisposeBag)
+
+        writeReactor.state
+            .map { $0.emoji }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] emoji in
+                self?.placeViewModel.input.updateEmoji.send(emoji)
+            })
+            .disposed(by: eventDisposeBag)
+    }
+
+    private func handlePlaceRoute(_ route: WishPlaceViewModel.Route) {
+        switch route {
+        case .presentPlaceSearch(let viewModel):
+            presentPanModal(PlaceSearchBottomSheetViewController(viewModel: viewModel))
+        case .showErrorAlert(let error):
+            AlertUtils.show(viewController: self, title: nil, message: error.localizedDescription)
+        }
     }
 }
 

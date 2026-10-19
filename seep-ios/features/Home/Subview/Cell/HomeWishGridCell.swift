@@ -22,6 +22,20 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             let width = max(0, (availableWidth - spacing * (columnCount - 1)) / columnCount)
             return CGSize(width: width, height: width * heightRatio)
         }
+        
+        /// 사진이 있는 셀 (GH-36 R-6)
+        enum Photo {
+            static let height: CGFloat = 92
+            static let emojiCircleSize: CGFloat = 34
+            static let emojiFontSize: CGFloat = 19
+            /// 사진 아래 모서리에 원의 절반쯤 걸치게 둔다
+            static let emojiCircleOverlap: CGFloat = 18
+            static let titleTopSpacing: CGFloat = 20
+            /// 세로 사진(3:4)도 aspect fill 로 흐리지 않게 셀 폭보다 조금 크게 디코딩한다 (R-8)
+            static let thumbnailScale: CGFloat = 4.0 / 3.0
+        }
+        
+        static let emojiFontSize: CGFloat = 36
     }
     
     private let containerView: UIView = {
@@ -31,9 +45,29 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         return view
     }()
     
+    private let photoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .gray2
+        imageView.layer.cornerRadius = 12
+        imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        imageView.accessibilityIgnoresInvertColors = true
+        imageView.isHidden = true
+        return imageView
+    }()
+    
+    private let emojiCircleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray1
+        view.layer.cornerRadius = Layout.Photo.emojiCircleSize / 2
+        view.isHidden = true
+        return view
+    }()
+    
     private let emojiLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 36)
+        label.font = .systemFont(ofSize: Layout.emojiFontSize)
         return label
     }()
     
@@ -44,6 +78,8 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         label.font = .appleSemiBold(size: 16)
         return label
     }()
+    
+    private let pinImageView = HomeWishPinMenu.makePinImageView()
     
     private let ddayLabel = DdayLabel()
     
@@ -65,19 +101,25 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         return button
     }()
     
+    private var viewModel: HomeWishCellViewModel?
+    
     override func setup() {
         setupUI()
+        contentView.addInteraction(UIContextMenuInteraction(delegate: self))
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         
         titleLabel.attributedText = nil
+        photoImageView.image = nil
     }
     
     private func setupUI() {
         backgroundColor = .clear
         contentView.addSubview(containerView)
+        contentView.addSubview(photoImageView)
+        contentView.addSubview(emojiCircleView)
         contentView.addSubview(emojiLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(ddayLabel)
@@ -85,32 +127,33 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         contentView.addSubview(stepProgressBar)
         contentView.addSubview(stepProgressLabel)
         contentView.addSubview(finishButton)
+        contentView.addSubview(pinImageView)
         
         containerView.snp.makeConstraints {
             $0.edges.equalTo(0)
         }
         
-        emojiLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(14)
-            $0.top.equalToSuperview().offset(14)
+        photoImageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(Layout.Photo.height)
         }
         
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(14)
+        // 그리드는 오른쪽 위, 이모지 줄에 핀을 둔다 (GH-33 R-7)
+        pinImageView.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-14)
-            $0.top.equalTo(emojiLabel.snp.bottom).offset(4)
+            $0.centerY.equalTo(emojiLabel)
+        }
+        
+        emojiCircleView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(10)
+            $0.top.equalTo(photoImageView.snp.bottom).offset(-Layout.Photo.emojiCircleOverlap)
+            $0.size.equalTo(Layout.Photo.emojiCircleSize)
         }
         
         finishButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-14)
             $0.bottom.equalToSuperview().offset(-14)
             $0.size.equalTo(30)
-        }
-        
-        // 그리드는 뱃지가 세로로 쌓이므로, 오른쪽이 비어 있는 D-day 줄에 진행도를 붙인다
-        stepProgressBar.snp.makeConstraints {
-            $0.leading.equalTo(ddayLabel.snp.trailing).offset(6)
-            $0.centerY.equalTo(ddayLabel)
         }
         
         stepProgressLabel.snp.makeConstraints {
@@ -120,41 +163,56 @@ final class HomeWishGridCell: BaseCollectionViewCell {
     }
     
     func bind(viewModel: HomeWishCellViewModel) {
-        setupWish(viewModel.output.wish)
+        self.viewModel = viewModel
+        pinImageView.isHidden = !viewModel.output.isPinned
+        setupWish(viewModel.output.wish, hasPhoto: viewModel.output.photoFileName != nil)
         setupStepProgress(viewModel.output.stepProgress)
         
         finishButton.tapPublisher
             .subscribe(viewModel.input.didTapFinish)
             .store(in: &cancellables)
+        
+        if viewModel.output.photoFileName != nil {
+            bindThumbnail(viewModel: viewModel)
+        }
     }
     
-    func setupWish(_ wish: Wish) {
+    /// 셀 크기에 맞춘 썸네일을 백그라운드에서 받아 붙인다. 읽기에 실패하면 사진 없는 셀로 되돌린다 (GH-36 R-7, R-8).
+    /// 재사용되면 prepareForReuse 에서 구독이 끊겨 늦게 온 썸네일이 다른 위시에 붙지 않는다.
+    private func bindThumbnail(viewModel: HomeWishCellViewModel) {
+        viewModel.output.thumbnail
+            .main
+            .withUnretained(self)
+            .sink { (owner: HomeWishGridCell, image: CGImage?) in
+                if let image {
+                    owner.photoImageView.image = UIImage(cgImage: image)
+                } else {
+                    owner.setupWish(viewModel.output.wish, hasPhoto: false)
+                    owner.setupStepProgress(viewModel.output.stepProgress)
+                }
+            }
+            .store(in: &cancellables)
+        
+        let width = bounds.width > 0 ? bounds.width : Layout.columnWidthUnit
+        let maxPixelSize = Int((width * traitCollection.displayScale * Layout.Photo.thumbnailScale).rounded(.up))
+        viewModel.input.loadThumbnail.send(maxPixelSize)
+    }
+    
+    func setupWish(_ wish: Wish, hasPhoto: Bool = false) {
         emojiLabel.text = wish.emoji
         titleLabel.text = wish.title
         ddayLabel.bind(dday: wish.endDate)
         finishButton.isSelected = wish.isSuccess
         
         tagLabel.isHidden = wish.hashtag.isEmpty
-        if wish.hashtag.isEmpty {
-            ddayLabel.snp.removeConstraints()
-            ddayLabel.snp.makeConstraints {
-                $0.left.equalTo(titleLabel)
-                $0.bottom.equalTo(finishButton)
-            }
-        } else {
+        if !wish.hashtag.isEmpty {
             tagLabel.text = HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
-            
-            ddayLabel.snp.removeConstraints()
-            tagLabel.snp.removeConstraints()
-            ddayLabel.snp.makeConstraints {
-                $0.leading.equalTo(titleLabel)
-                $0.bottom.equalTo(tagLabel.snp.top).offset(-6)
-            }
-            
-            tagLabel.snp.makeConstraints {
-                $0.left.height.equalTo(ddayLabel)
-                $0.bottom.equalTo(finishButton)
-            }
+        }
+        
+        if hasPhoto {
+            setupPhotoLayout(hasTag: !wish.hashtag.isEmpty)
+        } else {
+            setupDefaultLayout(hasTag: !wish.hashtag.isEmpty)
         }
         
         if wish.isSuccess {
@@ -170,11 +228,89 @@ final class HomeWishGridCell: BaseCollectionViewCell {
             
             ddayLabel.alpha = 0.5
             tagLabel.alpha = 0.5
+            photoImageView.alpha = 0.5
         } else {
             emojiLabel.alpha = 1
             titleLabel.alpha = 1
             ddayLabel.alpha = 1
             tagLabel.alpha = 1
+            photoImageView.alpha = 1
+        }
+    }
+    
+    /// 사진 없는 셀 — 지금까지의 레이아웃 그대로. 그리드는 뱃지가 세로로 쌓이므로, 오른쪽이 비어 있는 D-day 줄에 진행도를 붙인다
+    private func setupDefaultLayout(hasTag: Bool) {
+        photoImageView.isHidden = true
+        emojiCircleView.isHidden = true
+        emojiLabel.font = .systemFont(ofSize: Layout.emojiFontSize)
+        
+        emojiLabel.snp.remakeConstraints {
+            $0.leading.equalToSuperview().offset(14)
+            $0.top.equalToSuperview().offset(14)
+        }
+        
+        titleLabel.snp.remakeConstraints {
+            $0.leading.equalToSuperview().offset(14)
+            $0.trailing.equalToSuperview().offset(-14)
+            $0.top.equalTo(emojiLabel.snp.bottom).offset(4)
+        }
+        
+        if hasTag {
+            ddayLabel.snp.remakeConstraints {
+                $0.leading.equalTo(titleLabel)
+                $0.bottom.equalTo(tagLabel.snp.top).offset(-6)
+            }
+            
+            tagLabel.snp.remakeConstraints {
+                $0.left.height.equalTo(ddayLabel)
+                $0.bottom.equalTo(finishButton)
+            }
+        } else {
+            ddayLabel.snp.remakeConstraints {
+                $0.left.equalTo(titleLabel)
+                $0.bottom.equalTo(finishButton)
+            }
+        }
+        
+        stepProgressBar.snp.remakeConstraints {
+            $0.leading.equalTo(ddayLabel.snp.trailing).offset(6)
+            $0.centerY.equalTo(ddayLabel)
+        }
+    }
+    
+    /// 사진 있는 셀 — 위쪽 92pt 사진, 이모지는 사진 왼쪽 아래 흰 원 안, 뱃지는 한 줄 (GH-36 R-6)
+    private func setupPhotoLayout(hasTag: Bool) {
+        photoImageView.isHidden = false
+        emojiCircleView.isHidden = false
+        emojiLabel.font = .systemFont(ofSize: Layout.Photo.emojiFontSize)
+        
+        emojiLabel.snp.remakeConstraints {
+            $0.center.equalTo(emojiCircleView)
+        }
+        
+        ddayLabel.snp.remakeConstraints {
+            $0.leading.equalToSuperview().offset(14)
+            $0.centerY.equalTo(finishButton)
+        }
+        
+        if hasTag {
+            tagLabel.snp.remakeConstraints {
+                $0.leading.equalTo(ddayLabel.snp.trailing).offset(7)
+                $0.centerY.height.equalTo(ddayLabel)
+            }
+        }
+        
+        titleLabel.snp.remakeConstraints {
+            $0.leading.equalToSuperview().offset(14)
+            $0.trailing.equalToSuperview().offset(-14)
+            $0.top.equalTo(photoImageView.snp.bottom).offset(Layout.Photo.titleTopSpacing)
+            // 두 줄 제목이 뱃지 줄과 겹치면 말줄임한다
+            $0.bottom.lessThanOrEqualTo(ddayLabel.snp.top).offset(-4)
+        }
+        
+        stepProgressBar.snp.remakeConstraints {
+            $0.leading.equalTo((hasTag ? tagLabel : ddayLabel).snp.trailing).offset(6)
+            $0.centerY.equalTo(ddayLabel)
         }
     }
     
@@ -185,5 +321,22 @@ final class HomeWishGridCell: BaseCollectionViewCell {
         
         stepProgressBar.bind(progress: progress)
         stepProgressLabel.text = Strings.Home.stepProgressFormat(progress.doneCount, progress.totalCount)
+    }
+}
+
+// MARK: Pin (GH-33)
+extension HomeWishGridCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return HomeWishPinMenu.configuration(viewModel: viewModel)
+    }
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return HomeWishPinMenu.preview(view: contentView)
     }
 }

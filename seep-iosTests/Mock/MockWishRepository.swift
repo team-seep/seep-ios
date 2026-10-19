@@ -1,3 +1,5 @@
+import struct Foundation.Date
+
 @testable import seep_ios_dev
 
 final class MockWishRepository: WishRepository {
@@ -15,6 +17,25 @@ final class MockWishRepository: WishRepository {
     /// nil 이면 호출된 위시 id·소감으로 만든 위시를 성공으로 돌려준다
     var updateFinishNoteResult: Result<Wish, RepositoryError>?
     private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
+    var searchWishesResult: [Wish] = []
+    private(set) var searchWishesCalls: [String] = []
+    /// 실제 구현처럼 [from, to) 안의 완료 위시만 골라 돌려준다
+    var fetchFinishedWishesResult: [Wish] = []
+    private(set) var fetchFinishedWishesCalls: [(from: Date, to: Date)] = []
+    /// nil 이면 호출된 위시 id·고정 여부로 만든 위시를 성공으로 돌려준다
+    var updatePinResult: Result<Wish, RepositoryError>?
+    private(set) var updatePinCalls: [(wishId: String, isPinned: Bool)] = []
+    /// nil 이면 호출된 위시 id 로 lastCheckedAt 이 지금인 위시를 성공으로 돌려준다
+    var markCheckedResult: Result<Wish, RepositoryError>?
+    private(set) var markCheckedCalledIds: [String] = []
+    /// nil 이면 호출된 위시 id·장소로 만든 위시를 성공으로 돌려준다
+    var updatePlaceResult: Result<Wish, RepositoryError>?
+    private(set) var updatePlaceCalls: [(wishId: String, place: WishPlace?)] = []
+    /// nil 이면 호출된 위시 id·파일 이름으로 만든 위시를 성공으로 돌려준다
+    var updatePhotoResult: Result<Wish, RepositoryError>?
+    private(set) var updatePhotoCalls: [(wishId: String, fileName: String)] = []
+
+    var fetchAllFinishedWishesResult: [Wish] = []
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
@@ -51,5 +72,42 @@ final class MockWishRepository: WishRepository {
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
         updateFinishNoteCalls.append((wishId, note))
         return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note))
+    }
+
+    func searchWishes(keyword: String) -> [Wish] {
+        searchWishesCalls.append(keyword)
+        return searchWishesResult
+    }
+
+    func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {
+        fetchFinishedWishesCalls.append((from, to))
+        return fetchFinishedWishesResult.filter { wish in
+            guard wish.isSuccess, let finishDate = wish.finishDate else { return false }
+            return from <= finishDate && finishDate < to
+        }
+    }
+
+    func fetchAllFinishedWishes() -> [Wish] {
+        return fetchAllFinishedWishesResult
+    }
+
+    func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError> {
+        updatePinCalls.append((wishId, isPinned))
+        return updatePinResult ?? .success(Wish(id: wishId, pinnedAt: isPinned ? DateUtils.now() : nil))
+    }
+
+    func markChecked(wishId: String) -> Result<Wish, RepositoryError> {
+        markCheckedCalledIds.append(wishId)
+        return markCheckedResult ?? .success(Wish(id: wishId, lastCheckedAt: Date()))
+    }
+
+    func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {
+        updatePlaceCalls.append((wishId, place))
+        return updatePlaceResult ?? .success(Wish(id: wishId, category: .wantToGo, place: place))
+    }
+
+    func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {
+        updatePhotoCalls.append((wishId, fileName))
+        return updatePhotoResult ?? .success(Wish(id: wishId, photoFileName: fileName))
     }
 }

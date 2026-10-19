@@ -107,6 +107,15 @@ final class FinishNoteBottomSheetViewController: BaseViewController {
         viewModel.input.viewDidLoad.send(())
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // 저장·건너뛰기(dismiss 호출)와 끌어 닫기 모두 여기로 온다
+        if isBeingDismissed {
+            viewModel.input.didDismiss.send(())
+        }
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

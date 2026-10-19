@@ -7,38 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A25F00010000000000000002 /* FinishNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000001 /* FinishNoteViewModel.swift */; };
-		A25F00010000000000000004 /* FinishNoteBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */; };
-		A25F00010000000000000006 /* FinishNoteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000005 /* FinishNoteViewModelTests.swift */; };
-		050C71F5903092578149F737 /* SavingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */; };
-		41FEE210BA2773236C785FD0 /* SavingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */; };
-		7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
-		75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
-		83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */; };
-		B0042A5CED4B6AF6998B8313 /* WishSavingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */; };
-		DA446742E6E9F66ACF5480BE /* WishSavingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */; };
-		13853757B38631E0B58E5F81 /* SavingInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */; };
-		C4B7663D705D81FCE6767CE7 /* SavingInputBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */; };
-		A4C35FB1592F723657B97003 /* TargetAmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03C25768BE0638355714F9C /* TargetAmountInputView.swift */; };
-		99B938686802C41D8298407D /* WishSavingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */; };
+		021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */; };
 		042777C6C45215367A054571 /* SavingInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */; };
-		DEA3B9B0C6E1656ECAD3F7C5 /* WriteReactorTargetAmountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820431309D9DE5D0DCA8238D /* WriteReactorTargetAmountTests.swift */; };
-		7D73E6C5D0C2C19131BDDC7F /* WishEditReactorTargetAmountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7761F34D1D53844442E57D57 /* WishEditReactorTargetAmountTests.swift */; };
-		F08E650BB4343D5016548B9C /* AmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */; };
 		050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */; };
-		A1B2C3D4E5F60718293A4B11 /* HomeWishGridLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */; };
+		050C71F5903092578149F737 /* SavingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */; };
+		05EDC01C97CF62B008F30A5F /* PlaceSearchBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5355B6BC7B23A66CE2A079C1 /* PlaceSearchBottomSheetViewController.swift */; };
+		08EF5F3F0E333A4101401C52 /* LinkPreviewCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4862102A58DBC2005CAB641 /* LinkPreviewCache.swift */; };
+		13853757B38631E0B58E5F81 /* SavingInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */; };
 		13A0B31AF2FDAB9358477F01 /* SharePhotoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */; };
+		164F650323BA46FD48E482C2 /* WishPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B257F3D74F4512EDB7D18D92 /* WishPlaceViewModel.swift */; };
+		1AB44FABB94FA35E5765F703 /* WishLinkSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40092B3F9566B2EFBA097456 /* WishLinkSectionView.swift */; };
+		1D2D88DA5EC29C876DDAAD79 /* WishPlaceReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E887300E389AE7DADD5B08B8 /* WishPlaceReactorTests.swift */; };
+		23F50BC3FF985CF5955FD358 /* WishCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EC803FE877E21B5FFDB6D8 /* WishCalendarViewModel.swift */; };
+		267E846F50CC07AACD19C526 /* PlaceMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E717D8AFD880C37EA56903FF /* PlaceMapViewModel.swift */; };
 		33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
+		36A000000000000000000011 /* WishPhotoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000001 /* WishPhotoStorage.swift */; };
+		36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000002 /* WishPhotoViewModel.swift */; };
+		36A000000000000000000013 /* WishPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000003 /* WishPhotoView.swift */; };
+		36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000004 /* WishPhotoViewModelTests.swift */; };
+		36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000005 /* WishPhotoStorageTests.swift */; };
+		36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A000000000000000000006 /* MockWishPhotoStorage.swift */; };
+		401171A7B86AFD636626E0FD /* PlaceSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E129F563CEA3484ED850B3 /* PlaceSearchResultCell.swift */; };
+		41FEE210BA2773236C785FD0 /* SavingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */; };
 		485F2D38C29DB8F68B9D94DF /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269705858459DA909159F323 /* MockNotificationManager.swift */; };
 		4D6707DFD528EF1CAFA6EAF4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668C632E3284174D8A1FCA5 /* Foundation.framework */; };
+		4F3AACCE2D010391019609E0 /* PlaceSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C52AB5688A2B8E8872E4DB2 /* PlaceSearchViewModel.swift */; };
+		57E695FB3BAABE14B3BC8C83 /* MockLinkMetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BD4F8C72208E876F987F33 /* MockLinkMetadataProvider.swift */; };
 		582A5AA71ACAA592A4DFCC8C /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */; };
+		59D52B66C25673D5E1CC6CC1 /* WishPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */; };
 		6183E1D0CA04784F739EDD28 /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */; };
+		66C7F16CF982BEAC5A8DC7E3 /* PlaceMapViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */; };
 		6708B90CB2D3AA7CBADA1BA4 /* WishStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */; };
 		6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07528226136D8800041E7B /* PageItemReactor.swift */; };
 		6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091571264F80AB0048EB79 /* ShareTypeButton.swift */; };
 		6E091575264F87070048EB79 /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091574264F87070048EB79 /* SharePhotoCell.swift */; };
 		6E091577264F99A50048EB79 /* SharePhotoReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091576264F99A50048EB79 /* SharePhotoReactor.swift */; };
 		6E091579264FA94E0048EB79 /* CommonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091578264FA94E0048EB79 /* CommonError.swift */; };
+		6E120012AA00000000000001 /* WideScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E120012AA00000000000002 /* WideScreenLayout.swift */; };
+		6E120012AA00000000000003 /* WideScreenLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E120012AA00000000000004 /* WideScreenLayoutTests.swift */; };
 		6E1E400A2CD65EE9008BCC77 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E1E40092CD65EE9008BCC77 /* RealmSwift */; };
 		6E1E400B2CD65F00008BCC77 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 6E1E40092CD65EE9008BCC77 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6E274E5525F20B31007DC880 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5425F20B31007DC880 /* AlertUtils.swift */; };
@@ -141,7 +147,6 @@
 		6E6CBE3C274A2B67005D7BFE /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E66A26E25FB40BD00C0C051 /* Category.swift */; };
 		6E6D19782CCDCEEE008A460C /* HomeFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D19772CCDCEEE008A460C /* HomeFilterHeaderView.swift */; };
 		6E6D197A2CCDD154008A460C /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D19792CCDD154008A460C /* UIUtils.swift */; };
-		6E120012AA00000000000001 /* WideScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E120012AA00000000000002 /* WideScreenLayout.swift */; };
 		6E6D197C2CCDD705008A460C /* HomeCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D197B2CCDD705008A460C /* HomeCategoryView.swift */; };
 		6E6D197F2CCDD87F008A460C /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 6E6D197E2CCDD87F008A460C /* CombineCocoa */; };
 		6E6D19812CCDD8BF008A460C /* PublisherExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D19802CCDD8BF008A460C /* PublisherExtension.swift */; };
@@ -222,17 +227,92 @@
 		6EFB350C27AB6A5200CB45F7 /* WishEditReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */; };
 		6EFB350E27AB70EB00CB45F7 /* WishEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */; };
 		6EFB351027AB749D00CB45F7 /* WishEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */; };
+		7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
+		759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4C358AA2D714E019784ADE /* CalendarManager.swift */; };
+		75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
+		7D73E6C5D0C2C19131BDDC7F /* WishEditReactorTargetAmountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7761F34D1D53844442E57D57 /* WishEditReactorTargetAmountTests.swift */; };
 		7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */; };
+		83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */; };
+		8E995950DC9B98F75A741D14 /* WishLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3808BCB0B09986AD41873F37 /* WishLinkViewModel.swift */; };
+		94A8A9FB46DBD094756D06EF /* WishLinkInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBDF57A8E53FC037620A2D /* WishLinkInput.swift */; };
+		951DE527BFA402D0FEC1AA4C /* PlaceMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD807FF9E1D992CE176B9616 /* PlaceMapViewController.swift */; };
+		99B938686802C41D8298407D /* WishSavingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */; };
+		99CEBD46548420E0CC5EDC7E /* LinkMetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523AB10C8344B1B16FD9E51 /* LinkMetadataProvider.swift */; };
+		9B2887D6747D6E71762121B2 /* MockPlaceSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E67BF648DC24CA0FE0F9B /* MockPlaceSearchService.swift */; };
 		9E10BE9381E274E0691DE230 /* WishStepsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */; };
-		A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */; };
-		6E120012AA00000000000003 /* WideScreenLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E120012AA00000000000004 /* WideScreenLayoutTests.swift */; };
 		A10C0F1E2D3C4B5A69788710 /* ToastManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10C0F1E2D3C4B5A69788711 /* ToastManagerTests.swift */; };
-		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
-		C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */; };
-		D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
+		A1B2C3D4E5F60718293A4B11 /* HomeWishGridLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */; };
+		A25F00010000000000000002 /* FinishNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000001 /* FinishNoteViewModel.swift */; };
+		A25F00010000000000000004 /* FinishNoteBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */; };
+		A25F00010000000000000006 /* FinishNoteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F00010000000000000005 /* FinishNoteViewModelTests.swift */; };
+		A30E00010000000000000002 /* SleepingWishPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000001 /* SleepingWishPolicy.swift */; };
+		A30E00010000000000000004 /* HomeSleepingWishCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000003 /* HomeSleepingWishCardViewModel.swift */; };
+		A30E00010000000000000006 /* HomeSleepingWishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000005 /* HomeSleepingWishCell.swift */; };
+		A30E00010000000000000008 /* SleepingWishPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000007 /* SleepingWishPolicyTests.swift */; };
+		A30E00010000000000000010 /* HomeViewModelSleepingWishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000009 /* HomeViewModelSleepingWishTests.swift */; };
+		A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000001 /* WishSearchMatcher.swift */; };
+		A32F00000000000000000004 /* WishSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000003 /* WishSearchViewModel.swift */; };
+		A32F00000000000000000006 /* WishSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000005 /* WishSearchViewController.swift */; };
+		A32F00000000000000000008 /* WishSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000007 /* WishSearchResultCell.swift */; };
+		A32F0000000000000000000A /* WishSearchSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */; };
+		A32F0000000000000000000C /* WishSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000B /* WishSearchEmptyView.swift */; };
+		A32F0000000000000000000E /* WishSearchMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000D /* WishSearchMatcherTests.swift */; };
+		A32F00000000000000000010 /* WishSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000F /* WishSearchViewModelTests.swift */; };
+		A34000010000000000000002 /* YearReviewSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000001 /* YearReviewSummary.swift */; };
+		A34000010000000000000004 /* HomeYearReviewBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000003 /* HomeYearReviewBannerCell.swift */; };
+		A34000010000000000000006 /* YearReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000005 /* YearReviewViewModel.swift */; };
+		A34000010000000000000008 /* YearReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000007 /* YearReviewViewController.swift */; };
+		A3400001000000000000000A /* YearReviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000009 /* YearReviewListViewModel.swift */; };
+		A3400001000000000000000C /* YearReviewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000B /* YearReviewListViewController.swift */; };
+		A3400001000000000000000E /* YearReviewImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000D /* YearReviewImageRenderer.swift */; };
+		A34000010000000000000010 /* YearReviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000F /* YearReviewCardView.swift */; };
+		A34000010000000000000012 /* YearReviewListViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000011 /* YearReviewListViews.swift */; };
+		A34000010000000000000014 /* YearReviewSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000013 /* YearReviewSummaryTests.swift */; };
+		A34000010000000000000016 /* YearReviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000015 /* YearReviewViewModelTests.swift */; };
+		A34000010000000000000018 /* YearReviewListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000017 /* YearReviewListViewModelTests.swift */; };
+		A3400001000000000000001A /* HomeViewModelYearReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */; };
+		A34000010000000000000092 /* YearReviewPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000091 /* YearReviewPeriod.swift */; };
+		A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */; };
+		A4C35FB1592F723657B97003 /* TargetAmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03C25768BE0638355714F9C /* TargetAmountInputView.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */; };
 		A7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */; };
+		ADC46ADE7E7DD31BECC6C8E8 /* WishLinkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9875DC27FAAB3A86BE095530 /* WishLinkViewModelTests.swift */; };
+		B0042A5CED4B6AF6998B8313 /* WishSavingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */; };
+		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
+		B35A00000000000000000002 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000001 /* Badge.swift */; };
+		B35A00000000000000000004 /* BadgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000003 /* BadgeCalculator.swift */; };
+		B35A00000000000000000006 /* BadgeCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000005 /* BadgeCollectionViewModel.swift */; };
+		B35A00000000000000000008 /* BadgeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000007 /* BadgeCollectionViewController.swift */; };
+		B35A0000000000000000000A /* BadgeCelebrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000009 /* BadgeCelebrationViewModel.swift */; };
+		B35A0000000000000000000C /* BadgeCelebrationBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A0000000000000000000B /* BadgeCelebrationBottomSheetViewController.swift */; };
+		B35A0000000000000000000E /* BadgeMedalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A0000000000000000000D /* BadgeMedalView.swift */; };
+		B35A00000000000000000010 /* BadgeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A0000000000000000000F /* BadgeCardView.swift */; };
+		B35A00000000000000000012 /* BadgeLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000011 /* BadgeLinkButton.swift */; };
+		B35A00000000000000000014 /* BadgeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000013 /* BadgeCalculatorTests.swift */; };
+		B35A00000000000000000016 /* BadgeCelebrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */; };
+		B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */; };
+		B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */; };
+		B564CB2B6158D9460D8A98EF /* LinkPreviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87263216EFA8B155F202128 /* LinkPreviewCardView.swift */; };
+		B89A3D37506E9BE4C1E36C49 /* EmojiPinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */; };
+		BABC0A9A71B1F3DCC53A8FCB /* WishPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */; };
+		C024800893918CED18532155 /* WishCalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */; };
+		C3D8AD70BB8D652B921763D5 /* WishPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */; };
+		C3E7D618FABB8D780895AC8C /* WishLinkReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B02FBB10244E7A686280A /* WishLinkReactorTests.swift */; };
+		C4B7663D705D81FCE6767CE7 /* SavingInputBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */; };
+		C874114DBEA333540EB38058 /* WishStepsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */; };
+		CCC3836F2EE224C064144B11 /* MockLinkPreviewCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B94C1FA504294A092AB844 /* MockLinkPreviewCache.swift */; };
+		D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */; };
+		D998F37558FF8E68B8DCFA7B /* PlaceSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390E6D47D30DA010BF10E9 /* PlaceSearchService.swift */; };
+		DA446742E6E9F66ACF5480BE /* WishSavingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */; };
+		DC911944AFB87C313D649C4F /* WishLinkInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04FC7B35E353674424AEBFE /* WishLinkInputView.swift */; };
+		DEA3B9B0C6E1656ECAD3F7C5 /* WriteReactorTargetAmountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820431309D9DE5D0DCA8238D /* WriteReactorTargetAmountTests.swift */; };
+		E0350A3482B42D9CBC51CBCC /* PlaceSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762E75DD17D61FCFE12E936D /* PlaceSearchViewModelTests.swift */; };
+		E12993B2A75900FDF3DEE37F /* WishPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463E7E1E33AA8096B6DD898B /* WishPlaceView.swift */; };
+		E35BC6C811B0A237A8EC78C8 /* HomePlaceMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1124CDF4F241AA066B340D /* HomePlaceMapTests.swift */; };
+		EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */; };
+		F08E650BB4343D5016548B9C /* AmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */; };
+		F7638EF80298FAC76DCE7374 /* PlaceMapWishCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD815F881A394AC0835EFBFB /* PlaceMapWishCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -288,33 +368,43 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A25F00010000000000000001 /* FinishNoteViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteViewModel.swift; sourceTree = "<group>"; };
-		A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteBottomSheetViewController.swift; sourceTree = "<group>"; };
-		A25F00010000000000000005 /* FinishNoteViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteViewModelTests.swift; sourceTree = "<group>"; };
-		14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingDTO.swift; sourceTree = "<group>"; };
-		76EC49270480D77773B034E4 /* WishSaving.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSaving.swift; sourceTree = "<group>"; };
-		E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
-		DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsViewModel.swift; sourceTree = "<group>"; };
-		9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsView.swift; sourceTree = "<group>"; };
 		0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModel.swift; sourceTree = "<group>"; };
 		0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputBottomSheetViewController.swift; sourceTree = "<group>"; };
-		B03C25768BE0638355714F9C /* TargetAmountInputView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TargetAmountInputView.swift; sourceTree = "<group>"; };
-		2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsViewModelTests.swift; sourceTree = "<group>"; };
-		FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModelTests.swift; sourceTree = "<group>"; };
-		820431309D9DE5D0DCA8238D /* WriteReactorTargetAmountTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorTargetAmountTests.swift; sourceTree = "<group>"; };
-		7761F34D1D53844442E57D57 /* WishEditReactorTargetAmountTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorTargetAmountTests.swift; sourceTree = "<group>"; };
-		B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
+		13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharePhotoLayoutTests.swift; sourceTree = "<group>"; };
+		14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingDTO.swift; sourceTree = "<group>"; };
 		212AB76829E69C76D8CFC27A /* StepProgressBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StepProgressBar.swift; sourceTree = "<group>"; };
+		21E129F563CEA3484ED850B3 /* PlaceSearchResultCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceSearchResultCell.swift; sourceTree = "<group>"; };
+		24CBDF57A8E53FC037620A2D /* WishLinkInput.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishLinkInput.swift; sourceTree = "<group>"; };
 		269705858459DA909159F323 /* MockNotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockNotificationManager.swift; sourceTree = "<group>"; };
+		2A6009F9FFCAD4E4E00D41EA /* WishSavingsViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsViewModelTests.swift; sourceTree = "<group>"; };
 		3195F20C1B7B771212492CAA /* WishStepsViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModelTests.swift; sourceTree = "<group>"; };
+		36A000000000000000000001 /* WishPhotoStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoStorage.swift; sourceTree = "<group>"; };
+		36A000000000000000000002 /* WishPhotoViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoViewModel.swift; sourceTree = "<group>"; };
+		36A000000000000000000003 /* WishPhotoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoView.swift; sourceTree = "<group>"; };
+		36A000000000000000000004 /* WishPhotoViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoViewModelTests.swift; sourceTree = "<group>"; };
+		36A000000000000000000005 /* WishPhotoStorageTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPhotoStorageTests.swift; sourceTree = "<group>"; };
+		36A000000000000000000006 /* MockWishPhotoStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishPhotoStorage.swift; sourceTree = "<group>"; };
+		3808BCB0B09986AD41873F37 /* WishLinkViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishLinkViewModel.swift; sourceTree = "<group>"; };
 		3C76D73EAF4C8C916AA05E07 /* seep-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "seep-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		40092B3F9566B2EFBA097456 /* WishLinkSectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishLinkSectionView.swift; sourceTree = "<group>"; };
+		420E67BF648DC24CA0FE0F9B /* MockPlaceSearchService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockPlaceSearchService.swift; sourceTree = "<group>"; };
 		43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishRepository.swift; sourceTree = "<group>"; };
+		463E7E1E33AA8096B6DD898B /* WishPlaceView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceView.swift; sourceTree = "<group>"; };
 		4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepDTO.swift; sourceTree = "<group>"; };
+		5355B6BC7B23A66CE2A079C1 /* PlaceSearchBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceSearchBottomSheetViewController.swift; sourceTree = "<group>"; };
+		5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmojiPinImage.swift; sourceTree = "<group>"; };
+		54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishCalendarViewModelTests.swift; sourceTree = "<group>"; };
+		58B94C1FA504294A092AB844 /* MockLinkPreviewCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockLinkPreviewCache.swift; sourceTree = "<group>"; };
+		5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceMapViewModelTests.swift; sourceTree = "<group>"; };
+		632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceViewModelTests.swift; sourceTree = "<group>"; };
+		6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddCalendarButton.swift; sourceTree = "<group>"; };
 		6E07528226136D8800041E7B /* PageItemReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemReactor.swift; sourceTree = "<group>"; };
 		6E091571264F80AB0048EB79 /* ShareTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTypeButton.swift; sourceTree = "<group>"; };
 		6E091574264F87070048EB79 /* SharePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
 		6E091576264F99A50048EB79 /* SharePhotoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoReactor.swift; sourceTree = "<group>"; };
 		6E091578264FA94E0048EB79 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
+		6E120012AA00000000000002 /* WideScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideScreenLayout.swift; sourceTree = "<group>"; };
+		6E120012AA00000000000004 /* WideScreenLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WideScreenLayoutTests.swift; sourceTree = "<group>"; };
 		6E274E5425F20B31007DC880 /* AlertUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
 		6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtils.swift; sourceTree = "<group>"; };
 		6E274E5C25F20D5A007DC880 /* RatioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioUtils.swift; sourceTree = "<group>"; };
@@ -399,7 +489,6 @@
 		6E6CBE37274A0B9B005D7BFE /* SmallRemainWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainWidget.swift; sourceTree = "<group>"; };
 		6E6D19772CCDCEEE008A460C /* HomeFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFilterHeaderView.swift; sourceTree = "<group>"; };
 		6E6D19792CCDD154008A460C /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
-		6E120012AA00000000000002 /* WideScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideScreenLayout.swift; sourceTree = "<group>"; };
 		6E6D197B2CCDD705008A460C /* HomeCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCategoryView.swift; sourceTree = "<group>"; };
 		6E6D19802CCDD8BF008A460C /* PublisherExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherExtension.swift; sourceTree = "<group>"; };
 		6E6D19822CCDDBFA008A460C /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
@@ -470,19 +559,89 @@
 		6EFB350B27AB6A5200CB45F7 /* WishEditReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditReactor.swift; sourceTree = "<group>"; };
 		6EFB350D27AB70EB00CB45F7 /* WishEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditViewController.swift; sourceTree = "<group>"; };
 		6EFB350F27AB749D00CB45F7 /* WishEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditCoordinator.swift; sourceTree = "<group>"; };
-		A668C632E3284174D8A1FCA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
-		6E120012AA00000000000004 /* WideScreenLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WideScreenLayoutTests.swift; sourceTree = "<group>"; };
+		762E75DD17D61FCFE12E936D /* PlaceSearchViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceSearchViewModelTests.swift; sourceTree = "<group>"; };
+		76EC49270480D77773B034E4 /* WishSaving.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSaving.swift; sourceTree = "<group>"; };
+		7761F34D1D53844442E57D57 /* WishEditReactorTargetAmountTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorTargetAmountTests.swift; sourceTree = "<group>"; };
+		7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlace.swift; sourceTree = "<group>"; };
+		820431309D9DE5D0DCA8238D /* WriteReactorTargetAmountTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorTargetAmountTests.swift; sourceTree = "<group>"; };
+		82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCalendarManager.swift; sourceTree = "<group>"; };
+		8523AB10C8344B1B16FD9E51 /* LinkMetadataProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LinkMetadataProvider.swift; sourceTree = "<group>"; };
+		8A3B02FBB10244E7A686280A /* WishLinkReactorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishLinkReactorTests.swift; sourceTree = "<group>"; };
+		8C52AB5688A2B8E8872E4DB2 /* PlaceSearchViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceSearchViewModel.swift; sourceTree = "<group>"; };
+		9875DC27FAAB3A86BE095530 /* WishLinkViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishLinkViewModelTests.swift; sourceTree = "<group>"; };
+		9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsView.swift; sourceTree = "<group>"; };
 		A10C0F1E2D3C4B5A69788711 /* ToastManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ToastManagerTests.swift; sourceTree = "<group>"; };
-		C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsView.swift; sourceTree = "<group>"; };
-		D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModel.swift; sourceTree = "<group>"; };
-		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
-		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishGridLayoutTests.swift; sourceTree = "<group>"; };
-		13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharePhotoLayoutTests.swift; sourceTree = "<group>"; };
+		A25F00010000000000000001 /* FinishNoteViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteViewModel.swift; sourceTree = "<group>"; };
+		A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteBottomSheetViewController.swift; sourceTree = "<group>"; };
+		A25F00010000000000000005 /* FinishNoteViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishNoteViewModelTests.swift; sourceTree = "<group>"; };
+		A30E00010000000000000001 /* SleepingWishPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SleepingWishPolicy.swift; sourceTree = "<group>"; };
+		A30E00010000000000000003 /* HomeSleepingWishCardViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeSleepingWishCardViewModel.swift; sourceTree = "<group>"; };
+		A30E00010000000000000005 /* HomeSleepingWishCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeSleepingWishCell.swift; sourceTree = "<group>"; };
+		A30E00010000000000000007 /* SleepingWishPolicyTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SleepingWishPolicyTests.swift; sourceTree = "<group>"; };
+		A30E00010000000000000009 /* HomeViewModelSleepingWishTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelSleepingWishTests.swift; sourceTree = "<group>"; };
+		A32F00000000000000000001 /* WishSearchMatcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchMatcher.swift; sourceTree = "<group>"; };
+		A32F00000000000000000003 /* WishSearchViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewModel.swift; sourceTree = "<group>"; };
+		A32F00000000000000000005 /* WishSearchViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewController.swift; sourceTree = "<group>"; };
+		A32F00000000000000000007 /* WishSearchResultCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchResultCell.swift; sourceTree = "<group>"; };
+		A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchSectionHeaderView.swift; sourceTree = "<group>"; };
+		A32F0000000000000000000B /* WishSearchEmptyView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchEmptyView.swift; sourceTree = "<group>"; };
+		A32F0000000000000000000D /* WishSearchMatcherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchMatcherTests.swift; sourceTree = "<group>"; };
+		A32F0000000000000000000F /* WishSearchViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewModelTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000001 /* YearReviewSummary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewSummary.swift; sourceTree = "<group>"; };
+		A34000010000000000000003 /* HomeYearReviewBannerCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeYearReviewBannerCell.swift; sourceTree = "<group>"; };
+		A34000010000000000000005 /* YearReviewViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewModel.swift; sourceTree = "<group>"; };
+		A34000010000000000000007 /* YearReviewViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewController.swift; sourceTree = "<group>"; };
+		A34000010000000000000009 /* YearReviewListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewModel.swift; sourceTree = "<group>"; };
+		A3400001000000000000000B /* YearReviewListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewController.swift; sourceTree = "<group>"; };
+		A3400001000000000000000D /* YearReviewImageRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewImageRenderer.swift; sourceTree = "<group>"; };
+		A3400001000000000000000F /* YearReviewCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewCardView.swift; sourceTree = "<group>"; };
+		A34000010000000000000011 /* YearReviewListViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViews.swift; sourceTree = "<group>"; };
+		A34000010000000000000013 /* YearReviewSummaryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewSummaryTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000015 /* YearReviewViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewModelTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000017 /* YearReviewListViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewModelTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelYearReviewTests.swift; sourceTree = "<group>"; };
+		A34000010000000000000091 /* YearReviewPeriod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewPeriod.swift; sourceTree = "<group>"; };
+		A4862102A58DBC2005CAB641 /* LinkPreviewCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LinkPreviewCache.swift; sourceTree = "<group>"; };
+		A668C632E3284174D8A1FCA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		AD815F881A394AC0835EFBFB /* PlaceMapWishCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceMapWishCardView.swift; sourceTree = "<group>"; };
+		B03C25768BE0638355714F9C /* TargetAmountInputView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TargetAmountInputView.swift; sourceTree = "<group>"; };
+		B257F3D74F4512EDB7D18D92 /* WishPlaceViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceViewModel.swift; sourceTree = "<group>"; };
+		B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
+		B35A00000000000000000001 /* Badge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
+		B35A00000000000000000003 /* BadgeCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCalculator.swift; sourceTree = "<group>"; };
+		B35A00000000000000000005 /* BadgeCollectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewModel.swift; sourceTree = "<group>"; };
+		B35A00000000000000000007 /* BadgeCollectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewController.swift; sourceTree = "<group>"; };
+		B35A00000000000000000009 /* BadgeCelebrationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationViewModel.swift; sourceTree = "<group>"; };
+		B35A0000000000000000000B /* BadgeCelebrationBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationBottomSheetViewController.swift; sourceTree = "<group>"; };
+		B35A0000000000000000000D /* BadgeMedalView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeMedalView.swift; sourceTree = "<group>"; };
+		B35A0000000000000000000F /* BadgeCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCardView.swift; sourceTree = "<group>"; };
+		B35A00000000000000000011 /* BadgeLinkButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeLinkButton.swift; sourceTree = "<group>"; };
+		B35A00000000000000000013 /* BadgeCalculatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCalculatorTests.swift; sourceTree = "<group>"; };
+		B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationViewModelTests.swift; sourceTree = "<group>"; };
+		B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelBadgeTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorStepsTests.swift; sourceTree = "<group>"; };
+		B9BD4F8C72208E876F987F33 /* MockLinkMetadataProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockLinkMetadataProvider.swift; sourceTree = "<group>"; };
+		C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsView.swift; sourceTree = "<group>"; };
+		C7390E6D47D30DA010BF10E9 /* PlaceSearchService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceSearchService.swift; sourceTree = "<group>"; };
+		C87263216EFA8B155F202128 /* LinkPreviewCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LinkPreviewCardView.swift; sourceTree = "<group>"; };
+		C8EC803FE877E21B5FFDB6D8 /* WishCalendarViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishCalendarViewModel.swift; sourceTree = "<group>"; };
+		CB4C358AA2D714E019784ADE /* CalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		CD807FF9E1D992CE176B9616 /* PlaceMapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceMapViewController.swift; sourceTree = "<group>"; };
+		D5DFDA0F48B98085B0D26FF9 /* WishStepsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStepsViewModel.swift; sourceTree = "<group>"; };
+		DA1124CDF4F241AA066B340D /* HomePlaceMapTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomePlaceMapTests.swift; sourceTree = "<group>"; };
+		DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSavingsViewModel.swift; sourceTree = "<group>"; };
+		E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
+		E717D8AFD880C37EA56903FF /* PlaceMapViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceMapViewModel.swift; sourceTree = "<group>"; };
+		E887300E389AE7DADD5B08B8 /* WishPlaceReactorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceReactorTests.swift; sourceTree = "<group>"; };
+		F04FC7B35E353674424AEBFE /* WishLinkInputView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishLinkInputView.swift; sourceTree = "<group>"; };
+		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
+		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
+		FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -571,28 +730,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A25F00010000000000000007 /* FinishNote */ = {
-			isa = PBXGroup;
-			children = (
-				A25F00010000000000000001 /* FinishNoteViewModel.swift */,
-				A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */,
-			);
-			path = FinishNote;
-			sourceTree = "<group>";
-		};
-		87A58DA3E871B741FF607C5D /* savings */ = {
-			isa = PBXGroup;
-			children = (
-				DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */,
-				9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */,
-				0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */,
-				0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */,
-				B03C25768BE0638355714F9C /* TargetAmountInputView.swift */,
-			);
-			name = savings;
-			path = savings;
-			sourceTree = "<group>";
-		};
 		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -613,9 +750,40 @@
 				FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */,
 				A1B2C3D4E5F60718293A4B12 /* HomeWishGridLayoutTests.swift */,
 				13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */,
+				54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */,
+				A32F0000000000000000000D /* WishSearchMatcherTests.swift */,
+				A32F0000000000000000000F /* WishSearchViewModelTests.swift */,
+				A34000010000000000000013 /* YearReviewSummaryTests.swift */,
+				A34000010000000000000015 /* YearReviewViewModelTests.swift */,
+				A34000010000000000000017 /* YearReviewListViewModelTests.swift */,
+				A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */,
+				B35A00000000000000000013 /* BadgeCalculatorTests.swift */,
+				B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */,
+				B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */,
+				B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */,
+				8A3B02FBB10244E7A686280A /* WishLinkReactorTests.swift */,
+				9875DC27FAAB3A86BE095530 /* WishLinkViewModelTests.swift */,
+				A30E00010000000000000007 /* SleepingWishPolicyTests.swift */,
+				A30E00010000000000000009 /* HomeViewModelSleepingWishTests.swift */,
+				762E75DD17D61FCFE12E936D /* PlaceSearchViewModelTests.swift */,
+				632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */,
+				5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */,
+				DA1124CDF4F241AA066B340D /* HomePlaceMapTests.swift */,
+				E887300E389AE7DADD5B08B8 /* WishPlaceReactorTests.swift */,
+				36A000000000000000000004 /* WishPhotoViewModelTests.swift */,
+				36A000000000000000000005 /* WishPhotoStorageTests.swift */,
 			);
 			name = "seep-iosTests";
 			path = "seep-iosTests";
+			sourceTree = "<group>";
+		};
+		36A000000000000000000020 /* photo */ = {
+			isa = PBXGroup;
+			children = (
+				36A000000000000000000002 /* WishPhotoViewModel.swift */,
+				36A000000000000000000003 /* WishPhotoView.swift */,
+			);
+			path = photo;
 			sourceTree = "<group>";
 		};
 		6E091573264F86F90048EB79 /* cell */ = {
@@ -689,6 +857,11 @@
 				6EE5CE7225FB24C900A737DF /* shared */,
 				6E274E8C25F214FB007DC880 /* Home */,
 				6E274E7D25F20F4C007DC880 /* base */,
+				A32F00000000000000000011 /* wish-search */,
+				A3400001000000000000001B /* year-review */,
+				B35A0000000000000000001C /* badge */,
+				AA3CB289B5878937BF97BC1C /* wish-link */,
+				FCB9E166A9040B8706F9DB06 /* place */,
 			);
 			path = features;
 			sourceTree = "<group>";
@@ -723,6 +896,7 @@
 				6E489D972CCE24AA00965995 /* HomeSortOrder.swift */,
 				6E59E93C2CD4A7AC006AA02D /* SortOrderBottomSheetViewController.swift */,
 				6E59E9402CD4B3A9006AA02D /* SortOrderBottomSheetViewModel.swift */,
+				A30E00010000000000000011 /* SleepingWish */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -869,6 +1043,8 @@
 				6E7EA28027A376E000D5F38D /* WishDetailCoordinator.swift */,
 				74C39C6093BA273B7EE6A5CD /* steps */,
 				87A58DA3E871B741FF607C5D /* savings */,
+				A28C0A1E2D3C4B5A69788001 /* calendar */,
+				36A000000000000000000020 /* photo */,
 			);
 			path = "wish-detail";
 			sourceTree = "<group>";
@@ -960,6 +1136,12 @@
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
 				F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */,
 				76EC49270480D77773B034E4 /* WishSaving.swift */,
+				A32F00000000000000000001 /* WishSearchMatcher.swift */,
+				A34000010000000000000001 /* YearReviewSummary.swift */,
+				A34000010000000000000091 /* YearReviewPeriod.swift */,
+				B35A00000000000000000001 /* Badge.swift */,
+				B35A00000000000000000003 /* BadgeCalculator.swift */,
+				7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */,
 			);
 			path = presentation;
 			sourceTree = "<group>";
@@ -1020,6 +1202,8 @@
 			children = (
 				6E3B468027A6947A000A1D41 /* toast */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
+				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
+				36A000000000000000000001 /* WishPhotoStorage.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
@@ -1119,6 +1303,7 @@
 				6E804291279D36A1008A0EB4 /* LeftAlignedCollectionViewFlowLayout.swift */,
 				6E59E93E2CD4AFE4006AA02D /* BottomSheetIndicator.swift */,
 				212AB76829E69C76D8CFC27A /* StepProgressBar.swift */,
+				C87263216EFA8B155F202128 /* LinkPreviewCardView.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -1133,6 +1318,7 @@
 				6EF37F892CD11CEF00653C2A /* HomeFilterHeaderViewModel.swift */,
 				6E59E9372CD48454006AA02D /* HomeWishCellViewModel.swift */,
 				6E59E9452CD518BA006AA02D /* HomeEmptyCell.swift */,
+				A34000010000000000000003 /* HomeYearReviewBannerCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1166,15 +1352,95 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
+		87A58DA3E871B741FF607C5D /* savings */ = {
+			isa = PBXGroup;
+			children = (
+				DF210C8A7207CE2F8D3ADC88 /* WishSavingsViewModel.swift */,
+				9F9A401C4B0ABCD551F55CB2 /* WishSavingsView.swift */,
+				0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */,
+				0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */,
+				B03C25768BE0638355714F9C /* TargetAmountInputView.swift */,
+			);
+			name = savings;
+			path = savings;
+			sourceTree = "<group>";
+		};
 		8B296ED1CFDAAC15A58AEF24 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
 				B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */,
 				43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */,
 				269705858459DA909159F323 /* MockNotificationManager.swift */,
+				82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */,
+				58B94C1FA504294A092AB844 /* MockLinkPreviewCache.swift */,
+				B9BD4F8C72208E876F987F33 /* MockLinkMetadataProvider.swift */,
+				420E67BF648DC24CA0FE0F9B /* MockPlaceSearchService.swift */,
+				36A000000000000000000006 /* MockWishPhotoStorage.swift */,
 			);
 			name = Mock;
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		A25F00010000000000000007 /* FinishNote */ = {
+			isa = PBXGroup;
+			children = (
+				A25F00010000000000000001 /* FinishNoteViewModel.swift */,
+				A25F00010000000000000003 /* FinishNoteBottomSheetViewController.swift */,
+			);
+			path = FinishNote;
+			sourceTree = "<group>";
+		};
+		A28C0A1E2D3C4B5A69788001 /* calendar */ = {
+			isa = PBXGroup;
+			children = (
+				C8EC803FE877E21B5FFDB6D8 /* WishCalendarViewModel.swift */,
+				6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */,
+			);
+			path = calendar;
+			sourceTree = "<group>";
+		};
+		A30E00010000000000000011 /* SleepingWish */ = {
+			isa = PBXGroup;
+			children = (
+				A30E00010000000000000001 /* SleepingWishPolicy.swift */,
+				A30E00010000000000000003 /* HomeSleepingWishCardViewModel.swift */,
+				A30E00010000000000000005 /* HomeSleepingWishCell.swift */,
+			);
+			path = SleepingWish;
+			sourceTree = "<group>";
+		};
+		A32F00000000000000000011 /* wish-search */ = {
+			isa = PBXGroup;
+			children = (
+				A32F00000000000000000003 /* WishSearchViewModel.swift */,
+				A32F00000000000000000005 /* WishSearchViewController.swift */,
+				A32F00000000000000000007 /* WishSearchResultCell.swift */,
+				A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */,
+				A32F0000000000000000000B /* WishSearchEmptyView.swift */,
+			);
+			path = "wish-search";
+			sourceTree = "<group>";
+		};
+		A3400001000000000000001B /* year-review */ = {
+			isa = PBXGroup;
+			children = (
+				A34000010000000000000005 /* YearReviewViewModel.swift */,
+				A34000010000000000000007 /* YearReviewViewController.swift */,
+				A34000010000000000000009 /* YearReviewListViewModel.swift */,
+				A3400001000000000000000B /* YearReviewListViewController.swift */,
+				A3400001000000000000000D /* YearReviewImageRenderer.swift */,
+				A3400001000000000000001C /* subviews */,
+			);
+			path = "year-review";
+			sourceTree = "<group>";
+		};
+		A3400001000000000000001C /* subviews */ = {
+			isa = PBXGroup;
+			children = (
+				A3400001000000000000000F /* YearReviewCardView.swift */,
+				A34000010000000000000011 /* YearReviewListViews.swift */,
+			);
+			path = subviews;
 			sourceTree = "<group>";
 		};
 		A59D84F56481B30FACF6A680 /* Frameworks */ = {
@@ -1185,6 +1451,59 @@
 				77A835D24905877700C2E8A1 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA3CB289B5878937BF97BC1C /* wish-link */ = {
+			isa = PBXGroup;
+			children = (
+				40092B3F9566B2EFBA097456 /* WishLinkSectionView.swift */,
+				F04FC7B35E353674424AEBFE /* WishLinkInputView.swift */,
+				3808BCB0B09986AD41873F37 /* WishLinkViewModel.swift */,
+				A4862102A58DBC2005CAB641 /* LinkPreviewCache.swift */,
+				8523AB10C8344B1B16FD9E51 /* LinkMetadataProvider.swift */,
+				24CBDF57A8E53FC037620A2D /* WishLinkInput.swift */,
+			);
+			path = "wish-link";
+			sourceTree = "<group>";
+		};
+		B35A0000000000000000001B /* subviews */ = {
+			isa = PBXGroup;
+			children = (
+				B35A0000000000000000000D /* BadgeMedalView.swift */,
+				B35A0000000000000000000F /* BadgeCardView.swift */,
+				B35A00000000000000000011 /* BadgeLinkButton.swift */,
+			);
+			path = subviews;
+			sourceTree = "<group>";
+		};
+		B35A0000000000000000001C /* badge */ = {
+			isa = PBXGroup;
+			children = (
+				B35A00000000000000000005 /* BadgeCollectionViewModel.swift */,
+				B35A00000000000000000007 /* BadgeCollectionViewController.swift */,
+				B35A00000000000000000009 /* BadgeCelebrationViewModel.swift */,
+				B35A0000000000000000000B /* BadgeCelebrationBottomSheetViewController.swift */,
+				B35A0000000000000000001B /* subviews */,
+			);
+			path = badge;
+			sourceTree = "<group>";
+		};
+		FCB9E166A9040B8706F9DB06 /* place */ = {
+			isa = PBXGroup;
+			children = (
+				C7390E6D47D30DA010BF10E9 /* PlaceSearchService.swift */,
+				8C52AB5688A2B8E8872E4DB2 /* PlaceSearchViewModel.swift */,
+				5355B6BC7B23A66CE2A079C1 /* PlaceSearchBottomSheetViewController.swift */,
+				21E129F563CEA3484ED850B3 /* PlaceSearchResultCell.swift */,
+				B257F3D74F4512EDB7D18D92 /* WishPlaceViewModel.swift */,
+				463E7E1E33AA8096B6DD898B /* WishPlaceView.swift */,
+				5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */,
+				E717D8AFD880C37EA56903FF /* PlaceMapViewModel.swift */,
+				CD807FF9E1D992CE176B9616 /* PlaceMapViewController.swift */,
+				AD815F881A394AC0835EFBFB /* PlaceMapWishCardView.swift */,
+			);
+			name = place;
+			path = place;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1411,6 +1730,33 @@
 				050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */,
 				A1B2C3D4E5F60718293A4B11 /* HomeWishGridLayoutTests.swift in Sources */,
 				13A0B31AF2FDAB9358477F01 /* SharePhotoLayoutTests.swift in Sources */,
+				021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */,
+				C024800893918CED18532155 /* WishCalendarViewModelTests.swift in Sources */,
+				A32F0000000000000000000E /* WishSearchMatcherTests.swift in Sources */,
+				A32F00000000000000000010 /* WishSearchViewModelTests.swift in Sources */,
+				A34000010000000000000014 /* YearReviewSummaryTests.swift in Sources */,
+				A34000010000000000000016 /* YearReviewViewModelTests.swift in Sources */,
+				A34000010000000000000018 /* YearReviewListViewModelTests.swift in Sources */,
+				A3400001000000000000001A /* HomeViewModelYearReviewTests.swift in Sources */,
+				B35A00000000000000000014 /* BadgeCalculatorTests.swift in Sources */,
+				B35A00000000000000000016 /* BadgeCelebrationViewModelTests.swift in Sources */,
+				B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */,
+				B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */,
+				CCC3836F2EE224C064144B11 /* MockLinkPreviewCache.swift in Sources */,
+				57E695FB3BAABE14B3BC8C83 /* MockLinkMetadataProvider.swift in Sources */,
+				C3E7D618FABB8D780895AC8C /* WishLinkReactorTests.swift in Sources */,
+				ADC46ADE7E7DD31BECC6C8E8 /* WishLinkViewModelTests.swift in Sources */,
+				A30E00010000000000000008 /* SleepingWishPolicyTests.swift in Sources */,
+				A30E00010000000000000010 /* HomeViewModelSleepingWishTests.swift in Sources */,
+				E0350A3482B42D9CBC51CBCC /* PlaceSearchViewModelTests.swift in Sources */,
+				59D52B66C25673D5E1CC6CC1 /* WishPlaceViewModelTests.swift in Sources */,
+				66C7F16CF982BEAC5A8DC7E3 /* PlaceMapViewModelTests.swift in Sources */,
+				E35BC6C811B0A237A8EC78C8 /* HomePlaceMapTests.swift in Sources */,
+				1D2D88DA5EC29C876DDAAD79 /* WishPlaceReactorTests.swift in Sources */,
+				9B2887D6747D6E71762121B2 /* MockPlaceSearchService.swift in Sources */,
+				36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */,
+				36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */,
+				36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1548,6 +1894,58 @@
 				83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */,
 				7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */,
 				050C71F5903092578149F737 /* SavingDTO.swift in Sources */,
+				759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */,
+				23F50BC3FF985CF5955FD358 /* WishCalendarViewModel.swift in Sources */,
+				EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */,
+				A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */,
+				A32F00000000000000000004 /* WishSearchViewModel.swift in Sources */,
+				A32F00000000000000000006 /* WishSearchViewController.swift in Sources */,
+				A32F00000000000000000008 /* WishSearchResultCell.swift in Sources */,
+				A32F0000000000000000000A /* WishSearchSectionHeaderView.swift in Sources */,
+				A32F0000000000000000000C /* WishSearchEmptyView.swift in Sources */,
+				A34000010000000000000002 /* YearReviewSummary.swift in Sources */,
+				A34000010000000000000092 /* YearReviewPeriod.swift in Sources */,
+				A34000010000000000000004 /* HomeYearReviewBannerCell.swift in Sources */,
+				A34000010000000000000006 /* YearReviewViewModel.swift in Sources */,
+				A34000010000000000000008 /* YearReviewViewController.swift in Sources */,
+				A3400001000000000000000A /* YearReviewListViewModel.swift in Sources */,
+				A3400001000000000000000C /* YearReviewListViewController.swift in Sources */,
+				A3400001000000000000000E /* YearReviewImageRenderer.swift in Sources */,
+				A34000010000000000000010 /* YearReviewCardView.swift in Sources */,
+				A34000010000000000000012 /* YearReviewListViews.swift in Sources */,
+				B35A00000000000000000002 /* Badge.swift in Sources */,
+				B35A00000000000000000004 /* BadgeCalculator.swift in Sources */,
+				B35A00000000000000000006 /* BadgeCollectionViewModel.swift in Sources */,
+				B35A00000000000000000008 /* BadgeCollectionViewController.swift in Sources */,
+				B35A0000000000000000000A /* BadgeCelebrationViewModel.swift in Sources */,
+				B35A0000000000000000000C /* BadgeCelebrationBottomSheetViewController.swift in Sources */,
+				B35A0000000000000000000E /* BadgeMedalView.swift in Sources */,
+				B35A00000000000000000010 /* BadgeCardView.swift in Sources */,
+				B35A00000000000000000012 /* BadgeLinkButton.swift in Sources */,
+				B564CB2B6158D9460D8A98EF /* LinkPreviewCardView.swift in Sources */,
+				1AB44FABB94FA35E5765F703 /* WishLinkSectionView.swift in Sources */,
+				DC911944AFB87C313D649C4F /* WishLinkInputView.swift in Sources */,
+				8E995950DC9B98F75A741D14 /* WishLinkViewModel.swift in Sources */,
+				08EF5F3F0E333A4101401C52 /* LinkPreviewCache.swift in Sources */,
+				99CEBD46548420E0CC5EDC7E /* LinkMetadataProvider.swift in Sources */,
+				94A8A9FB46DBD094756D06EF /* WishLinkInput.swift in Sources */,
+				A30E00010000000000000002 /* SleepingWishPolicy.swift in Sources */,
+				A30E00010000000000000004 /* HomeSleepingWishCardViewModel.swift in Sources */,
+				A30E00010000000000000006 /* HomeSleepingWishCell.swift in Sources */,
+				D998F37558FF8E68B8DCFA7B /* PlaceSearchService.swift in Sources */,
+				4F3AACCE2D010391019609E0 /* PlaceSearchViewModel.swift in Sources */,
+				05EDC01C97CF62B008F30A5F /* PlaceSearchBottomSheetViewController.swift in Sources */,
+				401171A7B86AFD636626E0FD /* PlaceSearchResultCell.swift in Sources */,
+				164F650323BA46FD48E482C2 /* WishPlaceViewModel.swift in Sources */,
+				E12993B2A75900FDF3DEE37F /* WishPlaceView.swift in Sources */,
+				B89A3D37506E9BE4C1E36C49 /* EmojiPinImage.swift in Sources */,
+				267E846F50CC07AACD19C526 /* PlaceMapViewModel.swift in Sources */,
+				951DE527BFA402D0FEC1AA4C /* PlaceMapViewController.swift in Sources */,
+				F7638EF80298FAC76DCE7374 /* PlaceMapWishCardView.swift in Sources */,
+				BABC0A9A71B1F3DCC53A8FCB /* WishPlace.swift in Sources */,
+				36A000000000000000000011 /* WishPhotoStorage.swift in Sources */,
+				36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */,
+				36A000000000000000000013 /* WishPhotoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1592,6 +1990,7 @@
 				75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */,
 				41FEE210BA2773236C785FD0 /* SavingDTO.swift in Sources */,
 				D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */,
+				C3D8AD70BB8D652B921763D5 /* WishPlace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

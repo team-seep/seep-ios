@@ -20,6 +20,7 @@ final class WishEditReactor: Reactor {
         case inputMemo(String)
         case updateSteps([WishStep])
         case inputTargetAmount(Int)
+        case inputLink(WishLinkInput)
         case tapHashtag(index: Int)
         case inputHashtag(String)
         case tapEditButton
@@ -41,6 +42,7 @@ final class WishEditReactor: Reactor {
         case setMemo(String)
         case setSteps([WishStep])
         case setTargetAmount(Int)
+        case setLink(WishLinkInput)
         case selectHashtag(index: Int?)
         case setCustomHashtag(String)
         case setEditButtonState(EditButton.EditButtonState)
@@ -63,6 +65,8 @@ final class WishEditReactor: Reactor {
         var steps: [WishStep]
         /// 목표 금액(원). 갖고 싶어요일 때만 저장하고, 0 이면 상세 모으기 섹션을 숨긴다 (GH-16 R-7)
         var targetAmount: Int
+        /// 링크 칸 값. 갖고 싶어요일 때만 저장하고, 형식이 아니면 수정을 막는다 (GH-29 R-1, R-2)
+        var link: WishLinkInput
         var hashtags: [HashtagType] = HashtagType.array
         var selectedHashtag: HashtagType?
         var customHashtag: String
@@ -76,6 +80,13 @@ final class WishEditReactor: Reactor {
     private let wishID: String
     /// 수정 화면은 기록을 바꾸지 않는다. 상세로 돌려줄 위시에 그대로 담는다 (GH-16 R-7)
     private let savings: [WishSaving]
+    /// 카테고리를 바꾸지 않으면 고정을 그대로 둔다 (GH-33 R-9)
+    private let originalCategory: Category
+    private let originalPinnedAt: Date?
+    /// 수정 화면은 장소를 편집하지 않는다. 상세로 돌려줄 위시에 그대로 실어 보낸다 (GH-31 R-10)
+    private let place: WishPlace?
+    /// 수정 화면은 사진을 바꾸지 않는다. 상세·홈으로 돌려줄 위시에 그대로 담는다 (GH-36 R-10)
+    private let photoFileName: String
     private let wishService: WishServiceProtocol
     private let notificationManager: NotificationManagerProtocol
     
@@ -95,11 +106,16 @@ final class WishEditReactor: Reactor {
             memo: wish.memo,
             steps: wish.steps,
             targetAmount: wish.targetAmount,
+            link: WishLinkInput(text: wish.link),
             selectedHashtag: HashtagType(rawValue: wish.hashtag),
             customHashtag: HashtagType(rawValue: wish.hashtag) == nil ? wish.hashtag : ""
         )
         self.wishID = wish.id
         self.savings = wish.savings
+        self.originalCategory = wish.category
+        self.originalPinnedAt = wish.pinnedAt
+        self.place = wish.place
+        self.photoFileName = wish.photoFileName
         self.wishService = wishService
         self.notificationManager = notificationManager
     }
@@ -110,7 +126,10 @@ final class WishEditReactor: Reactor {
             return .just(.setEmoji(emoji))
             
         case .tapCategory(let category):
-            return .just(.setCategory(category))
+            return .merge([
+                .just(.setCategory(category)),
+                .just(.setEditButtonState(self.validateForEnable(category: category)))
+            ])
             
         case .inputTitle(let title):
             return .merge([
@@ -166,6 +185,12 @@ final class WishEditReactor: Reactor {
         case .inputTargetAmount(let amount):
             return .just(.setTargetAmount(min(max(amount, 0), WishSaving.maxAmount)))
             
+        case .inputLink(let link):
+            return .merge([
+                .just(.setLink(link)),
+                .just(.setEditButtonState(self.validateForEnable(link: link)))
+            ])
+            
         case .tapHashtag(let index):
             return .merge([
                 .just(.setCustomHashtag("")),
@@ -189,7 +214,10 @@ final class WishEditReactor: Reactor {
                 observables.append(.just(.setDeadlineError("write_error_date_empty".localized)))
             }
             
-            if observables.isEmpty {
+            // 링크 형식 안내는 링크 칸이 이미 보여준다 (GH-29 R-2)
+            let isLinkBlocking = self.currentState.link.blocksSave(category: self.currentState.category)
+            
+            if observables.isEmpty && !isLinkBlocking {
                 return self.updateWish()
             } else {
                 return .merge(observables)
@@ -246,6 +274,9 @@ final class WishEditReactor: Reactor {
         case .setTargetAmount(let amount):
             newState.targetAmount = amount
             
+        case .setLink(let link):
+            newState.link = link
+            
         case .selectHashtag(let index):
             if let index = index {
                 newState.selectedHashtag = newState.hashtags[index]
@@ -269,8 +300,15 @@ final class WishEditReactor: Reactor {
         return newState
     }
     
-    private func validateForEnable(title: String) -> EditButton.EditButtonState {
-        return title.isEmpty ? .more : .active
+    private func validateForEnable(
+        title: String? = nil,
+        category: Category? = nil,
+        link: WishLinkInput? = nil
+    ) -> EditButton.EditButtonState {
+        let title = title ?? self.currentState.title
+        let category = category ?? self.currentState.category
+        let link = link ?? self.currentState.link
+        return (title.isEmpty || link.blocksSave(category: category)) ? .more : .active
     }
     
     private func updateWish() -> Observable<Mutation> {
@@ -299,7 +337,15 @@ final class WishEditReactor: Reactor {
             targetAmount: self.currentState.category == .wantToGet ? self.currentState.targetAmount : 0,
             savings: self.savings,
             memo: self.currentState.memo,
-            hashtag: hashtag
+            hashtag: hashtag,
+            // 옮겨 간 카테고리의 고정 3개 제한을 넘지 않도록, 카테고리를 바꾸면 고정을 푼다 (GH-33 R-9)
+            pinnedAt: self.currentState.category == self.originalCategory ? self.originalPinnedAt : nil,
+            // 다른 카테고리로 바꿨으면 링크는 빈 문자열로 저장한다 (GH-29 R-1)
+            link: self.currentState.link.storedLink(category: self.currentState.category),
+            // 홈이 돌려받은 위시로 잠든 위시 카드를 다시 판단한다 (GH-30 R-2, TC-9)
+            lastCheckedAt: Date(),
+            place: self.place,
+            photoFileName: self.photoFileName
         )
         
         self.wishService.updateWish(id: self.wishID, newWish: wish)
