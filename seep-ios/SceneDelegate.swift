@@ -48,11 +48,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func handleDeepLink(urlContexts: Set<UIOpenURLContext>) {
         guard let widgetDeepLink = urlContexts.first(where: { $0.url.scheme == "widget" }) else { return }
         
-        Preference.shared.reservedDeepLink = widgetDeepLink.url.absoluteString
-        
-        if let navigationViewController = self.window?.rootViewController as? UINavigationController,
-           let homeViewController = navigationViewController.topViewController as? HomeViewController {
-            homeViewController.handleReservedDeepLink()
+        guard let navigationViewController = self.window?.rootViewController as? UINavigationController else {
+            // 스플래시 중(냉시작): 홈 첫 로드가 처리한다
+            Preference.shared.reservedDeepLink = widgetDeepLink.url.absoluteString
+            return
         }
+        // 홈 위에 다른 화면이 있으면 링크를 남기지 않는다. 남기면 다음 실행 때 엉뚱하게 작성 화면이 열린다
+        guard let homeViewController = navigationViewController.topViewController as? HomeViewController,
+              homeViewController.presentedViewController == nil else { return }
+        
+        Preference.shared.reservedDeepLink = widgetDeepLink.url.absoluteString
+        homeViewController.handleReservedDeepLink()
     }
 }
