@@ -43,6 +43,9 @@ protocol WishRepository {
     
     /// 사진 파일 이름을 저장하고(빈 값이면 사진 없음), 반영된 위시를 돌려준다 (GH-36 R-9).
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError>
+    
+    /// id 로 위시 하나를 읽는다. 없으면(지워졌으면) nil. 잠금화면 위젯 링크로 상세를 열 때 쓴다 (GH-47 R-14)
+    func fetchWish(id: String) -> Wish?
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -229,6 +232,13 @@ final class WishRepositoryImpl: WishRepository {
         }
         
         return .success(Wish(dto: targetObject))
+    }
+    
+    func fetchWish(id: String) -> Wish? {
+        guard let realm = try? Realm(),
+              let targetObject = realm.objects(WishDTO.self).filter("_id == %@", id).first else { return nil }
+        
+        return Wish(dto: targetObject)
     }
     
     private func updateSavings(

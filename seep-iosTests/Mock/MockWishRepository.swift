@@ -36,6 +36,9 @@ final class MockWishRepository: WishRepository {
     private(set) var updatePhotoCalls: [(wishId: String, fileName: String)] = []
 
     var fetchAllFinishedWishesResult: [Wish] = []
+    /// id 가 같은 위시를 돌려준다. 없으면 nil (지워진 위시)
+    var fetchWishResult: [Wish] = []
+    private(set) var fetchWishCalledIds: [String] = []
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
@@ -109,5 +112,10 @@ final class MockWishRepository: WishRepository {
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {
         updatePhotoCalls.append((wishId, fileName))
         return updatePhotoResult ?? .success(Wish(id: wishId, photoFileName: fileName))
+    }
+
+    func fetchWish(id: String) -> Wish? {
+        fetchWishCalledIds.append(id)
+        return fetchWishResult.first { $0.id == id }
     }
 }

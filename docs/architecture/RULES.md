@@ -116,10 +116,10 @@ realm?.objects(WishDTO.self)
 ## R4. Realm 모델을 바꾸면 schemaVersion과 마이그레이션을 같이 바꾼다
 
 **규칙** — `seep-ios/model/dto/*.swift`(Realm `Object`)의 저장 프로퍼티를 추가·삭제·타입 변경하면 같은 PR에서
-1. `schemaVersion`을 올린다 — **앱(`AppDelegate.swift`)과 위젯 Provider 3곳 전부 같은 값**으로,
+1. `schemaVersion`을 올린다 — **앱(`AppDelegate.swift`)과 위젯 Provider(`widget/**/*Provider.swift`, 현재 4곳) 전부 같은 값**으로,
 2. `AppDelegate.setupRealmConfig()`의 `migrationBlock`에 `oldSchemaVersion < 새버전` 분기를 추가한다.
 
-**이유** — 로컬 DB 앱에서 스키마 불일치는 **업데이트 직후 실행 크래시 = 사용자 데이터 손실**이다. 위젯은 같은 App Group의 Realm 파일을 자기 설정으로 열기 때문에, 앱만 올리고 위젯을 빼먹으면 위젯이 깨진다. 사람이 기억하기 어려운 4곳 동기화라 기계로 막는다.
+**이유** — 로컬 DB 앱에서 스키마 불일치는 **업데이트 직후 실행 크래시 = 사용자 데이터 손실**이다. 위젯은 같은 App Group의 Realm 파일을 자기 설정으로 열기 때문에, 앱만 올리고 위젯을 빼먹으면 위젯이 깨진다. 사람이 기억하기 어려운 5곳 동기화라 기계로 막는다.
 
 **좋은 예**
 ```swift
