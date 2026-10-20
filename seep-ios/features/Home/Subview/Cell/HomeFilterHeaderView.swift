@@ -71,6 +71,14 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         return button
     }()
     
+    /// 앱 잠금 시트 진입 (GH-46 R-1). 아이콘은 작아도 터치 영역은 44pt
+    private let appLockButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .gray4
+        button.accessibilityLabel = Strings.AppLock.Home.accessibilityOff
+        return button
+    }()
+    
     private let backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(r: 246, g: 247, b: 249, a: 1)
@@ -122,6 +130,7 @@ final class HomeFilterHeaderView: UICollectionReusableView {
         addSubview(viewTypeButton)
         addSubview(searchButton)
         addSubview(placeMapButton)
+        addSubview(appLockButton)
         addSubview(gradientView)
         
         backgroundView.snp.makeConstraints {
@@ -153,8 +162,15 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             $0.centerY.equalTo(sortButton)
         }
         
-        searchButton.snp.makeConstraints {
+        appLockButton.snp.makeConstraints {
             $0.trailing.equalTo(viewTypeButton.snp.leading).offset(-6)
+            $0.size.equalTo(44)
+            $0.centerY.equalTo(sortButton)
+        }
+        
+        // 검색·지도는 자물쇠 왼쪽으로 한 칸 민다 (GH-46 R-1)
+        searchButton.snp.makeConstraints {
+            $0.trailing.equalTo(appLockButton.snp.leading)
             $0.size.equalTo(44)
             $0.centerY.equalTo(sortButton)
         }
@@ -200,6 +216,10 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             .subscribe(viewModel.input.didTapPlaceMap)
             .store(in: &cancellables)
         
+        appLockButton.tapPublisher
+            .subscribe(viewModel.input.didTapAppLock)
+            .store(in: &cancellables)
+        
         // Output
         viewModel.output.category
             .main
@@ -233,6 +253,14 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             }
             .store(in: &cancellables)
         
+        viewModel.output.isAppLockEnabled
+            .main
+            .withUnretained(self)
+            .sink { (owner: HomeFilterHeaderView, isEnabled: Bool) in
+                owner.updateAppLockButton(isEnabled: isEnabled)
+            }
+            .store(in: &cancellables)
+        
         viewModel.output.isPlaceMapVisible
             .main
             .withUnretained(self)
@@ -240,5 +268,15 @@ final class HomeFilterHeaderView: UICollectionReusableView {
                 owner.placeMapButton.isHidden = !isVisible
             }
             .store(in: &cancellables)
+    }
+    
+    private func updateAppLockButton(isEnabled: Bool) {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular)
+        let symbolName = isEnabled ? "lock.fill" : "lock"
+        appLockButton.setImage(UIImage(systemName: symbolName, withConfiguration: configuration), for: .normal)
+        appLockButton.tintColor = isEnabled ? .seepBlue : .gray4
+        appLockButton.accessibilityLabel = isEnabled
+            ? Strings.AppLock.Home.accessibilityOn
+            : Strings.AppLock.Home.accessibilityOff
     }
 }

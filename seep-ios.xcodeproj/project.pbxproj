@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46A000000000000000000002 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000001 /* AuthenticationManager.swift */; };
+		46A000000000000000000004 /* AppLockPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000003 /* AppLockPolicy.swift */; };
+		46A000000000000000000006 /* AppLockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000005 /* AppLockViewModel.swift */; };
+		46A000000000000000000008 /* AppLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000007 /* AppLockViewController.swift */; };
+		46A00000000000000000000A /* AppLockWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000009 /* AppLockWindow.swift */; };
+		46A00000000000000000000C /* AppLockBottomSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000B /* AppLockBottomSheetViewModel.swift */; };
+		46A00000000000000000000E /* AppLockBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000D /* AppLockBottomSheetViewController.swift */; };
+		46A000000000000000000010 /* AppLockPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000F /* AppLockPolicyTests.swift */; };
+		46A000000000000000000012 /* AppLockViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000011 /* AppLockViewModelTests.swift */; };
+		46A000000000000000000014 /* AppLockBottomSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000013 /* AppLockBottomSheetViewModelTests.swift */; };
+		46A000000000000000000016 /* HomeViewModelAppLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000015 /* HomeViewModelAppLockTests.swift */; };
+		46A000000000000000000018 /* MockAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000017 /* MockAuthenticationManager.swift */; };
 		021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */; };
 		042777C6C45215367A054571 /* SavingInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */; };
 		050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */; };
@@ -369,6 +381,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		46A000000000000000000001 /* AuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		46A000000000000000000003 /* AppLockPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockPolicy.swift; sourceTree = "<group>"; };
+		46A000000000000000000005 /* AppLockViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockViewModel.swift; sourceTree = "<group>"; };
+		46A000000000000000000007 /* AppLockViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockViewController.swift; sourceTree = "<group>"; };
+		46A000000000000000000009 /* AppLockWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockWindow.swift; sourceTree = "<group>"; };
+		46A00000000000000000000B /* AppLockBottomSheetViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockBottomSheetViewModel.swift; sourceTree = "<group>"; };
+		46A00000000000000000000D /* AppLockBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockBottomSheetViewController.swift; sourceTree = "<group>"; };
+		46A00000000000000000000F /* AppLockPolicyTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockPolicyTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000011 /* AppLockViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockViewModelTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000013 /* AppLockBottomSheetViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockBottomSheetViewModelTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000015 /* HomeViewModelAppLockTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelAppLockTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000017 /* MockAuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockAuthenticationManager.swift; sourceTree = "<group>"; };
 		0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModel.swift; sourceTree = "<group>"; };
 		0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputBottomSheetViewController.swift; sourceTree = "<group>"; };
 		13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharePhotoLayoutTests.swift; sourceTree = "<group>"; };
@@ -732,6 +756,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		46A000000000000000000019 /* app-lock */ = {
+			isa = PBXGroup;
+			children = (
+				46A000000000000000000003 /* AppLockPolicy.swift */,
+				46A000000000000000000005 /* AppLockViewModel.swift */,
+				46A000000000000000000007 /* AppLockViewController.swift */,
+				46A000000000000000000009 /* AppLockWindow.swift */,
+				46A00000000000000000000B /* AppLockBottomSheetViewModel.swift */,
+				46A00000000000000000000D /* AppLockBottomSheetViewController.swift */,
+			);
+			path = "app-lock";
+			sourceTree = "<group>";
+		};
 		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -775,6 +812,10 @@
 				E887300E389AE7DADD5B08B8 /* WishPlaceReactorTests.swift */,
 				36A000000000000000000004 /* WishPhotoViewModelTests.swift */,
 				36A000000000000000000005 /* WishPhotoStorageTests.swift */,
+				46A00000000000000000000F /* AppLockPolicyTests.swift */,
+				46A000000000000000000011 /* AppLockViewModelTests.swift */,
+				46A000000000000000000013 /* AppLockBottomSheetViewModelTests.swift */,
+				46A000000000000000000015 /* HomeViewModelAppLockTests.swift */,
 			);
 			name = "seep-iosTests";
 			path = "seep-iosTests";
@@ -865,6 +906,7 @@
 				B35A0000000000000000001C /* badge */,
 				AA3CB289B5878937BF97BC1C /* wish-link */,
 				FCB9E166A9040B8706F9DB06 /* place */,
+				46A000000000000000000019 /* app-lock */,
 			);
 			path = features;
 			sourceTree = "<group>";
@@ -1207,6 +1249,7 @@
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
 				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
 				36A000000000000000000001 /* WishPhotoStorage.swift */,
+				46A000000000000000000001 /* AuthenticationManager.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
@@ -1379,6 +1422,7 @@
 				B9BD4F8C72208E876F987F33 /* MockLinkMetadataProvider.swift */,
 				420E67BF648DC24CA0FE0F9B /* MockPlaceSearchService.swift */,
 				36A000000000000000000006 /* MockWishPhotoStorage.swift */,
+				46A000000000000000000017 /* MockAuthenticationManager.swift */,
 			);
 			name = Mock;
 			path = Mock;
@@ -1761,6 +1805,11 @@
 				36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */,
 				36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */,
 				36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */,
+				46A000000000000000000010 /* AppLockPolicyTests.swift in Sources */,
+				46A000000000000000000012 /* AppLockViewModelTests.swift in Sources */,
+				46A000000000000000000014 /* AppLockBottomSheetViewModelTests.swift in Sources */,
+				46A000000000000000000016 /* HomeViewModelAppLockTests.swift in Sources */,
+				46A000000000000000000018 /* MockAuthenticationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1950,6 +1999,13 @@
 				36A000000000000000000011 /* WishPhotoStorage.swift in Sources */,
 				36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */,
 				36A000000000000000000013 /* WishPhotoView.swift in Sources */,
+				46A000000000000000000002 /* AuthenticationManager.swift in Sources */,
+				46A000000000000000000004 /* AppLockPolicy.swift in Sources */,
+				46A000000000000000000006 /* AppLockViewModel.swift in Sources */,
+				46A000000000000000000008 /* AppLockViewController.swift in Sources */,
+				46A00000000000000000000A /* AppLockWindow.swift in Sources */,
+				46A00000000000000000000C /* AppLockBottomSheetViewModel.swift in Sources */,
+				46A00000000000000000000E /* AppLockBottomSheetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

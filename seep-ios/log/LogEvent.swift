@@ -152,4 +152,8 @@ enum LogObjectId: String {
     case addPhoto = "add_photo"
     case changePhoto = "change_photo"
     case deletePhoto = "delete_photo"
+    case appLock = "app_lock"
+    case enableAppLock = "enable_app_lock"
+    case disableAppLock = "disable_app_lock"
+    case unlockApp = "unlock_app"
 }

@@ -309,3 +309,27 @@
 "hashtag_date" = "데이트";
 "hashtag_stock" = "주식";
 "hashtag_leisure" = "여가생활";
+
+// App lock (GH-46)
+"app_lock.reason" = "싶 잠금을 확인할게요";
+"app_lock.biometry.face_id" = "Face ID";
+"app_lock.biometry.touch_id" = "Touch ID";
+"app_lock.biometry.passcode" = "기기 암호";
+"app_lock.home.accessibility_off" = "앱 잠금";
+"app_lock.home.accessibility_on" = "앱 잠금 켜짐";
+"app_lock.sheet.enable_title" = "싶을 나만 볼 수 있게\n잠가둘까요?";
+"app_lock.sheet.enable_title_bold" = "잠가둘까요?";
+"app_lock.sheet.enable_description_format" = "앱을 열 때 %@나 기기 암호를 물어봐요.\n홈 화면 위젯은 잠금과 상관없이 보여요.";
+"app_lock.sheet.enable_description_passcode" = "앱을 열 때 기기 암호를 물어봐요.\n홈 화면 위젯은 잠금과 상관없이 보여요.";
+"app_lock.sheet.enable_button_format" = "%@로 잠그기";
+"app_lock.sheet.later" = "다음에 할게요";
+"app_lock.sheet.disable_title" = "지금 싶이\n잠겨 있어요";
+"app_lock.sheet.disable_title_bold" = "잠겨 있어요";
+"app_lock.sheet.disable_description" = "잠금을 끄면 앱을 열 때 더 묻지 않아요.\n끄기 전에 한 번 더 확인할게요.";
+"app_lock.sheet.disable_button" = "잠금 끄기";
+"app_lock.sheet.close" = "닫기";
+"app_lock.toast.no_passcode" = "기기 암호를 먼저 설정해 주세요";
+"app_lock.screen.title" = "싶이 잠겨 있어요";
+"app_lock.screen.title_bold" = "잠겨 있어요";
+"app_lock.screen.description_format" = "%@로 확인하면 열려요";
+"app_lock.screen.unlock_button_format" = "%@로 열기";
