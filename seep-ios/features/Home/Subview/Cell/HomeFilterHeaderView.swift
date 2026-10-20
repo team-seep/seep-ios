@@ -159,8 +159,9 @@ final class HomeFilterHeaderView: UICollectionReusableView {
             $0.centerY.equalTo(sortButton)
         }
         
+        // 검색 버튼(터치 영역 44pt) 바로 왼쪽. 같은 기준에 붙이면 돋보기와 겹친다 (GH-56 R-1)
         placeMapButton.snp.makeConstraints {
-            $0.trailing.equalTo(viewTypeButton.snp.leading).offset(-12)
+            $0.trailing.equalTo(searchButton.snp.leading)
             $0.size.equalTo(24)
             $0.centerY.equalTo(sortButton)
         }
