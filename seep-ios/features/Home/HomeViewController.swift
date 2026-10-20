@@ -541,6 +541,11 @@ extension HomeViewController {
 }
 
 extension HomeViewController: WriteDelegate {
+    /// 앱이 떠 있을 때 저장된 위젯 링크를 처리한다. SceneDelegate 가 부른다 (GH-50 R-2)
+    func handleReservedDeepLink() {
+        viewModel.input.handleReservedDeepLink.send(())
+    }
+    
     func onSuccessWrite(category: Category) {
         viewModel.input.updateCategory.send(category)
         ToastManager.shared.show(message: Strings.Home.Toast.successWrite)

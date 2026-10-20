@@ -67,22 +67,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appLockViewModel.input.didBecomeActive.send(())
     }
     
+    /// 위젯 링크는 Preference 에 남겨 홈이 처리한다. 냉시작이면 홈 첫 로드에서, 홈이 이미 떠 있으면 바로 (GH-50 R-1, R-2)
     private func handleDeepLink(urlContexts: Set<UIOpenURLContext>) {
-        guard let widgetDeepLink = urlContexts.first(where: { $0.url.scheme == "widget" }),
-              let urlComponents = URLComponents(string: widgetDeepLink.url.absoluteString) else { return }
+        guard let widgetDeepLink = urlContexts.first(where: { $0.url.scheme == "widget" }) else { return }
         
-        if urlComponents.host == "add" {
-            if let categoryQuery = urlComponents.queryItems?.first(where: { $0.name == "category" }),
-               let category = Category(rawValue: categoryQuery.value ?? "") {
-                
-                if let navigationVC = self.window?.rootViewController as? UINavigationController,
-                   let homeViewController = navigationVC.topViewController as? HomeViewController {
-                    
-//                    homeViewController.presentWrite(category: category)
-                } else {
-                    UserDefaultsUtils().setDeepLink(deepLink: widgetDeepLink.url.absoluteString)
-                }
-            }
+        guard let navigationViewController = self.window?.rootViewController as? UINavigationController else {
+            // 스플래시 중(냉시작): 홈 첫 로드가 처리한다
+            Preference.shared.reservedDeepLink = widgetDeepLink.url.absoluteString
+            return
         }
+        // 홈 위에 다른 화면이 있으면 링크를 남기지 않는다. 남기면 다음 실행 때 엉뚱하게 작성 화면이 열린다
+        guard let homeViewController = navigationViewController.topViewController as? HomeViewController,
+              homeViewController.presentedViewController == nil else { return }
+        
+        Preference.shared.reservedDeepLink = widgetDeepLink.url.absoluteString
+        homeViewController.handleReservedDeepLink()
     }
 }
