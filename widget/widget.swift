@@ -11,6 +11,9 @@ struct widgets: WidgetBundle {
         SmallRemainWidget()
         MediumVerticalWidget()
         MediumHorizontalWidget()
+        CheckWidget()
+        LockScreenDdayWidget()
+        LockScreenRemainWidget()
         if #available(iOS 18.0, *) {
             SeepWriteControl()
         }

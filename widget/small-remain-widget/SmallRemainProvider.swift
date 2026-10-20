@@ -29,13 +29,7 @@ struct SmallRemainProvider: TimelineProvider {
             Category.wantToGo
         ].randomElement() ?? .wantToDo
         
-        let realmPath = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
-            .appendingPathComponent(Bundle.realmName)
-        var realmConfig = Realm.Configuration(fileURL: realmPath)
-        realmConfig.schemaVersion = 7
-        
-        if let realm = try? Realm(configuration: realmConfig) {
+        if let realm = try? Realm(configuration: RealmConfiguration.shared) {
             let searchTask = realm.objects(WishDTO.self)
                 .filter { ($0.isSuccess == false) && ($0.category == randomCategory.rawValue) }
             let wishCount = searchTask.map { $0 }.count

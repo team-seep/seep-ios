@@ -61,6 +61,7 @@ final class HomeViewController: BaseViewController {
         bind()
         registerNotification()
         viewModel.input.firstLoad.send(())
+        syncWidgetChangesIfVisible()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -204,10 +205,26 @@ final class HomeViewController: BaseViewController {
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
     
     @objc private func willEnterForeground() {
         playEmojiAnimationIfCellVisible()
+    }
+    
+    @objc private func didBecomeActive() {
+        syncWidgetChangesIfVisible()
+    }
+    
+    /// 체크 위젯 기록은 홈이 맨 위이고 다른 화면이 없을 때만 처리한다. 소감 시트를 띄울 수 있어야 해서다 (GH-48 R-7)
+    private func syncWidgetChangesIfVisible() {
+        guard navigationController?.topViewController === self, presentedViewController == nil else { return }
+        viewModel.input.syncWidgetChanges.send(())
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
@@ -456,6 +473,8 @@ extension HomeViewController {
             presentYearReview(viewModel: viewModel)
         case .pushPlaceMap(let viewModel):
             navigationController?.pushViewController(PlaceMapViewController(viewModel: viewModel), animated: true)
+        case .presentAppLockBottomSheet(let viewModel):
+            presentPanModal(AppLockBottomSheetViewController(viewModel: viewModel))
         case .showErrorAlert(let error):
             showErrorAlert(error)
         }

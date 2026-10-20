@@ -154,4 +154,13 @@ enum LogObjectId: String {
     case deletePhoto = "delete_photo"
     case controlWrite = "control_write"
     case shortcutWrite = "shortcut_write"
+    case widgetCheckStep = "widget_check_step"
+    case widgetFinishWish = "widget_finish_wish"
+    case widgetUnfinishWish = "widget_unfinish_wish"
+    case lockscreenDdayWidget = "lockscreen_dday_widget"
+    case lockscreenRemainWidget = "lockscreen_remain_widget"
+    case appLock = "app_lock"
+    case enableAppLock = "enable_app_lock"
+    case disableAppLock = "disable_app_lock"
+    case unlockApp = "unlock_app"
 }

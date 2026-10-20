@@ -46,6 +46,8 @@ struct SeepNotification: Equatable, Hashable {
     }
     
     init(dto: NotificationDTO) {
+        // 예약할 때 쓴 id 를 그대로 써야 완료·삭제 때 대기 중 알림을 지울 수 있다 (GH-48 에서 발견)
+        self.id = dto.id
         self.type = NotificationType(rawValue: dto.type) ?? .targetDay
         self.time = dto.time
     }

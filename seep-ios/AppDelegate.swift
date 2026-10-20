@@ -90,12 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupRealmConfig() {
-        var config = Realm.Configuration()
-        
-        config.fileURL = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
-            .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 7
+        // 경로·schemaVersion 은 위젯과 같이 쓰는 RealmConfiguration 한 곳에서 정한다 (GH-48 R-6)
+        var config = RealmConfiguration.shared
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {

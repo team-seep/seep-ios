@@ -109,21 +109,21 @@ realm?.objects(WishDTO.self)
 
 **강제 수단** — SwiftLint `realm_only_in_repository`.
 
-**예외** — `AppDelegate.swift`(Realm 설정·마이그레이션), `widget/`(앱 Repository를 쓸 수 없는 별도 익스텐션 타깃이라 Provider에서 직접 읽는다 — 읽기 전용으로만). 레거시 `WishServices`는 Reactor 화면이 쓰는 중이라 허용하되, 새 기능은 `WishRepository`에 메서드를 추가한다.
+**예외** — `AppDelegate.swift`(Realm 설정·마이그레이션), `widget/`(앱 Repository를 쓸 수 없는 별도 익스텐션 타깃이라 Provider에서 직접 읽는다 — 읽기 전용으로만. 위젯에서 쓰기가 필요하면 앱·위젯 두 타깃에 넣은 `seep-ios/Repository/WidgetCheckRepository`처럼 Repository를 거친다 — GH-48). 레거시 `WishServices`는 Reactor 화면이 쓰는 중이라 허용하되, 새 기능은 `WishRepository`에 메서드를 추가한다.
 
 ---
 
 ## R4. Realm 모델을 바꾸면 schemaVersion과 마이그레이션을 같이 바꾼다
 
 **규칙** — `seep-ios/model/dto/*.swift`(Realm `Object`)의 저장 프로퍼티를 추가·삭제·타입 변경하면 같은 PR에서
-1. `schemaVersion`을 올린다 — **앱(`AppDelegate.swift`)과 위젯 Provider 3곳 전부 같은 값**으로,
+1. `schemaVersion`을 올린다 — **`seep-ios/Repository/RealmConfiguration.swift` 한 곳**(앱 `AppDelegate`와 위젯 Provider·인텐트가 `RealmConfiguration.shared`를 같이 쓴다, GH-48). 설정을 직접 만드는 위젯 Provider가 있으면 그 값도 같게,
 2. `AppDelegate.setupRealmConfig()`의 `migrationBlock`에 `oldSchemaVersion < 새버전` 분기를 추가한다.
 
-**이유** — 로컬 DB 앱에서 스키마 불일치는 **업데이트 직후 실행 크래시 = 사용자 데이터 손실**이다. 위젯은 같은 App Group의 Realm 파일을 자기 설정으로 열기 때문에, 앱만 올리고 위젯을 빼먹으면 위젯이 깨진다. 사람이 기억하기 어려운 4곳 동기화라 기계로 막는다.
+**이유** — 로컬 DB 앱에서 스키마 불일치는 **업데이트 직후 실행 크래시 = 사용자 데이터 손실**이다. 위젯은 같은 App Group의 Realm 파일을 열기 때문에, 앱만 올리고 위젯을 빼먹으면 위젯이 깨진다. 그래서 값을 한 곳(`RealmConfiguration`)에 모으고, 따로 쓴 곳이 남아 있으면 기계로 같은지 본다.
 
 **좋은 예**
 ```swift
-config.schemaVersion = 4                       // AppDelegate + widget/*Provider.swift 전부 4
+config.schemaVersion = 4                       // RealmConfiguration.shared (앱·위젯 공용)
 config.migrationBlock = { migration, oldSchemaVersion in
     if oldSchemaVersion < 3 { ... }
     if oldSchemaVersion < 4 {
@@ -135,7 +135,7 @@ config.migrationBlock = { migration, oldSchemaVersion in
 ```
 
 **강제 수단** — `scripts/check-realm-schema.sh` (`make lint`, CI `lint.yml`).
-- 항상: 앱·위젯의 `schemaVersion` 값이 모두 같은지.
+- 항상: `RealmConfiguration`·`AppDelegate`·`widget/**/*Provider.swift` 중 `schemaVersion`을 직접 쓴 곳의 값이 모두 같은지.
 - CI(`BASE_REF` 지정 시): `model/dto/`가 바뀌었는데 `schemaVersion`이 base와 같으면 실패.
 - 라벨 `schema-change`가 붙어 리뷰어가 마이그레이션 코드를 먼저 본다. 마이그레이션 TC(구버전 데이터 → 신버전 실행)는 수동/자동화 TC로 반드시 넣는다 (`docs/process/e2e-and-manual-tests.md`).
 
