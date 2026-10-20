@@ -481,6 +481,12 @@ extension HomeViewController {
     }
     
     private func presentWrite(category: Category) {
+        // 싶 적기 컨트롤·단축어로 다시 열면 작성 화면을 또 띄우지 않고 카테고리만 바꾼다 (GH-49 R-5)
+        if let writeViewController = presentedWriteViewController() {
+            writeViewController.changeCategory(category)
+            return
+        }
+        
         let viewController = WriteViewController.instance(category: category)
         viewController.delegate = self
         
@@ -489,7 +495,29 @@ extension HomeViewController {
             $0.modalPresentationStyle = .overCurrentContext
         }
         
-        present(navigationViewController, animated: true)
+        // 컨트롤·단축어는 상세 등 다른 화면 위에서도 열 수 있어, 맨 위 화면에서 띄운다 (GH-49 R-5)
+        topmostViewController().present(navigationViewController, animated: true)
+    }
+    
+    private func topmostViewController() -> UIViewController {
+        var viewController: UIViewController = navigationController ?? self
+        while let presentedViewController = viewController.presentedViewController,
+              !presentedViewController.isBeingDismissed {
+            viewController = presentedViewController
+        }
+        return viewController
+    }
+    
+    private func presentedWriteViewController() -> WriteViewController? {
+        var viewController: UIViewController? = (navigationController ?? self).presentedViewController
+        while let current = viewController {
+            if let writeViewController = (current as? UINavigationController)?.viewControllers.first as? WriteViewController,
+               !current.isBeingDismissed {
+                return writeViewController
+            }
+            viewController = current.presentedViewController
+        }
+        return nil
     }
     
     private func presentSortBottomSheet(viewModel: SortOrderBottomSheetViewModel) {

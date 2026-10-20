@@ -9,7 +9,8 @@ extension WidgetDeepLink.Source {
             return .lockscreenDdayWidget
         case .lockscreenRemain:
             return .lockscreenRemainWidget
-        case .checkWidget:
+        case .checkWidget, .control, .shortcut:
+            // 체크 위젯 줄 열기는 트래킹 대상이 아니고, 컨트롤·단축어는 writeIntentClickEvent 가 보낸다 (GH-49)
             return nil
         }
     }

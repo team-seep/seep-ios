@@ -14,5 +14,8 @@ struct widgets: WidgetBundle {
         CheckWidget()
         LockScreenDdayWidget()
         LockScreenRemainWidget()
+        if #available(iOS 18.0, *) {
+            SeepWriteControl()
+        }
     }
 }

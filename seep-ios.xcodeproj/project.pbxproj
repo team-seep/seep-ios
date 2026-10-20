@@ -306,6 +306,15 @@
 		B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */; };
 		B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */; };
 		A50000010000000000000002 /* HomeViewModelDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */; };
+		A49000010000000000000011 /* WriteCategoryAppEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000010 /* WriteCategoryAppEnum.swift */; };
+		A49000010000000000000012 /* WriteCategoryAppEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000010 /* WriteCategoryAppEnum.swift */; };
+		A49000010000000000000021 /* OpenWriteIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000020 /* OpenWriteIntent.swift */; };
+		A49000010000000000000022 /* OpenWriteIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000020 /* OpenWriteIntent.swift */; };
+		A49000010000000000000032 /* SeepWriteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000030 /* SeepWriteControl.swift */; };
+		A49000010000000000000041 /* WriteDeepLinkOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000040 /* WriteDeepLinkOpener.swift */; };
+		A49000010000000000000051 /* SeepAppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000050 /* SeepAppShortcuts.swift */; };
+		A49000010000000000000061 /* WriteIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000060 /* WriteIntentTests.swift */; };
+		A49000010000000000000071 /* HomeViewModelWriteIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000070 /* HomeViewModelWriteIntentTests.swift */; };
 		B564CB2B6158D9460D8A98EF /* LinkPreviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87263216EFA8B155F202128 /* LinkPreviewCardView.swift */; };
 		B89A3D37506E9BE4C1E36C49 /* EmojiPinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */; };
 		BABC0A9A71B1F3DCC53A8FCB /* WishPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */; };
@@ -676,6 +685,13 @@
 		B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelBadgeTests.swift; sourceTree = "<group>"; };
 		A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelDeepLinkTests.swift; sourceTree = "<group>"; };
+		A49000010000000000000010 /* WriteCategoryAppEnum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteCategoryAppEnum.swift; sourceTree = "<group>"; };
+		A49000010000000000000020 /* OpenWriteIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenWriteIntent.swift; sourceTree = "<group>"; };
+		A49000010000000000000030 /* SeepWriteControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SeepWriteControl.swift; sourceTree = "<group>"; };
+		A49000010000000000000040 /* WriteDeepLinkOpener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteDeepLinkOpener.swift; sourceTree = "<group>"; };
+		A49000010000000000000050 /* SeepAppShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SeepAppShortcuts.swift; sourceTree = "<group>"; };
+		A49000010000000000000060 /* WriteIntentTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteIntentTests.swift; sourceTree = "<group>"; };
+		A49000010000000000000070 /* HomeViewModelWriteIntentTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelWriteIntentTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteReactorStepsTests.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockWishService.swift; sourceTree = "<group>"; };
 		B7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishEditReactorStepsTests.swift; sourceTree = "<group>"; };
@@ -853,6 +869,8 @@
 				B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */,
 				B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */,
 				A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */,
+				A49000010000000000000060 /* WriteIntentTests.swift */,
+				A49000010000000000000070 /* HomeViewModelWriteIntentTests.swift */,
 				A4800001000000000000001C /* WidgetCheckActionTests.swift */,
 				A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */,
 				A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */,
@@ -1046,6 +1064,7 @@
 				6E283AFA25F2047900955B57 /* SceneDelegate.swift */,
 				6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */,
 				6E283B0625F2047A00955B57 /* Info.plist */,
+				A49000010000000000000090 /* intents */,
 			);
 			path = "seep-ios";
 			sourceTree = "<group>";
@@ -1332,9 +1351,29 @@
 				6EC9BF9B26BE0432007C7708 /* medium-vertical-widget */,
 				6E6CBE30274A0088005D7BFE /* small-remain-widget */,
 				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
+				A49000010000000000000080 /* control-widget */,
 				A48000010000000000000080 /* check-widget */,
 			);
 			path = widget;
+			sourceTree = "<group>";
+		};
+		A49000010000000000000080 /* control-widget */ = {
+			isa = PBXGroup;
+			children = (
+				A49000010000000000000010 /* WriteCategoryAppEnum.swift */,
+				A49000010000000000000020 /* OpenWriteIntent.swift */,
+				A49000010000000000000030 /* SeepWriteControl.swift */,
+			);
+			path = "control-widget";
+			sourceTree = "<group>";
+		};
+		A49000010000000000000090 /* intents */ = {
+			isa = PBXGroup;
+			children = (
+				A49000010000000000000040 /* WriteDeepLinkOpener.swift */,
+				A49000010000000000000050 /* SeepAppShortcuts.swift */,
+			);
+			path = intents;
 			sourceTree = "<group>";
 		};
 		6EB50F0F26BD6BDA00F0096E /* small-write-widget */ = {
@@ -1907,6 +1946,8 @@
 				36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */,
 				36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */,
 				36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */,
+				A49000010000000000000061 /* WriteIntentTests.swift in Sources */,
+				A49000010000000000000071 /* HomeViewModelWriteIntentTests.swift in Sources */,
 				46A000000000000000000010 /* AppLockPolicyTests.swift in Sources */,
 				46A000000000000000000012 /* AppLockViewModelTests.swift in Sources */,
 				46A000000000000000000014 /* AppLockBottomSheetViewModelTests.swift in Sources */,
@@ -2108,6 +2149,10 @@
 				36A000000000000000000011 /* WishPhotoStorage.swift in Sources */,
 				36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */,
 				36A000000000000000000013 /* WishPhotoView.swift in Sources */,
+				A49000010000000000000011 /* WriteCategoryAppEnum.swift in Sources */,
+				A49000010000000000000021 /* OpenWriteIntent.swift in Sources */,
+				A49000010000000000000041 /* WriteDeepLinkOpener.swift in Sources */,
+				A49000010000000000000051 /* SeepAppShortcuts.swift in Sources */,
 				46A000000000000000000002 /* AuthenticationManager.swift in Sources */,
 				46A000000000000000000004 /* AppLockPolicy.swift in Sources */,
 				46A000000000000000000006 /* AppLockViewModel.swift in Sources */,
@@ -2175,6 +2220,9 @@
 				41FEE210BA2773236C785FD0 /* SavingDTO.swift in Sources */,
 				D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */,
 				C3D8AD70BB8D652B921763D5 /* WishPlace.swift in Sources */,
+				A49000010000000000000012 /* WriteCategoryAppEnum.swift in Sources */,
+				A49000010000000000000022 /* OpenWriteIntent.swift in Sources */,
+				A49000010000000000000032 /* SeepWriteControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

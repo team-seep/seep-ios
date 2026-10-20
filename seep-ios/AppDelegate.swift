@@ -1,3 +1,4 @@
+import AppIntents
 import UIKit
 import UserNotifications
 
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.initilizeFirebase()
         self.copyDefaultToAppGroup()
         self.setupRealmConfig()
+        self.registerAppIntentDependencies()
         self.requestNotificationAuthorization()
         application.registerForRemoteNotifications()
         return true
@@ -36,6 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didDiscardSceneSessions sceneSessions: Set<UISceneSession>
     ) {
         
+    }
+    
+    /// 싶 적기 컨트롤·단축어(`OpenWriteIntent`)가 앱에 링크를 넘길 곳 (GH-49 R-11)
+    private func registerAppIntentDependencies() {
+        AppDependencyManager.shared.add(dependency: WriteDeepLinkOpener() as WriteDeepLinkOpening)
     }
     
     private func initilizeFirebase() {

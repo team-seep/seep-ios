@@ -563,7 +563,11 @@ final class HomeViewModel {
         }
         
         switch deepLink {
-        case .add(let category):
+        case .add(let category, _):
+            // 컨트롤·단축어로 열었으면 클릭 로그를 남긴다 (GH-49 TC-12, TC-13)
+            if let clickEvent = deepLink.writeIntentClickEvent {
+                dependency.logManager.sendEvent(event: clickEvent)
+            }
             output.route.send(.presentWrite(category))
         case .wish(let id, _):
             // 위젯이 갱신되기 전에 위시가 지워졌으면 홈만 보여준다 (GH-47 R-10, GH-48 R-9)
