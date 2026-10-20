@@ -152,4 +152,6 @@ enum LogObjectId: String {
     case addPhoto = "add_photo"
     case changePhoto = "change_photo"
     case deletePhoto = "delete_photo"
+    case controlWrite = "control_write"
+    case shortcutWrite = "shortcut_write"
 }

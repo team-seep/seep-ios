@@ -519,12 +519,16 @@ final class HomeViewModel {
         guard !reservedDeepLink.isEmpty else { return }
         dependency.preference.reservedDeepLink = ""
         
-        guard let urlComponents = URLComponents(string: reservedDeepLink),
-              urlComponents.host == "add",
-              let categoryValue = urlComponents.queryItems?.first(where: { $0.name == "category" })?.value,
-              let category = Category(rawValue: categoryValue) else { return }
+        guard let deepLink = WidgetDeepLink(string: reservedDeepLink) else { return }
         
-        output.route.send(.presentWrite(category))
+        switch deepLink {
+        case .add(let category, _):
+            // 컨트롤·단축어로 열었으면 클릭 로그를 남긴다 (GH-49 TC-12, TC-13)
+            if let clickEvent = deepLink.writeIntentClickEvent {
+                dependency.logManager.sendEvent(event: clickEvent)
+            }
+            output.route.send(.presentWrite(category))
+        }
     }
     
     private func createWishCellViewModels(wish: Wish) -> HomeWishCellViewModel {

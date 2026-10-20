@@ -67,6 +67,12 @@ final class WriteViewController: BaseVC, View, WriteCoordinator {
         })
     }
     
+    /// 싶 적기 컨트롤·단축어로 다시 열면 새로 띄우지 않고 카테고리만 바꾼다 (GH-49 R-5)
+    func changeCategory(_ category: Category) {
+        writeView.categoryView.moveActiveButton(category: category)
+        writeReactor.action.onNext(.tapCategory(category))
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
