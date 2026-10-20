@@ -17,6 +17,8 @@ extension HomeViewModel {
         let didTapDelete = PassthroughSubject<Int, Never>()
         let didTapSearch = PassthroughSubject<Void, Never>()
         let didTapBadgeCollection = PassthroughSubject<Void, Never>()
+        /// 앱이 떠 있을 때 위젯 링크가 저장되면 SceneDelegate 가 보낸다 (GH-50 R-2)
+        let handleReservedDeepLink = PassthroughSubject<Void, Never>()
         
         // From FinishNote
         let finishNoteDismissed = PassthroughSubject<Void, Never>()
@@ -151,6 +153,13 @@ final class HomeViewModel {
             .sink { (owner: HomeViewModel, _) in
                 owner.initializeBadgesIfNeeded()
                 owner.fetchWishDatas()
+                owner.handleDeepLinkIfExisted()
+            }
+            .store(in: &cancellables)
+        
+        input.handleReservedDeepLink
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
                 owner.handleDeepLinkIfExisted()
             }
             .store(in: &cancellables)
@@ -504,17 +513,18 @@ final class HomeViewModel {
         output.toast.send(Strings.Home.SleepingWish.Toast.release)
     }
     
+    /// 위젯 링크는 한 번만 처리하도록, 읽으면 유효하지 않은 링크라도 바로 비운다 (GH-50 R-3, R-4)
     private func handleDeepLinkIfExisted() {
         let reservedDeepLink = dependency.preference.reservedDeepLink
-        guard !reservedDeepLink.isEmpty,
-              let urlComponents = URLComponents(string: reservedDeepLink),
-              urlComponents.host == "add" else { return }
+        guard !reservedDeepLink.isEmpty else { return }
+        dependency.preference.reservedDeepLink = ""
         
-        if let categoryQuery = urlComponents.queryItems?.first(where: { $0.name == "category" }),
-           let category = Category(rawValue: categoryQuery.value ?? "") {
-            
-            output.route.send(.presentWrite(category))
-        }
+        guard let urlComponents = URLComponents(string: reservedDeepLink),
+              urlComponents.host == "add",
+              let categoryValue = urlComponents.queryItems?.first(where: { $0.name == "category" })?.value,
+              let category = Category(rawValue: categoryValue) else { return }
+        
+        output.route.send(.presentWrite(category))
     }
     
     private func createWishCellViewModels(wish: Wish) -> HomeWishCellViewModel {
