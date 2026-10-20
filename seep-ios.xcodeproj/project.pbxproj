@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46A000000000000000000002 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000001 /* AuthenticationManager.swift */; };
+		46A000000000000000000004 /* AppLockPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000003 /* AppLockPolicy.swift */; };
+		46A000000000000000000006 /* AppLockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000005 /* AppLockViewModel.swift */; };
+		46A000000000000000000008 /* AppLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000007 /* AppLockViewController.swift */; };
+		46A00000000000000000000A /* AppLockWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000009 /* AppLockWindow.swift */; };
+		46A00000000000000000000C /* AppLockBottomSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000B /* AppLockBottomSheetViewModel.swift */; };
+		46A00000000000000000000E /* AppLockBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000D /* AppLockBottomSheetViewController.swift */; };
+		46A000000000000000000010 /* AppLockPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000F /* AppLockPolicyTests.swift */; };
+		46A000000000000000000012 /* AppLockViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000011 /* AppLockViewModelTests.swift */; };
+		46A000000000000000000014 /* AppLockBottomSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000013 /* AppLockBottomSheetViewModelTests.swift */; };
+		46A000000000000000000016 /* HomeViewModelAppLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000015 /* HomeViewModelAppLockTests.swift */; };
+		46A000000000000000000018 /* MockAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000017 /* MockAuthenticationManager.swift */; };
 		021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */; };
 		042777C6C45215367A054571 /* SavingInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */; };
 		050B31AF2FDAB9358477F6EC /* HomeWishCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */; };
@@ -322,8 +334,6 @@
 		A48000010000000000000009 /* WidgetCheckStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000007 /* WidgetCheckStore.swift */; };
 		A4800001000000000000000B /* WidgetCheckAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000000A /* WidgetCheckAction.swift */; };
 		A4800001000000000000000C /* WidgetCheckAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000000A /* WidgetCheckAction.swift */; };
-		A4800001000000000000000E /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000000D /* WidgetDeepLink.swift */; };
-		A4800001000000000000000F /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000000D /* WidgetDeepLink.swift */; };
 		A48000010000000000000011 /* HomeWidgetCheckSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000010 /* HomeWidgetCheckSync.swift */; };
 		A48000010000000000000013 /* CheckWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000012 /* CheckWidget.swift */; };
 		A48000010000000000000015 /* CheckWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000014 /* CheckWidgetEntry.swift */; };
@@ -334,6 +344,17 @@
 		A4800001000000000000001F /* WidgetCheckRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */; };
 		A48000010000000000000021 /* HomeViewModelWidgetCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */; };
 		A480000100000000000000F1 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A480000100000000000000F2 /* RealmSwift */; };
+		A47000010000000000000002 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
+		A47000010000000000000003 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
+		A47000010000000000000005 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
+		A47000010000000000000006 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
+		A47000010000000000000008 /* LockScreenEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000007 /* LockScreenEntry.swift */; };
+		A4700001000000000000000A /* LockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000009 /* LockScreenProvider.swift */; };
+		A4700001000000000000000C /* LockScreenDdayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4700001000000000000000B /* LockScreenDdayWidget.swift */; };
+		A4700001000000000000000E /* LockScreenRemainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4700001000000000000000D /* LockScreenRemainWidget.swift */; };
+		A47000010000000000000010 /* LockScreenDdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4700001000000000000000F /* LockScreenDdayTests.swift */; };
+		A47000010000000000000012 /* WidgetDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000011 /* WidgetDeepLinkTests.swift */; };
+		A47000010000000000000014 /* HomeViewModelLockScreenDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -389,6 +410,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		46A000000000000000000001 /* AuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		46A000000000000000000003 /* AppLockPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockPolicy.swift; sourceTree = "<group>"; };
+		46A000000000000000000005 /* AppLockViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockViewModel.swift; sourceTree = "<group>"; };
+		46A000000000000000000007 /* AppLockViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockViewController.swift; sourceTree = "<group>"; };
+		46A000000000000000000009 /* AppLockWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockWindow.swift; sourceTree = "<group>"; };
+		46A00000000000000000000B /* AppLockBottomSheetViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockBottomSheetViewModel.swift; sourceTree = "<group>"; };
+		46A00000000000000000000D /* AppLockBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockBottomSheetViewController.swift; sourceTree = "<group>"; };
+		46A00000000000000000000F /* AppLockPolicyTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockPolicyTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000011 /* AppLockViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockViewModelTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000013 /* AppLockBottomSheetViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLockBottomSheetViewModelTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000015 /* HomeViewModelAppLockTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelAppLockTests.swift; sourceTree = "<group>"; };
+		46A000000000000000000017 /* MockAuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockAuthenticationManager.swift; sourceTree = "<group>"; };
 		0C381B8C5AAB2D1E1CFB2B01 /* SavingInputViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModel.swift; sourceTree = "<group>"; };
 		0EEA52F1FB92EB3929A83BCC /* SavingInputBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputBottomSheetViewController.swift; sourceTree = "<group>"; };
 		13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharePhotoLayoutTests.swift; sourceTree = "<group>"; };
@@ -668,7 +701,6 @@
 		A48000010000000000000004 /* WidgetCheckRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepository.swift; sourceTree = "<group>"; };
 		A48000010000000000000007 /* WidgetCheckStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckStore.swift; sourceTree = "<group>"; };
 		A4800001000000000000000A /* WidgetCheckAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckAction.swift; sourceTree = "<group>"; };
-		A4800001000000000000000D /* WidgetDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLink.swift; sourceTree = "<group>"; };
 		A48000010000000000000010 /* HomeWidgetCheckSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetCheckSync.swift; sourceTree = "<group>"; };
 		A48000010000000000000012 /* CheckWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidget.swift; sourceTree = "<group>"; };
 		A48000010000000000000014 /* CheckWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidgetEntry.swift; sourceTree = "<group>"; };
@@ -678,6 +710,15 @@
 		A4800001000000000000001C /* WidgetCheckActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckActionTests.swift; sourceTree = "<group>"; };
 		A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepositoryTests.swift; sourceTree = "<group>"; };
 		A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelWidgetCheckTests.swift; sourceTree = "<group>"; };
+		A47000010000000000000001 /* LockScreenDday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDday.swift; sourceTree = "<group>"; };
+		A47000010000000000000004 /* WidgetDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLink.swift; sourceTree = "<group>"; };
+		A47000010000000000000007 /* LockScreenEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenEntry.swift; sourceTree = "<group>"; };
+		A47000010000000000000009 /* LockScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenProvider.swift; sourceTree = "<group>"; };
+		A4700001000000000000000B /* LockScreenDdayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDdayWidget.swift; sourceTree = "<group>"; };
+		A4700001000000000000000D /* LockScreenRemainWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenRemainWidget.swift; sourceTree = "<group>"; };
+		A4700001000000000000000F /* LockScreenDdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDdayTests.swift; sourceTree = "<group>"; };
+		A47000010000000000000011 /* WidgetDeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLinkTests.swift; sourceTree = "<group>"; };
+		A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelLockScreenDeepLinkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -767,6 +808,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		46A000000000000000000019 /* app-lock */ = {
+			isa = PBXGroup;
+			children = (
+				46A000000000000000000003 /* AppLockPolicy.swift */,
+				46A000000000000000000005 /* AppLockViewModel.swift */,
+				46A000000000000000000007 /* AppLockViewController.swift */,
+				46A000000000000000000009 /* AppLockWindow.swift */,
+				46A00000000000000000000B /* AppLockBottomSheetViewModel.swift */,
+				46A00000000000000000000D /* AppLockBottomSheetViewController.swift */,
+			);
+			path = "app-lock";
+			sourceTree = "<group>";
+		};
 		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -802,6 +856,9 @@
 				A4800001000000000000001C /* WidgetCheckActionTests.swift */,
 				A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */,
 				A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */,
+				A4700001000000000000000F /* LockScreenDdayTests.swift */,
+				A47000010000000000000011 /* WidgetDeepLinkTests.swift */,
+				A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */,
 				8A3B02FBB10244E7A686280A /* WishLinkReactorTests.swift */,
 				9875DC27FAAB3A86BE095530 /* WishLinkViewModelTests.swift */,
 				A30E00010000000000000007 /* SleepingWishPolicyTests.swift */,
@@ -813,6 +870,10 @@
 				E887300E389AE7DADD5B08B8 /* WishPlaceReactorTests.swift */,
 				36A000000000000000000004 /* WishPhotoViewModelTests.swift */,
 				36A000000000000000000005 /* WishPhotoStorageTests.swift */,
+				46A00000000000000000000F /* AppLockPolicyTests.swift */,
+				46A000000000000000000011 /* AppLockViewModelTests.swift */,
+				46A000000000000000000013 /* AppLockBottomSheetViewModelTests.swift */,
+				46A000000000000000000015 /* HomeViewModelAppLockTests.swift */,
 			);
 			name = "seep-iosTests";
 			path = "seep-iosTests";
@@ -904,6 +965,7 @@
 				B35A0000000000000000001C /* badge */,
 				AA3CB289B5878937BF97BC1C /* wish-link */,
 				FCB9E166A9040B8706F9DB06 /* place */,
+				46A000000000000000000019 /* app-lock */,
 			);
 			path = features;
 			sourceTree = "<group>";
@@ -1177,7 +1239,8 @@
 			isa = PBXGroup;
 			children = (
 				A4800001000000000000000A /* WidgetCheckAction.swift */,
-				A4800001000000000000000D /* WidgetDeepLink.swift */,
+				A47000010000000000000001 /* LockScreenDday.swift */,
+				A47000010000000000000004 /* WidgetDeepLink.swift */,
 				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
 				6E80428F279D3072008A0EB4 /* HashtagType.swift */,
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
@@ -1251,6 +1314,7 @@
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
 				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
 				36A000000000000000000001 /* WishPhotoStorage.swift */,
+				46A000000000000000000001 /* AuthenticationManager.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
@@ -1264,6 +1328,7 @@
 				6EB50EF826BD549000F0096E /* Assets.xcassets */,
 				6E6D610427587C6000A0BFD9 /* extensions */,
 				6E7206CC275B455F009C7AFC /* medium-horizontal-widget */,
+				A47000010000000000000015 /* lockscreen-widget */,
 				6EC9BF9B26BE0432007C7708 /* medium-vertical-widget */,
 				6E6CBE30274A0088005D7BFE /* small-remain-widget */,
 				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
@@ -1424,6 +1489,7 @@
 				B9BD4F8C72208E876F987F33 /* MockLinkMetadataProvider.swift */,
 				420E67BF648DC24CA0FE0F9B /* MockPlaceSearchService.swift */,
 				36A000000000000000000006 /* MockWishPhotoStorage.swift */,
+				46A000000000000000000017 /* MockAuthenticationManager.swift */,
 			);
 			name = Mock;
 			path = Mock;
@@ -1564,6 +1630,17 @@
 				A4800001000000000000001A /* CheckWishIntents.swift */,
 			);
 			path = "check-widget";
+			sourceTree = "<group>";
+		};
+		A47000010000000000000015 /* lockscreen-widget */ = {
+			isa = PBXGroup;
+			children = (
+				A47000010000000000000007 /* LockScreenEntry.swift */,
+				A47000010000000000000009 /* LockScreenProvider.swift */,
+				A4700001000000000000000B /* LockScreenDdayWidget.swift */,
+				A4700001000000000000000D /* LockScreenRemainWidget.swift */,
+			);
+			path = "lockscreen-widget";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1781,6 +1858,9 @@
 				A4800001000000000000001D /* WidgetCheckActionTests.swift in Sources */,
 				A4800001000000000000001F /* WidgetCheckRepositoryTests.swift in Sources */,
 				A48000010000000000000021 /* HomeViewModelWidgetCheckTests.swift in Sources */,
+				A47000010000000000000010 /* LockScreenDdayTests.swift in Sources */,
+				A47000010000000000000012 /* WidgetDeepLinkTests.swift in Sources */,
+				A47000010000000000000014 /* HomeViewModelLockScreenDeepLinkTests.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B3 /* WishEditReactorStepsTests.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B2 /* MockWishService.swift in Sources */,
 				A7C1E2F3B4D5A6C7E8F9A0B1 /* WriteReactorStepsTests.swift in Sources */,
@@ -1827,6 +1907,11 @@
 				36A000000000000000000014 /* WishPhotoViewModelTests.swift in Sources */,
 				36A000000000000000000015 /* WishPhotoStorageTests.swift in Sources */,
 				36A000000000000000000016 /* MockWishPhotoStorage.swift in Sources */,
+				46A000000000000000000010 /* AppLockPolicyTests.swift in Sources */,
+				46A000000000000000000012 /* AppLockViewModelTests.swift in Sources */,
+				46A000000000000000000014 /* AppLockBottomSheetViewModelTests.swift in Sources */,
+				46A000000000000000000016 /* HomeViewModelAppLockTests.swift in Sources */,
+				46A000000000000000000018 /* MockAuthenticationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1838,8 +1923,9 @@
 				A48000010000000000000005 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000008 /* WidgetCheckStore.swift in Sources */,
 				A4800001000000000000000B /* WidgetCheckAction.swift in Sources */,
-				A4800001000000000000000E /* WidgetDeepLink.swift in Sources */,
 				A48000010000000000000011 /* HomeWidgetCheckSync.swift in Sources */,
+				A47000010000000000000002 /* LockScreenDday.swift in Sources */,
+				A47000010000000000000005 /* WidgetDeepLink.swift in Sources */,
 				6EB50EFC26BD549000F0096E /* widget.intentdefinition in Sources */,
 				6E5DECFE264263F70005487F /* TagLabel.swift in Sources */,
 				6E41F28125FB873500CE1530 /* TextInputView.swift in Sources */,
@@ -2022,6 +2108,13 @@
 				36A000000000000000000011 /* WishPhotoStorage.swift in Sources */,
 				36A000000000000000000012 /* WishPhotoViewModel.swift in Sources */,
 				36A000000000000000000013 /* WishPhotoView.swift in Sources */,
+				46A000000000000000000002 /* AuthenticationManager.swift in Sources */,
+				46A000000000000000000004 /* AppLockPolicy.swift in Sources */,
+				46A000000000000000000006 /* AppLockViewModel.swift in Sources */,
+				46A000000000000000000008 /* AppLockViewController.swift in Sources */,
+				46A00000000000000000000A /* AppLockWindow.swift in Sources */,
+				46A00000000000000000000C /* AppLockBottomSheetViewModel.swift in Sources */,
+				46A00000000000000000000E /* AppLockBottomSheetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2033,12 +2126,17 @@
 				A48000010000000000000006 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000009 /* WidgetCheckStore.swift in Sources */,
 				A4800001000000000000000C /* WidgetCheckAction.swift in Sources */,
-				A4800001000000000000000F /* WidgetDeepLink.swift in Sources */,
 				A48000010000000000000013 /* CheckWidget.swift in Sources */,
 				A48000010000000000000015 /* CheckWidgetEntry.swift in Sources */,
 				A48000010000000000000017 /* CheckWidgetProvider.swift in Sources */,
 				A48000010000000000000019 /* CheckWidgetEntryView.swift in Sources */,
 				A4800001000000000000001B /* CheckWishIntents.swift in Sources */,
+				A47000010000000000000003 /* LockScreenDday.swift in Sources */,
+				A47000010000000000000006 /* WidgetDeepLink.swift in Sources */,
+				A47000010000000000000008 /* LockScreenEntry.swift in Sources */,
+				A4700001000000000000000A /* LockScreenProvider.swift in Sources */,
+				A4700001000000000000000C /* LockScreenDdayWidget.swift in Sources */,
+				A4700001000000000000000E /* LockScreenRemainWidget.swift in Sources */,
 				6E7206CB275B3696009C7AFC /* DateExtensions.swift in Sources */,
 				6E7206CA275B3374009C7AFC /* ViewExtensions.swift in Sources */,
 				6E7206D7275B48C6009C7AFC /* WishHorizontalItemView.swift in Sources */,
@@ -2269,7 +2367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev";
 				PRODUCT_NAME = "seep-ios-dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2297,7 +2395,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2324,7 +2422,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = dev.realm;
@@ -2351,7 +2449,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = default.realm;

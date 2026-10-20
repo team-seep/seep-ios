@@ -42,6 +42,9 @@ extension HomeViewModel {
         let didTapYearReviewBanner = PassthroughSubject<Void, Never>()
         let didTapCloseYearReviewBanner = PassthroughSubject<Void, Never>()
         let yearReviewDismissed = PassthroughSubject<Void, Never>()
+        
+        // 앱 잠금 (GH-46)
+        let didTapAppLock = PassthroughSubject<Void, Never>()
     }
     
     struct Output {
@@ -88,6 +91,7 @@ extension HomeViewModel {
         case pushWishSearch(WishSearchViewModel)
         case presentYearReview(YearReviewViewModel)
         case pushPlaceMap(PlaceMapViewModel)
+        case presentAppLockBottomSheet(AppLockBottomSheetViewModel)
         case showErrorAlert(Error)
     }
     
@@ -107,6 +111,8 @@ extension HomeViewModel {
         let photoStorage: WishPhotoStorage
         /// 체크 위젯이 App Group 에 남긴 기록 (GH-48)
         let widgetCheckStore: WidgetCheckStore
+        /// 잠금 시트에 넘긴다 (GH-46 R-9)
+        let authenticationManager: AuthenticationManagerProtocol
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
@@ -119,7 +125,8 @@ extension HomeViewModel {
             linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared,
             dateProvider: @escaping () -> Date = Date.init,
             photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
-            widgetCheckStore: WidgetCheckStore = .shared
+            widgetCheckStore: WidgetCheckStore = .shared,
+            authenticationManager: AuthenticationManagerProtocol = AuthenticationManager.shared
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
@@ -132,6 +139,7 @@ extension HomeViewModel {
             self.dateProvider = dateProvider
             self.photoStorage = photoStorage
             self.widgetCheckStore = widgetCheckStore
+            self.authenticationManager = authenticationManager
         }
     }
 }
@@ -140,7 +148,10 @@ extension HomeViewModel {
 final class HomeViewModel {
     let input = Input()
     let output = Output()
-    lazy var headerViewModel = HomeFilterHeaderViewModel(config: .init(viewType: dependency.preference.viewType))
+    lazy var headerViewModel = HomeFilterHeaderViewModel(config: .init(
+        viewType: dependency.preference.viewType,
+        isAppLockEnabled: dependency.preference.isAppLockEnabled
+    ))
     private var state: State
     private var dependency: Dependency
     /// 같은 카드를 다시 그릴 때 셀이 묶인 뷰모델을 그대로 쓰도록 들고 있는다
@@ -315,6 +326,13 @@ final class HomeViewModel {
             }
             .store(in: &cancellables)
         
+        input.didTapAppLock
+            .withUnretained(self)
+            .sink { (owner: HomeViewModel, _) in
+                owner.presentAppLockBottomSheet()
+            }
+            .store(in: &cancellables)
+        
         input.didTapYearReviewBanner
             .withUnretained(self)
             .sink { (owner: HomeViewModel, _) in
@@ -382,6 +400,10 @@ final class HomeViewModel {
         
         headerViewModel.output.didTapPlaceMap
             .subscribe(input.didTapPlaceMap)
+            .store(in: &headerViewModel.cancellables)
+        
+        headerViewModel.output.didTapAppLock
+            .subscribe(input.didTapAppLock)
             .store(in: &headerViewModel.cancellables)
         
         input.updateSortOrder
@@ -536,6 +558,9 @@ final class HomeViewModel {
         dependency.preference.reservedDeepLink = ""
         
         guard let deepLink = WidgetDeepLink(string: reservedDeepLink) else { return }
+        if let event = deepLink.source?.clickEvent {
+            dependency.logManager.sendEvent(event: event)
+        }
         
         switch deepLink {
         case .add(let category):
@@ -859,5 +884,21 @@ extension HomeViewModel {
         if let wish = result.finishNoteWish {
             presentFinishNoteBottomSheet(wish: wish)
         }
+    }
+}
+
+// MARK: App lock (GH-46)
+extension HomeViewModel {
+    private func presentAppLockBottomSheet() {
+        sendClickLog(objectId: .appLock)
+        let viewModel = AppLockBottomSheetViewModel(dependency: .init(
+            preference: dependency.preference,
+            authenticationManager: dependency.authenticationManager,
+            logManager: dependency.logManager
+        ))
+        viewModel.output.didChangeAppLock
+            .subscribe(headerViewModel.input.updateAppLock)
+            .store(in: &viewModel.cancellables)
+        output.route.send(.presentAppLockBottomSheet(viewModel))
     }
 }

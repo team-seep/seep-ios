@@ -66,6 +66,26 @@ final class Preference {
         }
     }
     
+    /// 앱 잠금(Face ID·기기 암호)을 켰는지 (GH-46 R-9)
+    var isAppLockEnabled: Bool {
+        set {
+            instance.set(newValue, forKey: "isAppLockEnabled")
+        }
+        get {
+            instance.bool(forKey: "isAppLockEnabled")
+        }
+    }
+
+    /// 마지막으로 백그라운드에 들어간 시각. 돌아올 때 60초가 지났으면 잠근다 (GH-46 R-5)
+    var appLockBackgroundAt: Date? {
+        set {
+            instance.set(newValue, forKey: "appLockBackgroundAt")
+        }
+        get {
+            instance.object(forKey: "appLockBackgroundAt") as? Date
+        }
+    }
+
     /// 업데이트 직후 이미 얻은 배지를 축하함으로 넘기는 처리를 했는지 (GH-35 R-8)
     var isBadgeInitialized: Bool {
         set {

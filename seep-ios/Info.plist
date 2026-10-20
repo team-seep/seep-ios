@@ -28,6 +28,8 @@
 	<string>위시 날짜를 캘린더에 일정으로 추가하기 위해 캘린더 접근이 필요해요.</string>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>위시 날짜를 캘린더에 일정으로 추가하기 위해 캘린더 접근이 필요해요.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>싶을 잠가두면 앱을 열 때 Face ID로 확인해요.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>공유할 이미지를 만들기 위해 앨범에 접근이 필요해요.</string>
 	<key>REALM_NAME</key>

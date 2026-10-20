@@ -1,17 +1,18 @@
 import Foundation
 
 /// 위젯 탭 링크(`widget://…`). 위젯은 이 타입으로 URL 을 만들고, 앱은 같은 타입으로 읽는다 (GH-47 R-11, GH-48 R-9)
-/// #53(GH-47)과 같은 타입이다. 늦게 머지되는 쪽이 `Source` 케이스를 합친다.
 enum WidgetDeepLink: Equatable {
     /// 바로 적기 위젯 → 작성 화면. `widget://add?category=…`
     case add(Category)
-    /// 위젯의 위시 줄 → 위시 상세. `widget://wish?id=…&source=…`
+    /// 잠금화면 D-day 위젯·체크 위젯의 위시 줄 → 위시 상세. `widget://wish?id=…&source=…`
     case wish(id: String, source: Source?)
     /// 홈만 연다. `widget://home?source=…`
     case home(source: Source?)
 
-    /// 어느 위젯에서 열렸는지
+    /// 어느 위젯에서 열렸는지. 앱이 클릭 로그로 남긴다
     enum Source: String {
+        case lockscreenDday = "lockscreen_dday"
+        case lockscreenRemain = "lockscreen_remain"
         case checkWidget = "check_widget"
     }
 

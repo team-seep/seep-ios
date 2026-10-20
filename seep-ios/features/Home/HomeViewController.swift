@@ -473,6 +473,8 @@ extension HomeViewController {
             presentYearReview(viewModel: viewModel)
         case .pushPlaceMap(let viewModel):
             navigationController?.pushViewController(PlaceMapViewController(viewModel: viewModel), animated: true)
+        case .presentAppLockBottomSheet(let viewModel):
+            presentPanModal(AppLockBottomSheetViewController(viewModel: viewModel))
         case .showErrorAlert(let error):
             showErrorAlert(error)
         }
