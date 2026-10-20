@@ -270,6 +270,75 @@ internal enum Strings {
   internal static let wrtiePlaceholderMemo = Strings.tr("Localization", "wrtie_placeholder_memo", fallback: "필요한 정보가 또 있나요? (선택)")
   /// 차근차근 적어봐요!
   internal static let wrtieTitleBold = Strings.tr("Localization", "wrtie_title_bold", fallback: "차근차근 적어봐요!")
+  internal enum AppLock {
+    /// 싶 잠금을 확인할게요
+    internal static let reason = Strings.tr("Localization", "app_lock.reason", fallback: "싶 잠금을 확인할게요")
+    internal enum Biometry {
+      /// Face ID
+      internal static let faceId = Strings.tr("Localization", "app_lock.biometry.face_id", fallback: "Face ID")
+      /// 기기 암호
+      internal static let passcode = Strings.tr("Localization", "app_lock.biometry.passcode", fallback: "기기 암호")
+      /// Touch ID
+      internal static let touchId = Strings.tr("Localization", "app_lock.biometry.touch_id", fallback: "Touch ID")
+    }
+    internal enum Home {
+      /// 앱 잠금
+      internal static let accessibilityOff = Strings.tr("Localization", "app_lock.home.accessibility_off", fallback: "앱 잠금")
+      /// 앱 잠금 켜짐
+      internal static let accessibilityOn = Strings.tr("Localization", "app_lock.home.accessibility_on", fallback: "앱 잠금 켜짐")
+    }
+    internal enum Screen {
+      /// %@로 확인하면 열려요
+      internal static func descriptionFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "app_lock.screen.description_format", String(describing: p1), fallback: "%@로 확인하면 열려요")
+      }
+      /// 싶이 잠겨 있어요
+      internal static let title = Strings.tr("Localization", "app_lock.screen.title", fallback: "싶이 잠겨 있어요")
+      /// 잠겨 있어요
+      internal static let titleBold = Strings.tr("Localization", "app_lock.screen.title_bold", fallback: "잠겨 있어요")
+      /// %@로 열기
+      internal static func unlockButtonFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "app_lock.screen.unlock_button_format", String(describing: p1), fallback: "%@로 열기")
+      }
+    }
+    internal enum Sheet {
+      /// 닫기
+      internal static let close = Strings.tr("Localization", "app_lock.sheet.close", fallback: "닫기")
+      /// 잠금 끄기
+      internal static let disableButton = Strings.tr("Localization", "app_lock.sheet.disable_button", fallback: "잠금 끄기")
+      /// 잠금을 끄면 앱을 열 때 더 묻지 않아요.
+      /// 끄기 전에 한 번 더 확인할게요.
+      internal static let disableDescription = Strings.tr("Localization", "app_lock.sheet.disable_description", fallback: "잠금을 끄면 앱을 열 때 더 묻지 않아요.\n끄기 전에 한 번 더 확인할게요.")
+      /// 지금 싶이
+      /// 잠겨 있어요
+      internal static let disableTitle = Strings.tr("Localization", "app_lock.sheet.disable_title", fallback: "지금 싶이\n잠겨 있어요")
+      /// 잠겨 있어요
+      internal static let disableTitleBold = Strings.tr("Localization", "app_lock.sheet.disable_title_bold", fallback: "잠겨 있어요")
+      /// %@로 잠그기
+      internal static func enableButtonFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "app_lock.sheet.enable_button_format", String(describing: p1), fallback: "%@로 잠그기")
+      }
+      /// 앱을 열 때 %@나 기기 암호를 물어봐요.
+      /// 홈 화면 위젯은 잠금과 상관없이 보여요.
+      internal static func enableDescriptionFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "app_lock.sheet.enable_description_format", String(describing: p1), fallback: "앱을 열 때 %@나 기기 암호를 물어봐요.\n홈 화면 위젯은 잠금과 상관없이 보여요.")
+      }
+      /// 앱을 열 때 기기 암호를 물어봐요.
+      /// 홈 화면 위젯은 잠금과 상관없이 보여요.
+      internal static let enableDescriptionPasscode = Strings.tr("Localization", "app_lock.sheet.enable_description_passcode", fallback: "앱을 열 때 기기 암호를 물어봐요.\n홈 화면 위젯은 잠금과 상관없이 보여요.")
+      /// 싶을 나만 볼 수 있게
+      /// 잠가둘까요?
+      internal static let enableTitle = Strings.tr("Localization", "app_lock.sheet.enable_title", fallback: "싶을 나만 볼 수 있게\n잠가둘까요?")
+      /// 잠가둘까요?
+      internal static let enableTitleBold = Strings.tr("Localization", "app_lock.sheet.enable_title_bold", fallback: "잠가둘까요?")
+      /// 다음에 할게요
+      internal static let later = Strings.tr("Localization", "app_lock.sheet.later", fallback: "다음에 할게요")
+    }
+    internal enum Toast {
+      /// 기기 암호를 먼저 설정해 주세요
+      internal static let noPasscode = Strings.tr("Localization", "app_lock.toast.no_passcode", fallback: "기기 암호를 먼저 설정해 주세요")
+    }
+  }
   internal enum Badge {
     /// D-day
     internal static let dday = Strings.tr("Localization", "badge.dday", fallback: "D-day")
@@ -412,6 +481,26 @@ internal enum Strings {
       /// 링크
       internal static let title = Strings.tr("Localization", "detail.link.title", fallback: "링크")
     }
+    internal enum Photo {
+      /// ＋ 사진 붙이기
+      internal static let add = Strings.tr("Localization", "detail.photo.add", fallback: "＋ 사진 붙이기")
+      /// 이루고 싶은 장면을 한 장 붙여둬요
+      internal static let addDescription = Strings.tr("Localization", "detail.photo.add_description", fallback: "이루고 싶은 장면을 한 장 붙여둬요")
+      /// 사진은 이 기기에만 저장돼요.
+      internal static let caption = Strings.tr("Localization", "detail.photo.caption", fallback: "사진은 이 기기에만 저장돼요.")
+      /// 바꾸기
+      internal static let change = Strings.tr("Localization", "detail.photo.change", fallback: "바꾸기")
+      /// 사진 지우기
+      internal static let delete = Strings.tr("Localization", "detail.photo.delete", fallback: "사진 지우기")
+      /// 사진
+      internal static let title = Strings.tr("Localization", "detail.photo.title", fallback: "사진")
+      internal enum Error {
+        /// 사진을 불러오지 못했어요. 다른 사진을 골라주세요.
+        internal static let invalidImage = Strings.tr("Localization", "detail.photo.error.invalid_image", fallback: "사진을 불러오지 못했어요. 다른 사진을 골라주세요.")
+        /// 사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.
+        internal static let writeFailed = Strings.tr("Localization", "detail.photo.error.write_failed", fallback: "사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.")
+      }
+    }
     internal enum Place {
       /// 바꾸기
       internal static let change = Strings.tr("Localization", "detail.place.change", fallback: "바꾸기")
@@ -435,26 +524,6 @@ internal enum Strings {
         internal static let title = Strings.tr("Localization", "detail.place.search.title", fallback: "어디로\n가고 싶어요?")
         /// 가고 싶어요?
         internal static let titleBold = Strings.tr("Localization", "detail.place.search.title_bold", fallback: "가고 싶어요?")
-      }
-    }
-    internal enum Photo {
-      /// ＋ 사진 붙이기
-      internal static let add = Strings.tr("Localization", "detail.photo.add", fallback: "＋ 사진 붙이기")
-      /// 이루고 싶은 장면을 한 장 붙여둬요
-      internal static let addDescription = Strings.tr("Localization", "detail.photo.add_description", fallback: "이루고 싶은 장면을 한 장 붙여둬요")
-      /// 사진은 이 기기에만 저장돼요.
-      internal static let caption = Strings.tr("Localization", "detail.photo.caption", fallback: "사진은 이 기기에만 저장돼요.")
-      /// 바꾸기
-      internal static let change = Strings.tr("Localization", "detail.photo.change", fallback: "바꾸기")
-      /// 사진 지우기
-      internal static let delete = Strings.tr("Localization", "detail.photo.delete", fallback: "사진 지우기")
-      /// 사진
-      internal static let title = Strings.tr("Localization", "detail.photo.title", fallback: "사진")
-      internal enum Error {
-        /// 사진을 불러오지 못했어요. 다른 사진을 골라주세요.
-        internal static let invalidImage = Strings.tr("Localization", "detail.photo.error.invalid_image", fallback: "사진을 불러오지 못했어요. 다른 사진을 골라주세요.")
-        /// 사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.
-        internal static let writeFailed = Strings.tr("Localization", "detail.photo.error.write_failed", fallback: "사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.")
       }
     }
     internal enum Saving {
@@ -609,10 +678,6 @@ internal enum Strings {
         return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
       }
     }
-    internal enum Search {
-      /// 위시 검색
-      internal static let accessibility = Strings.tr("Localization", "home.search.accessibility", fallback: "위시 검색")
-    }
     internal enum Pin {
       /// 고정은 3개까지 할 수 있어요
       internal static let limitToast = Strings.tr("Localization", "home.pin.limit_toast", fallback: "고정은 3개까지 할 수 있어요")
@@ -620,6 +685,10 @@ internal enum Strings {
       internal static let pin = Strings.tr("Localization", "home.pin.pin", fallback: "맨 위에 고정")
       /// 고정 해제
       internal static let unpin = Strings.tr("Localization", "home.pin.unpin", fallback: "고정 해제")
+    }
+    internal enum Search {
+      /// 위시 검색
+      internal static let accessibility = Strings.tr("Localization", "home.search.accessibility", fallback: "위시 검색")
     }
     internal enum SleepingWish {
       /// %d일째 그대로예요
@@ -709,6 +778,22 @@ internal enum Strings {
       }
     }
   }
+  internal enum PlaceMap {
+    /// 뒤로
+    internal static let back = Strings.tr("Localization", "place_map.back", fallback: "뒤로")
+    /// %@ · %@
+    internal static func cardSubtitleFormat(_ p1: Any, _ p2: Any) -> String {
+      return Strings.tr("Localization", "place_map.card_subtitle_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@")
+    }
+    /// 장소를 붙인 곳 %d곳
+    internal static func countFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "place_map.count_format", p1, fallback: "장소를 붙인 곳 %d곳")
+    }
+    /// 아직 장소를 붙인 곳이 없어요.
+    internal static let empty = Strings.tr("Localization", "place_map.empty", fallback: "아직 장소를 붙인 곳이 없어요.")
+    /// 가고 싶은 곳 지도
+    internal static let title = Strings.tr("Localization", "place_map.title", fallback: "가고 싶은 곳 지도")
+  }
   internal enum WishSearch {
     /// 제목·메모·해시태그에서 찾아봤어요
     internal static let emptyDescription = Strings.tr("Localization", "wish_search.empty_description", fallback: "제목·메모·해시태그에서 찾아봤어요")
@@ -730,22 +815,6 @@ internal enum Strings {
     internal static func resultCountHighlightFormat(_ p1: Int) -> String {
       return Strings.tr("Localization", "wish_search.result_count_highlight_format", p1, fallback: "%d개")
     }
-  }
-  internal enum PlaceMap {
-    /// 뒤로
-    internal static let back = Strings.tr("Localization", "place_map.back", fallback: "뒤로")
-    /// %@ · %@
-    internal static func cardSubtitleFormat(_ p1: Any, _ p2: Any) -> String {
-      return Strings.tr("Localization", "place_map.card_subtitle_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@")
-    }
-    /// 장소를 붙인 곳 %d곳
-    internal static func countFormat(_ p1: Int) -> String {
-      return Strings.tr("Localization", "place_map.count_format", p1, fallback: "장소를 붙인 곳 %d곳")
-    }
-    /// 아직 장소를 붙인 곳이 없어요.
-    internal static let empty = Strings.tr("Localization", "place_map.empty", fallback: "아직 장소를 붙인 곳이 없어요.")
-    /// 가고 싶은 곳 지도
-    internal static let title = Strings.tr("Localization", "place_map.title", fallback: "가고 싶은 곳 지도")
   }
   internal enum Write {
     internal enum Link {

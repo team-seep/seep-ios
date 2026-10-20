@@ -3,6 +3,9 @@ import WidgetKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    /// 앱 잠금 (GH-46). 잠금 화면은 별도 윈도우로 앱 전체를 덮는다
+    private let appLockViewModel = AppLockViewModel()
+    private var appLockWindow: AppLockWindow?
     
     func scene(
         _ scene: UIScene,
@@ -15,7 +18,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.windowScene = windowScene
         self.window?.rootViewController = SplashVC.instance()
         self.window?.makeKeyAndVisible()
-        
+        self.appLockWindow = AppLockWindow(
+            windowScene: windowScene,
+            mainWindow: self.window,
+            viewModel: self.appLockViewModel
+        )
+
         self.handleDeepLink(urlContexts: connectionOptions.urlContexts)
     }
     
@@ -34,6 +42,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         ) { [weak window] in
             window?.makeKeyAndVisible()
         }
+        // 콜드 스타트 잠금은 스플래시 다음, 홈이 뜨는 순간에 덮는다 (GH-46 R-5)
+        appLockViewModel.input.didShowMain.send(())
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -42,6 +52,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         WidgetCenter.shared.reloadAllTimelines()
+        appLockViewModel.input.didEnterBackground.send(())
+    }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        appLockViewModel.input.willResignActive.send(())
+    }
+    
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        appLockViewModel.input.willEnterForeground.send(())
+    }
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        appLockViewModel.input.didBecomeActive.send(())
     }
     
     /// 위젯 링크는 Preference 에 남겨 홈이 처리한다. 냉시작이면 홈 첫 로드에서, 홈이 이미 떠 있으면 바로 (GH-50 R-1, R-2)
