@@ -326,6 +326,24 @@
 		EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */; };
 		F08E650BB4343D5016548B9C /* AmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */; };
 		F7638EF80298FAC76DCE7374 /* PlaceMapWishCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD815F881A394AC0835EFBFB /* PlaceMapWishCardView.swift */; };
+		A48000010000000000000002 /* RealmConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000001 /* RealmConfiguration.swift */; };
+		A48000010000000000000003 /* RealmConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000001 /* RealmConfiguration.swift */; };
+		A48000010000000000000005 /* WidgetCheckRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000004 /* WidgetCheckRepository.swift */; };
+		A48000010000000000000006 /* WidgetCheckRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000004 /* WidgetCheckRepository.swift */; };
+		A48000010000000000000008 /* WidgetCheckStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000007 /* WidgetCheckStore.swift */; };
+		A48000010000000000000009 /* WidgetCheckStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000007 /* WidgetCheckStore.swift */; };
+		A4800001000000000000000B /* WidgetCheckAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000000A /* WidgetCheckAction.swift */; };
+		A4800001000000000000000C /* WidgetCheckAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000000A /* WidgetCheckAction.swift */; };
+		A48000010000000000000011 /* HomeWidgetCheckSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000010 /* HomeWidgetCheckSync.swift */; };
+		A48000010000000000000013 /* CheckWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000012 /* CheckWidget.swift */; };
+		A48000010000000000000015 /* CheckWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000014 /* CheckWidgetEntry.swift */; };
+		A48000010000000000000017 /* CheckWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000016 /* CheckWidgetProvider.swift */; };
+		A48000010000000000000019 /* CheckWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000018 /* CheckWidgetEntryView.swift */; };
+		A4800001000000000000001B /* CheckWishIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000001A /* CheckWishIntents.swift */; };
+		A4800001000000000000001D /* WidgetCheckActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000001C /* WidgetCheckActionTests.swift */; };
+		A4800001000000000000001F /* WidgetCheckRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */; };
+		A48000010000000000000021 /* HomeViewModelWidgetCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */; };
+		A480000100000000000000F1 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A480000100000000000000F2 /* RealmSwift */; };
 		A47000010000000000000002 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
 		A47000010000000000000003 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
 		A47000010000000000000005 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
@@ -679,6 +697,19 @@
 		F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
 		FC6DC80E62B2CF061F5C0305 /* HomeWishCellViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeWishCellViewModelTests.swift; sourceTree = "<group>"; };
 		FDC2A14DCF464D9855597347 /* SavingInputViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SavingInputViewModelTests.swift; sourceTree = "<group>"; };
+		A48000010000000000000001 /* RealmConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfiguration.swift; sourceTree = "<group>"; };
+		A48000010000000000000004 /* WidgetCheckRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepository.swift; sourceTree = "<group>"; };
+		A48000010000000000000007 /* WidgetCheckStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckStore.swift; sourceTree = "<group>"; };
+		A4800001000000000000000A /* WidgetCheckAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckAction.swift; sourceTree = "<group>"; };
+		A48000010000000000000010 /* HomeWidgetCheckSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetCheckSync.swift; sourceTree = "<group>"; };
+		A48000010000000000000012 /* CheckWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidget.swift; sourceTree = "<group>"; };
+		A48000010000000000000014 /* CheckWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidgetEntry.swift; sourceTree = "<group>"; };
+		A48000010000000000000016 /* CheckWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidgetProvider.swift; sourceTree = "<group>"; };
+		A48000010000000000000018 /* CheckWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidgetEntryView.swift; sourceTree = "<group>"; };
+		A4800001000000000000001A /* CheckWishIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWishIntents.swift; sourceTree = "<group>"; };
+		A4800001000000000000001C /* WidgetCheckActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckActionTests.swift; sourceTree = "<group>"; };
+		A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepositoryTests.swift; sourceTree = "<group>"; };
+		A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelWidgetCheckTests.swift; sourceTree = "<group>"; };
 		A47000010000000000000001 /* LockScreenDday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDday.swift; sourceTree = "<group>"; };
 		A47000010000000000000004 /* WidgetDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLink.swift; sourceTree = "<group>"; };
 		A47000010000000000000007 /* LockScreenEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenEntry.swift; sourceTree = "<group>"; };
@@ -770,6 +801,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D6707DFD528EF1CAFA6EAF4 /* Foundation.framework in Frameworks */,
+				A480000100000000000000F1 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -821,6 +853,9 @@
 				B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */,
 				B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */,
 				A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */,
+				A4800001000000000000001C /* WidgetCheckActionTests.swift */,
+				A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */,
+				A48000010000000000000020 /* HomeViewModelWidgetCheckTests.swift */,
 				A4700001000000000000000F /* LockScreenDdayTests.swift */,
 				A47000010000000000000011 /* WidgetDeepLinkTests.swift */,
 				A47000010000000000000013 /* HomeViewModelLockScreenDeepLinkTests.swift */,
@@ -864,6 +899,7 @@
 		6E274E5325F20B1E007DC880 /* uilts */ = {
 			isa = PBXGroup;
 			children = (
+				A48000010000000000000007 /* WidgetCheckStore.swift */,
 				6E274E5425F20B31007DC880 /* AlertUtils.swift */,
 				E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */,
 				6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */,
@@ -950,6 +986,7 @@
 		6E274E8C25F214FB007DC880 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				A48000010000000000000010 /* HomeWidgetCheckSync.swift */,
 				6E6DA12E279FB4B00091F2B6 /* Subview */,
 				A25F00010000000000000007 /* FinishNote */,
 				6E274E8D25F21506007DC880 /* HomeView.swift */,
@@ -1051,6 +1088,8 @@
 		6E489D9A2CCE25CB00965995 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				A48000010000000000000001 /* RealmConfiguration.swift */,
+				A48000010000000000000004 /* WidgetCheckRepository.swift */,
 				6E489D9B2CCE25D300965995 /* WishRepository.swift */,
 				6E42CCF927BF4162008C1F5F /* RemoteConfigRepository.swift */,
 			);
@@ -1199,6 +1238,7 @@
 		6E804288279D2578008A0EB4 /* presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A4800001000000000000000A /* WidgetCheckAction.swift */,
 				A47000010000000000000001 /* LockScreenDday.swift */,
 				A47000010000000000000004 /* WidgetDeepLink.swift */,
 				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
@@ -1292,6 +1332,7 @@
 				6EC9BF9B26BE0432007C7708 /* medium-vertical-widget */,
 				6E6CBE30274A0088005D7BFE /* small-remain-widget */,
 				6EB50F0F26BD6BDA00F0096E /* small-write-widget */,
+				A48000010000000000000080 /* check-widget */,
 			);
 			path = widget;
 			sourceTree = "<group>";
@@ -1579,6 +1620,18 @@
 			path = place;
 			sourceTree = "<group>";
 		};
+		A48000010000000000000080 /* check-widget */ = {
+			isa = PBXGroup;
+			children = (
+				A48000010000000000000012 /* CheckWidget.swift */,
+				A48000010000000000000014 /* CheckWidgetEntry.swift */,
+				A48000010000000000000016 /* CheckWidgetProvider.swift */,
+				A48000010000000000000018 /* CheckWidgetEntryView.swift */,
+				A4800001000000000000001A /* CheckWishIntents.swift */,
+			);
+			path = "check-widget";
+			sourceTree = "<group>";
+		};
 		A47000010000000000000015 /* lockscreen-widget */ = {
 			isa = PBXGroup;
 			children = (
@@ -1654,6 +1707,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				6E59E9422CD500A8006AA02D /* Error */,
+			);
 			name = widgetExtension;
 			productName = widgetExtension;
 			productReference = 6EB50EEF26BD548F00F0096E /* widgetExtension.appex */;
@@ -1676,6 +1732,9 @@
 				B1C2D3E4F5A6B7C8D9E0F1A2 /* Log */,
 			);
 			name = "seep-iosTests";
+			packageProductDependencies = (
+				A480000100000000000000F2 /* RealmSwift */,
+			);
 			productName = "seep-iosTests";
 			productReference = 3C76D73EAF4C8C916AA05E07 /* seep-iosTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1796,6 +1855,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4800001000000000000001D /* WidgetCheckActionTests.swift in Sources */,
+				A4800001000000000000001F /* WidgetCheckRepositoryTests.swift in Sources */,
+				A48000010000000000000021 /* HomeViewModelWidgetCheckTests.swift in Sources */,
 				A47000010000000000000010 /* LockScreenDdayTests.swift in Sources */,
 				A47000010000000000000012 /* WidgetDeepLinkTests.swift in Sources */,
 				A47000010000000000000014 /* HomeViewModelLockScreenDeepLinkTests.swift in Sources */,
@@ -1857,6 +1919,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A48000010000000000000002 /* RealmConfiguration.swift in Sources */,
+				A48000010000000000000005 /* WidgetCheckRepository.swift in Sources */,
+				A48000010000000000000008 /* WidgetCheckStore.swift in Sources */,
+				A4800001000000000000000B /* WidgetCheckAction.swift in Sources */,
+				A48000010000000000000011 /* HomeWidgetCheckSync.swift in Sources */,
 				A47000010000000000000002 /* LockScreenDday.swift in Sources */,
 				A47000010000000000000005 /* WidgetDeepLink.swift in Sources */,
 				6EB50EFC26BD549000F0096E /* widget.intentdefinition in Sources */,
@@ -2055,6 +2122,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A48000010000000000000003 /* RealmConfiguration.swift in Sources */,
+				A48000010000000000000006 /* WidgetCheckRepository.swift in Sources */,
+				A48000010000000000000009 /* WidgetCheckStore.swift in Sources */,
+				A4800001000000000000000C /* WidgetCheckAction.swift in Sources */,
+				A48000010000000000000013 /* CheckWidget.swift in Sources */,
+				A48000010000000000000015 /* CheckWidgetEntry.swift in Sources */,
+				A48000010000000000000017 /* CheckWidgetProvider.swift in Sources */,
+				A48000010000000000000019 /* CheckWidgetEntryView.swift in Sources */,
+				A4800001000000000000001B /* CheckWishIntents.swift in Sources */,
 				A47000010000000000000003 /* LockScreenDday.swift in Sources */,
 				A47000010000000000000006 /* WidgetDeepLink.swift in Sources */,
 				A47000010000000000000008 /* LockScreenEntry.swift in Sources */,
@@ -2667,6 +2743,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E74E20D2763844E00D872D5 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		A480000100000000000000F2 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E1E40082CD65EE9008BCC77 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

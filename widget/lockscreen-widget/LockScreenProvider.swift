@@ -29,13 +29,8 @@ struct LockScreenProvider: TimelineProvider {
     }
 
     private func generateEntry(now: Date) -> LockScreenEntry {
-        let realmPath = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
-            .appendingPathComponent(Bundle.realmName)
-        var realmConfig = Realm.Configuration(fileURL: realmPath)
-        realmConfig.schemaVersion = 7
-
-        guard let realm = try? Realm(configuration: realmConfig) else {
+        // 앱·다른 위젯과 같은 App Group Realm 설정을 쓴다 (GH-48 RealmConfiguration)
+        guard let realm = try? Realm(configuration: RealmConfiguration.shared) else {
             return LockScreenEntry(date: now, wish: nil, remainCount: 0)
         }
         let wishes = Array(realm.objects(WishDTO.self).filter { !$0.isSuccess }.map { Wish(dto: $0) })
