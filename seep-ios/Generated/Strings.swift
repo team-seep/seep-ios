@@ -473,6 +473,20 @@ internal enum Strings {
         }
       }
     }
+    internal enum Dday {
+      /// %@이었어요
+      internal static func pastFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.dday.past_format", String(describing: p1), fallback: "%@이었어요")
+      }
+      /// D-Day
+      internal static let today = Strings.tr("Localization", "detail.dday.today", fallback: "D-Day")
+      /// %@까지
+      internal static func untilFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.dday.until_format", String(describing: p1), fallback: "%@까지")
+      }
+      /// 오늘까지
+      internal static let untilToday = Strings.tr("Localization", "detail.dday.until_today", fallback: "오늘까지")
+    }
     internal enum Link {
       /// 상품 링크 열기
       internal static let openAccessibility = Strings.tr("Localization", "detail.link.open_accessibility", fallback: "상품 링크 열기")
@@ -480,6 +494,20 @@ internal enum Strings {
       internal static let previewFailed = Strings.tr("Localization", "detail.link.preview_failed", fallback: "미리보기를 불러오지 못했어요. 탭하면 열 수 있어요")
       /// 링크
       internal static let title = Strings.tr("Localization", "detail.link.title", fallback: "링크")
+    }
+    internal enum Meta {
+      /// %@ 외 %d개
+      internal static func notificationMoreFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.meta.notification_more_format", String(describing: p1), p2, fallback: "%@ 외 %d개")
+      }
+    }
+    internal enum Nav {
+      /// 뒤로
+      internal static let back = Strings.tr("Localization", "detail.nav.back", fallback: "뒤로")
+      /// 수정
+      internal static let edit = Strings.tr("Localization", "detail.nav.edit", fallback: "수정")
+      /// 더보기
+      internal static let more = Strings.tr("Localization", "detail.nav.more", fallback: "더보기")
     }
     internal enum Photo {
       /// ＋ 사진 붙이기
@@ -587,6 +615,22 @@ internal enum Strings {
       internal enum Toast {
         /// 👏 목표 금액을 다 모았어요!
         internal static let completed = Strings.tr("Localization", "detail.saving.toast.completed", fallback: "👏 목표 금액을 다 모았어요!")
+      }
+    }
+    internal enum Section {
+      /// 열기
+      internal static let linkOpen = Strings.tr("Localization", "detail.section.link_open", fallback: "열기")
+      /// ＋ 장소 붙이기
+      internal static let placeAdd = Strings.tr("Localization", "detail.section.place_add", fallback: "＋ 장소 붙이기")
+      /// 변경
+      internal static let placeChange = Strings.tr("Localization", "detail.section.place_change", fallback: "변경")
+      /// 모은 돈
+      internal static let savings = Strings.tr("Localization", "detail.section.savings", fallback: "모은 돈")
+      /// ＋ 기록
+      internal static let savingsAdd = Strings.tr("Localization", "detail.section.savings_add", fallback: "＋ 기록")
+      /// %d/%d
+      internal static func stepCountFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.section.step_count_format", p1, p2, fallback: "%d/%d")
       }
     }
     internal enum Step {

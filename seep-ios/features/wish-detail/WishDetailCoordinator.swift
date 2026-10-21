@@ -1,13 +1,9 @@
 import UIKit
 
 protocol WishDetailCoordinator: AnyObject, BaseCoordinator {
-    func showActionSheet(
-        wish: Wish,
-        mode: DetailMode,
-        onTapShare: @escaping () -> Void,
-        onTapDelete: @escaping () -> Void,
-        onTapCancelFinish: @escaping () -> Void,
-        onTapDeletePhoto: (() -> Void)?
+    func showMoreMenu(
+        items: [DetailMoreMenu.Item],
+        onSelect: @escaping (DetailMoreMenu.Item) -> Void
     )
     
     func presentSharePhoto(wish: Wish)
@@ -21,72 +17,33 @@ protocol WishDetailCoordinator: AnyObject, BaseCoordinator {
 }
 
 extension WishDetailCoordinator where Self: WishDetailViewController {
-    func showActionSheet(
-        wish: Wish,
-        mode: DetailMode,
-        onTapShare: @escaping () -> Void,
-        onTapDelete: @escaping () -> Void,
-        onTapCancelFinish: @escaping () -> Void,
-        onTapDeletePhoto: (() -> Void)?
+    /// ⋯ 메뉴 (GH-59 R-9). 항목 구성은 `DetailMoreMenu`, 삭제·완료 취소는 여기서 한 번 더 묻는다.
+    func showMoreMenu(
+        items: [DetailMoreMenu.Item],
+        onSelect: @escaping (DetailMoreMenu.Item) -> Void
     ) {
         let alertController = UIAlertController(
             title: nil,
             message: nil,
             preferredStyle: .actionSheet
         )
-        let cancelAction = UIAlertAction(
-          title: "detail_action_sheet_cancel".localized,
-          style: .cancel,
-          handler: nil
-        )
-        let shereAction = UIAlertAction(
-          title: "detail_action_sheet_share".localized,
-          style: .default
-        ) { action in
-          onTapShare()
-        }
-        
-        if mode == .fromHome {
-            let deleteAction = UIAlertAction(
-                title: "detail_action_sheet_delete".localized,
-                style: .destructive
-            ) { [weak self] action in
-                self?.showDeleteAlert(onTapDelete: onTapDelete)
+        items.forEach { item in
+            let action = UIAlertAction(
+                title: item.title,
+                style: item.isDestructive ? .destructive : .default
+            ) { [weak self] _ in
+                switch item {
+                case .delete:
+                    self?.showDeleteAlert { onSelect(item) }
+                case .cancelFinish:
+                    self?.showCancelFinishAlert { onSelect(item) }
+                case .addCalendar, .share, .deletePhoto:
+                    onSelect(item)
+                }
             }
-            
-            let editAction = UIAlertAction(
-                title: "detail_action_sheet_edit".localized,
-                style: .default
-            ) { [weak self] action in
-                self?.pushEdit(wish: wish)
-            }
-          
-          alertController.addAction(deleteAction)
-            alertController.addAction(editAction)
-        } else {
-          let cancelFinishAction = UIAlertAction(
-            title: "detail_action_sheet_cancel_finish".localized,
-            style: .default
-          ) { [weak self] action in
-            self?.showCancelFinishAlert(onTapCancelFinish: onTapCancelFinish)
-          }
-          
-          alertController.addAction(cancelFinishAction)
+            alertController.addAction(action)
         }
-        
-        // 사진이 있을 때만 (GH-36 R-4)
-        if let onTapDeletePhoto {
-            let deletePhotoAction = UIAlertAction(
-                title: Strings.Detail.Photo.delete,
-                style: .default
-            ) { _ in
-                onTapDeletePhoto()
-            }
-            alertController.addAction(deletePhotoAction)
-        }
-        
-        alertController.addAction(shereAction)
-        alertController.addAction(cancelAction)
+        alertController.addAction(UIAlertAction(title: Strings.detailActionSheetCancel, style: .cancel))
         
         self.present(alertController, animated: true, completion: nil)
     }
@@ -125,7 +82,7 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
         AlertUtils.showWithCancel(
           viewController: self,
           title: nil,
-          message: "detail_delete_message".localized
+          message: Strings.detailDeleteMessage
         ) {
             onTapDelete()
         }
@@ -134,10 +91,10 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
     private func showCancelFinishAlert(onTapCancelFinish: @escaping () -> Void) {
         AlertUtils.showWithCancel(
             viewController: self,
-            title: "detail_cancel_finish_title".localized,
-            message: "detail_cancel_finish_description".localized,
-            okButton: "detail_cancel_finish_ok".localized,
-            cancelButton: "detail_cancel_finish_no".localized
+            title: Strings.detailCancelFinishTitle,
+            message: Strings.detailCancelFinishDescription,
+            okButton: Strings.detailCancelFinishOk,
+            cancelButton: Strings.detailCancelFinishNo
         ) {
             onTapCancelFinish()
         }

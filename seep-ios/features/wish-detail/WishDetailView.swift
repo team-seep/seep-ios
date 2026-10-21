@@ -1,388 +1,156 @@
 import UIKit
+import Combine
 
-import ISEmojiView
-import RxSwift
-import RxCocoa
+import CombineCocoa
+import SnapKit
 
+/// 위시 상세 = 흰 바탕의 한 장 문서 (GH-59 D2).
+/// 상단 바(뒤로·수정·⋯) / 제목 블록(이모지·제목·D-day 줄·메타 줄) / 메모 / 단계 · 모은 돈 · 링크 · 장소 · 사진 섹션.
+/// 작성용 입력 컴포넌트를 쓰지 않고, 카드·구분선 없이 섹션 사이 40pt 여백으로 나눈다 (R-1).
 final class WishDetailView: BaseView {
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_chevron_back"), for: .normal)
+    private enum Layout {
+        static let horizontalInset: CGFloat = 24
+        static let sectionSpacing: CGFloat = 40
+        static let bodySpacing: CGFloat = 28
     }
-    
-    let moreButton = UIButton().then {
-        $0.setImage(UIImage(named: "ic_more"), for: .normal)
-    }
-    
-//    let cancelButton = UIButton().then {
-//        $0.setTitle("detail_cancel".localized, for: .normal)
-//        $0.setTitleColor(.gray3, for: .normal)
-//        $0.titleLabel?.font = .appleRegular(size: 16)
-//        $0.alpha = 0.0
-//    }
-    
-    let scrollView = UIScrollView().then {
-        $0.backgroundColor = .clear
-        $0.showsVerticalScrollIndicator = false
-    }
-    
-    let containerView = UIView()
-    
-    let emojiInputView = EmojiInputView()
-    
-    let categoryView = CategoryView()
-    
-    let photoView = WishPhotoView()
-    
-    let titleField = TextInputField(
-        iconImage: UIImage(named: "ic_title"),
-        title: "write_header_title".localized,
-        placeholder: nil
-    )
-    
-    let dateField = TextInputField(
-        iconImage: UIImage(named: "ic_calendar"),
-        title: "write_header_date".localized,
-        placeholder: "write_placeholder_date_enable".localized
-    )
-    
-    /// "날짜" 라벨 줄 오른쪽 (GH-28)
-    let calendarButton: AddCalendarButton = {
-        let button = AddCalendarButton()
-        button.isHidden = true
-        return button
+
+    let navigationBar = DetailNavigationBar()
+
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.backgroundColor = .clear
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.alwaysBounceVertical = true
+        return scrollView
     }()
-    
-    let linkSectionView = WishLinkSectionView()
-    
-    let placeView = WishPlaceView()
-    
-    let savingsView = WishSavingsView()
-    
-    let stepsView = WishStepsView()
-    
-    private let notificationIcon = UIImageView().then {
-        $0.image = UIImage(named: "ic_notification_normal")
-    }
-    
-    private let notificationLabel = UILabel().then {
-        $0.font = .appleRegular(size: 14)
-        $0.textColor = .gray5
-        $0.text = "write_header_notification".localized
-    }
-    
-    let notificationTableView = UITableView().then {
-        $0.backgroundColor = .clear
-        $0.tableFooterView = UIView()
-        $0.estimatedRowHeight = UITableView.automaticDimension
-        $0.separatorStyle = .none
-        $0.register(
-            WriteNotificationTableViewCell.self,
-            forCellReuseIdentifier: WriteNotificationTableViewCell.registerId
-        )
-    }
-    
-    private let memoIcon = UIImageView().then {
-        $0.image = UIImage(named: "ic_memo")
-    }
-    
-    private let memoLabel = UILabel().then {
-        $0.font = .appleRegular(size: 14)
-        $0.textColor = .gray5
-        $0.text = "write_header_memo".localized
-    }
-    
-    let memoField = TextInputView()
-    
-    private let hashtagIcon = UIImageView().then {
-        $0.image = UIImage(named: "ic_hashtag")
-    }
-    
-    private let hashtagLabel = UILabel().then {
-        $0.font = .appleRegular(size: 14)
-        $0.textColor = .gray5
-        $0.text = "write_header_hashtag".localized
-    }
-    
-    let hashtagCollectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
-    ).then {
-        let layout = LeftAlignedCollectionViewFlowLayout()
-        
-        layout.minimumInteritemSpacing = 8
-        layout.minimumLineSpacing = 8
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        
-        $0.collectionViewLayout = layout
-        $0.register(
-            HashtagCollectionViewCell.self,
-            forCellWithReuseIdentifier: HashtagCollectionViewCell.registerID
-        )
-        $0.backgroundColor = .clear
-    }
-    
-    let hashtagField = CustomHashtagField()
-    
+
+    private let contentStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = Layout.sectionSpacing
+        return stackView
+    }()
+
+    let titleBlock = DocumentTitleBlock()
+
+    let memoView = DocumentBodyView()
+
+    let stepsView: WishStepsView = {
+        let view = WishStepsView()
+        view.configure(style: .document)
+        return view
+    }()
+
+    let stepsSection = DocumentSectionView(title: Strings.Detail.Step.title)
+
+    let savingsView: WishSavingsView = {
+        let view = WishSavingsView()
+        view.configure(style: .document)
+        return view
+    }()
+
+    let savingsSection = DocumentSectionView(
+        title: Strings.Detail.Section.savings,
+        actionTitle: Strings.Detail.Section.savingsAdd
+    )
+
+    let linkView = LinkInlineView()
+
+    let linkSection = DocumentSectionView(
+        title: Strings.Detail.Link.title,
+        actionTitle: Strings.Detail.Section.linkOpen
+    )
+
+    let placeView: WishPlaceView = {
+        let view = WishPlaceView()
+        view.configure(style: .document)
+        return view
+    }()
+
+    let placeSection = DocumentSectionView(
+        title: Strings.Detail.Place.title,
+        actionTitle: Strings.Detail.Section.placeChange
+    )
+
+    let photoView: WishPhotoView = {
+        let view = WishPhotoView()
+        view.configure(style: .document)
+        return view
+    }()
+
+    let photoSection = DocumentSectionView(
+        title: Strings.Detail.Photo.title,
+        actionTitle: Strings.Detail.Photo.change
+    )
+
     override func setup() {
-        self.backgroundColor = .white
-        self.containerView.addSubViews([
-            self.emojiInputView,
-            self.categoryView,
-            self.photoView,
-            self.titleField,
-            self.linkSectionView,
-            self.dateField,
-            self.calendarButton,
-            self.placeView,
-            self.savingsView,
-            self.stepsView,
-            self.notificationIcon,
-            self.notificationLabel,
-            self.notificationTableView,
-            self.memoIcon,
-            self.memoLabel,
-            self.memoField,
-            self.hashtagIcon,
-            self.hashtagLabel,
-            self.hashtagCollectionView,
-            self.hashtagField
-        ])
-        self.scrollView.addSubview(containerView)
-        
-        self.addSubViews([
-            self.backButton,
-            self.moreButton,
-            self.scrollView
-        ])
+        backgroundColor = .gray1
+
+        stepsSection.setContent(stepsView)
+        savingsSection.setContent(savingsView)
+        linkSection.setContent(linkView)
+        placeSection.setContent(placeView)
+        photoSection.setContent(photoView)
+
+        [titleBlock, memoView, stepsSection, savingsSection, linkSection, placeSection, photoSection]
+            .forEach(contentStackView.addArrangedSubview)
+        scrollView.addSubview(contentStackView)
+        addSubViews([scrollView, navigationBar])
+
+        bindCollapsingTitle()
     }
-    
+
     override func bindConstraints() {
         // 듀오 바깥 화면은 오른쪽 위에 센서·상태 표시 영역(safe area 오른쪽 inset)이 있어 safe area 기준으로 둔다.
-        // 아이콘(24pt) 위치는 그대로 두고 터치 영역만 44pt로 넓힌다.
-        self.backButton.snp.makeConstraints { make in
-            make.leading.equalTo(self.safeAreaLayoutGuide).offset(10)
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(3)
-            make.width.height.equalTo(44)
-        }
-        
-        self.moreButton.snp.makeConstraints { make in
-            make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-10)
-            make.centerY.equalTo(self.backButton)
-            make.width.height.equalTo(44)
-        }
-        
-        self.scrollView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
-            make.bottom.equalToSuperview()
-            make.top.equalTo(self.backButton.snp.bottom).offset(3)
-        }
-        
-        self.containerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalToSuperview()
-            make.top.equalTo(self.emojiInputView).priority(.high)
-            make.bottom.equalTo(self.hashtagField).offset(20).priority(.high)
-        }
-        
-        self.emojiInputView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.top.equalToSuperview().offset(16)
-        }
-        
-        self.categoryView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(self.emojiInputView.snp.bottom).offset(32)
-        }
-        
-        // 사진 섹션은 카테고리 트랙 아래, 제목 위 (GH-36 R-1)
-        self.photoView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(self.categoryView.snp.bottom).offset(31)
-        }
-        
-        self.titleField.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(self.photoView.snp.bottom).offset(26)
-        }
-        
-        // 링크 섹션은 위쪽 간격(24)을 스스로 가져, 링크가 없으면 높이 0 이 된다 (GH-29 R-4)
-        self.linkSectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.titleField.snp.bottom)
-        }
-        
-        self.dateField.snp.makeConstraints { make in
-            make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.linkSectionView.snp.bottom).offset(24)
-        }
-        
-        // 버튼 글자를 "날짜" 라벨(16pt 줄)과 같은 줄에 두고, 터치 영역만 위아래로 넓힌다
-        self.calendarButton.snp.makeConstraints { make in
-            make.trailing.equalTo(self.dateField)
-            make.centerY.equalTo(self.dateField.snp.top).offset(8)
-            make.height.equalTo(AddCalendarButton.height)
-        }
-        
-        // 장소 섹션은 위쪽 간격(26)을 스스로 가져, 가고 싶어요가 아니면 높이 0 이 된다 (GH-31 R-1)
-        self.placeView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.dateField.snp.bottom)
-        }
-        
-        // 모으기 섹션은 위쪽 간격(26)을 스스로 가져, 접히면 높이 0 이 된다 (GH-16)
-        self.savingsView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.placeView.snp.bottom)
-        }
-        
-        self.stepsView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self.titleField)
-            make.top.equalTo(self.savingsView.snp.bottom).offset(26)
-        }
-        
-        self.notificationIcon.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.stepsView.snp.bottom).offset(16)
-            make.width.height.equalTo(16)
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(safeAreaLayoutGuide)
         }
 
-        
-        self.notificationLabel.snp.makeConstraints { make in
-            make.left.equalTo(self.notificationIcon.snp.right).offset(4)
-            make.centerY.equalTo(self.notificationIcon)
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalToSuperview()
         }
-        
-        self.notificationTableView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.top.equalTo(self.notificationIcon.snp.bottom).offset(2)
-            make.height.equalTo(56)
-        }
-        
-        self.memoIcon.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.notificationTableView.snp.bottom).offset(26)
-            make.width.equalTo(16)
-            make.height.equalTo(16)
-        }
-        
-        self.memoLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(self.memoIcon)
-            make.left.equalTo(self.memoIcon.snp.right).offset(4)
-        }
-        
-        self.memoField.snp.makeConstraints { make in
-            make.left.right.equalTo(self.titleField)
-            make.top.equalTo(self.memoIcon.snp.bottom).offset(10)
-        }
-        
-        self.hashtagIcon.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.memoField.snp.bottom).offset(26)
-            make.width.equalTo(16)
-            make.height.equalTo(16)
-        }
-        
-        self.hashtagLabel.snp.makeConstraints { make in
-            make.left.equalTo(self.hashtagIcon.snp.right).offset(4)
-            make.centerY.equalTo(self.hashtagIcon)
-        }
-        
-        self.hashtagCollectionView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(self.hashtagIcon.snp.bottom).offset(10)
-            make.height.equalTo(72)
-        }
-        
-        self.hashtagField.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.top.equalTo(self.hashtagCollectionView.snp.bottom).offset(8)
-        }
-    }
-    
-    fileprivate func bind(wish: Wish) {
-        self.disposeBag = DisposeBag()
-        
-        self.emojiInputView.setEmoji(emoji: wish.emoji)
-        self.emojiInputView.isEditable = false
-        self.categoryView.moveActiveButton(category: wish.category)
-        self.categoryView.isEditable = false
-        self.titleField.setText(text: wish.title)
-        self.dateField.setDate(date: wish.endDate)
-        self.setNotifications(notifications: wish.notifications)
-        self.memoField.setText(text: wish.memo)
-        self.setHashtag(hashtag: wish.hashtag)
-    }
-    
-    private func updateNotificationTableViewHeight(by notifications: [SeepNotification?]) {
-        self.notificationTableView.snp.updateConstraints { make in
-            make.height.equalTo(CGFloat(notifications.count) * WriteNotificationTableViewCell.height)
-        }
-    }
-    
-    private func setNotifications(notifications: [SeepNotification]) {
-        let notifications: [SeepNotification?] = notifications.isEmpty ? [nil] : notifications
-        
-        Observable.just(notifications)
-            .do(onNext: { [weak self] notifications in
-                self?.updateNotificationTableViewHeight(by: notifications)
-            })
-            .asDriver(onErrorJustReturn: [nil])
-            .drive(self.notificationTableView.rx.items(
-                cellIdentifier: WriteNotificationTableViewCell.registerId,
-                cellType: WriteNotificationTableViewCell.self
-            )) { row, notification, cell in
-                cell.bind(notification: notification, isEnable: true)
-                cell.rightArrowImage.isHidden = true
-            }
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func setHashtag(hashtag: String) {
-        Observable.just(HashtagType.array)
-            .asDriver(onErrorJustReturn: [])
-            .drive(self.hashtagCollectionView.rx.items(
-                    cellIdentifier: HashtagCollectionViewCell.registerID,
-                    cellType: HashtagCollectionViewCell.self
-            )) { row, hashtagType, cell in
-                cell.bind(type: hashtagType)
-                cell.isSelected = (hashtagType == HashtagType(rawValue: hashtag))
-            }
-            .disposed(by: self.disposeBag)
-        
-        self.hashtagField.isHidden = HashtagType(rawValue: hashtag) != nil
-        if !hashtag.isEmpty {
-            self.hashtagField.setText(text: hashtag)
-        } else {
-            self.hashtagField.isHidden = true
-        }
-    }
-}
 
-extension Reactive where Base: WishDetailView{
-    var wish: Binder<Wish> {
-        return Binder(self.base) { view, wish in
-            view.bind(wish: wish)
+        contentStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.bottom.equalToSuperview().offset(-40)
+            $0.leading.equalToSuperview().offset(Layout.horizontalInset)
+            $0.trailing.equalToSuperview().offset(-Layout.horizontalInset)
+            $0.width.equalToSuperview().offset(-Layout.horizontalInset * 2)
         }
     }
-}
 
-extension WishDetailView {
-    /// 상세에서는 단계를 추가할 수 없어, 단계가 0개면 섹션을 접는다 (GH-5 R-1).
-    func setStepsHidden(_ isHidden: Bool) {
-        stepsView.isHidden = isHidden
-        notificationIcon.snp.remakeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            if isHidden {
-                make.top.equalTo(savingsView.snp.bottom).offset(26)
-            } else {
-                make.top.equalTo(stepsView.snp.bottom).offset(16)
+    func bind(summary: WishDetailSummary) {
+        titleBlock.bind(summary: summary)
+        memoView.bind(text: summary.memo)
+        navigationBar.setTitle(summary.title, dday: summary.navigationDday)
+    }
+
+    /// 섹션 노출·순서 (R-10). 순서는 스택에 넣은 순서가 `DetailSection` 순서와 같다.
+    func apply(sections: [DetailSection]) {
+        memoView.isHidden = !sections.contains(.memo)
+        stepsSection.isHidden = !sections.contains(.steps)
+        savingsSection.isHidden = !sections.contains(.savings)
+        linkSection.isHidden = !sections.contains(.link)
+        placeSection.isHidden = !sections.contains(.place)
+        photoSection.isHidden = !sections.contains(.photo)
+        // 메모는 메타 줄과 28, 나머지 섹션은 40 (디자인 D2)
+        contentStackView.setCustomSpacing(
+            sections.contains(.memo) ? Layout.bodySpacing : Layout.sectionSpacing,
+            after: titleBlock
+        )
+    }
+
+    /// 큰 제목이 상단 바 아래로 지나가면 바 가운데에 제목·작은 D-day를 보인다 (R-8)
+    private func bindCollapsingTitle() {
+        scrollView.contentOffsetPublisher
+            .withUnretained(self)
+            .sink { (owner: WishDetailView, offset: CGPoint) in
+                let titleLabel = owner.titleBlock.titleLabel
+                let titleBottom = titleLabel.convert(titleLabel.bounds, to: owner.scrollView).maxY
+                owner.navigationBar.setTitleCollapsed(titleBottom > 0 && offset.y >= titleBottom)
             }
-            make.width.height.equalTo(16)
-        }
+            .store(in: &cancellables)
     }
 }

@@ -16,6 +16,8 @@ final class WishStepsView: BaseView {
         didSet { addButton.isHidden = !isEditable }
     }
 
+    private(set) var style: WishSectionStyle = .form
+
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -123,6 +125,18 @@ final class WishStepsView: BaseView {
         }
     }
 
+    /// 상세 문서 모양 (GH-59 R-6): 헤더(아이콘·진행 바)와 회색 상자 없이 체크 행만. 진행도는 `DocumentSectionView` 제목 옆 숫자로.
+    func configure(style: WishSectionStyle) {
+        self.style = style
+        guard style == .document else { return }
+        headerView.isHidden = true
+        stepBoxView.backgroundColor = .clear
+        stepBoxView.layer.cornerRadius = 0
+        stepStackView.snp.remakeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
     func setTitle(_ title: String) {
         titleLabel.text = title
     }
@@ -134,7 +148,8 @@ final class WishStepsView: BaseView {
                 step: step,
                 isFirst: index == 0,
                 isCheckable: isCheckable,
-                showsDeleteButton: isEditable
+                showsDeleteButton: isEditable,
+                style: style
             )
             rowView.tag = index
             rowView.onTapDelete = { [weak self] in
@@ -216,9 +231,11 @@ private final class WishStepRowView: UIControl {
         return button
     }()
 
-    init(step: WishStep, isFirst: Bool, isCheckable: Bool, showsDeleteButton: Bool) {
+    init(step: WishStep, isFirst: Bool, isCheckable: Bool, showsDeleteButton: Bool, style: WishSectionStyle) {
         super.init(frame: .zero)
-        setup(isFirst: isFirst, showsDeleteButton: showsDeleteButton)
+        // 상세 문서는 행 사이 구분선 없이 체크 24pt (GH-59)
+        let isDocument = style == .document
+        setup(isFirst: isFirst || isDocument, showsDeleteButton: showsDeleteButton, checkSize: isDocument ? 24 : 22)
         bind(step: step, isCheckable: isCheckable)
     }
 
@@ -226,7 +243,7 @@ private final class WishStepRowView: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup(isFirst: Bool, showsDeleteButton: Bool) {
+    private func setup(isFirst: Bool, showsDeleteButton: Bool, checkSize: CGFloat) {
         addSubview(separatorView)
         addSubview(checkImageView)
         addSubview(titleLabel)
@@ -246,7 +263,7 @@ private final class WishStepRowView: UIControl {
 
         checkImageView.snp.makeConstraints {
             $0.leading.centerY.equalToSuperview()
-            $0.size.equalTo(22)
+            $0.size.equalTo(checkSize)
         }
 
         deleteButton.snp.makeConstraints {

@@ -108,6 +108,7 @@ final class WishPlaceView: BaseView {
 
     private var place: WishPlace?
     private var isCollapsed = false
+    private var style: WishSectionStyle = .form
     private var emoji: String = WishPlaceViewModel.fallbackEmoji
     private var snapshotter: MKMapSnapshotter?
     private var snapshotKey: String?
@@ -183,10 +184,46 @@ final class WishPlaceView: BaseView {
     /// 가고 싶어요가 아니면 접는다 (R-1)
     func setCollapsed(_ isCollapsed: Bool) {
         self.isCollapsed = isCollapsed
-        spacerView.isHidden = isCollapsed
-        headerView.isHidden = isCollapsed
+        // 상세 문서 모양은 간격·제목·"변경"을 DocumentSectionView 가 그린다 (GH-59)
+        spacerView.isHidden = isCollapsed || style == .document
+        headerView.isHidden = isCollapsed || style == .document
         placeholderButton.isHidden = isCollapsed || place != nil
         cardView.isHidden = isCollapsed || place == nil
+    }
+
+    /// 상세 문서 모양 (GH-59 R-6): 지도·회색 카드 없이 장소 이름 SemiBold 16/24 · 주소 14/20 `gray4`.
+    /// 장소가 없으면 입력칸 모양 대신 파란 글자 "＋ 장소 붙이기" 한 줄. 길게 눌러 지우기는 그대로.
+    func configure(style: WishSectionStyle) {
+        self.style = style
+        guard style == .document else { return }
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = .zero
+        configuration.attributedTitle = AttributedString(
+            Strings.Detail.Section.placeAdd,
+            attributes: .init([.font: UIFont.appleMedium(size: 14) as Any, .foregroundColor: UIColor.seepBlue])
+        )
+        placeholderButton.configuration = configuration
+        placeholderButton.contentHorizontalAlignment = .leading
+        placeholderButton.snp.remakeConstraints {
+            $0.height.equalTo(44)
+        }
+
+        cardView.backgroundColor = .clear
+        cardView.layer.cornerRadius = 0
+        mapImageView.isHidden = true
+        nameLabel.font = .appleSemiBold(size: 16)
+        nameLabel.snp.remakeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+        }
+        addressLabel.snp.remakeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(2)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        mapImageView.snp.remakeConstraints {
+            $0.top.leading.equalToSuperview()
+            $0.size.equalTo(0)
+        }
+        setCollapsed(isCollapsed)
     }
 
     func bind(place: WishPlace?) {
@@ -209,7 +246,7 @@ final class WishPlaceView: BaseView {
     }
 
     private func updateSnapshotIfNeeded() {
-        guard let place, !cardView.isHidden else { return }
+        guard style == .form, let place, !cardView.isHidden else { return }
         let size = mapImageView.bounds.size
         guard size.width > 0, size.height > 0 else { return }
 

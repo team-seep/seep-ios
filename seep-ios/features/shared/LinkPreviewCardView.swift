@@ -20,27 +20,11 @@ final class LinkPreviewCardView: BaseView {
     /// 실패 카드의 안내 문구 (작성·수정과 상세가 다르다)
     var failedMessage = Strings.Write.Link.previewFailed
 
-    private let thumbnailView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray2
-        view.layer.cornerRadius = Layout.cornerRadius
-        view.clipsToBounds = true
-        return view
-    }()
-
-    private let thumbnailImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-
-    private let placeholderImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .gray3
-        return imageView
-    }()
+    private let thumbnailView = LinkThumbnailView(
+        size: Layout.thumbnailSize,
+        cornerRadius: Layout.cornerRadius,
+        symbolSize: 24
+    )
 
     private let textStackView: UIStackView = {
         let stackView = UIStackView()
@@ -88,7 +72,6 @@ final class LinkPreviewCardView: BaseView {
         layer.borderWidth = 1
         layer.borderColor = UIColor.gray2_5.cgColor
 
-        thumbnailView.addSubViews([placeholderImageView, thumbnailImageView])
         [titleLabel, domainLabel].forEach(textStackView.addArrangedSubview)
         [0.9, 0.6, 0.35].forEach { ratio in
             let bar = UIView()
@@ -112,15 +95,6 @@ final class LinkPreviewCardView: BaseView {
             $0.leading.equalToSuperview().offset(Layout.inset)
             $0.centerY.equalToSuperview()
             $0.size.equalTo(Layout.thumbnailSize)
-        }
-
-        thumbnailImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-
-        placeholderImageView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.size.equalTo(24)
         }
 
         chevronImageView.snp.makeConstraints {
@@ -175,10 +149,6 @@ final class LinkPreviewCardView: BaseView {
     }
 
     private func setThumbnail(imageData: Data?, placeholderSymbol: String?) {
-        let image = imageData.flatMap(UIImage.init(data:))
-        thumbnailImageView.image = image
-        thumbnailImageView.isHidden = image == nil
-        placeholderImageView.image = placeholderSymbol.flatMap { UIImage(systemName: $0) }
-        placeholderImageView.isHidden = image != nil
+        thumbnailView.bind(imageData: imageData, placeholderSymbol: placeholderSymbol)
     }
 }

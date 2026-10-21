@@ -163,4 +163,6 @@ enum LogObjectId: String {
     case enableAppLock = "enable_app_lock"
     case disableAppLock = "disable_app_lock"
     case unlockApp = "unlock_app"
+    case detailEdit = "detail_edit"
+    case detailMore = "detail_more"
 }
