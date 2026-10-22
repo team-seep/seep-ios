@@ -30,6 +30,8 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     private let linkViewModel: WishLinkViewModel
     private let placeViewModel: WishPlaceViewModel
     private let photoViewModel: WishPhotoViewModel
+    /// 문서형 머리·섹션 구성·상단 바(수정·⋯) (GH-59)
+    private let viewModel: WishDetailViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(wish: Wish, mode: DetailMode) {
@@ -44,6 +46,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.linkViewModel = Self.makeLinkViewModel(wish: wish)
         self.placeViewModel = WishPlaceViewModel(config: .init(mode: .persisted(wish)))
         self.photoViewModel = WishPhotoViewModel(config: .init(wish: wish))
+        self.viewModel = WishDetailViewModel(config: .init(wish: wish, mode: mode))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,6 +62,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.linkViewModel = Self.makeLinkViewModel(wish: reactor.initialState.wish)
         self.placeViewModel = WishPlaceViewModel(config: .init(mode: .persisted(reactor.initialState.wish)))
         self.photoViewModel = WishPhotoViewModel(config: .init(wish: reactor.initialState.wish))
+        self.viewModel = WishDetailViewModel(config: .init(wish: reactor.initialState.wish, mode: mode))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -74,32 +78,12 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
         self.view = WideScreenContainerView(contentView: self.wishDetailView)
     }
   
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        
-        // 폴더블 접기/펴기·회전으로 창 폭이 바뀌면 해시태그 줄바꿈을 새 폭으로 다시 계산한다
-        coordinator.animate(alongsideTransition: { [weak self] _ in
-            self?.wishDetailView.hashtagCollectionView.collectionViewLayout.invalidateLayout()
-        })
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.reactor = self.wishDetailReactor
         self.coordinator = self
-        // 상세는 읽기 전용이지만 단계·모으기·캘린더 버튼·링크 카드·장소·사진 섹션은 바로 쓸 수 있다
-        let interactiveViews: [UIView] = [
-            self.wishDetailView.stepsView,
-            self.wishDetailView.savingsView,
-            self.wishDetailView.calendarButton,
-            self.wishDetailView.linkSectionView,
-            self.wishDetailView.placeView,
-            self.wishDetailView.photoView
-        ]
-        self.wishDetailView.containerView.subviews
-            .filter { subview in !interactiveViews.contains { $0 === subview } }
-            .forEach { $0.isUserInteractionEnabled = false }
+        self.bindDocument()
         self.bindSteps()
         self.bindSavings()
         self.bindCalendar()
@@ -109,32 +93,7 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     }
   
     override func bindEvent() {
-        self.wishDetailView.moreButton.rx.tap
-            .asDriver()
-            .compactMap { [weak self] in
-                return self?.mode
-            }
-            .drive(onNext: { [weak self] mode in
-                guard let self = self else { return }
-                self.coordinator?.showActionSheet(
-                    wish: self.wishDetailReactor.currentState.wish,
-                    mode: self.mode,
-                    onTapShare: {
-                        self.wishDetailReactor.action.onNext(.tapSharePhoto)
-                    },
-                    onTapDelete: {
-                        self.wishDetailReactor.action.onNext(.tapDeleteButton)
-                    },
-                    onTapCancelFinish: {
-                        self.wishDetailReactor.action.onNext(.tapCancelFinish)
-                    },
-                    onTapDeletePhoto: self.photoViewModel.hasPhoto ? { [weak self] in
-                        self?.photoViewModel.input.didTapDelete.send(())
-                    } : nil)
-            })
-            .disposed(by: self.eventDisposeBag)
-        
-        self.wishDetailView.backButton.rx.tap
+        self.wishDetailView.navigationBar.backButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.coordinator?.popup(animated: true)
@@ -159,11 +118,73 @@ final class WishDetailViewController: BaseVC, View, WishDetailCoordinator {
     
     func bind(reactor: WishDetailReactor) {
         // MARK: State
+        // 단계 체크·기록·수정 저장으로 바뀐 위시를 문서 머리·섹션 구성에 반영한다 (R-11)
         reactor.state
             .map { $0.wish }
-            .asDriver(onErrorJustReturn: Wish())
-            .drive(self.wishDetailView.rx.wish)
+            .subscribe(onNext: { [weak self] wish in
+                self?.viewModel.input.updateWish.send(wish)
+            })
             .disposed(by: self.disposeBag)
+    }
+}
+
+// MARK: Document
+extension WishDetailViewController {
+    private func bindDocument() {
+        let detailView = wishDetailView
+        detailView.navigationBar.setEditVisible(viewModel.output.isEditVisible)
+
+        detailView.navigationBar.editButton.tapPublisher
+            .subscribe(viewModel.input.didTapEdit)
+            .store(in: &cancellables)
+
+        detailView.navigationBar.moreButton.tapPublisher
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, _) in
+                owner.viewModel.input.didTapMore.send(.init(
+                    isCalendarVisible: owner.calendarViewModel.output.isVisible.value,
+                    isCalendarAdded: owner.calendarViewModel.output.isAdded.value,
+                    hasPhoto: owner.photoViewModel.hasPhoto
+                ))
+            }
+            .store(in: &cancellables)
+
+        viewModel.output.summary
+            .main
+            .sink { summary in
+                detailView.bind(summary: summary)
+            }
+            .store(in: &cancellables)
+
+        viewModel.output.sections
+            .main
+            .sink { sections in
+                detailView.apply(sections: sections)
+            }
+            .store(in: &cancellables)
+
+        viewModel.output.route
+            .main
+            .withUnretained(self)
+            .sink { (owner: WishDetailViewController, route: WishDetailViewModel.Route) in
+                owner.handleRoute(route)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleMoreMenu(item: DetailMoreMenu.Item) {
+        switch item {
+        case .addCalendar:
+            calendarViewModel.input.didTapButton.send(())
+        case .share:
+            wishDetailReactor.action.onNext(.tapSharePhoto)
+        case .deletePhoto:
+            photoViewModel.input.didTapDelete.send(())
+        case .delete:
+            wishDetailReactor.action.onNext(.tapDeleteButton)
+        case .cancelFinish:
+            wishDetailReactor.action.onNext(.tapCancelFinish)
+        }
     }
 }
 
@@ -178,17 +199,20 @@ extension WishDetailViewController {
         
         stepsViewModel.output.steps
             .main
-            .withUnretained(self)
-            .sink { (owner: WishDetailViewController, steps: [WishStep]) in
+            .sink { steps in
                 stepsView.bind(steps: steps)
-                owner.wishDetailView.setStepsHidden(steps.isEmpty)
             }
             .store(in: &cancellables)
         
+        let stepsSection = wishDetailView.stepsSection
         stepsViewModel.output.progress
             .main
             .sink { progress in
                 stepsView.bind(progress: progress)
+                // "단계 1/2" (R-6)
+                stepsSection.setCount(progress.map {
+                    Strings.Detail.Section.stepCountFormat($0.doneCount, $0.totalCount)
+                })
             }
             .store(in: &cancellables)
         
@@ -228,7 +252,7 @@ extension WishDetailViewController {
     private func bindSavings() {
         let savingsView = wishDetailView.savingsView
         
-        savingsView.addButton.tapPublisher
+        wishDetailView.savingsSection.actionButton.tapPublisher
             .subscribe(savingsViewModel.input.didTapAdd)
             .store(in: &cancellables)
         
@@ -283,27 +307,8 @@ extension WishDetailViewController {
 
 // MARK: Calendar
 extension WishDetailViewController {
+    /// "캘린더에 추가"는 ⋯ 메뉴로 옮겼다 (GH-59 R-9). 상태(isVisible·isAdded)는 메뉴를 열 때 읽는다.
     private func bindCalendar() {
-        let calendarButton = wishDetailView.calendarButton
-        
-        calendarButton.tapPublisher
-            .subscribe(calendarViewModel.input.didTapButton)
-            .store(in: &cancellables)
-        
-        calendarViewModel.output.isVisible
-            .main
-            .sink { isVisible in
-                calendarButton.isHidden = !isVisible
-            }
-            .store(in: &cancellables)
-        
-        calendarViewModel.output.isAdded
-            .main
-            .sink { isAdded in
-                calendarButton.bind(isAdded: isAdded)
-            }
-            .store(in: &cancellables)
-        
         calendarViewModel.output.toast
             .main
             .sink { message in
@@ -332,25 +337,20 @@ extension WishDetailViewController {
         ))
     }
 
-    /// 링크 카드 (GH-29 R-4, R-5)
+    /// 링크 (GH-29 R-4, R-5). 노출은 `DetailSectionBuilder`가 정한다
     private func bindLink() {
-        let linkSectionView = wishDetailView.linkSectionView
+        let linkView = wishDetailView.linkView
 
-        linkSectionView.didTapCardPublisher
+        // 링크 줄 탭과 섹션 "열기" 모두 Safari 로 연다 (GH-59 R-6)
+        linkView.didTapPublisher
+            .merge(with: wishDetailView.linkSection.actionButton.tapPublisher)
             .subscribe(linkViewModel.input.didTapCard)
-            .store(in: &cancellables)
-
-        linkViewModel.output.isVisible
-            .main
-            .sink { isVisible in
-                linkSectionView.setCollapsed(!isVisible)
-            }
             .store(in: &cancellables)
 
         linkViewModel.output.preview
             .main
             .sink { preview in
-                linkSectionView.bind(preview: preview)
+                linkView.bind(state: preview)
             }
             .store(in: &cancellables)
 
@@ -371,19 +371,14 @@ extension WishDetailViewController {
     private func bindPlace() {
         let placeView = wishDetailView.placeView
         
+        // 장소 없음 "＋ 장소 붙이기"와 섹션 "변경" (GH-59 R-6)
         placeView.tapPlacePublisher
+            .merge(with: wishDetailView.placeSection.actionButton.tapPublisher)
             .subscribe(placeViewModel.input.didTapPlace)
             .store(in: &cancellables)
         
         placeView.deletePlacePublisher
             .subscribe(placeViewModel.input.didTapDelete)
-            .store(in: &cancellables)
-        
-        placeViewModel.output.isVisible
-            .main
-            .sink { isVisible in
-                placeView.setCollapsed(!isVisible)
-            }
             .store(in: &cancellables)
         
         placeViewModel.output.emoji
@@ -393,10 +388,12 @@ extension WishDetailViewController {
             }
             .store(in: &cancellables)
         
+        let placeSection = wishDetailView.placeSection
         placeViewModel.output.place
             .main
             .sink { place in
                 placeView.bind(place: place)
+                placeSection.setActionHidden(place == nil)
             }
             .store(in: &cancellables)
         
@@ -426,7 +423,8 @@ extension WishDetailViewController {
             .subscribe(photoViewModel.input.didTapAdd)
             .store(in: &cancellables)
         
-        photoView.changeButton.tapPublisher
+        let photoSection = wishDetailView.photoSection
+        photoSection.actionButton.tapPublisher
             .subscribe(photoViewModel.input.didTapChange)
             .store(in: &cancellables)
         
@@ -434,6 +432,7 @@ extension WishDetailViewController {
             .main
             .sink { photoURL in
                 photoView.bind(photoURL: photoURL)
+                photoSection.setActionHidden(photoURL == nil)
             }
             .store(in: &cancellables)
         
@@ -487,6 +486,17 @@ extension WishDetailViewController: PHPickerViewControllerDelegate {
 
 // MARK: Route
 extension WishDetailViewController {
+    private func handleRoute(_ route: WishDetailViewModel.Route) {
+        switch route {
+        case .pushEdit(let wish):
+            coordinator?.pushEdit(wish: wish)
+        case .showMoreMenu(let items):
+            coordinator?.showMoreMenu(items: items) { [weak self] item in
+                self?.handleMoreMenu(item: item)
+            }
+        }
+    }
+
     private func handleCalendarRoute(_ route: WishCalendarViewModel.Route) {
         switch route {
         case .showAddAgainAlert:

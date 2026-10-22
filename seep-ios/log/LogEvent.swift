@@ -179,4 +179,6 @@ enum LogObjectId: String {
     case rateApp = "rate_app"
     case contact = "contact"
     case license = "license"
+    case detailEdit = "detail_edit"
+    case detailMore = "detail_more"
 }

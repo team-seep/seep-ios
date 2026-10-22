@@ -10,42 +10,46 @@ final class DdayLabel: PaddingLabel {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// 문구·색 규칙은 `DdayStyle`이 정한다 (GH-59). 홈 셀 표기(당일 "D-0")는 그대로 둔다.
     func bind(dday: Date?) {
-        if let dday = dday {
-            let remainDay = Calendar.current.dateComponents([.day], from: Date().startOfDay, to: dday.startOfDay).day ?? -1
-            
-            switch remainDay {
-            case _ where remainDay < 0:
-                textColor = .optionPurple
-                backgroundColor = .optionPurple.withAlphaComponent(0.15)
-            case 0..<8:
-                textColor = .optionRed
-                backgroundColor = UIColor(r: 255, g: 236, b: 235)
-            case 8..<31:
-                textColor = UIColor(r: 56, g: 202, b: 79)
-                backgroundColor = UIColor(r: 231, g: 251, b: 234)
-            default:
-                textColor = UIColor(r: 62, g: 163, b: 254)
-                backgroundColor = UIColor(r: 236, g: 243, b: 250)
-            }
-            
-            if remainDay < 0 {
-                text = "D+\(abs(remainDay))"
-            } else if remainDay <= 365 {
-                text = "D-\(remainDay)"
-            } else {
-                text = "home_in_far_furture".localized
-            }
-        } else {
-            backgroundColor = UIColor(r: 236, g: 243, b: 250)
-            textColor = UIColor(r: 62, g: 163, b: 254)
-            text = "home_no_deanline".localized
-        }
+        let style = DdayStyle(endDate: dday)
+        textColor = style.tone.textColor
+        backgroundColor = style.tone.badgeBackgroundColor
+        text = style.labelText
     }
     
     private func setup() {
         font = .appleBold(size: 11)
         layer.cornerRadius = 4
         layer.masksToBounds = true
+    }
+}
+
+extension DdayTone {
+    var textColor: UIColor {
+        switch self {
+        case .past:
+            return .optionPurple
+        case .urgent:
+            return .optionRed
+        case .soon:
+            return .ddayGreenText
+        case .later:
+            return .ddayBlueText
+        }
+    }
+
+    /// 홈 셀 배지 바탕. 상세 D-day 줄은 바탕 없이 글자색만 쓴다
+    var badgeBackgroundColor: UIColor {
+        switch self {
+        case .past:
+            return .optionPurple.withAlphaComponent(0.15)
+        case .urgent:
+            return .ddayRedBg
+        case .soon:
+            return .ddayGreenBg
+        case .later:
+            return .ddayBlueBg
+        }
     }
 }

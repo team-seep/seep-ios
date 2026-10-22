@@ -68,8 +68,9 @@ final class SafeAreaTopButtonTests: XCTestCase {
         layoutLikeDuoOuter(view)
 
         // Then
-        assertTappableInSafeArea(view.backButton, in: view)
-        assertTappableInSafeArea(view.moreButton, in: view)
+        // 상단 바는 GH-59에서 DetailNavigationBar 로 옮겼다
+        assertTappableInSafeArea(view.navigationBar.backButton, in: view)
+        assertTappableInSafeArea(view.navigationBar.moreButton, in: view)
     }
 
     func test_GH10_TC7_수정화면_뒤로버튼이_safeArea안에있고_44pt이상이다() {

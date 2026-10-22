@@ -12,6 +12,9 @@ final class WishPhotoView: BaseView {
 
     private let headerView = UIView()
 
+    private var style: WishSectionStyle = .form
+    private var currentImage: UIImage?
+
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
@@ -129,6 +132,27 @@ final class WishPhotoView: BaseView {
         }
     }
 
+    /// 상세 문서 모양 (GH-59 R-6): 헤더·회색 빈 자리·안내 문구 없이, 사진이 없으면 파란 글자 "＋ 사진 붙이기" 한 줄.
+    /// 제목 "사진"과 "바꾸기" 액션은 `DocumentSectionView`가 그린다.
+    func configure(style: WishSectionStyle) {
+        self.style = style
+        guard style == .document else { return }
+        headerView.isHidden = true
+        headerView.snp.remakeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(0)
+        }
+        emptyButton.backgroundColor = .clear
+        emptyButton.layer.cornerRadius = 0
+        emptyDescriptionLabel.isHidden = true
+        emptyStackView.alignment = .leading
+        emptyStackView.snp.remakeConstraints {
+            $0.leading.centerY.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
+        }
+        bind(image: currentImage)
+    }
+
     /// 사진 파일을 읽지 못하면(파일 없음·손상) 빈 상태로 보여준다 (R-7).
     func bind(photoURL: URL?) {
         bind(image: photoURL.flatMap { UIImage(contentsOfFile: $0.path) })
@@ -136,31 +160,41 @@ final class WishPhotoView: BaseView {
 
     /// 빈 자리와 사진 중 보이는 쪽만 제약을 건다. 숨긴 뷰에 높이·비율 제약이 남으면 섹션 폭이 무너질 수 있어 지운다.
     private func bind(image: UIImage?) {
+        currentImage = image
         let hasPhoto = image != nil
+        let isDocument = style == .document
+        let contentTop: CGFloat = isDocument ? 0 : 10
         photoImageView.image = image
         photoImageView.isHidden = !hasPhoto
-        captionLabel.isHidden = !hasPhoto
+        captionLabel.isHidden = !hasPhoto || isDocument
         changeButton.isHidden = !hasPhoto
         emptyButton.isHidden = hasPhoto
 
         if hasPhoto {
             emptyButton.snp.removeConstraints()
             photoImageView.snp.remakeConstraints {
-                $0.top.equalTo(headerView.snp.bottom).offset(10)
+                $0.top.equalTo(headerView.snp.bottom).offset(contentTop)
                 $0.leading.trailing.equalToSuperview()
                 $0.height.equalTo(photoImageView.snp.width).multipliedBy(Layout.photoAspectRatio)
+                if isDocument {
+                    $0.bottom.equalToSuperview()
+                }
             }
-            captionLabel.snp.remakeConstraints {
-                $0.top.equalTo(photoImageView.snp.bottom).offset(8)
-                $0.leading.trailing.bottom.equalToSuperview()
+            if isDocument {
+                captionLabel.snp.removeConstraints()
+            } else {
+                captionLabel.snp.remakeConstraints {
+                    $0.top.equalTo(photoImageView.snp.bottom).offset(8)
+                    $0.leading.trailing.bottom.equalToSuperview()
+                }
             }
         } else {
             photoImageView.snp.removeConstraints()
             captionLabel.snp.removeConstraints()
             emptyButton.snp.remakeConstraints {
-                $0.top.equalTo(headerView.snp.bottom).offset(10)
+                $0.top.equalTo(headerView.snp.bottom).offset(contentTop)
                 $0.leading.trailing.bottom.equalToSuperview()
-                $0.height.equalTo(Layout.emptyHeight)
+                $0.height.equalTo(isDocument ? 44 : Layout.emptyHeight)
             }
         }
     }

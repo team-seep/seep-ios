@@ -22,6 +22,8 @@ final class WishSavingsView: BaseView {
 
     private let spacerView = UIView()
 
+    private var style: WishSectionStyle = .form
+
     private let headerView = UIView()
 
     private let iconImageView: UIImageView = {
@@ -70,7 +72,8 @@ final class WishSavingsView: BaseView {
         return label
     }()
 
-    private let progressBar = StepProgressBar(height: 8)
+    /// 상세 문서 모양에서는 4pt 바로 갈아끼운다 (GH-59 D2)
+    private var progressBar = StepProgressBar(height: 8)
 
     private let messageLabel: UILabel = {
         let label = UILabel()
@@ -163,9 +166,32 @@ final class WishSavingsView: BaseView {
         }
     }
 
-    /// 갖고 싶어요 + 목표 금액이 없으면 접는다 (R-1, R-7)
+    /// 갖고 싶어요 + 목표 금액이 없으면 접는다 (R-1, R-7). 상세 문서 모양에서는 자체 간격·헤더·기록 버튼을 계속 숨긴다
     func setCollapsed(_ isCollapsed: Bool) {
-        stackView.arrangedSubviews.forEach { $0.isHidden = isCollapsed }
+        let hiddenInStyle: [UIView] = style == .document ? [spacerView, headerView, addButton] : []
+        stackView.arrangedSubviews.forEach { view in
+            view.isHidden = isCollapsed || hiddenInStyle.contains { $0 === view }
+        }
+    }
+
+    /// 상세 문서 모양 (GH-59 R-6): 헤더·회색 상자·"모은 돈 기록" 버튼 없이 큰 금액 / 목표 · 진행 바 · 문구 · 기록.
+    /// 제목 "모은 돈"과 "＋ 기록" 액션은 `DocumentSectionView`가 그린다.
+    func configure(style: WishSectionStyle) {
+        self.style = style
+        guard style == .document else { return }
+        boxView.backgroundColor = .clear
+        boxView.layer.cornerRadius = 0
+        boxStackView.snp.remakeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        let thinBar = StepProgressBar(height: 4)
+        if let index = boxStackView.arrangedSubviews.firstIndex(of: progressBar) {
+            progressBar.removeFromSuperview()
+            boxStackView.insertArrangedSubview(thinBar, at: index)
+            boxStackView.setCustomSpacing(8, after: thinBar)
+        }
+        progressBar = thinBar
+        setCollapsed(boxView.isHidden)
     }
 
     func bind(progress: WishSavingProgress?) {
@@ -177,7 +203,10 @@ final class WishSavingsView: BaseView {
 
         let amountText = NSMutableAttributedString(
             string: Strings.Common.wonFormat(AmountFormatter.string(from: progress.savedAmount)),
-            attributes: [.font: UIFont.appleBold(size: 22) as Any, .foregroundColor: UIColor.gray5]
+            attributes: [
+                .font: (style == .document ? UIFont.appleExtraBold(size: 22) : UIFont.appleBold(size: 22)) as Any,
+                .foregroundColor: UIColor.gray5
+            ]
         )
         amountText.append(NSAttributedString(
             string: " " + Strings.Detail.Saving.targetFormat(AmountFormatter.string(from: progress.targetAmount)),
