@@ -50,12 +50,12 @@ struct HomeOverviewView: View {
         }
     }
 
+    /// 헤드라인 속 "n개" — 숫자부터 다음 공백 전까지. 단위 문자열(`%02d개`·`곳`)은 헤드라인(`%d개`)과 글자가 달라 쓰지 않는다
     private func unitText(_ count: Int) -> String {
-        switch category {
-        case .wantToDo: return Strings.Common.WantToDo.unit(count)
-        case .wantToGet: return Strings.Common.WantToGet.unit(count)
-        case .wantToGo: return Strings.Common.WantToGo.unit(count)
-        }
+        let text = countTitle(count)
+        guard let start = text.range(of: "\(count)")?.lowerBound else { return "\(count)" }
+        let end = text[start...].firstIndex(where: \.isWhitespace) ?? text.endIndex
+        return String(text[start..<end])
     }
 
     private static let emptyBold = "적어봐요!"
@@ -236,7 +236,7 @@ struct HomeFilterBar: View {
             .buttonStyle(.plain)
             .accessibilityLabel(Text(viewType == .list ? Strings.Home.Filter.viewTypeGrid : Strings.Home.Filter.viewTypeList))
         }
-        .padding(.leading, 2)
+        .padding(.leading, 20)
     }
 
     private func iconButton(image: Image, size: CGFloat, label: String, action: @escaping () -> Void) -> some View {

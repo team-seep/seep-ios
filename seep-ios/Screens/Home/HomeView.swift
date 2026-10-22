@@ -109,6 +109,7 @@ struct HomeView: View {
     private var filterHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
             HomeCategoryTabs(selected: viewModel.state.category) { viewModel.send(.selectCategory($0)) }
+                .padding(.horizontal, 12)
             HomeFilterBar(
                 sortOrder: viewModel.state.sortOrder,
                 viewType: viewModel.state.viewType,

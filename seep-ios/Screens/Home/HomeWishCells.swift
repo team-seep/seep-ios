@@ -238,7 +238,6 @@ struct HomeCheckButton: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .disabled(isChecked)
         .accessibilityLabel(Text(isChecked ? Strings.Home.finishedAccessibility : Strings.Home.finishAccessibility))
     }
 
