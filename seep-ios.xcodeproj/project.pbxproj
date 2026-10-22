@@ -48,7 +48,6 @@
 		582A5AA71ACAA592A4DFCC8C /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */; };
 		59D52B66C25673D5E1CC6CC1 /* WishPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */; };
 		6183E1D0CA04784F739EDD28 /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */; };
-		66C7F16CF982BEAC5A8DC7E3 /* PlaceMapViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */; };
 		6708B90CB2D3AA7CBADA1BA4 /* WishStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBA684853569EB00B1AAD4 /* WishStepsView.swift */; };
 		6E07528326136D8800041E7B /* PageItemReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07528226136D8800041E7B /* PageItemReactor.swift */; };
 		6E091572264F80AB0048EB79 /* ShareTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E091571264F80AB0048EB79 /* ShareTypeButton.swift */; };
@@ -450,7 +449,6 @@
 		5441C1DE7B7877B40DEDF83A /* EmojiPinImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmojiPinImage.swift; sourceTree = "<group>"; };
 		54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishCalendarViewModelTests.swift; sourceTree = "<group>"; };
 		58B94C1FA504294A092AB844 /* MockLinkPreviewCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockLinkPreviewCache.swift; sourceTree = "<group>"; };
-		5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceMapViewModelTests.swift; sourceTree = "<group>"; };
 		632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		6575F2B4FCB1FE7F52D1CEB8 /* AddCalendarButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddCalendarButton.swift; sourceTree = "<group>"; };
 		6E07528226136D8800041E7B /* PageItemReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageItemReactor.swift; sourceTree = "<group>"; };
@@ -908,7 +906,6 @@
 				A30E00010000000000000009 /* HomeViewModelSleepingWishTests.swift */,
 				762E75DD17D61FCFE12E936D /* PlaceSearchViewModelTests.swift */,
 				632680DDB4AC7DB09A559833 /* WishPlaceViewModelTests.swift */,
-				5EB97D205CC5D3C541BBE78D /* PlaceMapViewModelTests.swift */,
 				DA1124CDF4F241AA066B340D /* HomePlaceMapTests.swift */,
 				E887300E389AE7DADD5B08B8 /* WishPlaceReactorTests.swift */,
 				36A000000000000000000004 /* WishPhotoViewModelTests.swift */,
@@ -1964,7 +1961,6 @@
 				A30E00010000000000000010 /* HomeViewModelSleepingWishTests.swift in Sources */,
 				E0350A3482B42D9CBC51CBCC /* PlaceSearchViewModelTests.swift in Sources */,
 				59D52B66C25673D5E1CC6CC1 /* WishPlaceViewModelTests.swift in Sources */,
-				66C7F16CF982BEAC5A8DC7E3 /* PlaceMapViewModelTests.swift in Sources */,
 				E35BC6C811B0A237A8EC78C8 /* HomePlaceMapTests.swift in Sources */,
 				1D2D88DA5EC29C876DDAAD79 /* WishPlaceReactorTests.swift in Sources */,
 				9B2887D6747D6E71762121B2 /* MockPlaceSearchService.swift in Sources */,
