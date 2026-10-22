@@ -174,7 +174,7 @@ final class HomeViewModelYearReviewTests: XCTestCase {
         repository.fetchFinishedWishesResult = [finished("a", at: date(2026, 6, 1))]
         let viewModel = makeViewModel(now: date(2026, 12, 5))
         viewModel.input.firstLoad.send(())
-        var routedViewModel: YearReviewViewModel?
+        var routedViewModel: LegacyYearReviewViewModel?
         viewModel.output.route
             .sink { route in
                 if case .presentYearReview(let reviewViewModel) = route {

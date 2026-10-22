@@ -1,7 +1,7 @@
 import UIKit
 
 /// 회고 카드만 4:5 이미지(@3x)로 그린다 (GH-34 R-5). 닫기·버튼은 카드 밖이라 들어가지 않는다.
-enum YearReviewImageRenderer {
+enum LegacyYearReviewImageRenderer {
     static let aspectRatio: CGFloat = 4.0 / 5.0
     static let padding: CGFloat = 24
     static let scale: CGFloat = 3

@@ -1,12 +1,12 @@
 import Foundation
 import Combine
 
-struct WishSearchSection: Equatable {
+struct LegacyWishSearchSection: Equatable {
     let category: Category
-    let items: [WishSearchResultItem]
+    let items: [LegacyWishSearchResultItem]
 }
 
-struct WishSearchResultItem: Equatable {
+struct LegacyWishSearchResultItem: Equatable {
     let wish: Wish
     /// 제목에서 일치한 범위. 해시태그·메모에서만 찾았으면 nil
     let titleHighlightRange: NSRange?
@@ -14,7 +14,7 @@ struct WishSearchResultItem: Equatable {
     let memoSnippet: WishSearchMemoSnippet?
 }
 
-extension WishSearchViewModel {
+extension LegacyWishSearchViewModel {
     struct Input {
         /// 디바운스는 화면(VC)에서 건다. ViewModel은 들어온 검색어로 바로 찾는다
         let inputKeyword = PassthroughSubject<String, Never>()
@@ -26,7 +26,7 @@ extension WishSearchViewModel {
 
     struct Output {
         let screenName: ScreenName = .wishSearch
-        let sections = CurrentValueSubject<[WishSearchSection], Never>([])
+        let sections = CurrentValueSubject<[LegacyWishSearchSection], Never>([])
         /// 검색어가 비어 있으면 nil — 개수 줄을 숨긴다
         let resultCount = CurrentValueSubject<Int?, Never>(nil)
         /// 결과 없음 안내에 넣을 검색어. 안내를 숨길 때는 nil
@@ -42,7 +42,7 @@ extension WishSearchViewModel {
 
     struct State {
         var keyword: String?
-        var sections: [WishSearchSection] = []
+        var sections: [LegacyWishSearchSection] = []
         /// 결과 없음 노출 로그를 보낸 검색어 — 검색어당 1회 (TC-13)
         var loggedEmptyKeywords: Set<String> = []
     }
@@ -64,7 +64,7 @@ extension WishSearchViewModel {
     }
 }
 
-final class WishSearchViewModel {
+final class LegacyWishSearchViewModel {
     /// 결과 섹션 순서 (R-4)
     static let categoryOrder: [Category] = [.wantToDo, .wantToGet, .wantToGo]
 
@@ -82,7 +82,7 @@ final class WishSearchViewModel {
     private func bind() {
         input.inputKeyword
             .withUnretained(self)
-            .sink { (owner: WishSearchViewModel, keyword: String) in
+            .sink { (owner: LegacyWishSearchViewModel, keyword: String) in
                 owner.state.keyword = WishSearchMatcher.normalize(keyword)
                 owner.search()
             }
@@ -90,14 +90,14 @@ final class WishSearchViewModel {
 
         input.didTapResult
             .withUnretained(self)
-            .sink { (owner: WishSearchViewModel, indexPath: IndexPath) in
+            .sink { (owner: LegacyWishSearchViewModel, indexPath: IndexPath) in
                 owner.handleTapResult(indexPath: indexPath)
             }
             .store(in: &cancellables)
 
         input.wishDidChange
             .withUnretained(self)
-            .sink { (owner: WishSearchViewModel, _) in
+            .sink { (owner: LegacyWishSearchViewModel, _) in
                 owner.search()
                 owner.output.didChangeWishes.send(())
             }
@@ -168,17 +168,17 @@ final class WishSearchViewModel {
     }
 
     /// 카테고리별로 묶고(결과 없는 카테고리는 뺀다), 섹션 안은 미완료 먼저·마감순으로 정렬한다 (R-4)
-    static func makeSections(wishes: [Wish], keyword: String) -> [WishSearchSection] {
+    static func makeSections(wishes: [Wish], keyword: String) -> [LegacyWishSearchSection] {
         return categoryOrder.compactMap { category in
             let items = sortForSearch(wishes.filter { $0.category == category })
                 .map { wish in
-                    WishSearchResultItem(
+                    LegacyWishSearchResultItem(
                         wish: wish,
                         titleHighlightRange: WishSearchMatcher.titleHighlightRange(title: wish.title, keyword: keyword),
                         memoSnippet: WishSearchMatcher.memoSnippet(wish: wish, keyword: keyword)
                     )
                 }
-            return items.isEmpty ? nil : WishSearchSection(category: category, items: items)
+            return items.isEmpty ? nil : LegacyWishSearchSection(category: category, items: items)
         }
     }
 

@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-extension YearReviewListViewModel {
+extension LegacyYearReviewListViewModel {
     struct Input {
         /// 나타날 때마다 다시 읽는다. 상세에서 완료 취소·삭제하고 돌아온 경우를 반영한다 (R-7)
         let viewWillAppear = PassthroughSubject<Void, Never>()
@@ -64,7 +64,7 @@ extension YearReviewListViewModel {
 }
 
 /// 올해 이룬 싶 모두 보기 — 달별 목록 (GH-34 R-6).
-final class YearReviewListViewModel {
+final class LegacyYearReviewListViewModel {
     let input = Input()
     let output: Output
     var cancellables = Set<AnyCancellable>()
@@ -81,14 +81,14 @@ final class YearReviewListViewModel {
     private func bind() {
         input.viewWillAppear
             .withUnretained(self)
-            .sink { (owner: YearReviewListViewModel, _) in
+            .sink { (owner: LegacyYearReviewListViewModel, _) in
                 owner.load()
             }
             .store(in: &cancellables)
 
         input.didTapWish
             .withUnretained(self)
-            .sink { (owner: YearReviewListViewModel, indexPath: IndexPath) in
+            .sink { (owner: LegacyYearReviewListViewModel, indexPath: IndexPath) in
                 guard let item = owner.output.sections.value[safe: indexPath.section]?.items[safe: indexPath.item] else { return }
                 owner.output.route.send(.pushWishDetail(WishDetailReactor(wish: item.wish, wishService: WishService())))
             }
@@ -96,7 +96,7 @@ final class YearReviewListViewModel {
 
         input.didTapBack
             .withUnretained(self)
-            .sink { (owner: YearReviewListViewModel, _) in
+            .sink { (owner: LegacyYearReviewListViewModel, _) in
                 owner.output.route.send(.pop)
             }
             .store(in: &cancellables)
@@ -104,7 +104,7 @@ final class YearReviewListViewModel {
 
     private func load() {
         let calendar = dependency.calendar
-        let wishes = YearReviewViewModel.fetchWishes(
+        let wishes = LegacyYearReviewViewModel.fetchWishes(
             year: config.year,
             wishRepository: dependency.wishRepository,
             calendar: calendar

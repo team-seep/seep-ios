@@ -259,25 +259,22 @@
 		A30E00010000000000000008 /* SleepingWishPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000007 /* SleepingWishPolicyTests.swift */; };
 		A30E00010000000000000010 /* HomeViewModelSleepingWishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30E00010000000000000009 /* HomeViewModelSleepingWishTests.swift */; };
 		A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000001 /* WishSearchMatcher.swift */; };
-		A32F00000000000000000004 /* WishSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000003 /* WishSearchViewModel.swift */; };
+		A32F00000000000000000004 /* LegacyWishSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000003 /* LegacyWishSearchViewModel.swift */; };
 		A32F00000000000000000006 /* WishSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000005 /* WishSearchViewController.swift */; };
 		A32F00000000000000000008 /* WishSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000007 /* WishSearchResultCell.swift */; };
 		A32F0000000000000000000A /* WishSearchSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */; };
 		A32F0000000000000000000C /* WishSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000B /* WishSearchEmptyView.swift */; };
 		A32F0000000000000000000E /* WishSearchMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000D /* WishSearchMatcherTests.swift */; };
-		A32F00000000000000000010 /* WishSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0000000000000000000F /* WishSearchViewModelTests.swift */; };
 		A34000010000000000000002 /* YearReviewSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000001 /* YearReviewSummary.swift */; };
 		A34000010000000000000004 /* HomeYearReviewBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000003 /* HomeYearReviewBannerCell.swift */; };
-		A34000010000000000000006 /* YearReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000005 /* YearReviewViewModel.swift */; };
+		A34000010000000000000006 /* LegacyYearReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000005 /* LegacyYearReviewViewModel.swift */; };
 		A34000010000000000000008 /* YearReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000007 /* YearReviewViewController.swift */; };
-		A3400001000000000000000A /* YearReviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000009 /* YearReviewListViewModel.swift */; };
+		A3400001000000000000000A /* LegacyYearReviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000009 /* LegacyYearReviewListViewModel.swift */; };
 		A3400001000000000000000C /* YearReviewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000B /* YearReviewListViewController.swift */; };
 		A3400001000000000000000E /* YearReviewImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000D /* YearReviewImageRenderer.swift */; };
 		A34000010000000000000010 /* YearReviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3400001000000000000000F /* YearReviewCardView.swift */; };
 		A34000010000000000000012 /* YearReviewListViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000011 /* YearReviewListViews.swift */; };
 		A34000010000000000000014 /* YearReviewSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000013 /* YearReviewSummaryTests.swift */; };
-		A34000010000000000000016 /* YearReviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000015 /* YearReviewViewModelTests.swift */; };
-		A34000010000000000000018 /* YearReviewListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000017 /* YearReviewListViewModelTests.swift */; };
 		A3400001000000000000001A /* HomeViewModelYearReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */; };
 		A34000010000000000000092 /* YearReviewPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34000010000000000000091 /* YearReviewPeriod.swift */; };
 		A486A62A60614CF66B8A7007 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C69E2F0189229441EB8CC /* HomeViewModelTests.swift */; };
@@ -290,7 +287,7 @@
 		B220696C0CAC50D0293006C1 /* StepProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AB76829E69C76D8CFC27A /* StepProgressBar.swift */; };
 		B35A00000000000000000002 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000001 /* Badge.swift */; };
 		B35A00000000000000000004 /* BadgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000003 /* BadgeCalculator.swift */; };
-		B35A00000000000000000006 /* BadgeCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000005 /* BadgeCollectionViewModel.swift */; };
+		B35A00000000000000000006 /* LegacyBadgeCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000005 /* LegacyBadgeCollectionViewModel.swift */; };
 		B35A00000000000000000008 /* BadgeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000007 /* BadgeCollectionViewController.swift */; };
 		B35A0000000000000000000A /* BadgeCelebrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000009 /* BadgeCelebrationViewModel.swift */; };
 		B35A0000000000000000000C /* BadgeCelebrationBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A0000000000000000000B /* BadgeCelebrationBottomSheetViewController.swift */; };
@@ -299,7 +296,6 @@
 		B35A00000000000000000012 /* BadgeLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000011 /* BadgeLinkButton.swift */; };
 		B35A00000000000000000014 /* BadgeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000013 /* BadgeCalculatorTests.swift */; };
 		B35A00000000000000000016 /* BadgeCelebrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */; };
-		B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */; };
 		B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */; };
 		A50000010000000000000002 /* HomeViewModelDeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */; };
 		A49000010000000000000011 /* WriteCategoryAppEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49000010000000000000010 /* WriteCategoryAppEnum.swift */; };
@@ -636,25 +632,22 @@
 		A30E00010000000000000007 /* SleepingWishPolicyTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SleepingWishPolicyTests.swift; sourceTree = "<group>"; };
 		A30E00010000000000000009 /* HomeViewModelSleepingWishTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelSleepingWishTests.swift; sourceTree = "<group>"; };
 		A32F00000000000000000001 /* WishSearchMatcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchMatcher.swift; sourceTree = "<group>"; };
-		A32F00000000000000000003 /* WishSearchViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewModel.swift; sourceTree = "<group>"; };
+		A32F00000000000000000003 /* LegacyWishSearchViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LegacyWishSearchViewModel.swift; sourceTree = "<group>"; };
 		A32F00000000000000000005 /* WishSearchViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewController.swift; sourceTree = "<group>"; };
 		A32F00000000000000000007 /* WishSearchResultCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchResultCell.swift; sourceTree = "<group>"; };
 		A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchSectionHeaderView.swift; sourceTree = "<group>"; };
 		A32F0000000000000000000B /* WishSearchEmptyView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchEmptyView.swift; sourceTree = "<group>"; };
 		A32F0000000000000000000D /* WishSearchMatcherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchMatcherTests.swift; sourceTree = "<group>"; };
-		A32F0000000000000000000F /* WishSearchViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSearchViewModelTests.swift; sourceTree = "<group>"; };
 		A34000010000000000000001 /* YearReviewSummary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewSummary.swift; sourceTree = "<group>"; };
 		A34000010000000000000003 /* HomeYearReviewBannerCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeYearReviewBannerCell.swift; sourceTree = "<group>"; };
-		A34000010000000000000005 /* YearReviewViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewModel.swift; sourceTree = "<group>"; };
+		A34000010000000000000005 /* LegacyYearReviewViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LegacyYearReviewViewModel.swift; sourceTree = "<group>"; };
 		A34000010000000000000007 /* YearReviewViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewController.swift; sourceTree = "<group>"; };
-		A34000010000000000000009 /* YearReviewListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewModel.swift; sourceTree = "<group>"; };
+		A34000010000000000000009 /* LegacyYearReviewListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LegacyYearReviewListViewModel.swift; sourceTree = "<group>"; };
 		A3400001000000000000000B /* YearReviewListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewController.swift; sourceTree = "<group>"; };
 		A3400001000000000000000D /* YearReviewImageRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewImageRenderer.swift; sourceTree = "<group>"; };
 		A3400001000000000000000F /* YearReviewCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewCardView.swift; sourceTree = "<group>"; };
 		A34000010000000000000011 /* YearReviewListViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViews.swift; sourceTree = "<group>"; };
 		A34000010000000000000013 /* YearReviewSummaryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewSummaryTests.swift; sourceTree = "<group>"; };
-		A34000010000000000000015 /* YearReviewViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewViewModelTests.swift; sourceTree = "<group>"; };
-		A34000010000000000000017 /* YearReviewListViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewListViewModelTests.swift; sourceTree = "<group>"; };
 		A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelYearReviewTests.swift; sourceTree = "<group>"; };
 		A34000010000000000000091 /* YearReviewPeriod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = YearReviewPeriod.swift; sourceTree = "<group>"; };
 		A4862102A58DBC2005CAB641 /* LinkPreviewCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LinkPreviewCache.swift; sourceTree = "<group>"; };
@@ -665,7 +658,7 @@
 		B33183781EC2BF604C774D7A /* AmountFormatterTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
 		B35A00000000000000000001 /* Badge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		B35A00000000000000000003 /* BadgeCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCalculator.swift; sourceTree = "<group>"; };
-		B35A00000000000000000005 /* BadgeCollectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewModel.swift; sourceTree = "<group>"; };
+		B35A00000000000000000005 /* LegacyBadgeCollectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LegacyBadgeCollectionViewModel.swift; sourceTree = "<group>"; };
 		B35A00000000000000000007 /* BadgeCollectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewController.swift; sourceTree = "<group>"; };
 		B35A00000000000000000009 /* BadgeCelebrationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationViewModel.swift; sourceTree = "<group>"; };
 		B35A0000000000000000000B /* BadgeCelebrationBottomSheetViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationBottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -674,7 +667,6 @@
 		B35A00000000000000000011 /* BadgeLinkButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeLinkButton.swift; sourceTree = "<group>"; };
 		B35A00000000000000000013 /* BadgeCalculatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCalculatorTests.swift; sourceTree = "<group>"; };
 		B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCelebrationViewModelTests.swift; sourceTree = "<group>"; };
-		B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BadgeCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelBadgeTests.swift; sourceTree = "<group>"; };
 		A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeViewModelDeepLinkTests.swift; sourceTree = "<group>"; };
 		A49000010000000000000010 /* WriteCategoryAppEnum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WriteCategoryAppEnum.swift; sourceTree = "<group>"; };
@@ -896,14 +888,10 @@
 				13A0C80E62B2CF061F5C0301 /* SharePhotoLayoutTests.swift */,
 				54D11917E1370A5522F7F899 /* WishCalendarViewModelTests.swift */,
 				A32F0000000000000000000D /* WishSearchMatcherTests.swift */,
-				A32F0000000000000000000F /* WishSearchViewModelTests.swift */,
 				A34000010000000000000013 /* YearReviewSummaryTests.swift */,
-				A34000010000000000000015 /* YearReviewViewModelTests.swift */,
-				A34000010000000000000017 /* YearReviewListViewModelTests.swift */,
 				A34000010000000000000019 /* HomeViewModelYearReviewTests.swift */,
 				B35A00000000000000000013 /* BadgeCalculatorTests.swift */,
 				B35A00000000000000000015 /* BadgeCelebrationViewModelTests.swift */,
-				B35A00000000000000000017 /* BadgeCollectionViewModelTests.swift */,
 				B35A00000000000000000019 /* HomeViewModelBadgeTests.swift */,
 				A50000010000000000000001 /* HomeViewModelDeepLinkTests.swift */,
 				A49000010000000000000060 /* WriteIntentTests.swift */,
@@ -1601,7 +1589,7 @@
 		A32F00000000000000000011 /* wish-search */ = {
 			isa = PBXGroup;
 			children = (
-				A32F00000000000000000003 /* WishSearchViewModel.swift */,
+				A32F00000000000000000003 /* LegacyWishSearchViewModel.swift */,
 				A32F00000000000000000005 /* WishSearchViewController.swift */,
 				A32F00000000000000000007 /* WishSearchResultCell.swift */,
 				A32F00000000000000000009 /* WishSearchSectionHeaderView.swift */,
@@ -1613,9 +1601,9 @@
 		A3400001000000000000001B /* year-review */ = {
 			isa = PBXGroup;
 			children = (
-				A34000010000000000000005 /* YearReviewViewModel.swift */,
+				A34000010000000000000005 /* LegacyYearReviewViewModel.swift */,
 				A34000010000000000000007 /* YearReviewViewController.swift */,
-				A34000010000000000000009 /* YearReviewListViewModel.swift */,
+				A34000010000000000000009 /* LegacyYearReviewListViewModel.swift */,
 				A3400001000000000000000B /* YearReviewListViewController.swift */,
 				A3400001000000000000000D /* YearReviewImageRenderer.swift */,
 				A3400001000000000000001C /* subviews */,
@@ -1668,7 +1656,7 @@
 		B35A0000000000000000001C /* badge */ = {
 			isa = PBXGroup;
 			children = (
-				B35A00000000000000000005 /* BadgeCollectionViewModel.swift */,
+				B35A00000000000000000005 /* LegacyBadgeCollectionViewModel.swift */,
 				B35A00000000000000000007 /* BadgeCollectionViewController.swift */,
 				B35A00000000000000000009 /* BadgeCelebrationViewModel.swift */,
 				B35A0000000000000000000B /* BadgeCelebrationBottomSheetViewController.swift */,
@@ -1962,14 +1950,10 @@
 				021202E4AE5A915A5A5D9422 /* MockCalendarManager.swift in Sources */,
 				C024800893918CED18532155 /* WishCalendarViewModelTests.swift in Sources */,
 				A32F0000000000000000000E /* WishSearchMatcherTests.swift in Sources */,
-				A32F00000000000000000010 /* WishSearchViewModelTests.swift in Sources */,
 				A34000010000000000000014 /* YearReviewSummaryTests.swift in Sources */,
-				A34000010000000000000016 /* YearReviewViewModelTests.swift in Sources */,
-				A34000010000000000000018 /* YearReviewListViewModelTests.swift in Sources */,
 				A3400001000000000000001A /* HomeViewModelYearReviewTests.swift in Sources */,
 				B35A00000000000000000014 /* BadgeCalculatorTests.swift in Sources */,
 				B35A00000000000000000016 /* BadgeCelebrationViewModelTests.swift in Sources */,
-				B35A00000000000000000018 /* BadgeCollectionViewModelTests.swift in Sources */,
 				B35A0000000000000000001A /* HomeViewModelBadgeTests.swift in Sources */,
 				A50000010000000000000002 /* HomeViewModelDeepLinkTests.swift in Sources */,
 				CCC3836F2EE224C064144B11 /* MockLinkPreviewCache.swift in Sources */,
@@ -2139,7 +2123,7 @@
 				23F50BC3FF985CF5955FD358 /* WishCalendarViewModel.swift in Sources */,
 				EEBEE00A2AB66F1E8035B4D0 /* AddCalendarButton.swift in Sources */,
 				A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */,
-				A32F00000000000000000004 /* WishSearchViewModel.swift in Sources */,
+				A32F00000000000000000004 /* LegacyWishSearchViewModel.swift in Sources */,
 				A32F00000000000000000006 /* WishSearchViewController.swift in Sources */,
 				A32F00000000000000000008 /* WishSearchResultCell.swift in Sources */,
 				A32F0000000000000000000A /* WishSearchSectionHeaderView.swift in Sources */,
@@ -2147,16 +2131,16 @@
 				A34000010000000000000002 /* YearReviewSummary.swift in Sources */,
 				A34000010000000000000092 /* YearReviewPeriod.swift in Sources */,
 				A34000010000000000000004 /* HomeYearReviewBannerCell.swift in Sources */,
-				A34000010000000000000006 /* YearReviewViewModel.swift in Sources */,
+				A34000010000000000000006 /* LegacyYearReviewViewModel.swift in Sources */,
 				A34000010000000000000008 /* YearReviewViewController.swift in Sources */,
-				A3400001000000000000000A /* YearReviewListViewModel.swift in Sources */,
+				A3400001000000000000000A /* LegacyYearReviewListViewModel.swift in Sources */,
 				A3400001000000000000000C /* YearReviewListViewController.swift in Sources */,
 				A3400001000000000000000E /* YearReviewImageRenderer.swift in Sources */,
 				A34000010000000000000010 /* YearReviewCardView.swift in Sources */,
 				A34000010000000000000012 /* YearReviewListViews.swift in Sources */,
 				B35A00000000000000000002 /* Badge.swift in Sources */,
 				B35A00000000000000000004 /* BadgeCalculator.swift in Sources */,
-				B35A00000000000000000006 /* BadgeCollectionViewModel.swift in Sources */,
+				B35A00000000000000000006 /* LegacyBadgeCollectionViewModel.swift in Sources */,
 				B35A00000000000000000008 /* BadgeCollectionViewController.swift in Sources */,
 				B35A0000000000000000000A /* BadgeCelebrationViewModel.swift in Sources */,
 				B35A0000000000000000000C /* BadgeCelebrationBottomSheetViewController.swift in Sources */,

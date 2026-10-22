@@ -79,10 +79,10 @@ final class WishSearchViewController: BaseViewController {
 
     private let emptyView = WishSearchEmptyView()
 
-    private let viewModel: WishSearchViewModel
-    private var sections: [WishSearchSection] = []
+    private let viewModel: LegacyWishSearchViewModel
+    private var sections: [LegacyWishSearchSection] = []
 
-    init(viewModel: WishSearchViewModel) {
+    init(viewModel: LegacyWishSearchViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -236,7 +236,7 @@ final class WishSearchViewController: BaseViewController {
         viewModel.output.sections
             .main
             .withUnretained(self)
-            .sink { (owner: WishSearchViewController, sections: [WishSearchSection]) in
+            .sink { (owner: WishSearchViewController, sections: [LegacyWishSearchSection]) in
                 owner.sections = sections
                 owner.collectionView.reloadData()
             }
@@ -262,7 +262,7 @@ final class WishSearchViewController: BaseViewController {
         viewModel.output.route
             .main
             .withUnretained(self)
-            .sink { (owner: WishSearchViewController, route: WishSearchViewModel.Route) in
+            .sink { (owner: WishSearchViewController, route: LegacyWishSearchViewModel.Route) in
                 owner.handleRoute(route)
             }
             .store(in: &cancellables)
@@ -354,7 +354,7 @@ extension WishSearchViewController: UICollectionViewDataSource {
 
 // MARK: Route
 extension WishSearchViewController {
-    private func handleRoute(_ route: WishSearchViewModel.Route) {
+    private func handleRoute(_ route: LegacyWishSearchViewModel.Route) {
         switch route {
         case .pushWishDetail(let reactor):
             pushWishDetail(reactor: reactor)

@@ -176,7 +176,7 @@ final class YearReviewListCell: BaseCollectionViewCell {
         }
     }
 
-    func bind(item: YearReviewListViewModel.Item) {
+    func bind(item: LegacyYearReviewListViewModel.Item) {
         emojiLabel.text = item.wish.emoji
         titleLabel.text = item.wish.title
         noteLabel.text = item.note

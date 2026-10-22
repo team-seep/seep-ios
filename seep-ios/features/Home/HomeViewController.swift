@@ -536,7 +536,7 @@ extension HomeViewController {
     }
     
     /// 축하 시트에서 왔으면 시트를 먼저 닫고 push 한다 (GH-35 R-10)
-    private func pushBadgeCollection(viewModel: BadgeCollectionViewModel) {
+    private func pushBadgeCollection(viewModel: LegacyBadgeCollectionViewModel) {
         let viewController = BadgeCollectionViewController(viewModel: viewModel)
         guard let presentedViewController else {
             navigationController?.pushViewController(viewController, animated: true)
@@ -571,12 +571,12 @@ extension HomeViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    private func pushWishSearch(viewModel: WishSearchViewModel) {
+    private func pushWishSearch(viewModel: LegacyWishSearchViewModel) {
         let viewController = WishSearchViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    private func presentYearReview(viewModel: YearReviewViewModel) {
+    private func presentYearReview(viewModel: LegacyYearReviewViewModel) {
         // 목록·상세로 push 하려고 내비게이션으로 감싼다. 바는 각 화면이 직접 그린다
         let navigationController = UINavigationController(rootViewController: YearReviewViewController(viewModel: viewModel))
         navigationController.isNavigationBarHidden = true

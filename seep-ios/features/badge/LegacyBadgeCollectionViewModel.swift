@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-extension BadgeCollectionViewModel {
+extension LegacyBadgeCollectionViewModel {
     struct Input {
         let viewWillAppear = PassthroughSubject<Void, Never>()
         let didTapBack = PassthroughSubject<Void, Never>()
@@ -37,7 +37,7 @@ extension BadgeCollectionViewModel {
 }
 
 /// 배지 모아보기 (GH-35 R-5). 나타날 때마다 완료 위시로 다시 계산한다.
-final class BadgeCollectionViewModel {
+final class LegacyBadgeCollectionViewModel {
     let input = Input()
     let output = Output()
     private var state = State()
@@ -52,14 +52,14 @@ final class BadgeCollectionViewModel {
     private func bind() {
         input.viewWillAppear
             .withUnretained(self)
-            .sink { (owner: BadgeCollectionViewModel, _) in
+            .sink { (owner: LegacyBadgeCollectionViewModel, _) in
                 owner.reloadBadges()
             }
             .store(in: &cancellables)
 
         input.didTapBack
             .withUnretained(self)
-            .sink { (owner: BadgeCollectionViewModel, _) in
+            .sink { (owner: LegacyBadgeCollectionViewModel, _) in
                 owner.output.route.send(.pop)
             }
             .store(in: &cancellables)

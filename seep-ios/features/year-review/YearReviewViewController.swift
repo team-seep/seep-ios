@@ -14,7 +14,7 @@ final class YearReviewViewController: BaseViewController {
         static let shareButtonBottomInset: CGFloat = 24
     }
 
-    private let viewModel: YearReviewViewModel
+    private let viewModel: LegacyYearReviewViewModel
 
     private let closeButton: UIButton = {
         let button = UIButton()
@@ -56,7 +56,7 @@ final class YearReviewViewController: BaseViewController {
         return button
     }()
 
-    init(viewModel: YearReviewViewModel) {
+    init(viewModel: LegacyYearReviewViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -134,7 +134,7 @@ final class YearReviewViewController: BaseViewController {
         shareButton.tapPublisher
             .withUnretained(self)
             .compactMap { (owner: YearReviewViewController, _) in
-                YearReviewImageRenderer.render(cardView: owner.cardView).pngData()
+                LegacyYearReviewImageRenderer.render(cardView: owner.cardView).pngData()
             }
             .subscribe(viewModel.input.didTapShare)
             .store(in: &cancellables)
@@ -151,7 +151,7 @@ final class YearReviewViewController: BaseViewController {
         viewModel.output.route
             .main
             .withUnretained(self)
-            .sink { (owner: YearReviewViewController, route: YearReviewViewModel.Route) in
+            .sink { (owner: YearReviewViewController, route: LegacyYearReviewViewModel.Route) in
                 owner.handleRoute(route)
             }
             .store(in: &cancellables)
@@ -160,7 +160,7 @@ final class YearReviewViewController: BaseViewController {
 
 // MARK: Route
 extension YearReviewViewController {
-    private func handleRoute(_ route: YearReviewViewModel.Route) {
+    private func handleRoute(_ route: LegacyYearReviewViewModel.Route) {
         switch route {
         case .presentShareSheet(let imageData):
             presentShareSheet(imageData: imageData)
@@ -172,14 +172,14 @@ extension YearReviewViewController {
     }
 
     private func presentShareSheet(imageData: Data) {
-        guard let image = UIImage(data: imageData, scale: YearReviewImageRenderer.scale) else { return }
+        guard let image = UIImage(data: imageData, scale: LegacyYearReviewImageRenderer.scale) else { return }
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         // 아이패드·넓은 화면에서는 팝오버로 뜨므로 기준 뷰를 준다
         activityViewController.popoverPresentationController?.sourceView = shareButton
         present(activityViewController, animated: true)
     }
 
-    private func pushYearReviewList(viewModel: YearReviewListViewModel) {
+    private func pushYearReviewList(viewModel: LegacyYearReviewListViewModel) {
         let viewController = YearReviewListViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
