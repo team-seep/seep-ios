@@ -1,13 +1,6 @@
 import Foundation
 import Combine
 
-enum WishLinkPreviewState: Equatable {
-    case hidden
-    case loading(domain: String)
-    case loaded(LinkPreview)
-    /// 미리보기를 못 불러왔다. 링크는 그대로 저장·열기 가능 (R-3)
-    case failed(domain: String)
-}
 
 extension WishLinkViewModel {
     struct Input {

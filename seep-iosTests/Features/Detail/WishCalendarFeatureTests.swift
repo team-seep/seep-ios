@@ -1,14 +1,11 @@
 import XCTest
-import Combine
 
 @testable import seep_ios_dev
 
-/// 위시 상세 "캘린더에 추가" 버튼 (GH-28).
-final class WishCalendarViewModelTests: XCTestCase {
+/// 상세 ⋯ 메뉴 "캘린더에 추가" (GH-28, GH-64 TC-609)
+final class WishCalendarFeatureTests: ViewModelTestCase {
     private var mockCalendarManager: MockCalendarManager!
-    private var mockLogManager: MockLogManager!
     private var preference: Preference!
-    private var cancellables: Set<AnyCancellable>!
 
     /// 2026-11-21 (토) 12:00 KST
     private let dday = Date(timeIntervalSince1970: 1_795_230_000)
@@ -16,16 +13,12 @@ final class WishCalendarViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockCalendarManager = MockCalendarManager()
-        mockLogManager = MockLogManager()
         preference = Preference(name: "test-gh28-calendar")
-        cancellables = []
     }
 
     override func tearDown() {
         mockCalendarManager = nil
-        mockLogManager = nil
         preference = nil
-        cancellables = nil
         super.tearDown()
     }
 
@@ -51,31 +44,9 @@ final class WishCalendarViewModelTests: XCTestCase {
             dependency: .init(
                 calendarManager: mockCalendarManager,
                 preference: preference,
-                logManager: mockLogManager
+                logManager: logManager
             )
         )
-    }
-
-    private func collectRoutes(_ viewModel: WishCalendarViewModel) -> () -> [WishCalendarViewModel.Route] {
-        var routes: [WishCalendarViewModel.Route] = []
-        viewModel.output.route
-            .sink { routes.append($0) }
-            .store(in: &cancellables)
-        return { routes }
-    }
-
-    private func collectToasts(_ viewModel: WishCalendarViewModel) -> () -> [String] {
-        var toasts: [String] = []
-        viewModel.output.toast
-            .sink { toasts.append($0) }
-            .store(in: &cancellables)
-        return { toasts }
-    }
-
-    private func clickEvents(objectId: LogObjectId) -> [ClickEvent] {
-        return mockLogManager.sentEvents
-            .compactMap { $0 as? ClickEvent }
-            .filter { $0.extraParameters?[.objectId] as? LogObjectId == objectId }
     }
 
     // MARK: GH-28 TC1
@@ -88,8 +59,8 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: wish, isAddable: true)
 
         // Then
-        XCTAssertTrue(viewModel.output.isVisible.value)
-        XCTAssertFalse(viewModel.output.isAdded.value)
+        XCTAssertTrue(viewModel.state.isVisible)
+        XCTAssertFalse(viewModel.state.isAdded)
     }
 
     // MARK: GH-28 TC2
@@ -102,7 +73,7 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: wish)
 
         // Then
-        XCTAssertFalse(viewModel.output.isVisible.value)
+        XCTAssertFalse(viewModel.state.isVisible)
     }
 
     func test_GH28_TC2_완료목록에서연상세는_버튼이보이지않는다() {
@@ -114,8 +85,8 @@ final class WishCalendarViewModelTests: XCTestCase {
         let finishedFromHome = makeViewModel(wish: wish, isAddable: true)
 
         // Then
-        XCTAssertFalse(fromFinish.output.isVisible.value)
-        XCTAssertFalse(finishedFromHome.output.isVisible.value)
+        XCTAssertFalse(fromFinish.state.isVisible)
+        XCTAssertFalse(finishedFromHome.state.isVisible)
     }
 
     func test_GH28_TC2_수정화면에서날짜를지우면_버튼이숨겨진다() {
@@ -123,10 +94,10 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
 
         // When
-        viewModel.input.reloadWish.send(makeWish(endDate: nil))
+        viewModel.send(.reload(makeWish(endDate: nil)))
 
         // Then
-        XCTAssertFalse(viewModel.output.isVisible.value)
+        XCTAssertFalse(viewModel.state.isVisible)
     }
 
     // MARK: GH-28 TC3
@@ -134,10 +105,9 @@ final class WishCalendarViewModelTests: XCTestCase {
     func test_GH28_TC3_권한허용시탭하면_이벤트가한번저장되고_토스트후추가됨상태가된다() {
         // Given
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
-        let toasts = collectToasts(viewModel)
 
         // When
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
         XCTAssertEqual(mockCalendarManager.requestAccessCallCount, 1)
@@ -146,8 +116,8 @@ final class WishCalendarViewModelTests: XCTestCase {
             date: dday,
             notes: "숙소는 애월 쪽으로 알아보기"
         )])
-        XCTAssertEqual(toasts(), ["👏 11월 21일 캘린더에 추가했어요!"])
-        XCTAssertTrue(viewModel.output.isAdded.value)
+        XCTAssertEqual(viewModel.route, .toast("👏 11월 21일 캘린더에 추가했어요!"))
+        XCTAssertTrue(viewModel.state.isAdded)
         XCTAssertEqual(preference.calendarEventId(wishId: "wish-1"), "event-1")
     }
 
@@ -156,7 +126,7 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: makeWish(endDate: dday, memo: ""))
 
         // When
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
         XCTAssertEqual(mockCalendarManager.savedDrafts.count, 1)
@@ -173,7 +143,7 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
 
         // Then
-        XCTAssertTrue(viewModel.output.isAdded.value)
+        XCTAssertTrue(viewModel.state.isAdded)
     }
 
     // MARK: GH-28 TC5
@@ -182,16 +152,14 @@ final class WishCalendarViewModelTests: XCTestCase {
         // Given
         preference.setCalendarEventId("event-old", wishId: "wish-1")
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
-        let routes = collectRoutes(viewModel)
 
         // When (알럿에서 "취소"는 Input 을 보내지 않는다)
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
-        guard case .showAddAgainAlert = routes().first else {
-            return XCTFail("확인 알럿 route 가 없다: \(routes())")
+        guard case .addAgainAlert = viewModel.route else {
+            return XCTFail("확인 알럿 route 가 없다: \(String(describing: viewModel.route))")
         }
-        XCTAssertEqual(routes().count, 1)
         XCTAssertEqual(mockCalendarManager.requestAccessCallCount, 0)
         XCTAssertTrue(mockCalendarManager.savedDrafts.isEmpty)
     }
@@ -201,15 +169,14 @@ final class WishCalendarViewModelTests: XCTestCase {
         preference.setCalendarEventId("event-old", wishId: "wish-1")
         mockCalendarManager.saveAllDayEventResult = .success("event-new")
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
-        let toasts = collectToasts(viewModel)
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // When
-        viewModel.input.confirmAddAgain.send(())
+        viewModel.send(.confirmAddAgain)
 
         // Then
         XCTAssertEqual(mockCalendarManager.savedDrafts.count, 1)
-        XCTAssertEqual(toasts(), ["👏 11월 21일 캘린더에 추가했어요!"])
+        XCTAssertEqual(viewModel.route, .toast("👏 11월 21일 캘린더에 추가했어요!"))
         XCTAssertEqual(preference.calendarEventId(wishId: "wish-1"), "event-new")
     }
 
@@ -219,17 +186,16 @@ final class WishCalendarViewModelTests: XCTestCase {
         // Given
         mockCalendarManager.requestAccessResult = false
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
-        let routes = collectRoutes(viewModel)
 
         // When
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
-        guard case .showPermissionDeniedAlert = routes().first else {
-            return XCTFail("설정 안내 알럿 route 가 없다: \(routes())")
+        guard case .permissionDeniedAlert = viewModel.route else {
+            return XCTFail("설정 안내 알럿 route 가 없다: \(String(describing: viewModel.route))")
         }
         XCTAssertTrue(mockCalendarManager.savedDrafts.isEmpty)
-        XCTAssertFalse(viewModel.output.isAdded.value)
+        XCTAssertFalse(viewModel.state.isAdded)
         XCTAssertNil(preference.calendarEventId(wishId: "wish-1"))
     }
 
@@ -239,18 +205,15 @@ final class WishCalendarViewModelTests: XCTestCase {
         // Given
         mockCalendarManager.saveAllDayEventResult = .failure(CalendarManagerError.noDefaultCalendar)
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
-        let routes = collectRoutes(viewModel)
-        let toasts = collectToasts(viewModel)
 
         // When
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
-        guard case .showErrorAlert = routes().first else {
-            return XCTFail("에러 알럿 route 가 없다: \(routes())")
+        guard case .errorAlert = viewModel.route else {
+            return XCTFail("에러 알럿 route 가 없다: \(String(describing: viewModel.route))")
         }
-        XCTAssertTrue(toasts().isEmpty)
-        XCTAssertFalse(viewModel.output.isAdded.value)
+        XCTAssertFalse(viewModel.state.isAdded)
         XCTAssertNil(preference.calendarEventId(wishId: "wish-1"))
     }
 
@@ -261,7 +224,7 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
 
         // When
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
         let events = clickEvents(objectId: .addCalendar)
@@ -278,11 +241,11 @@ final class WishCalendarViewModelTests: XCTestCase {
         let deniedViewModel = makeViewModel(wish: makeWish(endDate: dday))
 
         // When
-        deniedViewModel.input.didTapButton.send(())
+        deniedViewModel.send(.tapButton)
         mockCalendarManager.requestAccessResult = true
         mockCalendarManager.saveAllDayEventResult = .failure(CalendarManagerError.noDefaultCalendar)
         let failedViewModel = makeViewModel(wish: makeWish(endDate: dday))
-        failedViewModel.input.didTapButton.send(())
+        failedViewModel.send(.tapButton)
 
         // Then
         let values = clickEvents(objectId: .addCalendar).map { $0.extraParameters?[.value] as? String }
@@ -297,7 +260,7 @@ final class WishCalendarViewModelTests: XCTestCase {
         let viewModel = makeViewModel(wish: makeWish(endDate: dday))
 
         // When
-        viewModel.input.didTapButton.send(())
+        viewModel.send(.tapButton)
 
         // Then
         let addEvents = clickEvents(objectId: .addCalendar)
@@ -307,12 +270,27 @@ final class WishCalendarViewModelTests: XCTestCase {
         XCTAssertTrue(clickEvents(objectId: .confirmAddCalendar).isEmpty)
 
         // When
-        viewModel.input.confirmAddAgain.send(())
+        viewModel.send(.confirmAddAgain)
 
         // Then
         let confirmEvents = clickEvents(objectId: .confirmAddCalendar)
         XCTAssertEqual(confirmEvents.count, 1)
         XCTAssertEqual(confirmEvents.first?.extraParameters?[.value] as? String, "saved")
         XCTAssertEqual(clickEvents(objectId: .addCalendar).count, 1)
+    }
+
+    // MARK: GH-64 TC609
+
+    func test_GH64_TC609_완료목록상세는_메뉴에캘린더가없고_탭이와도저장하지않는다() {
+        // Given
+        let viewModel = makeViewModel(wish: makeWish(endDate: dday), isAddable: false)
+
+        // When
+        viewModel.send(.tapButton)
+
+        // Then
+        XCTAssertFalse(viewModel.state.isVisible)
+        XCTAssertEqual(mockCalendarManager.requestAccessCallCount, 0)
+        XCTAssertTrue(clickEvents(objectId: .addCalendar).isEmpty)
     }
 }

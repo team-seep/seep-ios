@@ -337,3 +337,10 @@ extension UIViewController {
         present(alertController, animated: true)
     }
 }
+
+/// 작성·수정과 상세가 같이 쓰는 섹션 뷰(단계·모으기·장소·사진)의 모양 (GH-59).
+/// `.form`(기본)은 작성·수정 화면 그대로, `.document`는 상세 문서용 — 자체 헤더·회색 상자를 숨기고 `DocumentSectionView` 안에 들어간다.
+enum WishSectionStyle {
+    case form
+    case document
+}

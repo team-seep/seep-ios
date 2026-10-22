@@ -46,6 +46,9 @@ protocol WishRepository {
     
     /// id 로 위시 하나를 읽는다. 없으면(지워졌으면) nil. 잠금화면 위젯 링크로 상세를 열 때 쓴다 (GH-47 R-14)
     func fetchWish(id: String) -> Wish?
+    
+    /// 완료를 취소하고(완료일·소감도 지운다), 반영된 위시를 돌려준다. 상세 ⋯ "완료 취소하기" (GH-64 TC-605, GH-25 R-6)
+    func cancelFinish(wishId: String) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -239,6 +242,26 @@ final class WishRepositoryImpl: WishRepository {
               let targetObject = realm.objects(WishDTO.self).filter("_id == %@", id).first else { return nil }
         
         return Wish(dto: targetObject)
+    }
+    
+    func cancelFinish(wishId: String) -> Result<Wish, RepositoryError> {
+        guard let realm = try? Realm() else { return .failure(.noDatabase) }
+        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
+            return .failure(.targetNotFound)
+        }
+        
+        do {
+            try realm.write {
+                targetObject.isSuccess = false
+                targetObject.finishDate = nil
+                // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
+                targetObject.finishNote = ""
+            }
+        } catch {
+            return .failure(.writeFailed)
+        }
+        
+        return .success(Wish(dto: targetObject))
     }
     
     private func updateSavings(
