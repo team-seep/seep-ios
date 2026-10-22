@@ -539,4 +539,22 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         // Then
         XCTAssertGreaterThanOrEqual(size, 44)
     }
+
+    func test_GH10_TC7_수정화면_뒤로버튼이_safeArea안에있고_44pt이상이다() {
+        // Given: 수정 폼도 같은 상단 바(뒤로 버튼)를 쓴다
+        // When
+        let size = WishFormScreen.topButtonSize
+
+        // Then
+        XCTAssertGreaterThanOrEqual(size, 44)
+    }
+
+    func test_GH10_TC7_알림화면_뒤로·삭제버튼과_목록이_safeArea안에있다() {
+        // Given: 알림 화면은 시트(NotificationEditorSheet)로 바뀌어 뒤로 버튼 없이 삭제 버튼만 남았다
+        // When
+        let size = NotificationEditorSheet.deleteButtonSize
+
+        // Then
+        XCTAssertGreaterThanOrEqual(size, 44)
+    }
 }

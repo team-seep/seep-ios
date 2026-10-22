@@ -54,6 +54,24 @@ final class DetailLinkFeatureTests: ViewModelTestCase {
         XCTAssertEqual(clickEvents.first?.extraParameters?[.objectType] as? LogObjectType, .card)
     }
 
+    /// 레거시 `WishLinkViewModelTests`의 같은 TC (Safari 대신 링크 열기 route 로 바뀌었다)
+    func test_GH29_TC8_상세에서링크카드를탭하면_Safari열기route와_wish_link클릭로그가1건전송된다() {
+        // Given
+        mockProvider.fetchPreviewResult = preview
+        let viewModel = makeViewModel(link: link)
+        viewModel.send(.load)
+
+        // When
+        viewModel.send(.tapCard)
+
+        // Then
+        guard case .openURL(let url) = viewModel.route else {
+            return XCTFail("링크 열기 route 가 아니다")
+        }
+        XCTAssertEqual(url.absoluteString, link)
+        XCTAssertEqual(events(objectId: .wishLink).count, 1)
+    }
+
     func test_GH29_TC8_링크가없는위시상세면_링크섹션이없다() {
         // Given
         let viewModel = makeViewModel(link: "")

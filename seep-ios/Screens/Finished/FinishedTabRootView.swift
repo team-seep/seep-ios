@@ -39,7 +39,7 @@ struct FinishedTabRootView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 24)
                 }
-                .frame(maxWidth: WideScreenLayout.maxContentWidth)
+                .frame(maxWidth: SeepLayout.maxContentWidth)
                 .frame(maxWidth: .infinity)
             }
             .onChange(of: router.scrollToTopToken[.finished]) { _, _ in

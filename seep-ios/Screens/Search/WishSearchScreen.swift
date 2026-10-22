@@ -46,7 +46,7 @@ private struct WishSearchContentView: View {
                 }
             }
         }
-        .frame(maxWidth: WideScreenLayout.maxContentWidth)
+        .frame(maxWidth: SeepLayout.maxContentWidth)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.gray2.ignoresSafeArea())
         .trackScreen(viewModel.screenName)

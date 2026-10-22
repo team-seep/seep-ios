@@ -153,7 +153,7 @@ struct WishFormScreen: View {
                     .padding(.horizontal, 20)
                 }
                 // 넓은 화면(듀오 안쪽)은 600pt 기둥 가운데 (레거시 WideScreenContainerView)
-                .frame(maxWidth: 600)
+                .frame(maxWidth: SeepLayout.maxContentWidth)
                 .frame(maxWidth: .infinity)
             }
             .scrollDismissesKeyboard(.interactively)

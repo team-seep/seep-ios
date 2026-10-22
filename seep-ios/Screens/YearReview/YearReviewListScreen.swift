@@ -72,7 +72,7 @@ private struct YearReviewListContentView: View {
                         .padding(.bottom, 12)
                     }
                 }
-                .frame(maxWidth: WideScreenLayout.maxContentWidth)
+                .frame(maxWidth: SeepLayout.maxContentWidth)
                 .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)

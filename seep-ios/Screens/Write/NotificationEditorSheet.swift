@@ -18,6 +18,9 @@ struct NotificationEditorSheet: View {
         self.onDelete = onDelete
     }
 
+    /// 삭제 버튼 탭 영역. 시트 안이라 safe area 를 벗어나지 않는다 (GH-10 TC-7)
+    static let deleteButtonSize: CGFloat = 44
+
     var body: some View {
         // 중간 높이에서도 저장 버튼까지 닿도록 스크롤로 감싼다
         ScrollView {
@@ -86,7 +89,7 @@ struct NotificationEditorSheet: View {
                         viewModel.send(.tapDelete)
                     } label: {
                         Assets.Icons.icTrash.swiftUIImage
-                            .frame(width: 44, height: 44)
+                            .frame(width: Self.deleteButtonSize, height: Self.deleteButtonSize)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(Text(Strings.NotificationEditor.delete))

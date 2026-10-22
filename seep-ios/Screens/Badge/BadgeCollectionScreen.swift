@@ -40,7 +40,7 @@ struct BadgeCollectionScreen: View {
                     .padding(.top, 20)
                     .padding(.bottom, 24)
                 }
-                .frame(maxWidth: WideScreenLayout.maxContentWidth, alignment: .leading)
+                .frame(maxWidth: SeepLayout.maxContentWidth, alignment: .leading)
                 .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)

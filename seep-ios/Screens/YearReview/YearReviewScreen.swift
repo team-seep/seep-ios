@@ -67,7 +67,7 @@ private struct YearReviewContentView: View {
                 .padding(.top, 4)
                 // 공유 버튼에 가리지 않도록 아래 여백을 둔다
                 .padding(.bottom, 50 + 24 + 16)
-                .frame(maxWidth: WideScreenLayout.maxContentWidth)
+                .frame(maxWidth: SeepLayout.maxContentWidth)
                 .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)

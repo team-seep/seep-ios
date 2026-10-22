@@ -53,7 +53,7 @@ struct SettingsTabRootView: View {
                     .padding(.bottom, 24)
             }
             .padding(.horizontal, 20)
-            .frame(maxWidth: WideScreenLayout.maxContentWidth)
+            .frame(maxWidth: SeepLayout.maxContentWidth)
             .frame(maxWidth: .infinity)
         }
         .background(Color.gray2)

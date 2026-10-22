@@ -76,7 +76,7 @@ private struct WishDetailContent: View {
                 if let summary = viewModel.state.summary {
                     document(summary: summary)
                         // 넓은 화면(듀오 안쪽)은 600pt 기둥 (GH-12)
-                        .frame(maxWidth: HomeLayout.maxContentWidth)
+                        .frame(maxWidth: SeepLayout.maxContentWidth)
                         .frame(maxWidth: .infinity)
                 }
             }
