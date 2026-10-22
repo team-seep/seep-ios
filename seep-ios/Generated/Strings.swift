@@ -778,6 +778,18 @@ internal enum Strings {
       }
     }
   }
+  internal enum MainTab {
+    /// 이룬 싶
+    internal static let finished = Strings.tr("Localization", "main_tab.finished", fallback: "이룬 싶")
+    /// 새로 이룬 싶이 있어요
+    internal static let finishedDotAccessibility = Strings.tr("Localization", "main_tab.finished_dot_accessibility", fallback: "새로 이룬 싶이 있어요")
+    /// 설정
+    internal static let settings = Strings.tr("Localization", "main_tab.settings", fallback: "설정")
+    /// GH-64 메인 탭 · 적기 시트
+    internal static let wish = Strings.tr("Localization", "main_tab.wish", fallback: "싶")
+    /// 적기
+    internal static let write = Strings.tr("Localization", "main_tab.write", fallback: "적기")
+  }
   internal enum PlaceMap {
     /// 뒤로
     internal static let back = Strings.tr("Localization", "place_map.back", fallback: "뒤로")
@@ -843,6 +855,19 @@ internal enum Strings {
       /// 목표 금액
       internal static let title = Strings.tr("Localization", "write.target_amount.title", fallback: "목표 금액")
     }
+  }
+  internal enum WriteCategorySheet {
+    /// 뭐 하고 싶어요?
+    internal static let ctaWantToDo = Strings.tr("Localization", "write_category_sheet.cta_want_to_do", fallback: "뭐 하고 싶어요?")
+    /// 뭐 갖고 싶어요?
+    internal static let ctaWantToGet = Strings.tr("Localization", "write_category_sheet.cta_want_to_get", fallback: "뭐 갖고 싶어요?")
+    /// 어디 가고 싶어요?
+    internal static let ctaWantToGo = Strings.tr("Localization", "write_category_sheet.cta_want_to_go", fallback: "어디 가고 싶어요?")
+    /// 어떤 싶을
+    /// 적어볼까요?
+    internal static let title = Strings.tr("Localization", "write_category_sheet.title", fallback: "어떤 싶을\n적어볼까요?")
+    /// 적어볼까요?
+    internal static let titleBold = Strings.tr("Localization", "write_category_sheet.title_bold", fallback: "적어볼까요?")
   }
   internal enum YearReview {
     /// 닫기

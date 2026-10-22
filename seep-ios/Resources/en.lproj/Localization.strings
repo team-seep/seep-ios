@@ -333,3 +333,15 @@
 "app_lock.screen.title_bold" = "잠겨 있어요";
 "app_lock.screen.description_format" = "%@로 확인하면 열려요";
 "app_lock.screen.unlock_button_format" = "%@로 열기";
+
+/* GH-64 메인 탭 · 적기 시트 */
+"main_tab.wish" = "싶";
+"main_tab.finished" = "이룬 싶";
+"main_tab.write" = "적기";
+"main_tab.settings" = "설정";
+"main_tab.finished_dot_accessibility" = "새로 이룬 싶이 있어요";
+"write_category_sheet.title" = "어떤 싶을\n적어볼까요?";
+"write_category_sheet.title_bold" = "적어볼까요?";
+"write_category_sheet.cta_want_to_do" = "뭐 하고 싶어요?";
+"write_category_sheet.cta_want_to_get" = "뭐 갖고 싶어요?";
+"write_category_sheet.cta_want_to_go" = "어디 가고 싶어요?";

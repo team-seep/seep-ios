@@ -8,9 +8,21 @@ enum MainTab: Hashable {
     case settings
 }
 
-/// 탭 내비게이션 스택에 쌓는 화면
+/// 탭 내비게이션 스택에 쌓는 화면. 화면은 `DestinationView`가 고른다
 enum AppDestination: Hashable {
     case wishDetail(id: String, isFinished: Bool)
+    /// 검색. 이룬 싶 탭에서 열면 완료한 위시만 찾는다 (R-19)
+    case search(finishedOnly: Bool)
+    case badgeCollection
+    case yearReviewList(year: Int)
+    case placeMap
+    case widgetGuide
+    case controlGuide
+    case license
+}
+
+extension Category: Identifiable {
+    var id: String { rawValue }
 }
 
 /// 위젯 링크를 앱이 뜨기 전까지 맡아 두는 곳 (GH-50 `Preference.reservedDeepLink`)
@@ -47,6 +59,14 @@ final class AppRouter {
     private(set) var isMainReady = false
     /// `seepSheet`로 띄운 시트 수. 시트가 떠 있으면 위젯 링크를 무시한다
     private(set) var presentedModalCount = 0
+    /// 싶 탭에서 마지막으로 고른 카테고리. 적기 시트가 기본 선택으로 쓴다 (R-8)
+    var homeCategory: Category = .wantToDo
+    /// 싶 탭에서 완료한 뒤 이룬 싶 탭 아이콘에 붙는 점 (R-14)
+    var showsFinishedDot = false
+    /// 값이 바뀌면 떠 있는 `seepSheet`·풀스크린이 모두 닫힌다 (단축어로 작성 화면을 맨 위에 띄울 때)
+    private(set) var dismissAllModalsToken = 0
+    /// 지금 탭을 다시 누르면 올라가는 값. 각 탭 루트 목록이 맨 위로 스크롤한다 (R-4)
+    private(set) var scrollToTopToken: [MainTab: Int] = [:]
 
     private let dependency: Dependency
 
@@ -69,6 +89,81 @@ final class AppRouter {
 
     func modalDidDisappear() {
         presentedModalCount = max(0, presentedModalCount - 1)
+        presentPendingIntentIfPossible()
+    }
+
+    func select(_ tab: MainTab) {
+        if tab == selectedTab {
+            // 지금 탭을 다시 누르면 루트로 돌아가고, 이미 루트면 맨 위로 스크롤한다 (R-4)
+            if path(for: tab).isEmpty {
+                scrollToTopToken[tab, default: 0] += 1
+            } else {
+                setPath([], for: tab)
+            }
+        } else {
+            selectedTab = tab
+        }
+        if tab == .finished {
+            showsFinishedDot = false
+        }
+    }
+
+    func path(for tab: MainTab) -> [AppDestination] {
+        switch tab {
+        case .wish: return wishPath
+        case .finished: return finishedPath
+        case .settings: return settingsPath
+        }
+    }
+
+    func setPath(_ path: [AppDestination], for tab: MainTab) {
+        switch tab {
+        case .wish: wishPath = path
+        case .finished: finishedPath = path
+        case .settings: settingsPath = path
+        }
+    }
+
+    /// 지금 탭에 화면을 쌓는다
+    func push(_ destination: AppDestination) {
+        var current = path(for: selectedTab)
+        current.append(destination)
+        setPath(current, for: selectedTab)
+    }
+
+    /// 싶 적기 컨트롤·단축어(GH-49). 위젯 링크와 달리 다른 화면이 떠 있어도 작성 화면을 맨 위에 띄운다 (GH-49 R-5, R-12).
+    /// 시트가 떠 있으면 먼저 모두 닫고, 닫히는 애니메이션이 끝난 뒤 작성 화면을 띄운다
+    @discardableResult
+    func openFromIntent(_ deepLink: WidgetDeepLink) -> WidgetDeepLink? {
+        guard case .add(let category, _) = deepLink, let url = deepLink.url else {
+            return deepLink.url.flatMap { open(url: $0) }
+        }
+        guard isMainReady else {
+            dependency.deepLinkStore.reservedDeepLink = url.absoluteString
+            return nil
+        }
+        if writeCategory != nil {
+            writeCategory = category
+            return deepLink
+        }
+        if presentedModalCount > 0 {
+            dismissAllModalsToken += 1
+            pendingIntentCategory = category
+            return deepLink
+        }
+        writeCategory = category
+        return deepLink
+    }
+
+    /// 시트가 모두 닫힌 뒤(`modalDidDisappear`로 0이 되면) 미뤄 둔 작성 화면을 띄운다
+    private var pendingIntentCategory: Category? {
+        didSet { presentPendingIntentIfPossible() }
+    }
+
+    private func presentPendingIntentIfPossible() {
+        guard let category = pendingIntentCategory, presentedModalCount == 0 else { return }
+        pendingIntentCategory = nil
+        writeCategory = category
     }
 
     /// `.onOpenURL`로 받은 위젯 링크. 메인이 아직 없으면 맡아 두고, 있으면 바로 처리한다

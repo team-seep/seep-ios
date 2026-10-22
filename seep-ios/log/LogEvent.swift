@@ -163,4 +163,11 @@ enum LogObjectId: String {
     case enableAppLock = "enable_app_lock"
     case disableAppLock = "disable_app_lock"
     case unlockApp = "unlock_app"
+    // GH-64 메인 탭 · 적기 시트
+    case tabWish = "tab_wish"
+    case tabFinished = "tab_finished"
+    case tabWrite = "tab_write"
+    case tabSettings = "tab_settings"
+    case writeCategory = "write_category"
+    case finishedTabDot = "finished_tab_dot"
 }
