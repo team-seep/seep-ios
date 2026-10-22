@@ -51,8 +51,14 @@ struct MainTabView: View {
             }
         }
         .seepFullScreenCover(item: $router.writeCategory) { category in
-            // 작성 화면은 P2에서 SwiftUI 로 옮긴다
-            PendingScreen(title: Strings.MainTab.write + " · " + category.rawValue)
+            WishFormScreen(mode: .add(category)) { savedWish in
+                router.writeCategory = nil
+                if let savedWish {
+                    // 작성을 마치면 싶 탭으로 가서 그 카테고리를 보여준다 (R-9)
+                    router.homeCategory = savedWish.category
+                    router.select(.wish)
+                }
+            }
         }
         .onAppear {
             if viewModel == nil {

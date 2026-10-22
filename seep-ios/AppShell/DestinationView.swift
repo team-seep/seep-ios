@@ -16,9 +16,8 @@ struct DestinationView: View {
 
     var body: some View {
         switch destination {
-        case .wishDetail:
-            // 상세는 P2(#60 D2)에서 옮긴다
-            PendingScreen(title: "wish_detail")
+        case .wishDetail(let id, let isFinished):
+            WishDetailScreen(wishId: id, isFinished: isFinished)
         case .search(let finishedOnly):
             WishSearchScreen(finishedOnly: finishedOnly)
         case .badgeCollection:
