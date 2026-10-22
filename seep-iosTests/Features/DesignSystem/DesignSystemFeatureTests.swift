@@ -8,55 +8,53 @@ import UIKit
 final class DesignSystemFeatureTests: XCTestCase {
     // MARK: GH-64 TC26
 
-    func test_GH64_TC26_SwiftUI색토큰은_UIKit토큰과_RGB가같다() {
-        // Given
-        let pairs: [(String, Color, UIColor)] = [
-            ("gray1", .gray1, .gray1),
-            ("gray2", .gray2, .gray2),
-            ("gray2_5", .gray2_5, .gray2_5),
-            ("gray3", .gray3, .gray3),
-            ("gray4", .gray4, .gray4),
-            ("gray5", .gray5, .gray5),
-            ("seepBlue", .seepBlue, .seepBlue),
-            ("optionRed", .optionRed, .optionRed),
-            ("tennisGreen", .tennisGreen, .tennisGreen),
-            ("optionPurple", .optionPurple, .optionPurple)
+    func test_GH64_TC26_SwiftUI색토큰은_디자인시스템값과_RGB가같다() {
+        // Given — 싶 디자인 시스템 tokens.json (UIKit 토큰은 GH-64 P3에서 지웠다)
+        let expected: [(String, Color, Int)] = [
+            ("gray1", .gray1, 0xFFFFFF),
+            ("gray2", .gray2, 0xF6F7F9),
+            ("gray2_5", .gray2_5, 0xE1E3E7),
+            ("gray3", .gray3, 0xC0C5CD),
+            ("gray4", .gray4, 0x828993),
+            ("gray5", .gray5, 0x333333),
+            ("seepBlue", .seepBlue, 0x2FA8F9),
+            ("optionRed", .optionRed, 0xFF5C52),
+            ("tennisGreen", .tennisGreen, 0x66DF1B),
+            ("optionPurple", .optionPurple, 0xE773E2),
+            ("categoryTrack", .categoryTrack, 0xE8F6FF)
         ]
 
-        for (name, swiftUIColor, uiKitColor) in pairs {
+        for (name, color, hex) in expected {
             // When
-            let resolved = UIColor(swiftUIColor).rgba
+            let resolved = UIColor(color).rgba
 
             // Then
-            let expected = uiKitColor.rgba
-            XCTAssertEqual(resolved.r, expected.r, accuracy: 0.002, name)
-            XCTAssertEqual(resolved.g, expected.g, accuracy: 0.002, name)
-            XCTAssertEqual(resolved.b, expected.b, accuracy: 0.002, name)
-            XCTAssertEqual(resolved.a, expected.a, accuracy: 0.002, name)
+            XCTAssertEqual(resolved.r, CGFloat((hex >> 16) & 0xFF) / 255, accuracy: 0.002, name)
+            XCTAssertEqual(resolved.g, CGFloat((hex >> 8) & 0xFF) / 255, accuracy: 0.002, name)
+            XCTAssertEqual(resolved.b, CGFloat(hex & 0xFF) / 255, accuracy: 0.002, name)
+            XCTAssertEqual(resolved.a, 1, accuracy: 0.002, name)
         }
     }
 
-    func test_GH64_TC26_폰트이름은_UIKit폰트와같고_기기에있다() {
+    func test_GH64_TC26_폰트이름은_AppleSDGothicNeo굵기별이름이고_기기에있다() {
         // Given
-        let uiKitFonts: [(SeepFontName, UIFont?)] = [
-            (.ultraLight, .appleUltraLight(size: 10)),
-            (.light, .appleLight(size: 10)),
-            (.regular, .appleRegular(size: 10)),
-            (.medium, .appleMedium(size: 10)),
-            (.semiBold, .appleSemiBold(size: 10)),
-            (.bold, .appleBold(size: 10)),
-            (.extraBold, .appleExtraBold(size: 10))
+        let expected: [(SeepFontName, String)] = [
+            (.ultraLight, "AppleSDGothicNeo-UltraLight"),
+            (.light, "AppleSDGothicNeo-Light"),
+            (.regular, "AppleSDGothicNeo-Regular"),
+            (.medium, "AppleSDGothicNeo-Medium"),
+            (.semiBold, "AppleSDGothicNeo-SemiBold"),
+            (.bold, "AppleSDGothicNeo-Bold"),
+            (.extraBold, "AppleSDGothicNeoEB00")
         ]
 
-        for (name, uiKitFont) in uiKitFonts {
-            // When
-            // 토큰 이름이 기기에 실제로 있는 폰트인지 확인하려고 이름으로 직접 만든다
-            // swiftlint:disable:next no_uifont_name
+        for (name, fontName) in expected {
+            // When — 토큰 이름이 기기에 실제로 있는 폰트인지 이름으로 직접 만들어 본다
             let font = UIFont(name: name.rawValue, size: 10)
 
             // Then
+            XCTAssertEqual(name.rawValue, fontName)
             XCTAssertNotNil(font, "\(name.rawValue) 폰트가 없다")
-            XCTAssertEqual(font?.fontName, uiKitFont?.fontName)
         }
     }
 

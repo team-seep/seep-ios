@@ -217,6 +217,8 @@ internal enum Strings {
   internal static let sharePhotoTitle = Strings.tr("Localization", "share_photo_title", fallback: "공유하기")
   /// 👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요
   internal static let sharePhotoTooltip = Strings.tr("Localization", "share_photo_tooltip", fallback: "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요")
+  /// GH-63 스플래시
+  internal static let splashTagline = Strings.tr("Localization", "splash_tagline", fallback: "진짜 나를 위해 하고 싶은 것")
   /// 알림 추가
   internal static let writeAddNotification = Strings.tr("Localization", "write_add_notification", fallback: "알림 추가")
   /// 😭 조금만...더!

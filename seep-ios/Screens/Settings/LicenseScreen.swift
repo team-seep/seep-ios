@@ -13,7 +13,6 @@ struct OpenSourceLicense: Identifiable, Equatable {
 struct LicenseScreen: View {
     static let licenses: [OpenSourceLicense] = [
         OpenSourceLicense(name: "Abseil", license: "Apache License 2.0", url: "https://github.com/google/abseil-cpp-binary"),
-        OpenSourceLicense(name: "CombineCocoa", license: "MIT License", url: "https://github.com/CombineCommunity/CombineCocoa"),
         OpenSourceLicense(name: "Firebase", license: "Apache License 2.0", url: "https://github.com/firebase/firebase-ios-sdk"),
         OpenSourceLicense(name: "Firebase App Check", license: "Apache License 2.0", url: "https://github.com/google/app-check"),
         OpenSourceLicense(name: "GoogleAppMeasurement", license: "Apache License 2.0", url: "https://github.com/google/GoogleAppMeasurement"),
@@ -22,22 +21,11 @@ struct LicenseScreen: View {
         OpenSourceLicense(name: "gRPC", license: "Apache License 2.0", url: "https://github.com/google/grpc-binary"),
         OpenSourceLicense(name: "GTMSessionFetcher", license: "Apache License 2.0", url: "https://github.com/google/gtm-session-fetcher"),
         OpenSourceLicense(name: "Interop for Google SDKs", license: "Apache License 2.0", url: "https://github.com/google/interop-ios-for-google-sdks"),
-        OpenSourceLicense(name: "ISEmojiView", license: "MIT License", url: "https://github.com/isaced/ISEmojiView"),
-        OpenSourceLicense(name: "Kingfisher", license: "MIT License", url: "https://github.com/onevcat/Kingfisher"),
         OpenSourceLicense(name: "leveldb", license: "BSD 3-Clause License", url: "https://github.com/firebase/leveldb"),
-        OpenSourceLicense(name: "Lottie", license: "Apache License 2.0", url: "https://github.com/airbnb/lottie-ios"),
         OpenSourceLicense(name: "nanopb", license: "zlib License", url: "https://github.com/firebase/nanopb"),
-        OpenSourceLicense(name: "PanModal", license: "MIT License", url: "https://github.com/slackhq/PanModal"),
         OpenSourceLicense(name: "Promises", license: "Apache License 2.0", url: "https://github.com/google/promises"),
-        OpenSourceLicense(name: "ReactorKit", license: "MIT License", url: "https://github.com/ReactorKit/ReactorKit"),
         OpenSourceLicense(name: "Realm", license: "Apache License 2.0", url: "https://github.com/realm/realm-swift"),
-        OpenSourceLicense(name: "RxDataSources", license: "MIT License", url: "https://github.com/RxSwiftCommunity/RxDataSources"),
-        OpenSourceLicense(name: "RxSwift", license: "MIT License", url: "https://github.com/ReactiveX/RxSwift"),
-        OpenSourceLicense(name: "SnapKit", license: "MIT License", url: "https://github.com/SnapKit/SnapKit"),
-        OpenSourceLicense(name: "SwiftProtobuf", license: "Apache License 2.0", url: "https://github.com/apple/swift-protobuf"),
-        OpenSourceLicense(name: "SwiftyBeaver", license: "MIT License", url: "https://github.com/SwiftyBeaver/SwiftyBeaver"),
-        OpenSourceLicense(name: "Then", license: "MIT License", url: "https://github.com/devxoul/Then"),
-        OpenSourceLicense(name: "WeakMapTable", license: "MIT License", url: "https://github.com/ReactorKit/WeakMapTable")
+        OpenSourceLicense(name: "SwiftProtobuf", license: "Apache License 2.0", url: "https://github.com/apple/swift-protobuf")
     ]
 
     var body: some View {

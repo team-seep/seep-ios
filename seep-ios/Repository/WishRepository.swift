@@ -47,10 +47,10 @@ protocol WishRepository {
     /// id 로 위시 하나를 읽는다. 없으면(지워졌으면) nil. 잠금화면 위젯 링크로 상세를 열 때 쓴다 (GH-47 R-14)
     func fetchWish(id: String) -> Wish?
 
-    /// 작성 폼에서 만든 위시를 저장하고, 저장된 위시를 돌려준다 (GH-64 P2, 레거시 `WishService.addWish` 대체)
+    /// 작성 폼에서 만든 위시를 저장하고, 저장된 위시를 돌려준다 (GH-64 P2)
     func addWish(_ wish: Wish) -> Result<Wish, RepositoryError>
 
-    /// 수정 폼에서 바꾼 값을 저장한다. 바꾸는 필드는 레거시 `WishService.updateWish`와 같다
+    /// 수정 폼에서 바꾼 값을 저장한다. 바꾸는 필드는 예전 작성 서비스(GH-64 P2에서 삭제)와 같다
     /// (모은 돈 기록·장소·사진·완료 상태는 건드리지 않는다) (GH-64 P2)
     func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError>
     

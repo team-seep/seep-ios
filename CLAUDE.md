@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 서버 없이 **로컬 Realm**에 저장하고, App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
 
 - 타깃: `seep-ios`(앱), `widgetExtension`(WidgetKit, SwiftUI), `seep-iosTests`(XCTest)
-- iOS 18.0+. **SwiftUI + `@Observable` ViewModel로 전환 중**(GH-64). 새 화면은 SwiftUI로만 쓰고, 남은 UIKit(SnapKit)·ReactorKit 화면은 단계별로 옮긴다(P0 기반 → P1 탭·홈 → P2 작성·상세·수정 → P3 정리). 위젯은 SwiftUI
-- 의존성: Swift Package Manager (Realm, Kingfisher, Firebase, SwiftyBeaver / 전환 후 제거 예정: RxSwift·ReactorKit·CombineCocoa·SnapKit·Then·PanModal·ISEmojiView·Lottie)
+- iOS 18.0+. **SwiftUI + `@Observable` ViewModel**(GH-64에서 전환). UIKit은 `AppDelegate`(Firebase·Realm·알림 델리게이트)만. 위젯도 SwiftUI
+- 의존성: Swift Package Manager (Realm, Firebase) — 나머지(RxSwift·ReactorKit·SnapKit 등)는 GH-64에서 지웠다
 - Git-flow, 메인 개발 브랜치 `develop`, 원격 `team-seep/seep-ios`
 
 ## 필수 명령어
@@ -31,7 +31,7 @@ xcodebuild build \
 ```
 - 시뮬레이터는 `xcrun simctl list devices available | grep iPhone`으로 먼저 확인한다. 기기명은 머신마다 다르다.
 - 스킴은 `seep-ios` 하나(Debug = dev 번들 `macgongmon.seep-ios.dev`, 모듈명 `seep_ios_dev` / Release = `macgongmon.seep-ios`). 위젯은 `widgetExtension` 스킴.
-- 일반 그룹 구조라 **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 예외는 동기화 폴더(넣기만 하면 된다): `seep-ios/DesignSystem`(앱·위젯), `seep-ios/AppShell`(앱), `seep-ios/model/Error`(앱·위젯), `seep-ios/log`(앱), `seep-iosTests/Features`·`seep-iosTests/Log`(테스트). 새 SwiftUI 코드는 가능하면 동기화 폴더 아래에 둔다. 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
+- 일반 그룹 구조라 **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 예외는 동기화 폴더(넣기만 하면 된다): `seep-ios/DesignSystem`(앱·위젯), `seep-ios/AppShell`(앱), `seep-ios/Screens`(앱), `seep-ios/model/Error`(앱·위젯), `seep-ios/log`(앱), `seep-iosTests/Features`·`seep-iosTests/Log`(테스트). 새 SwiftUI 코드는 가능하면 동기화 폴더 아래에 둔다. 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
 - Realm은 20.0.6(Xcode 26.1~27 지원). CI는 `macos-26` 러너.
 - 서명 없이 빌드할 때 `CODE_SIGNING_ALLOWED=NO`를 쓰지 않는다 — App Group 엔타이틀먼트가 빠져 실행 직후 크래시한다. 대신 `CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=`.
 
@@ -63,12 +63,12 @@ xcodebuild build \
 
 상세·예외는 [RULES.md](docs/architecture/RULES.md). 기존 위반은 `.swiftlint-baseline.json`에 동결, **새 위반만** 실패.
 
-- **R1** 화면은 SwiftUI View + `@Observable` ViewModel. `import UIKit`·UIKit 래퍼(`UIViewRepresentable`·`UIHostingController`)·`RxSwift`/`ReactorKit` 신규 사용 금지 (예외: `AppDelegate.swift`)
+- **R1** 화면은 SwiftUI View + `@Observable` ViewModel. `import UIKit`·UIKit 래퍼(`UIViewRepresentable`·`UIHostingController`) 금지 (예외: `AppDelegate.swift`)
 - **R2** `*ViewModel.swift`는 `import UIKit`·`import SwiftUI`·`UIApplication.shared` 금지(`Foundation`·`Observation`·필요하면 `Combine`). 의존은 `Dependency`로 주입, protocol 타입
-- **R3** `Realm()`·`realm.write/objects/...`는 `seep-ios/Repository/`에서만 (예외: AppDelegate 설정, widget Provider, 레거시 `WishServices`)
+- **R3** `Realm()`·`realm.write/objects/...`는 `seep-ios/Repository/`에서만 (예외: AppDelegate 설정, widget Provider)
 - **R4** `model/dto/` 저장 프로퍼티를 바꾸면 `schemaVersion`을 **`Repository/RealmConfiguration.swift`(앱·위젯 공용)** 에서 올리고 `AppDelegate` `migrationBlock`에 분기 추가
-- **R5** 시트·풀스크린은 `.seepSheet(item:)`/`.seepFullScreenCover(item:)`로만(앱 잠금 오버레이 보장). 남은 UIKit VC/Cell은 Base 클래스 상속
-- **R6** 색은 `Color.gray5`·`.seepBlue`(`DesignSystem/SeepColor`), 폰트는 `Font.appleBold(size:)`(`SeepFont`), 문구는 `Text(Strings.xxx)`(리터럴 금지, 번역 안 하는 값은 `Text(verbatim:)`), 이미지는 `Assets.xxx`. UIKit 레거시는 `UIColorExtension`/`UIFontExtension`·SnapKit `leading/trailing`·`then` 금지
+- **R5** 시트·풀스크린은 `.seepSheet(item:)`/`.seepFullScreenCover(item:)`로만(앱 잠금 오버레이·토스트·detent 보장). 탭 스택에 쌓는 화면은 내비게이션 바가 숨겨져 있어 뒤로 버튼을 직접 그린다
+- **R6** 색은 `Color.gray5`·`.seepBlue`(`DesignSystem/SeepColor`), 폰트는 `Font.appleBold(size:)`(`SeepFont`), 문구는 `Text(Strings.xxx)`(리터럴 금지, 번역 안 하는 값은 `Text(verbatim:)`), 이미지는 `Assets.xxx`(`.swiftUIImage`). 넓은 화면 기둥은 `SeepLayout.maxContentWidth`
 - **R7** 타입은 책임 하나. 타입 400·파일 600줄 초과는 `// swiftlint:disable:next type_body_length - {사유}`
 - **R8** `print`·`try!`·`as!` 금지
 - **R9** ViewModel 구조 Action/State/Route/Config/Dependency, View는 `send(_:)`로만 입력, `state` 하나를 읽고, `route`를 처리한 뒤 `send(.routeHandled)`
@@ -78,7 +78,7 @@ xcodebuild build \
 가슴속 3천원 iOS Log 모듈과 같은 형식이다 (`seep-ios/log/`).
 - 이벤트: `ClickEvent`(GA `click`) / `ImpressionEvent`(`impression`) / `CustomEvent` — 공통 파라미터 `screen`, 클릭·노출은 `object_type`·`object_id`
 - 전송: ViewModel `Dependency.logManager: LogManagerProtocol = LogManager.shared` → `sendEvent(event:)`. 화면명은 ViewModel의 `screenName`
-- 페이지뷰: SwiftUI 화면은 `.trackScreen(.home)`(처음 나타날 때 한 번). 레거시 VC는 `override var screenName`(BaseViewController가 viewDidLoad에서 전송)
+- 페이지뷰: 화면에 `.trackScreen(.home)`(처음 나타날 때 한 번)
 - 테스트: `seep-iosTests/Log/MockLogManager.swift`의 `sentEvents`로 단언
 - 새 값은 snake_case로 `LogObjectId`·`ScreenName`·`EventName`·`ParameterName`에 추가
 
@@ -88,21 +88,17 @@ xcodebuild build \
 seep-ios/
 ├── DesignSystem/             # 앱·위젯 공용 SwiftUI 토큰·컴포넌트 (SeepColor, SeepFont, DdayBadge, WishRow, CategoryTabs, SeepCTA …) — 동기화 폴더
 ├── AppShell/                 # 앱 SwiftUI 기반: AppRouter(탭·딥링크), ToastCenter, AppLockOverlay, SeepSheet, trackScreen — 동기화 폴더
-├── features/{화면}/          # Home, write, wish-detail, wish-edit, notification, share-photo, splash …
-│   ├── {Name}View.swift + {Name}ViewModel.swift   # SwiftUI + @Observable (전환 후)
-│   ├── {Name}ViewController.swift                  # 레거시 UIKit (전환 중)
-│   ├── {Name}Reactor.swift                         # 레거시 ReactorKit (전환 중)
-│   └── subviews/, cell/
-├── features/base/            # BaseViewController(Combine), BaseVC(Rx), BaseView, Base*Cell, BaseCoordinator
-├── features/shared/          # 공용 UI 컴포넌트
+├── Screens/{화면}/            # Home, Finished, Settings, Write, Detail, Search, Badge, YearReview, Place, SharePhoto — 동기화 폴더
+│   ├── {Name}Screen.swift / {Name}View.swift   # SwiftUI
+│   └── {Name}ViewModel.swift                    # @Observable (Action/State/Route/Config/Dependency)
+├── features/                 # 화면 아닌 순수 로직 몇 개 (AppLockPolicy, PlaceSearchService, LinkMetadataProvider …)
 ├── Repository/               # WishRepository(Protocol+Impl), RemoteConfigRepository — Realm 접근 지점
-├── services/                 # WishServices (레거시, Reactor 화면용)
 ├── model/dto/                # Realm Object (WishDTO, NotificationDTO) — 바꾸면 R4
 ├── model/presentation/       # 도메인 모델 (Wish, SeepNotification, HashtagType)
 ├── log/                      # LogManager(Firebase Analytics), ClickEvent·ImpressionEvent·CustomEvent, ScreenName …
-├── manager/                  # NotificationManager(로컬 알림), ToastManager
-├── uilts/                    # Preference(UserDefaults), DateUtils, AlertUtils …
-├── extensions/               # UIColorExtension(색 토큰), UIFontExtension(폰트) …
+├── manager/                  # NotificationManager(로컬 알림), AuthenticationManager, CalendarManager
+├── uilts/                    # Preference(UserDefaults), DateUtils …
+├── extensions/               # Foundation 확장(String·Date …). 색·폰트 토큰은 DesignSystem/
 ├── Generated/                # SwiftGen 산출물 (Strings.swift, Assets.swift) — 직접 수정 금지
 └── Resources/                # xcassets, en.lproj/Localization.strings, Firebase plist, Lottie
 widget/                       # small-write / small-remain / medium-horizontal / medium-vertical 위젯
@@ -232,19 +228,15 @@ struct MyView: View {
 - 시트는 `.seepSheet(item:)`로만 띄운다(R5). 토스트는 `@Environment(ToastCenter.self)`의 `show(_:)`.
 - 테스트는 `seep-iosTests/Features/{화면}/{화면}FeatureTests.swift`에서 `ViewModelTestCase`를 상속해 `send` → `state`/`route`/`logManager` 로 단언한다.
 
-### 레거시 UIKit 화면 (전환 중)
-
-남은 UIKit 화면을 고칠 때는 기존 패턴(Combine `Input/Output` ViewModel + `BaseViewController`, Route는 VC `// MARK: Route` extension)을 따른다. 화면을 크게 고쳐야 하면 GH-64 단계와 맞춰 SwiftUI로 옮기는 걸 먼저 검토한다.
-
 ### Repository (R3)
 
 - Protocol + Impl 구조 (`WishRepository` / `WishRepositoryImpl`). 쓰기 결과는 `Result<_, RepositoryError>`로 돌려준다 (`try!` 금지, R8).
-- 새 조회/쓰기는 레거시 `WishServices`가 아니라 `WishRepository`에 메서드를 추가하고, `seep-iosTests/Mock/MockWishRepository.swift`도 같이 맞춘다.
+- 새 조회/쓰기는 `WishRepository`에 메서드를 추가하고, `seep-iosTests/Mock/MockWishRepository.swift`도 같이 맞춘다.
 
 ### UI
 
 - SwiftUI. 공용 컴포넌트는 `DesignSystem/`(앱·위젯 공용이라 도메인 타입·`Strings`에 의존하지 않는다 — 문구는 인자로 받는다), 앱 기반은 `AppShell/`.
-- 색·폰트·문자열·이미지는 토큰/SwiftGen만 (R6). 새 색은 `SeepColor`에 토큰부터(UIKit 화면이 쓰면 `UIColorExtension`에도 같은 값), 새 문자열은 `Localization.strings`에 키 추가 → `make swiftgen`.
+- 색·폰트·문자열·이미지는 토큰/SwiftGen만 (R6). 새 색은 `SeepColor`에 토큰부터, 새 문자열은 `Localization.strings`에 키 추가 → `make swiftgen`.
 - 넓은 화면은 콘텐츠를 `WideScreenLayout.maxContentWidth`(600) 기둥으로 가운데 둔다.
 
 ## 코드 스타일
