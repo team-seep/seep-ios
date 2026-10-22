@@ -1,59 +1,39 @@
 import XCTest
-import Combine
 
 @testable import seep_ios_dev
 
-/// 상세 "사진" 섹션 (GH-36 R-1~R-4, R-7).
-final class WishPhotoViewModelTests: XCTestCase {
+/// 상세 "사진" 섹션 (GH-36 R-1~R-4, R-7, GH-64 TC-608)
+final class WishPhotoFeatureTests: ViewModelTestCase {
     private var mockRepository: MockWishRepository!
     private var mockStorage: MockWishPhotoStorage!
-    private var mockLogManager: MockLogManager!
-    private var cancellables: Set<AnyCancellable>!
+    private var updates: [String] = []
 
     override func setUp() {
         super.setUp()
         mockRepository = MockWishRepository()
         mockStorage = MockWishPhotoStorage()
-        mockLogManager = MockLogManager()
-        cancellables = []
+        updates = []
     }
 
     override func tearDown() {
         mockRepository = nil
         mockStorage = nil
-        mockLogManager = nil
-        cancellables = nil
         super.tearDown()
     }
 
     private func makeViewModel(photoFileName: String = "") -> WishPhotoViewModel {
         let wish = Wish(id: "wish-1", emoji: "🏝️", category: .wantToGo, title: "제주도 한 달 살기", photoFileName: photoFileName)
-        return WishPhotoViewModel(
+        let viewModel = WishPhotoViewModel(
             config: .init(wish: wish),
-            dependency: .init(wishRepository: mockRepository, photoStorage: mockStorage, logManager: mockLogManager)
+            dependency: .init(wishRepository: mockRepository, photoStorage: mockStorage, logManager: logManager)
         )
+        viewModel.onUpdate = { [unowned self] in updates.append($0) }
+        return viewModel
     }
 
-    private func collectRoutes(_ viewModel: WishPhotoViewModel) -> () -> [WishPhotoViewModel.Route] {
-        var routes: [WishPhotoViewModel.Route] = []
-        viewModel.output.route
-            .sink { routes.append($0) }
-            .store(in: &cancellables)
-        return { routes }
-    }
-
-    private func collectUpdates(_ viewModel: WishPhotoViewModel) -> () -> [String] {
-        var updates: [String] = []
-        viewModel.output.didUpdatePhoto
-            .sink { updates.append($0) }
-            .store(in: &cancellables)
-        return { updates }
-    }
-
-    private func clickEvents(objectId: LogObjectId) -> [ClickEvent] {
-        return mockLogManager.sentEvents
-            .compactMap { $0 as? ClickEvent }
-            .filter { ($0.extraParameters?[.objectId] as? LogObjectId) == objectId }
+    private func isErrorAlert(_ route: WishPhotoViewModel.Route?) -> Bool {
+        if case .errorAlert = route { return true }
+        return false
     }
 
     // MARK: GH-36 TC1
@@ -63,7 +43,7 @@ final class WishPhotoViewModelTests: XCTestCase {
         let viewModel = makeViewModel(photoFileName: "")
 
         // When
-        let photoURL = viewModel.output.photoURL.value
+        let photoURL = viewModel.state.photoURL
 
         // Then
         XCTAssertNil(photoURL)
@@ -73,16 +53,12 @@ final class WishPhotoViewModelTests: XCTestCase {
     func test_GH36_TC1_빈사진자리를탭하면_사진고르기를연다() {
         // Given
         let viewModel = makeViewModel()
-        let routes = collectRoutes(viewModel)
 
         // When
-        viewModel.input.didTapAdd.send(())
+        viewModel.send(.tapAdd)
 
         // Then
-        XCTAssertEqual(routes().count, 1)
-        guard case .presentPhotoPicker = routes().first else {
-            return XCTFail("사진 고르기 route 가 아니다")
-        }
+        XCTAssertEqual(viewModel.route, .photoPicker)
     }
 
     // MARK: GH-36 TC2
@@ -90,59 +66,51 @@ final class WishPhotoViewModelTests: XCTestCase {
     func test_GH36_TC2_사진을고르면_저장소에쓰고_파일이름을위시에저장한뒤_사진있음상태가된다() {
         // Given
         let viewModel = makeViewModel()
-        let updates = collectUpdates(viewModel)
         mockStorage.savePhotoResult = .success("wish-1-new.jpg")
         let imageData = Data([0xFF, 0xD8, 0xFF])
 
         // When
-        viewModel.input.didPickPhoto.send(imageData)
+        viewModel.send(.pickPhoto(imageData))
 
         // Then
         XCTAssertEqual(mockStorage.savePhotoCalls.map(\.wishId), ["wish-1"])
         XCTAssertEqual(mockStorage.savePhotoCalls.map(\.imageData), [imageData])
         XCTAssertEqual(mockRepository.updatePhotoCalls.map(\.wishId), ["wish-1"])
         XCTAssertEqual(mockRepository.updatePhotoCalls.map(\.fileName), ["wish-1-new.jpg"])
-        XCTAssertEqual(viewModel.output.photoURL.value?.lastPathComponent, "wish-1-new.jpg")
+        XCTAssertEqual(viewModel.state.photoURL?.lastPathComponent, "wish-1-new.jpg")
         XCTAssertTrue(viewModel.hasPhoto)
-        XCTAssertEqual(updates(), ["wish-1-new.jpg"])
+        XCTAssertEqual(updates, ["wish-1-new.jpg"])
         XCTAssertTrue(mockStorage.deletedFileNames.isEmpty)
     }
 
     func test_GH36_TC2_위시저장에실패하면_방금쓴파일을지우고_에러알럿을띄운다() {
         // Given
         let viewModel = makeViewModel()
-        let routes = collectRoutes(viewModel)
-        let updates = collectUpdates(viewModel)
         mockStorage.savePhotoResult = .success("wish-1-new.jpg")
         mockRepository.updatePhotoResult = .failure(.writeFailed)
 
         // When
-        viewModel.input.didPickPhoto.send(Data([0x01]))
+        viewModel.send(.pickPhoto(Data([0x01])))
 
         // Then
         XCTAssertEqual(mockStorage.deletedFileNames, ["wish-1-new.jpg"])
-        XCTAssertNil(viewModel.output.photoURL.value)
-        XCTAssertTrue(updates().isEmpty)
-        guard case .showErrorAlert = routes().first else {
-            return XCTFail("에러 알럿 route 가 아니다")
-        }
+        XCTAssertNil(viewModel.state.photoURL)
+        XCTAssertTrue(updates.isEmpty)
+        XCTAssertTrue(isErrorAlert(viewModel.route))
     }
 
     func test_GH36_TC2_이미지를읽지못하면_위시를바꾸지않고_에러알럿을띄운다() {
         // Given
         let viewModel = makeViewModel()
-        let routes = collectRoutes(viewModel)
         mockStorage.savePhotoResult = .failure(.invalidImage)
 
         // When
-        viewModel.input.didPickPhoto.send(Data([0x01]))
+        viewModel.send(.pickPhoto(Data([0x01])))
 
         // Then
         XCTAssertTrue(mockRepository.updatePhotoCalls.isEmpty)
-        XCTAssertNil(viewModel.output.photoURL.value)
-        guard case .showErrorAlert = routes().first else {
-            return XCTFail("에러 알럿 route 가 아니다")
-        }
+        XCTAssertNil(viewModel.state.photoURL)
+        XCTAssertTrue(isErrorAlert(viewModel.route))
     }
 
     // MARK: GH-36 TC3
@@ -151,22 +119,22 @@ final class WishPhotoViewModelTests: XCTestCase {
         // Given
         mockStorage.existingFileNames = ["wish-1-old.jpg"]
         let viewModel = makeViewModel(photoFileName: "wish-1-old.jpg")
-        let routes = collectRoutes(viewModel)
-        let updates = collectUpdates(viewModel)
         mockStorage.savePhotoResult = .success("wish-1-new.jpg")
 
         // When
-        viewModel.input.didTapChange.send(())
-        viewModel.input.didPickPhoto.send(Data([0x01]))
+        viewModel.send(.tapChange)
 
         // Then
-        guard case .presentPhotoPicker = routes().first else {
-            return XCTFail("사진 고르기 route 가 아니다")
-        }
+        XCTAssertEqual(viewModel.route, .photoPicker)
+
+        // When
+        viewModel.send(.pickPhoto(Data([0x01])))
+
+        // Then
         XCTAssertEqual(mockRepository.updatePhotoCalls.map(\.fileName), ["wish-1-new.jpg"])
         XCTAssertEqual(mockStorage.deletedFileNames, ["wish-1-old.jpg"])
-        XCTAssertEqual(viewModel.output.photoURL.value?.lastPathComponent, "wish-1-new.jpg")
-        XCTAssertEqual(updates(), ["wish-1-new.jpg"])
+        XCTAssertEqual(viewModel.state.photoURL?.lastPathComponent, "wish-1-new.jpg")
+        XCTAssertEqual(updates, ["wish-1-new.jpg"])
     }
 
     // MARK: GH-36 TC4
@@ -175,37 +143,33 @@ final class WishPhotoViewModelTests: XCTestCase {
         // Given
         mockStorage.existingFileNames = ["wish-1-old.jpg"]
         let viewModel = makeViewModel(photoFileName: "wish-1-old.jpg")
-        let updates = collectUpdates(viewModel)
         XCTAssertTrue(viewModel.hasPhoto)
 
         // When
-        viewModel.input.didTapDelete.send(())
+        viewModel.send(.tapDelete)
 
         // Then
         XCTAssertEqual(mockRepository.updatePhotoCalls.map(\.wishId), ["wish-1"])
         XCTAssertEqual(mockRepository.updatePhotoCalls.map(\.fileName), [""])
         XCTAssertEqual(mockStorage.deletedFileNames, ["wish-1-old.jpg"])
-        XCTAssertNil(viewModel.output.photoURL.value)
+        XCTAssertNil(viewModel.state.photoURL)
         XCTAssertFalse(viewModel.hasPhoto)
-        XCTAssertEqual(updates(), [""])
+        XCTAssertEqual(updates, [""])
     }
 
     func test_GH36_TC4_위시저장에실패하면_파일을지우지않고_에러알럿을띄운다() {
         // Given
         mockStorage.existingFileNames = ["wish-1-old.jpg"]
         let viewModel = makeViewModel(photoFileName: "wish-1-old.jpg")
-        let routes = collectRoutes(viewModel)
         mockRepository.updatePhotoResult = .failure(.writeFailed)
 
         // When
-        viewModel.input.didTapDelete.send(())
+        viewModel.send(.tapDelete)
 
         // Then
         XCTAssertTrue(mockStorage.deletedFileNames.isEmpty)
         XCTAssertTrue(viewModel.hasPhoto)
-        guard case .showErrorAlert = routes().first else {
-            return XCTFail("에러 알럿 route 가 아니다")
-        }
+        XCTAssertTrue(isErrorAlert(viewModel.route))
     }
 
     // MARK: GH-36 TC6
@@ -218,7 +182,7 @@ final class WishPhotoViewModelTests: XCTestCase {
         let viewModel = makeViewModel(photoFileName: "wish-1-restored.jpg")
 
         // Then
-        XCTAssertNil(viewModel.output.photoURL.value)
+        XCTAssertNil(viewModel.state.photoURL)
         XCTAssertFalse(viewModel.hasPhoto)
     }
 
@@ -229,7 +193,7 @@ final class WishPhotoViewModelTests: XCTestCase {
         let viewModel = makeViewModel()
 
         // When
-        viewModel.input.didTapAdd.send(())
+        viewModel.send(.tapAdd)
 
         // Then
         let events = clickEvents(objectId: .addPhoto)
@@ -244,7 +208,7 @@ final class WishPhotoViewModelTests: XCTestCase {
         let viewModel = makeViewModel(photoFileName: "wish-1-old.jpg")
 
         // When
-        viewModel.input.didTapChange.send(())
+        viewModel.send(.tapChange)
 
         // Then
         let events = clickEvents(objectId: .changePhoto)
@@ -259,7 +223,7 @@ final class WishPhotoViewModelTests: XCTestCase {
         let viewModel = makeViewModel(photoFileName: "wish-1-old.jpg")
 
         // When
-        viewModel.input.didTapDelete.send(())
+        viewModel.send(.tapDelete)
 
         // Then
         let events = clickEvents(objectId: .deletePhoto)
@@ -273,10 +237,10 @@ final class WishPhotoViewModelTests: XCTestCase {
         let viewModel = makeViewModel()
 
         // When
-        viewModel.input.didPickPhoto.send(Data([0x01]))
+        viewModel.send(.pickPhoto(Data([0x01])))
 
         // Then
-        let events = mockLogManager.sentEvents
+        let events = logManager.sentEvents
             .compactMap { $0 as? CustomEvent }
             .filter { $0.name == .savePhoto }
         XCTAssertEqual(events.count, 1)
@@ -289,9 +253,35 @@ final class WishPhotoViewModelTests: XCTestCase {
         mockRepository.updatePhotoResult = .failure(.writeFailed)
 
         // When
-        viewModel.input.didPickPhoto.send(Data([0x01]))
+        viewModel.send(.pickPhoto(Data([0x01])))
 
         // Then
-        XCTAssertTrue(mockLogManager.sentEvents.compactMap { $0 as? CustomEvent }.isEmpty)
+        XCTAssertTrue(logManager.sentEvents.compactMap { $0 as? CustomEvent }.isEmpty)
+    }
+
+    // MARK: GH-64 TC608
+
+    func test_GH64_TC608_사진고르기에서읽지못하면_저장하지않고_에러알럿을띄운다() {
+        // Given
+        let viewModel = makeViewModel()
+
+        // When
+        viewModel.send(.pickFailed)
+
+        // Then
+        XCTAssertTrue(mockStorage.savePhotoCalls.isEmpty)
+        XCTAssertTrue(isErrorAlert(viewModel.route))
+    }
+
+    func test_GH64_TC608_수정화면에서돌아와사진이바뀌면_새파일로보인다() {
+        // Given
+        mockStorage.existingFileNames = ["wish-1-a.jpg", "wish-1-b.jpg"]
+        let viewModel = makeViewModel(photoFileName: "wish-1-a.jpg")
+
+        // When
+        viewModel.send(.reload(Wish(id: "wish-1", photoFileName: "wish-1-b.jpg")))
+
+        // Then
+        XCTAssertEqual(viewModel.state.photoURL?.lastPathComponent, "wish-1-b.jpg")
     }
 }

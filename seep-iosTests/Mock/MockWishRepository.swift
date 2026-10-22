@@ -39,6 +39,9 @@ final class MockWishRepository: WishRepository {
     /// id 가 같은 위시를 돌려준다. 없으면 nil (지워진 위시)
     var fetchWishResult: [Wish] = []
     private(set) var fetchWishCalledIds: [String] = []
+    /// nil 이면 호출된 위시 id 로 완료가 풀린 위시를 성공으로 돌려준다
+    var cancelFinishResult: Result<Wish, RepositoryError>?
+    private(set) var cancelFinishCalledIds: [String] = []
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
@@ -135,5 +138,15 @@ final class MockWishRepository: WishRepository {
     func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
         updatedWishes.append(wish)
         return updateWishResult ?? .success(wish)
+    }
+
+    func cancelFinish(wishId: String) -> Result<Wish, RepositoryError> {
+        cancelFinishCalledIds.append(wishId)
+        if let cancelFinishResult { return cancelFinishResult }
+        var wish = fetchWishResult.first { $0.id == wishId } ?? Wish(id: wishId)
+        wish.isSuccess = false
+        wish.finishDate = nil
+        wish.finishNote = ""
+        return .success(wish)
     }
 }
