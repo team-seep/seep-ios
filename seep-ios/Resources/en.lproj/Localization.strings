@@ -422,3 +422,14 @@
 "license.description" = "싶은 아래 오픈소스를 사용해요. 각 라이선스 전문은 저장소에서 볼 수 있어요.";
 "app_lock.sheet.toast_enabled" = "앱 잠금을 켰어요";
 "app_lock.sheet.toast_disabled" = "앱 잠금을 껐어요";
+
+/* GH-64 홈 */
+"home.toast.added_to_finished" = "👏 이룬 싶에 담았어요";
+"home.empty_tab" = "아직 등록된 것이 없네요.\n아래 적기 버튼을 누르면 작성할 수 있어요!";
+"home.filter.view_type_list" = "리스트로 보기";
+"home.filter.view_type_grid" = "그리드로 보기";
+"home.filter.sort_accessibility" = "정렬 바꾸기";
+"home.delete" = "삭제";
+"home.finish_accessibility" = "완료하기";
+"home.finished_accessibility" = "완료됨";
+"home.error_alert.confirm" = "확인";

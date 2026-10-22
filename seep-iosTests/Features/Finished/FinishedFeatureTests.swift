@@ -3,7 +3,7 @@ import XCTest
 @testable import seep_ios_dev
 
 /// 연말 회고 기간만 돌려주는 Remote Config 대역
-private struct StubRemoteConfigRepository: RemoteConfigRepository {
+private struct FinishedStubRemoteConfig: RemoteConfigRepository {
     let period: YearReviewPeriod?
 
     func fetchForceUpdateVersion() async -> Result<String, Error> {
@@ -50,7 +50,7 @@ final class FinishedFeatureTests: ViewModelTestCase {
         let now = now ?? date(2026, 10, 22)
         return FinishedViewModel(dependency: .init(
             wishRepository: wishRepository,
-            remoteConfigRepository: StubRemoteConfigRepository(period: period),
+            remoteConfigRepository: FinishedStubRemoteConfig(period: period),
             logManager: logManager,
             now: { now },
             calendar: calendar
