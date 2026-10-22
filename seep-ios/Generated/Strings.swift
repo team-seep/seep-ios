@@ -1058,6 +1058,18 @@ internal enum Strings {
       internal static let title = Strings.tr("Localization", "settings.view_type.title", fallback: "홈 보기 방식")
     }
   }
+  internal enum SharePhoto {
+    /// 취소
+    internal static let alertCancel = Strings.tr("Localization", "share_photo.alert_cancel", fallback: "취소")
+    /// 설정
+    internal static let alertSettings = Strings.tr("Localization", "share_photo.alert_settings", fallback: "설정")
+    /// 공유할 카드. 두 번 탭하면 글자색이 바뀌어요
+    internal static let cardAccessibility = Strings.tr("Localization", "share_photo.card_accessibility", fallback: "공유할 카드. 두 번 탭하면 글자색이 바뀌어요")
+    /// 이미지를 저장하지 못했어요. 다시 시도해 주세요.
+    internal static let saveFailed = Strings.tr("Localization", "share_photo.save_failed", fallback: "이미지를 저장하지 못했어요. 다시 시도해 주세요.")
+    /// GH-64 사진 공유
+    internal static let savedToast = Strings.tr("Localization", "share_photo.saved_toast", fallback: "👏이미지를 앨범에 저장했어요!")
+  }
   internal enum WidgetGuide {
     /// 스크린샷 자리
     internal static let screenshotPlaceholder = Strings.tr("Localization", "widget_guide.screenshot_placeholder", fallback: "스크린샷 자리")

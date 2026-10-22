@@ -576,12 +576,6 @@ extension WishDetailViewController {
     }
 }
 
-extension WishDetailViewController: SharePhotoDelegate {
-    func onSuccessSave() {
-        self.coordinator?.showToast(message: "👏이미지를 앨범에 저장했어요!")
-    }
-}
-
 extension WishDetailViewController: WishEditViewControllerDelegate {
     func onUpdateWish(wish: Wish) {
         self.wishDetailReactor.action.onNext(.updateWish(wish: wish))

@@ -447,3 +447,10 @@
 "home.finish_accessibility" = "완료하기";
 "home.finished_accessibility" = "완료됨";
 "home.error_alert.confirm" = "확인";
+
+/* GH-64 사진 공유 */
+"share_photo.saved_toast" = "👏이미지를 앨범에 저장했어요!";
+"share_photo.save_failed" = "이미지를 저장하지 못했어요. 다시 시도해 주세요.";
+"share_photo.alert_settings" = "설정";
+"share_photo.alert_cancel" = "취소";
+"share_photo.card_accessibility" = "공유할 카드. 두 번 탭하면 글자색이 바뀌어요";

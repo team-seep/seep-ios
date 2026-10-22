@@ -49,10 +49,7 @@ extension WishDetailCoordinator where Self: WishDetailViewController {
     }
     
     func presentSharePhoto(wish: Wish) {
-        let viewController = SharePhotoVC.instance(wish: wish)
-        
-        viewController.delegate = self
-        self.present(viewController, animated: true, completion: nil)
+        // 사진 공유는 SwiftUI `SharePhotoScreen`으로 옮겼다(GH-64 P2). 이 레거시 상세는 같은 P2에서 SwiftUI 상세로 바뀐다
     }
     
     func pushNotification(
