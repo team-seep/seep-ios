@@ -107,7 +107,7 @@ final class WishSearchResultCell: BaseCollectionViewCell {
         memoLabel.attributedText = nil
     }
 
-    func bind(item: WishSearchResultItem) {
+    func bind(item: LegacyWishSearchResultItem) {
         let wish = item.wish
         emojiLabel.text = wish.emoji
         titleLabel.attributedText = makeTitle(wish: wish, highlightRange: item.titleHighlightRange)

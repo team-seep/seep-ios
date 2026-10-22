@@ -8,10 +8,10 @@ import SnapKit
 final class YearReviewListViewController: BaseViewController {
     override var screenName: ScreenName { viewModel.output.screenName }
 
-    private typealias Section = YearReviewListViewModel.Section
-    private typealias Item = YearReviewListViewModel.Item
+    private typealias Section = LegacyYearReviewListViewModel.Section
+    private typealias Item = LegacyYearReviewListViewModel.Item
 
-    private let viewModel: YearReviewListViewModel
+    private let viewModel: LegacyYearReviewListViewModel
 
     private let backButton: UIButton = {
         let button = UIButton()
@@ -46,7 +46,7 @@ final class YearReviewListViewController: BaseViewController {
         return cell
     }
 
-    init(viewModel: YearReviewListViewModel) {
+    init(viewModel: LegacyYearReviewListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -130,7 +130,7 @@ final class YearReviewListViewController: BaseViewController {
         viewModel.output.route
             .main
             .withUnretained(self)
-            .sink { (owner: YearReviewListViewController, route: YearReviewListViewModel.Route) in
+            .sink { (owner: YearReviewListViewController, route: LegacyYearReviewListViewModel.Route) in
                 owner.handleRoute(route)
             }
             .store(in: &cancellables)
@@ -181,7 +181,7 @@ final class YearReviewListViewController: BaseViewController {
 
 // MARK: Route
 extension YearReviewListViewController {
-    private func handleRoute(_ route: YearReviewListViewModel.Route) {
+    private func handleRoute(_ route: LegacyYearReviewListViewModel.Route) {
         switch route {
         case .pushWishDetail(let reactor):
             let viewController = WishDetailViewController(reactor: reactor, mode: .fromFinish)

@@ -14,7 +14,7 @@ final class BadgeCollectionViewController: BaseViewController {
         static let spacing: CGFloat = 10
     }
 
-    private let viewModel: BadgeCollectionViewModel
+    private let viewModel: LegacyBadgeCollectionViewModel
 
     private let backButton: UIButton = {
         let button = UIButton()
@@ -55,7 +55,7 @@ final class BadgeCollectionViewController: BaseViewController {
 
     private var cardViews: [BadgeCardView] = []
 
-    init(viewModel: BadgeCollectionViewModel) {
+    init(viewModel: LegacyBadgeCollectionViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -169,7 +169,7 @@ final class BadgeCollectionViewController: BaseViewController {
         viewModel.output.route
             .main
             .withUnretained(self)
-            .sink { (owner: BadgeCollectionViewController, route: BadgeCollectionViewModel.Route) in
+            .sink { (owner: BadgeCollectionViewController, route: LegacyBadgeCollectionViewModel.Route) in
                 owner.handleRoute(route)
             }
             .store(in: &cancellables)
@@ -197,7 +197,7 @@ final class BadgeCollectionViewController: BaseViewController {
 
 // MARK: Route
 extension BadgeCollectionViewController {
-    private func handleRoute(_ route: BadgeCollectionViewModel.Route) {
+    private func handleRoute(_ route: LegacyBadgeCollectionViewModel.Route) {
         switch route {
         case .pop:
             navigationController?.popViewController(animated: true)

@@ -85,11 +85,11 @@ extension HomeViewModel {
         case presentSortBottomSheet(SortOrderBottomSheetViewModel)
         case presentFinishNoteBottomSheet(FinishNoteViewModel)
         case presentBadgeCelebration(BadgeCelebrationViewModel)
-        case pushBadgeCollection(BadgeCollectionViewModel)
+        case pushBadgeCollection(LegacyBadgeCollectionViewModel)
         case showReleaseSleepingWishAlert(Wish)
         case pushWishDetail(WishDetailReactor)
-        case pushWishSearch(WishSearchViewModel)
-        case presentYearReview(YearReviewViewModel)
+        case pushWishSearch(LegacyWishSearchViewModel)
+        case presentYearReview(LegacyYearReviewViewModel)
         case pushPlaceMap(PlaceMapViewModel)
         case presentAppLockBottomSheet(AppLockBottomSheetViewModel)
         case showErrorAlert(Error)
@@ -695,7 +695,7 @@ final class HomeViewModel {
     }
     
     private func pushWishSearch() {
-        let viewModel = WishSearchViewModel(dependency: .init(
+        let viewModel = LegacyWishSearchViewModel(dependency: .init(
             wishRepository: dependency.wishRepository,
             logManager: dependency.logManager
         ))
@@ -801,7 +801,7 @@ extension HomeViewModel {
             extraParameters: [.year: banner.year]
         ))
         
-        let viewModel = YearReviewViewModel(
+        let viewModel = LegacyYearReviewViewModel(
             config: .init(year: banner.year),
             dependency: .init(
                 wishRepository: dependency.wishRepository,
@@ -864,7 +864,7 @@ extension HomeViewModel {
     }
     
     private func pushBadgeCollection() {
-        let viewModel = BadgeCollectionViewModel(dependency: .init(wishRepository: dependency.wishRepository))
+        let viewModel = LegacyBadgeCollectionViewModel(dependency: .init(wishRepository: dependency.wishRepository))
         output.route.send(.pushBadgeCollection(viewModel))
     }
 }

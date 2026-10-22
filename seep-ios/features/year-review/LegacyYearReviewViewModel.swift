@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-extension YearReviewViewModel {
+extension LegacyYearReviewViewModel {
     struct Input {
         /// 나타날 때마다 다시 집계한다. 목록 → 상세에서 완료 취소하고 돌아온 경우를 반영한다 (R-7)
         let viewWillAppear = PassthroughSubject<Void, Never>()
@@ -21,7 +21,7 @@ extension YearReviewViewModel {
 
     enum Route {
         case presentShareSheet(imageData: Data)
-        case pushYearReviewList(YearReviewListViewModel)
+        case pushYearReviewList(LegacyYearReviewListViewModel)
         case dismiss
     }
 
@@ -47,7 +47,7 @@ extension YearReviewViewModel {
 }
 
 /// 올해 이룬 싶 회고 카드 (GH-34 R-3~R-5).
-final class YearReviewViewModel {
+final class LegacyYearReviewViewModel {
     let input = Input()
     let output = Output()
     var cancellables = Set<AnyCancellable>()
@@ -63,28 +63,28 @@ final class YearReviewViewModel {
     private func bind() {
         input.viewWillAppear
             .withUnretained(self)
-            .sink { (owner: YearReviewViewModel, _) in
+            .sink { (owner: LegacyYearReviewViewModel, _) in
                 owner.loadSummary()
             }
             .store(in: &cancellables)
 
         input.didTapShare
             .withUnretained(self)
-            .sink { (owner: YearReviewViewModel, imageData: Data) in
+            .sink { (owner: LegacyYearReviewViewModel, imageData: Data) in
                 owner.share(imageData: imageData)
             }
             .store(in: &cancellables)
 
         input.didTapShowAll
             .withUnretained(self)
-            .sink { (owner: YearReviewViewModel, _) in
+            .sink { (owner: LegacyYearReviewViewModel, _) in
                 owner.pushYearReviewList()
             }
             .store(in: &cancellables)
 
         input.didTapClose
             .withUnretained(self)
-            .sink { (owner: YearReviewViewModel, _) in
+            .sink { (owner: LegacyYearReviewViewModel, _) in
                 owner.output.route.send(.dismiss)
                 owner.output.dismissed.send(())
             }
@@ -92,7 +92,7 @@ final class YearReviewViewModel {
     }
 
     private func loadSummary() {
-        let wishes = YearReviewViewModel.fetchWishes(
+        let wishes = LegacyYearReviewViewModel.fetchWishes(
             year: config.year,
             wishRepository: dependency.wishRepository,
             calendar: dependency.calendar
@@ -111,7 +111,7 @@ final class YearReviewViewModel {
     }
 
     private func pushYearReviewList() {
-        let viewModel = YearReviewListViewModel(
+        let viewModel = LegacyYearReviewListViewModel(
             config: .init(year: config.year),
             dependency: .init(wishRepository: dependency.wishRepository, calendar: dependency.calendar)
         )
@@ -119,7 +119,7 @@ final class YearReviewViewModel {
     }
 }
 
-extension YearReviewViewModel {
+extension LegacyYearReviewViewModel {
     /// 대상 연도 [1/1, 다음 해 1/1) 의 완료 위시 (R-3)
     static func fetchWishes(year: Int, wishRepository: WishRepository, calendar: Calendar) -> [Wish] {
         guard let range = YearReviewSummary.dateRange(year: year, calendar: calendar) else { return [] }
