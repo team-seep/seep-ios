@@ -12,57 +12,66 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 - 규칙 포맷: **규칙 한 문장 / 이유 / 좋은 예·나쁜 예 / 강제 수단 / 예외**.
 - 강제 수단 우선순위: **린트(SwiftLint custom_rules) > 스크립트 > 문서**. 문서로만 강제되는 규칙은 R9 하나다.
 
+> **SwiftUI 전환 중 (GH-64, 2026-10~).** 앱 전체를 SwiftUI + `@Observable` ViewModel로 옮기고 있다(최소 iOS 18). 새 코드는 아래 규칙의 **SwiftUI 기준**을 따른다. UIKit·Rx 기준 규칙(`no_base_vc`, `vc_inherits_base`, `cell_inherits_base`, SnapKit·`then`·`UIColor`/`UIFont` 규칙)은 남은 레거시 화면을 지키려고 전환이 끝날 때(GH-64 P3)까지만 둔다. 레거시 UIKit 파일은 `no_uikit` 베이스라인에 동결돼 있고, 화면을 옮길 때마다 줄어든다.
+
 ## 한눈에 보기
 
 | # | 규칙 | 강제 수단 | 베이스라인 |
 |---|---|---|---|
-| R1 | 새 코드는 Combine + ViewModel. RxSwift·ReactorKit·`BaseVC` 신규 사용 금지 | 린트 `no_new_rx`, `no_base_vc` | 80건 동결 |
-| R2 | ViewModel은 UI를 모르고, 의존은 주입받는다 | 린트 `viewmodel_no_uikit_import`, `viewmodel_no_uiapplication` | 1건 동결 |
+| R1 | 화면은 SwiftUI View + `@Observable` ViewModel. UIKit·RxSwift·ReactorKit·`BaseVC` 신규 사용 금지 | 린트 `no_uikit`, `no_new_rx`, `no_base_vc` | 레거시 동결 (P3에서 0) |
+| R2 | ViewModel은 UI를 모르고(UIKit·SwiftUI import 금지), 의존은 주입받는다 | 린트 `viewmodel_no_uikit_import`, `viewmodel_no_swiftui_import`, `viewmodel_no_uiapplication` | 1건 동결 |
 | R3 | Realm 읽기/쓰기는 Repository에서만 | 린트 `realm_only_in_repository` | 0건 |
 | R4 | Realm 모델을 바꾸면 schemaVersion(앱+위젯)과 마이그레이션을 같이 바꾼다 | 스크립트 `check-realm-schema.sh` + 라벨 `schema-change` | 0건 |
-| R5 | ViewController/Cell은 Base 클래스를 상속 | 린트 `vc_inherits_base`, `cell_inherits_base` | 0건 |
-| R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·leading/trailing·클로저 초기화·화면 크기 고정 금지 | 린트 `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`, `no_screen_size` | 529건 동결 |
+| R5 | 시트·풀스크린은 `seepSheet`/`seepFullScreenCover`로만 띄운다 (전환 중에는 UIKit VC/Cell의 Base 상속도 유지) | 린트 `no_raw_sheet`, `vc_inherits_base`, `cell_inherits_base` | 0건 |
+| R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·화면 크기 고정 금지 (UIKit 레거시: leading/trailing·클로저 초기화) | 린트 `no_color_literal`, `no_font_custom`, `no_text_literal`, `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`, `no_screen_size` | 레거시 동결 |
 | R7 | 타입은 책임 하나만 진다 (타입 400·파일 600줄 초과는 사유 필수) | 린트 `type_body_length`·`file_length` + `length_disable_reason` | 0건 |
 | R8 | `print`·`try!`·`as!` 금지 | 린트 `no_print`, `force_try`, `force_cast` | 15건 동결 |
-| R9 | ViewModel 구조(Input/Output/Route/Config/Dependency/State)·Route는 VC extension | 문서 + AI 리뷰 | — |
+| R9 | ViewModel 구조(Action/State/Route/Config/Dependency, `send(_:)`)·Route는 View에서 처리 | 문서 + AI 리뷰 | — |
 
 린트 대상은 `seep-ios/`, `seep-iosTests/`, `widget/`(R1·R7·R8·`snapkit`·`then`만). `seep-ios/Generated/`(SwiftGen 산출물)는 제외.
 
 ---
 
-## R1. 새 코드는 Combine + ViewModel로 쓴다
+## R1. 화면은 SwiftUI View + `@Observable` ViewModel로 쓴다
 
-**규칙** — 새 화면·새 컴포넌트는 Combine 기반 `XxxViewModel` + `BaseViewController`로 만든다. `RxSwift`/`RxCocoa`/`ReactorKit`/`RxDataSources`를 새 파일에 import하지 않고, 새 VC가 `BaseVC`(Rx용)를 상속하지 않는다.
+**규칙** — 새 화면·새 컴포넌트는 SwiftUI `View` + `@Observable` `XxxViewModel`로 만든다. `seep-ios/`에서 `import UIKit`, `UIViewRepresentable`/`UIViewControllerRepresentable`/`UIHostingController`를 새로 쓰지 않는다(`AppDelegate.swift` 제외). `RxSwift`/`RxCocoa`/`ReactorKit`/`RxDataSources`도 새로 import하지 않고, 새 VC가 `BaseVC`를 상속하지 않는다.
 
-**이유** — 레포에 두 패턴(ReactorKit 레거시 / Combine ViewModel 신규 — `HomeViewModel`)이 섞여 있다. 패턴이 둘이면 AI가 매번 어느 쪽을 따를지 추측하고, 리뷰어는 두 방식을 다 읽어야 한다. 이동 방향을 하나로 고정해야 섞인 상태가 줄어든다.
+**이유** — 레포에 세 패턴(ReactorKit 레거시 / Combine ViewModel + UIKit / 위젯 SwiftUI)이 섞여 있다. 패턴이 여럿이면 AI가 매번 어느 쪽을 따를지 추측하고, 리뷰어는 모든 방식을 읽어야 한다. 위젯·잠금화면 위젯·컨트롤이 이미 SwiftUI라 앱 화면도 SwiftUI로 모으면 컴포넌트·토큰을 같이 쓴다(GH-64). UIKit 래퍼도 막는 이유는 "일단 래퍼로" 남은 화면이 전환을 끝나지 않게 만들기 때문이다.
 
 **좋은 예**
 ```swift
-import Combine
+import Foundation
+import Observation
 
+@Observable
 final class FinishedViewModel {
-    let input = Input()
-    let output = Output()
+    private(set) var state = State()
+    func send(_ action: Action) { ... }
 }
 
-final class FinishedViewController: BaseViewController { ... }
+struct FinishedView: View {
+    @State var viewModel: FinishedViewModel
+    var body: some View { ... }
+}
 ```
 
 **나쁜 예**
 ```swift
-import ReactorKit                                   // ❌ 새 파일
-final class FinishedViewController: BaseVC, View { } // ❌ BaseVC 신규 상속
+import UIKit                                        // ❌ 새 파일
+final class FinishedViewController: BaseViewController { }  // ❌ 새 UIKit 화면
+struct MapView: UIViewRepresentable { }             // ❌ UIKit 래퍼
+import ReactorKit                                   // ❌
 ```
 
-**강제 수단** — SwiftLint `no_new_rx`, `no_base_vc`.
+**강제 수단** — SwiftLint `no_uikit`, `no_new_rx`, `no_base_vc`.
 
-**예외(베이스라인)** — 기존 Reactor 화면(Write, WishDetail, WishEdit, Finished, Notification, SharePhoto, Splash, PageItem)의 import·상속 80건 동결. 그 화면을 **크게** 고칠 때는 ViewModel로 옮기는 걸 우선 검토한다(옮기면 베이스라인 항목이 저절로 사라진다). `seep-ios/features/base/`는 두 패턴의 공용 기반이라 제외.
+**예외(베이스라인)** — 전환 전 UIKit·Reactor 파일은 베이스라인에 동결한다. 화면을 SwiftUI로 옮기면 그 파일이 지워져 항목이 저절로 사라지고, GH-64 P3에서 0이 된다. `AppDelegate.swift`는 `@UIApplicationDelegateAdaptor`로 Firebase·Realm·알림 델리게이트를 맡는 UI 아닌 코드라 제외. `seep-ios/features/base/`는 레거시 공용 기반이라 `no_new_rx`에서 제외.
 
 ---
 
 ## R2. ViewModel은 UI를 모르고, 의존은 주입받는다
 
-**규칙** — `*ViewModel.swift`는 `import UIKit` 금지, `UIApplication.shared` 금지. 외부 의존(Repository, Preference, NotificationManager 등)은 `Dependency`로 주입받고 **protocol 타입**으로 둔다.
+**규칙** — `*ViewModel.swift`는 `import UIKit`·`import SwiftUI` 금지, `UIApplication.shared` 금지. `Foundation`·`Observation`(필요하면 `Combine`)만 쓴다. 외부 의존(Repository, Preference, NotificationManager 등)은 `Dependency`로 주입받고 **protocol 타입**으로 둔다.
 
 **이유** — ViewModel이 UI를 모르면 ViewModel 테스트만으로 화면 로직이 검증된다(VC는 테스트하지 않는다). 의존이 protocol이면 테스트에서 목으로 갈아끼울 수 있다 (`MockWishRepository`, `MockNotificationManager`).
 
@@ -82,11 +91,12 @@ struct Dependency {
 **나쁜 예**
 ```swift
 import UIKit                                   // ❌
-UIApplication.shared.open(url)                 // ❌ → Route(.openURL(url)) 로 VC에서
+import SwiftUI                                 // ❌ ViewModel 에서
+UIApplication.shared.open(url)                 // ❌ → Route(.openURL(url)) 로 View 에서 openURL
 NotificationManager.shared.cancel(wish)        // ❌ 싱글턴 직접 호출 → Dependency 로
 ```
 
-**강제 수단** — SwiftLint `viewmodel_no_uikit_import`, `viewmodel_no_uiapplication`. protocol 타입 여부는 문서 + 리뷰.
+**강제 수단** — SwiftLint `viewmodel_no_uikit_import`, `viewmodel_no_swiftui_import`, `viewmodel_no_uiapplication`. protocol 타입 여부는 문서 + 리뷰.
 
 **예외(베이스라인)** — `HomeFilterHeaderViewModel`의 `import UIKit` 1건 동결.
 
@@ -143,21 +153,39 @@ config.migrationBlock = { migration, oldSchemaVersion in
 
 ---
 
-## R5. ViewController/Cell은 Base 클래스를 상속한다
+## R5. 시트·풀스크린은 `seepSheet`/`seepFullScreenCover`로만 띄운다
 
-**규칙** — VC는 `BaseViewController`, `UICollectionViewCell`은 `BaseCollectionViewCell`, `UITableViewCell`은 `BaseTableViewCell`을 상속한다.
+**규칙** — SwiftUI에서 시트·풀스크린은 `.seepSheet(item:)`/`.seepFullScreenCover(item:)`(`seep-ios/AppShell/SeepSheet.swift`)로만 띄운다. `.sheet(`·`.fullScreenCover(`를 직접 부르지 않는다. 전환 중 남은 UIKit 화면은 지금처럼 VC는 `BaseViewController`, Cell은 `BaseCollectionViewCell`/`BaseTableViewCell`을 상속한다.
 
-**이유** — `cancellables`, `setup()`/`bindConstraints()` 호출 순서, `prepareForReuse`에서의 구독 해제를 한 곳에서 관리한다. 셀 재사용 시 구독이 안 풀려 이벤트가 중복되는 버그를 구조로 막는다.
+**이유** — 앱 잠금(GH-46)은 열려 있는 시트 위까지 가려야 한다. SwiftUI에서 루트에 덮은 화면은 그 위에 뜬 시트를 가리지 못하므로, 모든 시트 내용 루트에 `.appLockOverlay()`를 붙여야 한다. 한 곳(`seepSheet`)에서만 띄우게 하면 빠뜨릴 수 없다. 높이에 맞춘 detent·인디케이터도 같이 통일된다. UIKit Base 상속 규칙은 셀 재사용 구독 해제를 지키려고 레거시가 남아 있는 동안만 둔다.
 
-**강제 수단** — SwiftLint `vc_inherits_base`, `cell_inherits_base`.
+**좋은 예**
+```swift
+.seepSheet(item: $viewModel.route.sortSheet) { sheet in
+    SortOrderSheet(viewModel: sheet)
+}
+```
 
-**예외** — `seep-ios/features/base/` 자체, `widget/`(SwiftUI).
+**나쁜 예**
+```swift
+.sheet(item: $route) { ... }   // ❌ 잠금 오버레이·detent 규칙이 빠진다
+```
+
+**강제 수단** — SwiftLint `no_raw_sheet`(정의 파일 `SeepSheet.swift` 제외), `vc_inherits_base`, `cell_inherits_base`.
+
+**예외** — `seep-ios/features/base/` 자체, `widget/`(시트 없음). 시스템 `.alert`·`.confirmationDialog`는 잠길 때 닫으므로 이 규칙 밖이다.
 
 ---
 
-## R6. UI 표현은 토큰·SwiftGen·leading/trailing·클로저 초기화로 한다
+## R6. UI 표현은 토큰·SwiftGen으로 한다
 
-**규칙**
+**규칙** (SwiftUI)
+- 색은 `seep-ios/DesignSystem/SeepColor.swift`의 토큰(`Color.gray5`, `.seepBlue` …)만. `Color(red:…)`·`Color(r:…)`·`Color(hex:)` 직접 생성 금지.
+- 폰트는 `SeepFont.swift`(`Font.appleBold(size:)` …)만. `Font.custom(…)` 직접 호출 금지.
+- 화면 문구는 `Text(Strings.xxx)`. `Text("문구")` 리터럴 금지(숫자·고유명사처럼 번역하지 않는 값은 `Text(verbatim:)`).
+- 레이아웃 크기는 `UIScreen`이 아니라 컨테이너 기준(`containerRelativeFrame`, `GeometryReader`는 꼭 필요할 때만)으로 정한다. 넓은 화면 기둥은 `WideScreenLayout.maxContentWidth`.
+
+**규칙** (UIKit 레거시, GH-64 P3까지)
 - 색은 `UIColorExtension.swift`의 토큰(`.gray1`~`.gray5`, `.seepBlue`, `.tennisGreen` …)만. `UIColor(r:g:b:)` 직접 생성 금지 — 새 색은 토큰부터 추가한다.
 - 폰트는 `UIFontExtension.swift`(`.appleBold(size:)` …)만. `UIFont(name:)` 금지.
 - 문자열은 SwiftGen `Strings.xxx`, 이미지는 `Assets.xxx`. `"key".localized` 금지 (키 오타가 런타임에야 드러난다).
@@ -192,9 +220,9 @@ let label = UILabel().then {                    // ❌ then
 make.left.equalToSuperview()                    // ❌ left
 ```
 
-**강제 수단** — SwiftLint `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`, `no_screen_size`.
+**강제 수단** — SwiftLint `no_color_literal`, `no_font_custom`, `no_text_literal`(SwiftUI), `no_uicolor_literal`, `no_uifont_name`, `no_localized_literal`, `snapkit_leading_trailing`, `no_then`, `no_screen_size`(UIKit 레거시).
 
-**예외(베이스라인)** — 기존 코드 529건 동결 (`snapkit` 189, `then` 159, `localized` 107, 색 45, 폰트 21, 화면 크기 8). `RatioUtils.swift`·`UIUtils.swift`(헬퍼 정의)는 `no_screen_size`에서 제외 — 남은 사용처가 정리되면 헬퍼를 지운다. 위젯(SwiftUI)은 색·폰트·문자열 규칙에서 제외 (`widget/extensions/ColorExtensions.swift` 사용). 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
+**예외(베이스라인)** — 기존 코드 529건 동결 (`snapkit` 189, `then` 159, `localized` 107, 색 45, 폰트 21, 화면 크기 8). `RatioUtils.swift`·`UIUtils.swift`(헬퍼 정의)는 `no_screen_size`에서 제외 — 남은 사용처가 정리되면 헬퍼를 지운다. 위젯은 색·폰트·문자열 규칙에서 제외한다(위젯 문구는 위젯 타깃 안에 있다). 위젯 색 토큰은 앱과 같은 `seep-ios/DesignSystem/SeepColor.swift`를 쓴다(앱·위젯 두 타깃 멤버). 토큰 정의 파일(`SeepColor.swift`·`SeepFont.swift`)은 색·폰트 규칙에서 제외. 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
 
 ---
 
@@ -229,19 +257,24 @@ do {
 
 ---
 
-## R9. ViewModel 구조·Route 분리를 통일한다
+## R9. ViewModel 구조·Route 처리를 통일한다
 
-**규칙** — 모든 ViewModel은 `Input / Output / Route / Config / Dependency / State` 중첩 타입 구조를 따른다 (`Route`·`Config`·`Dependency`·`State`는 필요할 때만). Route 처리는 ViewController의 `// MARK: Route` extension으로 분리한다.
+**규칙** — SwiftUI ViewModel은 `@Observable final class`이고 중첩 타입 `Action / State / Route / Config / Dependency`를 쓴다(`Route`·`Config`는 필요할 때만).
+- View는 `viewModel.send(.action)`으로만 입력을 보낸다.
+- 화면 상태는 `private(set) var state: State` 하나로 읽는다.
+- 화면 이동·시트·URL 열기는 `private(set) var route: Route?`로 내보낸다. View가 `.navigationDestination`/`.seepSheet(item:)`/`openURL`로 처리하고 `send(.routeHandled)`로 비운다. 탭·딥링크 이동은 `AppRouter`가 맡는다.
 
-**이유** — 화면이 같은 모양이어야 AI가 새 화면을 만들 때도, 사람이 리뷰할 때도 "어디를 보면 되는지"를 안다. 기준 구현은 `HomeViewModel`.
+전환 전 Combine ViewModel(`Input/Output`)은 화면을 옮길 때 이 구조로 바꾼다.
 
-**좋은 예** — 루트 `CLAUDE.md`의 "ViewModel 구조" 템플릿, `seep-ios/features/Home/HomeViewModel.swift`.
+**이유** — 화면이 같은 모양이어야 AI가 새 화면을 만들 때도, 사람이 리뷰할 때도 "어디를 보면 되는지"를 안다. 테스트는 `send` → `state`/`route` 단언 하나로 통일된다(`seep-iosTests/Features/ViewModelTestCase.swift`). 기준 구현은 GH-64 P1의 SwiftUI `HomeViewModel`.
+
+**좋은 예** — 루트 `CLAUDE.md`의 "ViewModel 구조" 템플릿.
 
 **나쁜 예**
 ```swift
-final class FinishedViewModel {
-    let didTapButton = PassthroughSubject<Void, Never>()   // ❌ Input 밖에 흩어진 입력
-    var wishes: [Wish] = []                                // ❌ State 밖 상태
+@Observable final class FinishedViewModel {
+    var wishes: [Wish] = []           // ❌ State 밖 상태, View가 직접 바꿀 수 있다
+    func didTapButton() { }           // ❌ Action 밖 입력
 }
 ```
 
@@ -254,6 +287,7 @@ final class FinishedViewModel {
 - `.swiftlint-baseline.json`(`make lint-baseline`으로 생성). 베이스라인에 있는 위반은 보고되지 않는다. 파일을 옮기거나 크게 고쳐 매칭이 깨지면 그때 고친다.
 - **custom_rules의 `message`를 바꾸면 베이스라인 매칭이 깨진다**(메시지가 매칭 키에 포함). 메시지를 바꿨으면 같은 PR에서 `make lint-baseline`으로 재생성하고, 항목 수가 늘지 않았는지 확인한다.
 - 베이스라인은 **줄어들기만** 해야 한다. 항목이 늘어나는 PR은 리뷰어가 사유를 확인한다 (`baseline-change` 라벨).
+- 예외: 새 규칙을 켜면 기존 코드 위반이 한꺼번에 동결되어 항목이 늘어난다(GH-64 P0의 `no_uikit` 등). 그 PR 본문에 규칙별 동결 수를 적고, 이후 PR에서는 다시 줄어들기만 한다.
 
 ## 규칙을 바꾸는 방법
 
