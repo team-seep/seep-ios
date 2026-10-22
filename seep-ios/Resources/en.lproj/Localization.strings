@@ -345,3 +345,14 @@
 "write_category_sheet.cta_want_to_do" = "뭐 하고 싶어요?";
 "write_category_sheet.cta_want_to_get" = "뭐 갖고 싶어요?";
 "write_category_sheet.cta_want_to_go" = "어디 가고 싶어요?";
+
+/* GH-64 홈 */
+"home.toast.added_to_finished" = "👏 이룬 싶에 담았어요";
+"home.empty_tab" = "아직 등록된 것이 없네요.\n아래 적기 버튼을 누르면 작성할 수 있어요!";
+"home.filter.view_type_list" = "리스트로 보기";
+"home.filter.view_type_grid" = "그리드로 보기";
+"home.filter.sort_accessibility" = "정렬 바꾸기";
+"home.delete" = "삭제";
+"home.finish_accessibility" = "완료하기";
+"home.finished_accessibility" = "완료됨";
+"home.error_alert.confirm" = "확인";

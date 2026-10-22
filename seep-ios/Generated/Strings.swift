@@ -621,9 +621,18 @@ internal enum Strings {
     internal static func badgeLinkFormat(_ p1: Int, _ p2: Int) -> String {
       return Strings.tr("Localization", "home.badge_link_format", p1, p2, fallback: "배지 %d/%d 모아보기")
     }
+    /// 삭제
+    internal static let delete = Strings.tr("Localization", "home.delete", fallback: "삭제")
     /// 아직 등록된 것이 없네요.
     /// 👇🏻아래 버튼을 누르면 작성할 수 있어요!
     internal static let empty = Strings.tr("Localization", "home.empty", fallback: "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!")
+    /// 아직 등록된 것이 없네요.
+    /// 아래 적기 버튼을 누르면 작성할 수 있어요!
+    internal static let emptyTab = Strings.tr("Localization", "home.empty_tab", fallback: "아직 등록된 것이 없네요.\n아래 적기 버튼을 누르면 작성할 수 있어요!")
+    /// 완료하기
+    internal static let finishAccessibility = Strings.tr("Localization", "home.finish_accessibility", fallback: "완료하기")
+    /// 완료됨
+    internal static let finishedAccessibility = Strings.tr("Localization", "home.finished_accessibility", fallback: "완료됨")
     /// %d/%d
     internal static func stepProgressFormat(_ p1: Int, _ p2: Int) -> String {
       return Strings.tr("Localization", "home.step_progress_format", p1, p2, fallback: "%d/%d")
@@ -639,11 +648,21 @@ internal enum Strings {
       /// 적어봐요!
       internal static let wantToGo = Strings.tr("Localization", "home.empty_title.want_to_go", fallback: "가고 싶은 장소를\n적어봐요!")
     }
+    internal enum ErrorAlert {
+      /// 확인
+      internal static let confirm = Strings.tr("Localization", "home.error_alert.confirm", fallback: "확인")
+    }
     internal enum Filter {
       /// 완료된 위시만
       internal static let onlyFinished = Strings.tr("Localization", "home.filter.only_finished", fallback: "완료된 위시만")
       /// 가고 싶은 곳 지도
       internal static let placeMap = Strings.tr("Localization", "home.filter.place_map", fallback: "가고 싶은 곳 지도")
+      /// 정렬 바꾸기
+      internal static let sortAccessibility = Strings.tr("Localization", "home.filter.sort_accessibility", fallback: "정렬 바꾸기")
+      /// 그리드로 보기
+      internal static let viewTypeGrid = Strings.tr("Localization", "home.filter.view_type_grid", fallback: "그리드로 보기")
+      /// 리스트로 보기
+      internal static let viewTypeList = Strings.tr("Localization", "home.filter.view_type_list", fallback: "리스트로 보기")
       internal enum Sort {
         /// 완료일 가까운순
         internal static let deadline = Strings.tr("Localization", "home.filter.sort.deadline", fallback: "완료일 가까운순")
@@ -748,6 +767,8 @@ internal enum Strings {
       }
     }
     internal enum Toast {
+      /// GH-64 홈
+      internal static let addedToFinished = Strings.tr("Localization", "home.toast.added_to_finished", fallback: "👏 이룬 싶에 담았어요")
       /// 👏위시를 완료했어요!
       internal static let finishWish = Strings.tr("Localization", "home.toast.finish_wish", fallback: "👏위시를 완료했어요!")
       /// 👏등록이 완료됐어요!

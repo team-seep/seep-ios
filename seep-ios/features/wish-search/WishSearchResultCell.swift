@@ -3,7 +3,7 @@ import UIKit
 /// 검색 결과 셀. 홈 리스트 셀(`HomeWishListCell`)과 같은 모양이고, 일치 글자를 강조한다 (GH-32 R-6, R-7).
 final class WishSearchResultCell: BaseCollectionViewCell {
     enum Layout {
-        static let height: CGFloat = HomeWishListCell.Layout.height
+        static let height: CGFloat = 70
     }
 
     private let containerView: UIView = {
