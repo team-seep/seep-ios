@@ -3,7 +3,6 @@ import SwiftUI
 import WidgetKit
 
 /// 제어 센터·잠금화면·동작 버튼에 놓는 "싶 적기" 컨트롤 (GH-49 R-1~R-3, R-8)
-@available(iOS 18.0, *)
 struct SeepWriteControl: ControlWidget {
     static let kind = "SeepWriteControl"
 
@@ -29,7 +28,6 @@ struct SeepWriteControl: ControlWidget {
 }
 
 /// 컨트롤 편집에서 고르는 카테고리. 기본값 하고 싶어요 (R-2)
-@available(iOS 18.0, *)
 struct SeepWriteControlConfiguration: ControlConfigurationIntent {
     static let title: LocalizedStringResource = "싶 적기"
 

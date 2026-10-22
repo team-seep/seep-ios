@@ -30,24 +30,11 @@ struct CheckWishRowView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            if #available(iOSApplicationExtension 17.0, *) {
-                // 체크 원 밖은 위시 상세 링크, 체크 원은 인텐트 버튼 (R-3, R-9)
-                Link(destination: detailURL) {
-                    content
-                }
-                checkButton
-            } else {
-                // iOS 16 은 인텐트 버튼이 없어 줄 전체가 상세 링크다 (R-9)
-                Link(destination: detailURL) {
-                    HStack(spacing: 0) {
-                        content
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(.gray3)
-                            .frame(width: 32, height: 40)
-                    }
-                }
+            // 체크 원 밖은 위시 상세 링크, 체크 원은 인텐트 버튼 (R-3, R-9)
+            Link(destination: detailURL) {
+                content
             }
+            checkButton
         }
         .frame(height: 40)
         .background(Color.gray1)
@@ -96,7 +83,6 @@ struct CheckWishRowView: View {
         .id("\(wish.id)-\(wish.isSuccess)")
     }
 
-    @available(iOSApplicationExtension 17.0, *)
     private var checkButton: some View {
         Group {
             if wish.isSuccess {

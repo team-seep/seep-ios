@@ -39,12 +39,8 @@ final class CalendarManager: CalendarManagerProtocol {
             }
         }
 
-        // iOS 17+ 는 일정을 읽지 않으므로 쓰기 전용 권한만 요청한다 (R-2)
-        if #available(iOS 17.0, *) {
-            eventStore.requestWriteOnlyAccessToEvents(completion: handler)
-        } else {
-            eventStore.requestAccess(to: .event, completion: handler)
-        }
+        // 일정을 읽지 않으므로 쓰기 전용 권한만 요청한다 (R-2)
+        eventStore.requestWriteOnlyAccessToEvents(completion: handler)
     }
 
     func saveAllDayEvent(_ draft: CalendarEventDraft) -> Result<String, Error> {

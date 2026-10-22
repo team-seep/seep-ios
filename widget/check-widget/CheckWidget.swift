@@ -2,7 +2,7 @@ import WidgetKit
 import SwiftUI
 
 /// 홈 화면에서 앱을 열지 않고 다음 단계·위시를 체크하는 위젯 (GH-48 R-1, R-12).
-/// 체크 버튼(App Intent)은 iOS 17+ 에서만 보이고, iOS 16 은 줄을 누르면 위시 상세로 연다
+/// 체크 원은 App Intent 버튼이고, 나머지 줄은 위시 상세 링크다
 struct CheckWidget: Widget {
     let kind: String = "\(CheckWidget.self)"
 
