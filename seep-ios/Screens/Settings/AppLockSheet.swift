@@ -38,8 +38,6 @@ struct AppLockSheet: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 8)
-        // 루트 토스트는 시트 아래에 가려져 시트 안에도 띄운다
-        .toastOverlay(toastCenter)
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in
             handle(route)
