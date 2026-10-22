@@ -213,7 +213,7 @@ final class WishDetailViewModel {
             }
             return
         }
-        guard wish != state.wish else { return }
+        // `Wish ==`는 id 만 비교하므로 값이 같은지 따지지 않고 다시 반영한다
         apply(wish: wish)
         if steps == nil {
             makeSectionViewModels(wish: wish)
