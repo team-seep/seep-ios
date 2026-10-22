@@ -1,21 +1,20 @@
 import XCTest
-import Combine
 
 @testable import seep_ios_dev
 
-/// 잠금 화면과 생명주기 (GH-46 R-5 ~ R-7, R-11)
-final class AppLockViewModelTests: XCTestCase {
-    private var sut: AppLockViewModel!
+/// 잠금 화면과 생명주기 (GH-46 R-5 ~ R-7, R-11) — `AppLockViewModelTests`(UIKit 윈도우)를 SwiftUI 오버레이 판으로 옮겼다.
+/// UIKit 생명주기 알림은 `scenePhase` 전이로 바뀐다: willResignActive = active→inactive, didEnterBackground = →background,
+/// willEnterForeground = background→inactive, didBecomeActive = →active
+final class AppLockOverlayFeatureTests: ViewModelTestCase {
+    private var sut: AppLockOverlayViewModel!
     private var preference: Preference!
     private var authenticationManager: MockAuthenticationManager!
-    private var logManager: MockLogManager!
     private var now = Date(timeIntervalSince1970: 1_800_000_000)
 
     override func setUp() {
         super.setUp()
-        preference = Preference(name: "test-gh46-app-lock")
+        preference = Preference(name: "test-gh64-app-lock-overlay-feature")
         authenticationManager = MockAuthenticationManager()
-        logManager = MockLogManager()
         now = Date(timeIntervalSince1970: 1_800_000_000)
     }
 
@@ -23,13 +22,12 @@ final class AppLockViewModelTests: XCTestCase {
         sut = nil
         preference = nil
         authenticationManager = nil
-        logManager = nil
         super.tearDown()
     }
 
     private func makeSut(isEnabled: Bool) {
         preference.isAppLockEnabled = isEnabled
-        sut = AppLockViewModel(dependency: .init(
+        sut = AppLockOverlayViewModel(dependency: .init(
             preference: preference,
             authenticationManager: authenticationManager,
             logManager: logManager,
@@ -37,23 +35,23 @@ final class AppLockViewModelTests: XCTestCase {
         ))
     }
 
-    /// 콜드 스타트: 활성화된 뒤 스플래시가 끝나 홈이 뜬다
+    /// 콜드 스타트: 활성화된 뒤 스플래시가 끝나 메인이 뜬다
     private func launch() {
-        sut.input.didBecomeActive.send(())
-        sut.input.didShowMain.send(())
+        sut.send(.phaseChanged(.active))
+        sut.send(.mainDidAppear)
     }
 
     /// 홈 화면으로 나갔다가 `seconds` 뒤 돌아온다
     private func leaveAndReturn(after seconds: TimeInterval) {
-        sut.input.willResignActive.send(())
-        sut.input.didEnterBackground.send(())
+        sut.send(.phaseChanged(.inactive))
+        sut.send(.phaseChanged(.background))
         now = now.addingTimeInterval(seconds)
-        sut.input.willEnterForeground.send(())
-        sut.input.didBecomeActive.send(())
+        sut.send(.phaseChanged(.inactive))
+        sut.send(.phaseChanged(.active))
     }
 
     private var unlockLogCount: Int {
-        return logManager.sentEvents.filter {
+        logManager.sentEvents.filter {
             $0.name == .click
                 && $0.screen == .appLock
                 && $0.parameters[ParameterName.objectId.rawValue] as? String == "unlock_app"
@@ -71,7 +69,7 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .locked)
+        XCTAssertEqual(sut.state.lockState, .locked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, 1)
     }
 
@@ -84,7 +82,7 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
     }
 
     func test_GH46_TC4_잠금켜짐_스플래시중에는_잠그지않는다() {
@@ -92,11 +90,11 @@ final class AppLockViewModelTests: XCTestCase {
         makeSut(isEnabled: true)
 
         // When
-        sut.input.willEnterForeground.send(())
-        sut.input.didBecomeActive.send(())
+        sut.send(.phaseChanged(.inactive))
+        sut.send(.phaseChanged(.active))
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, 0)
     }
 
@@ -112,7 +110,7 @@ final class AppLockViewModelTests: XCTestCase {
         leaveAndReturn(after: 30)
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, callCountAfterLaunch)
     }
 
@@ -129,7 +127,7 @@ final class AppLockViewModelTests: XCTestCase {
         leaveAndReturn(after: 61)
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .locked)
+        XCTAssertEqual(sut.state.lockState, .locked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, callCountAfterLaunch + 1)
     }
 
@@ -142,11 +140,11 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // When: 인증 창이 닫히며 앱이 다시 활성화된다
-        sut.input.willResignActive.send(())
-        sut.input.didBecomeActive.send(())
+        sut.send(.phaseChanged(.inactive))
+        sut.send(.phaseChanged(.active))
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .locked)
+        XCTAssertEqual(sut.state.lockState, .locked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, 1)
     }
 
@@ -158,11 +156,11 @@ final class AppLockViewModelTests: XCTestCase {
 
         // When
         authenticationManager.authenticateResult = true
-        sut.input.didTapUnlock.send(())
+        sut.send(.tapUnlock)
 
         // Then
         XCTAssertEqual(authenticationManager.authenticateCallCount, 2)
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
     }
 
     // MARK: GH-46 TC8
@@ -176,7 +174,7 @@ final class AppLockViewModelTests: XCTestCase {
         leaveAndReturn(after: 61)
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, 0)
     }
 
@@ -188,10 +186,10 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // When
-        sut.input.willResignActive.send(())
+        sut.send(.phaseChanged(.inactive))
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .covered)
+        XCTAssertEqual(sut.state.lockState, .covered)
     }
 
     func test_GH46_TC9_앱이띄운인증창으로비활성화되면_덮지않는다() {
@@ -201,10 +199,10 @@ final class AppLockViewModelTests: XCTestCase {
         authenticationManager.isAuthenticating = true
 
         // When
-        sut.input.willResignActive.send(())
+        sut.send(.phaseChanged(.inactive))
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
     }
 
     func test_GH46_TC9_잠금꺼짐_비활성화되어도_덮지않는다() {
@@ -213,10 +211,10 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // When
-        sut.input.willResignActive.send(())
+        sut.send(.phaseChanged(.inactive))
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
     }
 
     // MARK: GH-46 TC11
@@ -231,8 +229,8 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // Then
-        XCTAssertEqual(sut.output.description.value, "Touch ID로 확인하면 열려요")
-        XCTAssertEqual(sut.output.unlockButtonTitle.value, "Touch ID로 열기")
+        XCTAssertEqual(sut.state.description, "Touch ID로 확인하면 열려요")
+        XCTAssertEqual(sut.state.unlockButtonTitle, "Touch ID로 열기")
     }
 
     func test_GH46_TC11_생체인증이없는기기_잠금화면문구가기기암호다() {
@@ -245,8 +243,8 @@ final class AppLockViewModelTests: XCTestCase {
         launch()
 
         // Then
-        XCTAssertEqual(sut.output.description.value, "기기 암호로 확인하면 열려요")
-        XCTAssertEqual(sut.output.unlockButtonTitle.value, "기기 암호로 열기")
+        XCTAssertEqual(sut.state.description, "기기 암호로 확인하면 열려요")
+        XCTAssertEqual(sut.state.unlockButtonTitle, "기기 암호로 열기")
     }
 
     // MARK: GH-46 TC12
@@ -259,7 +257,7 @@ final class AppLockViewModelTests: XCTestCase {
 
         // When
         authenticationManager.authenticateResult = true
-        sut.input.didTapUnlock.send(())
+        sut.send(.tapUnlock)
 
         // Then
         XCTAssertEqual(unlockLogCount, 1)
@@ -272,7 +270,7 @@ final class AppLockViewModelTests: XCTestCase {
 
         // When
         launch()
-        sut.input.didTapUnlock.send(())
+        sut.send(.tapUnlock)
 
         // Then
         XCTAssertEqual(unlockLogCount, 0)
@@ -290,7 +288,30 @@ final class AppLockViewModelTests: XCTestCase {
         leaveAndReturn(after: 61)
 
         // Then
-        XCTAssertEqual(sut.output.lockState.value, .unlocked)
+        XCTAssertEqual(sut.state.lockState, .unlocked)
         XCTAssertEqual(authenticationManager.authenticateCallCount, 0)
+    }
+
+    // MARK: GH-64 TC1102
+
+    func test_GH64_TC1102_잠긴상태에서인증실패하면_잠김이유지되고_다시시도할수있다() {
+        // Given
+        makeSut(isEnabled: true)
+        authenticationManager.authenticateResult = false
+        launch()
+
+        // When
+        sut.send(.tapUnlock)
+
+        // Then
+        XCTAssertEqual(sut.state.lockState, .locked)
+        XCTAssertEqual(authenticationManager.authenticateCallCount, 2)
+
+        // When
+        authenticationManager.authenticateResult = true
+        sut.send(.tapUnlock)
+
+        // Then
+        XCTAssertEqual(sut.state.lockState, .unlocked)
     }
 }

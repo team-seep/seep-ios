@@ -170,4 +170,13 @@ enum LogObjectId: String {
     case tabSettings = "tab_settings"
     case writeCategory = "write_category"
     case finishedTabDot = "finished_tab_dot"
+    // GH-64 이룬 싶·설정
+    case yearReviewCard = "year_review_card"
+    case notificationSetting = "notification_setting"
+    case viewTypeSetting = "view_type_setting"
+    case widgetGuide = "widget_guide"
+    case controlGuide = "control_guide"
+    case rateApp = "rate_app"
+    case contact = "contact"
+    case license = "license"
 }

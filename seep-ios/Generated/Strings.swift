@@ -333,6 +333,10 @@ internal enum Strings {
       internal static let enableTitleBold = Strings.tr("Localization", "app_lock.sheet.enable_title_bold", fallback: "잠가둘까요?")
       /// 다음에 할게요
       internal static let later = Strings.tr("Localization", "app_lock.sheet.later", fallback: "다음에 할게요")
+      /// 앱 잠금을 껐어요
+      internal static let toastDisabled = Strings.tr("Localization", "app_lock.sheet.toast_disabled", fallback: "앱 잠금을 껐어요")
+      /// 앱 잠금을 켰어요
+      internal static let toastEnabled = Strings.tr("Localization", "app_lock.sheet.toast_enabled", fallback: "앱 잠금을 켰어요")
     }
     internal enum Toast {
       /// 기기 암호를 먼저 설정해 주세요
@@ -437,6 +441,34 @@ internal enum Strings {
       internal static func unit(_ p1: Int) -> String {
         return Strings.tr("Localization", "common.want_to_go.unit", p1, fallback: "%02d곳")
       }
+    }
+  }
+  internal enum ControlGuide {
+    /// 제어 센터 · 단축어로 적기
+    internal static let title = Strings.tr("Localization", "control_guide.title", fallback: "제어 센터 · 단축어로 적기")
+    internal enum Control {
+      /// "싶 적기" 컨트롤을 두면 앱을 찾지 않고 바로 작성 화면을 열어요.
+      internal static let description = Strings.tr("Localization", "control_guide.control.description", fallback: "\"싶 적기\" 컨트롤을 두면 앱을 찾지 않고 바로 작성 화면을 열어요.")
+      /// 제어 센터를 열고 왼쪽 위 ＋를 눌러요.
+      internal static let step1 = Strings.tr("Localization", "control_guide.control.step1", fallback: "제어 센터를 열고 왼쪽 위 ＋를 눌러요.")
+      /// 컨트롤 추가에서 "싶 적기"를 찾아 놓아요.
+      internal static let step2 = Strings.tr("Localization", "control_guide.control.step2", fallback: "컨트롤 추가에서 \"싶 적기\"를 찾아 놓아요.")
+      /// 컨트롤을 길게 눌러 카테고리를 고를 수 있어요.
+      internal static let step3 = Strings.tr("Localization", "control_guide.control.step3", fallback: "컨트롤을 길게 눌러 카테고리를 고를 수 있어요.")
+      /// 제어 센터 · 잠금화면 · 동작 버튼
+      internal static let title = Strings.tr("Localization", "control_guide.control.title", fallback: "제어 센터 · 잠금화면 · 동작 버튼")
+    }
+    internal enum Shortcut {
+      /// 단축어 앱이나 Siri로도 바로 적을 수 있어요.
+      internal static let description = Strings.tr("Localization", "control_guide.shortcut.description", fallback: "단축어 앱이나 Siri로도 바로 적을 수 있어요.")
+      /// 단축어 앱에서 ＋를 눌러 새 단축어를 만들어요.
+      internal static let step1 = Strings.tr("Localization", "control_guide.shortcut.step1", fallback: "단축어 앱에서 ＋를 눌러 새 단축어를 만들어요.")
+      /// "싶"을 검색해 "싶 적기" 동작을 추가해요.
+      internal static let step2 = Strings.tr("Localization", "control_guide.shortcut.step2", fallback: "\"싶\"을 검색해 \"싶 적기\" 동작을 추가해요.")
+      /// Siri에게 "싶 적기"라고 말해도 돼요.
+      internal static let step3 = Strings.tr("Localization", "control_guide.shortcut.step3", fallback: "Siri에게 \"싶 적기\"라고 말해도 돼요.")
+      /// 단축어 · Siri
+      internal static let title = Strings.tr("Localization", "control_guide.shortcut.title", fallback: "단축어 · Siri")
     }
   }
   internal enum Detail {
@@ -616,6 +648,73 @@ internal enum Strings {
       }
     }
   }
+  internal enum Finished {
+    /// 모였어요!
+    internal static let headlineBold = Strings.tr("Localization", "finished.headline_bold", fallback: "모였어요!")
+    /// %d개
+    internal static func headlineCountFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "finished.headline_count_format", p1, fallback: "%d개")
+    }
+    /// 아직 이룬 싶이 없어요
+    /// 하나씩 체크해봐요!
+    internal static let headlineEmpty = Strings.tr("Localization", "finished.headline_empty", fallback: "아직 이룬 싶이 없어요\n하나씩 체크해봐요!")
+    /// 하나씩 체크해봐요!
+    internal static let headlineEmptyBold = Strings.tr("Localization", "finished.headline_empty_bold", fallback: "하나씩 체크해봐요!")
+    /// GH-64 이룬 싶·설정
+    internal static func headlineFormat(_ p1: Int) -> String {
+      return Strings.tr("Localization", "finished.headline_format", p1, fallback: "지금까지 이룬 싶이\n%d개 모였어요!")
+    }
+    /// %@년 %d월
+    internal static func monthFormat(_ p1: Any, _ p2: Int) -> String {
+      return Strings.tr("Localization", "finished.month_format", String(describing: p1), p2, fallback: "%@년 %d월")
+    }
+    /// 이룬 싶 검색
+    internal static let search = Strings.tr("Localization", "finished.search", fallback: "이룬 싶 검색")
+    internal enum BadgeCard {
+      /// 모아보기 ›
+      internal static let more = Strings.tr("Localization", "finished.badge_card.more", fallback: "모아보기 ›")
+      /// 배지 %d/%d
+      internal static func titleFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "finished.badge_card.title_format", p1, p2, fallback: "배지 %d/%d")
+      }
+    }
+    internal enum Empty {
+      /// 싶 탭에서 체크하면 여기 모여요
+      internal static let description = Strings.tr("Localization", "finished.empty.description", fallback: "싶 탭에서 체크하면 여기 모여요")
+      /// 이 카테고리에서 이룬 싶이 아직 없어요
+      internal static let filtered = Strings.tr("Localization", "finished.empty.filtered", fallback: "이 카테고리에서 이룬 싶이 아직 없어요")
+      /// 아직 이룬 싶이 없어요
+      internal static let title = Strings.tr("Localization", "finished.empty.title", fallback: "아직 이룬 싶이 없어요")
+    }
+    internal enum Filter {
+      /// 전체
+      internal static let all = Strings.tr("Localization", "finished.filter.all", fallback: "전체")
+      /// 하고
+      internal static let wantToDo = Strings.tr("Localization", "finished.filter.want_to_do", fallback: "하고")
+      /// 갖고
+      internal static let wantToGet = Strings.tr("Localization", "finished.filter.want_to_get", fallback: "갖고")
+      /// 가고
+      internal static let wantToGo = Strings.tr("Localization", "finished.filter.want_to_go", fallback: "가고")
+    }
+    internal enum Row {
+      /// %d일 이룸
+      internal static func dayFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.row.day_format", p1, fallback: "%d일 이룸")
+      }
+      /// “%@”
+      internal static func noteFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "finished.row.note_format", String(describing: p1), fallback: "“%@”")
+      }
+    }
+    internal enum YearReviewCard {
+      /// 보기 ›
+      internal static let more = Strings.tr("Localization", "finished.year_review_card.more", fallback: "보기 ›")
+      /// %@년 이룬 싶 돌아보기
+      internal static func titleFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "finished.year_review_card.title_format", String(describing: p1), fallback: "%@년 이룬 싶 돌아보기")
+      }
+    }
+  }
   internal enum Home {
     /// 배지 %d/%d 모아보기
     internal static func badgeLinkFormat(_ p1: Int, _ p2: Int) -> String {
@@ -778,6 +877,12 @@ internal enum Strings {
       }
     }
   }
+  internal enum License {
+    /// 싶은 아래 오픈소스를 사용해요. 각 라이선스 전문은 저장소에서 볼 수 있어요.
+    internal static let description = Strings.tr("Localization", "license.description", fallback: "싶은 아래 오픈소스를 사용해요. 각 라이선스 전문은 저장소에서 볼 수 있어요.")
+    /// 오픈소스 라이선스
+    internal static let title = Strings.tr("Localization", "license.title", fallback: "오픈소스 라이선스")
+  }
   internal enum MainTab {
     /// 이룬 싶
     internal static let finished = Strings.tr("Localization", "main_tab.finished", fallback: "이룬 싶")
@@ -805,6 +910,118 @@ internal enum Strings {
     internal static let empty = Strings.tr("Localization", "place_map.empty", fallback: "아직 장소를 붙인 곳이 없어요.")
     /// 가고 싶은 곳 지도
     internal static let title = Strings.tr("Localization", "place_map.title", fallback: "가고 싶은 곳 지도")
+  }
+  internal enum Settings {
+    /// 뒤로
+    internal static let back = Strings.tr("Localization", "settings.back", fallback: "뒤로")
+    /// 문의하기
+    internal static let contact = Strings.tr("Localization", "settings.contact", fallback: "문의하기")
+    /// 제어 센터 · 단축어로 적기
+    internal static let controlGuide = Strings.tr("Localization", "settings.control_guide", fallback: "제어 센터 · 단축어로 적기")
+    /// 싶은 서버 없이 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.
+    internal static let footer = Strings.tr("Localization", "settings.footer", fallback: "싶은 서버 없이 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.")
+    /// 오픈소스 라이선스
+    internal static let license = Strings.tr("Localization", "settings.license", fallback: "오픈소스 라이선스")
+    /// 앱 평가하기
+    internal static let rateApp = Strings.tr("Localization", "settings.rate_app", fallback: "앱 평가하기")
+    /// 설정
+    internal static let title = Strings.tr("Localization", "settings.title", fallback: "설정")
+    /// 버전
+    internal static let version = Strings.tr("Localization", "settings.version", fallback: "버전")
+    /// 위젯 추가하는 법
+    internal static let widgetGuide = Strings.tr("Localization", "settings.widget_guide", fallback: "위젯 추가하는 법")
+    internal enum Contact {
+      /// 
+      /// 
+      /// 
+      /// ---
+      /// 앱 버전: %@
+      /// iOS 버전: %@
+      /// 기기: %@
+      internal static func bodyFormat(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+        return Strings.tr("Localization", "settings.contact.body_format", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "\n\n\n---\n앱 버전: %@\niOS 버전: %@\n기기: %@")
+      }
+      /// [싶 문의]
+      internal static let subject = Strings.tr("Localization", "settings.contact.subject", fallback: "[싶 문의]")
+      /// 메일 앱을 열 수 없어요. %@ 로 보내주세요
+      internal static func unavailableFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "settings.contact.unavailable_format", String(describing: p1), fallback: "메일 앱을 열 수 없어요. %@ 로 보내주세요")
+      }
+    }
+    internal enum Group {
+      /// 정보
+      internal static let info = Strings.tr("Localization", "settings.group.info", fallback: "정보")
+      /// 잠금과 알림
+      internal static let lockNotification = Strings.tr("Localization", "settings.group.lock_notification", fallback: "잠금과 알림")
+      /// 바로 적기
+      internal static let quickWrite = Strings.tr("Localization", "settings.group.quick_write", fallback: "바로 적기")
+      /// 보기
+      internal static let view = Strings.tr("Localization", "settings.group.view", fallback: "보기")
+    }
+    internal enum Lock {
+      /// 앱을 열 때 %@나 기기 암호로 확인해요
+      internal static func descriptionFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "settings.lock.description_format", String(describing: p1), fallback: "앱을 열 때 %@나 기기 암호로 확인해요")
+      }
+      /// 앱을 열 때 기기 암호로 확인해요
+      internal static let descriptionPasscode = Strings.tr("Localization", "settings.lock.description_passcode", fallback: "앱을 열 때 기기 암호로 확인해요")
+      /// %@로 잠그기
+      internal static func titleFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "settings.lock.title_format", String(describing: p1), fallback: "%@로 잠그기")
+      }
+      /// 암호로 잠그기
+      internal static let titlePasscode = Strings.tr("Localization", "settings.lock.title_passcode", fallback: "암호로 잠그기")
+    }
+    internal enum Notification {
+      /// 아이폰 설정에서 바꿀 수 있어요
+      internal static let description = Strings.tr("Localization", "settings.notification.description", fallback: "아이폰 설정에서 바꿀 수 있어요")
+      /// 꺼짐
+      internal static let off = Strings.tr("Localization", "settings.notification.off", fallback: "꺼짐")
+      /// 켜짐
+      internal static let on = Strings.tr("Localization", "settings.notification.on", fallback: "켜짐")
+      /// D-day 알림
+      internal static let title = Strings.tr("Localization", "settings.notification.title", fallback: "D-day 알림")
+    }
+    internal enum ViewType {
+      /// 취소
+      internal static let cancel = Strings.tr("Localization", "settings.view_type.cancel", fallback: "취소")
+      /// 그리드
+      internal static let grid = Strings.tr("Localization", "settings.view_type.grid", fallback: "그리드")
+      /// 리스트
+      internal static let list = Strings.tr("Localization", "settings.view_type.list", fallback: "리스트")
+      /// 홈 보기 방식
+      internal static let title = Strings.tr("Localization", "settings.view_type.title", fallback: "홈 보기 방식")
+    }
+  }
+  internal enum WidgetGuide {
+    /// 스크린샷 자리
+    internal static let screenshotPlaceholder = Strings.tr("Localization", "widget_guide.screenshot_placeholder", fallback: "스크린샷 자리")
+    /// 위젯 추가하는 법
+    internal static let title = Strings.tr("Localization", "widget_guide.title", fallback: "위젯 추가하는 법")
+    internal enum Home {
+      /// 바로 적기 · 남은 싶 · 바로 체크하기 위젯을 홈 화면에 둘 수 있어요.
+      internal static let description = Strings.tr("Localization", "widget_guide.home.description", fallback: "바로 적기 · 남은 싶 · 바로 체크하기 위젯을 홈 화면에 둘 수 있어요.")
+      /// 홈 화면의 빈 곳을 길게 눌러요.
+      internal static let step1 = Strings.tr("Localization", "widget_guide.home.step1", fallback: "홈 화면의 빈 곳을 길게 눌러요.")
+      /// 왼쪽 위 ＋ 버튼을 누르고 "싶"을 찾아요.
+      internal static let step2 = Strings.tr("Localization", "widget_guide.home.step2", fallback: "왼쪽 위 ＋ 버튼을 누르고 \"싶\"을 찾아요.")
+      /// 원하는 크기를 골라 위젯 추가를 눌러요.
+      internal static let step3 = Strings.tr("Localization", "widget_guide.home.step3", fallback: "원하는 크기를 골라 위젯 추가를 눌러요.")
+      /// 홈 화면 위젯
+      internal static let title = Strings.tr("Localization", "widget_guide.home.title", fallback: "홈 화면 위젯")
+    }
+    internal enum Lock {
+      /// 다가오는 D-day와 남은 싶을 잠금화면에서 바로 볼 수 있어요.
+      internal static let description = Strings.tr("Localization", "widget_guide.lock.description", fallback: "다가오는 D-day와 남은 싶을 잠금화면에서 바로 볼 수 있어요.")
+      /// 잠금화면을 길게 누르고 사용자화를 눌러요.
+      internal static let step1 = Strings.tr("Localization", "widget_guide.lock.step1", fallback: "잠금화면을 길게 누르고 사용자화를 눌러요.")
+      /// 잠금화면을 고르고 시계 아래 위젯 자리를 눌러요.
+      internal static let step2 = Strings.tr("Localization", "widget_guide.lock.step2", fallback: "잠금화면을 고르고 시계 아래 위젯 자리를 눌러요.")
+      /// "싶"에서 원하는 위젯을 골라요.
+      internal static let step3 = Strings.tr("Localization", "widget_guide.lock.step3", fallback: "\"싶\"에서 원하는 위젯을 골라요.")
+      /// 잠금화면 위젯
+      internal static let title = Strings.tr("Localization", "widget_guide.lock.title", fallback: "잠금화면 위젯")
+    }
   }
   internal enum WishSearch {
     /// 제목·메모·해시태그에서 찾아봤어요
