@@ -67,6 +67,8 @@ final class AppRouter {
     private(set) var dismissAllModalsToken = 0
     /// 지금 탭을 다시 누르면 올라가는 값. 각 탭 루트 목록이 맨 위로 스크롤한다 (R-4)
     private(set) var scrollToTopToken: [MainTab: Int] = [:]
+    /// 작성·수정으로 위시가 바뀌면 올라가는 값. 풀스크린이 닫혀도 onAppear 가 다시 오지 않아 목록이 이 값으로 다시 읽는다
+    private(set) var wishesChangedToken = 0
 
     private let dependency: Dependency
 
@@ -81,6 +83,10 @@ final class AppRouter {
             || !wishPath.isEmpty
             || !finishedPath.isEmpty
             || !settingsPath.isEmpty
+    }
+
+    func wishesDidChange() {
+        wishesChangedToken += 1
     }
 
     func modalDidAppear() {

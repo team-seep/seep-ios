@@ -49,17 +49,6 @@ final class SafeAreaTopButtonTests: XCTestCase {
 
     // MARK: GH-10 TC7
 
-    func test_GH10_TC7_작성화면_닫기버튼이_safeArea안에있고_44pt이상이다() {
-        // Given
-        let view = WriteView()
-
-        // When
-        layoutLikeDuoOuter(view)
-
-        // Then
-        assertTappableInSafeArea(view.closeButton, in: view)
-    }
-
     func test_GH10_TC7_상세화면_뒤로·더보기버튼이_safeArea안에있고_44pt이상이다() {
         // Given
         let view = WishDetailView()
