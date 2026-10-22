@@ -163,7 +163,7 @@ struct WishFormCategoryTrack: View {
         .padding(.horizontal, 9)
         .frame(height: 48)
         // 디자인 시스템 category-track(#E8F6FF) — seep-blue 11% 와 같은 색
-        .background(Color.seepBlue.opacity(0.11), in: RoundedRectangle(cornerRadius: 24))
+        .background(Color.categoryTrack, in: RoundedRectangle(cornerRadius: 24))
         .animation(.easeInOut(duration: 0.2), value: selected)
         .sensoryFeedback(.impact(weight: .light), trigger: selected)
     }

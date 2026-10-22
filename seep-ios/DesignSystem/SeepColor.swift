@@ -31,4 +31,8 @@ extension Color {
     static let tagBg = Color(r: 241, g: 241, b: 241)
     static let ctaDisabled = Color(r: 204, g: 207, b: 211)
     static let emptyText = Color(r: 170, g: 170, b: 170)
+    /// 작성·수정 화면 카테고리 선택 트랙 배경 (디자인 시스템 category-track)
+    static let categoryTrack = Color(r: 232, g: 246, b: 255)
+    /// 작성 화면 카테고리 비선택 텍스트 (디자인 시스템 category-text-off)
+    static let categoryTextOff = Color(r: 136, g: 136, b: 136)
 }
