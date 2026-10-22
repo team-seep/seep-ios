@@ -118,4 +118,22 @@ final class MockWishRepository: WishRepository {
         fetchWishCalledIds.append(id)
         return fetchWishResult.first { $0.id == id }
     }
+
+    // MARK: 작성·수정 폼 (GH-64 P2)
+
+    private(set) var addedWishes: [Wish] = []
+    private(set) var updatedWishes: [Wish] = []
+    /// nil 이면 넘긴 위시를 그대로 성공으로 돌려준다
+    var addWishResult: Result<Wish, RepositoryError>?
+    var updateWishResult: Result<Wish, RepositoryError>?
+
+    func addWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
+        addedWishes.append(wish)
+        return addWishResult ?? .success(wish)
+    }
+
+    func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
+        updatedWishes.append(wish)
+        return updateWishResult ?? .success(wish)
+    }
 }
