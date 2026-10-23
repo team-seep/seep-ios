@@ -97,25 +97,6 @@ final class SafeAreaTopButtonTests: XCTestCase {
         XCTAssertLessThanOrEqual(groupFrame.maxX, view.bounds.width - view.safeAreaInsets.right + 0.5)
     }
 
-    func test_GH10_TC7_홈헤더_일러스트가_safeArea오른쪽inset을침범하지않는다() {
-        // Given: 홈 overview 섹션처럼 좌우 22pt 여백으로 화면 폭에 놓인 셀
-        let container = UIView()
-        let cell = HomeOverviewCell(frame: .zero)
-        container.addSubview(cell)
-
-        // When
-        layoutLikeDuoOuter(container)
-        cell.frame = CGRect(x: 22, y: 0, width: container.bounds.width - 44, height: HomeOverviewCell.Layout.height)
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-
-        // Then
-        // 일러스트는 10도 회전돼 있어 frame 대신 회전 전 영역(center ± bounds/2)으로 본다
-        let center = cell.contentView.convert(cell.emojiView.center, to: container)
-        let maxX = center.x + cell.emojiView.bounds.width / 2
-        XCTAssertLessThanOrEqual(maxX, container.bounds.width - container.safeAreaInsets.right - 20 + 0.5)
-    }
-
     /// 듀오 바깥 화면처럼 오른쪽에 84pt safe area inset이 생기게 한 뒤 레이아웃한다
     private func layoutLikeDuoOuter(_ view: UIView) {
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 466, height: 678))

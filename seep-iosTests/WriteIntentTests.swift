@@ -54,7 +54,8 @@ final class WriteIntentTests: XCTestCase {
     func test_GH49_TC2_인텐트링크를넘기면_예약딥링크로남는다() async {
         // Given
         let preference = Preference(name: "test.writeIntent")
-        let opener = WriteDeepLinkOpener(preference: preference, homeProvider: { nil })
+        let router = AppRouter(dependency: .init(wishRepository: MockWishRepository(), deepLinkStore: preference))
+        let opener = WriteDeepLinkOpener(routerProvider: { router }, logManager: MockLogManager())
 
         // When
         await opener.open(OpenWriteIntent(target: .wantToGet, source: .control).deepLink)

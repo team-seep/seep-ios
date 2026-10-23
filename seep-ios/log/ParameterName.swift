@@ -21,4 +21,6 @@ extension ParameterName {
     static let hasTargetAmount = ParameterName(rawValue: "has_target_amount")
     static let year = ParameterName(rawValue: "year")
     static let badgeId = ParameterName(rawValue: "badge_id")
+    /// 설정 탭 잠금 줄을 눌렀을 때 잠금이 켜져 있었는지 (GH-64)
+    static let enabled = ParameterName(rawValue: "enabled")
 }

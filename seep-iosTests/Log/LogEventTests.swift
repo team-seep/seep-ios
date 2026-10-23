@@ -23,22 +23,18 @@ final class LogEventTests: XCTestCase {
 
     // MARK: 회귀 — 홈 클릭 로그
 
-    func test_회귀_홈에서작성버튼을누르면_write클릭로그가한건전송된다() {
-        // Given
+    func test_회귀_홈에서작성탭을누르면_tab_write클릭로그가한건전송된다() {
+        // Given: 작성 버튼은 탭 바의 적기 탭으로 옮겨 갔다 (GH-64 R-11)
         let logManager = MockLogManager()
-        let viewModel = HomeViewModel(dependency: .init(
-            wishRepository: MockWishRepository(),
-            preference: Preference(name: "test"),
-            notificationManager: MockNotificationManager(),
-            logManager: logManager
-        ))
+        let router = AppRouter(dependency: .init(wishRepository: MockWishRepository(), deepLinkStore: Preference(name: "test")))
+        let viewModel = MainTabViewModel(dependency: .init(router: router, logManager: logManager))
 
         // When
-        viewModel.input.didTapWrite.send(())
+        viewModel.send(.tapTab(.write))
 
         // Then
         XCTAssertEqual(logManager.sentEvents.count, 1)
-        XCTAssertEqual(logManager.sentEvents.first?.parameters["object_id"] as? String, "write")
+        XCTAssertEqual(logManager.sentEvents.first?.parameters["object_id"] as? String, "tab_write")
         XCTAssertEqual(logManager.sentEvents.first?.parameters["screen"] as? String, "home")
     }
 }

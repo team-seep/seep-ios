@@ -56,6 +56,7 @@ extension View {
 private struct SeepSheetContentModifier: ViewModifier {
     let detent: SeepSheetDetent
     @State private var contentHeight: CGFloat = 0
+    @Environment(ToastCenter.self) private var toastCenter: ToastCenter?
 
     func body(content: Content) -> some View {
         content
@@ -68,6 +69,8 @@ private struct SeepSheetContentModifier: ViewModifier {
             .presentationDragIndicator(.visible)
             .presentationCornerRadius(20)
             .modifier(SeepModalTrackingModifier())
+            // 루트 토스트는 시트 뒤에 가려지므로 시트 안에도 같은 토스트를 그린다
+            .modifier(OptionalToastOverlay(center: toastCenter))
             .appLockOverlay()
     }
 
@@ -89,10 +92,27 @@ private struct SeepSheetContentModifier: ViewModifier {
 /// 시트가 떠 있는 동안 `AppRouter.presentedModalCount`를 올려 둔다(GH-50 링크 무시 규칙)
 private struct SeepModalTrackingModifier: ViewModifier {
     @Environment(AppRouter.self) private var router: AppRouter?
+    @Environment(\.dismiss) private var dismiss
 
     func body(content: Content) -> some View {
         content
             .onAppear { router?.modalDidAppear() }
             .onDisappear { router?.modalDidDisappear() }
+            // 단축어로 작성 화면을 맨 위에 띄울 때 떠 있는 시트를 모두 닫는다 (GH-49 R-12)
+            .onChange(of: router?.dismissAllModalsToken) { _, _ in
+                dismiss()
+            }
+    }
+}
+
+private struct OptionalToastOverlay: ViewModifier {
+    let center: ToastCenter?
+
+    func body(content: Content) -> some View {
+        if let center {
+            content.toastOverlay(center)
+        } else {
+            content
+        }
     }
 }

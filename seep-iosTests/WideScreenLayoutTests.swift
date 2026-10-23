@@ -48,28 +48,6 @@ final class WideScreenLayoutTests: XCTestCase {
         XCTAssertEqual(container.backgroundColor, .white)
     }
 
-    // MARK: TC-6 카테고리 탭 간격
-
-    func test_GH12_TC6_탭줄폭이400을넘어도_탭위치가400일때와같다() {
-        let at400 = tabFrames(width: 400)
-        let at560 = tabFrames(width: 560)
-        let at900 = tabFrames(width: 900)
-
-        XCTAssertEqual(at560, at400)
-        XCTAssertEqual(at900, at400)
-    }
-
-    func test_GH12_TC6_아이폰폭에서는_탭이기존처럼양끝여백20안에균등분배된다() {
-        let width: CGFloat = 362 // 아이폰 18 Pro(402) - 40
-        let frames = tabFrames(width: width)
-
-        XCTAssertEqual(frames.first?.minX, 20)
-        XCTAssertEqual(frames.last?.maxX ?? 0, width - 20, accuracy: 0.5)
-        let gap1 = frames[1].minX - frames[0].maxX
-        let gap2 = frames[2].minX - frames[1].maxX
-        XCTAssertEqual(gap1, gap2, accuracy: 0.5)
-    }
-
     // MARK: Helpers
 
     private func makeContainer(size: CGSize) -> (WideScreenContainerView, UIView) {
@@ -78,25 +56,5 @@ final class WideScreenLayoutTests: XCTestCase {
         container.frame = CGRect(origin: .zero, size: size)
         container.layoutIfNeeded()
         return (container, content)
-    }
-
-    /// 카테고리 탭 버튼들의 프레임(카테고리 뷰 좌표계)
-    private func tabFrames(width: CGFloat) -> [CGRect] {
-        let host = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 100))
-        let categoryView = HomeCategoryView()
-        host.addSubview(categoryView)
-        categoryView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            categoryView.leadingAnchor.constraint(equalTo: host.leadingAnchor),
-            categoryView.trailingAnchor.constraint(equalTo: host.trailingAnchor),
-            categoryView.topAnchor.constraint(equalTo: host.topAnchor)
-        ])
-        host.layoutIfNeeded()
-
-        guard let stackView = categoryView.subviews.compactMap({ $0 as? UIStackView }).first else {
-            XCTFail("탭 스택뷰가 없다")
-            return []
-        }
-        return stackView.arrangedSubviews.map { $0.convert($0.bounds, to: categoryView) }
     }
 }

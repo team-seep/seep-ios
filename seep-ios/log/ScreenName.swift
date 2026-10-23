@@ -33,4 +33,9 @@ extension ScreenName {
     static let lockScreenWidget = ScreenName(rawValue: "lock_screen_widget")
     static let appLockBottomSheet = ScreenName(rawValue: "app_lock_bottom_sheet")
     static let appLock = ScreenName(rawValue: "app_lock")
+    static let writeCategorySheet = ScreenName(rawValue: "write_category_sheet")
+    static let settings = ScreenName(rawValue: "settings")
+    static let widgetGuide = ScreenName(rawValue: "widget_guide")
+    static let controlGuide = ScreenName(rawValue: "control_guide")
+    static let license = ScreenName(rawValue: "license")
 }
