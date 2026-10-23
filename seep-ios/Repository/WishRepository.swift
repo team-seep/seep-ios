@@ -1,6 +1,6 @@
 import Foundation
 
-import RealmSwift
+import GRDB
 
 protocol WishRepository {
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish]
@@ -59,310 +59,209 @@ protocol WishRepository {
 }
 
 final class WishRepositoryImpl: WishRepository {
+    private let database: AppDatabase?
+    private let now: () -> Date
+
+    init(database: AppDatabase? = AppDatabase.shared, now: @escaping () -> Date = Date.init) {
+        self.database = database
+        self.now = now
+    }
+
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
-        guard let realm = try? Realm() else { return [] }
-        let searchTask = realm.objects(WishDTO.self)
-            .filter { (isOnlyFinished ? ($0.isSuccess == isOnlyFinished) : true) && ($0.category == category.rawValue) }
-            .map { Wish(dto: $0) }
-        
-        return sort.sorted(Array(searchTask))
-    }
-    
-    func fetchNotFinishCount(category: Category) -> Int {
-        guard let realm = try? Realm() else { return 0 }
-        let searchTask = realm.objects(WishDTO.self)
-            .filter { ($0.isSuccess == false) && ($0.category == category.rawValue) }
-        
-        return searchTask.count
-    }
-    
-    func finishWish(wish: Wish) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wish.id }).first else {
-            return .failure(.targetNotFound)
+        var request = WishRecordStore.aliveWishes().filter(WishRecord.Columns.category == category.rawValue)
+        if isOnlyFinished {
+            request = request.filter(WishRecord.Columns.isSuccess == true)
         }
-        
+        return sort.sorted(read { try WishRecordStore.fetchWishes(request, in: $0) } ?? [])
+    }
+
+    func fetchNotFinishCount(category: Category) -> Int {
+        let request = WishRecordStore.aliveWishes()
+            .filter(WishRecord.Columns.category == category.rawValue && WishRecord.Columns.isSuccess == false)
+        return read { try request.fetchCount($0) } ?? 0
+    }
+
+    func finishWish(wish: Wish) -> Result<Wish, RepositoryError> {
         let finishDate = DateUtils.now()
-        realm.beginWrite()
-        targetObject.isSuccess = true
-        targetObject.finishDate = finishDate
-        // 완료하면 고정을 푼다. 완료를 취소해도 돌아오지 않는다 (GH-33 R-6)
-        targetObject.pinnedAt = nil
-        
-        do {
-            try realm.commitWrite()
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wish.id, now: now, in: db) { record in
+                record.isSuccess = true
+                record.finishDate = finishDate
+                // 완료하면 고정을 푼다. 완료를 취소해도 돌아오지 않는다 (GH-33 R-6)
+                record.pinnedAt = nil
+            }
             var finishedWish = wish
             finishedWish.isSuccess = true
             finishedWish.finishDate = finishDate
             finishedWish.pinnedAt = nil
-            return .success(finishedWish)
-        } catch {
-            return .failure(.writeFailed)
+            return finishedWish
         }
     }
-    
+
     func deleteWish(id: String) {
-        guard let realm = try? Realm() else { return }
-        let searchTask = realm.objects(WishDTO.self).filter { $0._id == id }
-        guard let targetObject = searchTask.first else { return }
-        
-        do {
-            try realm.write {
-                realm.delete(targetObject)
-            }
-        } catch {
-            // 프로토콜이 결과를 돌려주지 않아 실패하면 그대로 둔다. 지워지지 않은 위시는 목록에 남는다
-            return
+        // 줄을 지우지 않고 삭제 표시만 남긴다. 프로토콜이 결과를 돌려주지 않아 실패하면 위시가 목록에 남는다 (GH-79 R-5)
+        _ = write { db, now in
+            try WishRecordStore.softDeleteWish(id: id, now: now, in: db)
         }
     }
-    
+
     func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
-        return updateSteps(wishId: wishId) { steps in
-            guard let step = steps.first(where: { $0._id == stepId }) else { return }
-            step.isDone.toggle()
+        return write { db, now in
+            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.isDone.toggle() }
+            return try WishRecordStore.aliveSteps(wishId: wishId, in: db)
+                .map { WishStep(id: $0.id, title: $0.title, isDone: $0.isDone, order: $0.order) }
+                .sorted { $0.order < $1.order }
         }
     }
-    
+
     func addSaving(wishId: String, amount: Int) -> Result<[WishSaving], RepositoryError> {
-        return updateSavings(wishId: wishId) { savings in
-            savings.append(SavingDTO(saving: WishSaving(amount: amount, createdAt: DateUtils.now())))
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { _ in }
+            let saving = WishSaving(amount: amount, createdAt: DateUtils.now())
+            try WishSavingRecord(saving: saving, wishId: wishId, updatedAt: now).insert(db)
+            return try Self.savings(wishId: wishId, in: db)
         }
     }
-    
+
     func deleteSaving(wishId: String, savingId: String) -> Result<[WishSaving], RepositoryError> {
-        return updateSavings(wishId: wishId) { savings in
-            guard let index = savings.firstIndex(where: { $0._id == savingId }) else { return }
-            savings.remove(at: index)
-        }
-    }
-    
-    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
-        }
-        
-        do {
-            try realm.write {
-                targetObject.finishNote = note
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { _ in }
+            if var saving = try WishRecordStore.aliveSavings(wishId: wishId, in: db).first(where: { $0.id == savingId }) {
+                saving.deletedAt = now
+                saving.updatedAt = now
+                try saving.update(db)
             }
-        } catch {
-            return .failure(.writeFailed)
+            return try Self.savings(wishId: wishId, in: db)
         }
-        
-        return .success(Wish(dto: targetObject))
     }
-    
+
+    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
+        return updateAndFetch(wishId: wishId) { $0.finishNote = note }
+    }
+
     func searchWishes(keyword: String) -> [Wish] {
-        guard let keyword = WishSearchMatcher.normalize(keyword),
-              let realm = try? Realm() else { return [] }
-        
-        // 해시태그 표시 이름(예: trip → 여행)까지 봐야 해서 Realm 쿼리 대신 도메인 모델에서 거른다
-        return realm.objects(WishDTO.self)
-            .map { Wish(dto: $0) }
+        guard let keyword = WishSearchMatcher.normalize(keyword) else { return [] }
+        // 해시태그 표시 이름(예: trip → 여행)까지 봐야 해서 SQL 대신 도메인 모델에서 거른다
+        return (read { try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes(), in: $0) } ?? [])
             .filter { WishSearchMatcher.matches(wish: $0, keyword: keyword) }
     }
-    
+
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {
-        guard let realm = try? Realm() else { return [] }
-        return realm.objects(WishDTO.self)
-            .filter("isSuccess == true AND finishDate >= %@ AND finishDate < %@", from, to)
-            .map { Wish(dto: $0) }
+        return fetchAllFinishedWishes().filter { wish in
+            guard let finishDate = wish.finishDate else { return false }
+            return finishDate >= from && finishDate < to
+        }
     }
-    
+
     func fetchAllFinishedWishes() -> [Wish] {
-        guard let realm = try? Realm() else { return [] }
-        let finished = realm.objects(WishDTO.self).filter("isSuccess == true")
-        return Array(finished).map { Wish(dto: $0) }
+        let request = WishRecordStore.aliveWishes().filter(WishRecord.Columns.isSuccess == true)
+        return read { try WishRecordStore.fetchWishes(request, in: $0) } ?? []
     }
-    
+
     func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
-        }
-        
-        do {
-            try realm.write {
-                // 고정끼리 순서를 가르므로 시각까지 남긴다 (DateUtils.now()는 자정으로 잘라 쓰지 않는다)
-                targetObject.pinnedAt = isPinned ? Date() : nil
-            }
-        } catch {
-            return .failure(.writeFailed)
-        }
-        
-        return .success(Wish(dto: targetObject))
+        // 고정끼리 순서를 가르므로 시각까지 남긴다 (DateUtils.now()는 자정으로 잘라 쓰지 않는다)
+        let pinnedAt = isPinned ? now() : nil
+        return updateAndFetch(wishId: wishId) { $0.pinnedAt = pinnedAt }
     }
-    
+
     func markChecked(wishId: String) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
-        }
-        
-        do {
-            try realm.write {
-                targetObject.lastCheckedAt = Date()
-            }
-        } catch {
-            return .failure(.writeFailed)
-        }
-        
-        return .success(Wish(dto: targetObject))
+        let checkedAt = now()
+        return updateAndFetch(wishId: wishId) { $0.lastCheckedAt = checkedAt }
     }
-    
+
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
+        return updateAndFetch(wishId: wishId) { record in
+            record.placeName = place?.name ?? ""
+            record.placeAddress = place?.address ?? ""
+            record.latitude = place?.latitude ?? 0
+            record.longitude = place?.longitude ?? 0
         }
-        
-        do {
-            try realm.write {
-                targetObject.placeName = place?.name ?? ""
-                targetObject.placeAddress = place?.address ?? ""
-                targetObject.latitude = place?.latitude ?? 0
-                targetObject.longitude = place?.longitude ?? 0
-            }
-        } catch {
-            return .failure(.writeFailed)
-        }
-        
-        return .success(Wish(dto: targetObject))
     }
-    
+
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
-        }
-        
-        do {
-            try realm.write {
-                targetObject.photoFileName = fileName
-            }
-        } catch {
-            return .failure(.writeFailed)
-        }
-        
-        return .success(Wish(dto: targetObject))
+        return updateAndFetch(wishId: wishId) { $0.photoFileName = fileName }
     }
-    
+
     func fetchWish(id: String) -> Wish? {
-        guard let realm = try? Realm(),
-              let targetObject = realm.objects(WishDTO.self).filter("_id == %@", id).first else { return nil }
-        
-        return Wish(dto: targetObject)
+        return read { try WishRecordStore.fetchWish(id: id, in: $0) } ?? nil
     }
-    
+
     func cancelFinish(wishId: String) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
+        return updateAndFetch(wishId: wishId) { record in
+            record.isSuccess = false
+            record.finishDate = nil
+            // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
+            record.finishNote = ""
         }
-        
-        do {
-            try realm.write {
-                targetObject.isSuccess = false
-                targetObject.finishDate = nil
-                // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
-                targetObject.finishNote = ""
-            }
-        } catch {
-            return .failure(.writeFailed)
-        }
-        
-        return .success(Wish(dto: targetObject))
     }
-    
-    private func updateSavings(
-        wishId: String,
-        update: (List<SavingDTO>) -> Void
-    ) -> Result<[WishSaving], RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
-        }
-        
-        do {
-            try realm.write {
-                update(targetObject.savings)
-            }
-        } catch {
-            return .failure(.writeFailed)
-        }
-        
-        return .success(WishSaving.latestFirst(Array(targetObject.savings).map(WishSaving.init(dto:))))
-    }
-    
+
     func addWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        let dto = WishDTO(wish: wish)
-        do {
-            try realm.write {
-                realm.add(dto)
-            }
-        } catch {
-            return .failure(.writeFailed)
+        return write { db, now in
+            try WishRecordStore.insert(wish, now: now, in: db)
+            return try Self.fetchExisting(id: wish.id, in: db)
         }
-        return .success(Wish(dto: dto))
     }
 
     func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter("_id == %@", wish.id).first else {
-            return .failure(.targetNotFound)
-        }
-
-        do {
-            try realm.write {
-                targetObject.emoji = wish.emoji
-                targetObject.category = wish.category.rawValue
-                targetObject.title = wish.title
-                targetObject.date = wish.endDate
-                targetObject.notifications.removeAll()
-                targetObject.notifications.append(objectsIn: wish.notifications.map(NotificationDTO.init(seepNotification:)))
-                targetObject.memo = wish.memo
-                targetObject.hashtag = wish.hashtag
-                // 수정 폼에서 바꾼 단계로 교체한다. 남은 단계는 id·isDone 을 그대로 가진다 (GH-5 R-19)
-                targetObject.steps.removeAll()
-                targetObject.steps.append(objectsIn: wish.steps.map(WishStepDTO.init(step:)))
+        let checkedAt = now()
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wish.id, now: now, in: db) { record in
+                record.emoji = wish.emoji
+                record.category = wish.category.rawValue
+                record.title = wish.title
+                record.date = wish.endDate
+                record.memo = wish.memo
+                record.hashtag = wish.hashtag
                 // 목표 금액만 바꾸고 모은 돈 기록(savings)은 건드리지 않는다 (GH-16 R-7)
-                targetObject.targetAmount = wish.targetAmount
+                record.targetAmount = wish.targetAmount
                 // 수정 폼이 고정 여부를 정해 넘긴다. 카테고리를 바꾸면 nil 이다 (GH-33 R-9)
-                targetObject.pinnedAt = wish.pinnedAt
+                record.pinnedAt = wish.pinnedAt
                 // 링크는 문자열만 저장한다 (GH-29 R-7)
-                targetObject.link = wish.link
+                record.link = wish.link
                 // 수정해 저장하면 손댄 것으로 보고 잠든 위시 판정 기준을 갱신한다 (GH-30 R-2)
-                targetObject.lastCheckedAt = wish.lastCheckedAt ?? Date()
+                record.lastCheckedAt = wish.lastCheckedAt ?? checkedAt
             }
-        } catch {
-            return .failure(.writeFailed)
+            try WishRecordStore.replaceNotifications(wishId: wish.id, with: wish.notifications, now: now, in: db)
+            try WishRecordStore.replaceSteps(wishId: wish.id, with: wish.steps, now: now, in: db)
+            return try Self.fetchExisting(id: wish.id, in: db)
         }
-        return .success(Wish(dto: targetObject))
     }
 
-    private func updateSteps(
-        wishId: String,
-        update: (List<WishStepDTO>) -> Void
-    ) -> Result<[WishStep], RepositoryError> {
-        guard let realm = try? Realm() else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter({ $0._id == wishId }).first else {
-            return .failure(.targetNotFound)
-        }
-        
+    // MARK: - Private
+
+    private func read<T>(_ block: (Database) throws -> T) -> T? {
+        guard let database else { return nil }
+        return try? database.writer.read(block)
+    }
+
+    private func write<T>(_ block: (Database, Date) throws -> T) -> Result<T, RepositoryError> {
+        guard let database else { return .failure(.noDatabase) }
+        let now = now()
         do {
-            try realm.write {
-                update(targetObject.steps)
-            }
+            return .success(try database.writer.write { try block($0, now) })
         } catch {
-            return .failure(.writeFailed)
+            return .failure(RepositoryError(error))
         }
-        
-        let steps = Array(targetObject.steps)
-            .map(WishStep.init(dto:))
-            .sorted { $0.order < $1.order }
-        return .success(steps)
+    }
+
+    private func updateAndFetch(wishId: String, _ change: @escaping (inout WishRecord) -> Void) -> Result<Wish, RepositoryError> {
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db, change)
+            return try Self.fetchExisting(id: wishId, in: db)
+        }
+    }
+
+    private static func fetchExisting(id: String, in db: Database) throws -> Wish {
+        guard let wish = try WishRecordStore.fetchWish(id: id, in: db) else {
+            throw WishRecordStore.StoreError.targetNotFound
+        }
+        return wish
+    }
+
+    private static func savings(wishId: String, in db: Database) throws -> [WishSaving] {
+        WishSaving.latestFirst(
+            try WishRecordStore.aliveSavings(wishId: wishId, in: db)
+                .map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }
+        )
     }
 }

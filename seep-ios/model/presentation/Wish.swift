@@ -114,32 +114,4 @@ struct Wish: Equatable, Hashable {
         self.photoFileName = photoFileName
         self.createdAt = createdAt
     }
-    
-    init(dto: WishDTO) {
-        self.id = dto._id
-        self.emoji = dto.emoji
-        self.category = Category(rawValue: dto.category) ?? .wantToDo
-        self.title = dto.title
-        self.endDate = dto.date
-        self.finishDate = dto.finishDate
-        self.notifications = Array(dto.notifications).map(SeepNotification.init)
-        self.steps = Array(dto.steps).map(WishStep.init(dto:)).sorted { $0.order < $1.order }
-        self.targetAmount = dto.targetAmount
-        self.savings = WishSaving.latestFirst(Array(dto.savings).map(WishSaving.init(dto:)))
-        self.memo = dto.memo
-        self.hashtag = dto.hashtag
-        self.isSuccess = dto.isSuccess
-        self.finishNote = dto.finishNote
-        self.pinnedAt = dto.pinnedAt
-        self.link = dto.link
-        self.lastCheckedAt = dto.lastCheckedAt
-        self.place = WishPlace.stored(
-            name: dto.placeName,
-            address: dto.placeAddress,
-            latitude: dto.latitude,
-            longitude: dto.longitude
-        )
-        self.photoFileName = dto.photoFileName
-        self.createdAt = dto.createdAt
-    }
 }

@@ -2,8 +2,6 @@ import WidgetKit
 import SwiftUI
 import Intents
 
-import RealmSwift
-
 struct MediumHorizontalProvider: IntentTimelineProvider {
     func placeholder(in context: Context) -> MediumHorizontalEntry {
         return self.generateEntry()
@@ -28,20 +26,8 @@ struct MediumHorizontalProvider: IntentTimelineProvider {
     }
     
     private func generateEntry() -> MediumHorizontalEntry {
-        if let realm = try? Realm(configuration: RealmConfiguration.shared) {
-            let wishes = realm.objects(WishDTO.self)
-                .map { $0 }
-                .map { dto in
-                    return Wish(dto: dto)
-                }
-                .filter { !$0.isSuccess }
-                .sorted(by: Wish.deadlineOrder)
-            let wishSlice = wishes.count < 3 ? wishes : Array(wishes[..<3])
-            let entry = MediumHorizontalEntry(date: Date(), wishes: wishSlice)
-
-            return entry
-        } else {
-            return MediumHorizontalEntry.preview
-        }
+        let wishes = WidgetWishRepositoryImpl().fetchUnfinishedWishes()
+            .sorted(by: Wish.deadlineOrder)
+        return MediumHorizontalEntry(date: Date(), wishes: Array(wishes.prefix(3)))
     }
 }

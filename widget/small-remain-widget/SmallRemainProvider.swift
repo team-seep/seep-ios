@@ -1,7 +1,6 @@
 import WidgetKit
 import SwiftUI
 import Intents
-import RealmSwift
 
 struct SmallRemainProvider: TimelineProvider {
     func placeholder(in context: Context) -> SmallRemainEntry {
@@ -29,16 +28,7 @@ struct SmallRemainProvider: TimelineProvider {
             Category.wantToGo
         ].randomElement() ?? .wantToDo
         
-        if let realm = try? Realm(configuration: RealmConfiguration.shared) {
-            let searchTask = realm.objects(WishDTO.self)
-                .filter { ($0.isSuccess == false) && ($0.category == randomCategory.rawValue) }
-            let wishCount = searchTask.map { $0 }.count
-            
-            let entry = SmallRemainEntry(date: date, category: randomCategory, count: wishCount)
-            
-            return entry
-        } else {
-            return SmallRemainEntry(date: date, category: randomCategory, count: 100)
-        }
+        let wishCount = WidgetWishRepositoryImpl().fetchUnfinishedCount(category: randomCategory)
+        return SmallRemainEntry(date: date, category: randomCategory, count: wishCount)
     }
 }

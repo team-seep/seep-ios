@@ -25,4 +25,10 @@ extension ParameterName {
     static let enabled = ParameterName(rawValue: "enabled")
     /// 더하기 칩으로 꺼낸 칸 (GH-70)
     static let block = ParameterName(rawValue: "block")
+    /// db_migration 결과: success / failure (GH-79 R-22)
+    static let result = ParameterName(rawValue: "result")
+    static let wishCount = ParameterName(rawValue: "wish_count")
+    /// 겹치거나 비어 있어 새 id 를 붙인 레코드 수
+    static let reassignedIdCount = ParameterName(rawValue: "reassigned_id_count")
+    static let errorType = ParameterName(rawValue: "error_type")
 }

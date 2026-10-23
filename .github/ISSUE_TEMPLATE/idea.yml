@@ -21,7 +21,7 @@ body:
     id: serverless
     attributes:
       label: 서버리스 근거
-      description: 서버 없이 무엇으로 구현하나 (로컬 Realm, 위젯, 로컬 알림, CloudKit …)
+      description: 서버 없이 무엇으로 구현하나 (로컬 DB, 위젯, 로컬 알림, CloudKit …)
     validations:
       required: true
   - type: textarea
@@ -30,7 +30,7 @@ body:
       label: 크기 · 영향 영역
       value: |
         - 크기: S / M / L
-        - 영향: [ ] Realm 스키마(R4) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
+        - 영향: [ ] DB 스키마(R4) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
   - type: textarea
     id: requirements
     attributes:

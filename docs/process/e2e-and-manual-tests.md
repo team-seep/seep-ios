@@ -13,7 +13,7 @@
 | 애니메이션·제스처 | 스와이프 삭제, 바텀시트(PanModal), 카테고리 페이지 스와이프 | **자동화** | 영상 |
 | 위젯 | 위젯 렌더링, 위젯 탭 → `widget://` 딥링크 진입 | **자동화** | 홈 화면 위젯 추가 후 스크린샷 / `simctl openurl` |
 | OS 권한 팝업 | 알림·사진 권한 | **자동화** | `simctl privacy reset` 후 재현 |
-| Realm 마이그레이션 | 구버전 데이터 → 신버전 실행 | **자동화** | 구버전 빌드 설치·데이터 작성 → 신버전 덮어 설치 |
+| DB 마이그레이션 | 구버전 데이터 → 신버전 실행 | **자동화** | 구버전 빌드 설치·데이터 작성 → 신버전 덮어 설치 |
 | 로컬 알림 실제 수신 | D-day 알림이 예정 시각에 울림 | **수동** | 실기기 (시간 경과 필요) |
 | 외부 앱 공유 | 사진 공유(인스타 스토리 등) | **수동** | 실기기 |
 | 스토어 | 앱스토어 이동, 리뷰 요청 | **수동** | 실기기 |
@@ -42,7 +42,7 @@ diff가 아래 경로/키워드를 건드리면 해당 블록을 추가한다.
 
 | 트리거 (경로·키워드) | 추가 항목 |
 |---|---|
-| `seep-ios/model/dto/**`, `schemaVersion`, `migrationBlock` | 구버전(직전 릴리즈) 데이터가 있는 상태에서 업데이트 설치 → 기존 위시·알림 유지, 위젯 정상 표시 |
+| `seep-ios/model/dto/**`, `Repository/AppDatabase.swift`(migrator) | 구버전(직전 릴리즈) 데이터가 있는 상태에서 업데이트 설치 → 기존 위시·알림 유지, 위젯 정상 표시 |
 | `widget/**`, `Bundle.realmName`, App Group | 위젯 3종(small/medium 가로·세로) 렌더링, 위젯 탭 딥링크 콜드 스타트/백그라운드 |
 | `SceneDelegate`, `handleDeepLink`, `reservedDeepLink` | 콜드 스타트/백그라운드 두 경우 모두에서 딥링크 진입 |
 | `NotificationManager`, `UNUserNotificationCenter`, `notification/**` | 알림 예약·수정·완료·삭제 시 예약 목록 갱신, 권한 거부 상태 |

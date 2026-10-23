@@ -19,6 +19,7 @@ struct LicenseScreen: View {
         OpenSourceLicense(name: "GoogleDataTransport", license: "Apache License 2.0", url: "https://github.com/google/GoogleDataTransport"),
         OpenSourceLicense(name: "GoogleUtilities", license: "Apache License 2.0", url: "https://github.com/google/GoogleUtilities"),
         OpenSourceLicense(name: "gRPC", license: "Apache License 2.0", url: "https://github.com/google/grpc-binary"),
+        OpenSourceLicense(name: "GRDB", license: "MIT License", url: "https://github.com/groue/GRDB.swift"),
         OpenSourceLicense(name: "GTMSessionFetcher", license: "Apache License 2.0", url: "https://github.com/google/gtm-session-fetcher"),
         OpenSourceLicense(name: "Interop for Google SDKs", license: "Apache License 2.0", url: "https://github.com/google/interop-ios-for-google-sdks"),
         OpenSourceLicense(name: "leveldb", license: "BSD 3-Clause License", url: "https://github.com/firebase/leveldb"),

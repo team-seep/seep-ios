@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// 앱 진입점 (GH-64 A-1). Firebase·Realm·알림 델리게이트는 `AppDelegate`가 맡는다
+/// 앱 진입점 (GH-64 A-1). Firebase·DB·알림 델리게이트는 `AppDelegate`가 맡는다
 @main
 struct SeepApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate

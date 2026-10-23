@@ -57,8 +57,8 @@ cd "$WT"
 ```
 이후 모든 명령은 `$WT`에서 실행한다. PR을 올린 뒤 worktree는 그대로 둔다(리뷰 수정 때 재사용). 머지 후 정리는 `git worktree remove`.
 - 이슈의 **"디자인" 섹션이 UI 기준**이다. Design 링크를 Artifact `read`로 열어 After 아트보드를 확인하고, 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)의 토큰·컴포넌트 README에 적힌 원본 Swift 컴포넌트(`DdayLabel`, `HomeWishListCell` 등)를 재사용한다. "새 토큰"이 있으면 `UIColorExtension`/`UIFontExtension`에 먼저 추가한다.
-- `CLAUDE.md`의 규칙(R1~R9)을 지킨다: Combine ViewModel, Repository로만 Realm 접근, 토큰·SwiftGen, Base 클래스 상속.
-- Realm 모델을 바꾸면 R4: schemaVersion을 앱과 위젯 3곳에서 모두 올리고 migrationBlock에 분기를 추가한다.
+- `CLAUDE.md`의 규칙(R1~R9)을 지킨다: `@Observable` ViewModel, Repository로만 DB 접근, 토큰·SwiftGen.
+- DB 레코드를 바꾸면 R4: `AppDatabase.migrator`에 새 마이그레이션을 추가하고 동기화 대비 규칙(UUID PK·`updatedAt`·`deletedAt`·UNIQUE 금지)을 지킨다.
 - **트래킹 이벤트**: `seep-ios/log/`의 `LogObjectId`·`ScreenName`·`EventName`에 케이스를 추가하고, ViewModel에서 `dependency.logManager.sendEvent(event: ClickEvent(...))`로 보낸다. 형식은 기존 `HomeViewModel.sendClickLog` 참고.
 - 새 파일은 `project.pbxproj` 등록이 필요하다 (동기화 폴더는 `seep-ios/model/Error`, `seep-ios/log`, `seep-iosTests/Log`뿐). 가능하면 기존 동기화 폴더 안에 두거나, 등록 후 빌드 결과 수로 포함 여부를 확인한다.
 - 커밋 메시지: `GH-{n} : {설명}`.

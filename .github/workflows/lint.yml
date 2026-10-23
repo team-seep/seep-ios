@@ -6,20 +6,20 @@ on:
 
 jobs:
   lint:
-    name: SwiftLint + Realm 스키마
+    name: SwiftLint + DB 스키마
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # check-realm-schema.sh 가 base 와 merge-base 를 비교한다
+          fetch-depth: 0   # check-db-schema.sh 가 base 와 merge-base 를 비교한다
 
       - name: SwiftLint (새 위반만, 베이스라인 제외)
         uses: docker://ghcr.io/realm/swiftlint:0.63.2
         with:
           args: lint --strict --reporter github-actions-logging
 
-      - name: Realm 스키마 규칙 (R4)
+      - name: DB 스키마 규칙 (R4)
         env:
           BASE_REF: origin/${{ github.base_ref }}
-        run: scripts/check-realm-schema.sh
+        run: scripts/check-db-schema.sh

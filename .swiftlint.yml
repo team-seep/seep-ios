@@ -66,14 +66,13 @@ custom_rules:
     message: "R2: URL 열기·알럿 등 UI 동작은 Route 로 ViewController 에서 처리한다."
     severity: error
 
-  realm_only_in_repository:                 # R3
-    name: "R3 Realm 접근은 Repository 에서만"
+  db_only_in_repository:                    # R3 (GH-79)
+    name: "R3 DB 접근은 Repository 에서만"
     excluded:
-      - "widget/.*"                # 위젯은 앱 Repository 를 못 쓰는 별도 타깃 (RULES.md R3 예외)
       - "seep-ios/Repository/.*"
       - "seep-ios/AppDelegate\\.swift"
-    regex: "\\bRealm\\(|realm\\.(write|beginWrite|objects|add|delete)\\b"
-    message: "R3: Realm 읽기/쓰기는 Repository(Protocol+Impl) 에서만. ViewModel 은 Dependency 로 Repository 를 주입받는다."
+    regex: "\\b(DatabasePool|DatabaseQueue)\\(|\\.writer\\.(read|write)\\b|\\bdb\\.execute\\(|\\bRealm\\(|realm\\.(write|beginWrite|objects|add|delete)\\b"
+    message: "R3: DB(GRDB, 이전용 Realm) 읽기/쓰기는 Repository(Protocol+Impl) 에서만. ViewModel 은 Dependency 로 Repository 를 주입받는다."
     severity: error
 
   no_raw_sheet:                             # R5 (GH-64)

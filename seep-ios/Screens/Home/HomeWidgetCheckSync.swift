@@ -4,7 +4,7 @@ import Foundation
 /// 위젯 프로세스는 GA·소감 시트를 다룰 수 없어, 앱이 활성화될 때 홈이 이 타입으로 한 번에 처리한다.
 struct HomeWidgetCheckSync {
     struct Result: Equatable {
-        /// 위젯이 마지막으로 읽은 뒤에 Realm 을 바꿨으면 홈을 다시 읽는다 (R-8)
+        /// 위젯이 마지막으로 읽은 뒤에 DB 를 바꿨으면 홈을 다시 읽는다 (R-8)
         let needsReload: Bool
         /// 소감을 물을 위시. 위젯에서 완료한 것 중 가장 최근 하나만 (R-7)
         let finishNoteWish: Wish?
