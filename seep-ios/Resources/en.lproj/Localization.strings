@@ -480,3 +480,6 @@
 "emoji_picker.category.flags" = "깃발";
 "notification_editor.duplicate" = "🔕 이미 설정된 알림입니다.";
 "notification_editor.delete" = "알림 삭제";
+
+/* GH-63 스플래시 */
+"splash_tagline" = "진짜 나를 위해 하고 싶은 것";

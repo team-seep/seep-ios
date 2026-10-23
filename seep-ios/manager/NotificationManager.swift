@@ -1,6 +1,5 @@
 import UserNotifications
 
-import RxSwift
 
 protocol NotificationManagerProtocol {
     func reserveNotifications(wish: Wish)
@@ -59,11 +58,10 @@ final class NotificationManager: NotificationManagerProtocol {
         deadline: Date,
         notification: SeepNotification
     ) {
-        let notificationContent = UNMutableNotificationContent().then {
-            $0.title = "notification_title".localized
-            $0.body = String(format: "notification_body_format".localized, title)
-            $0.sound = .default
-        }
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = Strings.notificationTitle
+        notificationContent.body = Strings.notificationBodyFormat(title)
+        notificationContent.sound = .default
         var trigger: UNCalendarNotificationTrigger
         
         switch notification.type {
