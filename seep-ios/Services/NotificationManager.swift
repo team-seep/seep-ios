@@ -1,3 +1,4 @@
+import os
 import UserNotifications
 
 
@@ -126,7 +127,8 @@ final class NotificationManager: NotificationManagerProtocol {
         
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("Notification error: \(error)")
+                Logger(subsystem: "macgongmon.seep-ios", category: "NotificationManager")
+                    .error("알림 예약 실패: \(error.localizedDescription, privacy: .public)")
             }
         }
     }

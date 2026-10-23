@@ -27,7 +27,17 @@ enum HashtagType: String {
     case leisure
     
     var description: String {
-        return ("hashtag_" + self.rawValue).localized
+        switch self {
+        case .trip: return Strings.hashtagTrip
+        case .shopping: return Strings.hashtagShopping
+        case .sports: return Strings.hashtagSports
+        case .career: return Strings.hashtagCareer
+        case .life: return Strings.hashtagLife
+        case .hobby: return Strings.hashtagHobby
+        case .date: return Strings.hashtagDate
+        case .stock: return Strings.hashtagStock
+        case .leisure: return Strings.hashtagLeisure
+        }
     }
     
     static var array: [HashtagType] {

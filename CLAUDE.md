@@ -91,14 +91,13 @@ seep-ios/
 ├── Screens/{화면}/            # Home, Finished, Settings, Write, Detail, Search, Badge, YearReview, Place, SharePhoto — 동기화 폴더
 │   ├── {Name}Screen.swift / {Name}View.swift   # SwiftUI
 │   └── {Name}ViewModel.swift                    # @Observable (Action/State/Route/Config/Dependency)
-├── features/                 # 화면 아닌 순수 로직 몇 개 (AppLockPolicy, PlaceSearchService, LinkMetadataProvider …)
 ├── Repository/               # WishRepository(Protocol+Impl), RemoteConfigRepository — Realm 접근 지점
 ├── model/dto/                # Realm Object (WishDTO, NotificationDTO) — 바꾸면 R4
 ├── model/presentation/       # 도메인 모델 (Wish, SeepNotification, HashtagType)
 ├── log/                      # LogManager(Firebase Analytics), ClickEvent·ImpressionEvent·CustomEvent, ScreenName …
-├── manager/                  # NotificationManager(로컬 알림), AuthenticationManager, CalendarManager
-├── uilts/                    # Preference(UserDefaults), DateUtils …
-├── extensions/               # Foundation 확장(String·Date …). 색·폰트 토큰은 DesignSystem/
+├── Services/                 # 화면 아닌 기능: NotificationManager(로컬 알림), AuthenticationManager, CalendarManager, WishPhotoStorage, AppLock/·Place/·WishLink/
+├── Support/                  # Preference(UserDefaults), DateUtils, AmountFormatter, WidgetCheckStore …
+│   └── Extensions/           # Foundation 확장(Date·Bundle·Array …). 색·폰트 토큰은 DesignSystem/
 ├── Generated/                # SwiftGen 산출물 (Strings.swift, Assets.swift) — 직접 수정 금지
 └── Resources/                # xcassets, en.lproj/Localization.strings, Firebase plist, Lottie
 widget/                       # small-write / small-remain / medium-horizontal / medium-vertical 위젯

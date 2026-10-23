@@ -23,9 +23,9 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 | R3 | Realm 읽기/쓰기는 Repository에서만 | 린트 `realm_only_in_repository` | 0건 |
 | R4 | Realm 모델을 바꾸면 schemaVersion(앱+위젯)과 마이그레이션을 같이 바꾼다 | 스크립트 `check-realm-schema.sh` + 라벨 `schema-change` | 0건 |
 | R5 | 시트·풀스크린은 `seepSheet`/`seepFullScreenCover`로만 띄운다 | 린트 `no_raw_sheet` | 0건 |
-| R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·컨테이너 기준 크기 | 린트 `no_color_literal`, `no_font_custom`, `no_text_literal`, `no_localized_literal` | 5건 동결 |
+| R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·컨테이너 기준 크기 | 린트 `no_color_literal`, `no_font_custom`, `no_text_literal`, `no_localized_literal` | 0건 |
 | R7 | 타입은 책임 하나만 진다 (타입 400·파일 600줄 초과는 사유 필수) | 린트 `type_body_length`·`file_length` + `length_disable_reason` | 0건 |
-| R8 | `print`·`try!`·`as!` 금지 | 린트 `no_print`, `force_try`, `force_cast` | 7건 동결 |
+| R8 | `print`·`try!`·`as!` 금지 | 린트 `no_print`, `force_try`, `force_cast` | 0건 |
 | R9 | ViewModel 구조(Action/State/Route/Config/Dependency, `send(_:)`)·Route는 View에서 처리 | 문서 + AI 리뷰 | — |
 
 린트 대상은 `seep-ios/`, `seep-iosTests/`, `widget/`(R1·R7·R8·`snapkit`·`then`만). `seep-ios/Generated/`(SwiftGen 산출물)는 제외.
@@ -202,7 +202,7 @@ Text("하고 싶은 것들이")                         // ❌ 문자열 리터�
 
 **강제 수단** — SwiftLint `no_color_literal`, `no_font_custom`, `no_text_literal`, `no_localized_literal`.
 
-**예외(베이스라인)** — `"key".localized` 5건 동결(알림 문구·에러 등 모델 코드). 위젯은 색·폰트·문자열 규칙에서 제외한다(위젯 문구는 위젯 타깃 안에 있다). 위젯 색 토큰은 앱과 같은 `seep-ios/DesignSystem/SeepColor.swift`를 쓴다(앱·위젯 두 타깃 멤버). 토큰 정의 파일(`SeepColor.swift`·`SeepFont.swift`)은 색·폰트 규칙에서 제외. 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
+**예외** — 위젯은 색·폰트·문자열 규칙에서 제외한다(위젯 문구는 위젯 타깃 안에 있다). 위젯 색 토큰은 앱과 같은 `seep-ios/DesignSystem/SeepColor.swift`를 쓴다(앱·위젯 두 타깃 멤버). 토큰 정의 파일(`SeepColor.swift`·`SeepFont.swift`)은 색·폰트 규칙에서 제외. 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
 
 ---
 
@@ -233,7 +233,7 @@ do {
 
 **강제 수단** — SwiftLint `no_print`, `force_try`(error), `force_cast`(error).
 
-**예외(베이스라인)** — `print` 6건, `try!` 1건 동결(`AppDelegate` 마이그레이션·Realm 설정).
+**예외** — 없음. 남겨야 할 로그는 `os.Logger`로 쓴다(GH-76에서 베이스라인 7건을 고쳤다).
 
 ---
 

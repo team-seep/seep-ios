@@ -18,7 +18,7 @@ gh pr list -R team-seep/seep-ios --state merged --label design-system-update \
 ```
 - 없으면 바로 1단계(대상 고르기)로 간다.
 - 오래된 PR부터 하나씩:
-  1. `gh pr diff {pr} -R team-seep/seep-ios`에서 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets` 변경만 본다. 코드 기준은 **origin/develop의 현재 파일**이다(머지 후 더 바뀌었을 수 있다).
+  1. `gh pr diff {pr} -R team-seep/seep-ios`에서 `seep-ios/DesignSystem/**`, `seep-ios/Resources/Icons.xcassets` 변경만 본다. 코드 기준은 **origin/develop의 현재 파일**이다(머지 후 더 바뀌었을 수 있다).
   2. 디자인 시스템을 Artifact `read`로 열고, 결과가 주는 타입 지침의 "Revising" 절차대로 바뀐 것만 고친다.
      - 색·폰트 토큰 → `project/tokens.json`(통째로) + `usage`
      - 공용 컴포넌트 추가·변경 → `project/components/{Name}/README.md`(원본 Swift 경로, 크기·토큰·상태) + `preview.html`(`bundle.css`·토큰으로 그린 미리보기), 필요하면 `bundle.css`
@@ -72,7 +72,7 @@ cd "$WT"
 
 ## 4-1. 디자인 시스템 반영 (해당하면, PR 전에)
 
-이번 변경이 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸거나, 화면을 그리는 규칙(레이아웃·간격·넓은 화면 등)을 새로 정했다면 **PR을 올리기 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)을 같이 갱신한다. 다음 기획·디자인이 바로 최신 기준을 쓰게 하기 위해서다.
+이번 변경이 `seep-ios/DesignSystem/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸거나, 화면을 그리는 규칙(레이아웃·간격·넓은 화면 등)을 새로 정했다면 **PR을 올리기 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)을 같이 갱신한다. 다음 기획·디자인이 바로 최신 기준을 쓰게 하기 위해서다.
 - 방법은 0단계 2번과 같다: Artifact `read` → 타입 지침의 "Revising" 절차로 **바뀐 것만** 고친다(토큰 → `project/tokens.json`, 공용 컴포넌트 → `project/components/{Name}/README.md`·`preview.html`·`bundle.css`, 아이콘 → 에셋 업로드 + `assetGroups`, 규칙 → `project/README.md`). 인덱스 `lastChange`: `via` "seep-run-approved", `note` "GH-{n} {바뀐 것}".
 - 기준은 이 브랜치의 코드다. PR이 리뷰에서 바뀌면 같은 방식으로 다시 맞춘다.
 - 해당 없으면 건너뛴다(대부분의 기능 PR).

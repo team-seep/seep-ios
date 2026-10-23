@@ -23,7 +23,7 @@
 ## 2. 화면 변경 PR 공통 체크 항목
 
 **diff에 UI 파일이 있을 때만** PR TC 섹션에 붙인다.
-UI 파일 판정: `*View.swift`, `*ViewController.swift`, `*VC.swift`, `*Cell.swift`, `*BottomSheet*.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/**`, `seep-ios/extensions/UI*.swift`, `widget/**`.
+UI 파일 판정: `*View.swift`, `*ViewController.swift`, `*VC.swift`, `*Cell.swift`, `*BottomSheet*.swift`, `seep-ios/DesignSystem/**`, `seep-ios/AppShell/**`, `seep-ios/Screens/**`, `seep-ios/Resources/**`, `widget/**`.
 
 전부 **자동화 계층**이다.
 
