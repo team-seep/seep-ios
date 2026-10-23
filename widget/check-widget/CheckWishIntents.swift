@@ -3,7 +3,6 @@ import UserNotifications
 import WidgetKit
 
 /// 체크 원: 다음 단계를 체크하거나(남은 단계 2개 이상) 위시를 완료한다 (GH-48 R-3)
-@available(iOSApplicationExtension 17.0, *)
 struct CheckWishIntent: AppIntent {
     static var title: LocalizedStringResource = "위시 체크하기"
     static var isDiscoverable: Bool = false
@@ -38,7 +37,6 @@ struct CheckWishIntent: AppIntent {
 }
 
 /// 완료 모양인 줄의 체크 원: 위젯에서 한 완료를 취소한다. 단계 체크는 되돌리지 않는다 (GH-48 R-4)
-@available(iOSApplicationExtension 17.0, *)
 struct UncheckWishIntent: AppIntent {
     static var title: LocalizedStringResource = "위시 완료 취소하기"
     static var isDiscoverable: Bool = false

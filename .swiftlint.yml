@@ -1,5 +1,6 @@
 # SwiftLint 설정
 # 아키텍처 규칙(R1~R8)의 강제 수단. 규칙의 이유·예외는 docs/architecture/RULES.md 참고.
+# SwiftUI 전환 중(GH-64): SwiftUI 기준 규칙이 새 코드를 막고, UIKit·Rx 기준 규칙은 레거시를 지키려고 P3까지 남는다.
 # 기존 위반은 .swiftlint-baseline.json 에 동결되어 있다 (make lint-baseline 로 재생성). 새 위반만 보고된다.
 
 baseline: .swiftlint-baseline.json
@@ -36,6 +37,14 @@ force_try: error
 # ---- 아키텍처 custom rules (RULES.md 번호와 1:1) ----
 custom_rules:
 
+  no_uikit:                                 # R1 (GH-64)
+    name: "R1 UIKit 신규 사용 금지"
+    included: "seep-ios/.*"
+    excluded: "seep-ios/AppDelegate\\.swift"
+    regex: "^import UIKit\\b|\\b(UIViewRepresentable|UIViewControllerRepresentable|UIHostingController)\\b"
+    message: "R1: 화면은 SwiftUI View + @Observable ViewModel 로 쓴다. UIKit·UIKit 래퍼를 새로 쓰지 않는다 (GH-64)."
+    severity: error
+
   no_new_rx:                                # R1
     name: "R1 RxSwift·ReactorKit 신규 사용 금지"
     excluded: "seep-ios/features/base/.*"
@@ -56,6 +65,13 @@ custom_rules:
     message: "R2: ViewModel 은 UI 를 모른다. UI 동작은 Route/Output 으로 ViewController 에 넘긴다."
     severity: error
 
+  viewmodel_no_swiftui_import:              # R2 (GH-64)
+    name: "R2 ViewModel 에서 SwiftUI import 금지"
+    included: ".*ViewModel\\.swift"
+    regex: "^import SwiftUI\\b"
+    message: "R2: ViewModel 은 Foundation·Observation(필요하면 Combine)만 쓴다. 화면 표현은 View 에서 한다."
+    severity: error
+
   viewmodel_no_uiapplication:               # R2
     name: "R2 ViewModel 에서 UIApplication 금지"
     included: ".*ViewModel\\.swift"
@@ -74,6 +90,14 @@ custom_rules:
     message: "R3: Realm 읽기/쓰기는 Repository(Protocol+Impl) 에서만. ViewModel 은 Dependency 로 Repository 를 주입받는다."
     severity: error
 
+  no_raw_sheet:                             # R5 (GH-64)
+    name: "R5 시트는 seepSheet 로만"
+    included: "seep-ios/.*"
+    excluded: "seep-ios/AppShell/SeepSheet\\.swift"
+    regex: "\\.(sheet|fullScreenCover)\\("
+    message: "R5: 시트·풀스크린은 .seepSheet(item:) / .seepFullScreenCover(item:) 로 띄운다 (앱 잠금 오버레이·detent 통일)."
+    severity: error
+
   vc_inherits_base:                         # R5
     name: "R5 ViewController 는 BaseViewController 상속"
     excluded:
@@ -90,6 +114,29 @@ custom_rules:
       - "seep-ios/features/base/.*"
     regex: "class\\s+\\w+\\s*:\\s*(UICollectionViewCell|UITableViewCell)\\b"
     message: "R5: Cell 은 BaseCollectionViewCell / BaseTableViewCell 을 상속한다 (setup / bindConstraints / prepareForReuse 공통 관리)."
+    severity: error
+
+  no_color_literal:                         # R6 SwiftUI (GH-64)
+    name: "R6 Color 리터럴 금지"
+    included: "seep-ios/.*"
+    excluded: "seep-ios/DesignSystem/SeepColor\\.swift"
+    regex: "\\bColor\\((r|red|white|hex):"
+    message: "R6: 색은 SeepColor 토큰(Color.gray5, .seepBlue …)만 쓴다. 새 색은 토큰부터 추가한다."
+    severity: error
+
+  no_font_custom:                           # R6 SwiftUI (GH-64)
+    name: "R6 Font.custom 금지"
+    included: "seep-ios/.*"
+    excluded: "seep-ios/DesignSystem/SeepFont\\.swift"
+    regex: "\\.custom\\(\""
+    message: "R6: 폰트는 SeepFont(Font.appleBold(size:) …)만 쓴다."
+    severity: error
+
+  no_text_literal:                          # R6 SwiftUI (GH-64)
+    name: "R6 Text 문자열 리터럴 금지"
+    included: "seep-ios/.*"
+    regex: "\\bText\\(\""
+    message: "R6: 화면 문구는 Text(Strings.xxx). 번역하지 않는 값은 Text(verbatim:)."
     severity: error
 
   no_uicolor_literal:                       # R6

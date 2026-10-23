@@ -9,12 +9,8 @@ public struct UIUtils {
     }
     
     public static var bottomSafeAreaInset: CGFloat {
-        if #available(iOS 15.0, *) {
-            let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            return window?.keyWindow?.safeAreaInsets.bottom ?? .zero
-        } else {
-            return UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? .zero
-        }
+        let window = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        return window?.keyWindow?.safeAreaInsets.bottom ?? .zero
     }
     
     public static func getTopViewController(_ viewController: UIViewController) -> UIViewController {
