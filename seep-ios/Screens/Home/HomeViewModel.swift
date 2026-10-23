@@ -381,7 +381,9 @@ extension HomeViewModel {
         guard let targetIndex = wishes.firstIndex(where: { $0.id == wish.id }) else { return }
 
         switch dependency.wishRepository.finishWish(wish: wish) {
-        case .success(let finishedWish):
+        case .success(let result):
+            // 목록이 들고 있던 값은 상세에서 바뀌기 전일 수 있어(예: 방금 봉인한 편지) 저장소에서 다시 읽는다 (GH-61 R-5)
+            let finishedWish = dependency.wishRepository.fetchWish(id: result.id).flatMap { $0.isSuccess ? $0 : nil } ?? result
             dependency.notificationManager.cancelNotifications(wish: finishedWish)
             finishingWishIds.insert(finishedWish.id)
             isHomeFinishFlow = true
