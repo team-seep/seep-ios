@@ -61,6 +61,9 @@ struct HomeView: View {
             // 다른 탭에 있다가 싶 탭으로 돌아오면 위젯 기록을 반영한다 (R-16)
             if tab == .wish { viewModel.send(.syncWidgetChanges) }
         }
+        .onChange(of: router.wishesChangedToken) { _, _ in
+            viewModel.send(.onAppear)
+        }
         .onChange(of: router.homeCategory) { _, category in
             // 작성을 마치면 그 카테고리를 보여준다 (R-9)
             if category != viewModel.state.category { viewModel.send(.selectCategory(category)) }

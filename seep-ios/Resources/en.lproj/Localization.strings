@@ -242,6 +242,20 @@
 "detail.place.search.clear" = "검색어 지우기";
 "detail.place.search.empty" = "찾는 장소가 없어요";
 "detail.place.search.caption" = "장소 이름이나 주소로 찾아봐요. 위치 권한은 필요 없어요.";
+"detail.dday.today" = "D-Day";
+"detail.dday.until_today" = "오늘까지";
+"detail.dday.until_format" = "%@까지";
+"detail.dday.past_format" = "%@이었어요";
+"detail.meta.notification_more_format" = "%@ 외 %d개";
+"detail.nav.back" = "뒤로";
+"detail.nav.edit" = "수정";
+"detail.nav.more" = "더보기";
+"detail.section.step_count_format" = "%d/%d";
+"detail.section.savings" = "모은 돈";
+"detail.section.savings_add" = "＋ 기록";
+"detail.section.link_open" = "열기";
+"detail.section.place_change" = "변경";
+"detail.section.place_add" = "＋ 장소 붙이기";
 "place_map.title" = "가고 싶은 곳 지도";
 "place_map.count_format" = "장소를 붙인 곳 %d곳";
 "place_map.empty" = "아직 장소를 붙인 곳이 없어요.";
@@ -433,3 +447,36 @@
 "home.finish_accessibility" = "완료하기";
 "home.finished_accessibility" = "완료됨";
 "home.error_alert.confirm" = "확인";
+
+/* GH-64 사진 공유 */
+"share_photo.saved_toast" = "👏이미지를 앨범에 저장했어요!";
+"share_photo.save_failed" = "이미지를 저장하지 못했어요. 다시 시도해 주세요.";
+"share_photo.alert_settings" = "설정";
+"share_photo.alert_cancel" = "취소";
+"share_photo.card_accessibility" = "공유할 카드. 두 번 탭하면 글자색이 바뀌어요";
+
+/* GH-64 작성·수정 */
+"wish_form.keyboard_done" = "완료";
+"wish_form.close" = "닫기";
+"wish_form.back" = "뒤로";
+"wish_form.emoji_accessibility" = "이모지 고르기";
+"wish_form.random_emoji_accessibility" = "무작위 이모지";
+"wish_form.notification_requires_date" = "알림 허용을 위해선 날짜 지정이 필요해요.";
+"wish_form.notification_empty" = "알림 없음";
+"wish_form.notification_row_format" = "%@, %@";
+"wish_form.date_format" = "yyyy년 MM월 dd일 eeee 까지";
+"wish_form.date_confirm" = "확인";
+"wish_form.place_delete" = "장소 지우기";
+"emoji_picker.title" = "이모지 고르기";
+"emoji_picker.recent" = "최근 사용";
+"emoji_picker.category.smileys" = "표정";
+"emoji_picker.category.people" = "사람";
+"emoji_picker.category.animals" = "동물";
+"emoji_picker.category.food" = "음식";
+"emoji_picker.category.activities" = "활동";
+"emoji_picker.category.travel" = "여행";
+"emoji_picker.category.objects" = "사물";
+"emoji_picker.category.symbols" = "기호";
+"emoji_picker.category.flags" = "깃발";
+"notification_editor.duplicate" = "🔕 이미 설정된 알림입니다.";
+"notification_editor.delete" = "알림 삭제";

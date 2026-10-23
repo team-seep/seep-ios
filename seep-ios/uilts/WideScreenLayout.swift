@@ -7,7 +7,7 @@ import SnapKit
 /// 넘으면 콘텐츠를 `maxContentWidth` 기둥으로 가운데 둔다. 기둥 안 좌우 여백(20pt)은 각 화면 그대로.
 enum WideScreenLayout {
     /// 콘텐츠 기둥 최대 폭
-    static let maxContentWidth: CGFloat = 600
+    static let maxContentWidth: CGFloat = SeepLayout.maxContentWidth
 
     /// 카테고리 탭 줄 최대 폭. 가장 넓은 아이폰(Pro Max 440pt) 탭 줄 폭(440 - 40)에 맞춰
     /// 아이폰에서는 그대로 두고, 그보다 넓으면 탭 간격이 더 벌어지지 않게 한다.

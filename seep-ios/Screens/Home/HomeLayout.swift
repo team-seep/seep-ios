@@ -1,9 +1,9 @@
 import CoreGraphics
 
-/// 홈 화면 크기 규칙. `WideScreenLayout`(UIKit)과 같은 값을 SwiftUI 쪽에서 쓴다
+/// 홈 화면 크기 규칙
 enum HomeLayout {
     /// 넓은 화면(듀오 안쪽)에서 콘텐츠를 가두는 기둥 폭 (GH-12)
-    static let maxContentWidth: CGFloat = 600
+    static let maxContentWidth: CGFloat = SeepLayout.maxContentWidth
     /// 리스트·그리드 좌우 여백 (디자인 시스템 space-page)
     static let horizontalInset: CGFloat = 20
     /// 리스트 셀 높이·사이 간격

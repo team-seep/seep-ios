@@ -505,6 +505,20 @@ internal enum Strings {
         }
       }
     }
+    internal enum Dday {
+      /// %@이었어요
+      internal static func pastFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.dday.past_format", String(describing: p1), fallback: "%@이었어요")
+      }
+      /// D-Day
+      internal static let today = Strings.tr("Localization", "detail.dday.today", fallback: "D-Day")
+      /// %@까지
+      internal static func untilFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.dday.until_format", String(describing: p1), fallback: "%@까지")
+      }
+      /// 오늘까지
+      internal static let untilToday = Strings.tr("Localization", "detail.dday.until_today", fallback: "오늘까지")
+    }
     internal enum Link {
       /// 상품 링크 열기
       internal static let openAccessibility = Strings.tr("Localization", "detail.link.open_accessibility", fallback: "상품 링크 열기")
@@ -512,6 +526,20 @@ internal enum Strings {
       internal static let previewFailed = Strings.tr("Localization", "detail.link.preview_failed", fallback: "미리보기를 불러오지 못했어요. 탭하면 열 수 있어요")
       /// 링크
       internal static let title = Strings.tr("Localization", "detail.link.title", fallback: "링크")
+    }
+    internal enum Meta {
+      /// %@ 외 %d개
+      internal static func notificationMoreFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.meta.notification_more_format", String(describing: p1), p2, fallback: "%@ 외 %d개")
+      }
+    }
+    internal enum Nav {
+      /// 뒤로
+      internal static let back = Strings.tr("Localization", "detail.nav.back", fallback: "뒤로")
+      /// 수정
+      internal static let edit = Strings.tr("Localization", "detail.nav.edit", fallback: "수정")
+      /// 더보기
+      internal static let more = Strings.tr("Localization", "detail.nav.more", fallback: "더보기")
     }
     internal enum Photo {
       /// ＋ 사진 붙이기
@@ -621,6 +649,22 @@ internal enum Strings {
         internal static let completed = Strings.tr("Localization", "detail.saving.toast.completed", fallback: "👏 목표 금액을 다 모았어요!")
       }
     }
+    internal enum Section {
+      /// 열기
+      internal static let linkOpen = Strings.tr("Localization", "detail.section.link_open", fallback: "열기")
+      /// ＋ 장소 붙이기
+      internal static let placeAdd = Strings.tr("Localization", "detail.section.place_add", fallback: "＋ 장소 붙이기")
+      /// 변경
+      internal static let placeChange = Strings.tr("Localization", "detail.section.place_change", fallback: "변경")
+      /// 모은 돈
+      internal static let savings = Strings.tr("Localization", "detail.section.savings", fallback: "모은 돈")
+      /// ＋ 기록
+      internal static let savingsAdd = Strings.tr("Localization", "detail.section.savings_add", fallback: "＋ 기록")
+      /// %d/%d
+      internal static func stepCountFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.section.step_count_format", p1, p2, fallback: "%d/%d")
+      }
+    }
     internal enum Step {
       /// 단계 추가
       internal static let add = Strings.tr("Localization", "detail.step.add", fallback: "단계 추가")
@@ -646,6 +690,32 @@ internal enum Strings {
         /// 📍단계는 30자내로 작성해주세요!
         internal static let maxLength = Strings.tr("Localization", "detail.step.toast.max_length", fallback: "📍단계는 30자내로 작성해주세요!")
       }
+    }
+  }
+  internal enum EmojiPicker {
+    /// 최근 사용
+    internal static let recent = Strings.tr("Localization", "emoji_picker.recent", fallback: "최근 사용")
+    /// 이모지 고르기
+    internal static let title = Strings.tr("Localization", "emoji_picker.title", fallback: "이모지 고르기")
+    internal enum Category {
+      /// 활동
+      internal static let activities = Strings.tr("Localization", "emoji_picker.category.activities", fallback: "활동")
+      /// 동물
+      internal static let animals = Strings.tr("Localization", "emoji_picker.category.animals", fallback: "동물")
+      /// 깃발
+      internal static let flags = Strings.tr("Localization", "emoji_picker.category.flags", fallback: "깃발")
+      /// 음식
+      internal static let food = Strings.tr("Localization", "emoji_picker.category.food", fallback: "음식")
+      /// 사물
+      internal static let objects = Strings.tr("Localization", "emoji_picker.category.objects", fallback: "사물")
+      /// 사람
+      internal static let people = Strings.tr("Localization", "emoji_picker.category.people", fallback: "사람")
+      /// 표정
+      internal static let smileys = Strings.tr("Localization", "emoji_picker.category.smileys", fallback: "표정")
+      /// 기호
+      internal static let symbols = Strings.tr("Localization", "emoji_picker.category.symbols", fallback: "기호")
+      /// 여행
+      internal static let travel = Strings.tr("Localization", "emoji_picker.category.travel", fallback: "여행")
     }
   }
   internal enum Finished {
@@ -916,6 +986,12 @@ internal enum Strings {
     /// 적기
     internal static let write = Strings.tr("Localization", "main_tab.write", fallback: "적기")
   }
+  internal enum NotificationEditor {
+    /// 알림 삭제
+    internal static let delete = Strings.tr("Localization", "notification_editor.delete", fallback: "알림 삭제")
+    /// 🔕 이미 설정된 알림입니다.
+    internal static let duplicate = Strings.tr("Localization", "notification_editor.duplicate", fallback: "🔕 이미 설정된 알림입니다.")
+  }
   internal enum PlaceMap {
     /// 뒤로
     internal static let back = Strings.tr("Localization", "place_map.back", fallback: "뒤로")
@@ -1014,6 +1090,18 @@ internal enum Strings {
       internal static let title = Strings.tr("Localization", "settings.view_type.title", fallback: "홈 보기 방식")
     }
   }
+  internal enum SharePhoto {
+    /// 취소
+    internal static let alertCancel = Strings.tr("Localization", "share_photo.alert_cancel", fallback: "취소")
+    /// 설정
+    internal static let alertSettings = Strings.tr("Localization", "share_photo.alert_settings", fallback: "설정")
+    /// 공유할 카드. 두 번 탭하면 글자색이 바뀌어요
+    internal static let cardAccessibility = Strings.tr("Localization", "share_photo.card_accessibility", fallback: "공유할 카드. 두 번 탭하면 글자색이 바뀌어요")
+    /// 이미지를 저장하지 못했어요. 다시 시도해 주세요.
+    internal static let saveFailed = Strings.tr("Localization", "share_photo.save_failed", fallback: "이미지를 저장하지 못했어요. 다시 시도해 주세요.")
+    /// GH-64 사진 공유
+    internal static let savedToast = Strings.tr("Localization", "share_photo.saved_toast", fallback: "👏이미지를 앨범에 저장했어요!")
+  }
   internal enum WidgetGuide {
     /// 스크린샷 자리
     internal static let screenshotPlaceholder = Strings.tr("Localization", "widget_guide.screenshot_placeholder", fallback: "스크린샷 자리")
@@ -1043,6 +1131,32 @@ internal enum Strings {
       /// 잠금화면 위젯
       internal static let title = Strings.tr("Localization", "widget_guide.lock.title", fallback: "잠금화면 위젯")
     }
+  }
+  internal enum WishForm {
+    /// 뒤로
+    internal static let back = Strings.tr("Localization", "wish_form.back", fallback: "뒤로")
+    /// 닫기
+    internal static let close = Strings.tr("Localization", "wish_form.close", fallback: "닫기")
+    /// 확인
+    internal static let dateConfirm = Strings.tr("Localization", "wish_form.date_confirm", fallback: "확인")
+    /// yyyy년 MM월 dd일 eeee 까지
+    internal static let dateFormat = Strings.tr("Localization", "wish_form.date_format", fallback: "yyyy년 MM월 dd일 eeee 까지")
+    /// 이모지 고르기
+    internal static let emojiAccessibility = Strings.tr("Localization", "wish_form.emoji_accessibility", fallback: "이모지 고르기")
+    /// GH-64 작성·수정
+    internal static let keyboardDone = Strings.tr("Localization", "wish_form.keyboard_done", fallback: "완료")
+    /// 알림 없음
+    internal static let notificationEmpty = Strings.tr("Localization", "wish_form.notification_empty", fallback: "알림 없음")
+    /// 알림 허용을 위해선 날짜 지정이 필요해요.
+    internal static let notificationRequiresDate = Strings.tr("Localization", "wish_form.notification_requires_date", fallback: "알림 허용을 위해선 날짜 지정이 필요해요.")
+    /// %@, %@
+    internal static func notificationRowFormat(_ p1: Any, _ p2: Any) -> String {
+      return Strings.tr("Localization", "wish_form.notification_row_format", String(describing: p1), String(describing: p2), fallback: "%@, %@")
+    }
+    /// 장소 지우기
+    internal static let placeDelete = Strings.tr("Localization", "wish_form.place_delete", fallback: "장소 지우기")
+    /// 무작위 이모지
+    internal static let randomEmojiAccessibility = Strings.tr("Localization", "wish_form.random_emoji_accessibility", fallback: "무작위 이모지")
   }
   internal enum WishSearch {
     /// 제목·메모·해시태그에서 찾아봤어요

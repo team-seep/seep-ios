@@ -42,7 +42,7 @@ struct SettingsDetailLayout<Content: View>: View {
                 }
                 .padding(.horizontal, 22)
                 .padding(.bottom, 32)
-                .frame(maxWidth: WideScreenLayout.maxContentWidth, alignment: .leading)
+                .frame(maxWidth: SeepLayout.maxContentWidth, alignment: .leading)
                 .frame(maxWidth: .infinity)
             }
         }
