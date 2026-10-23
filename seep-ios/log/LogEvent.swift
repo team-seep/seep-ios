@@ -190,4 +190,8 @@ enum LogObjectId: String {
     case sealFutureLetter = "seal_future_letter"
     /// 완료 순간 열린 편지 카드 노출 (GH-61)
     case futureLetter = "future_letter"
+    /// 필터 바 "순서 바꾸기" (GH-73)
+    case reorderWishes = "reorder_wishes"
+    /// 순서 바꾸기 모드에서 위시를 옮겨 놓음 (GH-73)
+    case moveWish = "move_wish"
 }

@@ -103,6 +103,8 @@ struct LegacyRealmImporter {
                 // Realm 시절에는 편지가 없었다 (GH-61)
                 futureLetter: "",
                 futureLetterSealedAt: nil,
+                // 아래에서 카테고리별 최근 생성순으로 다시 채운다 (GH-73 R-3)
+                manualOrder: 0,
                 createdAt: dto.createdAt,
                 updatedAt: importedAt,
                 deletedAt: nil
@@ -147,6 +149,16 @@ struct LegacyRealmImporter {
             }
             if needsReschedule {
                 prepared.report.rescheduleWishIds.append(wishId)
+            }
+        }
+
+        // "내가 정한 순서"는 마이그레이션 v3 과 같은 규칙: 카테고리마다 최근 생성순 1, 2, 3 … (GH-73 R-3)
+        for category in Set(prepared.wishes.map(\.category)) {
+            let ordered = prepared.wishes.indices
+                .filter { prepared.wishes[$0].category == category }
+                .sorted { prepared.wishes[$0].createdAt > prepared.wishes[$1].createdAt }
+            for (position, index) in ordered.enumerated() {
+                prepared.wishes[index].manualOrder = Double(position + 1)
             }
         }
 

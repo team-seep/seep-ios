@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */; };
 		7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */; };
 		79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000065 /* LegacyRealmImporterTests.swift */; };
 		79C000000000000000000068 /* WishRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000067 /* WishRepositoryTests.swift */; };
@@ -238,6 +239,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOrderRepositoryTests.swift; sourceTree = "<group>"; };
 		7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureLetterRepositoryTests.swift; sourceTree = "<group>"; };
 		79C000000000000000000065 /* LegacyRealmImporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImporterTests.swift; sourceTree = "<group>"; };
 		79C000000000000000000067 /* WishRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRepositoryTests.swift; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 				A49000010000000000000060 /* WriteIntentTests.swift */,
 				A4800001000000000000001C /* WidgetCheckActionTests.swift */,
 				A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */,
+				7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */,
 				7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */,
 				79C000000000000000000065 /* LegacyRealmImporterTests.swift */,
 				79C000000000000000000067 /* WishRepositoryTests.swift */,
@@ -1108,6 +1111,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */,
 				7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */,
 				79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */,
 				79C000000000000000000068 /* WishRepositoryTests.swift in Sources */,

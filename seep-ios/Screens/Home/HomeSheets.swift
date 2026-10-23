@@ -1,17 +1,25 @@
 import SwiftUI
 
-/// 정렬 시트: 완료일 가까운순 / 최근 생성순 (높이 56 두 줄, 사이 gray2 선)
+/// 정렬 시트: 완료일 가까운순 / 최근 생성순 / 내가 정한 순서 (높이 56 세 줄, 사이 gray2 선).
+/// 고른 정렬은 seep-blue ExtraBold, 아래에 "내가 정한 순서" 안내 캡션 (GH-73 R-1)
 struct SortOrderSheet: View {
     let selected: HomeSortOrder
     let onSelect: (HomeSortOrder) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
-            row(.deadlineOrder)
-            Rectangle()
-                .fill(Color.gray2)
-                .frame(height: 1)
-            row(.latestOrder)
+            ForEach(Array(HomeSortOrder.allCases.enumerated()), id: \.element) { index, sortOrder in
+                if index > 0 {
+                    Rectangle()
+                        .fill(Color.gray2)
+                        .frame(height: 1)
+                }
+                row(sortOrder)
+            }
+            Text(Strings.Home.Filter.sortCaption)
+                .font(.appleMedium(size: 12))
+                .foregroundStyle(Color.gray4)
+                .padding(.top, 8)
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)
@@ -19,17 +27,18 @@ struct SortOrderSheet: View {
     }
 
     private func row(_ sortOrder: HomeSortOrder) -> some View {
-        Button {
+        let isSelected = sortOrder == selected
+        return Button {
             onSelect(sortOrder)
         } label: {
             Text(verbatim: sortOrder.title)
-                .font(.appleSemiBold(size: 16))
-                .foregroundStyle(Color.gray5)
+                .font(isSelected ? .appleExtraBold(size: 16) : .appleSemiBold(size: 16))
+                .foregroundStyle(isSelected ? Color.seepBlue : Color.gray5)
                 .frame(maxWidth: .infinity, minHeight: 56)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityAddTraits(sortOrder == selected ? .isSelected : [])
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

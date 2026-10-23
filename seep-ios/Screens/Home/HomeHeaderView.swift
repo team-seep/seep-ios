@@ -187,6 +187,9 @@ struct HomeFilterBar: View {
     let sortOrder: HomeSortOrder
     let viewType: ViewType
     let isPlaceMapVisible: Bool
+    /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때 (GH-73 R-4)
+    var isReorderVisible = false
+    var onTapReorder: () -> Void = {}
     let onTapSort: () -> Void
     let onTapPlaceMap: () -> Void
     let onTapSearch: () -> Void
@@ -212,6 +215,17 @@ struct HomeFilterBar: View {
 
             Spacer(minLength: 0)
 
+            if isReorderVisible {
+                Button(action: onTapReorder) {
+                    Text(Strings.Home.Reorder.button)
+                        .font(.appleExtraBold(size: 14))
+                        .foregroundStyle(Color.seepBlue)
+                        .padding(.horizontal, 8)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
             if isPlaceMapVisible {
                 iconButton(
                     image: Image(systemName: "map"),

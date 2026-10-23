@@ -10,6 +10,12 @@ extension HomeViewModel {
         case selectCategory(Category)
         case tapSortOrder
         case selectSortOrder(HomeSortOrder)
+        /// 필터 바 "순서 바꾸기" → 순서 바꾸기 모드 (GH-73 R-4)
+        case tapReorder
+        /// 순서 바꾸기 모드 "완료" (R-7)
+        case finishReorder
+        /// 순서 바꾸기 모드에서 옮길 수 있는 위시(고정 제외) 안의 이동 (R-5~R-7)
+        case moveWish(from: IndexSet, to: Int)
         case toggleViewType
         case tapWish(Wish)
         case tapFinish(Wish)
@@ -39,8 +45,10 @@ extension HomeViewModel {
 
     struct State: Equatable {
         var category: Category = .wantToDo
-        var sortOrder: HomeSortOrder = .deadlineOrder
+        var sortOrder: HomeSortOrder
         var viewType: ViewType
+        /// 순서 바꾸기 모드. 리스트 셀 + 손잡이, 탭 바·배너·잠든 위시 카드를 숨긴다 (GH-73 R-5)
+        var isReordering = false
         /// 헤드라인의 남은 개수. 첫 로드 전에는 nil
         var notFinishedCount: Int?
         var items: [HomeWishItem] = []
@@ -63,6 +71,21 @@ extension HomeViewModel {
         /// 리스트·그리드 모두 비었으면 빈 상태를 그린다
         var isEmpty: Bool {
             items.isEmpty && sleepingWishCard == nil
+        }
+
+        /// 순서 바꾸기 모드에서 맨 위에 흐리게 고정된 위시 (끌 수 없다, R-6)
+        var pinnedItems: [HomeWishItem] {
+            items.filter { $0.isPinned && !$0.wish.isSuccess }
+        }
+
+        /// 순서 바꾸기 모드에서 옮길 수 있는 위시. 방금 완료해 흐린 위시는 뺀다 (R-6)
+        var movableItems: [HomeWishItem] {
+            items.filter { !$0.isPinned && !$0.wish.isSuccess }
+        }
+
+        /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11)
+        var isReorderButtonVisible: Bool {
+            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering
         }
     }
 
@@ -170,7 +193,7 @@ final class HomeViewModel {
 
     init(dependency: Dependency = Dependency()) {
         self.dependency = dependency
-        self.state = State(viewType: dependency.preference.viewType)
+        self.state = State(sortOrder: dependency.preference.homeSortOrder, viewType: dependency.preference.viewType)
         if let router = dependency.router {
             state.category = router.homeCategory
         }
@@ -195,9 +218,18 @@ final class HomeViewModel {
             state.sheet = .sortOrder
 
         case .selectSortOrder(let sortOrder):
-            state.sortOrder = sortOrder
-            state.sheet = nil
-            fetchWishes()
+            selectSortOrder(sortOrder)
+
+        case .tapReorder:
+            guard state.isReorderButtonVisible else { return }
+            sendClickLog(objectId: .reorderWishes)
+            state.isReordering = true
+
+        case .finishReorder:
+            state.isReordering = false
+
+        case .moveWish(let source, let destination):
+            moveWish(from: source, to: destination)
 
         case .toggleViewType:
             let viewType = state.viewType.toggle()
@@ -622,6 +654,38 @@ extension HomeViewModel {
         }
         if let wish = result.finishNoteWish, state.sheet == nil {
             presentFinishNote(wish: wish)
+        }
+    }
+}
+
+// MARK: 내가 정한 순서 (GH-73)
+extension HomeViewModel {
+    private func selectSortOrder(_ sortOrder: HomeSortOrder) {
+        sendClickLog(objectId: .sortOrder, extraParameters: [.type: sortOrder.rawValue])
+        state.sortOrder = sortOrder
+        dependency.preference.homeSortOrder = sortOrder
+        state.sheet = nil
+        fetchWishes()
+    }
+
+    private func moveWish(from source: IndexSet, to destination: Int) {
+        guard state.isReordering, let sourceIndex = source.first else { return }
+        var ids = state.movableItems.map(\.id)
+        guard ids.indices.contains(sourceIndex) else { return }
+        let movedId = ids[sourceIndex]
+        ids.move(fromOffsets: source, toOffset: destination)
+        guard ids != state.movableItems.map(\.id) else { return }
+
+        switch dependency.wishRepository.moveWish(wishId: movedId, orderedIds: ids) {
+        case .success:
+            dependency.logManager.sendEvent(event: ClickEvent(
+                screen: screenName,
+                objectType: .card,
+                objectId: .moveWish
+            ))
+            fetchWishes()
+        case .failure(let error):
+            showError(error)
         }
     }
 }

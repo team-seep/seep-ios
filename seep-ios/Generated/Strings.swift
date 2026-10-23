@@ -676,6 +676,8 @@ internal enum Strings {
       internal static let placeMap = Strings.tr("Localization", "home.filter.place_map", fallback: "가고 싶은 곳 지도")
       /// 정렬 바꾸기
       internal static let sortAccessibility = Strings.tr("Localization", "home.filter.sort_accessibility", fallback: "정렬 바꾸기")
+      /// 고르면 홈에서 끌어서 순서를 바꿀 수 있어요
+      internal static let sortCaption = Strings.tr("Localization", "home.filter.sort_caption", fallback: "고르면 홈에서 끌어서 순서를 바꿀 수 있어요")
       /// 그리드로 보기
       internal static let viewTypeGrid = Strings.tr("Localization", "home.filter.view_type_grid", fallback: "그리드로 보기")
       /// 리스트로 보기
@@ -685,6 +687,8 @@ internal enum Strings {
         internal static let deadline = Strings.tr("Localization", "home.filter.sort.deadline", fallback: "완료일 가까운순")
         /// 최근 생성순
         internal static let latest = Strings.tr("Localization", "home.filter.sort.latest", fallback: "최근 생성순")
+        /// 내가 정한 순서
+        internal static let manual = Strings.tr("Localization", "home.filter.sort.manual", fallback: "내가 정한 순서")
       }
     }
     internal enum FinishNote {
@@ -737,6 +741,29 @@ internal enum Strings {
       internal static let pin = Strings.tr("Localization", "home.pin.pin", fallback: "맨 위에 고정")
       /// 고정 해제
       internal static let unpin = Strings.tr("Localization", "home.pin.unpin", fallback: "고정 해제")
+    }
+    internal enum Reorder {
+      /// 순서 바꾸기
+      internal static let button = Strings.tr("Localization", "home.reorder.button", fallback: "순서 바꾸기")
+      /// 완료
+      internal static let done = Strings.tr("Localization", "home.reorder.done", fallback: "완료")
+      /// 오른쪽 손잡이를 끌어서 옮겨요
+      internal static let guide = Strings.tr("Localization", "home.reorder.guide", fallback: "오른쪽 손잡이를 끌어서 옮겨요")
+      /// 고정한 위시는 맨 위에 있어요
+      internal static let pinnedCaption = Strings.tr("Localization", "home.reorder.pinned_caption", fallback: "고정한 위시는 맨 위에 있어요")
+      /// 순서를 바꾸고 있어요
+      internal static let titleBold = Strings.tr("Localization", "home.reorder.title_bold", fallback: "순서를 바꾸고 있어요")
+      internal enum Title {
+        /// 하고 싶은 것들의
+        /// 순서를 바꾸고 있어요
+        internal static let wantToDo = Strings.tr("Localization", "home.reorder.title.want_to_do", fallback: "하고 싶은 것들의\n순서를 바꾸고 있어요")
+        /// 갖고 싶은 것들의
+        /// 순서를 바꾸고 있어요
+        internal static let wantToGet = Strings.tr("Localization", "home.reorder.title.want_to_get", fallback: "갖고 싶은 것들의\n순서를 바꾸고 있어요")
+        /// 가고 싶은 장소의
+        /// 순서를 바꾸고 있어요
+        internal static let wantToGo = Strings.tr("Localization", "home.reorder.title.want_to_go", fallback: "가고 싶은 장소의\n순서를 바꾸고 있어요")
+      }
     }
     internal enum Search {
       /// 위시 검색

@@ -33,6 +33,8 @@ struct Wish: Equatable, Hashable {
     var futureLetter: String
     /// 편지를 봉인한 시각. 편지가 없으면 nil (GH-61)
     var futureLetterSealedAt: Date?
+    /// "내가 정한 순서" 값. 카테고리 안에서 작을수록 위다 (GH-73)
+    var manualOrder: Double
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -102,6 +104,7 @@ struct Wish: Equatable, Hashable {
         photoFileName: String = "",
         futureLetter: String = "",
         futureLetterSealedAt: Date? = nil,
+        manualOrder: Double = 0,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -125,6 +128,7 @@ struct Wish: Equatable, Hashable {
         self.photoFileName = photoFileName
         self.futureLetter = futureLetter
         self.futureLetterSealedAt = futureLetterSealedAt
+        self.manualOrder = manualOrder
         self.createdAt = createdAt
     }
 }

@@ -21,6 +21,16 @@
 "home.title_format.want_to_get" = "갖고 싶은 것들이\n%d개 남았어요!";
 "home.title_format.want_to_go" = "가고 싶은 장소가\n%d개 남았어요!";
 "home.filter.sort.latest" = "최근 생성순";
+"home.filter.sort.manual" = "내가 정한 순서";
+"home.filter.sort_caption" = "고르면 홈에서 끌어서 순서를 바꿀 수 있어요";
+"home.reorder.button" = "순서 바꾸기";
+"home.reorder.guide" = "오른쪽 손잡이를 끌어서 옮겨요";
+"home.reorder.done" = "완료";
+"home.reorder.title_bold" = "순서를 바꾸고 있어요";
+"home.reorder.title.want_to_do" = "하고 싶은 것들의\n순서를 바꾸고 있어요";
+"home.reorder.title.want_to_get" = "갖고 싶은 것들의\n순서를 바꾸고 있어요";
+"home.reorder.title.want_to_go" = "가고 싶은 장소의\n순서를 바꾸고 있어요";
+"home.reorder.pinned_caption" = "고정한 위시는 맨 위에 있어요";
 "home.filter.sort.deadline" = "완료일 가까운순";
 "home.step_progress_format" = "%d/%d";
 "home.finish_note.title_format" = "%@,\n이루고 나니 어때요?";

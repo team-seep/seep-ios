@@ -110,6 +110,21 @@ final class AppDatabase {
             }
         }
 
+        // GH-73: "내가 정한 순서". 기존 위시는 카테고리마다 최근 생성순(1, 2, 3 …)으로 채운다
+        migrator.registerMigration("v3") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "manualOrder", .double).notNull().defaults(to: 0)
+            }
+            try db.execute(sql: """
+                UPDATE wish SET manualOrder = (
+                    SELECT ranked.position FROM (
+                        SELECT id, ROW_NUMBER() OVER (PARTITION BY category ORDER BY createdAt DESC) AS position FROM wish
+                    ) AS ranked
+                    WHERE ranked.id = wish.id
+                )
+                """)
+        }
+
         return migrator
     }
 
