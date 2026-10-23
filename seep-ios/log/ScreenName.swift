@@ -17,6 +17,7 @@ extension ScreenName {
     static let home = ScreenName(rawValue: "home")
     static let sortOrderBottomSheet = ScreenName(rawValue: "sort_order_bottom_sheet")
     static let finishNoteBottomSheet = ScreenName(rawValue: "finish_note_bottom_sheet")
+    static let futureLetterBottomSheet = ScreenName(rawValue: "future_letter_bottom_sheet")
     static let write = ScreenName(rawValue: "write")
     static let wishDetail = ScreenName(rawValue: "wish_detail")
     static let wishEdit = ScreenName(rawValue: "wish_edit")

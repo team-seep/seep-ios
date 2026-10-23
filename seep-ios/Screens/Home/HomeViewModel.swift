@@ -399,7 +399,12 @@ extension HomeViewModel {
     private func presentFinishNote(wish: Wish) {
         let viewModel = FinishNoteViewModel(
             config: .init(wish: wish),
-            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+            dependency: .init(
+                wishRepository: dependency.wishRepository,
+                logManager: dependency.logManager,
+                now: dependency.now,
+                calendar: dependency.calendar
+            )
         )
         viewModel.onSave = { [weak self] savedWish in
             self?.updateWish(savedWish)

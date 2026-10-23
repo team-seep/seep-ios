@@ -35,6 +35,9 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var longitude: Double
     /// 붙인 사진 파일 이름(`Application Support/WishPhotos/` 안). 비어 있으면 사진 없음 (GH-36)
     var photoFileName: String
+    /// "미래의 나에게" 편지. 비어 있으면 편지 없음 (GH-61, 마이그레이션 v2)
+    var futureLetter: String
+    var futureLetterSealedAt: Date?
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -123,6 +126,8 @@ extension WishRecord {
         self.latitude = wish.place?.latitude ?? 0
         self.longitude = wish.place?.longitude ?? 0
         self.photoFileName = wish.photoFileName
+        self.futureLetter = wish.futureLetter
+        self.futureLetterSealedAt = wish.futureLetterSealedAt
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -222,6 +227,8 @@ extension Wish {
                 longitude: record.longitude
             ),
             photoFileName: record.photoFileName,
+            futureLetter: record.futureLetter,
+            futureLetterSealedAt: record.futureLetterSealedAt,
             createdAt: record.createdAt
         )
     }

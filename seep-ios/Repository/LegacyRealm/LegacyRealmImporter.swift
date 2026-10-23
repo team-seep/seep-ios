@@ -100,6 +100,9 @@ struct LegacyRealmImporter {
                 latitude: dto.latitude,
                 longitude: dto.longitude,
                 photoFileName: dto.photoFileName,
+                // Realm 시절에는 편지가 없었다 (GH-61)
+                futureLetter: "",
+                futureLetterSealedAt: nil,
                 createdAt: dto.createdAt,
                 updatedAt: importedAt,
                 deletedAt: nil

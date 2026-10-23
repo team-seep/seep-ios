@@ -184,4 +184,10 @@ enum LogObjectId: String {
     /// 작성·수정 문서 더하기 칩 (GH-70)
     case addBlock = "add_block"
     case discardWrite = "discard_write"
+    /// 상세 "미래의 나에게" ＋ 쓰기·다시 쓰기 (GH-61)
+    case writeFutureLetter = "write_future_letter"
+    /// 편지 시트 봉인하기 (GH-61)
+    case sealFutureLetter = "seal_future_letter"
+    /// 완료 순간 열린 편지 카드 노출 (GH-61)
+    case futureLetter = "future_letter"
 }

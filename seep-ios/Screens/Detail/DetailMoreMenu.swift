@@ -9,6 +9,8 @@ enum DetailMoreMenu {
         case addCalendar(isAdded: Bool)
         case share
         case deletePhoto
+        /// 편지가 있을 때 (GH-61 R-7)
+        case deleteLetter
         case delete
         case cancelFinish
 
@@ -20,6 +22,8 @@ enum DetailMoreMenu {
                 return Strings.detailActionSheetShare
             case .deletePhoto:
                 return Strings.Detail.Photo.delete
+            case .deleteLetter:
+                return Strings.Detail.Letter.delete
             case .delete:
                 return Strings.detailActionSheetDelete
             case .cancelFinish:
@@ -38,6 +42,7 @@ enum DetailMoreMenu {
         let isCalendarVisible: Bool
         let isCalendarAdded: Bool
         let hasPhoto: Bool
+        var hasLetter: Bool = false
     }
 
     /// 취소하기는 액션 시트의 cancel 항목이라 목록에 넣지 않는다
@@ -52,11 +57,17 @@ enum DetailMoreMenu {
             if context.hasPhoto {
                 items.append(.deletePhoto)
             }
+            if context.hasLetter {
+                items.append(.deleteLetter)
+            }
             items.append(.delete)
         case .fromFinish:
             items.append(.cancelFinish)
             if context.hasPhoto {
                 items.append(.deletePhoto)
+            }
+            if context.hasLetter {
+                items.append(.deleteLetter)
             }
             items.append(.share)
         }

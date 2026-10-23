@@ -91,6 +91,7 @@ private struct WishDetailContent: View {
         .onChange(of: viewModel.place?.route) { _, route in handlePlace(route) }
         .onChange(of: viewModel.photo?.route) { _, route in handlePhoto(route) }
         .onChange(of: pickedPhoto) { _, item in loadPickedPhoto(item) }
+        .modifier(DetailLetterRouteHandler(letter: viewModel.letter) { errorMessage = $0 })
         .confirmationDialog("", isPresented: $isMoreMenuPresented, titleVisibility: .hidden) {
             ForEach(moreMenuItems, id: \.title) { item in
                 Button(role: item.isDestructive ? .destructive : nil) {
@@ -266,6 +267,10 @@ private struct WishDetailContent: View {
                         onDelete: { place.send(.tapDelete) }
                     )
                 }
+            }
+        case .letter:
+            if let letter = viewModel.letter {
+                DetailLetterSection(viewModel: letter)
             }
         case .photo:
             if let photo = viewModel.photo {

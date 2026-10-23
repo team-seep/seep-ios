@@ -1,3 +1,4 @@
+// GH-61: 이루기 전 위시는 문서 맨 아래에 "미래의 나에게" 섹션(.letter)이 늘 있다
 import XCTest
 
 @testable import seep_ios_dev
@@ -39,7 +40,7 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.memo, .steps, .savings, .link, .photo])
+        XCTAssertEqual(sections, [.memo, .steps, .savings, .link, .photo, .letter])
     }
 
     func test_GH59_TC5_갖고싶어요도_목표금액링크가없으면_그섹션이없다() {
@@ -50,7 +51,7 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.photo])
+        XCTAssertEqual(sections, [.photo, .letter])
     }
 
     func test_GH59_TC5_가고싶어요는_장소섹션이_사진앞에나온다() {
@@ -61,7 +62,7 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.memo, .steps, .place, .photo])
+        XCTAssertEqual(sections, [.memo, .steps, .place, .photo, .letter])
     }
 
     func test_GH59_TC5_하고싶어요는_단계가없으면_사진만나온다() {
@@ -72,6 +73,6 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.photo])
+        XCTAssertEqual(sections, [.photo, .letter])
     }
 }

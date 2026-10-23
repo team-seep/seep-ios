@@ -275,7 +275,8 @@ final class WishDetailFeatureTests: ViewModelTestCase {
         XCTAssertEqual(mockRepository.fetchWishCalledIds, ["wish-1"])
         XCTAssertEqual(viewModel.state.summary?.title, "에어팟 프로 3")
         XCTAssertEqual(viewModel.state.summary?.ddayLine.text, "D-61")
-        XCTAssertEqual(viewModel.state.sections, [.memo, .photo])
+        // GH-61: 이루기 전 위시는 맨 아래 편지 섹션이 붙는다
+        XCTAssertEqual(viewModel.state.sections, [.memo, .photo, .letter])
         XCTAssertNotNil(viewModel.steps)
         XCTAssertNotNil(viewModel.photo)
     }

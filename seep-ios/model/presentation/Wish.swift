@@ -29,6 +29,10 @@ struct Wish: Equatable, Hashable {
     var place: WishPlace?
     /// 붙인 사진 파일 이름. 비어 있으면 사진 없음 (GH-36)
     var photoFileName: String
+    /// "미래의 나에게" 편지(최대 300자). 비어 있으면 편지 없음. 이루기 전에는 보여주지 않는다 (GH-61)
+    var futureLetter: String
+    /// 편지를 봉인한 시각. 편지가 없으면 nil (GH-61)
+    var futureLetterSealedAt: Date?
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -36,6 +40,11 @@ struct Wish: Equatable, Hashable {
     
     var isPinned: Bool {
         return pinnedAt != nil
+    }
+
+    /// 봉인한 편지가 있는지 (GH-61)
+    var hasFutureLetter: Bool {
+        return !futureLetter.isEmpty
     }
     
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -91,6 +100,8 @@ struct Wish: Equatable, Hashable {
         lastCheckedAt: Date? = nil,
         place: WishPlace? = nil,
         photoFileName: String = "",
+        futureLetter: String = "",
+        futureLetterSealedAt: Date? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -112,6 +123,8 @@ struct Wish: Equatable, Hashable {
         self.lastCheckedAt = lastCheckedAt
         self.place = place
         self.photoFileName = photoFileName
+        self.futureLetter = futureLetter
+        self.futureLetterSealedAt = futureLetterSealedAt
         self.createdAt = createdAt
     }
 }

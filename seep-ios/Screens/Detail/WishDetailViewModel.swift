@@ -100,6 +100,7 @@ final class WishDetailViewModel {
     private(set) var link: DetailLinkViewModel?
     private(set) var place: DetailPlaceViewModel?
     private(set) var photo: WishPhotoViewModel?
+    private(set) var letter: DetailLetterViewModel?
 
     private let config: Config
     private let dependency: Dependency
@@ -154,7 +155,8 @@ final class WishDetailViewModel {
             mode: config.mode,
             isCalendarVisible: calendar?.state.isVisible ?? false,
             isCalendarAdded: calendar?.state.isAdded ?? false,
-            hasPhoto: photo?.hasPhoto ?? false
+            hasPhoto: photo?.hasPhoto ?? false,
+            hasLetter: letter?.hasLetter ?? false
         ))
         route = .moreMenu(items)
     }
@@ -168,6 +170,8 @@ final class WishDetailViewModel {
             route = .sharePhoto(wish)
         case .deletePhoto:
             photo?.send(.tapDelete)
+        case .deleteLetter:
+            letter?.send(.tapDelete)
         case .delete:
             route = .confirmDelete
         case .cancelFinish:
@@ -299,6 +303,18 @@ final class WishDetailViewModel {
             self?.update { $0.photoFileName = fileName }
         }
         self.photo = photo
+
+        let letter = DetailLetterViewModel(
+            config: .init(wish: wish),
+            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+        )
+        letter.onUpdate = { [weak self] savedWish in
+            self?.update {
+                $0.futureLetter = savedWish.futureLetter
+                $0.futureLetterSealedAt = savedWish.futureLetterSealedAt
+            }
+        }
+        self.letter = letter
     }
 
     private func reloadSections(wish: Wish) {
@@ -308,6 +324,7 @@ final class WishDetailViewModel {
         link?.send(.reload(wish))
         place?.send(.reload(wish))
         photo?.send(.reload(wish))
+        letter?.send(.reload(wish))
     }
 
     private func sendClickLog(objectId: LogObjectId) {

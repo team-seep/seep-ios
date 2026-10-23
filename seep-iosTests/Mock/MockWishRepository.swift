@@ -149,4 +149,28 @@ final class MockWishRepository: WishRepository {
         wish.finishNote = ""
         return .success(wish)
     }
+
+    /// nil 이면 호출된 위시 id·편지로 봉인된 위시를 성공으로 돌려준다 (GH-61)
+    var sealFutureLetterResult: Result<Wish, RepositoryError>?
+    private(set) var sealFutureLetterCalls: [(wishId: String, letter: String)] = []
+    var deleteFutureLetterResult: Result<Wish, RepositoryError>?
+    private(set) var deleteFutureLetterCalledIds: [String] = []
+
+    func sealFutureLetter(wishId: String, letter: String) -> Result<Wish, RepositoryError> {
+        sealFutureLetterCalls.append((wishId, letter))
+        if let sealFutureLetterResult { return sealFutureLetterResult }
+        var wish = fetchWishResult.first { $0.id == wishId } ?? Wish(id: wishId)
+        wish.futureLetter = letter
+        wish.futureLetterSealedAt = Date()
+        return .success(wish)
+    }
+
+    func deleteFutureLetter(wishId: String) -> Result<Wish, RepositoryError> {
+        deleteFutureLetterCalledIds.append(wishId)
+        if let deleteFutureLetterResult { return deleteFutureLetterResult }
+        var wish = fetchWishResult.first { $0.id == wishId } ?? Wish(id: wishId)
+        wish.futureLetter = ""
+        wish.futureLetterSealedAt = nil
+        return .success(wish)
+    }
 }

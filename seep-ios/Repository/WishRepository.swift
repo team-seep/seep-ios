@@ -56,6 +56,12 @@ protocol WishRepository {
     
     /// 완료를 취소하고(완료일·소감도 지운다), 반영된 위시를 돌려준다. 상세 ⋯ "완료 취소하기" (GH-64 TC-605, GH-25 R-6)
     func cancelFinish(wishId: String) -> Result<Wish, RepositoryError>
+
+    /// "미래의 나에게" 편지를 봉인한다. 이미 있으면 새 내용·새 봉인 시각으로 덮어쓴다 (GH-61 R-4)
+    func sealFutureLetter(wishId: String, letter: String) -> Result<Wish, RepositoryError>
+
+    /// 편지를 지운다. 상세 ⋯ "편지 지우기" (GH-61 R-7)
+    func deleteFutureLetter(wishId: String) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -192,6 +198,21 @@ final class WishRepositoryImpl: WishRepository {
             record.finishDate = nil
             // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
             record.finishNote = ""
+        }
+    }
+
+    func sealFutureLetter(wishId: String, letter: String) -> Result<Wish, RepositoryError> {
+        let sealedAt = now()
+        return updateAndFetch(wishId: wishId) { record in
+            record.futureLetter = letter
+            record.futureLetterSealedAt = sealedAt
+        }
+    }
+
+    func deleteFutureLetter(wishId: String) -> Result<Wish, RepositoryError> {
+        return updateAndFetch(wishId: wishId) { record in
+            record.futureLetter = ""
+            record.futureLetterSealedAt = nil
         }
     }
 

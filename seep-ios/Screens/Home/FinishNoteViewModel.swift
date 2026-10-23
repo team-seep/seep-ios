@@ -9,7 +9,18 @@ extension FinishNoteViewModel {
         case tapSkip
     }
 
+    /// 완료 순간 열리는 "미래의 나에게" 편지 (GH-61 R-5)
+    struct OpenedLetter: Equatable {
+        /// "{n}일 전의 내가\n편지를 보냈어요" (n = 완료일 - 봉인일, 0이면 "오늘의 내가")
+        let headline: String
+        /// "{이모지} {제목} · {M월 d일}에 씀"
+        let caption: String
+        let body: String
+    }
+
     struct State: Equatable {
+        /// 편지가 있으면 시트 위쪽에 연다. 없으면 지금 소감 시트 그대로 (R-5, TC-8)
+        var openedLetter: OpenedLetter?
         /// 입력 칸에 보일 문자열 (최대 길이로 자른 값)
         var noteText = ""
         var countText = Strings.Home.FinishNote.countFormat(0, FinishNoteViewModel.maxLength)
@@ -28,13 +39,19 @@ extension FinishNoteViewModel {
     struct Dependency {
         let wishRepository: WishRepository
         let logManager: LogManagerProtocol
+        let now: () -> Date
+        let calendar: Calendar
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
-            logManager: LogManagerProtocol = LogManager.shared
+            logManager: LogManagerProtocol = LogManager.shared,
+            now: @escaping () -> Date = Date.init,
+            calendar: Calendar = .current
         ) {
             self.wishRepository = wishRepository
             self.logManager = logManager
+            self.now = now
+            self.calendar = calendar
         }
     }
 }
@@ -57,6 +74,7 @@ final class FinishNoteViewModel {
     init(config: Config, dependency: Dependency = Dependency()) {
         self.wish = config.wish
         self.dependency = dependency
+        state.openedLetter = Self.openedLetter(wish: config.wish, now: dependency.now(), calendar: dependency.calendar)
     }
 
     func send(_ action: Action) {
@@ -67,6 +85,13 @@ final class FinishNoteViewModel {
                 objectType: .card,
                 objectId: .finishNoteSheet
             ))
+            if state.openedLetter != nil {
+                dependency.logManager.sendEvent(event: ImpressionEvent(
+                    screen: screenName,
+                    objectType: .card,
+                    objectId: .futureLetter
+                ))
+            }
         case .inputNote(let text):
             apply(note: text)
         case .tapSave:
@@ -104,6 +129,24 @@ final class FinishNoteViewModel {
             objectType: .button,
             objectId: objectId
         ))
+    }
+
+    private static func openedLetter(wish: Wish, now: Date, calendar: Calendar) -> OpenedLetter? {
+        guard wish.hasFutureLetter, let sealedAt = wish.futureLetterSealedAt else { return nil }
+        let finishedAt = wish.finishDate ?? now
+        let days = calendar.dateComponents(
+            [.day],
+            from: calendar.startOfDay(for: sealedAt),
+            to: calendar.startOfDay(for: finishedAt)
+        ).day ?? 0
+        let headline = days > 0
+            ? Strings.Home.FinishNote.letterTitleFormat(days)
+            : Strings.Home.FinishNote.letterTitleToday
+        let caption = Strings.Home.FinishNote.letterCardFormat(
+            "\(wish.emoji) \(wish.title)".trimmingCharacters(in: .whitespaces),
+            DateUtils.toString(format: "M월 d일", date: sealedAt)
+        )
+        return OpenedLetter(headline: headline, caption: caption, body: wish.futureLetter)
     }
 
     private static func trimmed(_ note: String) -> String {
