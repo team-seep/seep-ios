@@ -19,7 +19,6 @@ struct WishSearchScreen: View {
 
 private enum WishSearchLayout {
     static let horizontalInset: CGFloat = 20
-    static let searchFieldHeight: CGFloat = 48
     /// 입력하는 대로 찾되 글자마다 조회하지 않도록 0.3초 멈추면 찾는다 (GH-32 R-3)
     static let debounce: Duration = .milliseconds(300)
 }
@@ -28,14 +27,12 @@ private struct WishSearchContentView: View {
     let viewModel: WishSearchViewModel
 
     @Environment(AppRouter.self) private var router
-    @Environment(\.dismiss) private var dismiss
     @FocusState private var isFieldFocused: Bool
     @State private var keyword = ""
     @State private var didFocusOnce = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            searchBar
             resultCount
             ZStack(alignment: .top) {
                 resultList
@@ -49,6 +46,17 @@ private struct WishSearchContentView: View {
         .frame(maxWidth: SeepLayout.maxContentWidth)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.gray2.ignoresSafeArea())
+        // 검색 칸은 시스템 내비게이션 바 아래 항상 펼쳐 둔다
+        .navigationTitle(Strings.WishSearch.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .searchable(
+            text: $keyword,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: Text(Strings.WishSearch.placeholder)
+        )
+        .searchFocused($isFieldFocused)
+        .onSubmit(of: .search) { isFieldFocused = false }
+        .autocorrectionDisabled()
         .trackScreen(viewModel.screenName)
         .onAppear {
             viewModel.send(.onAppear)
@@ -66,62 +74,6 @@ private struct WishSearchContentView: View {
         .onChange(of: viewModel.route) { _, route in
             handle(route)
         }
-    }
-
-    private var searchBar: some View {
-        HStack(spacing: 4) {
-            Button {
-                dismiss()
-            } label: {
-                Assets.Icons.icChevronBack.swiftUIImage
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.gray5)
-                    .frame(width: 44, height: 44)
-            }
-            .buttonStyle(.plain)
-            .padding(.leading, 8)
-
-            HStack(spacing: 8) {
-                Image(systemName: "magnifyingglass")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .foregroundStyle(Color.gray4)
-                    .accessibilityHidden(true)
-                TextField(
-                    "",
-                    text: $keyword,
-                    prompt: Text(Strings.WishSearch.placeholder)
-                        .font(.appleMedium(size: 16))
-                        .foregroundStyle(Color.gray3)
-                )
-                .font(.appleMedium(size: 16))
-                .foregroundStyle(Color.gray5)
-                .tint(.seepBlue)
-                .submitLabel(.search)
-                .autocorrectionDisabled()
-                .focused($isFieldFocused)
-                .onSubmit { isFieldFocused = false }
-                if !keyword.isEmpty {
-                    Button {
-                        keyword = ""
-                        isFieldFocused = true
-                    } label: {
-                        Assets.Icons.icClose.swiftUIImage
-                            .renderingMode(.template)
-                            .foregroundStyle(Color.gray3)
-                            .frame(width: 40, height: 40)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.leading, 14)
-            .padding(.trailing, 4)
-            .frame(height: WishSearchLayout.searchFieldHeight)
-            .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
-            .padding(.trailing, WishSearchLayout.horizontalInset)
-        }
-        .padding(.top, 8)
     }
 
     @ViewBuilder

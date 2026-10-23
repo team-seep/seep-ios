@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// 설정 탭 루트 (GH-64 R-24 ~ R-29).
-/// 큰 제목 "설정" 아래 그룹 목록(gray2 바탕 위 흰 카드·라운드 12·줄 최소 52, 그룹 제목 14 gray4)
+/// 시스템 내비게이션 바 큰 제목 "설정" 아래 그룹 목록(gray2 바탕 위 흰 카드·라운드 12·줄 최소 52, 그룹 제목 14 gray4)
 struct SettingsTabRootView: View {
     @Environment(AppRouter.self) private var router
     @Environment(ToastCenter.self) private var toastCenter
@@ -15,13 +15,6 @@ struct SettingsTabRootView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text(Strings.Settings.title)
-                    .font(.appleBold(size: 22))
-                    .foregroundStyle(Color.gray5)
-                    .accessibilityAddTraits(.isHeader)
-                    .padding(.top, 24)
-                    .padding(.horizontal, 2)
-
                 ForEach(viewModel.state.groups) { group in
                     Text(verbatim: group.title)
                         .font(.appleMedium(size: 14))
@@ -57,6 +50,8 @@ struct SettingsTabRootView: View {
             .frame(maxWidth: .infinity)
         }
         .background(Color.gray2)
+        .navigationTitle(Strings.Settings.title)
+        .navigationBarTitleDisplayMode(.large)
         .onAppear { viewModel.send(.onAppear) }
         .onChange(of: scenePhase) { _, phase in
             // 아이폰 설정에서 알림 권한을 바꾸고 돌아오면 다시 읽는다 (R-25)

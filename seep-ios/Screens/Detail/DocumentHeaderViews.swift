@@ -95,49 +95,18 @@ struct DocumentBody: View {
     }
 }
 
-/// 상세 상단 바 (GH-59 R-8): 뒤로 · [축소 제목 + 작은 D-day] · "수정" · ⋯.
-/// 스크롤해 큰 제목이 지나가면 가운데에 제목(말줄임)과 D-day(ExtraBold 13, 색만, 잘리지 않음)를 보이고 아래 1pt 선을 긋는다
-struct DetailNavigationBar: View {
+/// 상세 상단 바 (GH-59 R-8): 시스템 내비게이션 바에 [축소 제목 + 작은 D-day] · "수정" · ⋯ 를 얹는다. 뒤로 버튼은 시스템 것을 쓴다.
+/// 스크롤해 큰 제목이 지나가면 가운데에 제목(말줄임)과 D-day(ExtraBold 13, 색만, 잘리지 않음)를 보인다
+struct DetailToolbar: ToolbarContent {
     let title: String
     let dday: WishDetailSummary.DdayLine?
     let isTitleCollapsed: Bool
     let isEditVisible: Bool
-    let onBack: () -> Void
     let onEdit: () -> Void
     let onMore: () -> Void
 
-    var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                Button(action: onBack) {
-                    Assets.Icons.icChevronBack.swiftUIImage
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(Text(Strings.Detail.Nav.back))
-                Spacer(minLength: 0)
-                if isEditVisible {
-                    Button(action: onEdit) {
-                        Text(Strings.Detail.Nav.edit)
-                            .font(.appleExtraBold(size: 14))
-                            .foregroundStyle(Color.seepBlue)
-                            .padding(.horizontal, 6)
-                            .frame(minWidth: 44, minHeight: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                }
-                Button(action: onMore) {
-                    Assets.Icons.icMore.swiftUIImage
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(Text(Strings.Detail.Nav.more))
-            }
-            .padding(.horizontal, 10)
-
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
             HStack(spacing: 6) {
                 Text(verbatim: title)
                     .font(.appleSemiBold(size: 16))
@@ -151,20 +120,28 @@ struct DetailNavigationBar: View {
                         .fixedSize()
                 }
             }
-            .padding(.horizontal, 110)
             .opacity(isTitleCollapsed ? 1 : 0)
+            .animation(.easeInOut(duration: 0.2), value: isTitleCollapsed)
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
             .accessibilityHidden(!isTitleCollapsed)
         }
-        .frame(height: 44)
-        .background(Color.gray1)
-        .overlay(alignment: .bottom) {
-            Rectangle()
-                .fill(Color.gray2_5)
-                .frame(height: 1)
-                .opacity(isTitleCollapsed ? 1 : 0)
+        if isEditVisible {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: onEdit) {
+                    Text(Strings.Detail.Nav.edit)
+                        .font(.appleExtraBold(size: 14))
+                        .foregroundStyle(Color.seepBlue)
+                }
+            }
         }
-        .animation(.easeInOut(duration: 0.2), value: isTitleCollapsed)
+        ToolbarItem(placement: .topBarTrailing) {
+            Button(action: onMore) {
+                Assets.Icons.icMore.swiftUIImage
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.gray5)
+            }
+            .accessibilityLabel(Text(Strings.Detail.Nav.more))
+        }
     }
 }

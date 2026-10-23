@@ -15,7 +15,6 @@ struct YearReviewScreen: View {
     var body: some View {
         NavigationStack {
             YearReviewContentView(viewModel: viewModel)
-                .toolbarVisibility(.hidden, for: .navigationBar)
         }
     }
 }
@@ -32,21 +31,6 @@ private struct YearReviewContentView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Spacer()
-                Button {
-                    viewModel.send(.tapClose)
-                } label: {
-                    Assets.Icons.icClose.swiftUIImage
-                        .renderingMode(.template)
-                        .foregroundStyle(Color.gray5)
-                        .frame(width: 44, height: 44)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(Text(Strings.YearReview.close))
-                .padding(.trailing, 8)
-            }
-
             ScrollView {
                 VStack(spacing: 8) {
                     if let summary = viewModel.state.summary {
@@ -77,10 +61,22 @@ private struct YearReviewContentView: View {
                 .padding(.bottom, 24)
         }
         .background(Color.gray2.ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    viewModel.send(.tapClose)
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundStyle(Color.gray5)
+                }
+                .accessibilityLabel(Text(Strings.YearReview.close))
+            }
+        }
         .trackScreen(viewModel.screenName)
         .navigationDestination(isPresented: $showsList) {
             YearReviewListScreen(year: viewModel.year)
-                .toolbarVisibility(.hidden, for: .navigationBar)
+                .seepPushedScreen()
         }
         .onAppear { viewModel.send(.onAppear) }
         .onChange(of: viewModel.state.summary) { _, _ in renderShareImage() }

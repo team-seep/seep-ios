@@ -5,26 +5,23 @@ import MapKit
 /// 싶 탭(가고 싶어요)에서 `.placeMap`으로 쌓는다
 struct PlaceMapScreen: View {
     private enum Layout {
-        static let headerHeight: CGFloat = 50
         static let horizontalInset: CGFloat = 20
     }
 
     @Environment(AppRouter.self) private var router
-    @Environment(\.dismiss) private var dismiss
     @State private var viewModel = PlaceMapScreenViewModel()
     @State private var position: MapCameraPosition = .automatic
     /// 이미 맞춘 영역 요청. 같은 요청으로 다시 옮기지 않는다
     @State private var appliedFitId: Int?
 
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            ZStack {
-                map
-                overlays
-            }
+        ZStack {
+            map
+            overlays
         }
         .background(Color.gray1)
+        .navigationTitle(Strings.PlaceMap.title)
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear { viewModel.send(.onAppear) }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.state.cameraFit, initial: true) { _, fit in
@@ -35,27 +32,6 @@ struct PlaceMapScreen: View {
         .onChange(of: viewModel.route) { _, route in
             handle(route)
         }
-    }
-
-    private var header: some View {
-        ZStack {
-            Text(Strings.PlaceMap.title)
-                .font(.appleBold(size: 17))
-                .foregroundStyle(Color.gray5)
-            HStack {
-                Button {
-                    dismiss()
-                } label: {
-                    Assets.Icons.icChevronBack.swiftUIImage
-                        .frame(width: 44, height: 44)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(Text(Strings.PlaceMap.back))
-                Spacer()
-            }
-            .padding(.leading, 10)
-        }
-        .frame(height: Layout.headerHeight)
     }
 
     private var map: some View {

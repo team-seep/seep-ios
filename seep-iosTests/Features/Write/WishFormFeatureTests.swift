@@ -530,24 +530,7 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
     }
 
     // MARK: GH-10 TC7 (ToastManagerTests 에서 옮김 — 레거시 WriteView 대신 SwiftUI 폼)
-
-    func test_GH10_TC7_작성화면_닫기버튼이_safeArea안에있고_44pt이상이다() {
-        // Given: SwiftUI 폼의 상단 버튼은 safe area 안의 상단 바에 놓인다(ignoresSafeArea 없음)
-        // When
-        let size = WishFormScreen.topButtonSize
-
-        // Then
-        XCTAssertGreaterThanOrEqual(size, 44)
-    }
-
-    func test_GH10_TC7_수정화면_뒤로버튼이_safeArea안에있고_44pt이상이다() {
-        // Given: 수정 폼도 같은 상단 바(뒤로 버튼)를 쓴다
-        // When
-        let size = WishFormScreen.topButtonSize
-
-        // Then
-        XCTAssertGreaterThanOrEqual(size, 44)
-    }
+    // 작성·수정 폼의 닫기·뒤로 버튼은 시스템 내비게이션 바 버튼이라 위치·터치 영역을 시스템이 정한다 (GH-64 P4)
 
     func test_GH10_TC7_알림화면_뒤로·삭제버튼과_목록이_safeArea안에있다() {
         // Given: 알림 화면은 시트(NotificationEditorSheet)로 바뀌어 뒤로 버튼 없이 삭제 버튼만 남았다

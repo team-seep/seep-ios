@@ -20,21 +20,10 @@ struct YearReviewListScreen: View {
 private struct YearReviewListContentView: View {
     let viewModel: YearReviewListViewModel
 
-    @Environment(\.dismiss) private var dismiss
     @State private var pushed: AppDestination?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Button {
-                dismiss()
-            } label: {
-                Assets.Icons.icBack.swiftUIImage
-                    .frame(width: 44, height: 44)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(Text(Strings.YearReview.List.back))
-            .padding(.leading, 8)
-
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     headline
@@ -78,10 +67,12 @@ private struct YearReviewListContentView: View {
             .scrollIndicators(.hidden)
         }
         .background(Color.gray2.ignoresSafeArea())
+        // 제목은 본문 헤드라인이 맡고, 바에는 시스템 뒤로 버튼만 둔다
+        .navigationBarTitleDisplayMode(.inline)
         .trackScreen(viewModel.screenName)
         .navigationDestination(item: $pushed) { destination in
             DestinationView(destination: destination)
-                .toolbarVisibility(.hidden, for: .navigationBar)
+                .seepPushedScreen()
         }
         .onAppear { viewModel.send(.onAppear) }
         .onChange(of: viewModel.route) { _, route in
