@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A74A1C0E2EA9000100A74002 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A74A1C0E2EA9000100A74001 /* AppIcon.icon */; };
 		46A000000000000000000002 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000001 /* AuthenticationManager.swift */; };
 		46A000000000000000000004 /* AppLockPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000003 /* AppLockPolicy.swift */; };
 		46A000000000000000000010 /* AppLockPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A00000000000000000000F /* AppLockPolicyTests.swift */; };
@@ -222,6 +223,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A74A1C0E2EA9000100A74001 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		46A000000000000000000001 /* AuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		9FF7DB6B3BAB72B61E20AA34 /* DetailSectionBuilderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DetailSectionBuilderTests.swift; sourceTree = "<group>"; };
 		8310853235401634516BD25C /* WishDetailSummaryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishDetailSummaryTests.swift; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 		6E274E6325F20E20007DC880 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A74A1C0E2EA9000100A74001 /* AppIcon.icon */,
 				6E283B0125F2047A00955B57 /* Assets.xcassets */,
 				6E6D19842CCDDC24008A460C /* Images.xcassets */,
 				6E6D19822CCDDBFA008A460C /* Icons.xcassets */,
@@ -1017,6 +1020,7 @@
 				6E600149260831F1000065C8 /* GoogleService-Info-Prod.plist in Resources */,
 				6E274E6825F20E3F007DC880 /* Localization.strings in Resources */,
 				6E283B0225F2047A00955B57 /* Assets.xcassets in Resources */,
+				A74A1C0E2EA9000100A74002 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
