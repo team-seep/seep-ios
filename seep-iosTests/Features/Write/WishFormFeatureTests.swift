@@ -27,7 +27,8 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
 
         // Then
         XCTAssertEqual(viewModel.state.titleError, Strings.writeErrorTitleEmpty)
-        XCTAssertEqual(viewModel.state.deadlineError, Strings.writeErrorDateEmpty)
+        // GH-70 R-7: 날짜는 기본으로 없어 날짜 안내는 뜨지 않는다
+        XCTAssertNil(viewModel.state.deadlineError)
         XCTAssertTrue(wishRepository.addedWishes.isEmpty)
         XCTAssertNil(viewModel.route)
     }
@@ -88,6 +89,7 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         let picked = Date(timeIntervalSince1970: 1_798_000_000)
 
         // When
+        viewModel.send(.tapChip(.date))
         viewModel.send(.inputDeadline(picked))
         viewModel.send(.tapSave)
 
@@ -97,6 +99,7 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         // When — 날짜를 끄고 다시 저장
         let second = makeViewModel(mode: .add(.wantToDo))
         second.send(.inputTitle("서핑 배우기"))
+        second.send(.tapChip(.date))
         second.send(.inputDeadline(picked))
         second.send(.toggleDeadline(false))
         second.send(.tapSave)
@@ -124,6 +127,9 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         // Given
         let viewModel = makeViewModel(mode: .add(.wantToDo))
         viewModel.send(.inputTitle("서핑 배우기"))
+        // GH-70: 날짜·알림은 칩으로 꺼낸다
+        viewModel.send(.tapChip(.date))
+        viewModel.send(.tapChip(.notification))
         viewModel.send(.inputDeadline(now.addingTimeInterval(86_400 * 10)))
         XCTAssertEqual(viewModel.state.notifications.count, 1, "기본 알림 하나로 시작한다")
         viewModel.send(.saveNotification(SeepNotification(type: .dayAgo), index: nil))
@@ -156,6 +162,9 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
     func test_GH64_TC405_알림줄을누르면_그알림을고칠시트가뜬다() {
         // Given
         let viewModel = makeViewModel(mode: .add(.wantToDo))
+        // GH-70: 날짜·알림은 칩으로 꺼낸다
+        viewModel.send(.tapChip(.date))
+        viewModel.send(.tapChip(.notification))
 
         // When
         viewModel.send(.tapNotification(index: 0))
@@ -507,6 +516,9 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         let time = Calendar.current.date(from: components) ?? now
         let viewModel = makeViewModel(mode: .add(.wantToDo))
         viewModel.send(.inputTitle("서핑 배우기"))
+        // GH-70: 날짜·알림은 칩으로 꺼낸다
+        viewModel.send(.tapChip(.date))
+        viewModel.send(.tapChip(.notification))
         viewModel.send(.inputDeadline(now.addingTimeInterval(86_400 * 10)))
         let editor = NotificationEditorViewModel(config: NotificationEditorConfig(
             notifications: viewModel.state.notifications,

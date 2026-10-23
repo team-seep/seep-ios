@@ -28,18 +28,23 @@ struct WishDetailSummary: Equatable {
     let memo: String?
 
     init(wish: Wish, now: Date = Date(), calendar: Calendar = .current) {
-        let style = DdayStyle(endDate: wish.endDate, now: now, calendar: calendar)
         self.emoji = wish.emoji
         self.title = wish.title
-        self.ddayLine = DdayLine(
-            text: style.text,
-            tone: style.tone,
-            isWord: style.isWord,
-            dateText: Self.dateText(style: style, endDate: wish.endDate, calendar: calendar)
-        )
+        self.ddayLine = Self.ddayLine(endDate: wish.endDate, now: now, calendar: calendar)
         self.metaItems = Self.metaItems(wish: wish, calendar: calendar)
         let memo = wish.memo.trimmingCharacters(in: .whitespacesAndNewlines)
         self.memo = memo.isEmpty ? nil : wish.memo
+    }
+
+    /// D-day 줄. 작성·수정 문서 머리도 같은 줄을 쓴다 (GH-70 R-2)
+    static func ddayLine(endDate: Date?, now: Date = Date(), calendar: Calendar = .current) -> DdayLine {
+        let style = DdayStyle(endDate: endDate, now: now, calendar: calendar)
+        return DdayLine(
+            text: style.text,
+            tone: style.tone,
+            isWord: style.isWord,
+            dateText: dateText(style: style, endDate: endDate, calendar: calendar)
+        )
     }
 
     /// 스크롤해 제목이 지나가면 상단 바 제목 옆에 붙일 작은 D-day. 일정없음·먼훗날은 붙이지 않는다 (R-8)

@@ -50,7 +50,8 @@ private struct WishDetailContent: View {
     @State private var isMoreMenuPresented = false
     @State private var isDeleteAlertPresented = false
     @State private var isCancelFinishAlertPresented = false
-    @State private var editMode: WishFormMode?
+    /// 수정 중이면 문서가 제자리에서 편집 상태로 바뀐다 (GH-70 R-14)
+    @State private var editingViewModel: WishFormViewModel?
     @State private var sharingWish: SharingWish?
     @State private var errorMessage: String?
     @State private var savingInput: SavingInputViewModel?
@@ -62,36 +63,24 @@ private struct WishDetailContent: View {
     @State private var pickedPhoto: PhotosPickerItem?
 
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                if let summary = viewModel.state.summary {
-                    document(summary: summary)
-                        // 넓은 화면(듀오 안쪽)은 600pt 기둥 (GH-12)
-                        .frame(maxWidth: SeepLayout.maxContentWidth)
-                        .frame(maxWidth: .infinity)
+        ZStack {
+            if let editingViewModel {
+                WishDocumentEditor(viewModel: editingViewModel) { savedWish in
+                    withAnimation(.easeInOut(duration: 0.2)) { self.editingViewModel = nil }
+                    if let savedWish {
+                        viewModel.send(.editFinished(savedWish))
+                    }
                 }
-            }
-            .scrollIndicators(.hidden)
-            .onScrollGeometryChange(for: CGFloat.self) { geometry in
-                geometry.contentOffset.y + geometry.contentInsets.top
-            } action: { _, offset in
-                // 큰 제목이 상단 바 아래로 지나가면 바 가운데에 제목·작은 D-day를 보인다 (R-8)
-                let collapsed = titleBottom > 0 && offset >= titleBottom
-                if collapsed != isTitleCollapsed { isTitleCollapsed = collapsed }
+                .transition(.opacity)
+            } else {
+                readingDocument
+                    .transition(.opacity)
             }
         }
         .background(Color.gray1)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            DetailToolbar(
-                title: viewModel.state.summary?.title ?? "",
-                dday: viewModel.state.summary?.navigationDday,
-                isTitleCollapsed: isTitleCollapsed,
-                isEditVisible: viewModel.isEditVisible,
-                onEdit: { viewModel.send(.tapEdit) },
-                onMore: { viewModel.send(.tapMore) }
-            )
-        }
+        // 편집 중에는 뒤로 버튼·밀어서 뒤로 가기를 막는다 (GH-70 R-14)
+        .navigationBarBackButtonHidden(editingViewModel != nil)
         .onAppear { viewModel.send(.onAppear) }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in handle(route) }
@@ -163,16 +152,38 @@ private struct WishDetailContent: View {
             }
         }
         .photosPicker(isPresented: $isPhotoPickerPresented, selection: $pickedPhoto, matching: .images)
-        .seepFullScreenCover(item: $editMode) { mode in
-            WishFormScreen(mode: mode) { savedWish in
-                editMode = nil
-                if let savedWish {
-                    viewModel.send(.editFinished(savedWish))
-                }
-            }
-        }
         .seepFullScreenCover(item: $sharingWish) { sharing in
             SharePhotoScreen(wish: sharing.wish)
+        }
+    }
+
+    /// 읽기 상태 문서. 장소·사진·모은 돈은 여기서만 고친다 (GH-70 R-16)
+    private var readingDocument: some View {
+        ScrollView {
+            if let summary = viewModel.state.summary {
+                document(summary: summary)
+                    // 넓은 화면(듀오 안쪽)은 600pt 기둥 (GH-12)
+                    .frame(maxWidth: SeepLayout.maxContentWidth)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .scrollIndicators(.hidden)
+        .onScrollGeometryChange(for: CGFloat.self) { geometry in
+            geometry.contentOffset.y + geometry.contentInsets.top
+        } action: { _, offset in
+            // 큰 제목이 상단 바 아래로 지나가면 바 가운데에 제목·작은 D-day를 보인다 (R-8)
+            let collapsed = titleBottom > 0 && offset >= titleBottom
+            if collapsed != isTitleCollapsed { isTitleCollapsed = collapsed }
+        }
+        .toolbar {
+            DetailToolbar(
+                title: viewModel.state.summary?.title ?? "",
+                dday: viewModel.state.summary?.navigationDday,
+                isTitleCollapsed: isTitleCollapsed,
+                isEditVisible: viewModel.isEditVisible,
+                onEdit: { viewModel.send(.tapEdit) },
+                onMore: { viewModel.send(.tapMore) }
+            )
         }
     }
 
@@ -275,7 +286,9 @@ private struct WishDetailContent: View {
         guard let route else { return }
         switch route {
         case .edit(let wish):
-            editMode = .edit(wish)
+            withAnimation(.easeInOut(duration: 0.2)) {
+                editingViewModel = WishFormViewModel(config: .init(mode: .edit(wish)))
+            }
         case .moreMenu(let items):
             moreMenuItems = items
             isMoreMenuPresented = true
