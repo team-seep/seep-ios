@@ -5,8 +5,15 @@ extension View {
     func seepDestinations() -> some View {
         navigationDestination(for: AppDestination.self) { destination in
             DestinationView(destination: destination)
-                .toolbarVisibility(.hidden, for: .navigationBar)
+                .seepPushedScreen()
         }
+    }
+
+    /// 쌓인 화면 공통: 시스템 내비게이션 바(뒤로 버튼·밀어서 뒤로 가기)를 쓰고 탭 바는 숨긴다.
+    /// 뒤로 버튼에 앞 화면 제목을 붙이지 않는다
+    func seepPushedScreen() -> some View {
+        toolbarVisibility(.hidden, for: .tabBar)
+            .toolbarRole(.editor)
     }
 }
 

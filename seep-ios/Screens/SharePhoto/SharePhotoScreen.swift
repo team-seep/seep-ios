@@ -6,7 +6,9 @@ struct SharePhotoScreen: View {
     let wish: Wish
 
     var body: some View {
-        SharePhotoContent(wish: wish, library: PhotoLibrary())
+        NavigationStack {
+            SharePhotoContent(wish: wish, library: PhotoLibrary())
+        }
     }
 }
 
@@ -36,7 +38,6 @@ struct SharePhotoContent: View {
             let listBottomInset = SharePhotoLayout.shareButtonArea(bottomSafeArea: 0)
 
             VStack(spacing: 0) {
-                header
                 card(side: cardSide)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity)
@@ -70,6 +71,18 @@ struct SharePhotoContent: View {
             }
         }
         .background(Color.gray1)
+        .navigationTitle(Strings.sharePhotoTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text(Strings.sharePhotoDismiss)
+                        .foregroundStyle(Color.gray5)
+                }
+            }
+        }
         .trackScreen(viewModel.screenName)
         .onAppear { viewModel.send(.onAppear) }
         .task(id: viewModel.state.selectedPhotoId) {
@@ -87,40 +100,6 @@ struct SharePhotoContent: View {
     }
 
     // MARK: Subviews
-
-    private var header: some View {
-        VStack(spacing: 12) {
-            Capsule()
-                .fill(Color.gray3)
-                .frame(width: 48, height: 4)
-                .padding(.top, 9)
-            ZStack {
-                Text(Strings.sharePhotoTitle)
-                    .font(.appleLight(size: 20))
-                    .foregroundStyle(Color.gray5)
-                HStack {
-                    Spacer()
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text(Strings.sharePhotoDismiss)
-                            .font(.appleRegular(size: 14))
-                            .foregroundStyle(Color.gray4)
-                            .frame(minWidth: 44, minHeight: 44)
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.trailing, 12)
-                }
-            }
-            .frame(height: 24)
-        }
-        .overlay(alignment: .bottom) {
-            Rectangle()
-                .fill(Color.gray2)
-                .frame(height: 1)
-                .offset(y: 10)
-        }
-    }
 
     private func card(side: CGFloat) -> some View {
         ShareCardView(state: viewModel.state, side: side, photo: photo)

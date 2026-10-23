@@ -8,40 +8,43 @@ struct MainTabView: View {
     var body: some View {
         @Bindable var router = router
 
-        TabView(selection: $router.selectedTab) {
-            Tab(value: MainTab.wish) {
+        // 시스템 탭 바를 써서 iOS 26 이상에서는 리퀴드 글래스로 그린다. 화면을 쌓으면 탭 바가 숨는다 (`seepDestinations`)
+        TabView(selection: tabSelection) {
+            Tab(value: MainTabItem.wish) {
                 NavigationStack(path: $router.wishPath) {
                     WishTabRootView()
                         .seepDestinations()
                 }
-                .toolbarVisibility(.hidden, for: .tabBar)
+            } label: {
+                Label(Strings.MainTab.wish, systemImage: "list.bullet.rectangle")
             }
-            Tab(value: MainTab.finished) {
+            Tab(value: MainTabItem.finished) {
                 NavigationStack(path: $router.finishedPath) {
                     FinishedTabRootView()
                         .seepDestinations()
                 }
-                .toolbarVisibility(.hidden, for: .tabBar)
+            } label: {
+                Label(Strings.MainTab.finished, systemImage: "checkmark.circle")
             }
-            Tab(value: MainTab.settings) {
+            .badge(router.showsFinishedDot ? Text(verbatim: "") : nil)
+            .accessibilityValue(router.showsFinishedDot ? Text(Strings.MainTab.finishedDotAccessibility) : Text(verbatim: ""))
+            // 적기는 화면이 없다. 고르면 `tabSelection`이 탭을 바꾸지 않고 시트를 띄운다 (R-6)
+            Tab(value: MainTabItem.write) {
+                Color.gray2
+            } label: {
+                Label(Strings.MainTab.write, systemImage: "plus.circle.fill")
+            }
+            Tab(value: MainTabItem.settings) {
                 NavigationStack(path: $router.settingsPath) {
                     SettingsTabRootView()
                         .seepDestinations()
                 }
-                .toolbarVisibility(.hidden, for: .tabBar)
+            } label: {
+                Label(Strings.MainTab.settings, systemImage: "gearshape")
             }
         }
-        // 시스템 탭 바로는 적기(초록 원·선택 안 됨)를 그릴 수 없어 직접 그린 탭 바를 쓴다 (R-2)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            if router.path(for: router.selectedTab).isEmpty, let viewModel {
-                MainTabBar(
-                    selectedTab: router.selectedTab,
-                    showsFinishedDot: router.showsFinishedDot,
-                    onTap: { viewModel.send(.tapTab($0)) }
-                )
-                .transition(.move(edge: .bottom))
-            }
-        }
+        .tint(Color.seepBlue)
+        .sensoryFeedback(.selection, trigger: router.selectedTab)
         .seepSheet(isPresented: writeSheetBinding) {
             if let viewModel {
                 WriteCategorySheet(
@@ -66,6 +69,20 @@ struct MainTabView: View {
                 viewModel = MainTabViewModel(dependency: .init(router: router))
             }
         }
+    }
+
+    /// 탭 선택은 모두 뷰모델을 거친다 — 같은 탭을 다시 누르면 맨 위로·루트로, 적기는 시트 (R-3, R-6)
+    private var tabSelection: Binding<MainTabItem> {
+        Binding(
+            get: {
+                switch router.selectedTab {
+                case .wish: return .wish
+                case .finished: return .finished
+                case .settings: return .settings
+                }
+            },
+            set: { item in viewModel?.send(.tapTab(item)) }
+        )
     }
 
     private var writeSheetBinding: Binding<Bool> {

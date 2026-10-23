@@ -29,9 +29,6 @@ enum WishFormField: Hashable {
 /// 위시 작성·수정 화면 (TC-401~409, 501~504).
 /// `onFinish`는 저장한 위시(닫기면 nil)를 넘기고, 화면 닫기는 띄운 쪽이 한다
 struct WishFormScreen: View {
-    /// 닫기·뒤로 버튼 터치 영역. 아이콘(24pt)은 그대로 두고 44pt 로 넓힌다 (GH-10 TC7)
-    static let topButtonSize: CGFloat = 44
-
     let mode: WishFormMode
     let onFinish: (Wish?) -> Void
 
@@ -62,8 +59,13 @@ struct WishFormScreen: View {
     private var state: WishFormViewModel.State { viewModel.state }
 
     var body: some View {
+        NavigationStack {
+            form
+        }
+    }
+
+    private var form: some View {
         VStack(spacing: 0) {
-            topBar
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     if !isEditMode {
@@ -160,7 +162,9 @@ struct WishFormScreen: View {
             .onTapGesture { focus = nil }
         }
         .background(Color.gray1)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            topBarItem
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 Button {
@@ -198,32 +202,30 @@ struct WishFormScreen: View {
 
     // MARK: 상단
 
-    private var topBar: some View {
-        HStack {
-            if isEditMode {
+    /// 작성은 오른쪽 닫기, 수정은 왼쪽 뒤로. 시스템 내비게이션 바에 얹는다
+    @ToolbarContentBuilder
+    private var topBarItem: some ToolbarContent {
+        if isEditMode {
+            ToolbarItem(placement: .topBarLeading) {
                 Button {
                     viewModel.send(.tapClose)
                 } label: {
-                    Assets.Icons.icChevronBack.swiftUIImage
-                        .frame(width: Self.topButtonSize, height: Self.topButtonSize)
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(Color.gray5)
                 }
-                .buttonStyle(.plain)
                 .accessibilityLabel(Text(Strings.WishForm.back))
-                Spacer()
-            } else {
-                Spacer()
+            }
+        } else {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     viewModel.send(.tapClose)
                 } label: {
-                    Assets.Icons.icClose.swiftUIImage
-                        .frame(width: Self.topButtonSize, height: Self.topButtonSize)
+                    Image(systemName: "xmark")
+                        .foregroundStyle(Color.gray5)
                 }
-                .buttonStyle(.plain)
                 .accessibilityLabel(Text(Strings.WishForm.close))
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.top, 3)
     }
 
     // MARK: 칸

@@ -9,44 +9,25 @@ struct GuideSection: Identifiable {
     var id: String { title }
 }
 
-/// 설정에서 push 하는 화면 공통 틀. 뒤로 버튼 + 큰 제목 + 내용 (탭 바는 숨는다)
+/// 설정에서 push 하는 화면 공통 틀. 시스템 내비게이션 바의 큰 제목 + 내용 (탭 바는 숨는다)
 struct SettingsDetailLayout<Content: View>: View {
     let title: String
     let screenName: ScreenName
     @ViewBuilder let content: () -> Content
 
-    @Environment(\.dismiss) private var dismiss
-
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(Color.gray5)
-                    .frame(width: 44, height: 44)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                content()
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel(Text(Strings.Settings.back))
-            .padding(.leading, 8)
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(verbatim: title)
-                        .font(.appleBold(size: 22))
-                        .foregroundStyle(Color.gray5)
-                        .accessibilityAddTraits(.isHeader)
-                        .padding(.top, 8)
-                    content()
-                }
-                .padding(.horizontal, 22)
-                .padding(.bottom, 32)
-                .frame(maxWidth: SeepLayout.maxContentWidth, alignment: .leading)
-                .frame(maxWidth: .infinity)
-            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 32)
+            .frame(maxWidth: SeepLayout.maxContentWidth, alignment: .leading)
+            .frame(maxWidth: .infinity)
         }
         .background(Color.gray2)
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.large)
         .trackScreen(screenName)
     }
 }

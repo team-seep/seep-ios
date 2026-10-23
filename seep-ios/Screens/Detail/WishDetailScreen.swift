@@ -63,15 +63,6 @@ private struct WishDetailContent: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DetailNavigationBar(
-                title: viewModel.state.summary?.title ?? "",
-                dday: viewModel.state.summary?.navigationDday,
-                isTitleCollapsed: isTitleCollapsed,
-                isEditVisible: viewModel.isEditVisible,
-                onBack: { dismiss() },
-                onEdit: { viewModel.send(.tapEdit) },
-                onMore: { viewModel.send(.tapMore) }
-            )
             ScrollView {
                 if let summary = viewModel.state.summary {
                     document(summary: summary)
@@ -90,7 +81,17 @@ private struct WishDetailContent: View {
             }
         }
         .background(Color.gray1)
-        .toolbarVisibility(.hidden, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            DetailToolbar(
+                title: viewModel.state.summary?.title ?? "",
+                dday: viewModel.state.summary?.navigationDday,
+                isTitleCollapsed: isTitleCollapsed,
+                isEditVisible: viewModel.isEditVisible,
+                onEdit: { viewModel.send(.tapEdit) },
+                onMore: { viewModel.send(.tapMore) }
+            )
+        }
         .onAppear { viewModel.send(.onAppear) }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in handle(route) }

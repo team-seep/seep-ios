@@ -11,8 +11,8 @@ enum SharePhotoLayout {
     static let shareButtonHeight: CGFloat = 50
     static let shareButtonBottomOffset: CGFloat = 24
     static let shareButtonTopSpacing: CGFloat = 12
-    /// 인디케이터(위 9 + 4) + 제목(위 12 + 높이 24) + 카드 위 10
-    static let headerHeight: CGFloat = 59
+    /// 카드 위 여백 10. 제목·닫기는 시스템 내비게이션 바라 컨테이너 크기에 들어가지 않는다 (GH-64 P4)
+    static let headerHeight: CGFloat = 10
     static let switchHeight: CGFloat = 42
 
     /// 공유 버튼이 가리는 아래 영역. 사진·이모지 목록 아래 여백으로 쓴다

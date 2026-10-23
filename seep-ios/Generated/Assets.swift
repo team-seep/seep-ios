@@ -29,11 +29,9 @@ internal enum Assets {
   }
   internal enum Icons {
     internal static let icArrowRight = ImageAsset(name: "ic_arrow_right")
-    internal static let icBack = ImageAsset(name: "ic_back")
     internal static let icCalendar = ImageAsset(name: "ic_calendar")
     internal static let icCheckOff = ImageAsset(name: "ic_check_off")
     internal static let icCheckOn = ImageAsset(name: "ic_check_on")
-    internal static let icChevronBack = ImageAsset(name: "ic_chevron_back")
     internal static let icChevronDown = ImageAsset(name: "ic_chevron_down")
     internal static let icClose = ImageAsset(name: "ic_close")
     internal static let icGrid = ImageAsset(name: "ic_grid")

@@ -47,6 +47,8 @@ struct FinishedTabRootView: View {
             }
         }
         .background(Color.gray2)
+        // 루트는 헤드라인이 제목이라 내비게이션 바를 두지 않는다
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .onAppear { viewModel.send(.onAppear) }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in

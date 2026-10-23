@@ -66,6 +66,7 @@
 "home.search.accessibility" = "위시 검색";
 
 // WishSearch (GH-32)
+"wish_search.title" = "검색";
 "wish_search.placeholder" = "제목·메모·해시태그로 찾기";
 "wish_search.result_count_format" = "위시 %d개를 찾았어요";
 "wish_search.result_count_highlight_format" = "%d개";
@@ -93,7 +94,6 @@
 "year_review.list.headline_format" = "%@년에 이룬 싶\n%d개 모두 모아봤어요";
 "year_review.list.headline_bold_format" = "%d개 모두 모아봤어요";
 "year_review.list.month_format" = "%d월";
-"year_review.list.back" = "뒤로";
 "home.badge_link_format" = "배지 %d/%d 모아보기";
 
 // Badge (GH-35)
@@ -116,7 +116,6 @@
 "badge.collection.title_highlight_format" = "%d개";
 "badge.collection.title_bold" = "를 모았어요!";
 "badge.collection.description" = "위시를 이룰 때마다 하나씩 열려요";
-"badge.collection.back" = "뒤로";
 "badge.celebration.title_format" = "위시를 %d개나 이뤘어요!\n새 배지를 받았어요";
 "badge.celebration.title_bold" = "새 배지를 받았어요";
 "badge.celebration.card_description_format" = "%@ · %@";
@@ -247,7 +246,6 @@
 "detail.dday.until_format" = "%@까지";
 "detail.dday.past_format" = "%@이었어요";
 "detail.meta.notification_more_format" = "%@ 외 %d개";
-"detail.nav.back" = "뒤로";
 "detail.nav.edit" = "수정";
 "detail.nav.more" = "더보기";
 "detail.section.step_count_format" = "%d/%d";
@@ -259,7 +257,6 @@
 "place_map.title" = "가고 싶은 곳 지도";
 "place_map.count_format" = "장소를 붙인 곳 %d곳";
 "place_map.empty" = "아직 장소를 붙인 곳이 없어요.";
-"place_map.back" = "뒤로";
 "place_map.card_subtitle_format" = "%@ · %@";
 "home.filter.place_map" = "가고 싶은 곳 지도";
 "detail_random_info" = "Random으로 이모지를\n골라드립니다!";
@@ -408,7 +405,6 @@
 "settings.contact.subject" = "[싶 문의]";
 "settings.contact.body_format" = "\n\n\n---\n앱 버전: %@\niOS 버전: %@\n기기: %@";
 "settings.contact.unavailable_format" = "메일 앱을 열 수 없어요. %@ 로 보내주세요";
-"settings.back" = "뒤로";
 "widget_guide.title" = "위젯 추가하는 법";
 "widget_guide.home.title" = "홈 화면 위젯";
 "widget_guide.home.description" = "바로 적기 · 남은 싶 · 바로 체크하기 위젯을 홈 화면에 둘 수 있어요.";

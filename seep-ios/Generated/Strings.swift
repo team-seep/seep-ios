@@ -370,8 +370,6 @@ internal enum Strings {
       internal static let viewBadges = Strings.tr("Localization", "badge.celebration.view_badges", fallback: "배지 모아보기")
     }
     internal enum Collection {
-      /// 뒤로
-      internal static let back = Strings.tr("Localization", "badge.collection.back", fallback: "뒤로")
       /// 위시를 이룰 때마다 하나씩 열려요
       internal static let description = Strings.tr("Localization", "badge.collection.description", fallback: "위시를 이룰 때마다 하나씩 열려요")
       /// 를 모았어요!
@@ -536,8 +534,6 @@ internal enum Strings {
       }
     }
     internal enum Nav {
-      /// 뒤로
-      internal static let back = Strings.tr("Localization", "detail.nav.back", fallback: "뒤로")
       /// 수정
       internal static let edit = Strings.tr("Localization", "detail.nav.edit", fallback: "수정")
       /// 더보기
@@ -995,8 +991,6 @@ internal enum Strings {
     internal static let duplicate = Strings.tr("Localization", "notification_editor.duplicate", fallback: "🔕 이미 설정된 알림입니다.")
   }
   internal enum PlaceMap {
-    /// 뒤로
-    internal static let back = Strings.tr("Localization", "place_map.back", fallback: "뒤로")
     /// %@ · %@
     internal static func cardSubtitleFormat(_ p1: Any, _ p2: Any) -> String {
       return Strings.tr("Localization", "place_map.card_subtitle_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@")
@@ -1011,8 +1005,6 @@ internal enum Strings {
     internal static let title = Strings.tr("Localization", "place_map.title", fallback: "가고 싶은 곳 지도")
   }
   internal enum Settings {
-    /// 뒤로
-    internal static let back = Strings.tr("Localization", "settings.back", fallback: "뒤로")
     /// 문의하기
     internal static let contact = Strings.tr("Localization", "settings.contact", fallback: "문의하기")
     /// 제어 센터 · 단축어로 적기
@@ -1181,6 +1173,8 @@ internal enum Strings {
     internal static func resultCountHighlightFormat(_ p1: Int) -> String {
       return Strings.tr("Localization", "wish_search.result_count_highlight_format", p1, fallback: "%d개")
     }
+    /// 검색
+    internal static let title = Strings.tr("Localization", "wish_search.title", fallback: "검색")
   }
   internal enum Write {
     internal enum Link {
@@ -1252,8 +1246,6 @@ internal enum Strings {
       internal static let title = Strings.tr("Localization", "year_review.busiest_month.title", fallback: "가장 많이 이룬 달")
     }
     internal enum List {
-      /// 뒤로
-      internal static let back = Strings.tr("Localization", "year_review.list.back", fallback: "뒤로")
       /// %d개 모두 모아봤어요
       internal static func headlineBoldFormat(_ p1: Int) -> String {
         return Strings.tr("Localization", "year_review.list.headline_bold_format", p1, fallback: "%d개 모두 모아봤어요")

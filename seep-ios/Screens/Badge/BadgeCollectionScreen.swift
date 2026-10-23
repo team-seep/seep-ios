@@ -3,29 +3,17 @@ import SwiftUI
 /// 배지 모아보기 (GH-35 R-5, GH-64 TC-801). 싶 탭의 배지 축하 시트·이룬 싶 탭 배지 카드에서 push 된다
 struct BadgeCollectionScreen: View {
     @State private var viewModel = BadgeCollectionViewModel()
-    @Environment(\.dismiss) private var dismiss
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 10, alignment: .top), count: 3)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Button {
-                dismiss()
-            } label: {
-                Assets.Icons.icChevronBack.swiftUIImage
-                    .frame(width: 44, height: 44)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(Text(Strings.Badge.Collection.back))
-            .padding(.leading, 10)
-            .padding(.top, 4)
-
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     titleText
                         .lineSpacing(9)
                         .padding(.horizontal, 22)
-                        .padding(.top, 14)
+                        .padding(.top, 4)
                     Text(Strings.Badge.Collection.description)
                         .font(.appleRegular(size: 14))
                         .foregroundStyle(Color.gray4)
@@ -46,6 +34,8 @@ struct BadgeCollectionScreen: View {
             .scrollIndicators(.hidden)
         }
         .background(Color.gray2.ignoresSafeArea())
+        // 제목은 본문 헤드라인이 맡고, 바에는 시스템 뒤로 버튼만 둔다
+        .navigationBarTitleDisplayMode(.inline)
         .trackScreen(viewModel.screenName)
         .onAppear { viewModel.send(.onAppear) }
     }
