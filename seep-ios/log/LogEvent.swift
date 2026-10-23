@@ -181,4 +181,7 @@ enum LogObjectId: String {
     case license = "license"
     case detailEdit = "detail_edit"
     case detailMore = "detail_more"
+    /// 작성·수정 문서 더하기 칩 (GH-70)
+    case addBlock = "add_block"
+    case discardWrite = "discard_write"
 }

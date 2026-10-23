@@ -23,4 +23,6 @@ extension ParameterName {
     static let badgeId = ParameterName(rawValue: "badge_id")
     /// 설정 탭 잠금 줄을 눌렀을 때 잠금이 켜져 있었는지 (GH-64)
     static let enabled = ParameterName(rawValue: "enabled")
+    /// 더하기 칩으로 꺼낸 칸 (GH-70)
+    static let block = ParameterName(rawValue: "block")
 }

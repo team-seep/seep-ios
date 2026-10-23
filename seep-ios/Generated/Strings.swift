@@ -1124,6 +1124,64 @@ internal enum Strings {
       internal static let title = Strings.tr("Localization", "widget_guide.lock.title", fallback: "잠금화면 위젯")
     }
   }
+  internal enum WishDocument {
+    /// 취소
+    internal static let cancel = Strings.tr("Localization", "wish_document.cancel", fallback: "취소")
+    /// 카테고리 바꾸기
+    internal static let categoryMenu = Strings.tr("Localization", "wish_document.category_menu", fallback: "카테고리 바꾸기")
+    /// 날짜 없애기
+    internal static let dateRemove = Strings.tr("Localization", "wish_document.date_remove", fallback: "날짜 없애기")
+    /// 완료
+    internal static let done = Strings.tr("Localization", "wish_document.done", fallback: "완료")
+    /// ＃태그
+    internal static let hashtagEmpty = Strings.tr("Localization", "wish_document.hashtag_empty", fallback: "＃태그")
+    /// https://
+    internal static let linkPlaceholder = Strings.tr("Localization", "wish_document.link_placeholder", fallback: "https://")
+    /// 필요한 정보가 또 있나요?
+    internal static let memoPlaceholder = Strings.tr("Localization", "wish_document.memo_placeholder", fallback: "필요한 정보가 또 있나요?")
+    /// 길게 누르면 무작위로 골라요
+    internal static let randomTooltip = Strings.tr("Localization", "wish_document.random_tooltip", fallback: "길게 누르면 무작위로 골라요")
+    /// 지우기
+    internal static let remove = Strings.tr("Localization", "wish_document.remove", fallback: "지우기")
+    /// 저장
+    internal static let save = Strings.tr("Localization", "wish_document.save", fallback: "저장")
+    /// ＋ 추가
+    internal static let stepAdd = Strings.tr("Localization", "wish_document.step_add", fallback: "＋ 추가")
+    internal enum Chip {
+      /// 날짜
+      internal static let date = Strings.tr("Localization", "wish_document.chip.date", fallback: "날짜")
+      /// 링크
+      internal static let link = Strings.tr("Localization", "wish_document.chip.link", fallback: "링크")
+      /// 메모
+      internal static let memo = Strings.tr("Localization", "wish_document.chip.memo", fallback: "메모")
+      /// 알림
+      internal static let notification = Strings.tr("Localization", "wish_document.chip.notification", fallback: "알림")
+      /// 장소
+      internal static let place = Strings.tr("Localization", "wish_document.chip.place", fallback: "장소")
+      /// 단계
+      internal static let steps = Strings.tr("Localization", "wish_document.chip.steps", fallback: "단계")
+      /// 목표 금액
+      internal static let targetAmount = Strings.tr("Localization", "wish_document.chip.target_amount", fallback: "목표 금액")
+    }
+    internal enum Discard {
+      /// 적던 내용을 버릴까요?
+      internal static let addTitle = Strings.tr("Localization", "wish_document.discard.add_title", fallback: "적던 내용을 버릴까요?")
+      /// 버리기
+      internal static let confirm = Strings.tr("Localization", "wish_document.discard.confirm", fallback: "버리기")
+      /// 고친 내용을 버릴까요?
+      internal static let editTitle = Strings.tr("Localization", "wish_document.discard.edit_title", fallback: "고친 내용을 버릴까요?")
+      /// 계속 쓰기
+      internal static let keep = Strings.tr("Localization", "wish_document.discard.keep", fallback: "계속 쓰기")
+    }
+    internal enum HashtagSheet {
+      /// 태그
+      internal static let title = Strings.tr("Localization", "wish_document.hashtag_sheet.title", fallback: "태그")
+    }
+    internal enum Section {
+      /// 알림
+      internal static let notification = Strings.tr("Localization", "wish_document.section.notification", fallback: "알림")
+    }
+  }
   internal enum WishForm {
     /// 뒤로
     internal static let back = Strings.tr("Localization", "wish_form.back", fallback: "뒤로")

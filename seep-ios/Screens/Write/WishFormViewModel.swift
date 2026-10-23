@@ -1,164 +1,10 @@
 import Foundation
 import Observation
 
-/// 링크 칸 아래 미리보기 (GH-29 R-3)
-enum WishFormLinkPreview: Equatable {
-    case hidden
-    case loading(domain: String)
-    case loaded(LinkPreview)
-    /// 미리보기를 못 불러왔다. 링크는 그대로 저장할 수 있다
-    case failed(domain: String)
-}
-
-/// 작성·수정 완료 버튼 모양. 작성은 initial/active, 수정은 more/active (레거시 `WriteButton`·`EditButton`)
-enum WishFormSaveButtonState: Equatable {
-    case initial
-    case more
-    case active
-}
-
-/// 폼이 띄우는 시트
-enum WishFormSheet: Identifiable, Equatable {
-    case emoji
-    case date
-    case notification(NotificationEditorConfig)
-    case placeSearch
-
-    var id: String {
-        switch self {
-        case .emoji: return "emoji"
-        case .date: return "date"
-        case .notification(let config): return "notification-\(config.selectedIndex.map(String.init) ?? "new")"
-        case .placeSearch: return "placeSearch"
-        }
-    }
-}
-
-extension WishFormViewModel {
-    enum Action: Equatable {
-        case onAppear
-        case hideTooltip
-        case tapEmoji
-        case selectEmoji(String)
-        case tapRandomEmoji
-        case selectCategory(Category)
-        case inputTitle(String)
-        case tapDate
-        case inputDeadline(Date)
-        case toggleDeadline(Bool)
-        case toggleNotification(Bool)
-        case tapAddNotification
-        case tapNotification(index: Int)
-        case saveNotification(SeepNotification, index: Int?)
-        case deleteNotification(index: Int)
-        case inputMemo(String)
-        case tapAddStep
-        case addStep(String)
-        case deleteStep(index: Int)
-        case inputTargetAmount(String)
-        case inputLink(String)
-        case pasteLink(String)
-        case tapPlace
-        case selectPlace(WishPlace)
-        case deletePlace
-        case selectHashtag(HashtagType)
-        case inputCustomHashtag(String)
-        case tapSave
-        case tapClose
-        case dismissSheet
-        case routeHandled
-    }
-
-    enum Route: Equatable {
-        case toast(String)
-        case addStepAlert
-        /// 저장한 위시(닫기면 nil)를 띄운 쪽에 넘긴다. 화면 닫기는 띄운 쪽이 한다
-        case finish(Wish?)
-    }
-
-    struct State: Equatable {
-        var isTooltipVisible = false
-        var emoji = ""
-        var category: Category
-        var title = ""
-        var titleError: String?
-        var deadline: Date?
-        var deadlineError: String?
-        var isDeadlineEnabled = true
-        var notifications: [SeepNotification] = [SeepNotification()]
-        var isNotificationEnabled = true
-        var memo = ""
-        var memoError: String?
-        var steps: [WishStep] = []
-        /// 목표 금액(원). 갖고 싶어요일 때만 저장한다 (GH-16 R-1)
-        var targetAmount = 0
-        var linkText = ""
-        var link: WishLinkInput = .empty
-        var linkError: String?
-        var linkPreview: WishFormLinkPreview = .hidden
-        /// 붙인 장소. 작성의 가고 싶어요에서만 고르고 저장한다 (GH-31 R-1)
-        var place: WishPlace?
-        var selectedHashtag: HashtagType?
-        var customHashtag = ""
-        var customHashtagError: String?
-        var saveButtonState: WishFormSaveButtonState
-        var sheet: WishFormSheet?
-
-        var isLinkVisible: Bool { category == .wantToGet }
-        var isTargetAmountVisible: Bool { category == .wantToGet }
-        var titlePlaceholder: String {
-            switch category {
-            case .wantToDo: return Strings.writePlaceholderTitleCategoryWantToDo
-            case .wantToGet: return Strings.writePlaceholderTitleCategoryWantToGet
-            case .wantToGo: return Strings.writePlaceholderTitleCategoryWantToGo
-            }
-        }
-        var isAddStepEnabled: Bool { steps.count < WishStep.maxCount }
-    }
-
-    struct Config {
-        let mode: WishFormMode
-    }
-
-    struct Dependency {
-        let wishRepository: WishRepository
-        let notificationManager: NotificationManagerProtocol
-        let logManager: LogManagerProtocol
-        let userDefaults: UserDefaultsUtils
-        let linkMetadataProvider: LinkMetadataProviding
-        let linkPreviewCache: LinkPreviewCaching
-        /// 링크 입력이 멈추고 이만큼 지나면 미리보기를 불러온다. nil 이면 바로 (테스트)
-        let linkPreviewDelay: Duration?
-        let randomEmoji: () -> String
-        let now: () -> Date
-
-        init(
-            wishRepository: WishRepository = WishRepositoryImpl(),
-            notificationManager: NotificationManagerProtocol = NotificationManager.shared,
-            logManager: LogManagerProtocol = LogManager.shared,
-            userDefaults: UserDefaultsUtils = UserDefaultsUtils(),
-            linkMetadataProvider: LinkMetadataProviding = LinkMetadataProvider(),
-            linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared,
-            linkPreviewDelay: Duration? = .milliseconds(500),
-            randomEmoji: @escaping () -> String = EmojiCatalog.randomEmoji,
-            now: @escaping () -> Date = Date.init
-        ) {
-            self.wishRepository = wishRepository
-            self.notificationManager = notificationManager
-            self.logManager = logManager
-            self.userDefaults = userDefaults
-            self.linkMetadataProvider = linkMetadataProvider
-            self.linkPreviewCache = linkPreviewCache
-            self.linkPreviewDelay = linkPreviewDelay
-            self.randomEmoji = randomEmoji
-            self.now = now
-        }
-    }
-}
-
-/// 위시 작성·수정 폼 (GH-64 P2). 레거시 `WriteReactor`·`WishEditReactor`와 단계·링크·장소 섹션 ViewModel 의
+/// 위시 작성·수정 문서 (GH-64 P2, GH-70). 레거시 `WriteReactor`·`WishEditReactor`와 단계·링크·장소 섹션 ViewModel 의
 /// 작성·수정 동작을 하나로 옮겼다. 저장 규칙(카테고리별로 버리는 값, 고정 해제 등)은 레거시와 같다
 @Observable
+// swiftlint:disable:next type_body_length - 작성·수정 문서 하나의 입력·검증·저장 규칙을 한 곳에 둔다(블록·링크·단계가 서로 상태를 공유)
 final class WishFormViewModel {
     static let titleMaxLength = 18
     static let memoMaxLength = 300
@@ -172,6 +18,8 @@ final class WishFormViewModel {
     private let dependency: Dependency
     private var hasSentLinkPreviewImpression = false
     private var linkPreviewTask: Task<Void, Never>?
+    /// 열었을 때의 입력값. 닫을 때 바뀐 게 있는지 본다 (GH-70 R-18)
+    private var initialDraft: WishFormDraft?
 
     init(config: Config, dependency: Dependency = Dependency()) {
         self.config = config
@@ -179,7 +27,13 @@ final class WishFormViewModel {
         switch config.mode {
         case .add(let category):
             screenName = .write
-            state = State(category: category, saveButtonState: .initial)
+            // 날짜·알림은 칩으로 꺼낼 때만 켠다 (GH-70 R-7)
+            state = State(
+                category: category,
+                isDeadlineEnabled: false,
+                isNotificationEnabled: false,
+                saveButtonState: .initial
+            )
         case .edit(let wish):
             screenName = .wishEdit
             let hashtag = HashtagType(rawValue: wish.hashtag)
@@ -202,7 +56,15 @@ final class WishFormViewModel {
                 saveButtonState: .active
             )
             state.saveButtonState = validatedButtonState()
+            // 값이 있는 블록만 펼친 채 시작한다 (GH-70 R-15)
+            var revealed: Set<WishDocumentBlock> = []
+            if !wish.memo.isEmpty { revealed.insert(.memo) }
+            if !wish.steps.isEmpty { revealed.insert(.steps) }
+            if !wish.link.isEmpty { revealed.insert(.link) }
+            if wish.targetAmount > 0 { revealed.insert(.targetAmount) }
+            state.revealedBlocks = revealed
         }
+        initialDraft = draft
     }
 
     private var isEditMode: Bool {
@@ -213,6 +75,44 @@ final class WishFormViewModel {
     /// 장소는 작성 화면에서만 고른다. 수정 화면은 상세에서 바꾼다 (GH-31 R-10)
     var isPlaceVisible: Bool {
         !isEditMode && state.category == .wantToGo
+    }
+
+    var isEditing: Bool { isEditMode }
+
+    // MARK: 문서 블록 (GH-70)
+
+    /// 지금 카테고리·날짜에서 쓸 수 있는 칸인지 (R-6, R-8)
+    func isAvailable(_ block: WishDocumentBlock) -> Bool {
+        switch block {
+        case .date, .memo, .steps: return true
+        case .notification: return state.isDeadlineEnabled && state.deadline != nil
+        case .link, .targetAmount: return state.category == .wantToGet
+        case .place: return isPlaceVisible
+        }
+    }
+
+    func isRevealed(_ block: WishDocumentBlock) -> Bool {
+        switch block {
+        case .date: return state.isDeadlineEnabled
+        case .notification: return state.isNotificationEnabled
+        case .place: return state.place != nil
+        case .memo, .steps, .link, .targetAmount: return state.revealedBlocks.contains(block)
+        }
+    }
+
+    /// 문서에 보이는 블록, 놓는 순서대로 (R-5)
+    var visibleBlocks: [WishDocumentBlock] {
+        WishDocumentBlock.documentOrder.filter { isAvailable($0) && isRevealed($0) }
+    }
+
+    /// 하단 더하기 칩. 아직 안 꺼냈고 쓸 수 있는 칸만 (R-6)
+    var chips: [WishDocumentBlock] {
+        WishDocumentBlock.allCases.filter { isAvailable($0) && !isRevealed($0) }
+    }
+
+    /// 열었을 때와 입력이 달라졌는지 (R-18)
+    var hasChanges: Bool {
+        draft != initialDraft
     }
 
     func send(_ action: Action) {
@@ -234,7 +134,8 @@ final class WishFormViewModel {
         case .inputTitle(let title):
             inputTitle(title)
         case .tapDate:
-            guard state.isDeadlineEnabled else { return }
+            // 날짜가 꺼져 있으면 켜면서 연다 (GH-70 R-6 날짜 칩과 같음)
+            state.isDeadlineEnabled = true
             if state.deadline == nil {
                 state.deadline = dependency.now().endOfDay
             }
@@ -308,13 +209,105 @@ final class WishFormViewModel {
         case .tapSave:
             save()
         case .tapClose:
+            guard !hasChanges else {
+                route = .confirmDiscard
+                return
+            }
+            linkPreviewTask?.cancel()
+            route = .finish(nil)
+        case .confirmDiscard:
+            sendClickLog(objectType: .button, objectId: .discardWrite)
             linkPreviewTask?.cancel()
             route = .finish(nil)
         case .dismissSheet:
             state.sheet = nil
         case .routeHandled:
             route = nil
+        case .tapChip(let block):
+            tapChip(block)
+        case .removeBlock(let block):
+            removeBlock(block)
+        case .tapHashtag:
+            state.sheet = .hashtag
         }
+    }
+
+    // MARK: 블록 (GH-70)
+
+    private func tapChip(_ block: WishDocumentBlock) {
+        guard isAvailable(block) else { return }
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: screenName,
+            objectType: .button,
+            objectId: .addBlock,
+            extraParameters: [.block: block.rawValue]
+        ))
+        switch block {
+        case .date:
+            send(.tapDate)
+        case .notification:
+            state.isNotificationEnabled = true
+            if state.notifications.isEmpty {
+                state.notifications = [SeepNotification()]
+            }
+        case .memo:
+            state.revealedBlocks.insert(.memo)
+            route = .focus(.memo)
+        case .link:
+            state.revealedBlocks.insert(.link)
+            route = .focus(.link)
+        case .targetAmount:
+            state.revealedBlocks.insert(.targetAmount)
+            route = .focus(.targetAmount)
+        case .steps:
+            state.revealedBlocks.insert(.steps)
+            send(.tapAddStep)
+        case .place:
+            send(.tapPlace)
+        }
+    }
+
+    private func removeBlock(_ block: WishDocumentBlock) {
+        switch block {
+        case .date:
+            // 알림은 날짜가 있어야 한다 — 같이 끈다 (R-7)
+            state.isDeadlineEnabled = false
+            state.deadline = nil
+            state.deadlineError = nil
+            state.isNotificationEnabled = false
+            state.sheet = nil
+        case .notification:
+            state.isNotificationEnabled = false
+            state.notifications = [SeepNotification()]
+        case .memo:
+            state.memo = ""
+            state.memoError = nil
+        case .steps:
+            state.steps = []
+        case .link:
+            updateLink(text: "")
+        case .targetAmount:
+            state.targetAmount = 0
+        case .place:
+            state.place = nil
+        }
+        state.revealedBlocks.remove(block)
+    }
+
+    private var draft: WishFormDraft {
+        WishFormDraft(
+            emoji: state.emoji,
+            category: state.category,
+            title: state.title,
+            deadline: state.isDeadlineEnabled ? state.deadline : nil,
+            notifications: state.isNotificationEnabled ? state.notifications : [],
+            memo: state.memo,
+            steps: state.steps,
+            targetAmount: state.targetAmount,
+            linkText: state.linkText,
+            place: state.place,
+            hashtag: hashtag
+        )
     }
 
     // MARK: 입력
@@ -569,4 +562,19 @@ final class WishFormViewModel {
             objectId: objectId
         ))
     }
+}
+
+/// 버리기 확인에 쓰는 입력값 묶음
+struct WishFormDraft: Equatable {
+    let emoji: String
+    let category: Category
+    let title: String
+    let deadline: Date?
+    let notifications: [SeepNotification]
+    let memo: String
+    let steps: [WishStep]
+    let targetAmount: Int
+    let linkText: String
+    let place: WishPlace?
+    let hashtag: String
 }

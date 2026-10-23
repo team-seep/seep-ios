@@ -41,8 +41,10 @@ final class WishFormLegacyFeatureTests: WishFormFeatureTestCase {
         viewModel.send(.addStep("항공권 예약"))
         viewModel.send(.addStep("숙소 예약"))
 
-        // When
+        // When: 입력이 있으면 버릴지 묻고, 버리면 닫힌다 (GH-70 R-18)
         viewModel.send(.tapClose)
+        XCTAssertEqual(viewModel.route, .confirmDiscard)
+        viewModel.send(.confirmDiscard)
 
         // Then
         XCTAssertTrue(wishRepository.addedWishes.isEmpty)
@@ -122,11 +124,13 @@ final class WishFormLegacyFeatureTests: WishFormFeatureTestCase {
         viewModel.send(.deleteStep(index: 0))
         viewModel.send(.deleteStep(index: 0))
 
-        // When
+        // When: 바꾼 게 있으면 버릴지 묻고, 버리면 닫힌다 (GH-70 R-18)
         viewModel.send(.tapClose)
+        viewModel.send(.confirmDiscard)
 
         // Then
         XCTAssertTrue(wishRepository.updatedWishes.isEmpty)
+        XCTAssertEqual(viewModel.route, .finish(nil))
     }
 
     // MARK: GH-16 TC1 (작성 목표 금액)

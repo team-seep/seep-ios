@@ -478,3 +478,29 @@
 
 /* GH-63 스플래시 */
 "splash_tagline" = "진짜 나를 위해 하고 싶은 것";
+
+// GH-70 작성·수정 문서
+"wish_document.save" = "저장";
+"wish_document.done" = "완료";
+"wish_document.cancel" = "취소";
+"wish_document.remove" = "지우기";
+"wish_document.step_add" = "＋ 추가";
+"wish_document.hashtag_empty" = "＃태그";
+"wish_document.category_menu" = "카테고리 바꾸기";
+"wish_document.random_tooltip" = "길게 누르면 무작위로 골라요";
+"wish_document.date_remove" = "날짜 없애기";
+"wish_document.memo_placeholder" = "필요한 정보가 또 있나요?";
+"wish_document.link_placeholder" = "https://";
+"wish_document.chip.date" = "날짜";
+"wish_document.chip.memo" = "메모";
+"wish_document.chip.steps" = "단계";
+"wish_document.chip.notification" = "알림";
+"wish_document.chip.link" = "링크";
+"wish_document.chip.target_amount" = "목표 금액";
+"wish_document.chip.place" = "장소";
+"wish_document.section.notification" = "알림";
+"wish_document.discard.add_title" = "적던 내용을 버릴까요?";
+"wish_document.discard.edit_title" = "고친 내용을 버릴까요?";
+"wish_document.discard.confirm" = "버리기";
+"wish_document.discard.keep" = "계속 쓰기";
+"wish_document.hashtag_sheet.title" = "태그";
