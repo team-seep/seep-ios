@@ -44,6 +44,7 @@ extension SettingsViewModel {
         let deviceInfo: DeviceInfo
         let appStoreID: String?
         let contactEmail: String?
+        let pasteboard: PasteboardWriting
 
         init(
             preference: Preference = .shared,
@@ -52,7 +53,8 @@ extension SettingsViewModel {
             logManager: LogManagerProtocol = LogManager.shared,
             deviceInfo: DeviceInfo = .current,
             appStoreID: String? = SettingsLinks.appStoreID,
-            contactEmail: String? = SettingsLinks.contactEmail
+            contactEmail: String? = SettingsLinks.contactEmail,
+            pasteboard: PasteboardWriting = SystemPasteboard()
         ) {
             self.preference = preference
             self.authenticationManager = authenticationManager
@@ -61,6 +63,7 @@ extension SettingsViewModel {
             self.deviceInfo = deviceInfo
             self.appStoreID = appStoreID
             self.contactEmail = contactEmail
+            self.pasteboard = pasteboard
         }
     }
 }
@@ -134,8 +137,10 @@ final class SettingsViewModel {
             }
 
         case .contactUnavailable:
+            // 메일 계정이 없으면 주소를 복사해 다른 메일 앱에 붙여넣게 한다 (#64 R-28, GH-77 R-3)
             guard let email = dependency.contactEmail else { return }
-            route = .toast(Strings.Settings.Contact.unavailableFormat(email))
+            dependency.pasteboard.copy(email)
+            route = .toast(Strings.Settings.Contact.copiedFormat(email))
 
         case .tapLicense:
             sendClickLog(objectId: .license)
@@ -169,7 +174,9 @@ final class SettingsViewModel {
             isAppLockEnabled: state.isAppLockEnabled,
             notificationStatus: state.notificationStatus,
             viewType: state.viewType,
-            version: dependency.deviceInfo.appVersion
+            version: dependency.deviceInfo.appVersion,
+            isRateAppAvailable: SettingsLinks.reviewURL(appStoreID: dependency.appStoreID) != nil,
+            isContactAvailable: !(dependency.contactEmail ?? "").isEmpty
         )
     }
 

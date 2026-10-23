@@ -18,7 +18,7 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 
 | # | 규칙 | 강제 수단 | 베이스라인 |
 |---|---|---|---|
-| R1 | 화면은 SwiftUI View + `@Observable` ViewModel. UIKit·UIKit 래퍼 금지(`AppDelegate` 제외) | 린트 `no_uikit` | 0건 |
+| R1 | 화면은 SwiftUI View + `@Observable` ViewModel. UIKit·UIKit 래퍼 금지(`AppDelegate`·`SystemPasteboard` 제외) | 린트 `no_uikit` | 0건 |
 | R2 | ViewModel은 UI를 모르고(UIKit·SwiftUI import 금지), 의존은 주입받는다 | 린트 `viewmodel_no_uikit_import`, `viewmodel_no_swiftui_import`, `viewmodel_no_uiapplication` | 0건 |
 | R3 | Realm 읽기/쓰기는 Repository에서만 | 린트 `realm_only_in_repository` | 0건 |
 | R4 | Realm 모델을 바꾸면 schemaVersion(앱+위젯)과 마이그레이션을 같이 바꾼다 | 스크립트 `check-realm-schema.sh` + 라벨 `schema-change` | 0건 |
@@ -65,7 +65,7 @@ import ReactorKit                                   // ❌
 
 **강제 수단** — SwiftLint `no_uikit`.
 
-**예외** — `AppDelegate.swift`는 `@UIApplicationDelegateAdaptor`로 Firebase·Realm·알림 델리게이트를 맡는 UI 아닌 코드라 제외. 테스트 타깃(`seep-iosTests/`)은 색 값 비교 등에 UIKit을 쓸 수 있다.
+**예외** — `AppDelegate.swift`는 `@UIApplicationDelegateAdaptor`로 Firebase·Realm·알림 델리게이트를 맡는 UI 아닌 코드라 제외. `AppShell/SystemPasteboard.swift`는 iOS SwiftUI에 클립보드 쓰기 API가 없어 `UIPasteboard`를 `PasteboardWriting` 프로토콜 뒤에 감싼 파일이라 제외(GH-77). ViewModel은 프로토콜만 `Dependency`로 받는다. 테스트 타깃(`seep-iosTests/`)은 색 값 비교 등에 UIKit을 쓸 수 있다.
 
 ---
 

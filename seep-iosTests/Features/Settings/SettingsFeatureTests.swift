@@ -2,11 +2,20 @@ import XCTest
 
 @testable import seep_ios_dev
 
-/// 설정 탭 (GH-64 R-24 ~ R-29)
+final class MockPasteboard: PasteboardWriting {
+    private(set) var copiedTexts: [String] = []
+
+    func copy(_ text: String) {
+        copiedTexts.append(text)
+    }
+}
+
+/// 설정 탭 (GH-64 R-24 ~ R-29, GH-77)
 final class SettingsFeatureTests: ViewModelTestCase {
     private var preference: Preference!
     private var authenticationManager: MockAuthenticationManager!
     private var notificationManager: MockNotificationManager!
+    private var pasteboard: MockPasteboard!
 
     private let deviceInfo = DeviceInfo(appVersion: "2.5.0", osVersion: "18.1", deviceModel: "iPhone17,1")
 
@@ -15,12 +24,14 @@ final class SettingsFeatureTests: ViewModelTestCase {
         preference = Preference(name: "test-gh64-settings")
         authenticationManager = MockAuthenticationManager()
         notificationManager = MockNotificationManager()
+        pasteboard = MockPasteboard()
     }
 
     override func tearDown() {
         preference = nil
         authenticationManager = nil
         notificationManager = nil
+        pasteboard = nil
         super.tearDown()
     }
 
@@ -32,7 +43,8 @@ final class SettingsFeatureTests: ViewModelTestCase {
             logManager: logManager,
             deviceInfo: deviceInfo,
             appStoreID: appStoreID,
-            contactEmail: contactEmail
+            contactEmail: contactEmail,
+            pasteboard: pasteboard
         ))
     }
 
@@ -173,15 +185,79 @@ final class SettingsFeatureTests: ViewModelTestCase {
 
     // MARK: GH-64 TC18
 
-    func test_GH64_TC18_메일앱을열수없으면_주소를알려주는토스트를띄운다() {
+    func test_GH64_TC18_메일앱을열수없으면_주소를복사하고_알려주는토스트를띄운다() {
         // Given
         let sut = makeSut()
 
         // When
         sut.send(.contactUnavailable)
 
+        // Then: GH-77 R-3 — #64 R-28 대로 주소를 클립보드에 넣는다
+        XCTAssertEqual(pasteboard.copiedTexts, ["help@example.com"])
+        XCTAssertEqual(sut.route, .toast("메일 앱을 열 수 없어 주소를 복사했어요. help@example.com 로 보내주세요"))
+    }
+
+    // MARK: GH-77
+
+    func test_GH77_TC1_기본설정에서앱평가하기를누르면_싶의리뷰쓰기를연다() {
+        // Given
+        let sut = SettingsViewModel(dependency: .init(
+            preference: preference,
+            authenticationManager: authenticationManager,
+            notificationManager: notificationManager,
+            logManager: logManager,
+            deviceInfo: deviceInfo,
+            pasteboard: pasteboard
+        ))
+
+        // When
+        sut.send(.tapRateApp)
+
         // Then
-        XCTAssertEqual(sut.route, .toast("메일 앱을 열 수 없어요. help@example.com 로 보내주세요"))
+        XCTAssertEqual(sut.route, .openURL(URL(string: "itms-apps://apps.apple.com/app/id1559479928?action=write-review")!))
+        XCTAssertEqual(clickEvents(objectId: .rateApp).count, 1)
+    }
+
+    func test_GH77_TC2_기본설정에서문의하기를누르면_확정된주소로메일을연다() {
+        // Given
+        let sut = SettingsViewModel(dependency: .init(
+            preference: preference,
+            authenticationManager: authenticationManager,
+            notificationManager: notificationManager,
+            logManager: logManager,
+            deviceInfo: deviceInfo,
+            pasteboard: pasteboard
+        ))
+
+        // When
+        sut.send(.tapContact)
+
+        // Then
+        guard case .openURL(let url) = sut.route,
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            return XCTFail("메일 Route 가 나와야 한다")
+        }
+        XCTAssertEqual(components.scheme, "mailto")
+        XCTAssertEqual(components.path, "dbgustlr92@gmail.com")
+        XCTAssertEqual(components.queryItems?.first { $0.name == "subject" }?.value, "[싶 문의]")
+    }
+
+    func test_GH77_TC4_앱id나메일주소가없으면_그줄을숨긴다() {
+        // Given / When
+        let noLinks = makeSut(appStoreID: nil, contactEmail: nil)
+        let noMail = makeSut(appStoreID: "1559479928", contactEmail: "")
+
+        // Then
+        XCTAssertFalse(rows(noLinks).contains(.rateApp))
+        XCTAssertFalse(rows(noLinks).contains(.contact))
+        XCTAssertTrue(rows(noMail).contains(.rateApp))
+        XCTAssertFalse(rows(noMail).contains(.contact))
+    }
+
+    func test_GH77_TC5_출시설정의앱id와문의주소는_비어있지않다() {
+        // 비어 있으면 설정 줄이 숨거나 눌러도 반응이 없다 — 출시 전에 테스트로 막는다
+        XCTAssertEqual(SettingsLinks.appStoreID, "1559479928")
+        XCTAssertFalse((SettingsLinks.contactEmail ?? "").isEmpty)
     }
 
     // MARK: GH-64 TC19
