@@ -2,10 +2,10 @@ import Foundation
 
 /// 설정 탭이 여는 바깥 링크 (GH-64 R-25, R-28)
 enum SettingsLinks {
-    /// App Store 앱 id. 레포에 기록이 없어 확정 전이다 — 정해지면 숫자만 넣는다 (예: "1234567890")
-    static let appStoreID: String? = nil
-    /// 문의 받는 메일 주소. 이슈 #64 R-28 "[문의 메일 주소 — 개발 전 확정]"
-    static let contactEmail: String? = nil
+    /// App Store 앱 id ("싶 - 나를 위한 위시리스트"). 비어 있으면 설정에서 "앱 평가하기" 줄을 숨긴다 (GH-77 R-1, R-4)
+    static let appStoreID: String? = "1559479928"
+    /// 문의 받는 메일 주소. 비어 있으면 "문의하기" 줄을 숨긴다 (GH-77 R-2, R-4)
+    static let contactEmail: String? = "dbgustlr92@gmail.com"
 
     /// 앱의 시스템 설정 화면. UIKit `UIApplication.openSettingsURLString`과 같은 값
     static let appSettingsURL = URL(string: "app-settings:")

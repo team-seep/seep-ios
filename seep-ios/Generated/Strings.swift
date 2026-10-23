@@ -1032,12 +1032,12 @@ internal enum Strings {
       internal static func bodyFormat(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
         return Strings.tr("Localization", "settings.contact.body_format", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "\n\n\n---\n앱 버전: %@\niOS 버전: %@\n기기: %@")
       }
+      /// 메일 앱을 열 수 없어 주소를 복사했어요. %@ 로 보내주세요
+      internal static func copiedFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "settings.contact.copied_format", String(describing: p1), fallback: "메일 앱을 열 수 없어 주소를 복사했어요. %@ 로 보내주세요")
+      }
       /// [싶 문의]
       internal static let subject = Strings.tr("Localization", "settings.contact.subject", fallback: "[싶 문의]")
-      /// 메일 앱을 열 수 없어요. %@ 로 보내주세요
-      internal static func unavailableFormat(_ p1: Any) -> String {
-        return Strings.tr("Localization", "settings.contact.unavailable_format", String(describing: p1), fallback: "메일 앱을 열 수 없어요. %@ 로 보내주세요")
-      }
     }
     internal enum Group {
       /// 정보
