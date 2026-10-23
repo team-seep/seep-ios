@@ -10,12 +10,14 @@ struct ControlGuideScreen: View {
                 GuideSection(
                     title: Strings.ControlGuide.Control.title,
                     description: Strings.ControlGuide.Control.description,
-                    steps: [Strings.ControlGuide.Control.step1, Strings.ControlGuide.Control.step2, Strings.ControlGuide.Control.step3]
+                    steps: [Strings.ControlGuide.Control.step1, Strings.ControlGuide.Control.step2, Strings.ControlGuide.Control.step3],
+                    screenshot: Assets.Images.imgGuideControlCenter
                 ),
                 GuideSection(
                     title: Strings.ControlGuide.Shortcut.title,
                     description: Strings.ControlGuide.Shortcut.description,
-                    steps: [Strings.ControlGuide.Shortcut.step1, Strings.ControlGuide.Shortcut.step2, Strings.ControlGuide.Shortcut.step3]
+                    steps: [Strings.ControlGuide.Shortcut.step1, Strings.ControlGuide.Shortcut.step2, Strings.ControlGuide.Shortcut.step3],
+                    screenshot: Assets.Images.imgGuideShortcut
                 )
             ]
         )

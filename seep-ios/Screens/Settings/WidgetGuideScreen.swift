@@ -10,7 +10,8 @@ struct WidgetGuideScreen: View {
                 GuideSection(
                     title: Strings.WidgetGuide.Home.title,
                     description: Strings.WidgetGuide.Home.description,
-                    steps: [Strings.WidgetGuide.Home.step1, Strings.WidgetGuide.Home.step2, Strings.WidgetGuide.Home.step3]
+                    steps: [Strings.WidgetGuide.Home.step1, Strings.WidgetGuide.Home.step2, Strings.WidgetGuide.Home.step3],
+                    screenshot: Assets.Images.imgGuideWidgetHome
                 ),
                 GuideSection(
                     title: Strings.WidgetGuide.Lock.title,

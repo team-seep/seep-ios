@@ -451,8 +451,8 @@ internal enum Strings {
       internal static let description = Strings.tr("Localization", "control_guide.control.description", fallback: "\"싶 적기\" 컨트롤을 두면 앱을 찾지 않고 바로 작성 화면을 열어요.")
       /// 제어 센터를 열고 왼쪽 위 ＋를 눌러요.
       internal static let step1 = Strings.tr("Localization", "control_guide.control.step1", fallback: "제어 센터를 열고 왼쪽 위 ＋를 눌러요.")
-      /// 컨트롤 추가에서 "싶 적기"를 찾아 놓아요.
-      internal static let step2 = Strings.tr("Localization", "control_guide.control.step2", fallback: "컨트롤 추가에서 \"싶 적기\"를 찾아 놓아요.")
+      /// 제어 항목 추가에서 "싶 적기"를 찾아 놓아요.
+      internal static let step2 = Strings.tr("Localization", "control_guide.control.step2", fallback: "제어 항목 추가에서 \"싶 적기\"를 찾아 놓아요.")
       /// 컨트롤을 길게 눌러 카테고리를 고를 수 있어요.
       internal static let step3 = Strings.tr("Localization", "control_guide.control.step3", fallback: "컨트롤을 길게 눌러 카테고리를 고를 수 있어요.")
       /// 제어 센터 · 잠금화면 · 동작 버튼
@@ -463,8 +463,8 @@ internal enum Strings {
       internal static let description = Strings.tr("Localization", "control_guide.shortcut.description", fallback: "단축어 앱이나 Siri로도 바로 적을 수 있어요.")
       /// 단축어 앱에서 ＋를 눌러 새 단축어를 만들어요.
       internal static let step1 = Strings.tr("Localization", "control_guide.shortcut.step1", fallback: "단축어 앱에서 ＋를 눌러 새 단축어를 만들어요.")
-      /// "싶"을 검색해 "싶 적기" 동작을 추가해요.
-      internal static let step2 = Strings.tr("Localization", "control_guide.shortcut.step2", fallback: "\"싶\"을 검색해 \"싶 적기\" 동작을 추가해요.")
+      /// 동작 검색에서 "싶"을 찾아 "싶 적기"를 추가해요.
+      internal static let step2 = Strings.tr("Localization", "control_guide.shortcut.step2", fallback: "동작 검색에서 \"싶\"을 찾아 \"싶 적기\"를 추가해요.")
       /// Siri에게 "싶 적기"라고 말해도 돼요.
       internal static let step3 = Strings.tr("Localization", "control_guide.shortcut.step3", fallback: "Siri에게 \"싶 적기\"라고 말해도 돼요.")
       /// 단축어 · Siri
@@ -1097,8 +1097,6 @@ internal enum Strings {
     internal static let savedToast = Strings.tr("Localization", "share_photo.saved_toast", fallback: "👏이미지를 앨범에 저장했어요!")
   }
   internal enum WidgetGuide {
-    /// 스크린샷 자리
-    internal static let screenshotPlaceholder = Strings.tr("Localization", "widget_guide.screenshot_placeholder", fallback: "스크린샷 자리")
     /// 위젯 추가하는 법
     internal static let title = Strings.tr("Localization", "widget_guide.title", fallback: "위젯 추가하는 법")
     internal enum Home {
@@ -1106,8 +1104,8 @@ internal enum Strings {
       internal static let description = Strings.tr("Localization", "widget_guide.home.description", fallback: "바로 적기 · 남은 싶 · 바로 체크하기 위젯을 홈 화면에 둘 수 있어요.")
       /// 홈 화면의 빈 곳을 길게 눌러요.
       internal static let step1 = Strings.tr("Localization", "widget_guide.home.step1", fallback: "홈 화면의 빈 곳을 길게 눌러요.")
-      /// 왼쪽 위 ＋ 버튼을 누르고 "싶"을 찾아요.
-      internal static let step2 = Strings.tr("Localization", "widget_guide.home.step2", fallback: "왼쪽 위 ＋ 버튼을 누르고 \"싶\"을 찾아요.")
+      /// 왼쪽 위 편집 → 위젯 추가를 누르고 "싶"을 찾아요.
+      internal static let step2 = Strings.tr("Localization", "widget_guide.home.step2", fallback: "왼쪽 위 편집 → 위젯 추가를 누르고 \"싶\"을 찾아요.")
       /// 원하는 크기를 골라 위젯 추가를 눌러요.
       internal static let step3 = Strings.tr("Localization", "widget_guide.home.step3", fallback: "원하는 크기를 골라 위젯 추가를 눌러요.")
       /// 홈 화면 위젯

@@ -1,10 +1,12 @@
 import SwiftUI
 
-/// 안내 화면의 한 묶음: 제목 + 설명 + 단계 3개 + 스크린샷 자리
+/// 안내 화면의 한 묶음: 제목 + 설명 + 단계 3개 + 스크린샷
 struct GuideSection: Identifiable {
     let title: String
     let description: String
     let steps: [String]
+    /// 시스템 화면 스크린샷. 시뮬레이터로 찍을 수 없는 화면(잠금화면 편집)은 비워 둔다
+    var screenshot: ImageAsset?
 
     var id: String { title }
 }
@@ -67,13 +69,19 @@ struct GuideScreen: View {
                     .padding(14)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
-                    // 실제 스크린샷 이미지는 정해지면 에셋으로 넣는다
-                    Text(Strings.WidgetGuide.screenshotPlaceholder)
-                        .font(.appleMedium(size: 12))
-                        .foregroundStyle(Color.gray4)
-                        .frame(maxWidth: .infinity, minHeight: 160)
-                        .background(Color.gray2_5.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
-                        .accessibilityHidden(true)
+                    if let screenshot = section.screenshot {
+                        screenshot.swiftUIImage
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 420)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 16).strokeBorder(Color.gray2_5, lineWidth: 1)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 4)
+                            .accessibilityHidden(true)
+                    }
                 }
                 .padding(.top, 24)
             }
