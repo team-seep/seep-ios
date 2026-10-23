@@ -404,7 +404,7 @@
 "settings.footer" = "싶은 서버 없이 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.";
 "settings.contact.subject" = "[싶 문의]";
 "settings.contact.body_format" = "\n\n\n---\n앱 버전: %@\niOS 버전: %@\n기기: %@";
-"settings.contact.unavailable_format" = "메일 앱을 열 수 없어요. %@ 로 보내주세요";
+"settings.contact.copied_format" = "메일 앱을 열 수 없어 주소를 복사했어요. %@ 로 보내주세요";
 "widget_guide.title" = "위젯 추가하는 법";
 "widget_guide.home.title" = "홈 화면 위젯";
 "widget_guide.home.description" = "바로 적기 · 남은 싶 · 바로 체크하기 위젯을 홈 화면에 둘 수 있어요.";

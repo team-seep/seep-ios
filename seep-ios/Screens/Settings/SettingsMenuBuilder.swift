@@ -41,8 +41,18 @@ enum SettingsMenuBuilder {
         isAppLockEnabled: Bool,
         notificationStatus: NotificationAuthorization?,
         viewType: ViewType,
-        version: String
+        version: String,
+        isRateAppAvailable: Bool = true,
+        isContactAvailable: Bool = true
     ) -> [SettingsGroup] {
+        // 연결할 값이 없는 줄은 눌러도 반응이 없으니 아예 보이지 않는다 (GH-77 R-4)
+        let infoRows: [SettingsRow] = [
+            isRateAppAvailable ? .rateApp : nil,
+            isContactAvailable ? .contact : nil,
+            .license,
+            .version(version)
+        ].compactMap { $0 }
+        return
         [
             SettingsGroup(title: Strings.Settings.Group.lockNotification, rows: [
                 .appLock(
@@ -59,12 +69,7 @@ enum SettingsMenuBuilder {
                 .widgetGuide,
                 .controlGuide
             ]),
-            SettingsGroup(title: Strings.Settings.Group.info, rows: [
-                .rateApp,
-                .contact,
-                .license,
-                .version(version)
-            ])
+            SettingsGroup(title: Strings.Settings.Group.info, rows: infoRows)
         ]
     }
 

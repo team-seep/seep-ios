@@ -40,7 +40,7 @@ custom_rules:
   no_uikit:                                 # R1 (GH-64)
     name: "R1 UIKit 신규 사용 금지"
     included: "seep-ios/.*"
-    excluded: "seep-ios/AppDelegate\\.swift"
+    excluded: "seep-ios/(AppDelegate|AppShell/SystemPasteboard)\\.swift"   # 클립보드 쓰기는 SwiftUI API가 없다 (GH-77)
     regex: "^import UIKit\\b|\\b(UIViewRepresentable|UIViewControllerRepresentable|UIHostingController)\\b"
     message: "R1: 화면은 SwiftUI View + @Observable ViewModel 로 쓴다. UIKit·UIKit 래퍼를 새로 쓰지 않는다 (GH-64)."
     severity: error
