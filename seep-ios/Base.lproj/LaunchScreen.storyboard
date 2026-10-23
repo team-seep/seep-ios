@@ -16,10 +16,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="ic_logo_black" translatesAutoresizingMaskIntoConstraints="NO" id="Lgo-Im-001">
-                                <rect key="frame" x="191" y="428" width="32" height="40"/>
+                                <rect key="frame" x="185" y="421" width="44" height="54"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="32" id="Lgo-Cw-001"/>
-                                    <constraint firstAttribute="height" constant="40" id="Lgo-Ch-001"/>
+                                    <constraint firstAttribute="width" constant="44" id="Lgo-Cw-001"/>
+                                    <constraint firstAttribute="height" constant="54" id="Lgo-Ch-001"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -37,6 +37,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_logo_black" width="20" height="25"/>
+        <image name="ic_logo_black" width="20" height="24.5"/>
     </resources>
 </document>
