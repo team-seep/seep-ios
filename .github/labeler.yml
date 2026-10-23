@@ -25,4 +25,5 @@ schema-change:
       - any-glob-to-any-file:
           - "seep-ios/model/dto/**"
           - "seep-ios/AppDelegate.swift"
+          - "seep-ios/Repository/RealmConfiguration.swift"
           - "widget/**/*Provider.swift"

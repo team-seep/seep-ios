@@ -1,3 +1,4 @@
+import AppIntents
 import UIKit
 import UserNotifications
 
@@ -5,7 +6,7 @@ import Firebase
 import RealmSwift
 
 
-@main
+/// Firebase·Realm·알림 델리게이트·앱 인텐트 의존성 (UI 없음). 진입점은 SwiftUI `SeepApp` (GH-64 A-1)
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(
@@ -15,27 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.initilizeFirebase()
         self.copyDefaultToAppGroup()
         self.setupRealmConfig()
+        self.registerAppIntentDependencies()
         self.requestNotificationAuthorization()
         application.registerForRemoteNotifications()
         return true
     }
     
-    func application(
-        _ application: UIApplication,
-        configurationForConnecting connectingSceneSession: UISceneSession,
-        options: UIScene.ConnectionOptions
-    ) -> UISceneConfiguration {
-        return UISceneConfiguration(
-            name: "Default Configuration",
-            sessionRole: connectingSceneSession.role
-        )
-    }
-    
-    func application(
-        _ application: UIApplication,
-        didDiscardSceneSessions sceneSessions: Set<UISceneSession>
-    ) {
-        
+    /// 싶 적기 컨트롤·단축어(`OpenWriteIntent`)가 앱에 링크를 넘길 곳 (GH-49 R-11)
+    private func registerAppIntentDependencies() {
+        AppDependencyManager.shared.add(dependency: WriteDeepLinkOpener() as WriteDeepLinkOpening)
     }
     
     private func initilizeFirebase() {
@@ -83,12 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupRealmConfig() {
-        var config = Realm.Configuration()
-        
-        config.fileURL = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.macgongmon.seep-ios")?
-            .appendingPathComponent(Bundle.realmName)
-        config.schemaVersion = 7
+        // 경로·schemaVersion 은 위젯과 같이 쓰는 RealmConfiguration 한 곳에서 정한다 (GH-48 R-6)
+        var config = RealmConfiguration.shared
         
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 3 {

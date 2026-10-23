@@ -36,6 +36,12 @@ final class MockWishRepository: WishRepository {
     private(set) var updatePhotoCalls: [(wishId: String, fileName: String)] = []
 
     var fetchAllFinishedWishesResult: [Wish] = []
+    /// id 가 같은 위시를 돌려준다. 없으면 nil (지워진 위시)
+    var fetchWishResult: [Wish] = []
+    private(set) var fetchWishCalledIds: [String] = []
+    /// nil 이면 호출된 위시 id 로 완료가 풀린 위시를 성공으로 돌려준다
+    var cancelFinishResult: Result<Wish, RepositoryError>?
+    private(set) var cancelFinishCalledIds: [String] = []
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {
         return fetchWishesResult
@@ -109,5 +115,38 @@ final class MockWishRepository: WishRepository {
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {
         updatePhotoCalls.append((wishId, fileName))
         return updatePhotoResult ?? .success(Wish(id: wishId, photoFileName: fileName))
+    }
+
+    func fetchWish(id: String) -> Wish? {
+        fetchWishCalledIds.append(id)
+        return fetchWishResult.first { $0.id == id }
+    }
+
+    // MARK: 작성·수정 폼 (GH-64 P2)
+
+    private(set) var addedWishes: [Wish] = []
+    private(set) var updatedWishes: [Wish] = []
+    /// nil 이면 넘긴 위시를 그대로 성공으로 돌려준다
+    var addWishResult: Result<Wish, RepositoryError>?
+    var updateWishResult: Result<Wish, RepositoryError>?
+
+    func addWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
+        addedWishes.append(wish)
+        return addWishResult ?? .success(wish)
+    }
+
+    func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
+        updatedWishes.append(wish)
+        return updateWishResult ?? .success(wish)
+    }
+
+    func cancelFinish(wishId: String) -> Result<Wish, RepositoryError> {
+        cancelFinishCalledIds.append(wishId)
+        if let cancelFinishResult { return cancelFinishResult }
+        var wish = fetchWishResult.first { $0.id == wishId } ?? Wish(id: wishId)
+        wish.isSuccess = false
+        wish.finishDate = nil
+        wish.finishNote = ""
+        return .success(wish)
     }
 }

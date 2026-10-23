@@ -29,11 +29,9 @@ internal enum Assets {
   }
   internal enum Icons {
     internal static let icArrowRight = ImageAsset(name: "ic_arrow_right")
-    internal static let icBack = ImageAsset(name: "ic_back")
     internal static let icCalendar = ImageAsset(name: "ic_calendar")
     internal static let icCheckOff = ImageAsset(name: "ic_check_off")
     internal static let icCheckOn = ImageAsset(name: "ic_check_on")
-    internal static let icChevronBack = ImageAsset(name: "ic_chevron_back")
     internal static let icChevronDown = ImageAsset(name: "ic_chevron_down")
     internal static let icClose = ImageAsset(name: "ic_close")
     internal static let icGrid = ImageAsset(name: "ic_grid")
@@ -84,6 +82,9 @@ internal enum Assets {
     internal static let imgCategoryGo7 = ImageAsset(name: "img_category_go_7")
     internal static let imgCategoryGo8 = ImageAsset(name: "img_category_go_8")
     internal static let imgCategoryGo9 = ImageAsset(name: "img_category_go_9")
+    internal static let imgGuideControlCenter = ImageAsset(name: "img_guide_control_center")
+    internal static let imgGuideShortcut = ImageAsset(name: "img_guide_shortcut")
+    internal static let imgGuideWidgetHome = ImageAsset(name: "img_guide_widget_home")
     internal static let imgCategoryWantToDo = ImageAsset(name: "img_category_want_to_do")
     internal static let imgCategoryWantToGet = ImageAsset(name: "img_category_want_to_get")
     internal static let imgCategoryWantToGo = ImageAsset(name: "img_category_want_to_go")

@@ -1,6 +1,7 @@
 import Foundation
+import ImageIO
 import LinkPresentation
-import UIKit
+import UniformTypeIdentifiers
 
 /// 링크 미리보기에 쓰는 메타데이터. 썸네일은 축소한 JPEG 로만 들고 다닌다 (GH-29 R-5, R-7)
 struct LinkPreview: Equatable, Codable {
@@ -42,13 +43,13 @@ final class LinkMetadataProvider: LinkMetadataProviding {
 
             let title = metadata.title
             guard let imageProvider = metadata.imageProvider ?? metadata.iconProvider,
-                  imageProvider.canLoadObject(ofClass: UIImage.self) else {
+                  imageProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) else {
                 Self.complete(LinkPreview(link: link, title: title, imageData: nil), completion: completion)
                 return
             }
 
-            imageProvider.loadObject(ofClass: UIImage.self) { object, _ in
-                let imageData = (object as? UIImage).flatMap(Self.thumbnailData(from:))
+            imageProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, _ in
+                let imageData = data.flatMap(Self.thumbnailData(from:))
                 Self.complete(LinkPreview(link: link, title: title, imageData: imageData), completion: completion)
             }
         }
@@ -60,19 +61,44 @@ final class LinkMetadataProvider: LinkMetadataProviding {
         }
     }
 
-    /// 원본 이미지는 크기가 커서 썸네일 크기로 가운데를 채워 자른 JPEG 만 남긴다
-    private static func thumbnailData(from image: UIImage) -> Data? {
-        guard image.size.width > 0, image.size.height > 0 else { return nil }
+    /// 원본 이미지는 크기가 커서 썸네일 크기로 가운데를 채워 자른 JPEG 만 남긴다 (UIKit 없이 ImageIO·CoreGraphics)
+    static func thumbnailData(from data: Data) -> Data? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
         let targetSize = thumbnailPixelSize
-        let scale = max(targetSize.width / image.size.width, targetSize.height / image.size.height)
-        let drawSize = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        // 짧은 변이 썸네일을 덮을 만큼만 먼저 줄여 읽는다
+        let options: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: max(targetSize.width, targetSize.height) * 4
+        ]
+        guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary),
+              image.width > 0, image.height > 0 else { return nil }
+
+        let width = CGFloat(image.width)
+        let height = CGFloat(image.height)
+        let scale = max(targetSize.width / width, targetSize.height / height)
+        let drawSize = CGSize(width: width * scale, height: height * scale)
         let origin = CGPoint(x: (targetSize.width - drawSize.width) / 2, y: (targetSize.height - drawSize.height) / 2)
 
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        let renderer = UIGraphicsImageRenderer(size: targetSize, format: format)
-        return renderer.jpegData(withCompressionQuality: 0.8) { _ in
-            image.draw(in: CGRect(origin: origin, size: drawSize))
+        guard let context = CGContext(
+            data: nil,
+            width: Int(targetSize.width),
+            height: Int(targetSize.height),
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: CGColorSpace(name: CGColorSpace.sRGB) ?? CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue
+        ) else { return nil }
+        context.interpolationQuality = .high
+        context.draw(image, in: CGRect(origin: origin, size: drawSize))
+        guard let cropped = context.makeImage() else { return nil }
+
+        let output = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(output, UTType.jpeg.identifier as CFString, 1, nil) else {
+            return nil
         }
+        CGImageDestinationAddImage(destination, cropped, [kCGImageDestinationLossyCompressionQuality: 0.8] as CFDictionary)
+        guard CGImageDestinationFinalize(destination) else { return nil }
+        return output as Data
     }
 }
