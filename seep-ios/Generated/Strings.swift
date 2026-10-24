@@ -354,12 +354,6 @@ internal enum Strings {
       internal static let untilToday = Strings.tr("Localization", "detail.dday.until_today", fallback: "오늘까지")
     }
     internal enum Letter {
-      /// 편지 지우기
-      internal static let delete = Strings.tr("Localization", "detail.letter.delete", fallback: "편지 지우기")
-      /// 이루는 날의 나에게 편지를 남겨 둘 수 있어요.
-      internal static let empty = Strings.tr("Localization", "detail.letter.empty", fallback: "이루는 날의 나에게 편지를 남겨 둘 수 있어요.")
-      /// 다시 쓰기
-      internal static let rewrite = Strings.tr("Localization", "detail.letter.rewrite", fallback: "다시 쓰기")
       /// %@에 봉인했어요 · %d자
       internal static func sealedCaptionFormat(_ p1: Any, _ p2: Int) -> String {
         return Strings.tr("Localization", "detail.letter.sealed_caption_format", String(describing: p1), p2, fallback: "%@에 봉인했어요 · %d자")
@@ -368,17 +362,9 @@ internal enum Strings {
       internal static let sealedTitle = Strings.tr("Localization", "detail.letter.sealed_title", fallback: "이루는 날 열려요")
       /// 미래의 나에게
       internal static let title = Strings.tr("Localization", "detail.letter.title", fallback: "미래의 나에게")
-      /// ＋ 쓰기
-      internal static let write = Strings.tr("Localization", "detail.letter.write", fallback: "＋ 쓰기")
       /// %@에 씀
       internal static func writtenFormat(_ p1: Any) -> String {
         return Strings.tr("Localization", "detail.letter.written_format", String(describing: p1), fallback: "%@에 씀")
-      }
-      internal enum DeleteAlert {
-        /// 지우기
-        internal static let confirm = Strings.tr("Localization", "detail.letter.delete_alert.confirm", fallback: "지우기")
-        /// 편지를 지울까요?
-        internal static let title = Strings.tr("Localization", "detail.letter.delete_alert.title", fallback: "편지를 지울까요?")
       }
       internal enum RewriteAlert {
         /// 새로 쓰기
@@ -1014,12 +1000,16 @@ internal enum Strings {
     internal enum Chip {
       /// 날짜
       internal static let date = Strings.tr("Localization", "wish_document.chip.date", fallback: "날짜")
+      /// 미래의 나에게
+      internal static let letter = Strings.tr("Localization", "wish_document.chip.letter", fallback: "미래의 나에게")
       /// 링크
       internal static let link = Strings.tr("Localization", "wish_document.chip.link", fallback: "링크")
       /// 메모
       internal static let memo = Strings.tr("Localization", "wish_document.chip.memo", fallback: "메모")
       /// 알림
       internal static let notification = Strings.tr("Localization", "wish_document.chip.notification", fallback: "알림")
+      /// 사진
+      internal static let photo = Strings.tr("Localization", "wish_document.chip.photo", fallback: "사진")
       /// 장소
       internal static let place = Strings.tr("Localization", "wish_document.chip.place", fallback: "장소")
       /// 단계

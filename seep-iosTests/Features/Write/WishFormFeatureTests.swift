@@ -427,6 +427,7 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
             photoFileName: "photo.jpg",
             createdAt: Date(timeIntervalSince1970: 1_780_000_000)
         )
+        photoStorage.existingFileNames = ["photo.jpg"]
         let viewModel = makeEdit(original)
         viewModel.send(.inputTitle("필름 카메라"))
 

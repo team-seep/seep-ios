@@ -72,7 +72,8 @@ final class WishRepositoryTests: XCTestCase {
         XCTAssertEqual(canceled.finishNote, "")
     }
 
-    func test_GH79_TC8_수정하면_단계알림은바꾸고모은돈장소사진은그대로둔다() throws {
+    // GH-61 R-11: 사진 파일 이름은 수정 문서가 같이 저장한다
+    func test_GH79_TC8_수정하면_단계알림사진은바꾸고모은돈장소는그대로둔다() throws {
         // Given
         let original = Wish(
             id: "wish-1",
@@ -91,7 +92,7 @@ final class WishRepositoryTests: XCTestCase {
         edited.notifications = [SeepNotification(id: "noti-2", type: .weekAgo, time: Self.day(4))]
         edited.savings = []
         edited.place = nil
-        edited.photoFileName = ""
+        edited.photoFileName = "photo-new.jpg"
 
         // When
         let updated = try sut.updateWish(edited).get()
@@ -103,7 +104,7 @@ final class WishRepositoryTests: XCTestCase {
         XCTAssertEqual(updated.notifications.map(\.id), ["noti-2"])
         XCTAssertEqual(updated.savings.map(\.id), ["saving-1"])
         XCTAssertEqual(updated.place?.name, "카페")
-        XCTAssertEqual(updated.photoFileName, "photo.jpg")
+        XCTAssertEqual(updated.photoFileName, "photo-new.jpg")
         XCTAssertNotNil(updated.lastCheckedAt)
     }
 

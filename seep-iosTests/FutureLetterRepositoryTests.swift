@@ -22,19 +22,24 @@ final class FutureLetterRepositoryTests: XCTestCase {
 
     // MARK: GH-61 TC4
 
-    func test_GH61_TC4_봉인하면_편지와봉인시각이저장되고_다시쓰면덮어쓴다() throws {
+    func test_GH61_TC4_수정저장에편지가있으면_편지와봉인시각이저장되고_다시쓰면덮어쓴다() throws {
         // Given
         _ = try sut.addWish(Wish(id: "wish-1", title: "위시")).get()
+        let firstSealedAt = clock
 
         // When
-        _ = try sut.sealFutureLetter(wishId: "wish-1", letter: "첫 편지").get()
+        _ = try sut.updateWish(letterWish("첫 편지", sealedAt: firstSealedAt)).get()
         clock = clock.addingTimeInterval(86_400)
-        let rewritten = try sut.sealFutureLetter(wishId: "wish-1", letter: "새 편지").get()
+        let rewritten = try sut.updateWish(letterWish("새 편지", sealedAt: clock)).get()
 
         // Then
         XCTAssertEqual(rewritten.futureLetter, "새 편지")
         XCTAssertEqual(rewritten.futureLetterSealedAt, clock)
         XCTAssertEqual(sut.fetchWish(id: "wish-1")?.futureLetter, "새 편지")
+    }
+
+    private func letterWish(_ letter: String, sealedAt: Date?, photoFileName: String = "") -> Wish {
+        Wish(id: "wish-1", title: "위시", photoFileName: photoFileName, futureLetter: letter, futureLetterSealedAt: sealedAt)
     }
 
     // MARK: GH-61 TC11
@@ -81,10 +86,10 @@ final class FutureLetterRepositoryTests: XCTestCase {
 
         // When
         clock = clock.addingTimeInterval(60)
-        _ = try sut.sealFutureLetter(wishId: "wish-1", letter: "편지").get()
+        _ = try sut.updateWish(letterWish("편지", sealedAt: clock)).get()
         let afterSeal = try database.snapshot().wishes.first?.updatedAt
         clock = clock.addingTimeInterval(60)
-        _ = try sut.deleteFutureLetter(wishId: "wish-1").get()
+        _ = try sut.updateWish(letterWish("", sealedAt: nil)).get()
         let afterDelete = try database.snapshot().wishes.first
 
         // Then
@@ -92,5 +97,23 @@ final class FutureLetterRepositoryTests: XCTestCase {
         XCTAssertEqual(afterDelete?.updatedAt, clock)
         XCTAssertEqual(afterDelete?.futureLetter, "")
         XCTAssertNil(afterDelete?.futureLetterSealedAt)
+    }
+
+    // MARK: GH-61 TC22
+
+    func test_GH61_TC22_수정저장하면_사진파일이름과편지지움이_updatedAt과함께저장된다() throws {
+        // Given
+        _ = try sut.addWish(letterWish("편지", sealedAt: clock, photoFileName: "wish-1-a.jpg")).get()
+        clock = clock.addingTimeInterval(60)
+
+        // When
+        _ = try sut.updateWish(letterWish("", sealedAt: nil, photoFileName: "wish-1-b.jpg")).get()
+
+        // Then
+        let record = try XCTUnwrap(database.snapshot().wishes.first)
+        XCTAssertEqual(record.photoFileName, "wish-1-b.jpg")
+        XCTAssertEqual(record.futureLetter, "")
+        XCTAssertNil(record.futureLetterSealedAt)
+        XCTAssertEqual(record.updatedAt, clock)
     }
 }

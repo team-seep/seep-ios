@@ -140,7 +140,8 @@ final class WishDetailFeatureTests: ViewModelTestCase {
 
     // MARK: GH-59 TC8
 
-    func test_GH59_TC8_홈상세_날짜사진있으면_캘린더공유사진지우기삭제순이고_수정하기없음_detail_more로그1건() {
+    // GH-61 R-9: 사진 지우기는 수정 문서로 옮겨 홈 상세 메뉴에는 없다
+    func test_GH59_TC8_홈상세_날짜사진있으면_캘린더공유삭제순이고_수정하기없음_detail_more로그1건() {
         // Given
         mockStorage.existingFileNames = ["wish-1-photo.jpg"]
         let viewModel = makeViewModel(wish: makeWish(endDate: now, photoFileName: "wish-1-photo.jpg"), mode: .fromHome)
@@ -150,8 +151,8 @@ final class WishDetailFeatureTests: ViewModelTestCase {
 
         // Then
         let items = menuItems(viewModel.route)
-        XCTAssertEqual(items, [.addCalendar(isAdded: false), .share, .deletePhoto, .delete])
-        XCTAssertEqual(items?.map(\.title), ["캘린더에 추가", "공유하기", "사진 지우기", "삭제하기"])
+        XCTAssertEqual(items, [.addCalendar(isAdded: false), .share, .delete])
+        XCTAssertEqual(items?.map(\.title), ["캘린더에 추가", "공유하기", "삭제하기"])
         XCTAssertFalse(items?.map(\.title).contains("수정하기") ?? true)
         XCTAssertEqual(items?.filter(\.isDestructive), [.delete])
         let events = clickEvents(objectId: .detailMore)
@@ -275,8 +276,8 @@ final class WishDetailFeatureTests: ViewModelTestCase {
         XCTAssertEqual(mockRepository.fetchWishCalledIds, ["wish-1"])
         XCTAssertEqual(viewModel.state.summary?.title, "에어팟 프로 3")
         XCTAssertEqual(viewModel.state.summary?.ddayLine.text, "D-61")
-        // GH-61: 이루기 전 위시는 맨 아래 편지 섹션이 붙는다
-        XCTAssertEqual(viewModel.state.sections, [.memo, .photo, .letter])
+        // GH-61 R-9: 사진·편지는 값이 있을 때만
+        XCTAssertEqual(viewModel.state.sections, [.memo])
         XCTAssertNotNil(viewModel.steps)
         XCTAssertNotNil(viewModel.photo)
     }

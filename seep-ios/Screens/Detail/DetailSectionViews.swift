@@ -232,26 +232,36 @@ struct DetailPlaceBody: View {
     }
 }
 
-/// 사진 본문 (GH-36, GH-59 R-6): 16:9 사진(라운드 12). 없으면 파란 글자 "＋ 사진 붙이기" 한 줄
+/// 사진 본문 (GH-36, GH-59 R-6): 16:9 사진(라운드 12). 없으면 파란 글자 "＋ 사진 붙이기" 한 줄.
+/// 빈 자리는 이룬 싶 탭 상세에만 있다 — 나머지는 작성/수정 문서에서 붙인다 (GH-61 R-9, R-12)
 struct DetailPhotoBody: View {
     let photoURL: URL?
-    let onAdd: () -> Void
+    var onAdd: (() -> Void)?
 
     var body: some View {
         if let image = photoURL.flatMap({ DetailImageDecoder.cgImage(url: $0) }) {
-            Color.gray2
-                .aspectRatio(16 / 9, contentMode: .fit)
-                .overlay {
-                    Image(decorative: image, scale: 1)
-                        .resizable()
-                        .scaledToFill()
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .accessibilityElement()
-                .accessibilityLabel(Text(Strings.Detail.Photo.title))
-        } else {
+            PhotoFrame(image: image)
+        } else if let onAdd {
             // 파일이 없거나 읽지 못하면 빈 상태로 보여준다 (GH-36 R-7)
             TextActionButton(title: Strings.Detail.Photo.add, action: onAdd)
         }
+    }
+}
+
+/// 16:9로 잘라 보여주는 사진 (상세 사진 섹션·문서 사진 블록)
+struct PhotoFrame: View {
+    let image: CGImage
+
+    var body: some View {
+        Color.gray2
+            .aspectRatio(16 / 9, contentMode: .fit)
+            .overlay {
+                Image(decorative: image, scale: 1)
+                    .resizable()
+                    .scaledToFill()
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .accessibilityElement()
+            .accessibilityLabel(Text(Strings.Detail.Photo.title))
     }
 }

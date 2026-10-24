@@ -91,7 +91,6 @@ private struct WishDetailContent: View {
         .onChange(of: viewModel.place?.route) { _, route in handlePlace(route) }
         .onChange(of: viewModel.photo?.route) { _, route in handlePhoto(route) }
         .onChange(of: pickedPhoto) { _, item in loadPickedPhoto(item) }
-        .modifier(DetailLetterRouteHandler(letter: viewModel.letter) { errorMessage = $0 })
         .confirmationDialog("", isPresented: $isMoreMenuPresented, titleVisibility: .hidden) {
             ForEach(moreMenuItems, id: \.title) { item in
                 Button(role: item.isDestructive ? .destructive : nil) {
@@ -269,17 +268,19 @@ private struct WishDetailContent: View {
                 }
             }
         case .letter:
-            if let letter = viewModel.letter {
-                DetailLetterSection(viewModel: letter)
-            }
+            DetailLetterSection(letter: viewModel.state.letter)
         case .photo:
             if let photo = viewModel.photo {
+                // 바꾸기·빈 자리는 이룬 싶 탭 상세에만 (GH-61 R-12)
                 DocumentSection(
                     title: Strings.Detail.Photo.title,
-                    actionTitle: photo.hasPhoto ? Strings.Detail.Photo.change : nil,
+                    actionTitle: photo.isEditable && photo.hasPhoto ? Strings.Detail.Photo.change : nil,
                     action: { photo.send(.tapChange) }
                 ) {
-                    DetailPhotoBody(photoURL: photo.state.photoURL) { photo.send(.tapAdd) }
+                    DetailPhotoBody(
+                        photoURL: photo.state.photoURL,
+                        onAdd: photo.isEditable ? { photo.send(.tapAdd) } : nil
+                    )
                 }
             }
         }

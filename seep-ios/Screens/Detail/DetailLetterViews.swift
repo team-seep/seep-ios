@@ -1,47 +1,16 @@
 import SwiftUI
 
-/// 상세 "미래의 나에게" 섹션 (GH-61 R-2, R-6). 봉인된 편지는 본문을 그리지 않는다
+/// 상세 "미래의 나에게" 섹션 (GH-61 R-6, R-9). 봉인된 편지는 본문을 그리지 않는다
 struct DetailLetterSection: View {
-    let viewModel: DetailLetterViewModel
+    let letter: DetailLetter
 
     var body: some View {
-        switch viewModel.state.letter {
+        switch letter {
         case .hidden:
             EmptyView()
-        case .empty:
-            DocumentSection(title: Strings.Detail.Letter.title) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(Strings.Detail.Letter.empty)
-                        .font(.appleRegular(size: 14))
-                        .foregroundStyle(Color.gray4)
-                    TextActionButton(title: Strings.Detail.Letter.write) { viewModel.send(.tapWrite) }
-                }
-            }
         case .sealed(let caption):
-            DocumentSection(
-                title: Strings.Detail.Letter.title,
-                actionTitle: Strings.Detail.Letter.rewrite,
-                action: { viewModel.send(.tapRewrite) }
-            ) {
-                HStack(alignment: .top, spacing: 12) {
-                    Image(systemName: "lock")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color.gray4)
-                        .padding(.top, 2)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(Strings.Detail.Letter.sealedTitle)
-                            .font(.appleSemiBold(size: 16))
-                            .foregroundStyle(Color.gray5)
-                        Text(verbatim: caption)
-                            .font(.appleRegular(size: 13))
-                            .foregroundStyle(Color.gray4)
-                    }
-                    Spacer(minLength: 0)
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 18)
-                .background(Color.gray2, in: RoundedRectangle(cornerRadius: 12))
-                .accessibilityElement(children: .combine)
+            DocumentSection(title: Strings.Detail.Letter.title) {
+                SealedLetterCard(caption: caption)
             }
         case .opened(let body, let writtenAt):
             DocumentSection(title: Strings.Detail.Letter.title) {
@@ -60,6 +29,33 @@ struct DetailLetterSection: View {
                 .background(Color.gray2, in: RoundedRectangle(cornerRadius: 12))
             }
         }
+    }
+}
+
+/// 자물쇠 + "이루는 날 열려요" + 봉인일·글자 수 (상세 섹션·문서 블록)
+struct SealedLetterCard: View {
+    let caption: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "lock")
+                .font(.system(size: 16))
+                .foregroundStyle(Color.gray4)
+                .padding(.top, 2)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.Detail.Letter.sealedTitle)
+                    .font(.appleSemiBold(size: 16))
+                    .foregroundStyle(Color.gray5)
+                Text(verbatim: caption)
+                    .font(.appleRegular(size: 13))
+                    .foregroundStyle(Color.gray4)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 18)
+        .background(Color.gray2, in: RoundedRectangle(cornerRadius: 12))
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -129,50 +125,5 @@ struct FutureLetterSheet: View {
         .onChange(of: viewModel.route) { _, route in
             if route == .dismiss { dismiss() }
         }
-    }
-}
-
-/// 편지 섹션의 Route(시트·알럿)를 상세 화면에서 처리한다 (GH-61 R-3, R-4, R-7)
-struct DetailLetterRouteHandler: ViewModifier {
-    let letter: DetailLetterViewModel?
-    let onError: (String) -> Void
-
-    @State private var writingSheet: FutureLetterViewModel?
-    @State private var isRewriteAlertPresented = false
-    @State private var isDeleteAlertPresented = false
-
-    func body(content: Content) -> some View {
-        content
-            .onChange(of: letter?.route) { _, route in handle(route) }
-            .seepSheet(item: $writingSheet) { sheet in
-                FutureLetterSheet(viewModel: sheet)
-            }
-            .alert(Text(Strings.Detail.Letter.RewriteAlert.title), isPresented: $isRewriteAlertPresented) {
-                Button(role: .cancel) {} label: { Text(Strings.commonCancel) }
-                Button { letter?.send(.confirmRewrite) } label: { Text(Strings.Detail.Letter.RewriteAlert.confirm) }
-            } message: {
-                Text(Strings.Detail.Letter.RewriteAlert.message)
-            }
-            .alert(Text(Strings.Detail.Letter.DeleteAlert.title), isPresented: $isDeleteAlertPresented) {
-                Button(role: .cancel) {} label: { Text(Strings.commonCancel) }
-                Button(role: .destructive) { letter?.send(.confirmDelete) } label: {
-                    Text(Strings.Detail.Letter.DeleteAlert.confirm)
-                }
-            }
-    }
-
-    private func handle(_ route: DetailLetterViewModel.Route?) {
-        guard let route else { return }
-        switch route {
-        case .writeSheet(let sheet):
-            writingSheet = sheet
-        case .rewriteAlert:
-            isRewriteAlertPresented = true
-        case .deleteAlert:
-            isDeleteAlertPresented = true
-        case .errorAlert(let message):
-            onError(message)
-        }
-        letter?.send(.routeHandled)
     }
 }

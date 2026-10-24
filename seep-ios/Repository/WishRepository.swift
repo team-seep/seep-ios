@@ -56,12 +56,6 @@ protocol WishRepository {
     
     /// 완료를 취소하고(완료일·소감도 지운다), 반영된 위시를 돌려준다. 상세 ⋯ "완료 취소하기" (GH-64 TC-605, GH-25 R-6)
     func cancelFinish(wishId: String) -> Result<Wish, RepositoryError>
-
-    /// "미래의 나에게" 편지를 봉인한다. 이미 있으면 새 내용·새 봉인 시각으로 덮어쓴다 (GH-61 R-4)
-    func sealFutureLetter(wishId: String, letter: String) -> Result<Wish, RepositoryError>
-
-    /// 편지를 지운다. 상세 ⋯ "편지 지우기" (GH-61 R-7)
-    func deleteFutureLetter(wishId: String) -> Result<Wish, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -201,21 +195,6 @@ final class WishRepositoryImpl: WishRepository {
         }
     }
 
-    func sealFutureLetter(wishId: String, letter: String) -> Result<Wish, RepositoryError> {
-        let sealedAt = now()
-        return updateAndFetch(wishId: wishId) { record in
-            record.futureLetter = letter
-            record.futureLetterSealedAt = sealedAt
-        }
-    }
-
-    func deleteFutureLetter(wishId: String) -> Result<Wish, RepositoryError> {
-        return updateAndFetch(wishId: wishId) { record in
-            record.futureLetter = ""
-            record.futureLetterSealedAt = nil
-        }
-    }
-
     func addWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
         return write { db, now in
             try WishRecordStore.insert(wish, now: now, in: db)
@@ -239,6 +218,10 @@ final class WishRepositoryImpl: WishRepository {
                 record.pinnedAt = wish.pinnedAt
                 // 링크는 문자열만 저장한다 (GH-29 R-7)
                 record.link = wish.link
+                // 수정 문서가 사진·편지 블록도 같이 저장한다 (GH-61 R-11)
+                record.photoFileName = wish.photoFileName
+                record.futureLetter = wish.futureLetter
+                record.futureLetterSealedAt = wish.futureLetterSealedAt
                 // 수정해 저장하면 손댄 것으로 보고 잠든 위시 판정 기준을 갱신한다 (GH-30 R-2)
                 record.lastCheckedAt = wish.lastCheckedAt ?? checkedAt
             }

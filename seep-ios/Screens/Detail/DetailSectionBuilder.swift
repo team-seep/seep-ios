@@ -14,9 +14,17 @@ enum DetailSection: CaseIterable, Equatable {
 
 /// 위시 → 보일 섹션 목록 (GH-59 R-10, R-12). 노출 조건은 섹션별 ViewModel 과 같다:
 /// 단계 `WishStepsViewModel`(상세는 0개면 숨김) · 모은 돈 `WishSavingsViewModel` · 링크 `WishLinkViewModel(.detail)` · 장소 `WishPlaceViewModel`.
+/// 사진·편지도 값이 있을 때만 보이고, 넣기·바꾸기는 작성/수정 문서에서 한다 (GH-61 R-9).
 enum DetailSectionBuilder {
-    static func sections(for wish: Wish) -> [DetailSection] {
-        return DetailSection.allCases.filter { isVisible($0, wish: wish) }
+    /// - Parameters:
+    ///   - hasPhoto: 사진 파일이 실제로 있는지. nil 이면 파일 이름으로 판단한다 (GH-36 R-7)
+    ///   - isPhotoEditable: 수정 버튼이 없는 이룬 싶 탭 상세는 사진 빈 자리를 그대로 둔다 (GH-61 R-12)
+    static func sections(for wish: Wish, hasPhoto: Bool? = nil, isPhotoEditable: Bool = false) -> [DetailSection] {
+        let hasPhoto = hasPhoto ?? !wish.photoFileName.isEmpty
+        return DetailSection.allCases.filter { section in
+            if section == .photo { return hasPhoto || isPhotoEditable }
+            return isVisible(section, wish: wish)
+        }
     }
 
     private static func isVisible(_ section: DetailSection, wish: Wish) -> Bool {
@@ -32,10 +40,9 @@ enum DetailSectionBuilder {
         case .place:
             return wish.category == .wantToGo
         case .photo:
-            return true
+            return false
         case .letter:
-            // 이룬 위시는 편지가 있을 때만 (열린 편지). 이루기 전에는 늘 보인다 (GH-61 R-2, R-6)
-            return !wish.isSuccess || wish.hasFutureLetter
+            return wish.hasFutureLetter
         }
     }
 }

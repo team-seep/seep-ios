@@ -2,50 +2,39 @@ import XCTest
 
 @testable import seep_ios_dev
 
-/// "미래의 나에게" 편지 — 상세 섹션·편지 시트·완료 소감 시트 (GH-61)
-final class FutureLetterFeatureTests: ViewModelTestCase {
-    private var repository: MockWishRepository!
+/// "미래의 나에게" 편지 — 상세 섹션·문서 블록·편지 시트·완료 소감 시트 (GH-61)
+final class FutureLetterFeatureTests: WishFormFeatureTestCase {
     private let calendar = Calendar(identifier: .gregorian)
-
-    override func setUp() {
-        super.setUp()
-        repository = MockWishRepository()
-    }
-
-    override func tearDown() {
-        repository = nil
-        super.tearDown()
-    }
 
     private func day(_ day: Int) -> Date {
         calendar.date(from: DateComponents(year: 2026, month: 10, day: day, hour: 9))!
     }
 
-    private func makeSection(_ wish: Wish) -> DetailLetterViewModel {
-        DetailLetterViewModel(
-            config: .init(wish: wish),
-            dependency: .init(wishRepository: repository, logManager: logManager)
-        )
-    }
-
     private func makeDetail(_ wish: Wish) -> WishDetailViewModel {
-        repository.fetchWishResult = [wish]
+        wishRepository.fetchWishResult = [wish]
         return WishDetailViewModel(
             config: .init(wishId: wish.id, mode: wish.isSuccess ? .fromFinish : .fromHome),
-            dependency: .init(wishRepository: repository, logManager: logManager)
+            dependency: .init(wishRepository: wishRepository, logManager: logManager, photoStorage: photoStorage)
         )
     }
 
     private func makeFinishNote(_ wish: Wish) -> FinishNoteViewModel {
         FinishNoteViewModel(
             config: .init(wish: wish),
-            dependency: .init(wishRepository: repository, logManager: logManager, now: { [day] in day(31) }, calendar: calendar)
+            dependency: .init(wishRepository: wishRepository, logManager: logManager, now: { [day] in day(31) }, calendar: calendar)
         )
     }
 
-    private func sheet(from section: DetailLetterViewModel) -> FutureLetterViewModel? {
-        if case .writeSheet(let sheet) = section.route { return sheet }
+    /// 문서에 떠 있는 편지 시트
+    private func letterSheet(_ form: WishFormViewModel) -> FutureLetterViewModel? {
+        if case .letter(let sheet) = form.state.sheet { return sheet }
         return nil
+    }
+
+    private func seal(_ text: String, in form: WishFormViewModel) {
+        let sheet = letterSheet(form)
+        sheet?.send(.inputLetter(text))
+        sheet?.send(.tapSeal)
     }
 
     private func sealedWish(id: String = "wish-1", isSuccess: Bool = false, finishDate: Date? = nil) -> Wish {
@@ -62,16 +51,19 @@ final class FutureLetterFeatureTests: ViewModelTestCase {
 
     // MARK: GH-61 TC1
 
-    func test_GH61_TC1_편지없는미완료위시는_미래의나에게섹션이쓰기상태로보인다() {
+    func test_GH61_TC1_편지없는미완료위시는_상세에편지섹션이없고_수정문서칩에있다() {
         // Given
         let wish = Wish(id: "wish-1", title: "한라산 백록담 올라가기")
 
         // When
         let detail = makeDetail(wish)
+        let form = makeEdit(wish)
 
         // Then
-        XCTAssertEqual(detail.state.sections.last, .letter)
-        XCTAssertEqual(detail.letter?.state.letter, .empty)
+        XCTAssertFalse(detail.state.sections.contains(.letter))
+        XCTAssertEqual(detail.state.letter, .hidden)
+        XCTAssertEqual(form.chips.last, .letter)
+        XCTAssertFalse(form.visibleBlocks.contains(.letter))
     }
 
     // MARK: GH-61 TC2
@@ -108,68 +100,77 @@ final class FutureLetterFeatureTests: ViewModelTestCase {
 
     // MARK: GH-61 TC4
 
-    func test_GH61_TC4_내용을입력하고봉인하면_저장되고섹션이봉인상태가된다() {
+    func test_GH61_TC4_문서에서봉인하고저장하면_편지와저장시각이봉인일로저장된다() {
         // Given
-        let wish = Wish(id: "wish-1", title: "한라산 백록담 올라가기")
-        let section = makeSection(wish)
-        var updated: [Wish] = []
-        section.onUpdate = { updated.append($0) }
-        repository.sealFutureLetterResult = .success(sealedWish())
-        section.send(.tapWrite)
-        let sheet = sheet(from: section)
+        let form = makeWrite(category: .wantToDo)
+        form.send(.tapChip(.letter))
 
         // When
-        sheet?.send(.inputLetter("  왜 이걸 하고 싶었는지 잊지 마.  "))
-        sheet?.send(.tapSeal)
+        seal("  왜 이걸 하고 싶었는지 잊지 마.  ", in: form)
+        let caption = form.letterCaption
+        form.send(.tapSave)
 
         // Then
-        XCTAssertEqual(repository.sealFutureLetterCalls.map(\.letter), ["왜 이걸 하고 싶었는지 잊지 마."])
-        XCTAssertEqual(section.state.letter, .sealed(caption: "10월 8일에 봉인했어요 · 18자"))
-        XCTAssertEqual(updated.map(\.futureLetter), ["왜 이걸 하고 싶었는지 잊지 마."])
-        XCTAssertEqual(sheet?.route, .dismiss)
+        XCTAssertNil(form.state.sheet)
+        XCTAssertEqual(form.visibleBlocks.last, .letter)
+        XCTAssertEqual(caption, "\(DateUtils.toString(format: "M월 d일", date: now))에 봉인했어요 · 18자")
+        XCTAssertEqual(wishRepository.addedWishes.first?.futureLetter, "왜 이걸 하고 싶었는지 잊지 마.")
+        XCTAssertEqual(wishRepository.addedWishes.first?.futureLetterSealedAt, now)
+    }
+
+    func test_GH61_TC4_봉인한위시의상세는_봉인상태로보인다() {
+        // Given / When
+        let detail = makeDetail(sealedWish())
+
+        // Then
+        XCTAssertEqual(detail.state.sections.last, .letter)
+        XCTAssertEqual(detail.state.letter, .sealed(caption: "10월 8일에 봉인했어요 · 18자"))
     }
 
     // MARK: GH-61 TC5
 
-    func test_GH61_TC5_봉인된미완료위시는_본문이섹션상태어디에도없다() {
+    func test_GH61_TC5_봉인된미완료위시는_본문이상세와문서어디에도없다() {
         // Given / When
-        let section = makeSection(sealedWish())
+        let letter = DetailLetter(wish: sealedWish())
+        let form = makeEdit(sealedWish())
 
         // Then
-        guard case .sealed(let caption) = section.state.letter else { return XCTFail("봉인 상태가 아니다") }
+        guard case .sealed(let caption) = letter else { return XCTFail("봉인 상태가 아니다") }
         XCTAssertFalse(caption.contains("잊지 마"))
+        XCTAssertFalse(form.letterCaption?.contains("잊지 마") ?? true)
     }
 
     // MARK: GH-61 TC6
 
-    func test_GH61_TC6_다시쓰기는_확인뒤빈칸에서시작하고_새내용으로덮어쓴다() {
+    func test_GH61_TC6_봉인카드를누르면_확인뒤빈칸에서다시쓰고_새내용과새봉인일로저장된다() {
         // Given
-        let section = makeSection(sealedWish())
+        let form = makeEdit(sealedWish())
 
         // When
-        section.send(.tapRewrite)
-        let routeBeforeConfirm = section.route
-        section.send(.routeHandled)
-        section.send(.confirmRewrite)
-        let sheet = sheet(from: section)
-        sheet?.send(.inputLetter("새 편지"))
-        sheet?.send(.tapSeal)
+        form.send(.tapLetter)
+        let routeBeforeConfirm = form.route
+        form.send(.routeHandled)
+        form.send(.confirmRewriteLetter)
+        let startText = letterSheet(form)?.state.letterText
+        seal("새 편지", in: form)
+        form.send(.tapSave)
 
         // Then
-        XCTAssertEqual(routeBeforeConfirm, .rewriteAlert)
-        XCTAssertEqual(sheet?.state.letterText, "새 편지")
-        XCTAssertEqual(repository.sealFutureLetterCalls.map(\.letter), ["새 편지"])
+        XCTAssertEqual(routeBeforeConfirm, .rewriteLetterAlert)
+        XCTAssertEqual(startText, "")
+        XCTAssertEqual(wishRepository.updatedWishes.first?.futureLetter, "새 편지")
+        XCTAssertEqual(wishRepository.updatedWishes.first?.futureLetterSealedAt, now)
     }
 
-    func test_GH61_TC6_다시쓰기시트는_이전내용을보여주지않는다() {
+    func test_GH61_TC6_다시쓰지않고저장하면_봉인일이그대로다() {
         // Given
-        let section = makeSection(sealedWish())
+        let form = makeEdit(sealedWish())
 
         // When
-        section.send(.confirmRewrite)
+        form.send(.tapSave)
 
         // Then
-        XCTAssertEqual(sheet(from: section)?.state.letterText, "")
+        XCTAssertEqual(wishRepository.updatedWishes.first?.futureLetterSealedAt, day(8))
     }
 
     // MARK: GH-61 TC7
@@ -223,7 +224,7 @@ final class FutureLetterFeatureTests: ViewModelTestCase {
         let detail = makeDetail(wish)
 
         // Then
-        XCTAssertEqual(detail.letter?.state.letter, .opened(body: "왜 이걸 하고 싶었는지 잊지 마.", writtenAt: "10월 8일에 씀"))
+        XCTAssertEqual(detail.state.letter, .opened(body: "왜 이걸 하고 싶었는지 잊지 마.", writtenAt: "10월 8일에 씀"))
         XCTAssertTrue(detail.state.sections.contains(.letter))
     }
 
@@ -239,52 +240,64 @@ final class FutureLetterFeatureTests: ViewModelTestCase {
 
     func test_GH61_TC10_완료를취소하면_다시봉인상태가된다() {
         // Given
-        let section = makeSection(sealedWish(isSuccess: true, finishDate: day(20)))
+        let opened = DetailLetter(wish: sealedWish(isSuccess: true, finishDate: day(20)))
 
         // When
-        section.send(.reload(sealedWish(isSuccess: false)))
+        let restored = DetailLetter(wish: sealedWish(isSuccess: false))
 
         // Then
-        XCTAssertEqual(section.state.letter, .sealed(caption: "10월 8일에 봉인했어요 · 18자"))
-    }
-
-    // MARK: GH-61 R-7 (편지 지우기)
-
-    func test_GH61_R7_편지가있으면_더보기메뉴에편지지우기가있고_확인하면지운다() {
-        // Given
-        let detail = makeDetail(sealedWish())
-
-        // When
-        detail.send(.tapMore)
-        let items: [DetailMoreMenu.Item]
-        if case .moreMenu(let menu) = detail.route { items = menu } else { items = [] }
-        detail.send(.selectMoreItem(.deleteLetter))
-        let letterRoute = detail.letter?.route
-        detail.letter?.send(.confirmDelete)
-
-        // Then
-        XCTAssertTrue(items.contains(.deleteLetter))
-        XCTAssertEqual(letterRoute, .deleteAlert)
-        XCTAssertEqual(repository.deleteFutureLetterCalledIds, ["wish-1"])
-        XCTAssertEqual(detail.letter?.state.letter, .empty)
-        XCTAssertEqual(detail.state.wish?.futureLetter, "")
+        XCTAssertEqual(opened, .opened(body: "왜 이걸 하고 싶었는지 잊지 마.", writtenAt: "10월 8일에 씀"))
+        XCTAssertEqual(restored, .sealed(caption: "10월 8일에 봉인했어요 · 18자"))
     }
 
     // MARK: GH-61 TC12
 
-    func test_GH61_TC12_쓰기나다시쓰기를누르면_write_future_letter클릭로그가한번전송된다() {
+    func test_GH61_TC12_미래의나에게칩을누르면_add_block클릭로그가한번전송된다() {
         // Given
-        let empty = makeSection(Wish(id: "wish-1", title: "위시"))
-        let sealed = makeSection(sealedWish(id: "wish-2"))
+        let form = makeWrite(category: .wantToDo)
 
         // When
-        empty.send(.tapWrite)
-        sealed.send(.tapRewrite)
+        form.send(.tapChip(.letter))
 
         // Then
-        let events = clickEvents(objectId: .writeFutureLetter)
-        XCTAssertEqual(events.count, 2)
-        XCTAssertTrue(events.allSatisfy { $0.screen == .wishDetail })
+        let events = clickEvents(objectId: .addBlock)
+        XCTAssertEqual(events.count, 1)
+        XCTAssertEqual(events.first?.extraParameters?[.block] as? String, "future_letter")
+        XCTAssertNotNil(letterSheet(form))
+    }
+
+    // MARK: GH-61 TC22
+
+    func test_GH61_TC22_수정문서에서편지를지우고완료하면_편지없음으로저장된다() {
+        // Given
+        let form = makeEdit(sealedWish())
+
+        // When
+        form.send(.removeBlock(.letter))
+        form.send(.tapSave)
+
+        // Then
+        XCTAssertEqual(form.chips.last, .letter)
+        XCTAssertEqual(wishRepository.updatedWishes.first?.futureLetter, "")
+        XCTAssertNil(wishRepository.updatedWishes.first?.futureLetterSealedAt)
+    }
+
+    // MARK: GH-61 TC24
+
+    func test_GH61_TC24_홈에서연상세의더보기메뉴에는_사진편지지우기가없다() {
+        // Given
+        var wish = sealedWish()
+        wish.photoFileName = "wish-1-a.jpg"
+        photoStorage.existingFileNames = ["wish-1-a.jpg"]
+        let detail = makeDetail(wish)
+
+        // When
+        detail.send(.tapMore)
+
+        // Then
+        guard case .moreMenu(let items) = detail.route else { return XCTFail("메뉴가 열리지 않았다") }
+        XCTAssertFalse(items.contains(.deletePhoto))
+        XCTAssertEqual(items, [.share, .delete])
     }
 
     // MARK: GH-61 TC13

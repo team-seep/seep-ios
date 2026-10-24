@@ -90,8 +90,12 @@ struct ThinProgressBar: View {
 /// 파일·데이터의 이미지를 UIKit 없이(ImageIO) 읽어 그린다. 읽지 못하면 nil
 enum DetailImageDecoder {
     static func cgImage(data: Data) -> CGImage? {
+        cgImage(data: data, maxPixelSize: 400)
+    }
+
+    static func cgImage(data: Data, maxPixelSize: Int) -> CGImage? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
-        return thumbnail(source: source, maxPixelSize: 400)
+        return thumbnail(source: source, maxPixelSize: maxPixelSize)
     }
 
     static func cgImage(url: URL, maxPixelSize: Int = 1600) -> CGImage? {

@@ -148,18 +148,12 @@
 "common.won_unit" = "원";
 "common.won_format" = "%@원";
 "detail.letter.title" = "미래의 나에게";
-"detail.letter.empty" = "이루는 날의 나에게 편지를 남겨 둘 수 있어요.";
-"detail.letter.write" = "＋ 쓰기";
-"detail.letter.rewrite" = "다시 쓰기";
 "detail.letter.sealed_title" = "이루는 날 열려요";
 "detail.letter.sealed_caption_format" = "%@에 봉인했어요 · %d자";
 "detail.letter.written_format" = "%@에 씀";
-"detail.letter.delete" = "편지 지우기";
 "detail.letter.rewrite_alert.title" = "봉인한 편지를 새로 쓸까요?";
 "detail.letter.rewrite_alert.message" = "이전 편지는 사라져요.";
 "detail.letter.rewrite_alert.confirm" = "새로 쓰기";
-"detail.letter.delete_alert.title" = "편지를 지울까요?";
-"detail.letter.delete_alert.confirm" = "지우기";
 "future_letter.title" = "이루는 날의 나에게\n편지를 남겨요";
 "future_letter.title_bold" = "편지를 남겨요";
 "future_letter.placeholder" = "이 위시를 이룬 나에게 하고 싶은 말을 적어요";
@@ -444,6 +438,8 @@
 "wish_document.chip.link" = "링크";
 "wish_document.chip.target_amount" = "목표 금액";
 "wish_document.chip.place" = "장소";
+"wish_document.chip.photo" = "사진";
+"wish_document.chip.letter" = "미래의 나에게";
 "wish_document.section.notification" = "알림";
 "wish_document.discard.add_title" = "적던 내용을 버릴까요?";
 "wish_document.discard.edit_title" = "고친 내용을 버릴까요?";
