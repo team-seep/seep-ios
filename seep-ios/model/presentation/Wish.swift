@@ -35,6 +35,8 @@ struct Wish: Equatable, Hashable {
     var futureLetterSealedAt: Date?
     /// "내가 정한 순서" 값. 카테고리 안에서 작을수록 위다 (GH-73)
     var manualOrder: Double
+    /// 이어서 적은 앞 위시 id. nil 이면 처음 싶 (GH-84)
+    var previousWishId: String?
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -105,6 +107,7 @@ struct Wish: Equatable, Hashable {
         futureLetter: String = "",
         futureLetterSealedAt: Date? = nil,
         manualOrder: Double = 0,
+        previousWishId: String? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -129,6 +132,7 @@ struct Wish: Equatable, Hashable {
         self.futureLetter = futureLetter
         self.futureLetterSealedAt = futureLetterSealedAt
         self.manualOrder = manualOrder
+        self.previousWishId = previousWishId
         self.createdAt = createdAt
     }
 }

@@ -125,6 +125,14 @@ final class AppDatabase {
                 """)
         }
 
+        // GH-84: 싶 잇기. 기존 위시는 앞 위시 없음
+        migrator.registerMigration("v4") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "previousWishId", .text)
+            }
+            try db.create(index: "wish_on_previousWishId", on: WishRecord.databaseTableName, columns: ["previousWishId"])
+        }
+
         return migrator
     }
 

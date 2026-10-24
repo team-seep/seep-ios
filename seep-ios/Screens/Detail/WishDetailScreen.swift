@@ -43,6 +43,7 @@ private struct WishDetailContent: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(ToastCenter.self) private var toastCenter: ToastCenter?
+    @Environment(AppRouter.self) private var router: AppRouter?
 
     @State private var isTitleCollapsed = false
     @State private var titleBottom: CGFloat = 0
@@ -219,6 +220,10 @@ private struct WishDetailContent: View {
         switch section {
         case .memo:
             EmptyView()
+        case .chain:
+            if let chain = viewModel.state.chain {
+                DetailChainSection(chain: chain) { viewModel.send(.tapChainWish(id: $0)) }
+            }
         case .steps:
             if let steps = viewModel.steps {
                 DocumentSection(
@@ -304,6 +309,10 @@ private struct WishDetailContent: View {
             isCancelFinishAlertPresented = true
         case .sharePhoto(let wish):
             sharingWish = SharingWish(wish: wish)
+        case .chainedWrite(let wish):
+            router?.openChainedWrite(from: wish)
+        case .wishDetail(let id, let isFinished):
+            router?.push(.wishDetail(id: id, isFinished: isFinished))
         case .errorAlert(let message):
             errorMessage = message
         case .close:

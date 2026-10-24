@@ -187,7 +187,7 @@ final class WishDetailFeatureTests: ViewModelTestCase {
         viewModel.send(.tapMore)
 
         // Then
-        XCTAssertEqual(menuItems(viewModel.route), [.cancelFinish, .deletePhoto, .share])
+        XCTAssertEqual(menuItems(viewModel.route), [.cancelFinish, .chainNext, .deletePhoto, .share]) // GH-84: 이어서 적기
     }
 
     func test_GH59_TC9_완료모드는_캘린더상태와상관없이_캘린더항목이없다() {
@@ -200,7 +200,7 @@ final class WishDetailFeatureTests: ViewModelTestCase {
         ))
 
         // Then
-        XCTAssertEqual(items, [.cancelFinish, .share])
+        XCTAssertEqual(items, [.cancelFinish, .chainNext, .share]) // GH-84: 이어서 적기
     }
 
     // MARK: GH-59 TC10

@@ -189,6 +189,8 @@ extension WishFormViewModel {
 
     struct Config {
         let mode: WishFormMode
+        /// "이어서 적기"로 연 작성의 앞 위시 id. 저장하면 새 위시의 `previousWishId`가 된다 (GH-84 R-2)
+        var previousWishId: String?
     }
 
     struct Dependency {

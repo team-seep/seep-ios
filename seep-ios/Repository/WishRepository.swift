@@ -47,6 +47,9 @@ protocol WishRepository {
     /// id 로 위시 하나를 읽는다. 없으면(지워졌으면) nil. 잠금화면 위젯 링크로 상세를 열 때 쓴다 (GH-47 R-14)
     func fetchWish(id: String) -> Wish?
 
+    /// 위시가 이어진 싶(앞·다음)을 읽는다. 지금 위시가 없으면(지워졌으면) nil (GH-84 R-4, R-6, R-7)
+    func fetchWishChain(wishId: String) -> WishChain?
+
     /// 작성 폼에서 만든 위시를 저장하고, 저장된 위시를 돌려준다 (GH-64 P2)
     func addWish(_ wish: Wish) -> Result<Wish, RepositoryError>
 
@@ -190,6 +193,13 @@ final class WishRepositoryImpl: WishRepository {
         return read { try WishRecordStore.fetchWish(id: id, in: $0) } ?? nil
     }
 
+    func fetchWishChain(wishId: String) -> WishChain? {
+        // 삭제한 위시를 건너뛰어 잇기 위해 지운 줄까지 읽는다. id·앞 위시 id 만 쓰므로 표가 커도 가볍다
+        return read { db in
+            WishChain(records: try WishRecord.fetchAll(db), currentId: wishId)
+        } ?? nil
+    }
+
     func cancelFinish(wishId: String) -> Result<Wish, RepositoryError> {
         return updateAndFetch(wishId: wishId) { record in
             record.isSuccess = false
@@ -324,6 +334,72 @@ final class WishRepositoryImpl: WishRepository {
         WishSaving.latestFirst(
             try WishRecordStore.aliveSavings(wishId: wishId, in: db)
                 .map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }
+        )
+    }
+}
+
+/// 상세 "이어지는 싶" 섹션에 보일 체인 (GH-84 R-4, R-6~R-8)
+struct WishChain: Equatable {
+    /// 앞 위시 최대 개수. 지금 위시까지 10개를 넘으면 맨 앞을 접는다 (R-7)
+    static let maxPreviousCount = 9
+
+    /// 앞 → 뒤 순서. 지금 위시는 빠진다
+    let previous: [Wish]
+    let current: Wish
+    /// 지금 위시 바로 다음으로 이어 적은 위시들(갈래 허용, 만든 순서)
+    let next: [Wish]
+    /// 접어 둔 앞선 싶 수
+    let hiddenPreviousCount: Int
+
+    /// 지금 위시가 체인에서 몇 번째인지
+    var position: Int { hiddenPreviousCount + previous.count + 1 }
+    /// 지금 위시 하나만 남으면 섹션을 숨긴다 (R-6)
+    var isEmpty: Bool { previous.isEmpty && next.isEmpty }
+
+    init(previous: [Wish], current: Wish, next: [Wish], hiddenPreviousCount: Int = 0) {
+        self.previous = previous
+        self.current = current
+        self.next = next
+        self.hiddenPreviousCount = hiddenPreviousCount
+    }
+
+    /// 지운 위시는 건너뛰고 앞뒤를 바로 잇는다(R-6). 한 번 본 id 를 다시 만나면 멈춘다(R-7 순환 참조)
+    init?(records: [WishRecord], currentId: String) {
+        let byId = Dictionary(records.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        guard let currentRecord = byId[currentId], currentRecord.deletedAt == nil else { return nil }
+
+        func alivePrevious(of id: String) -> String? {
+            var candidate = byId[id]?.previousWishId
+            var visited: Set<String> = [id]
+            while let candidateId = candidate, let record = byId[candidateId], !visited.contains(candidateId) {
+                guard record.deletedAt != nil else { return candidateId }
+                visited.insert(candidateId)
+                candidate = record.previousWishId
+            }
+            return nil
+        }
+
+        var chain: [WishRecord] = []
+        var seen: Set<String> = [currentId]
+        var cursor = alivePrevious(of: currentId)
+        while let id = cursor, !seen.contains(id), let record = byId[id] {
+            chain.insert(record, at: 0)
+            seen.insert(id)
+            cursor = alivePrevious(of: id)
+        }
+        let nextRecords = records
+            .filter { $0.deletedAt == nil && !seen.contains($0.id) && alivePrevious(of: $0.id) == currentId }
+            .sorted { $0.createdAt < $1.createdAt }
+
+        func wish(_ record: WishRecord) -> Wish {
+            Wish(record: record, steps: [], savings: [], notifications: [])
+        }
+        let shown = chain.suffix(Self.maxPreviousCount)
+        self.init(
+            previous: shown.map(wish),
+            current: wish(currentRecord),
+            next: nextRecords.map(wish),
+            hiddenPreviousCount: chain.count - shown.count
         )
     }
 }
