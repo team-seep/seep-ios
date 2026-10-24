@@ -176,6 +176,12 @@ enum LogObjectId: String {
     case viewTypeSetting = "view_type_setting"
     /// 설정 "화면 모드"에서 고름 (+type) (GH-85)
     case selectAppearance = "select_appearance"
+    /// 설정 "시작 카테고리"에서 고름 (+type) (GH-86)
+    case selectStartCategory = "select_start_category"
+    /// 홈 "선택" → 선택 모드 (GH-86)
+    case selectWishes = "select_wishes"
+    /// 선택 모드 일괄 삭제 확인 (+count) (GH-86)
+    case deleteSelectedWishes = "delete_selected_wishes"
     case widgetGuide = "widget_guide"
     case controlGuide = "control_guide"
     case rateApp = "rate_app"

@@ -7,6 +7,8 @@ enum SettingsRow: Equatable, Identifiable {
     case viewType(ViewType)
     /// 화면 모드 (GH-85 R-3)
     case appearance(AppAppearance)
+    /// 시작 카테고리. nil 이면 마지막으로 본 카테고리 (GH-86 R-1)
+    case startCategory(Category?)
     case widgetGuide
     case controlGuide
     case rateApp
@@ -20,6 +22,7 @@ enum SettingsRow: Equatable, Identifiable {
         case .notification: return "notification"
         case .viewType: return "view_type"
         case .appearance: return "appearance"
+        case .startCategory: return "start_category"
         case .widgetGuide: return "widget_guide"
         case .controlGuide: return "control_guide"
         case .rateApp: return "rate_app"
@@ -45,6 +48,7 @@ enum SettingsMenuBuilder {
         notificationStatus: NotificationAuthorization?,
         viewType: ViewType,
         appearance: AppAppearance = .system,
+        startCategory: Category? = nil,
         version: String,
         isRateAppAvailable: Bool = true,
         isContactAvailable: Bool = true
@@ -68,6 +72,7 @@ enum SettingsMenuBuilder {
             ]),
             SettingsGroup(title: Strings.Settings.Group.view, rows: [
                 .viewType(viewType),
+                .startCategory(startCategory),
                 .appearance(appearance)
             ]),
             SettingsGroup(title: Strings.Settings.Group.quickWrite, rows: [

@@ -10,6 +10,9 @@ protocol WishRepository {
     func finishWish(wish: Wish) -> Result<Wish, RepositoryError>
     
     func deleteWish(id: String)
+
+    /// 여러 위시를 한 트랜잭션으로 삭제 표시한다. 하나라도 실패하면 아무것도 지우지 않는다 (GH-86 R-4)
+    func deleteWishes(ids: [String]) -> Result<Void, RepositoryError>
     
     /// 단계의 완료 여부를 뒤집고, 갱신된 단계 목록(order 오름차순)을 돌려준다. 상세 화면 체크/해제용.
     func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError>
@@ -109,6 +112,14 @@ final class WishRepositoryImpl: WishRepository {
         // 줄을 지우지 않고 삭제 표시만 남긴다. 프로토콜이 결과를 돌려주지 않아 실패하면 위시가 목록에 남는다 (GH-79 R-5)
         _ = write { db, now in
             try WishRecordStore.softDeleteWish(id: id, now: now, in: db)
+        }
+    }
+
+    func deleteWishes(ids: [String]) -> Result<Void, RepositoryError> {
+        return write { db, now in
+            for id in ids {
+                try WishRecordStore.softDeleteWish(id: id, now: now, in: db)
+            }
         }
     }
 

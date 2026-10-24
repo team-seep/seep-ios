@@ -12,6 +12,7 @@ struct SettingsTabRootView: View {
     @State private var appLockSheet: AppLockSheetViewModel?
     @State private var isViewTypeDialogPresented = false
     @State private var isAppearanceDialogPresented = false
+    @State private var isStartCategoryDialogPresented = false
 
     var body: some View {
         ScrollView {
@@ -75,6 +76,19 @@ struct SettingsTabRootView: View {
             Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
         }
         .confirmationDialog(
+            Strings.Settings.StartCategory.title,
+            isPresented: $isStartCategoryDialogPresented,
+            titleVisibility: .visible
+        ) {
+            Button(Strings.Settings.StartCategory.last) { viewModel.send(.selectStartCategory(nil)) }
+            ForEach([Category.wantToDo, .wantToGet, .wantToGo], id: \.self) { category in
+                Button(category.title) { viewModel.send(.selectStartCategory(category)) }
+            }
+            Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
+        } message: {
+            Text(Strings.Settings.StartCategory.description)
+        }
+        .confirmationDialog(
             Strings.Settings.Appearance.title,
             isPresented: $isAppearanceDialogPresented,
             titleVisibility: .visible
@@ -130,6 +144,13 @@ struct SettingsTabRootView: View {
                 title: Strings.Settings.Appearance.title,
                 value: Self.title(of: appearance),
                 action: .tapAppearance
+            )
+
+        case .startCategory(let category):
+            button(
+                title: Strings.Settings.StartCategory.title,
+                value: category?.title ?? Strings.Settings.StartCategory.lastShort,
+                action: .tapStartCategory
             )
 
         case .widgetGuide:
@@ -205,6 +226,8 @@ struct SettingsTabRootView: View {
             isViewTypeDialogPresented = true
         case .appearanceDialog:
             isAppearanceDialogPresented = true
+        case .startCategoryDialog:
+            isStartCategoryDialogPresented = true
         case .openURL(let url):
             let isContact = url.scheme == "mailto"
             openURL(url) { accepted in

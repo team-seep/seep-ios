@@ -14,6 +14,9 @@ extension SettingsViewModel {
         /// 화면 모드 (GH-85 R-3)
         case tapAppearance
         case selectAppearance(AppAppearance)
+        /// 시작 카테고리 (GH-86 R-1). nil 이면 마지막으로 본 카테고리
+        case tapStartCategory
+        case selectStartCategory(Category?)
         case tapWidgetGuide
         case tapControlGuide
         case tapRateApp
@@ -30,12 +33,14 @@ extension SettingsViewModel {
         var notificationStatus: NotificationAuthorization?
         var viewType: ViewType = .list
         var appearance: AppAppearance = .system
+        var startCategory: Category?
     }
 
     enum Route: Equatable {
         case appLockSheet
         case viewTypeDialog
         case appearanceDialog
+        case startCategoryDialog
         case openURL(URL)
         case push(AppDestination)
         case toast(String)
@@ -123,6 +128,14 @@ final class SettingsViewModel {
             dependency.preference.appearance = appearance
             reloadLocalState()
 
+        case .tapStartCategory:
+            route = .startCategoryDialog
+
+        case .selectStartCategory(let category):
+            sendClickLog(objectId: .selectStartCategory, extraParameters: [.type: category?.rawValue ?? "last"])
+            dependency.preference.startCategory = category
+            reloadLocalState()
+
         case .tapWidgetGuide:
             sendClickLog(objectId: .widgetGuide)
             route = .push(.widgetGuide)
@@ -168,6 +181,7 @@ final class SettingsViewModel {
         state.isAppLockEnabled = dependency.preference.isAppLockEnabled
         state.viewType = dependency.preference.viewType
         state.appearance = dependency.preference.appearance
+        state.startCategory = dependency.preference.startCategory
         rebuildGroups()
     }
 
@@ -189,6 +203,7 @@ final class SettingsViewModel {
             notificationStatus: state.notificationStatus,
             viewType: state.viewType,
             appearance: state.appearance,
+            startCategory: state.startCategory,
             version: dependency.deviceInfo.appVersion,
             isRateAppAvailable: SettingsLinks.reviewURL(appStoreID: dependency.appStoreID) != nil,
             isContactAvailable: !(dependency.contactEmail ?? "").isEmpty
