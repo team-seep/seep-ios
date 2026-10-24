@@ -14,7 +14,7 @@ struct CategoryTabs: View {
                 } label: {
                     Text(verbatim: title)
                         .font(index == selectedIndex ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
-                        .foregroundStyle(index == selectedIndex ? Color.gray1 : Color.gray4)
+                        .foregroundStyle(index == selectedIndex ? Color.onAccent : Color.gray4)
                         .padding(.horizontal, 18)
                         .frame(height: 30)
                         .background {

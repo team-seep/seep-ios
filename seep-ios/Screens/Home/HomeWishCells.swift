@@ -245,9 +245,9 @@ struct HomeCheckButton: View {
     private var icon: some View {
         let image = (isChecked ? Assets.Icons.icCheckOn : Assets.Icons.icCheckOff).swiftUIImage
         if let size {
-            image.resizable().frame(width: size, height: size)
+            image.resizable().foregroundStyle(Color.gray3).frame(width: size, height: size)
         } else {
-            image
+            image.foregroundStyle(Color.gray3)
         }
     }
 }

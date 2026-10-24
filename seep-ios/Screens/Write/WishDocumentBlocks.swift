@@ -80,6 +80,7 @@ struct WishDocumentBlocks: View {
                     HStack(spacing: 10) {
                         Assets.Icons.icCheckOff.swiftUIImage
                             .resizable()
+                            .foregroundStyle(Color.gray3)
                             .frame(width: 24, height: 24)
                             .accessibilityHidden(true)
                         Text(verbatim: step.title)

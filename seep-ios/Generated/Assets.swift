@@ -38,6 +38,7 @@ internal enum Assets {
     internal static let icHashtag = ImageAsset(name: "ic_hashtag")
     internal static let icList = ImageAsset(name: "ic_list")
     internal static let icLogoBlack = ImageAsset(name: "ic_logo_black")
+    internal static let icLogoLaunch = ImageAsset(name: "ic_logo_launch")
     internal static let icLogoWhite = ImageAsset(name: "ic_logo_white")
     internal static let icMemo = ImageAsset(name: "ic_memo")
     internal static let icMore = ImageAsset(name: "ic_more")

@@ -25,6 +25,16 @@ final class Preference {
         }
     }
     
+    /// 화면 모드. 없으면 시스템 설정 따르기 (GH-85 R-3)
+    var appearance: AppAppearance {
+        set {
+            instance.set(newValue.rawValue, forKey: AppAppearance.storageKey)
+        }
+        get {
+            instance.string(forKey: AppAppearance.storageKey).flatMap(AppAppearance.init(rawValue:)) ?? .system
+        }
+    }
+
     /// 홈 정렬. 없으면 완료일 가까운순 (GH-73 R-2)
     var homeSortOrder: HomeSortOrder {
         set {

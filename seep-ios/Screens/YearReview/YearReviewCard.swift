@@ -10,8 +10,10 @@ struct YearReviewCard: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Assets.Icons.icLogoBlack.swiftUIImage
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
+                    .foregroundStyle(Color.gray5)
                     .frame(height: 18)
                     .accessibilityHidden(true)
                 Spacer()
