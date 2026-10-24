@@ -73,7 +73,7 @@ struct HomeSelectionView: View {
         } label: {
             Text(Strings.Home.Select.deleteFormat(count))
                 .font(.appleExtraBold(size: 17))
-                .foregroundStyle(Color.gray1)
+                .foregroundStyle(Color.onAccent)
                 .frame(maxWidth: .infinity, minHeight: 50)
                 .background(count > 0 ? Color.optionRed : Color.ctaDisabled, in: Capsule())
         }
@@ -133,7 +133,7 @@ private struct HomeSelectionRow: View {
                     Circle().fill(Color.seepBlue)
                     Image(systemName: "checkmark")
                         .font(.system(size: 13, weight: .heavy))
-                        .foregroundStyle(Color.gray1)
+                        .foregroundStyle(Color.onAccent)
                 } else {
                     Circle().strokeBorder(Color.gray3, lineWidth: 2)
                 }

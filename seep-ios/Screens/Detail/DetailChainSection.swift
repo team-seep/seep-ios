@@ -127,7 +127,7 @@ struct DetailChainSection: View {
                 Circle().fill(Color.tennisGreen)
                 Image(systemName: "checkmark")
                     .font(.system(size: 11, weight: .bold))
-                    .foregroundStyle(Color.gray1)
+                    .foregroundStyle(Color.onAccent)
             } else {
                 Circle().strokeBorder(Color.gray3, lineWidth: 1.5)
             }
