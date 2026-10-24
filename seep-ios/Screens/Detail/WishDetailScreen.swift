@@ -267,14 +267,20 @@ private struct WishDetailContent: View {
                     )
                 }
             }
+        case .letter:
+            DetailLetterSection(letter: viewModel.state.letter)
         case .photo:
             if let photo = viewModel.photo {
+                // 바꾸기·빈 자리는 이룬 싶 탭 상세에만 (GH-61 R-12)
                 DocumentSection(
                     title: Strings.Detail.Photo.title,
-                    actionTitle: photo.hasPhoto ? Strings.Detail.Photo.change : nil,
+                    actionTitle: photo.isEditable && photo.hasPhoto ? Strings.Detail.Photo.change : nil,
                     action: { photo.send(.tapChange) }
                 ) {
-                    DetailPhotoBody(photoURL: photo.state.photoURL) { photo.send(.tapAdd) }
+                    DetailPhotoBody(
+                        photoURL: photo.state.photoURL,
+                        onAdd: photo.isEditable ? { photo.send(.tapAdd) } : nil
+                    )
                 }
             }
         }

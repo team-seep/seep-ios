@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 /// 작성·수정 문서 (GH-70 W1 "문서에 바로 쓰기").
@@ -17,6 +18,9 @@ struct WishDocumentEditor: View {
     @State private var isAddStepAlertPresented = false
     @State private var newStepTitle = ""
     @State private var isDiscardDialogPresented = false
+    @State private var isPhotoPickerPresented = false
+    @State private var pickedPhoto: PhotosPickerItem?
+    @State private var isRewriteLetterAlertPresented = false
 
     private var state: WishFormViewModel.State { viewModel.state }
 
@@ -83,8 +87,28 @@ struct WishDocumentEditor: View {
             }
             Button(Strings.WishDocument.Discard.keep, role: .cancel) {}
         }
+        .alert(Text(Strings.Detail.Letter.RewriteAlert.title), isPresented: $isRewriteLetterAlertPresented) {
+            Button(role: .cancel) {} label: { Text(Strings.commonCancel) }
+            Button { viewModel.send(.confirmRewriteLetter) } label: { Text(Strings.Detail.Letter.RewriteAlert.confirm) }
+        } message: {
+            Text(Strings.Detail.Letter.RewriteAlert.message)
+        }
+        .photosPicker(isPresented: $isPhotoPickerPresented, selection: $pickedPhoto, matching: .images)
+        .onChange(of: pickedPhoto) { _, item in loadPickedPhoto(item) }
         .onChange(of: viewModel.route) { _, route in
             handle(route)
+        }
+    }
+
+    private func loadPickedPhoto(_ item: PhotosPickerItem?) {
+        guard let item else { return }
+        pickedPhoto = nil
+        Task { @MainActor in
+            if let data = try? await item.loadTransferable(type: Data.self) {
+                viewModel.send(.pickPhoto(data))
+            } else {
+                viewModel.send(.pickPhotoFailed)
+            }
         }
     }
 
@@ -319,6 +343,8 @@ struct WishDocumentEditor: View {
             )
         case .placeSearch:
             PlaceSearchSheet(onSelect: { viewModel.send(.selectPlace($0)) })
+        case .letter(let letterViewModel):
+            FutureLetterSheet(viewModel: letterViewModel)
         case .hashtag:
             WishHashtagSheet(
                 selected: state.selectedHashtag,
@@ -355,6 +381,11 @@ struct WishDocumentEditor: View {
             }
         case .confirmDiscard:
             isDiscardDialogPresented = true
+        case .photoPicker:
+            focus = nil
+            isPhotoPickerPresented = true
+        case .rewriteLetterAlert:
+            isRewriteLetterAlertPresented = true
         }
         viewModel.send(.routeHandled)
     }

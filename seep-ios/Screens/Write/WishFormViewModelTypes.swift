@@ -25,9 +25,34 @@ enum WishDocumentBlock: String, CaseIterable, Hashable {
     case link
     case targetAmount = "target_amount"
     case place
+    /// 사진 한 장 (GH-61 R-10)
+    case photo
+    /// "미래의 나에게" 봉인 편지 — 문서 맨 아래 (GH-61 R-10)
+    case letter = "future_letter"
 
     /// 문서에 놓는 순서. 날짜는 머리의 D-day 줄이라 블록 목록에 없다 (R-5)
-    static let documentOrder: [WishDocumentBlock] = [.memo, .steps, .notification, .link, .targetAmount, .place]
+    static let documentOrder: [WishDocumentBlock] = [.memo, .steps, .notification, .link, .targetAmount, .place, .photo, .letter]
+}
+
+/// 문서의 사진 블록 값 (GH-61 R-10, R-11). 고른 사진은 저장할 때 파일로 쓴다
+enum WishFormPhoto: Equatable {
+    case none
+    /// 이미 저장된 사진 파일
+    case stored(fileName: String)
+    /// 새로 고른 사진 원본
+    case picked(Data)
+}
+
+/// 사진 블록 미리보기 소스
+enum WishFormPhotoPreview: Equatable {
+    case file(URL)
+    case data(Data)
+}
+
+/// 문서의 편지 블록 값. `sealedAt`이 nil 이면 이번에 봉인한 편지 — 저장 시각이 봉인일이 된다 (GH-61 R-11)
+struct WishFormLetter: Equatable {
+    let text: String
+    let sealedAt: Date?
 }
 
 /// 폼이 띄우는 시트
@@ -37,6 +62,8 @@ enum WishFormSheet: Identifiable, Equatable {
     case notification(NotificationEditorConfig)
     case placeSearch
     case hashtag
+    /// 편지 쓰기 시트 (GH-61 R-3, R-10)
+    case letter(FutureLetterViewModel)
 
     var id: String {
         switch self {
@@ -45,6 +72,7 @@ enum WishFormSheet: Identifiable, Equatable {
         case .notification(let config): return "notification-\(config.selectedIndex.map(String.init) ?? "new")"
         case .placeSearch: return "placeSearch"
         case .hashtag: return "hashtag"
+        case .letter: return "letter"
         }
     }
 }
@@ -89,6 +117,16 @@ extension WishFormViewModel {
         case tapHashtag
         /// 버리기 확인에서 "버리기" (GH-70 R-18)
         case confirmDiscard
+        /// 사진 고르기에서 고른 이미지 원본 / 읽지 못함 (GH-61 R-10)
+        case pickPhoto(Data)
+        case pickPhotoFailed
+        /// 사진 블록의 사진을 눌러 다시 고른다
+        case tapPhoto
+        /// 편지 시트에서 봉인했다
+        case sealLetter(String)
+        /// 봉인 카드를 눌렀다 → 다시 쓸지 묻는다 (R-4)
+        case tapLetter
+        case confirmRewriteLetter
     }
 
     enum Route: Equatable {
@@ -100,6 +138,9 @@ extension WishFormViewModel {
         case focus(WishFormField)
         /// 바뀐 게 있을 때 닫으면 버릴지 묻는다 (GH-70 R-18)
         case confirmDiscard
+        case photoPicker
+        /// "봉인한 편지를 새로 쓸까요?" (GH-61 R-4)
+        case rewriteLetterAlert
     }
 
     struct State: Equatable {
@@ -124,6 +165,8 @@ extension WishFormViewModel {
         var linkPreview: WishFormLinkPreview = .hidden
         /// 붙인 장소. 작성의 가고 싶어요에서만 고르고 저장한다 (GH-31 R-1)
         var place: WishPlace?
+        var photo: WishFormPhoto = .none
+        var letter: WishFormLetter?
         var selectedHashtag: HashtagType?
         var customHashtag = ""
         var customHashtagError: String?
@@ -155,6 +198,7 @@ extension WishFormViewModel {
         let userDefaults: UserDefaultsUtils
         let linkMetadataProvider: LinkMetadataProviding
         let linkPreviewCache: LinkPreviewCaching
+        let photoStorage: WishPhotoStorage
         /// 링크 입력이 멈추고 이만큼 지나면 미리보기를 불러온다. nil 이면 바로 (테스트)
         let linkPreviewDelay: Duration?
         let randomEmoji: () -> String
@@ -167,6 +211,7 @@ extension WishFormViewModel {
             userDefaults: UserDefaultsUtils = UserDefaultsUtils(),
             linkMetadataProvider: LinkMetadataProviding = LinkMetadataProvider(),
             linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared,
+            photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
             linkPreviewDelay: Duration? = .milliseconds(500),
             randomEmoji: @escaping () -> String = EmojiCatalog.randomEmoji,
             now: @escaping () -> Date = Date.init
@@ -177,6 +222,7 @@ extension WishFormViewModel {
             self.userDefaults = userDefaults
             self.linkMetadataProvider = linkMetadataProvider
             self.linkPreviewCache = linkPreviewCache
+            self.photoStorage = photoStorage
             self.linkPreviewDelay = linkPreviewDelay
             self.randomEmoji = randomEmoji
             self.now = now

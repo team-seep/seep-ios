@@ -45,6 +45,7 @@ extension WishDetailViewModel {
         var wish: Wish?
         var summary: WishDetailSummary?
         var sections: [DetailSection] = []
+        var letter: DetailLetter = .hidden
     }
 
     struct Dependency {
@@ -228,9 +229,17 @@ final class WishDetailViewModel {
         if summary != state.summary {
             state.summary = summary
         }
-        let sections = DetailSectionBuilder.sections(for: wish)
+        let sections = DetailSectionBuilder.sections(
+            for: wish,
+            hasPhoto: dependency.photoStorage.photoURL(fileName: wish.photoFileName) != nil,
+            isPhotoEditable: config.mode == .fromFinish
+        )
         if sections != state.sections {
             state.sections = sections
+        }
+        let letter = DetailLetter(wish: wish)
+        if letter != state.letter {
+            state.letter = letter
         }
     }
 
@@ -288,7 +297,7 @@ final class WishDetailViewModel {
         self.place = place
 
         let photo = WishPhotoViewModel(
-            config: .init(wish: wish),
+            config: .init(wish: wish, isEditable: config.mode == .fromFinish),
             dependency: .init(
                 wishRepository: dependency.wishRepository,
                 photoStorage: dependency.photoStorage,

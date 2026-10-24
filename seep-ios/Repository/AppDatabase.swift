@@ -102,6 +102,14 @@ final class AppDatabase {
             }
         }
 
+        // GH-61: "미래의 나에게" 편지. 기존 위시는 편지 없음
+        migrator.registerMigration("v2") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "futureLetter", .text).notNull().defaults(to: "")
+                table.add(column: "futureLetterSealedAt", .double)
+            }
+        }
+
         return migrator
     }
 
@@ -204,6 +212,18 @@ extension AppDatabase {
                 )
             )
         }
+    }
+
+    /// 예전 스키마(`version`까지 마이그레이션)에 `seedSQL`로 데이터를 넣은 뒤 최신까지 올린 메모리 DB. 마이그레이션 테스트용
+    static func makeInMemory(migratedUpTo version: String, seedSQL: [String]) throws -> AppDatabase {
+        let queue = try DatabaseQueue()
+        try migrator.migrate(queue, upTo: version)
+        try queue.write { db in
+            for sql in seedSQL {
+                try db.execute(sql: sql)
+            }
+        }
+        return try AppDatabase(queue)
     }
 
     /// 테스트에서 이전 도중 실패를 만들려고 위시 한 줄을 직접 넣는다

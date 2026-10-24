@@ -41,18 +41,22 @@ struct FinishNoteSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(verbatim: viewModel.wish.emoji)
-                .font(.system(size: 40))
-                .padding(.top, 24)
-            HeadlineText(
-                text: Strings.Home.FinishNote.titleFormat(viewModel.wish.title),
-                boldPart: Strings.Home.FinishNote.titleBold
-            )
-            .padding(.top, 10)
-            Text(Strings.Home.FinishNote.description)
-                .font(.appleRegular(size: 14))
-                .foregroundStyle(Color.gray4)
-                .padding(.top, 6)
+            if let letter = viewModel.state.openedLetter {
+                openedLetter(letter)
+            } else {
+                Text(verbatim: viewModel.wish.emoji)
+                    .font(.system(size: 40))
+                    .padding(.top, 24)
+                HeadlineText(
+                    text: Strings.Home.FinishNote.titleFormat(viewModel.wish.title),
+                    boldPart: Strings.Home.FinishNote.titleBold
+                )
+                .padding(.top, 10)
+                Text(Strings.Home.FinishNote.description)
+                    .font(.appleRegular(size: 14))
+                    .foregroundStyle(Color.gray4)
+                    .padding(.top, 6)
+            }
 
             TextField(
                 "",
@@ -221,5 +225,37 @@ struct HomeBadgeMedal: View {
         }
         .frame(width: diameter, height: diameter)
         .accessibilityHidden(true)
+    }
+}
+
+/// 완료 순간 열린 편지 (GH-61 R-5): "{n}일 전의 내가 / **편지를 보냈어요**" + 편지 카드 + "이루고 나니 어때요?"
+private extension FinishNoteSheet {
+    func openedLetter(_ letter: FinishNoteViewModel.OpenedLetter) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HeadlineText(text: letter.headline, boldPart: Strings.Home.FinishNote.letterTitleBold)
+                .padding(.top, 24)
+            VStack(alignment: .leading, spacing: 10) {
+                Text(verbatim: letter.caption)
+                    .font(.appleRegular(size: 12))
+                    .foregroundStyle(Color.gray4)
+                ScrollView {
+                    Text(verbatim: letter.body)
+                        .font(.appleRegular(size: 15))
+                        .foregroundStyle(Color.gray5)
+                        .lineSpacing(6)
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxHeight: 180)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(20)
+            .background(Color.gray2, in: RoundedRectangle(cornerRadius: 16))
+            .padding(.top, 20)
+            Text(Strings.Home.FinishNote.letterQuestion)
+                .font(.appleMedium(size: 14))
+                .foregroundStyle(Color.gray5)
+                .padding(.top, 24)
+        }
     }
 }

@@ -353,6 +353,28 @@ internal enum Strings {
       /// 오늘까지
       internal static let untilToday = Strings.tr("Localization", "detail.dday.until_today", fallback: "오늘까지")
     }
+    internal enum Letter {
+      /// %@에 봉인했어요 · %d자
+      internal static func sealedCaptionFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.letter.sealed_caption_format", String(describing: p1), p2, fallback: "%@에 봉인했어요 · %d자")
+      }
+      /// 이루는 날 열려요
+      internal static let sealedTitle = Strings.tr("Localization", "detail.letter.sealed_title", fallback: "이루는 날 열려요")
+      /// 미래의 나에게
+      internal static let title = Strings.tr("Localization", "detail.letter.title", fallback: "미래의 나에게")
+      /// %@에 씀
+      internal static func writtenFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.letter.written_format", String(describing: p1), fallback: "%@에 씀")
+      }
+      internal enum RewriteAlert {
+        /// 새로 쓰기
+        internal static let confirm = Strings.tr("Localization", "detail.letter.rewrite_alert.confirm", fallback: "새로 쓰기")
+        /// 이전 편지는 사라져요.
+        internal static let message = Strings.tr("Localization", "detail.letter.rewrite_alert.message", fallback: "이전 편지는 사라져요.")
+        /// 봉인한 편지를 새로 쓸까요?
+        internal static let title = Strings.tr("Localization", "detail.letter.rewrite_alert.title", fallback: "봉인한 편지를 새로 쓸까요?")
+      }
+    }
     internal enum Link {
       /// 상품 링크 열기
       internal static let openAccessibility = Strings.tr("Localization", "detail.link.open_accessibility", fallback: "상품 링크 열기")
@@ -595,6 +617,27 @@ internal enum Strings {
       }
     }
   }
+  internal enum FutureLetter {
+    /// %d/%d
+    internal static func countFormat(_ p1: Int, _ p2: Int) -> String {
+      return Strings.tr("Localization", "future_letter.count_format", p1, p2, fallback: "%d/%d")
+    }
+    /// 미래의 나에게 쓰는 편지
+    internal static let field = Strings.tr("Localization", "future_letter.field", fallback: "미래의 나에게 쓰는 편지")
+    /// 다음에 할게요
+    internal static let later = Strings.tr("Localization", "future_letter.later", fallback: "다음에 할게요")
+    /// 봉인하면 이 위시를 이룰 때까지 다시 볼 수 없어요
+    internal static let notice = Strings.tr("Localization", "future_letter.notice", fallback: "봉인하면 이 위시를 이룰 때까지 다시 볼 수 없어요")
+    /// 이 위시를 이룬 나에게 하고 싶은 말을 적어요
+    internal static let placeholder = Strings.tr("Localization", "future_letter.placeholder", fallback: "이 위시를 이룬 나에게 하고 싶은 말을 적어요")
+    /// 봉인하기
+    internal static let seal = Strings.tr("Localization", "future_letter.seal", fallback: "봉인하기")
+    /// 이루는 날의 나에게
+    /// 편지를 남겨요
+    internal static let title = Strings.tr("Localization", "future_letter.title", fallback: "이루는 날의 나에게\n편지를 남겨요")
+    /// 편지를 남겨요
+    internal static let titleBold = Strings.tr("Localization", "future_letter.title_bold", fallback: "편지를 남겨요")
+  }
   internal enum Home {
     /// 배지 %d/%d 모아보기
     internal static func badgeLinkFormat(_ p1: Int, _ p2: Int) -> String {
@@ -657,6 +700,22 @@ internal enum Strings {
       internal static let description = Strings.tr("Localization", "home.finish_note.description", fallback: "지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.")
       /// 완료 소감
       internal static let field = Strings.tr("Localization", "home.finish_note.field", fallback: "완료 소감")
+      /// %@ · %@에 씀
+      internal static func letterCardFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "home.finish_note.letter_card_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@에 씀")
+      }
+      /// 이루고 나니 어때요?
+      internal static let letterQuestion = Strings.tr("Localization", "home.finish_note.letter_question", fallback: "이루고 나니 어때요?")
+      /// 편지를 보냈어요
+      internal static let letterTitleBold = Strings.tr("Localization", "home.finish_note.letter_title_bold", fallback: "편지를 보냈어요")
+      /// %d일 전의 내가
+      /// 편지를 보냈어요
+      internal static func letterTitleFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.finish_note.letter_title_format", p1, fallback: "%d일 전의 내가\n편지를 보냈어요")
+      }
+      /// 오늘의 내가
+      /// 편지를 보냈어요
+      internal static let letterTitleToday = Strings.tr("Localization", "home.finish_note.letter_title_today", fallback: "오늘의 내가\n편지를 보냈어요")
       /// 예) 생각보다 훨씬 좋았어요!
       internal static let placeholder = Strings.tr("Localization", "home.finish_note.placeholder", fallback: "예) 생각보다 훨씬 좋았어요!")
       /// 남기기
@@ -941,12 +1000,16 @@ internal enum Strings {
     internal enum Chip {
       /// 날짜
       internal static let date = Strings.tr("Localization", "wish_document.chip.date", fallback: "날짜")
+      /// 미래의 나에게
+      internal static let letter = Strings.tr("Localization", "wish_document.chip.letter", fallback: "미래의 나에게")
       /// 링크
       internal static let link = Strings.tr("Localization", "wish_document.chip.link", fallback: "링크")
       /// 메모
       internal static let memo = Strings.tr("Localization", "wish_document.chip.memo", fallback: "메모")
       /// 알림
       internal static let notification = Strings.tr("Localization", "wish_document.chip.notification", fallback: "알림")
+      /// 사진
+      internal static let photo = Strings.tr("Localization", "wish_document.chip.photo", fallback: "사진")
       /// 장소
       internal static let place = Strings.tr("Localization", "wish_document.chip.place", fallback: "장소")
       /// 단계

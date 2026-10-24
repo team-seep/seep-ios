@@ -25,6 +25,8 @@ extension WishPhotoViewModel {
 
     struct Config {
         let wish: Wish
+        /// 상세에서 붙이기·바꾸기·지우기를 하는지. 이룬 싶 탭 상세만 (GH-61 R-12)
+        var isEditable = false
     }
 
     struct State: Equatable {
@@ -49,7 +51,7 @@ extension WishPhotoViewModel {
     }
 }
 
-/// 상세 "사진" 섹션 (GH-36, GH-59 R-6)
+/// 상세 "사진" 섹션 (GH-36, GH-59 R-6). 홈에서 연 상세는 보기만 하고, 사진은 작성/수정 문서에서 바꾼다 (GH-61 R-9)
 @Observable
 final class WishPhotoViewModel {
     let screenName: ScreenName = .wishDetail
@@ -58,6 +60,7 @@ final class WishPhotoViewModel {
     /// 저장한 사진 파일 이름(빈 값 = 지움). 상세가 위시에 반영한다
     var onUpdate: ((String) -> Void)?
 
+    let isEditable: Bool
     private let wishId: String
     private var fileName: String
     private let dependency: Dependency
@@ -69,6 +72,7 @@ final class WishPhotoViewModel {
 
     init(config: Config, dependency: Dependency = Dependency()) {
         self.wishId = config.wish.id
+        self.isEditable = config.isEditable
         self.fileName = config.wish.photoFileName
         self.dependency = dependency
         self.state = State(photoURL: dependency.photoStorage.photoURL(fileName: config.wish.photoFileName))
@@ -77,9 +81,11 @@ final class WishPhotoViewModel {
     func send(_ action: Action) {
         switch action {
         case .tapAdd:
+            guard isEditable else { return }
             sendClickLog(objectId: .addPhoto)
             route = .photoPicker
         case .tapChange:
+            guard isEditable else { return }
             sendClickLog(objectId: .changePhoto)
             route = .photoPicker
         case .pickPhoto(let data):
@@ -87,6 +93,7 @@ final class WishPhotoViewModel {
         case .pickFailed:
             route = .errorAlert(WishPhotoStorageError.invalidImage.localizedDescription)
         case .tapDelete:
+            guard isEditable else { return }
             sendClickLog(objectId: .deletePhoto)
             deletePhoto()
         case .reload(let wish):
