@@ -11,13 +11,17 @@ struct HomeView: View {
         Group {
             if viewModel.state.isReordering {
                 HomeReorderView(viewModel: viewModel)
+            } else if viewModel.state.isSelecting {
+                HomeSelectionView(viewModel: viewModel)
             } else {
                 homeList
             }
         }
         // 순서 바꾸기 중에는 탭 바를 숨겨 작성·다른 탭으로 빠지지 않게 한다 ("완료"로만 나간다, GH-73 R-5)
-        .toolbarVisibility(viewModel.state.isReordering ? .hidden : .automatic, for: .tabBar)
+        // 선택 모드도 탭 바를 숨긴다 (GH-86 R-3)
+        .toolbarVisibility(viewModel.state.isReordering || viewModel.state.isSelecting ? .hidden : .automatic, for: .tabBar)
         .animation(.easeInOut(duration: 0.2), value: viewModel.state.isReordering)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.state.isSelecting)
         .modifier(HomeViewEvents(viewModel: viewModel))
     }
 
@@ -69,6 +73,8 @@ struct HomeView: View {
                 isPlaceMapVisible: viewModel.state.isPlaceMapVisible,
                 isReorderVisible: viewModel.state.isReorderButtonVisible,
                 onTapReorder: { viewModel.send(.tapReorder) },
+                isSelectVisible: viewModel.state.isSelectButtonVisible,
+                onTapSelect: { viewModel.send(.tapSelect) },
                 onTapSort: { viewModel.send(.tapSortOrder) },
                 onTapPlaceMap: { viewModel.send(.tapPlaceMap) },
                 onTapSearch: { viewModel.send(.tapSearch) },
@@ -178,6 +184,19 @@ private struct HomeViewEvents: ViewModifier {
                 message: { _ in Text(Strings.Home.SleepingWish.Alert.message) }
             )
             .alert(
+                Strings.Home.Select.DeleteAlert.titleFormat(viewModel.state.deleteConfirmCount ?? 0),
+                isPresented: deleteConfirmBinding,
+                actions: {
+                    Button(Strings.Home.Select.cancel, role: .cancel) {
+                        viewModel.send(.cancelDeleteSelected)
+                    }
+                    Button(Strings.Home.Select.DeleteAlert.confirm, role: .destructive) {
+                        viewModel.send(.confirmDeleteSelected)
+                    }
+                },
+                message: { Text(Strings.Home.Select.DeleteAlert.message) }
+            )
+            .alert(
                 viewModel.state.errorMessage ?? "",
                 isPresented: errorAlertBinding,
                 actions: {
@@ -211,6 +230,15 @@ private struct HomeViewEvents: ViewModifier {
             get: { viewModel.state.releaseAlertWish != nil },
             set: { isPresented in
                 if !isPresented, viewModel.state.releaseAlertWish != nil { viewModel.send(.cancelReleaseSleepingWish) }
+            }
+        )
+    }
+
+    private var deleteConfirmBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.state.deleteConfirmCount != nil },
+            set: { isPresented in
+                if !isPresented, viewModel.state.deleteConfirmCount != nil { viewModel.send(.cancelDeleteSelected) }
             }
         )
     }

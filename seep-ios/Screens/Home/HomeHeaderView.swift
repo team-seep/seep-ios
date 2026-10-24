@@ -190,6 +190,9 @@ struct HomeFilterBar: View {
     /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때 (GH-73 R-4)
     var isReorderVisible = false
     var onTapReorder: () -> Void = {}
+    /// 위시가 있을 때 "선택" (GH-86 R-3)
+    var isSelectVisible = false
+    var onTapSelect: () -> Void = {}
     let onTapSort: () -> Void
     let onTapPlaceMap: () -> Void
     let onTapSearch: () -> Void
@@ -218,6 +221,17 @@ struct HomeFilterBar: View {
             if isReorderVisible {
                 Button(action: onTapReorder) {
                     Text(Strings.Home.Reorder.button)
+                        .font(.appleExtraBold(size: 14))
+                        .foregroundStyle(Color.seepBlue)
+                        .padding(.horizontal, 8)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+            if isSelectVisible {
+                Button(action: onTapSelect) {
+                    Text(Strings.Home.Select.button)
                         .font(.appleExtraBold(size: 14))
                         .foregroundStyle(Color.seepBlue)
                         .padding(.horizontal, 8)

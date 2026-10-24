@@ -769,6 +769,46 @@ internal enum Strings {
       /// 위시 검색
       internal static let accessibility = Strings.tr("Localization", "home.search.accessibility", fallback: "위시 검색")
     }
+    internal enum Select {
+      /// 전체 선택
+      internal static let all = Strings.tr("Localization", "home.select.all", fallback: "전체 선택")
+      /// 선택
+      internal static let button = Strings.tr("Localization", "home.select.button", fallback: "선택")
+      /// 취소
+      internal static let cancel = Strings.tr("Localization", "home.select.cancel", fallback: "취소")
+      /// %d개 선택됨
+      internal static func countFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.select.count_format", p1, fallback: "%d개 선택됨")
+      }
+      /// %d개 삭제
+      internal static func deleteFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.select.delete_format", p1, fallback: "%d개 삭제")
+      }
+      /// 골라서 지워요
+      internal static let titleBold = Strings.tr("Localization", "home.select.title_bold", fallback: "골라서 지워요")
+      internal enum DeleteAlert {
+        /// 삭제
+        internal static let confirm = Strings.tr("Localization", "home.select.delete_alert.confirm", fallback: "삭제")
+        /// 삭제한 위시는 되돌릴 수 없어요.
+        /// 예약한 알림도 함께 사라져요.
+        internal static let message = Strings.tr("Localization", "home.select.delete_alert.message", fallback: "삭제한 위시는 되돌릴 수 없어요.\n예약한 알림도 함께 사라져요.")
+        /// %d개의 위시를 삭제할까요?
+        internal static func titleFormat(_ p1: Int) -> String {
+          return Strings.tr("Localization", "home.select.delete_alert.title_format", p1, fallback: "%d개의 위시를 삭제할까요?")
+        }
+      }
+      internal enum Title {
+        /// 하고 싶은 것들을
+        /// 골라서 지워요
+        internal static let wantToDo = Strings.tr("Localization", "home.select.title.want_to_do", fallback: "하고 싶은 것들을\n골라서 지워요")
+        /// 갖고 싶은 것들을
+        /// 골라서 지워요
+        internal static let wantToGet = Strings.tr("Localization", "home.select.title.want_to_get", fallback: "갖고 싶은 것들을\n골라서 지워요")
+        /// 가고 싶은 장소를
+        /// 골라서 지워요
+        internal static let wantToGo = Strings.tr("Localization", "home.select.title.want_to_go", fallback: "가고 싶은 장소를\n골라서 지워요")
+      }
+    }
     internal enum SleepingWish {
       /// %d일째 그대로예요
       internal static func captionFormat(_ p1: Int) -> String {
@@ -949,6 +989,16 @@ internal enum Strings {
       internal static let on = Strings.tr("Localization", "settings.notification.on", fallback: "켜짐")
       /// D-day 알림
       internal static let title = Strings.tr("Localization", "settings.notification.title", fallback: "D-day 알림")
+    }
+    internal enum StartCategory {
+      /// 앱을 열면 처음 보일 탭이에요
+      internal static let description = Strings.tr("Localization", "settings.start_category.description", fallback: "앱을 열면 처음 보일 탭이에요")
+      /// 마지막으로 본 카테고리
+      internal static let last = Strings.tr("Localization", "settings.start_category.last", fallback: "마지막으로 본 카테고리")
+      /// 마지막으로 본
+      internal static let lastShort = Strings.tr("Localization", "settings.start_category.last_short", fallback: "마지막으로 본")
+      /// 시작 카테고리
+      internal static let title = Strings.tr("Localization", "settings.start_category.title", fallback: "시작 카테고리")
     }
     internal enum ViewType {
       /// 취소

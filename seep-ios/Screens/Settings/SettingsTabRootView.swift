@@ -11,6 +11,7 @@ struct SettingsTabRootView: View {
     @State private var viewModel = SettingsViewModel()
     @State private var appLockSheet: AppLockSheetViewModel?
     @State private var isViewTypeDialogPresented = false
+    @State private var isStartCategoryDialogPresented = false
 
     var body: some View {
         ScrollView {
@@ -73,6 +74,19 @@ struct SettingsTabRootView: View {
             Button(Strings.Settings.ViewType.grid) { viewModel.send(.selectViewType(.grid)) }
             Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
         }
+        .confirmationDialog(
+            Strings.Settings.StartCategory.title,
+            isPresented: $isStartCategoryDialogPresented,
+            titleVisibility: .visible
+        ) {
+            Button(Strings.Settings.StartCategory.last) { viewModel.send(.selectStartCategory(nil)) }
+            ForEach([Category.wantToDo, .wantToGet, .wantToGo], id: \.self) { category in
+                Button(category.title) { viewModel.send(.selectStartCategory(category)) }
+            }
+            Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
+        } message: {
+            Text(Strings.Settings.StartCategory.description)
+        }
     }
 
     // MARK: Rows
@@ -102,6 +116,13 @@ struct SettingsTabRootView: View {
                 title: Strings.Settings.ViewType.title,
                 value: viewType == .grid ? Strings.Settings.ViewType.grid : Strings.Settings.ViewType.list,
                 action: .tapViewType
+            )
+
+        case .startCategory(let category):
+            button(
+                title: Strings.Settings.StartCategory.title,
+                value: category?.title ?? Strings.Settings.StartCategory.lastShort,
+                action: .tapStartCategory
             )
 
         case .widgetGuide:
@@ -175,6 +196,8 @@ struct SettingsTabRootView: View {
             appLockSheet = AppLockSheetViewModel()
         case .viewTypeDialog:
             isViewTypeDialogPresented = true
+        case .startCategoryDialog:
+            isStartCategoryDialogPresented = true
         case .openURL(let url):
             let isContact = url.scheme == "mailto"
             openURL(url) { accepted in

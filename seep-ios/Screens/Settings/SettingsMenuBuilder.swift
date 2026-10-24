@@ -5,6 +5,8 @@ enum SettingsRow: Equatable, Identifiable {
     case appLock(title: String, description: String, isOn: Bool)
     case notification(status: NotificationAuthorization?)
     case viewType(ViewType)
+    /// 시작 카테고리. nil 이면 마지막으로 본 카테고리 (GH-86 R-1)
+    case startCategory(Category?)
     case widgetGuide
     case controlGuide
     case rateApp
@@ -17,6 +19,7 @@ enum SettingsRow: Equatable, Identifiable {
         case .appLock: return "app_lock"
         case .notification: return "notification"
         case .viewType: return "view_type"
+        case .startCategory: return "start_category"
         case .widgetGuide: return "widget_guide"
         case .controlGuide: return "control_guide"
         case .rateApp: return "rate_app"
@@ -41,6 +44,7 @@ enum SettingsMenuBuilder {
         isAppLockEnabled: Bool,
         notificationStatus: NotificationAuthorization?,
         viewType: ViewType,
+        startCategory: Category? = nil,
         version: String,
         isRateAppAvailable: Bool = true,
         isContactAvailable: Bool = true
@@ -63,7 +67,8 @@ enum SettingsMenuBuilder {
                 .notification(status: notificationStatus)
             ]),
             SettingsGroup(title: Strings.Settings.Group.view, rows: [
-                .viewType(viewType)
+                .viewType(viewType),
+                .startCategory(startCategory)
             ]),
             SettingsGroup(title: Strings.Settings.Group.quickWrite, rows: [
                 .widgetGuide,

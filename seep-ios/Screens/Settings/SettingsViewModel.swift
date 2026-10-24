@@ -11,6 +11,9 @@ extension SettingsViewModel {
         case tapNotification
         case tapViewType
         case selectViewType(ViewType)
+        /// 시작 카테고리 (GH-86 R-1). nil 이면 마지막으로 본 카테고리
+        case tapStartCategory
+        case selectStartCategory(Category?)
         case tapWidgetGuide
         case tapControlGuide
         case tapRateApp
@@ -26,11 +29,13 @@ extension SettingsViewModel {
         var isAppLockEnabled = false
         var notificationStatus: NotificationAuthorization?
         var viewType: ViewType = .list
+        var startCategory: Category?
     }
 
     enum Route: Equatable {
         case appLockSheet
         case viewTypeDialog
+        case startCategoryDialog
         case openURL(URL)
         case push(AppDestination)
         case toast(String)
@@ -110,6 +115,14 @@ final class SettingsViewModel {
             dependency.preference.viewType = viewType
             reloadLocalState()
 
+        case .tapStartCategory:
+            route = .startCategoryDialog
+
+        case .selectStartCategory(let category):
+            sendClickLog(objectId: .selectStartCategory, extraParameters: [.type: category?.rawValue ?? "last"])
+            dependency.preference.startCategory = category
+            reloadLocalState()
+
         case .tapWidgetGuide:
             sendClickLog(objectId: .widgetGuide)
             route = .push(.widgetGuide)
@@ -154,6 +167,7 @@ final class SettingsViewModel {
     private func reloadLocalState() {
         state.isAppLockEnabled = dependency.preference.isAppLockEnabled
         state.viewType = dependency.preference.viewType
+        state.startCategory = dependency.preference.startCategory
         rebuildGroups()
     }
 
@@ -174,6 +188,7 @@ final class SettingsViewModel {
             isAppLockEnabled: state.isAppLockEnabled,
             notificationStatus: state.notificationStatus,
             viewType: state.viewType,
+            startCategory: state.startCategory,
             version: dependency.deviceInfo.appVersion,
             isRateAppAvailable: SettingsLinks.reviewURL(appStoreID: dependency.appStoreID) != nil,
             isContactAvailable: !(dependency.contactEmail ?? "").isEmpty

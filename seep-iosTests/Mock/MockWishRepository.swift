@@ -157,4 +157,12 @@ final class MockWishRepository: WishRepository {
         moveWishCalls.append((wishId, orderedIds))
         return moveWishResult
     }
+
+    var deleteWishesResult: Result<Void, RepositoryError> = .success(())
+    private(set) var deleteWishesCalls: [[String]] = []
+
+    func deleteWishes(ids: [String]) -> Result<Void, RepositoryError> {
+        deleteWishesCalls.append(ids)
+        return deleteWishesResult
+    }
 }

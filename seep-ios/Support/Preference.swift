@@ -25,6 +25,26 @@ final class Preference {
         }
     }
     
+    /// 앱을 켤 때 홈이 처음 보일 카테고리. nil 이면 마지막으로 본 카테고리 (GH-86 R-1)
+    var startCategory: Category? {
+        set {
+            instance.set(newValue?.rawValue, forKey: "startCategory")
+        }
+        get {
+            instance.string(forKey: "startCategory").flatMap(Category.init(rawValue:))
+        }
+    }
+
+    /// 홈에서 마지막으로 본 카테고리 (GH-86 R-2)
+    var lastHomeCategory: Category {
+        set {
+            instance.set(newValue.rawValue, forKey: "lastHomeCategory")
+        }
+        get {
+            instance.string(forKey: "lastHomeCategory").flatMap(Category.init(rawValue:)) ?? .wantToDo
+        }
+    }
+
     /// 홈 정렬. 없으면 완료일 가까운순 (GH-73 R-2)
     var homeSortOrder: HomeSortOrder {
         set {

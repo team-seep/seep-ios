@@ -17,6 +17,14 @@ extension HomeViewModel {
         /// 순서 바꾸기 모드에서 옮길 수 있는 위시(고정 제외) 안의 이동 (R-5~R-7)
         case moveWish(from: IndexSet, to: Int)
         case toggleViewType
+        /// 필터 바 "선택" → 여러 개 골라 지우기 (GH-86 R-3)
+        case tapSelect
+        case cancelSelection
+        case selectAll
+        /// 선택 모드 "{n}개 삭제" → 확인 알럿 (R-4)
+        case tapDeleteSelected
+        case confirmDeleteSelected
+        case cancelDeleteSelected
         case tapWish(Wish)
         case tapFinish(Wish)
         case tapPinMenu(Wish)
@@ -49,6 +57,11 @@ extension HomeViewModel {
         var viewType: ViewType
         /// 순서 바꾸기 모드. 리스트 셀 + 손잡이, 탭 바·배너·잠든 위시 카드를 숨긴다 (GH-73 R-5)
         var isReordering = false
+        /// 여러 개 골라 지우기 모드. 리스트 셀 + 체크, 탭 바를 숨긴다 (GH-86 R-3)
+        var isSelecting = false
+        var selectedIds: Set<String> = []
+        /// 일괄 삭제 확인 알럿에 보일 개수. nil 이면 알럿 없음 (R-4)
+        var deleteConfirmCount: Int?
         /// 헤드라인의 남은 개수. 첫 로드 전에는 nil
         var notFinishedCount: Int?
         var items: [HomeWishItem] = []
@@ -81,6 +94,16 @@ extension HomeViewModel {
         /// 순서 바꾸기 모드에서 옮길 수 있는 위시. 방금 완료해 흐린 위시는 뺀다 (R-6)
         var movableItems: [HomeWishItem] {
             items.filter { !$0.isPinned && !$0.wish.isSuccess }
+        }
+
+        /// 선택 모드에서 고를 수 있는 위시. 방금 완료해 흐린 위시는 뺀다 (GH-86 R-5)
+        var selectableItems: [HomeWishItem] {
+            items.filter { !$0.wish.isSuccess }
+        }
+
+        /// 위시가 하나라도 있고 다른 모드가 아닐 때 "선택"이 보인다 (GH-86 R-3)
+        var isSelectButtonVisible: Bool {
+            !selectableItems.isEmpty && !isReordering && !isSelecting
         }
 
         /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11)
@@ -211,6 +234,8 @@ final class HomeViewModel {
 
         case .selectCategory(let category):
             state.category = category
+            // 다른 카테고리의 선택은 이어가지 않는다 (GH-86)
+            state.selectedIds = []
             dependency.router?.homeCategory = category
             fetchWishes()
 
@@ -236,7 +261,37 @@ final class HomeViewModel {
             state.viewType = viewType
             dependency.preference.viewType = viewType
 
+        case .tapSelect:
+            guard state.isSelectButtonVisible else { return }
+            sendClickLog(objectId: .selectWishes)
+            state.selectedIds = []
+            state.isSelecting = true
+
+        case .cancelSelection:
+            state.isSelecting = false
+            state.selectedIds = []
+
+        case .selectAll:
+            let all = Set(state.selectableItems.map(\.id))
+            state.selectedIds = state.selectedIds == all ? [] : all
+
+        case .tapDeleteSelected:
+            guard !state.selectedIds.isEmpty else { return }
+            state.deleteConfirmCount = state.selectedIds.count
+
+        case .confirmDeleteSelected:
+            state.deleteConfirmCount = nil
+            deleteSelected()
+
+        case .cancelDeleteSelected:
+            state.deleteConfirmCount = nil
+
         case .tapWish(let wish):
+            // 선택 모드에서는 상세 대신 선택/해제 (GH-86 R-5, TC-7)
+            if state.isSelecting {
+                toggleSelection(wish)
+                return
+            }
             // 잠든 위시 카드는 상세로 가지 않는다(카드에는 버튼만 있다)
             dependency.router?.push(.wishDetail(id: wish.id, isFinished: wish.isSuccess))
 
@@ -387,6 +442,33 @@ extension HomeViewModel {
             }
             // 고정 순서가 바뀌므로 정렬을 다시 적용한다 (GH-33 R-4)
             fetchWishes()
+        case .failure(let error):
+            showError(error)
+        }
+    }
+
+    private func toggleSelection(_ wish: Wish) {
+        guard !wish.isSuccess else { return }
+        if state.selectedIds.contains(wish.id) {
+            state.selectedIds.remove(wish.id)
+        } else {
+            state.selectedIds.insert(wish.id)
+        }
+    }
+
+    /// 한 트랜잭션으로 지우고, 성공하면 알림·사진·링크 캐시를 정리한다. 실패하면 아무것도 지우지 않는다 (GH-86 R-4)
+    private func deleteSelected() {
+        let targets = wishes.filter { state.selectedIds.contains($0.id) }
+        guard !targets.isEmpty else { return }
+        switch dependency.wishRepository.deleteWishes(ids: targets.map(\.id)) {
+        case .success:
+            sendClickLog(objectId: .deleteSelectedWishes, extraParameters: [.count: targets.count])
+            for wish in targets {
+                dependency.notificationManager.cancelNotifications(wish: wish)
+                cleanUpDeleted(wish)
+            }
+            state.isSelecting = false
+            state.selectedIds = []
         case .failure(let error):
             showError(error)
         }
