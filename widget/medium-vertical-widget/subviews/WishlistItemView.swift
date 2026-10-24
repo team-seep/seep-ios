@@ -1,30 +1,26 @@
 import SwiftUI
 import WidgetKit
 
+/// 중형 세로 한 줄: D-day · 이모지 18 · 제목 SemiBold 13. 체크 위젯 줄과 같은 틀 (GH-87 R-1)
 struct WishlistItemView: View {
     let wish: Wish
-    
+
     var body: some View {
-        HStack(
-            alignment: .center,
-            spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/,
-            content: {
-                if let endDate = self.wish.endDate {
-                    DdayView(date: endDate)
-                }
-                
-                Text(wish.emoji)
-                    .font(.system(size: 18))
-                
-                Text(wish.title)
-                    .font(.custom("AppleSDGothicNeo-Regular", size: 14))
-                    .foregroundColor(.black)
-                
-                Spacer()
-            })
-            .padding(10)
-            .background(Color.white)
-            .cornerRadius(10)
+        HStack(spacing: 7) {
+            if let endDate = wish.endDate {
+                DdayView(date: endDate)
+            }
+            Text(verbatim: wish.emoji)
+                .font(.system(size: 18))
+            Text(verbatim: wish.title)
+                .font(.appleSemiBold(size: 13))
+                .foregroundStyle(Color.gray5)
+                .lineLimit(1)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 10)
+        .frame(height: 40)
+        .background(Color.gray1, in: RoundedRectangle(cornerRadius: 10))
     }
 }
 

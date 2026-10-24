@@ -4,7 +4,7 @@ import WidgetKit
 struct MediumHorizontalEntryView: View {
     let entry: MediumHorizontalEntry
 
-    private let horizontalPadding: CGFloat = 15
+    private let horizontalPadding: CGFloat = 12
     private let itemSpacing: CGFloat = 8
     private let maxItemCount = 3
 
@@ -24,10 +24,10 @@ struct MediumHorizontalEntryView: View {
                     }
                 }
             }
-            .padding(.init(top: 14, leading: horizontalPadding, bottom: 14, trailing: horizontalPadding))
+            .padding(.init(top: 12, leading: horizontalPadding, bottom: 12, trailing: horizontalPadding))
             .frame(width: proxy.size.width, height: proxy.size.height)
         }
-        .widgetBackground(Color(r: 246, g: 247, b: 249))
+        .widgetBackground(.gray2)
     }
 
     /// 1~2개일 때도 3칸 기준 폭을 유지한다 (기존 디자인)
