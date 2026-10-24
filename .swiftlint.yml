@@ -39,7 +39,7 @@ custom_rules:
 
   no_uikit:                                 # R1 (GH-64)
     name: "R1 UIKit 신규 사용 금지"
-    included: "seep-ios/.*"
+    included: "/seep-ios/(?!(widget|seep-iosTests)/)"   # 앱 폴더만. 레포 폴더 이름도 seep-ios 라 앵커 없이 쓰면 widget·테스트까지 잡힌다 (GH-76)
     excluded: "seep-ios/(AppDelegate|AppShell/SystemPasteboard)\\.swift"   # 클립보드 쓰기는 SwiftUI API가 없다 (GH-77)
     regex: "^import UIKit\\b|\\b(UIViewRepresentable|UIViewControllerRepresentable|UIHostingController)\\b"
     message: "R1: 화면은 SwiftUI View + @Observable ViewModel 로 쓴다. UIKit·UIKit 래퍼를 새로 쓰지 않는다 (GH-64)."
@@ -78,7 +78,7 @@ custom_rules:
 
   no_raw_sheet:                             # R5 (GH-64)
     name: "R5 시트는 seepSheet 로만"
-    included: "seep-ios/.*"
+    included: "/seep-ios/(?!(widget|seep-iosTests)/)"   # 앱 폴더만. 레포 폴더 이름도 seep-ios 라 앵커 없이 쓰면 widget·테스트까지 잡힌다 (GH-76)
     excluded: "seep-ios/AppShell/SeepSheet\\.swift"
     regex: "\\.(sheet|fullScreenCover)\\("
     message: "R5: 시트·풀스크린은 .seepSheet(item:) / .seepFullScreenCover(item:) 로 띄운다 (앱 잠금 오버레이·detent 통일)."
@@ -86,7 +86,7 @@ custom_rules:
 
   no_color_literal:                         # R6 SwiftUI (GH-64)
     name: "R6 Color 리터럴 금지"
-    included: "seep-ios/.*"
+    included: "/seep-ios/(?!(widget|seep-iosTests)/)"   # 앱 폴더만. 레포 폴더 이름도 seep-ios 라 앵커 없이 쓰면 widget·테스트까지 잡힌다 (GH-76)
     excluded: "seep-ios/DesignSystem/SeepColor\\.swift"
     regex: "\\bColor\\((r|red|white|hex):"
     message: "R6: 색은 SeepColor 토큰(Color.gray5, .seepBlue …)만 쓴다. 새 색은 토큰부터 추가한다."
@@ -94,7 +94,7 @@ custom_rules:
 
   no_font_custom:                           # R6 SwiftUI (GH-64)
     name: "R6 Font.custom 금지"
-    included: "seep-ios/.*"
+    included: "/seep-ios/(?!(widget|seep-iosTests)/)"   # 앱 폴더만. 레포 폴더 이름도 seep-ios 라 앵커 없이 쓰면 widget·테스트까지 잡힌다 (GH-76)
     excluded: "seep-ios/DesignSystem/SeepFont\\.swift"
     regex: "\\.custom\\(\""
     message: "R6: 폰트는 SeepFont(Font.appleBold(size:) …)만 쓴다."
@@ -102,7 +102,7 @@ custom_rules:
 
   no_text_literal:                          # R6 SwiftUI (GH-64)
     name: "R6 Text 문자열 리터럴 금지"
-    included: "seep-ios/.*"
+    included: "/seep-ios/(?!(widget|seep-iosTests)/)"   # 앱 폴더만. 레포 폴더 이름도 seep-ios 라 앵커 없이 쓰면 widget·테스트까지 잡힌다 (GH-76)
     regex: "\\bText\\(\""
     message: "R6: 화면 문구는 Text(Strings.xxx). 번역하지 않는 값은 Text(verbatim:)."
     severity: error

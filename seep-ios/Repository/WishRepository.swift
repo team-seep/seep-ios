@@ -107,8 +107,13 @@ final class WishRepositoryImpl: WishRepository {
         let searchTask = realm.objects(WishDTO.self).filter { $0._id == id }
         guard let targetObject = searchTask.first else { return }
         
-        try! realm.write{
-            realm.delete(targetObject)
+        do {
+            try realm.write {
+                realm.delete(targetObject)
+            }
+        } catch {
+            // 프로토콜이 결과를 돌려주지 않아 실패하면 그대로 둔다. 지워지지 않은 위시는 목록에 남는다
+            return
         }
     }
     

@@ -4,13 +4,6 @@
 "common_category_want_to_do" = "하고 싶어요";
 "common_category_want_to_get" = "갖고 싶어요";
 "common_category_want_to_go" = "가고 싶어요";
-"common_category_want_to_do_unit" = "%02d개";
-"common_category_want_to_get_unit" = "%02d개";
-"common_category_want_to_go_unit" = "%02d곳";
-
-"common.want_to_do.unit" = "%02d개";
-"common.want_to_get.unit" = "%02d개";
-"common.want_to_go.unit" = "%02d곳";
 
 // Category
 "category_want_to_do" = "하고 싶어요";
@@ -18,23 +11,6 @@
 "category_want_to_go" = "가고 싶어요";
 
 // Home
-"home_write_category_want_to_do_button" = "📝 뭐 하고 싶어요?";
-"home_write_category_want_to_get_button" = "📝 뭐 갖고 싶어요?";
-"home_write_category_want_to_go_button" = "📝 어디 가고 싶어요?";
-"home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
-"home_write_category_want_to_get_count_empty" ="갖고 싶은 것들을\n적어봐요!";
-"home_write_category_want_to_go_count_empty" ="가고 싶은 곳들을\n적어봐요!";
-"home_write_category_want_to_do_count_empty" ="하고 싶은 것들을\n적어봐요!";
-"home_write_category_want_to_do_count_format" = "하고 싶은 것들이\n%02d개 남았어요!";
-"home_write_category_want_to_get_count_format" = "갖고 싶은 것들이\n%02d개 남았어요!";
-"home_write_category_want_to_go_count_format" = "가고 싶은 곳들이\n%02d곳 남았어요!";
-"home_finish_count_category_want_to_do_format" = "👏 지금까지 %d개를 이뤘어요";
-"home_finish_count_category_want_to_do_format_empty" = "😱 지금까지 %d개를 이뤘어요";
-"home_finish_count_category_want_to_get_format" = "👏 지금까지 %d개를 겟했어요";
-"home_finish_count_category_want_to_get_format_empty" = "😱 지금까지 %d개를 겟했어요";
-"home_finish_count_category_want_to_go_format" = "👏 지금까지 %d곳을 다녀왔어요";
-"home_finish_count_category_want_to_go_format_empty" = "😱 지금까지 %d곳을 다녀왔어요";
-"home_category_success" = "성공";
 "home_in_far_furture" = "먼훗날";
 "home_no_deanline" = "일정없음";
 
@@ -46,14 +22,7 @@
 "home.title_format.want_to_go" = "가고 싶은 장소가\n%d개 남았어요!";
 "home.filter.sort.latest" = "최근 생성순";
 "home.filter.sort.deadline" = "완료일 가까운순";
-"home.filter.only_finished" = "완료된 위시만";
-"home.write_button.want_to_do" = "📝 뭐 하고 싶어요?";
-"home.write_button.want_to_go" = "📝 어디 가고 싶어요?";
-"home.write_button.want_to_get" = "📝 뭐 갖고 싶어요?";
-"home.toast.finish_wish" = "👏위시를 완료했어요!";
-"home.toast.success_write" = "👏등록이 완료됐어요!";
 "home.step_progress_format" = "%d/%d";
-"home.empty" = "아직 등록된 것이 없네요.\n👇🏻아래 버튼을 누르면 작성할 수 있어요!";
 "home.finish_note.title_format" = "%@,\n이루고 나니 어때요?";
 "home.finish_note.title_bold" = "이루고 나니 어때요?";
 "home.finish_note.description" = "지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.";
@@ -140,26 +109,12 @@
 "home.sleeping_wish.toast.release" = "위시를 보내줬어요";
 
 // Write
-"write_title" = "작은 것부터\n차근차근 적어봐요!";
-"wrtie_title_bold" ="차근차근 적어봐요!";
 "write_header_title" = "제목";
-"write_header_date" = "날짜";
-"write_header_notification" = "알림";
 "write_header_memo" = "메모";
-"write_header_hashtag" = "해시태그";
 "write_placeholder_title_category_want_to_do" = "뭐 하고 싶어요?";
 "write_placeholder_title_category_want_to_get" = "뭐 갖고 싶어요?";
 "write_placeholder_title_category_want_to_go" = "어디 가고 싶어요?";
-"write_placeholder_date_enable" = "언제까지 하면 좋을까요?";
-"write_placeholder_date_disable" = "지정된 날짜 없음";
-"write_date_switch_title" = "날짜 지정";
-"write_notification_switch_title" = "알림 허용";
 "write_add_notification" = "알림 추가";
-"wrtie_placeholder_memo" = "필요한 정보가 또 있나요? (선택)";
-"write_button_off" = "🔥어서 채워봅시다!";
-"write_button_on" = "🎉등록해볼까요!";
-"write_button_more" = "😭 조금만...더!";
-"write_random_button" = "R";
 "write_error_max_length_title" = "📍제목은 18자내로 작성해주세요!";
 "write_error_max_length_memo" = "📍메모는 300자내로 작성해주세요!";
 "write_error_title_empty" = "📍제목을 작성해주세요!";
@@ -169,8 +124,6 @@
 
 // Detail
 "detail.step.title" = "단계";
-"detail.step.add" = "단계 추가";
-"detail.step.progress_format" = "%d/%d 완료";
 "detail.step.add_alert.title" = "단계 추가";
 "detail.step.add_alert.placeholder" = "예) 날짜 정하기";
 "detail.step.add_alert.confirm" = "추가";
@@ -179,12 +132,9 @@
 "detail.step.toast.max_count" = "📍단계는 10개까지 추가할 수 있어요!";
 "write.step.title" = "단계 (선택)";
 "write.target_amount.title" = "목표 금액";
-"write.target_amount.optional" = " (선택)";
 "write.target_amount.placeholder" = "0";
 "write.target_amount.caption" = "상세 화면에서 모은 돈을 기록할 수 있어요";
 "write.link.title" = "링크";
-"write.link.optional" = " (선택)";
-"write.link.placeholder" = "상품 페이지 링크를 붙여넣어요";
 "write.link.error_invalid" = "http:// 또는 https:// 로 시작하는 링크를 넣어주세요";
 "write.link.preview_failed" = "미리보기를 불러오지 못했어요";
 "detail.link.title" = "링크";
@@ -194,19 +144,14 @@
 "common.won_format" = "%@원";
 "detail.photo.title" = "사진";
 "detail.photo.add" = "＋ 사진 붙이기";
-"detail.photo.add_description" = "이루고 싶은 장면을 한 장 붙여둬요";
 "detail.photo.change" = "바꾸기";
-"detail.photo.caption" = "사진은 이 기기에만 저장돼요.";
 "detail.photo.delete" = "사진 지우기";
 "detail.photo.error.invalid_image" = "사진을 불러오지 못했어요. 다른 사진을 골라주세요.";
 "detail.photo.error.write_failed" = "사진을 저장하지 못했어요. 잠시 후 다시 시도해주세요.";
-"detail.saving.title" = "모으기";
-"detail.saving.percent_format" = "%d%%";
 "detail.saving.target_format" = "/ %@원";
 "detail.saving.remaining_format" = "%@원 더 모으면 돼요!";
 "detail.saving.completed" = "다 모았어요! 이제 겟할 시간이에요";
 "detail.saving.record_format" = "+%@원";
-"detail.saving.add" = "모은 돈 기록";
 "detail.saving.delete" = "기록 삭제";
 "detail.saving.delete_alert.title" = "이 기록을 삭제할까요?";
 "detail.saving.delete_alert.confirm" = "삭제";
@@ -232,8 +177,6 @@
 "detail.calendar.denied_alert.settings" = "설정으로 이동";
 "detail.calendar.error.no_default_calendar" = "일정을 추가할 캘린더가 없어요.";
 "detail.place.title" = "장소";
-"detail.place.placeholder" = "어디로 가고 싶어요?";
-"detail.place.change" = "바꾸기";
 "detail.place.delete" = "장소 지우기";
 "detail.place.search.title" = "어디로\n가고 싶어요?";
 "detail.place.search.title_bold" = "가고 싶어요?";
@@ -257,15 +200,9 @@
 "place_map.title" = "가고 싶은 곳 지도";
 "place_map.count_format" = "장소를 붙인 곳 %d곳";
 "place_map.empty" = "아직 장소를 붙인 곳이 없어요.";
-"place_map.card_subtitle_format" = "%@ · %@";
 "home.filter.place_map" = "가고 싶은 곳 지도";
-"detail_random_info" = "Random으로 이모지를\n골라드립니다!";
-"detail_button_more" = "😭 조금만...더!";
-"detail_button_on" = "✔️ 저장";
-"detail_cancel" = "취소";
 "detail_action_sheet_delete" = "삭제하기";
 "detail_action_sheet_cancel_finish" = "완료 취소하기";
-"detail_action_sheet_edit" = "수정하기";
 "detail_action_sheet_share" = "공유하기";
 "detail_action_sheet_cancel" = "취소하기";
 "detail_delete_message" = "삭제하면 복원이 안되요😭\n지워도 될까요?";
@@ -273,16 +210,8 @@
 "detail_cancel_finish_description" = "취소시 다시 메인 홈에서\n확인할 수 있습니다!";
 "detail_cancel_finish_no" = "아니요";
 "detail_cancel_finish_ok" = "취소할래요";
-"detail_memo_empty" = "메모 없음";
 
 // Finish
-"finish_back_button" = "메인 홈으로 돌아가기";
-"finish_title_empty" = "아직...\n완료된 것이 없지만";
-"finish_description_empty" = "하고 싶은게 많은 것만으로도\n반짝반짝 빛나는 사람인걸요.\n당신을 응원할게요!";
-"finish_empty_back_button" = "메인으로 돌아가기";
-"finish_count_category_want_to_do_format" = "지금까지\n%02d개 이뤘어요!";
-"finish_count_category_want_to_get_format" = "지금까지\n%02d개 겟했어요!";
-"finish_count_category_want_to_go_format" = "지금까지\n%02d곳 다녀왔어요!";
 
 // Notification
 "notification_title" = "🔔 여기보세요👀";
@@ -296,7 +225,6 @@
 "share_photo_deny_message" = "원하는 사진으로 공유하기 위해 앨범 접근 권한이 필요해요.";
 "share_photo_tooltip" = "👆화면을 두번 탭하면 텍스트 컬러를 바꿀 수 있어요";
 "share_photo_button" = "👌 이렇게 공유할래요";
-"share_photo_success" = "👌 공유하기 완료! 앨범에서 확인해보세요";
 
 // Notification
 "notification_add_title" = "알림 추가";
@@ -326,8 +254,6 @@
 "app_lock.biometry.face_id" = "Face ID";
 "app_lock.biometry.touch_id" = "Touch ID";
 "app_lock.biometry.passcode" = "기기 암호";
-"app_lock.home.accessibility_off" = "앱 잠금";
-"app_lock.home.accessibility_on" = "앱 잠금 켜짐";
 "app_lock.sheet.enable_title" = "싶을 나만 볼 수 있게\n잠가둘까요?";
 "app_lock.sheet.enable_title_bold" = "잠가둘까요?";
 "app_lock.sheet.enable_description_format" = "앱을 열 때 %@나 기기 암호를 물어봐요.\n홈 화면 위젯은 잠금과 상관없이 보여요.";
@@ -429,8 +355,6 @@
 "control_guide.shortcut.step3" = "Siri에게 \"싶 적기\"라고 말해도 돼요.";
 "license.title" = "오픈소스 라이선스";
 "license.description" = "싶은 아래 오픈소스를 사용해요. 각 라이선스 전문은 저장소에서 볼 수 있어요.";
-"app_lock.sheet.toast_enabled" = "앱 잠금을 켰어요";
-"app_lock.sheet.toast_disabled" = "앱 잠금을 껐어요";
 
 /* GH-64 홈 */
 "home.toast.added_to_finished" = "👏 이룬 싶에 담았어요";
@@ -453,15 +377,11 @@
 /* GH-64 작성·수정 */
 "wish_form.keyboard_done" = "완료";
 "wish_form.close" = "닫기";
-"wish_form.back" = "뒤로";
 "wish_form.emoji_accessibility" = "이모지 고르기";
 "wish_form.random_emoji_accessibility" = "무작위 이모지";
 "wish_form.notification_requires_date" = "알림 허용을 위해선 날짜 지정이 필요해요.";
-"wish_form.notification_empty" = "알림 없음";
 "wish_form.notification_row_format" = "%@, %@";
-"wish_form.date_format" = "yyyy년 MM월 dd일 eeee 까지";
 "wish_form.date_confirm" = "확인";
-"wish_form.place_delete" = "장소 지우기";
 "emoji_picker.title" = "이모지 고르기";
 "emoji_picker.recent" = "최근 사용";
 "emoji_picker.category.smileys" = "표정";

@@ -1,4 +1,5 @@
 import AppIntents
+import os
 import UIKit
 import UserNotifications
 
@@ -8,6 +9,7 @@ import RealmSwift
 
 /// Firebase·Realm·알림 델리게이트·앱 인텐트 의존성 (UI 없음). 진입점은 SwiftUI `SeepApp` (GH-64 A-1)
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    private static let logger = Logger(subsystem: "macgongmon.seep-ios", category: "AppDelegate")
     
     func application(
         _ application: UIApplication,
@@ -45,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         notificationCenter.delegate = self
         notificationCenter.requestAuthorization(options: authOptions) { success, error in
             if let error = error {
-                print("Error: \(error)")
+                Self.logger.error("알림 권한 요청 실패: \(error.localizedDescription, privacy: .public)")
             }
         }
     }
@@ -60,14 +62,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if fileManager.fileExists(atPath: originalPath.path) {
             do{
                 try fileManager.replaceItemAt(appGroupURL, withItemAt: originalPath)
-                print("Successfully replaced DB file")
+                Self.logger.info("Realm 파일을 App Group 으로 옮겼다")
                 try fileManager.removeItem(at: originalPath)
             }
             catch{
-                print("Error info: \(error)")
+                Self.logger.error("Realm 파일 이동 실패: \(error.localizedDescription, privacy: .public)")
             }
         } else {
-            print("File is not exist on original path")
+            Self.logger.debug("옮길 기존 Realm 파일 없음")
         }
     }
     
@@ -89,7 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           let hashtag = oldObject["hashtag"] as? String,
                           let isSuccess = oldObject["isSuccess"] as? Bool,
                           let createdAt = oldObject["createdAt"] as? Date else {
-                        return print("some field is nil")
+                        Self.logger.error("schema 3 미만 위시에 빈 필드가 있어 건너뛴다")
+                        return
                     }
                     
                     let wishDTO: MigrationObject = migration.create("WishDTO")

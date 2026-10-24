@@ -27,7 +27,7 @@ gh issue list -R team-seep/seep-ios --label idea --state all --limit 1 --json nu
 
 ## 2. 현재 앱 파악 (중복 방지)
 
-- `CLAUDE.md`의 "디렉터리 구조"와 `seep-ios/features/*`를 훑어 **이미 있는 기능**을 목록으로 만든다 (카테고리 3종, D-day·알림, 해시태그·메모·이모지, 완료/완료 취소, 정렬·완료만 보기·리스트/그리드, 사진 공유, 위젯 4종 등).
+- `CLAUDE.md`의 "디렉터리 구조"와 `seep-ios/Screens/*`·`seep-ios/Services/*`를 훑어 **이미 있는 기능**을 목록으로 만든다 (카테고리 3종, D-day·알림, 해시태그·메모·이모지, 완료/완료 취소, 정렬·완료만 보기·리스트/그리드, 사진 공유, 위젯 4종 등).
 - 기존 기획을 전부 읽는다. 열린 것, 승인된 것, 닫힌 것 모두. **반려 사유(닫힌 이슈의 마지막 코멘트)는 다음 추천의 제약으로 쓴다.**
   ```bash
   gh issue list -R team-seep/seep-ios --label idea --state all --limit 100 --json number,title,state,labels,comments
