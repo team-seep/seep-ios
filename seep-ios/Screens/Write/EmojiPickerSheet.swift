@@ -40,7 +40,7 @@ struct EmojiPickerSheet: View {
                         } label: {
                             Text(verbatim: item.title)
                                 .font(item == category ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
-                                .foregroundStyle(item == category ? Color.gray1 : Color.gray4)
+                                .foregroundStyle(item == category ? Color.onAccent : Color.gray4)
                                 .padding(.horizontal, 14)
                                 .frame(height: 30)
                                 .background {

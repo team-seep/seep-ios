@@ -56,7 +56,7 @@ struct GuideScreen: View {
                             HStack(alignment: .firstTextBaseline, spacing: 10) {
                                 Text(verbatim: "\(index + 1)")
                                     .font(.appleBold(size: 12))
-                                    .foregroundStyle(Color.gray1)
+                                    .foregroundStyle(Color.onAccent)
                                     .frame(width: 20, height: 20)
                                     .background(Color.seepBlue, in: Circle())
                                 Text(verbatim: step)

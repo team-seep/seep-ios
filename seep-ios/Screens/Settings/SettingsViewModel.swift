@@ -11,6 +11,9 @@ extension SettingsViewModel {
         case tapNotification
         case tapViewType
         case selectViewType(ViewType)
+        /// 화면 모드 (GH-85 R-3)
+        case tapAppearance
+        case selectAppearance(AppAppearance)
         case tapWidgetGuide
         case tapControlGuide
         case tapRateApp
@@ -26,11 +29,13 @@ extension SettingsViewModel {
         var isAppLockEnabled = false
         var notificationStatus: NotificationAuthorization?
         var viewType: ViewType = .list
+        var appearance: AppAppearance = .system
     }
 
     enum Route: Equatable {
         case appLockSheet
         case viewTypeDialog
+        case appearanceDialog
         case openURL(URL)
         case push(AppDestination)
         case toast(String)
@@ -110,6 +115,14 @@ final class SettingsViewModel {
             dependency.preference.viewType = viewType
             reloadLocalState()
 
+        case .tapAppearance:
+            route = .appearanceDialog
+
+        case .selectAppearance(let appearance):
+            sendClickLog(objectId: .selectAppearance, extraParameters: [.type: appearance.rawValue])
+            dependency.preference.appearance = appearance
+            reloadLocalState()
+
         case .tapWidgetGuide:
             sendClickLog(objectId: .widgetGuide)
             route = .push(.widgetGuide)
@@ -154,6 +167,7 @@ final class SettingsViewModel {
     private func reloadLocalState() {
         state.isAppLockEnabled = dependency.preference.isAppLockEnabled
         state.viewType = dependency.preference.viewType
+        state.appearance = dependency.preference.appearance
         rebuildGroups()
     }
 
@@ -174,6 +188,7 @@ final class SettingsViewModel {
             isAppLockEnabled: state.isAppLockEnabled,
             notificationStatus: state.notificationStatus,
             viewType: state.viewType,
+            appearance: state.appearance,
             version: dependency.deviceInfo.appVersion,
             isRateAppAvailable: SettingsLinks.reviewURL(appStoreID: dependency.appStoreID) != nil,
             isContactAvailable: !(dependency.contactEmail ?? "").isEmpty

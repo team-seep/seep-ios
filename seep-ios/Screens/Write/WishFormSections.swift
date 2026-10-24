@@ -36,7 +36,7 @@ struct WishFormHashtags: View {
                     } label: {
                         Text(verbatim: hashtag.description)
                             .font(.appleExtraBold(size: 14))
-                            .foregroundStyle(isSelected ? Color.gray1 : Color.gray4)
+                            .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 6)
                             .background(isSelected ? Color.seepBlue : Color.clear, in: RoundedRectangle(cornerRadius: 6))
@@ -63,7 +63,7 @@ struct WishFormHashtags: View {
             text: Binding(get: { custom }, set: onInputCustom)
         )
         .font(.appleExtraBold(size: 14))
-        .foregroundStyle(isFilled ? Color.gray1 : Color.gray5)
+        .foregroundStyle(isFilled ? Color.onAccent : Color.gray5)
         .submitLabel(.done)
         .focused(focus, equals: .hashtag)
         .fixedSize()

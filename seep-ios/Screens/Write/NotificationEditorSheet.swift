@@ -89,6 +89,7 @@ struct NotificationEditorSheet: View {
                         viewModel.send(.tapDelete)
                     } label: {
                         Assets.Icons.icTrash.swiftUIImage
+                            .foregroundStyle(Color.gray5)
                             .frame(width: Self.deleteButtonSize, height: Self.deleteButtonSize)
                     }
                     .buttonStyle(.plain)
@@ -110,6 +111,7 @@ struct NotificationEditorSheet: View {
                     .foregroundStyle(Color.gray5)
                 Spacer()
                 (isSelected ? Assets.Icons.icRadioOn : Assets.Icons.icRadioOff).swiftUIImage
+                    .foregroundStyle(Color.gray3)
             }
             .frame(height: 44)
             .contentShape(Rectangle())

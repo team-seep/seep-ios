@@ -14,6 +14,7 @@ struct DetailStepsBody: View {
                     HStack(spacing: 10) {
                         (step.isDone ? Assets.Icons.icCheckOn : Assets.Icons.icCheckOff).swiftUIImage
                             .resizable()
+                            .foregroundStyle(Color.gray3)
                             .frame(width: 24, height: 24)
                         Text(verbatim: step.title)
                             .font(.appleRegular(size: 16))

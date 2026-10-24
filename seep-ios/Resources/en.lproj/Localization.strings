@@ -351,6 +351,11 @@
 "settings.view_type.list" = "리스트";
 "settings.view_type.grid" = "그리드";
 "settings.view_type.cancel" = "취소";
+"settings.appearance.title" = "화면 모드";
+"settings.appearance.system" = "시스템 설정 따르기";
+"settings.appearance.light" = "라이트";
+"settings.appearance.dark" = "다크";
+"settings.appearance.footer" = "위젯은 아이폰 화면 모드를 따라요";
 "settings.widget_guide" = "위젯 추가하는 법";
 "settings.control_guide" = "제어 센터 · 단축어로 적기";
 "settings.rate_app" = "앱 평가하기";

@@ -11,6 +11,7 @@ struct SettingsTabRootView: View {
     @State private var viewModel = SettingsViewModel()
     @State private var appLockSheet: AppLockSheetViewModel?
     @State private var isViewTypeDialogPresented = false
+    @State private var isAppearanceDialogPresented = false
 
     var body: some View {
         ScrollView {
@@ -73,6 +74,26 @@ struct SettingsTabRootView: View {
             Button(Strings.Settings.ViewType.grid) { viewModel.send(.selectViewType(.grid)) }
             Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
         }
+        .confirmationDialog(
+            Strings.Settings.Appearance.title,
+            isPresented: $isAppearanceDialogPresented,
+            titleVisibility: .visible
+        ) {
+            ForEach(AppAppearance.allCases, id: \.self) { appearance in
+                Button(Self.title(of: appearance)) { viewModel.send(.selectAppearance(appearance)) }
+            }
+            Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
+        } message: {
+            Text(Strings.Settings.Appearance.footer)
+        }
+    }
+
+    static func title(of appearance: AppAppearance) -> String {
+        switch appearance {
+        case .system: return Strings.Settings.Appearance.system
+        case .light: return Strings.Settings.Appearance.light
+        case .dark: return Strings.Settings.Appearance.dark
+        }
     }
 
     // MARK: Rows
@@ -102,6 +123,13 @@ struct SettingsTabRootView: View {
                 title: Strings.Settings.ViewType.title,
                 value: viewType == .grid ? Strings.Settings.ViewType.grid : Strings.Settings.ViewType.list,
                 action: .tapViewType
+            )
+
+        case .appearance(let appearance):
+            button(
+                title: Strings.Settings.Appearance.title,
+                value: Self.title(of: appearance),
+                action: .tapAppearance
             )
 
         case .widgetGuide:
@@ -175,6 +203,8 @@ struct SettingsTabRootView: View {
             appLockSheet = AppLockSheetViewModel()
         case .viewTypeDialog:
             isViewTypeDialogPresented = true
+        case .appearanceDialog:
+            isAppearanceDialogPresented = true
         case .openURL(let url):
             let isContact = url.scheme == "mailto"
             openURL(url) { accepted in

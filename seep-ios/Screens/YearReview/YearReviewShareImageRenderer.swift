@@ -17,9 +17,11 @@ enum YearReviewImageRenderer {
     /// 카드 폭을 화면과 같게 두고 gray2 캔버스 가운데에 얹어 그린다. 그리지 못하면 nil
     @MainActor
     static func render(summary: YearReviewSummary, cardWidth: CGFloat) -> Image? {
+        // 공유 이미지는 화면 모드와 상관없이 라이트로 만든다 (GH-85 R-6)
         let card = YearReviewCard(summary: summary)
             .frame(width: cardWidth)
             .fixedSize(horizontal: false, vertical: true)
+            .environment(\.colorScheme, .light)
 
         // 1배로 한 번 그려 카드의 실제 높이(pt)를 얻는다
         let measuring = ImageRenderer(content: card)
@@ -31,7 +33,8 @@ enum YearReviewImageRenderer {
             Color.gray2
             card
         }
-        .frame(width: canvas.width, height: canvas.height))
+        .frame(width: canvas.width, height: canvas.height)
+        .environment(\.colorScheme, .light))
         renderer.scale = scale
         renderer.isOpaque = true
         guard let cgImage = renderer.cgImage else { return nil }

@@ -174,6 +174,8 @@ enum LogObjectId: String {
     case yearReviewCard = "year_review_card"
     case notificationSetting = "notification_setting"
     case viewTypeSetting = "view_type_setting"
+    /// 설정 "화면 모드"에서 고름 (+type) (GH-85)
+    case selectAppearance = "select_appearance"
     case widgetGuide = "widget_guide"
     case controlGuide = "control_guide"
     case rateApp = "rate_app"

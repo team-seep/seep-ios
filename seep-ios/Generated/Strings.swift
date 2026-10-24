@@ -898,6 +898,18 @@ internal enum Strings {
     internal static let version = Strings.tr("Localization", "settings.version", fallback: "버전")
     /// 위젯 추가하는 법
     internal static let widgetGuide = Strings.tr("Localization", "settings.widget_guide", fallback: "위젯 추가하는 법")
+    internal enum Appearance {
+      /// 다크
+      internal static let dark = Strings.tr("Localization", "settings.appearance.dark", fallback: "다크")
+      /// 위젯은 아이폰 화면 모드를 따라요
+      internal static let footer = Strings.tr("Localization", "settings.appearance.footer", fallback: "위젯은 아이폰 화면 모드를 따라요")
+      /// 라이트
+      internal static let light = Strings.tr("Localization", "settings.appearance.light", fallback: "라이트")
+      /// 시스템 설정 따르기
+      internal static let system = Strings.tr("Localization", "settings.appearance.system", fallback: "시스템 설정 따르기")
+      /// 화면 모드
+      internal static let title = Strings.tr("Localization", "settings.appearance.title", fallback: "화면 모드")
+    }
     internal enum Contact {
       /// 
       /// 
