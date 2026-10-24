@@ -140,7 +140,7 @@ struct HomeCategoryTabs: View {
                 } label: {
                     Text(verbatim: category.title)
                         .font(isSelected ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
-                        .foregroundStyle(isSelected ? Color.gray1 : Color.gray4)
+                        .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
                         .frame(height: 30)
                         .background {
                             if isSelected {
@@ -257,6 +257,7 @@ struct HomeFilterBar: View {
             Button(action: onToggleViewType) {
                 (viewType == .list ? Assets.Icons.icGrid : Assets.Icons.icList).swiftUIImage
                     .resizable()
+                    .foregroundStyle(Color.gray2_5)
                     .frame(width: 24, height: 24)
                     .frame(width: 44, height: 44)
                     .contentShape(Rectangle())

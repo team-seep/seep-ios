@@ -25,6 +25,16 @@ final class Preference {
         }
     }
     
+    /// 화면 모드. 없으면 시스템 설정 따르기 (GH-85 R-3)
+    var appearance: AppAppearance {
+        set {
+            instance.set(newValue.rawValue, forKey: AppAppearance.storageKey)
+        }
+        get {
+            instance.string(forKey: AppAppearance.storageKey).flatMap(AppAppearance.init(rawValue:)) ?? .system
+        }
+    }
+
     /// 앱을 켤 때 홈이 처음 보일 카테고리. nil 이면 마지막으로 본 카테고리 (GH-86 R-1)
     var startCategory: Category? {
         set {

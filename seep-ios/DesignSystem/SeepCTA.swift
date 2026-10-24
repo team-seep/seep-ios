@@ -12,7 +12,7 @@ struct SeepCTA: View {
         Button(action: action) {
             Text(verbatim: title)
                 .font(.appleExtraBold(size: 17))
-                .foregroundStyle(Color.gray1)
+                .foregroundStyle(Color.onAccent)
                 .padding(.horizontal, 30)
                 .frame(maxWidth: fillsWidth ? .infinity : nil)
                 .frame(height: 50)

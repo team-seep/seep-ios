@@ -3,6 +3,8 @@ import Foundation
 /// 위시 상세 문서의 본문 섹션 (GH-59 R-10). case 순서가 화면 순서다.
 enum DetailSection: CaseIterable, Equatable {
     case memo
+    /// "이어지는 싶" — 메모 다음 (GH-84 R-4)
+    case chain
     case steps
     case savings
     case link
@@ -19,10 +21,17 @@ enum DetailSectionBuilder {
     /// - Parameters:
     ///   - hasPhoto: 사진 파일이 실제로 있는지. nil 이면 파일 이름으로 판단한다 (GH-36 R-7)
     ///   - isPhotoEditable: 수정 버튼이 없는 이룬 싶 탭 상세는 사진 빈 자리를 그대로 둔다 (GH-61 R-12)
-    static func sections(for wish: Wish, hasPhoto: Bool? = nil, isPhotoEditable: Bool = false) -> [DetailSection] {
+    ///   - hasChain: 이어진 싶이 하나라도 있는지 (GH-84 R-4, R-6)
+    static func sections(
+        for wish: Wish,
+        hasPhoto: Bool? = nil,
+        isPhotoEditable: Bool = false,
+        hasChain: Bool = false
+    ) -> [DetailSection] {
         let hasPhoto = hasPhoto ?? !wish.photoFileName.isEmpty
         return DetailSection.allCases.filter { section in
             if section == .photo { return hasPhoto || isPhotoEditable }
+            if section == .chain { return hasChain }
             return isVisible(section, wish: wish)
         }
     }
@@ -39,7 +48,7 @@ enum DetailSectionBuilder {
             return wish.category == .wantToGet && WishLinkInput(text: wish.link).link != nil
         case .place:
             return wish.category == .wantToGo
-        case .photo:
+        case .photo, .chain:
             return false
         case .letter:
             return wish.hasFutureLetter

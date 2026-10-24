@@ -11,6 +11,7 @@ struct SettingsTabRootView: View {
     @State private var viewModel = SettingsViewModel()
     @State private var appLockSheet: AppLockSheetViewModel?
     @State private var isViewTypeDialogPresented = false
+    @State private var isAppearanceDialogPresented = false
     @State private var isStartCategoryDialogPresented = false
 
     var body: some View {
@@ -87,6 +88,26 @@ struct SettingsTabRootView: View {
         } message: {
             Text(Strings.Settings.StartCategory.description)
         }
+        .confirmationDialog(
+            Strings.Settings.Appearance.title,
+            isPresented: $isAppearanceDialogPresented,
+            titleVisibility: .visible
+        ) {
+            ForEach(AppAppearance.allCases, id: \.self) { appearance in
+                Button(Self.title(of: appearance)) { viewModel.send(.selectAppearance(appearance)) }
+            }
+            Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
+        } message: {
+            Text(Strings.Settings.Appearance.footer)
+        }
+    }
+
+    static func title(of appearance: AppAppearance) -> String {
+        switch appearance {
+        case .system: return Strings.Settings.Appearance.system
+        case .light: return Strings.Settings.Appearance.light
+        case .dark: return Strings.Settings.Appearance.dark
+        }
     }
 
     // MARK: Rows
@@ -116,6 +137,13 @@ struct SettingsTabRootView: View {
                 title: Strings.Settings.ViewType.title,
                 value: viewType == .grid ? Strings.Settings.ViewType.grid : Strings.Settings.ViewType.list,
                 action: .tapViewType
+            )
+
+        case .appearance(let appearance):
+            button(
+                title: Strings.Settings.Appearance.title,
+                value: Self.title(of: appearance),
+                action: .tapAppearance
             )
 
         case .startCategory(let category):
@@ -196,6 +224,8 @@ struct SettingsTabRootView: View {
             appLockSheet = AppLockSheetViewModel()
         case .viewTypeDialog:
             isViewTypeDialogPresented = true
+        case .appearanceDialog:
+            isAppearanceDialogPresented = true
         case .startCategoryDialog:
             isStartCategoryDialogPresented = true
         case .openURL(let url):

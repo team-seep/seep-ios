@@ -88,7 +88,7 @@ private struct YearReviewContentView: View {
     private var shareButton: some View {
         let label = Text(Strings.YearReview.share)
             .font(.appleExtraBold(size: 17))
-            .foregroundStyle(Color.gray1)
+            .foregroundStyle(Color.onAccent)
             .padding(.horizontal, 36)
             .frame(height: 50)
             .background(Color.tennisGreen, in: Capsule())

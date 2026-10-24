@@ -9,6 +9,8 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var isSplashFinished = false
+    /// 설정 "화면 모드". `Preference.appearance`가 같은 키에 쓴다 (GH-85 R-3)
+    @AppStorage(AppAppearance.storageKey) private var appearanceRawValue = AppAppearance.system.rawValue
 
     var logManager: LogManagerProtocol = LogManager.shared
 
@@ -28,6 +30,7 @@ struct RootView: View {
         }
         .toastOverlay(toastCenter)
         .appLockOverlay()
+        .preferredColorScheme(AppAppearance(rawValue: appearanceRawValue)?.colorScheme)
         .onOpenURL { url in
             log(router.open(url: url))
         }

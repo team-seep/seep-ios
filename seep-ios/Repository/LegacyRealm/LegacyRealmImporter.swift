@@ -105,6 +105,8 @@ struct LegacyRealmImporter {
                 futureLetterSealedAt: nil,
                 // 아래에서 카테고리별 최근 생성순으로 다시 채운다 (GH-73 R-3)
                 manualOrder: 0,
+                // Realm 시절에는 이어 적기가 없었다 (GH-84)
+                previousWishId: nil,
                 createdAt: dto.createdAt,
                 updatedAt: importedAt,
                 deletedAt: nil

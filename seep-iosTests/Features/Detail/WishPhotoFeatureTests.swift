@@ -311,6 +311,6 @@ final class WishPhotoFeatureTests: ViewModelTestCase {
         ))
 
         // Then
-        XCTAssertEqual(items, [.cancelFinish, .deletePhoto, .share])
+        XCTAssertEqual(items, [.cancelFinish, .chainNext, .deletePhoto, .share])
     }
 }

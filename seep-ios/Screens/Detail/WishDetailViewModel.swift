@@ -22,6 +22,8 @@ extension WishDetailViewModel {
         case confirmCancelFinish
         /// 수정 화면에서 저장하고 돌아왔다 (R-11)
         case editFinished(Wish)
+        /// "이어지는 싶"의 다른 싶 줄 (GH-84 R-5)
+        case tapChainWish(id: String)
         case routeHandled
     }
 
@@ -31,6 +33,10 @@ extension WishDetailViewModel {
         case confirmDelete
         case confirmCancelFinish
         case sharePhoto(Wish)
+        /// 이룬 위시에 이어서 작성 화면을 연다 (GH-84 R-3)
+        case chainedWrite(Wish)
+        /// 체인의 다른 위시 상세로 간다 (GH-84 R-5)
+        case wishDetail(id: String, isFinished: Bool)
         case errorAlert(String)
         /// 삭제·완료 취소 뒤, 또는 위시가 지워져 있으면 상세를 닫는다
         case close
@@ -46,6 +52,8 @@ extension WishDetailViewModel {
         var summary: WishDetailSummary?
         var sections: [DetailSection] = []
         var letter: DetailLetter = .hidden
+        /// 이어진 싶이 있을 때만 (GH-84 R-4, R-6)
+        var chain: WishChain?
     }
 
     struct Dependency {
@@ -114,6 +122,7 @@ final class WishDetailViewModel {
         self.config = config
         self.dependency = dependency
         if let wish = dependency.wishRepository.fetchWish(id: config.wishId) {
+            reloadChain()
             apply(wish: wish)
             makeSectionViewModels(wish: wish)
         }
@@ -136,6 +145,8 @@ final class WishDetailViewModel {
         case .editFinished(let wish):
             apply(wish: wish)
             reloadSections(wish: wish)
+        case .tapChainWish(let id):
+            openChainWish(id: id)
         case .routeHandled:
             route = nil
         }
@@ -169,6 +180,10 @@ final class WishDetailViewModel {
             route = .sharePhoto(wish)
         case .deletePhoto:
             photo?.send(.tapDelete)
+        case .chainNext:
+            guard let wish = state.wish else { return }
+            sendClickLog(objectId: .chainNextWish)
+            route = .chainedWrite(wish)
         case .delete:
             route = .confirmDelete
         case .cancelFinish:
@@ -215,11 +230,27 @@ final class WishDetailViewModel {
             return
         }
         // `Wish ==`는 id 만 비교하므로 값이 같은지 따지지 않고 다시 반영한다
+        reloadChain()
         apply(wish: wish)
         if steps == nil {
             makeSectionViewModels(wish: wish)
         } else {
             reloadSections(wish: wish)
+        }
+    }
+
+    private func openChainWish(id: String) {
+        guard let chain = state.chain, id != chain.current.id,
+              let wish = (chain.previous + chain.next).first(where: { $0.id == id }) else { return }
+        sendClickLog(objectId: .chainWishRow)
+        route = .wishDetail(id: id, isFinished: wish.isSuccess)
+    }
+
+    /// 체인은 다른 위시가 바뀔 때도 달라지므로 화면이 보일 때마다 다시 읽는다 (GH-84 R-6)
+    private func reloadChain() {
+        let chain = dependency.wishRepository.fetchWishChain(wishId: config.wishId).flatMap { $0.isEmpty ? nil : $0 }
+        if chain != state.chain {
+            state.chain = chain
         }
     }
 
@@ -232,7 +263,8 @@ final class WishDetailViewModel {
         let sections = DetailSectionBuilder.sections(
             for: wish,
             hasPhoto: dependency.photoStorage.photoURL(fileName: wish.photoFileName) != nil,
-            isPhotoEditable: config.mode == .fromFinish
+            isPhotoEditable: config.mode == .fromFinish,
+            hasChain: state.chain != nil
         )
         if sections != state.sections {
             state.sections = sections

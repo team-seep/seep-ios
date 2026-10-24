@@ -40,7 +40,7 @@ struct CheckCircle: View {
                     .fill(Color.tennisGreen)
                 Image(systemName: "checkmark")
                     .font(.system(size: size * 0.45, weight: .heavy))
-                    .foregroundStyle(Color.gray1)
+                    .foregroundStyle(Color.onAccent)
             } else {
                 Circle()
                     .strokeBorder(Color.gray3, lineWidth: 2)

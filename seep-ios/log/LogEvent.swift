@@ -174,6 +174,8 @@ enum LogObjectId: String {
     case yearReviewCard = "year_review_card"
     case notificationSetting = "notification_setting"
     case viewTypeSetting = "view_type_setting"
+    /// 설정 "화면 모드"에서 고름 (+type) (GH-85)
+    case selectAppearance = "select_appearance"
     /// 설정 "시작 카테고리"에서 고름 (+type) (GH-86)
     case selectStartCategory = "select_start_category"
     /// 홈 "선택" → 선택 모드 (GH-86)
@@ -196,6 +198,12 @@ enum LogObjectId: String {
     case sealFutureLetter = "seal_future_letter"
     /// 완료 순간 열린 편지 카드 노출 (GH-61)
     case futureLetter = "future_letter"
+    /// 이어서 적기 (소감 시트·이룬 싶 상세 ⋯) (GH-84)
+    case chainNextWish = "chain_next_wish"
+    /// 이어서 연 작성 화면에서 저장 (GH-84)
+    case saveChainedWish = "save_chained_wish"
+    /// 상세 "이어지는 싶" 섹션에서 다른 싶 줄 (GH-84)
+    case chainWishRow = "chain_wish_row"
     /// 필터 바 "순서 바꾸기" (GH-73)
     case reorderWishes = "reorder_wishes"
     /// 순서 바꾸기 모드에서 위시를 옮겨 놓음 (GH-73)

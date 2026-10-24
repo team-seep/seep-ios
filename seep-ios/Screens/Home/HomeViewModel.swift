@@ -203,6 +203,8 @@ final class HomeViewModel {
     private var finishingWishIds: Set<String> = []
     /// 이번 완료 흐름이 홈 체크에서 시작했는지. 위젯에서 완료한 위시의 소감은 토스트·점을 붙이지 않는다
     private var isHomeFinishFlow = false
+    /// 소감 시트에서 "이어서 적기"를 고른 앞 위시. 시트가 닫히면 작성 화면을 연다 (GH-84)
+    private var pendingChainWish: Wish?
     private var toastId = 0
     private var didSendYearReviewImpression = false
     /// 이번 실행에서 카테고리별로 카드에 올리기로 고른 위시 id — 실행당 카테고리별 1번만 고른다
@@ -525,6 +527,9 @@ extension HomeViewModel {
         viewModel.onSave = { [weak self] savedWish in
             self?.updateWish(savedWish)
         }
+        viewModel.onChainNext = { [weak self] previous in
+            self?.pendingChainWish = previous
+        }
         state.sheet = .finishNote(viewModel)
     }
 
@@ -539,8 +544,13 @@ extension HomeViewModel {
         state.sheet = nil
         switch dismissedSheet {
         case .finishNote:
-            // 소감 시트가 닫힌 뒤에만 배지 축하를 띄운다 (GH-35 R-7)
-            if !presentBadgeCelebrationIfNeeded() {
+            // 이어서 적기를 골랐으면 배지 축하 대신 작성 화면을 연다. 배지는 다음 완료 때 축하한다 (GH-84 R-1)
+            if let previous = pendingChainWish {
+                pendingChainWish = nil
+                completeFinishFlow()
+                dependency.router?.openChainedWrite(from: previous)
+            } else if !presentBadgeCelebrationIfNeeded() {
+                // 소감 시트가 닫힌 뒤에만 배지 축하를 띄운다 (GH-35 R-7)
                 completeFinishFlow()
             }
         case .badgeCelebration:

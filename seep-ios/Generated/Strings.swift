@@ -339,6 +339,30 @@ internal enum Strings {
         }
       }
     }
+    internal enum Chain {
+      /// 지금 이 싶
+      internal static let current = Strings.tr("Localization", "detail.chain.current", fallback: "지금 이 싶")
+      /// %@ 이뤘어요
+      internal static func finishedFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.chain.finished_format", String(describing: p1), fallback: "%@ 이뤘어요")
+      }
+      /// %@ 이뤘어요 · “%@”
+      internal static func finishedNoteFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.chain.finished_note_format", String(describing: p1), String(describing: p2), fallback: "%@ 이뤘어요 · “%@”")
+      }
+      /// 앞선 싶 %d개 더
+      internal static func hiddenFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.chain.hidden_format", p1, fallback: "앞선 싶 %d개 더")
+      }
+      /// 이어서 적기
+      internal static let next = Strings.tr("Localization", "detail.chain.next", fallback: "이어서 적기")
+      /// %d번째
+      internal static func positionFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.chain.position_format", p1, fallback: "%d번째")
+      }
+      /// 이어지는 싶
+      internal static let title = Strings.tr("Localization", "detail.chain.title", fallback: "이어지는 싶")
+    }
     internal enum Dday {
       /// %@이었어요
       internal static func pastFormat(_ p1: Any) -> String {
@@ -696,6 +720,12 @@ internal enum Strings {
       internal static func cellFormat(_ p1: Any) -> String {
         return Strings.tr("Localization", "home.finish_note.cell_format", String(describing: p1), fallback: "“%@”")
       }
+      /// ＋ 이어서 적기
+      internal static let chainAction = Strings.tr("Localization", "home.finish_note.chain_action", fallback: "＋ 이어서 적기")
+      /// 이 싶에 이어서 새 싶을 적어요
+      internal static let chainDescription = Strings.tr("Localization", "home.finish_note.chain_description", fallback: "이 싶에 이어서 새 싶을 적어요")
+      /// 다음엔 뭐 하고 싶어요?
+      internal static let chainTitle = Strings.tr("Localization", "home.finish_note.chain_title", fallback: "다음엔 뭐 하고 싶어요?")
       /// %d/%d
       internal static func countFormat(_ p1: Int, _ p2: Int) -> String {
         return Strings.tr("Localization", "home.finish_note.count_format", p1, p2, fallback: "%d/%d")
@@ -938,6 +968,18 @@ internal enum Strings {
     internal static let version = Strings.tr("Localization", "settings.version", fallback: "버전")
     /// 위젯 추가하는 법
     internal static let widgetGuide = Strings.tr("Localization", "settings.widget_guide", fallback: "위젯 추가하는 법")
+    internal enum Appearance {
+      /// 다크
+      internal static let dark = Strings.tr("Localization", "settings.appearance.dark", fallback: "다크")
+      /// 위젯은 아이폰 화면 모드를 따라요
+      internal static let footer = Strings.tr("Localization", "settings.appearance.footer", fallback: "위젯은 아이폰 화면 모드를 따라요")
+      /// 라이트
+      internal static let light = Strings.tr("Localization", "settings.appearance.light", fallback: "라이트")
+      /// 시스템 설정 따르기
+      internal static let system = Strings.tr("Localization", "settings.appearance.system", fallback: "시스템 설정 따르기")
+      /// 화면 모드
+      internal static let title = Strings.tr("Localization", "settings.appearance.title", fallback: "화면 모드")
+    }
     internal enum Contact {
       /// 
       /// 

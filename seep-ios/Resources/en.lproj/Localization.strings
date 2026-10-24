@@ -53,6 +53,9 @@
 "home.finish_note.count_format" = "%d/%d";
 "home.finish_note.save" = "남기기";
 "home.finish_note.skip" = "다음에 할게요";
+"home.finish_note.chain_title" = "다음엔 뭐 하고 싶어요?";
+"home.finish_note.chain_description" = "이 싶에 이어서 새 싶을 적어요";
+"home.finish_note.chain_action" = "＋ 이어서 적기";
 "home.finish_note.cell_format" = "“%@”";
 "home.finish_note.letter_title_format" = "%d일 전의 내가\n편지를 보냈어요";
 "home.finish_note.letter_title_today" = "오늘의 내가\n편지를 보냈어요";
@@ -169,6 +172,13 @@
 "detail.link.open_accessibility" = "상품 링크 열기";
 "common.won_unit" = "원";
 "common.won_format" = "%@원";
+"detail.chain.title" = "이어지는 싶";
+"detail.chain.position_format" = "%d번째";
+"detail.chain.current" = "지금 이 싶";
+"detail.chain.finished_format" = "%@ 이뤘어요";
+"detail.chain.finished_note_format" = "%@ 이뤘어요 · “%@”";
+"detail.chain.hidden_format" = "앞선 싶 %d개 더";
+"detail.chain.next" = "이어서 적기";
 "detail.letter.title" = "미래의 나에게";
 "detail.letter.sealed_title" = "이루는 날 열려요";
 "detail.letter.sealed_caption_format" = "%@에 봉인했어요 · %d자";
@@ -363,6 +373,11 @@
 "settings.view_type.list" = "리스트";
 "settings.view_type.grid" = "그리드";
 "settings.view_type.cancel" = "취소";
+"settings.appearance.title" = "화면 모드";
+"settings.appearance.system" = "시스템 설정 따르기";
+"settings.appearance.light" = "라이트";
+"settings.appearance.dark" = "다크";
+"settings.appearance.footer" = "위젯은 아이폰 화면 모드를 따라요";
 "settings.start_category.title" = "시작 카테고리";
 "settings.start_category.description" = "앱을 열면 처음 보일 탭이에요";
 "settings.start_category.last" = "마지막으로 본 카테고리";
