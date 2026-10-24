@@ -149,4 +149,12 @@ final class MockWishRepository: WishRepository {
         wish.finishNote = ""
         return .success(wish)
     }
+
+    var moveWishResult: Result<Void, RepositoryError> = .success(())
+    private(set) var moveWishCalls: [(wishId: String, orderedIds: [String])] = []
+
+    func moveWish(wishId: String, orderedIds: [String]) -> Result<Void, RepositoryError> {
+        moveWishCalls.append((wishId, orderedIds))
+        return moveWishResult
+    }
 }

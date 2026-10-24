@@ -4,12 +4,24 @@ import SwiftUI
 struct HomeView: View {
     @Bindable var viewModel: HomeViewModel
     @Environment(AppRouter.self) private var router
-    @Environment(ToastCenter.self) private var toastCenter
-    @Environment(\.scenePhase) private var scenePhase
 
     private static let topAnchorId = "home-top"
 
     var body: some View {
+        Group {
+            if viewModel.state.isReordering {
+                HomeReorderView(viewModel: viewModel)
+            } else {
+                homeList
+            }
+        }
+        // 순서 바꾸기 중에는 탭 바를 숨겨 작성·다른 탭으로 빠지지 않게 한다 ("완료"로만 나간다, GH-73 R-5)
+        .toolbarVisibility(viewModel.state.isReordering ? .hidden : .automatic, for: .tabBar)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.state.isReordering)
+        .modifier(HomeViewEvents(viewModel: viewModel))
+    }
+
+    private var homeList: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
@@ -45,68 +57,6 @@ struct HomeView: View {
             }
         }
         .background(Color.gray2.ignoresSafeArea())
-        .toolbarVisibility(.hidden, for: .navigationBar)
-        .trackScreen(viewModel.screenName)
-        .onAppear {
-            viewModel.send(.onAppear)
-            viewModel.send(.syncWidgetChanges)
-        }
-        .onChange(of: scenePhase) { _, phase in
-            // 앱이 다시 활성화될 때 싶 탭이 보이면 위젯 기록을 반영한다 (GH-48 R-7, R-8)
-            if phase == .active, router.selectedTab == .wish, router.wishPath.isEmpty {
-                viewModel.send(.syncWidgetChanges)
-            }
-        }
-        .onChange(of: router.selectedTab) { _, tab in
-            // 다른 탭에 있다가 싶 탭으로 돌아오면 위젯 기록을 반영한다 (R-16)
-            if tab == .wish { viewModel.send(.syncWidgetChanges) }
-        }
-        .onChange(of: router.wishesChangedToken) { _, _ in
-            viewModel.send(.onAppear)
-        }
-        .onChange(of: router.homeCategory) { _, category in
-            // 작성을 마치면 그 카테고리를 보여준다 (R-9)
-            if category != viewModel.state.category { viewModel.send(.selectCategory(category)) }
-        }
-        .onChange(of: viewModel.state.toast) { _, toast in
-            if let toast { toastCenter.show(toast.message) }
-        }
-        .seepSheet(item: sheetBinding) { sheet in
-            switch sheet {
-            case .sortOrder:
-                SortOrderSheet(selected: viewModel.state.sortOrder) { viewModel.send(.selectSortOrder($0)) }
-            case .finishNote(let finishNoteViewModel):
-                FinishNoteSheet(viewModel: finishNoteViewModel)
-            case .badgeCelebration(let celebrationViewModel):
-                BadgeCelebrationSheet(viewModel: celebrationViewModel)
-            }
-        }
-        .seepFullScreenCover(item: yearReviewBinding) { presentation in
-            YearReviewScreen(year: presentation.year)
-        }
-        .alert(
-            Strings.Home.SleepingWish.Alert.title,
-            isPresented: releaseAlertBinding,
-            presenting: viewModel.state.releaseAlertWish,
-            actions: { wish in
-                Button(Strings.Home.SleepingWish.Alert.cancel, role: .cancel) {
-                    viewModel.send(.cancelReleaseSleepingWish)
-                }
-                Button(Strings.Home.SleepingWish.Alert.release, role: .destructive) {
-                    viewModel.send(.confirmReleaseSleepingWish(wish))
-                }
-            },
-            message: { _ in Text(Strings.Home.SleepingWish.Alert.message) }
-        )
-        .alert(
-            viewModel.state.errorMessage ?? "",
-            isPresented: errorAlertBinding,
-            actions: {
-                Button(Strings.Home.ErrorAlert.confirm, role: .cancel) {
-                    viewModel.send(.errorAlertDismissed)
-                }
-            }
-        )
     }
 
     private var filterHeader: some View {
@@ -117,6 +67,8 @@ struct HomeView: View {
                 sortOrder: viewModel.state.sortOrder,
                 viewType: viewModel.state.viewType,
                 isPlaceMapVisible: viewModel.state.isPlaceMapVisible,
+                isReorderVisible: viewModel.state.isReorderButtonVisible,
+                onTapReorder: { viewModel.send(.tapReorder) },
                 onTapSort: { viewModel.send(.tapSortOrder) },
                 onTapPlaceMap: { viewModel.send(.tapPlaceMap) },
                 onTapSearch: { viewModel.send(.tapSearch) },
@@ -160,6 +112,80 @@ struct HomeView: View {
                 }
             }
         }
+    }
+}
+
+/// 홈 화면 수명주기·시트·알럿. 순서 바꾸기 모드와 일반 목록이 같이 쓴다
+private struct HomeViewEvents: ViewModifier {
+    @Bindable var viewModel: HomeViewModel
+    @Environment(AppRouter.self) private var router
+    @Environment(ToastCenter.self) private var toastCenter
+    @Environment(\.scenePhase) private var scenePhase
+
+    func body(content: Content) -> some View {
+        content
+            .toolbarVisibility(.hidden, for: .navigationBar)
+            .trackScreen(viewModel.screenName)
+            .onAppear {
+                viewModel.send(.onAppear)
+                viewModel.send(.syncWidgetChanges)
+            }
+            .onChange(of: scenePhase) { _, phase in
+                // 앱이 다시 활성화될 때 싶 탭이 보이면 위젯 기록을 반영한다 (GH-48 R-7, R-8)
+                if phase == .active, router.selectedTab == .wish, router.wishPath.isEmpty {
+                    viewModel.send(.syncWidgetChanges)
+                }
+            }
+            .onChange(of: router.selectedTab) { _, tab in
+                // 다른 탭에 있다가 싶 탭으로 돌아오면 위젯 기록을 반영한다 (R-16)
+                if tab == .wish { viewModel.send(.syncWidgetChanges) }
+            }
+            .onChange(of: router.wishesChangedToken) { _, _ in
+                viewModel.send(.onAppear)
+            }
+            .onChange(of: router.homeCategory) { _, category in
+                // 작성을 마치면 그 카테고리를 보여준다 (R-9)
+                if category != viewModel.state.category { viewModel.send(.selectCategory(category)) }
+            }
+            .onChange(of: viewModel.state.toast) { _, toast in
+                if let toast { toastCenter.show(toast.message) }
+            }
+            .seepSheet(item: sheetBinding) { sheet in
+                switch sheet {
+                case .sortOrder:
+                    SortOrderSheet(selected: viewModel.state.sortOrder) { viewModel.send(.selectSortOrder($0)) }
+                case .finishNote(let finishNoteViewModel):
+                    FinishNoteSheet(viewModel: finishNoteViewModel)
+                case .badgeCelebration(let celebrationViewModel):
+                    BadgeCelebrationSheet(viewModel: celebrationViewModel)
+                }
+            }
+            .seepFullScreenCover(item: yearReviewBinding) { presentation in
+                YearReviewScreen(year: presentation.year)
+            }
+            .alert(
+                Strings.Home.SleepingWish.Alert.title,
+                isPresented: releaseAlertBinding,
+                presenting: viewModel.state.releaseAlertWish,
+                actions: { wish in
+                    Button(Strings.Home.SleepingWish.Alert.cancel, role: .cancel) {
+                        viewModel.send(.cancelReleaseSleepingWish)
+                    }
+                    Button(Strings.Home.SleepingWish.Alert.release, role: .destructive) {
+                        viewModel.send(.confirmReleaseSleepingWish(wish))
+                    }
+                },
+                message: { _ in Text(Strings.Home.SleepingWish.Alert.message) }
+            )
+            .alert(
+                viewModel.state.errorMessage ?? "",
+                isPresented: errorAlertBinding,
+                actions: {
+                    Button(Strings.Home.ErrorAlert.confirm, role: .cancel) {
+                        viewModel.send(.errorAlertDismissed)
+                    }
+                }
+            )
     }
 
     private var sheetBinding: Binding<HomeSheet?> {

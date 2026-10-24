@@ -1,11 +1,15 @@
 import Foundation
 
-enum HomeSortOrder {
+/// 홈 정렬. rawValue 는 저장(`Preference.homeSortOrder`)과 `sort_order` 로그의 `type`에 쓴다 (GH-73 R-2, TC-9)
+enum HomeSortOrder: String, CaseIterable {
     /// 완료일 가까운 순서
-    case deadlineOrder
+    case deadlineOrder = "deadline"
     
     /// 최근 생성순
-    case latestOrder
+    case latestOrder = "latest"
+
+    /// 내가 정한 순서 — 끌어서 바꾼다 (GH-73)
+    case manualOrder = "manual"
 }
 
 extension HomeSortOrder {
@@ -15,6 +19,8 @@ extension HomeSortOrder {
             Strings.Home.Filter.Sort.deadline
         case .latestOrder:
             Strings.Home.Filter.Sort.latest
+        case .manualOrder:
+            Strings.Home.Filter.Sort.manual
         }
     }
     
@@ -35,6 +41,8 @@ extension HomeSortOrder {
             return deadlineOrder(wish1:wish2:)
         case .latestOrder:
             return newestOrder(wish1:wish2:)
+        case .manualOrder:
+            return manualOrder(wish1:wish2:)
         }
     }
     
@@ -55,5 +63,13 @@ extension HomeSortOrder {
     
     private func newestOrder(wish1: Wish, wish2: Wish) -> Bool {
         return wish1.createdAt > wish2.createdAt
+    }
+
+    /// 순서 값이 작을수록 위. 같으면 최근 생성순 (UNIQUE 제약이 없어 같을 수 있다)
+    private func manualOrder(wish1: Wish, wish2: Wish) -> Bool {
+        if wish1.manualOrder != wish2.manualOrder {
+            return wish1.manualOrder < wish2.manualOrder
+        }
+        return newestOrder(wish1: wish1, wish2: wish2)
     }
 }

@@ -40,7 +40,10 @@ final class LegacyRealmImporterTests: XCTestCase {
         XCTAssertEqual(report?.wishCount, 1)
         let imported = try XCTUnwrap(repository.fetchWish(id: "wish-1"))
         let sameUpdatedAt = Date(timeIntervalSinceReferenceDate: 0)
-        XCTAssertEqual(WishRecord(wish: imported, updatedAt: sameUpdatedAt), WishRecord(wish: original, updatedAt: sameUpdatedAt))
+        // GH-73: 이전은 "내가 정한 순서" 값을 카테고리별 최근 생성순(1부터)으로 새로 매긴다
+        var expected = original
+        expected.manualOrder = 1
+        XCTAssertEqual(WishRecord(wish: imported, updatedAt: sameUpdatedAt), WishRecord(wish: expected, updatedAt: sameUpdatedAt))
     }
 
     // MARK: GH-79 TC2

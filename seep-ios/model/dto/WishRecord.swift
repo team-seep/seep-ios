@@ -38,6 +38,8 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     /// "미래의 나에게" 편지. 비어 있으면 편지 없음 (GH-61, 마이그레이션 v2)
     var futureLetter: String
     var futureLetterSealedAt: Date?
+    /// "내가 정한 순서" 값. 카테고리 안에서 작을수록 위. UNIQUE 를 두지 않고 같으면 createdAt 으로 가른다 (GH-73, 마이그레이션 v3)
+    var manualOrder: Double
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -47,6 +49,7 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
         static let category = Column(CodingKeys.category)
         static let isSuccess = Column(CodingKeys.isSuccess)
         static let finishDate = Column(CodingKeys.finishDate)
+        static let manualOrder = Column(CodingKeys.manualOrder)
         static let deletedAt = Column(CodingKeys.deletedAt)
     }
 }
@@ -128,6 +131,7 @@ extension WishRecord {
         self.photoFileName = wish.photoFileName
         self.futureLetter = wish.futureLetter
         self.futureLetterSealedAt = wish.futureLetterSealedAt
+        self.manualOrder = wish.manualOrder
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -229,6 +233,7 @@ extension Wish {
             photoFileName: record.photoFileName,
             futureLetter: record.futureLetter,
             futureLetterSealedAt: record.futureLetterSealedAt,
+            manualOrder: record.manualOrder,
             createdAt: record.createdAt
         )
     }

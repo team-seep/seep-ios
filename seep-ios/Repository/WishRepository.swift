@@ -56,6 +56,10 @@ protocol WishRepository {
     
     /// 완료를 취소하고(완료일·소감도 지운다), 반영된 위시를 돌려준다. 상세 ⋯ "완료 취소하기" (GH-64 TC-605, GH-25 R-6)
     func cancelFinish(wishId: String) -> Result<Wish, RepositoryError>
+
+    /// "내가 정한 순서"에서 위시를 옮긴다. `orderedIds`는 옮긴 뒤 화면의 순서(고정 위시 제외).
+    /// 보통은 앞뒤 값의 중간값으로 옮긴 위시 1건만 바꾸고, 간격이 너무 좁으면 그 목록을 1, 2, 3 … 으로 다시 매긴다 (GH-73 R-7)
+    func moveWish(wishId: String, orderedIds: [String]) -> Result<Void, RepositoryError>
 }
 
 final class WishRepositoryImpl: WishRepository {
@@ -195,8 +199,34 @@ final class WishRepositoryImpl: WishRepository {
         }
     }
 
+    func moveWish(wishId: String, orderedIds: [String]) -> Result<Void, RepositoryError> {
+        return write { db, now in
+            guard let index = orderedIds.firstIndex(of: wishId) else {
+                throw WishRecordStore.StoreError.targetNotFound
+            }
+            let records = try WishRecordStore.aliveWishes()
+                .filter(orderedIds.contains(WishRecord.Columns.id))
+                .fetchAll(db)
+            let orders = Dictionary(records.map { ($0.id, $0.manualOrder) }, uniquingKeysWith: { first, _ in first })
+            let previous = index > 0 ? orders[orderedIds[index - 1]] : nil
+            let next = index + 1 < orderedIds.count ? orders[orderedIds[index + 1]] : nil
+
+            if let order = Self.manualOrder(between: previous, and: next) {
+                try WishRecordStore.updateWish(id: wishId, now: now, in: db) { $0.manualOrder = order }
+                return
+            }
+            // 간격이 좁거나 순서가 꼬였으면 화면 순서대로 다시 매긴다. 값이 바뀐 줄만 갱신한다
+            for (position, id) in orderedIds.enumerated() where orders[id] != Double(position + 1) {
+                try WishRecordStore.updateWish(id: id, now: now, in: db) { $0.manualOrder = Double(position + 1) }
+            }
+        }
+    }
+
     func addWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
         return write { db, now in
+            var wish = wish
+            // 새 위시는 정렬과 상관없이 그 카테고리의 맨 위 순서 값을 받는다 (GH-73 R-8)
+            wish.manualOrder = try Self.topManualOrder(category: wish.category.rawValue, in: db)
             try WishRecordStore.insert(wish, now: now, in: db)
             return try Self.fetchExisting(id: wish.id, in: db)
         }
@@ -205,7 +235,12 @@ final class WishRepositoryImpl: WishRepository {
     func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError> {
         let checkedAt = now()
         return write { db, now in
+            let newCategoryTop = try Self.topManualOrder(category: wish.category.rawValue, in: db)
             try WishRecordStore.updateWish(id: wish.id, now: now, in: db) { record in
+                // 카테고리를 바꾸면 새 카테고리의 맨 위로 간다 (GH-73 R-8)
+                if record.category != wish.category.rawValue {
+                    record.manualOrder = newCategoryTop
+                }
                 record.emoji = wish.emoji
                 record.category = wish.category.rawValue
                 record.title = wish.title
@@ -260,6 +295,29 @@ final class WishRepositoryImpl: WishRepository {
             throw WishRecordStore.StoreError.targetNotFound
         }
         return wish
+    }
+
+    /// 카테고리에서 가장 위(가장 작은 값)보다 1 작은 값
+    private static func topManualOrder(category: String, in db: Database) throws -> Double {
+        let minimum = try WishRecordStore.aliveWishes()
+            .filter(WishRecord.Columns.category == category)
+            .select(min(WishRecord.Columns.manualOrder), as: Double?.self)
+            .fetchOne(db) ?? nil
+        return (minimum ?? 1) - 1
+    }
+
+    /// 앞뒤 값 사이의 새 값. 사이가 너무 좁거나 순서가 꼬였으면 nil (다시 매겨야 한다)
+    private static func manualOrder(between previous: Double?, and next: Double?) -> Double? {
+        switch (previous, next) {
+        case let (previous?, next?):
+            return next - previous > 1e-6 ? (previous + next) / 2 : nil
+        case let (previous?, nil):
+            return previous + 1
+        case let (nil, next?):
+            return next - 1
+        case (nil, nil):
+            return 0
+        }
     }
 
     private static func savings(wishId: String, in db: Database) throws -> [WishSaving] {

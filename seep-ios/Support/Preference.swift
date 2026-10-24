@@ -25,6 +25,16 @@ final class Preference {
         }
     }
     
+    /// 홈 정렬. 없으면 완료일 가까운순 (GH-73 R-2)
+    var homeSortOrder: HomeSortOrder {
+        set {
+            instance.set(newValue.rawValue, forKey: "homeSortOrder")
+        }
+        get {
+            instance.string(forKey: "homeSortOrder").flatMap(HomeSortOrder.init(rawValue:)) ?? .deadlineOrder
+        }
+    }
+    
     var reservedDeepLink: String {
         set {
             instance.set(newValue, forKey: "reservedDeepLink")
