@@ -28,7 +28,12 @@ struct SmallRemainProvider: TimelineProvider {
             Category.wantToGo
         ].randomElement() ?? .wantToDo
         
-        let wishCount = WidgetWishRepositoryImpl().fetchUnfinishedCount(category: randomCategory)
-        return SmallRemainEntry(date: date, category: randomCategory, count: wishCount)
+        let repository = WidgetWishRepositoryImpl()
+        let wishCount = repository.fetchUnfinishedCount(category: randomCategory)
+        let nextWish = repository.fetchUnfinishedWishes()
+            .filter { $0.category == randomCategory }
+            .sorted(by: Wish.deadlineOrder)
+            .first
+        return SmallRemainEntry(date: date, category: randomCategory, count: wishCount, nextWish: nextWish)
     }
 }

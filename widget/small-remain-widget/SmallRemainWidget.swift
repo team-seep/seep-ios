@@ -6,7 +6,7 @@ struct SmallRemainWidget: Widget {
     
     var body: some WidgetConfiguration {
         StaticConfiguration(
-            kind: "\(SmallRemainWidget.self)",
+            kind: WidgetKind.smallRemain,
             provider: SmallRemainProvider()
         ) { entry in
             SmallRemainEntryView(entry: entry)

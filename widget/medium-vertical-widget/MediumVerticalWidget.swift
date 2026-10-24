@@ -2,7 +2,7 @@ import WidgetKit
 import SwiftUI
 
 struct MediumVerticalWidget: Widget {
-  let kind: String = "\(MediumVerticalWidget.self)"
+  let kind: String = WidgetKind.mediumVertical
   
   var body: some WidgetConfiguration {
     IntentConfiguration(

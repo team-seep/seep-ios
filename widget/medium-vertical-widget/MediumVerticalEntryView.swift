@@ -1,35 +1,26 @@
 import SwiftUI
 import WidgetKit
 
+/// 중형 세로: 최대 3줄, 체크 위젯과 같은 여백·간격 (GH-87 R-1, R-3)
 struct MediumVerticalEntryView: View {
     let entry: MediumVerticalEntry
-    
+
     var body: some View {
-        VStack {
-            VStack {
-                if entry.wishes.isEmpty {
-                    EmptyView()
-                } else {
-                    if entry.wishes.count == 1 {
-                        WishlistItemView(wish: entry.wishes[0])
-                        
-                        Spacer()
-                    } else if entry.wishes.count == 2 {
-                        WishlistItemView(wish: entry.wishes[0])
-                        WishlistItemView(wish: entry.wishes[1])
-                        
-                        Spacer()
-                    } else {
-                        WishlistItemView(wish: entry.wishes[0])
-                        WishlistItemView(wish: entry.wishes[1])
-                        WishlistItemView(wish: entry.wishes[2])
+        Group {
+            if entry.wishes.isEmpty {
+                EmptyView()
+            } else {
+                VStack(spacing: 8) {
+                    ForEach(entry.wishes.prefix(3), id: \.id) { wish in
+                        WishlistItemView(wish: wish)
                     }
+                    Spacer(minLength: 0)
                 }
+                .padding(.init(top: 12, leading: 15, bottom: 12, trailing: 12))
             }
-            .padding(.init(top: 12, leading: 15, bottom: 12, trailing: 15))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .widgetBackground(Color(r: 246, g: 247, b: 249))
+        .widgetBackground(.gray2)
     }
 }
 
