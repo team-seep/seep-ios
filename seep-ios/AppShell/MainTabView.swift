@@ -54,7 +54,7 @@ struct MainTabView: View {
             }
         }
         .seepFullScreenCover(item: $router.writeCategory) { category in
-            WishFormScreen(mode: .add(category)) { savedWish in
+            WishFormScreen(mode: .add(category), previousWishId: router.writePreviousWishId) { savedWish in
                 router.writeCategory = nil
                 if let savedWish {
                     router.wishesDidChange()

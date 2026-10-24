@@ -54,7 +54,13 @@ final class AppRouter {
     var finishedPath: [AppDestination] = []
     var settingsPath: [AppDestination] = []
     /// 작성 화면을 띄울 카테고리. nil 이면 닫혀 있다
-    var writeCategory: Category?
+    var writeCategory: Category? {
+        didSet {
+            if writeCategory == nil { writePreviousWishId = nil }
+        }
+    }
+    /// "이어서 적기"로 연 작성 화면의 앞 위시 id. 작성 화면이 닫히면 비운다 (GH-84 R-2)
+    private(set) var writePreviousWishId: String?
     /// 스플래시가 끝나 메인 탭이 보이는지. 그 전에 온 링크는 맡아 뒀다가 메인이 뜰 때 처리한다
     private(set) var isMainReady = false
     /// `seepSheet`로 띄운 시트 수. 시트가 떠 있으면 위젯 링크를 무시한다
@@ -159,6 +165,17 @@ final class AppRouter {
         }
         writeCategory = category
         return deepLink
+    }
+
+    /// 이룬 위시에 이어서 같은 카테고리의 작성 화면을 연다. 닫히는 시트가 있으면 다 닫힌 뒤 연다 (GH-84 R-1~R-3)
+    func openChainedWrite(from wish: Wish) {
+        guard writeCategory == nil else { return }
+        writePreviousWishId = wish.id
+        if presentedModalCount > 0 {
+            pendingIntentCategory = wish.category
+            return
+        }
+        writeCategory = wish.category
     }
 
     /// 시트가 모두 닫힌 뒤(`modalDidDisappear`로 0이 되면) 미뤄 둔 작성 화면을 띄운다

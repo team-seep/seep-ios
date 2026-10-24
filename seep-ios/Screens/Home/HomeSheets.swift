@@ -92,6 +92,9 @@ struct FinishNoteSheet: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .padding(.top, 8)
 
+            chainRow
+                .padding(.top, 20)
+
             SeepCTA(title: Strings.Home.FinishNote.save, isEnabled: viewModel.state.isSaveEnabled, fillsWidth: true) {
                 viewModel.send(.tapSave)
             }
@@ -239,6 +242,30 @@ struct HomeBadgeMedal: View {
 
 /// 완료 순간 열린 편지 (GH-61 R-5): "{n}일 전의 내가 / **편지를 보냈어요**" + 편지 카드 + "이루고 나니 어때요?"
 private extension FinishNoteSheet {
+    /// "다음엔 뭐 하고 싶어요? / ＋ 이어서 적기" (GH-84 R-1)
+    var chainRow: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .fill(Color.gray2_5)
+                .frame(height: 1)
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(Strings.Home.FinishNote.chainTitle)
+                        .font(.appleBold(size: 15))
+                        .foregroundStyle(Color.gray5)
+                    Text(Strings.Home.FinishNote.chainDescription)
+                        .font(.appleRegular(size: 13))
+                        .foregroundStyle(Color.gray4)
+                }
+                Spacer(minLength: 0)
+                TextActionButton(title: Strings.Home.FinishNote.chainAction) {
+                    viewModel.send(.tapChainNext)
+                }
+            }
+            .padding(.top, 16)
+        }
+    }
+
     func openedLetter(_ letter: FinishNoteViewModel.OpenedLetter) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HeadlineText(text: letter.headline, boldPart: Strings.Home.FinishNote.letterTitleBold)

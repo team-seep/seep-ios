@@ -7,6 +7,8 @@ extension FinishNoteViewModel {
         case inputNote(String)
         case tapSave
         case tapSkip
+        /// "＋ 이어서 적기" — 입력한 소감은 저장하고 닫은 뒤 작성 화면을 연다 (GH-84 R-1)
+        case tapChainNext
     }
 
     /// 완료 순간 열리는 "미래의 나에게" 편지 (GH-61 R-5)
@@ -68,6 +70,8 @@ final class FinishNoteViewModel {
     private(set) var route: Route?
     /// 저장에 성공한 위시. 홈 목록이 받아서 셀을 갱신한다
     @ObservationIgnored var onSave: ((Wish) -> Void)?
+    /// 이어서 적을 앞 위시. 시트가 닫힌 뒤 홈이 작성 화면을 연다 (GH-84 R-1)
+    @ObservationIgnored var onChainNext: ((Wish) -> Void)?
 
     private let dependency: Dependency
 
@@ -99,6 +103,8 @@ final class FinishNoteViewModel {
         case .tapSkip:
             sendClickLog(objectId: .skipFinishNote)
             route = .dismiss
+        case .tapChainNext:
+            chainNext()
         }
     }
 
@@ -121,6 +127,25 @@ final class FinishNoteViewModel {
         case .failure(let error):
             route = .errorAlert(message: error.localizedDescription)
         }
+    }
+
+    /// 소감이 있으면 저장하고(실패하면 이어 적지 않는다), 없으면 건너뛰기와 같다 (GH-84 R-1)
+    private func chainNext() {
+        let note = Self.trimmed(state.noteText)
+        var previous = wish
+        if !note.isEmpty {
+            switch dependency.wishRepository.updateFinishNote(wishId: wish.id, note: note) {
+            case .success(let savedWish):
+                onSave?(savedWish)
+                previous = savedWish
+            case .failure(let error):
+                route = .errorAlert(message: error.localizedDescription)
+                return
+            }
+        }
+        sendClickLog(objectId: .chainNextWish)
+        onChainNext?(previous)
+        route = .dismiss
     }
 
     private func sendClickLog(objectId: LogObjectId) {

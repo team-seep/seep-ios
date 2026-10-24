@@ -122,6 +122,14 @@ final class MockWishRepository: WishRepository {
         return fetchWishResult.first { $0.id == id }
     }
 
+    /// nil 이면 체인 없음(지금 위시만) (GH-84)
+    var fetchWishChainResult: WishChain?
+
+    func fetchWishChain(wishId: String) -> WishChain? {
+        if let fetchWishChainResult { return fetchWishChainResult }
+        return fetchWishResult.first { $0.id == wishId }.map { WishChain(previous: [], current: $0, next: []) }
+    }
+
     // MARK: 작성·수정 폼 (GH-64 P2)
 
     private(set) var addedWishes: [Wish] = []

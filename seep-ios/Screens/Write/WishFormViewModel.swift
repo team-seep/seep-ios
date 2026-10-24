@@ -606,6 +606,7 @@ final class WishFormViewModel {
             photoFileName: photoFileName,
             futureLetter: letter.text,
             futureLetterSealedAt: letter.sealedAt,
+            previousWishId: config.previousWishId,
             createdAt: dependency.now()
         )
 
@@ -618,6 +619,9 @@ final class WishFormViewModel {
                 objectId: .write,
                 extraParameters: [.hasTargetAmount: saved.targetAmount > 0]
             ))
+            if config.previousWishId != nil {
+                sendClickLog(objectType: .button, objectId: .saveChainedWish)
+            }
             return saved
         case .failure(let error):
             route = .toast(error.localizedDescription)
@@ -654,6 +658,7 @@ final class WishFormViewModel {
             photoFileName: photoFileName,
             futureLetter: letter.text,
             futureLetterSealedAt: letter.sealedAt,
+            previousWishId: original.previousWishId,
             createdAt: original.createdAt
         )
 
