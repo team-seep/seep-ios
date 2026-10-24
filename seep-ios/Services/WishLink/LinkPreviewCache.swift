@@ -7,7 +7,7 @@ protocol LinkPreviewCaching {
 }
 
 /// 상세에서 불러온 링크 미리보기를 위시 id 별 파일로 앱 Caches 에 둔다 (GH-29 R-5).
-/// Realm 에는 링크 문자열만 저장하고(R-7), 시스템이 Caches 를 비워도 다시 불러오면 되므로 캐시로 충분하다.
+/// DB 에는 링크 문자열만 저장하고(R-7), 시스템이 Caches 를 비워도 다시 불러오면 되므로 캐시로 충분하다.
 final class LinkPreviewCache: LinkPreviewCaching {
     static let shared = LinkPreviewCache()
 

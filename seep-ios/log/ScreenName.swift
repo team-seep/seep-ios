@@ -12,6 +12,8 @@ extension ScreenName {
     static let empty = ScreenName(rawValue: "empty")
 
     static let splash = ScreenName(rawValue: "splash")
+    /// 화면과 무관하게 앱 실행 때 보내는 이벤트 (GH-79 db_migration)
+    static let appLaunch = ScreenName(rawValue: "app_launch")
     static let home = ScreenName(rawValue: "home")
     static let sortOrderBottomSheet = ScreenName(rawValue: "sort_order_bottom_sheet")
     static let finishNoteBottomSheet = ScreenName(rawValue: "finish_note_bottom_sheet")

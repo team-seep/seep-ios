@@ -4,17 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 서버 없이 **로컬 Realm**에 저장하고, App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
+**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 서버 없이 **로컬 SQLite(GRDB)** 에 저장하고, App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
 
 - 타깃: `seep-ios`(앱), `widgetExtension`(WidgetKit, SwiftUI), `seep-iosTests`(XCTest)
-- iOS 18.0+. **SwiftUI + `@Observable` ViewModel**(GH-64에서 전환). UIKit은 `AppDelegate`(Firebase·Realm·알림 델리게이트)만. 위젯도 SwiftUI
-- 의존성: Swift Package Manager (Realm, Firebase) — 나머지(RxSwift·ReactorKit·SnapKit 등)는 GH-64에서 지웠다
+- iOS 18.0+. **SwiftUI + `@Observable` ViewModel**(GH-64에서 전환). UIKit은 `AppDelegate`(Firebase·DB·알림 델리게이트)만. 위젯도 SwiftUI
+- 의존성: Swift Package Manager (GRDB, Firebase, 이전용 Realm) — 나머지(RxSwift·ReactorKit·SnapKit 등)는 GH-64에서 지웠다
 - Git-flow, 메인 개발 브랜치 `develop`, 원격 `team-seep/seep-ios`
 
 ## 필수 명령어
 
 ```bash
-make lint            # SwiftLint(새 위반만) + scripts/check-realm-schema.sh — 코드 작성 후 반드시
+make lint            # SwiftLint(새 위반만) + scripts/check-db-schema.sh — 코드 작성 후 반드시
 make lint-fix        # SwiftLint 자동 수정
 make test            # 유닛 테스트 + build/summary.md (결과 수·실패 목록)
 make swiftgen        # Localization.strings / xcassets 변경 후 Generated/ 갱신
@@ -32,7 +32,7 @@ xcodebuild build \
 - 시뮬레이터는 `xcrun simctl list devices available | grep iPhone`으로 먼저 확인한다. 기기명은 머신마다 다르다.
 - 스킴은 `seep-ios` 하나(Debug = dev 번들 `macgongmon.seep-ios.dev`, 모듈명 `seep_ios_dev` / Release = `macgongmon.seep-ios`). 위젯은 `widgetExtension` 스킴.
 - 일반 그룹 구조라 **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 예외는 동기화 폴더(넣기만 하면 된다): `seep-ios/DesignSystem`(앱·위젯), `seep-ios/AppShell`(앱), `seep-ios/Screens`(앱), `seep-ios/model/Error`(앱·위젯), `seep-ios/log`(앱), `seep-iosTests/Features`·`seep-iosTests/Log`(테스트). 새 SwiftUI 코드는 가능하면 동기화 폴더 아래에 둔다. 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
-- Realm은 20.0.6(Xcode 26.1~27 지원). CI는 `macos-26` 러너.
+- DB는 GRDB 7.11.1(App Group `dev.sqlite`/`default.sqlite`, GH-79). Realm 20.0.6은 GH-79 이전 데이터를 1회 옮기는 데만 남아 있다(`Repository/LegacyRealm/`). CI는 `macos-26` 러너.
 - 서명 없이 빌드할 때 `CODE_SIGNING_ALLOWED=NO`를 쓰지 않는다 — App Group 엔타이틀먼트가 빠져 실행 직후 크래시한다. 대신 `CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=`.
 
 ## 개발 프로세스 (AI 개발 흐름)
@@ -65,8 +65,8 @@ xcodebuild build \
 
 - **R1** 화면은 SwiftUI View + `@Observable` ViewModel. `import UIKit`·UIKit 래퍼(`UIViewRepresentable`·`UIHostingController`) 금지 (예외: `AppDelegate.swift`)
 - **R2** `*ViewModel.swift`는 `import UIKit`·`import SwiftUI`·`UIApplication.shared` 금지(`Foundation`·`Observation`·필요하면 `Combine`). 의존은 `Dependency`로 주입, protocol 타입
-- **R3** `Realm()`·`realm.write/objects/...`는 `seep-ios/Repository/`에서만 (예외: AppDelegate 설정, widget Provider)
-- **R4** `model/dto/` 저장 프로퍼티를 바꾸면 `schemaVersion`을 **`Repository/RealmConfiguration.swift`(앱·위젯 공용)** 에서 올리고 `AppDelegate` `migrationBlock`에 분기 추가
+- **R3** DB 접근(`AppDatabase.writer.read/write`·`db.execute`·이전용 `Realm()`)은 `seep-ios/Repository/`에서만. 위젯도 `WidgetWishRepository`·`WidgetCheckRepository`를 거친다 (예외: AppDelegate)
+- **R4** `model/dto/` 레코드 저장 프로퍼티를 바꾸면 **`Repository/AppDatabase.swift`** `migrator`에 새 마이그레이션 추가. 동기화 대비로 UUID PK, 모든 테이블에 `updatedAt`·`deletedAt`(삭제는 표시만), PK 외 UNIQUE 금지
 - **R5** 시트·풀스크린은 `.seepSheet(item:)`/`.seepFullScreenCover(item:)`로만(앱 잠금 오버레이·토스트·detent 보장). 탭 스택에 쌓는 화면은 내비게이션 바가 숨겨져 있어 뒤로 버튼을 직접 그린다
 - **R6** 색은 `Color.gray5`·`.seepBlue`(`DesignSystem/SeepColor`), 폰트는 `Font.appleBold(size:)`(`SeepFont`), 문구는 `Text(Strings.xxx)`(리터럴 금지, 번역 안 하는 값은 `Text(verbatim:)`), 이미지는 `Assets.xxx`(`.swiftUIImage`). 넓은 화면 기둥은 `SeepLayout.maxContentWidth`
 - **R7** 타입은 책임 하나. 타입 400·파일 600줄 초과는 `// swiftlint:disable:next type_body_length - {사유}`
@@ -91,8 +91,8 @@ seep-ios/
 ├── Screens/{화면}/            # Home, Finished, Settings, Write, Detail, Search, Badge, YearReview, Place, SharePhoto — 동기화 폴더
 │   ├── {Name}Screen.swift / {Name}View.swift   # SwiftUI
 │   └── {Name}ViewModel.swift                    # @Observable (Action/State/Route/Config/Dependency)
-├── Repository/               # WishRepository(Protocol+Impl), RemoteConfigRepository — Realm 접근 지점
-├── model/dto/                # Realm Object (WishDTO, NotificationDTO) — 바꾸면 R4
+├── Repository/               # AppDatabase(GRDB 스키마·App Group), WishRepository·WidgetWishRepository·WidgetCheckRepository(Protocol+Impl), WishRecordStore, LegacyRealm/(1회 이전) — DB 접근 지점
+├── model/dto/                # GRDB 레코드 (WishRecord, WishStepRecord, WishSavingRecord, WishNotificationRecord) — 바꾸면 R4
 ├── model/presentation/       # 도메인 모델 (Wish, SeepNotification, HashtagType)
 ├── log/                      # LogManager(Firebase Analytics), ClickEvent·ImpressionEvent·CustomEvent, ScreenName …
 ├── Services/                 # 화면 아닌 기능: NotificationManager(로컬 알림), AuthenticationManager, CalendarManager, WishPhotoStorage, AppLock/·Place/·WishLink/
@@ -231,6 +231,7 @@ struct MyView: View {
 
 - Protocol + Impl 구조 (`WishRepository` / `WishRepositoryImpl`). 쓰기 결과는 `Result<_, RepositoryError>`로 돌려준다 (`try!` 금지, R8).
 - 새 조회/쓰기는 `WishRepository`에 메서드를 추가하고, `seep-iosTests/Mock/MockWishRepository.swift`도 같이 맞춘다.
+- 구현은 `WishRecordStore`(살아 있는 줄만 읽기, 쓰기 때 `updatedAt` 갱신, 삭제는 `deletedAt`)를 거친다. 저장소 테스트는 `AppDatabase.makeInMemory()`로 실제 구현을 돌리고 `snapshot()`으로 삭제 표시까지 확인한다 (`WishRepositoryTests`).
 
 ### UI
 

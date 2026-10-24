@@ -1,10 +1,10 @@
 import Foundation
 
-import RealmSwift
+import GRDB
 
 /// 체크 위젯(GH-48)이 쓰는 저장소. 앱·위젯 두 타깃에 들어간다 (R-6).
 /// `WishRepository`는 SwiftGen·Then 에 묶인 타입을 써서 위젯 타깃에 넣을 수 없어 따로 둔다.
-/// 위젯 프로세스에는 Realm 기본 설정이 없으므로 `RealmConfiguration.shared`를 직접 받는다.
+/// 앱·위젯이 같은 App Group DB(`AppDatabase.shared`)를 연다 (GH-79).
 protocol WidgetCheckRepository {
     /// 위젯 목록: 미완료 위시 + 오늘 위젯에서 완료한 위시를 `Wish.deadlineOrder`로 정렬해 `limit`개 (R-1, R-4)
     func fetchCheckWidgetWishes(limit: Int) -> [Wish]
@@ -22,42 +22,42 @@ protocol WidgetCheckRepository {
 }
 
 final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
-    private let configuration: Realm.Configuration
+    private let database: AppDatabase?
     private let store: WidgetCheckStore
     private let now: () -> Date
     private let calendar: Calendar
 
     init(
-        configuration: Realm.Configuration = RealmConfiguration.shared,
+        database: AppDatabase? = AppDatabase.shared,
         store: WidgetCheckStore = .shared,
         now: @escaping () -> Date = Date.init,
         calendar: Calendar = .current
     ) {
-        self.configuration = configuration
+        self.database = database
         self.store = store
         self.now = now
         self.calendar = calendar
     }
 
     func fetchCheckWidgetWishes(limit: Int) -> [Wish] {
-        guard let realm = try? Realm(configuration: configuration) else { return [] }
+        guard let database,
+              let wishes = try? database.writer.read({ try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes(), in: $0) })
+        else { return [] }
         let doneIds = store.doneWishIds(now: now(), calendar: calendar)
-        let wishes = realm.objects(WishDTO.self)
-            .map { Wish(dto: $0) }
+        let visible = wishes
             .filter { !$0.isSuccess || doneIds.contains($0.id) }
             .sorted(by: Wish.deadlineOrder)
-        return Array(wishes.prefix(limit))
+        return Array(visible.prefix(limit))
     }
 
     func fetchWish(id: String) -> Wish? {
-        guard let realm = try? Realm(configuration: configuration),
-              let targetObject = realm.objects(WishDTO.self).filter("_id == %@", id).first else { return nil }
-        return Wish(dto: targetObject)
+        guard let database else { return nil }
+        return (try? database.writer.read { try WishRecordStore.fetchWish(id: id, in: $0) }) ?? nil
     }
 
     func checkStep(wishId: String, stepId: String) -> Result<Wish, RepositoryError> {
-        let result = write(wishId: wishId) { wishDTO in
-            wishDTO.steps.first(where: { $0._id == stepId })?.isDone = true
+        let result = write(wishId: wishId) { db, now in
+            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.isDone = true }
         }
         if case .success = result {
             store.recordStepCheck(at: now())
@@ -67,15 +67,17 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
 
     func finishWish(wishId: String, lastStepId: String?) -> Result<Wish, RepositoryError> {
         let finishedAt = now()
-        let result = write(wishId: wishId) { wishDTO in
+        let result = write(wishId: wishId) { db, now in
             if let lastStepId {
-                wishDTO.steps.first(where: { $0._id == lastStepId })?.isDone = true
+                try WishRecordStore.updateStep(wishId: wishId, stepId: lastStepId, now: now, in: db) { $0.isDone = true }
             }
-            wishDTO.isSuccess = true
-            // 앱의 완료와 같게 날짜만 남긴다 (DateUtils.now() 규칙)
-            wishDTO.finishDate = calendar.startOfDay(for: finishedAt)
-            // 완료하면 고정을 푼다 (GH-33 R-6)
-            wishDTO.pinnedAt = nil
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { record in
+                record.isSuccess = true
+                // 앱의 완료와 같게 날짜만 남긴다 (DateUtils.now() 규칙)
+                record.finishDate = self.calendar.startOfDay(for: finishedAt)
+                // 완료하면 고정을 푼다 (GH-33 R-6)
+                record.pinnedAt = nil
+            }
         }
         if case .success = result {
             store.recordFinish(wishId: wishId, at: finishedAt)
@@ -84,11 +86,13 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
     }
 
     func unfinishWish(wishId: String) -> Result<Wish, RepositoryError> {
-        let result = write(wishId: wishId) { wishDTO in
-            wishDTO.isSuccess = false
-            wishDTO.finishDate = nil
-            // 다시 완료하면 소감을 새로 묻는다 (앱의 완료 취소와 같은 규칙, GH-25 R-6)
-            wishDTO.finishNote = ""
+        let result = write(wishId: wishId) { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { record in
+                record.isSuccess = false
+                record.finishDate = nil
+                // 다시 완료하면 소감을 새로 묻는다 (앱의 완료 취소와 같은 규칙, GH-25 R-6)
+                record.finishNote = ""
+            }
         }
         if case .success = result {
             store.recordUnfinish(wishId: wishId, at: now())
@@ -96,20 +100,19 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
         return result
     }
 
-    private func write(wishId: String, update: (WishDTO) -> Void) -> Result<Wish, RepositoryError> {
-        guard let realm = try? Realm(configuration: configuration) else { return .failure(.noDatabase) }
-        guard let targetObject = realm.objects(WishDTO.self).filter("_id == %@", wishId).first else {
-            return .failure(.targetNotFound)
-        }
-
+    private func write(wishId: String, update: (Database, Date) throws -> Void) -> Result<Wish, RepositoryError> {
+        guard let database else { return .failure(.noDatabase) }
+        let now = now()
         do {
-            try realm.write {
-                update(targetObject)
-            }
+            return .success(try database.writer.write { db in
+                try update(db, now)
+                guard let wish = try WishRecordStore.fetchWish(id: wishId, in: db) else {
+                    throw WishRecordStore.StoreError.targetNotFound
+                }
+                return wish
+            })
         } catch {
-            return .failure(.writeFailed)
+            return .failure(RepositoryError(error))
         }
-
-        return .success(Wish(dto: targetObject))
     }
 }

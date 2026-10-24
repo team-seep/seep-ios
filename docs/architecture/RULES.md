@@ -12,7 +12,7 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 - 규칙 포맷: **규칙 한 문장 / 이유 / 좋은 예·나쁜 예 / 강제 수단 / 예외**.
 - 강제 수단 우선순위: **린트(SwiftLint custom_rules) > 스크립트 > 문서**. 문서로만 강제되는 규칙은 R9 하나다.
 
-> **SwiftUI 전환 완료 (GH-64, 2026-10).** 앱 전체가 SwiftUI + `@Observable` ViewModel이다(최소 iOS 18). UIKit은 `AppDelegate.swift`(Firebase·Realm·알림 델리게이트, UI 없음)만 쓴다. RxSwift·ReactorKit·SnapKit·Then·PanModal·CombineCocoa·ISEmojiView·Lottie·Kingfisher·SwiftyBeaver 의존성은 지웠고, 그 시절 린트 규칙(`no_new_rx`, `no_base_vc`, `vc_inherits_base`, `cell_inherits_base`, `snapkit_leading_trailing`, `no_then`, `no_uicolor_literal`, `no_uifont_name`, `no_screen_size`)도 지웠다.
+> **SwiftUI 전환 완료 (GH-64, 2026-10).** 앱 전체가 SwiftUI + `@Observable` ViewModel이다(최소 iOS 18). UIKit은 `AppDelegate.swift`(Firebase·DB·알림 델리게이트, UI 없음)만 쓴다. RxSwift·ReactorKit·SnapKit·Then·PanModal·CombineCocoa·ISEmojiView·Lottie·Kingfisher·SwiftyBeaver 의존성은 지웠고, 그 시절 린트 규칙(`no_new_rx`, `no_base_vc`, `vc_inherits_base`, `cell_inherits_base`, `snapkit_leading_trailing`, `no_then`, `no_uicolor_literal`, `no_uifont_name`, `no_screen_size`)도 지웠다.
 
 ## 한눈에 보기
 
@@ -20,8 +20,8 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 |---|---|---|---|
 | R1 | 화면은 SwiftUI View + `@Observable` ViewModel. UIKit·UIKit 래퍼 금지(`AppDelegate`·`SystemPasteboard` 제외) | 린트 `no_uikit` | 0건 |
 | R2 | ViewModel은 UI를 모르고(UIKit·SwiftUI import 금지), 의존은 주입받는다 | 린트 `viewmodel_no_uikit_import`, `viewmodel_no_swiftui_import`, `viewmodel_no_uiapplication` | 0건 |
-| R3 | Realm 읽기/쓰기는 Repository에서만 | 린트 `realm_only_in_repository` | 0건 |
-| R4 | Realm 모델을 바꾸면 schemaVersion(앱+위젯)과 마이그레이션을 같이 바꾼다 | 스크립트 `check-realm-schema.sh` + 라벨 `schema-change` | 0건 |
+| R3 | DB 읽기/쓰기는 Repository에서만 | 린트 `db_only_in_repository` | 0건 |
+| R4 | 레코드를 바꾸면 마이그레이션을 추가하고 동기화 대비 규칙(UUID PK·`updatedAt`·`deletedAt`·UNIQUE 금지)을 지킨다 | 스크립트 `check-db-schema.sh` + 라벨 `schema-change` | 0건 |
 | R5 | 시트·풀스크린은 `seepSheet`/`seepFullScreenCover`로만 띄운다 | 린트 `no_raw_sheet` | 0건 |
 | R6 | UI 표현은 토큰(색·폰트)·SwiftGen(문자열·이미지)·컨테이너 기준 크기 | 린트 `no_color_literal`, `no_font_custom`, `no_text_literal`, `no_localized_literal` | 0건 |
 | R7 | 타입은 책임 하나만 진다 (타입 400·파일 600줄 초과는 사유 필수) | 린트 `type_body_length`·`file_length` + `length_disable_reason` | 0건 |
@@ -65,7 +65,7 @@ import ReactorKit                                   // ❌
 
 **강제 수단** — SwiftLint `no_uikit`.
 
-**예외** — `AppDelegate.swift`는 `@UIApplicationDelegateAdaptor`로 Firebase·Realm·알림 델리게이트를 맡는 UI 아닌 코드라 제외. `AppShell/SystemPasteboard.swift`는 iOS SwiftUI에 클립보드 쓰기 API가 없어 `UIPasteboard`를 `PasteboardWriting` 프로토콜 뒤에 감싼 파일이라 제외(GH-77). ViewModel은 프로토콜만 `Dependency`로 받는다. 테스트 타깃(`seep-iosTests/`)은 색 값 비교 등에 UIKit을 쓸 수 있다.
+**예외** — `AppDelegate.swift`는 `@UIApplicationDelegateAdaptor`로 Firebase·DB·알림 델리게이트를 맡는 UI 아닌 코드라 제외. `AppShell/SystemPasteboard.swift`는 iOS SwiftUI에 클립보드 쓰기 API가 없어 `UIPasteboard`를 `PasteboardWriting` 프로토콜 뒤에 감싼 파일이라 제외(GH-77). ViewModel은 프로토콜만 `Dependency`로 받는다. 테스트 타깃(`seep-iosTests/`)은 색 값 비교 등에 UIKit을 쓸 수 있다.
 
 ---
 
@@ -101,54 +101,53 @@ NotificationManager.shared.cancel(wish)        // ❌ 싱글턴 직접 호출 �
 
 ---
 
-## R3. Realm 읽기/쓰기는 Repository에서만 한다
+## R3. DB 읽기/쓰기는 Repository에서만 한다
 
-**규칙** — `Realm()` 생성, `realm.objects/write/add/delete`는 `seep-ios/Repository/`에서만 한다. ViewModel은 Repository protocol을 통해서만 데이터를 다룬다.
+**규칙** — `AppDatabase`(GRDB)의 `writer.read`/`writer.write`·`db.execute`·`DatabasePool`/`DatabaseQueue` 생성은 `seep-ios/Repository/`에서만 한다. 이전용으로 남은 Realm(`Realm()`, `realm.objects/write/...`)도 같다. ViewModel·위젯 Provider는 Repository protocol을 통해서만 데이터를 다룬다.
 
-**이유** — 이 앱의 "서버"는 로컬 Realm이다. 저장소 접근이 흩어지면 정렬·필터·완료 처리 같은 도메인 규칙이 화면마다 달라지고, 테스트에서 Realm을 목으로 바꿀 수 없다.
+**이유** — 이 앱의 "서버"는 로컬 DB다. 저장소 접근이 흩어지면 정렬·필터·완료 처리·삭제 표시(`deletedAt`) 같은 규칙이 화면마다 달라지고, 테스트에서 저장소를 목으로 바꿀 수 없다.
 
-**좋은 예** — `WishRepository`(protocol) + `WishRepositoryImpl`, `HomeViewModel.Dependency.wishRepository`.
+**좋은 예** — `WishRepository`(protocol) + `WishRepositoryImpl`, `HomeViewModel.Dependency.wishRepository`. 위젯은 앱·위젯 두 타깃에 넣은 `WidgetWishRepository`(읽기)·`WidgetCheckRepository`(체크 위젯 쓰기)를 쓴다.
 
 **나쁜 예**
 ```swift
 // HomeViewModel.swift
-let realm = try? Realm()                       // ❌
-realm?.objects(WishDTO.self)
+let wishes = try AppDatabase.shared?.writer.read { try WishRecord.fetchAll($0) }   // ❌
 ```
 
-**강제 수단** — SwiftLint `realm_only_in_repository`.
+**강제 수단** — SwiftLint `db_only_in_repository`.
 
-**예외** — `AppDelegate.swift`(Realm 설정·마이그레이션), `widget/`(앱 Repository를 쓸 수 없는 별도 익스텐션 타깃이라 Provider에서 직접 읽는다 — 읽기 전용으로만. 위젯에서 쓰기가 필요하면 앱·위젯 두 타깃에 넣은 `seep-ios/Repository/WidgetCheckRepository`처럼 Repository를 거친다 — GH-48).
+**예외** — `AppDelegate.swift`(DB 열기, 아주 예전 Realm 파일을 App Group으로 옮기기). 저장소 테스트는 파일 맨 위에 `// swiftlint:disable db_only_in_repository - {사유}`.
 
 ---
 
-## R4. Realm 모델을 바꾸면 schemaVersion과 마이그레이션을 같이 바꾼다
+## R4. 레코드를 바꾸면 마이그레이션을 추가하고, 동기화 대비 규칙을 지킨다
 
-**규칙** — `seep-ios/model/dto/*.swift`(Realm `Object`)의 저장 프로퍼티를 추가·삭제·타입 변경하면 같은 PR에서
-1. `schemaVersion`을 올린다 — **`seep-ios/Repository/RealmConfiguration.swift` 한 곳**(앱 `AppDelegate`와 위젯 Provider·인텐트가 `RealmConfiguration.shared`를 같이 쓴다, GH-48). 설정을 직접 만드는 위젯 Provider가 있으면 그 값도 같게,
-2. `AppDelegate.setupRealmConfig()`의 `migrationBlock`에 `oldSchemaVersion < 새버전` 분기를 추가한다.
+**규칙** — `seep-ios/model/dto/*.swift`(GRDB 레코드)의 저장 프로퍼티를 추가·삭제·타입 변경하면 같은 PR에서 `seep-ios/Repository/AppDatabase.swift`의 `migrator`에 **새 마이그레이션**(`registerMigration("v2")` …)을 추가한다. 배포된 마이그레이션은 고치거나 지우지 않는다.
+동기화(CloudKit·Firebase)를 나중에 붙일 수 있게 스키마는 다음을 지킨다 (GH-79):
+1. 모든 테이블의 PK는 UUID 문자열이다. 자동 증가 정수 키를 쓰지 않는다.
+2. 모든 테이블에 `updatedAt`(모든 쓰기에서 갱신, 하위 레코드가 바뀌면 부모 `wish`도)과 `deletedAt`(삭제 표시)을 둔다. 사용자가 지운 것은 줄을 지우지 않고 `deletedAt`만 남긴다. 조회는 `deletedAt IS NULL`만 본다(`WishRecordStore`).
+3. PK 외에 UNIQUE 제약을 두지 않는다. 정렬·필터용은 일반 인덱스.
+4. `wish`가 최상위 레코드다. 하위 테이블은 `wishId`로만 `wish`를 가리킨다.
 
-**이유** — 로컬 DB 앱에서 스키마 불일치는 **업데이트 직후 실행 크래시 = 사용자 데이터 손실**이다. 위젯은 같은 App Group의 Realm 파일을 열기 때문에, 앱만 올리고 위젯을 빼먹으면 위젯이 깨진다. 그래서 값을 한 곳(`RealmConfiguration`)에 모으고, 따로 쓴 곳이 남아 있으면 기계로 같은지 본다.
+**이유** — 로컬 DB 앱에서 스키마 불일치는 **업데이트 직후 실행 크래시 = 사용자 데이터 손실**이다. 앱·위젯이 같은 App Group DB를 열기 때문에 스키마는 `AppDatabase` 한 곳에서 정하고, 먼저 여는 쪽이 마이그레이션한다(파일 코디네이션). 동기화 규칙은 나중에 서버를 붙일 때 DB를 다시 옮기지 않기 위해서다.
 
 **좋은 예**
 ```swift
-config.schemaVersion = 4                       // RealmConfiguration.shared (앱·위젯 공용)
-config.migrationBlock = { migration, oldSchemaVersion in
-    if oldSchemaVersion < 3 { ... }
-    if oldSchemaVersion < 4 {
-        migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-            newObject?["isPinned"] = false
-        }
+migrator.registerMigration("v2") { db in
+    try db.alter(table: "wish") { table in
+        table.add(column: "manualOrder", .double).notNull().defaults(to: 0)
     }
 }
 ```
 
-**강제 수단** — `scripts/check-realm-schema.sh` (`make lint`, CI `lint.yml`).
-- 항상: `RealmConfiguration`·`AppDelegate`·`widget/**/*Provider.swift` 중 `schemaVersion`을 직접 쓴 곳의 값이 모두 같은지.
-- CI(`BASE_REF` 지정 시): `model/dto/`가 바뀌었는데 `schemaVersion`이 base와 같으면 실패.
-- 라벨 `schema-change`가 붙어 리뷰어가 마이그레이션 코드를 먼저 본다. 마이그레이션 TC(구버전 데이터 → 신버전 실행)는 수동/자동화 TC로 반드시 넣는다 (`docs/process/e2e-and-manual-tests.md`).
+**강제 수단** — `scripts/check-db-schema.sh` (`make lint`, CI `lint.yml`).
+- 항상: 레코드마다 `updatedAt`·`deletedAt`이 있는지, `AppDatabase`에 UNIQUE 제약이 없는지.
+- CI(`BASE_REF` 지정 시): 레코드가 바뀌었는데 마이그레이션이 늘지 않았으면 실패. base에 있던 마이그레이션 이름이 사라졌으면 실패.
+- 라벨 `schema-change`가 붙어 리뷰어가 마이그레이션 코드를 먼저 본다. 마이그레이션 TC(구버전 데이터 → 신버전 실행)는 유닛(메모리 DB에서 `migrator`)과 자동화 TC로 넣는다 (`docs/process/e2e-and-manual-tests.md`).
 
-**예외** — 저장되지 않는 computed 프로퍼티·메서드·주석만 바꿨다면 스크립트가 실패해도 PR 본문에 사유를 적고 리뷰어가 승인한다.
+**예외** — 저장되지 않는 computed 프로퍼티·메서드·주석만 바꿨다면 스크립트가 실패해도 PR 본문에 사유를 적고 리뷰어가 승인한다. `appMetadata`(1회 이전 표시 등 이 기기에만 있는 값)는 동기화 대상이 아니라 2번 규칙에서 뺀다.
+**이전용 Realm** — GH-79 전 데이터를 옮기는 `Repository/LegacyRealm/`(Realm DTO·`schemaVersion` 7·`migrationBlock`)은 고치지 않는다. 이전 실패율을 본 뒤 후속 이슈에서 지운다.
 
 ---
 
@@ -220,7 +219,7 @@ Text("하고 싶은 것들이")                         // ❌ 문자열 리터�
 
 **규칙** — `print`를 남기지 않는다. `try!`/`as!` 대신 `try?`/`do-catch`, `as?` + `guard`.
 
-**이유** — `try!`는 Realm 쓰기 실패 같은 드문 상황에서 앱을 죽인다. 로컬 DB 앱에서 크래시는 곧 데이터 신뢰 상실이다. `print`는 릴리즈에 남아 의미 없는 로그가 된다.
+**이유** — `try!`는 DB 쓰기 실패 같은 드문 상황에서 앱을 죽인다. 로컬 DB 앱에서 크래시는 곧 데이터 신뢰 상실이다. `print`는 릴리즈에 남아 의미 없는 로그가 된다.
 
 **좋은 예**
 ```swift

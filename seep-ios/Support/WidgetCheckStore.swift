@@ -4,7 +4,7 @@ import Foundation
 /// - `widgetFinishedWishIds`: 위젯에서 완료해 앱이 아직 처리(알림 취소·소감 시트)하지 않은 위시 id. 최근 것이 앞 (R-7)
 /// - `widgetDoneWishIds`: 위젯에서 완료해 그날 자정까지 완료 모양으로 남길 줄. id → 완료 시각 (R-4)
 /// - `widgetActionLogs`: 위젯은 GA 를 못 보내 실행 기록만 쌓고 앱이 보낸다 (트래킹 이벤트)
-/// - `widgetMutatedAt`: 위젯이 마지막으로 Realm 에 쓴 시각. 앱이 홈을 다시 읽을지 정한다 (R-8)
+/// - `widgetMutatedAt`: 위젯이 마지막으로 DB 에 쓴 시각. 앱이 홈을 다시 읽을지 정한다 (R-8)
 final class WidgetCheckStore {
     enum Action: String, Equatable {
         case checkStep = "check_step"
@@ -28,7 +28,7 @@ final class WidgetCheckStore {
 
     private let userDefaults: UserDefaults
 
-    init(userDefaults: UserDefaults? = UserDefaults(suiteName: RealmConfiguration.appGroupIdentifier)) {
+    init(userDefaults: UserDefaults? = UserDefaults(suiteName: AppDatabase.appGroupIdentifier)) {
         self.userDefaults = userDefaults ?? .standard
     }
 

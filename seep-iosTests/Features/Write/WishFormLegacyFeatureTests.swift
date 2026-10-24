@@ -415,17 +415,16 @@ final class WishFormLegacyFeatureTests: WishFormFeatureTestCase {
 
     // MARK: GH-29 TC9
 
-    func test_GH29_TC9_링크필드가없는기존위시DTO는_link가빈문자열이다() {
-        // Given
-        let dto = WishDTO()
-        dto.title = "예전 위시"
+    func test_GH29_TC9_링크가없는기존위시레코드는_link가빈문자열이다() {
+        // Given: 저장소 레코드로 바꿨다가 되돌린다 (GH-79 에서 Realm DTO → GRDB 레코드)
+        let record = WishRecord(wish: Wish(title: "예전 위시"), updatedAt: Date())
 
         // When
-        let wish = Wish(dto: dto)
+        let wish = Wish(record: record, steps: [], savings: [], notifications: [])
 
         // Then
         XCTAssertEqual(wish.link, "")
-        XCTAssertEqual(WishDTO(wish: Wish(link: link)).link, link)
+        XCTAssertEqual(WishRecord(wish: Wish(link: link), updatedAt: Date()).link, link)
     }
 
     // MARK: GH-31 TC9 (장소)

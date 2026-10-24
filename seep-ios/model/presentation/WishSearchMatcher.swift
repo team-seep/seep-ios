@@ -1,6 +1,6 @@
 import Foundation
 
-/// 위시 검색의 일치 판단·강조 범위 계산 (GH-32 R-3, R-6). Realm 없이 테스트할 수 있게 순수 함수로 둔다.
+/// 위시 검색의 일치 판단·강조 범위 계산 (GH-32 R-3, R-6). DB 없이 테스트할 수 있게 순수 함수로 둔다.
 enum WishSearchMatcher {
     /// 메모 줄에서 일치 글자 앞에 남겨 둘 글자 수. 이보다 뒤에서 일치하면 앞을 `…`로 줄인다
     static let memoLeadingContextLength = 6

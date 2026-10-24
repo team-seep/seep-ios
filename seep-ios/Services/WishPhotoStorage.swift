@@ -17,7 +17,7 @@ enum WishPhotoStorageError: LocalizedError {
     }
 }
 
-/// 위시 사진 파일 저장소 (GH-36). 앱 컨테이너 `Application Support/WishPhotos/`에 JPEG로 두고 Realm에는 파일 이름만 저장한다.
+/// 위시 사진 파일 저장소 (GH-36). 앱 컨테이너 `Application Support/WishPhotos/`에 JPEG로 두고 DB에는 파일 이름만 저장한다.
 /// 위젯에는 사진을 보여주지 않아 App Group이 아니라 앱 컨테이너에 둔다.
 protocol WishPhotoStorage {
     /// 긴 변 1080px 이하 JPEG(품질 0.8)로 줄여 `{위시id}-{uuid}.jpg`로 저장하고 파일 이름을 돌려준다.

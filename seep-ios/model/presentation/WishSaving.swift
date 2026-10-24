@@ -19,12 +19,6 @@ struct WishSaving: Equatable, Hashable {
         self.createdAt = createdAt
     }
 
-    init(dto: SavingDTO) {
-        self.id = dto._id
-        self.amount = dto.amount
-        self.createdAt = dto.createdAt
-    }
-
     /// 최신 기록이 먼저 오도록 정렬한다 (R-3).
     static func latestFirst(_ savings: [WishSaving]) -> [WishSaving] {
         return savings.sorted { $0.createdAt > $1.createdAt }
