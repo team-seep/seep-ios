@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// 상세 "일지" 섹션 (GH-95 R-3, R-7): 헤더 "일지 {개수}" + "＋ 남기기"(홈에서 연 상세만) / 최신순 3줄 + "모두 보기 (n)"
+/// 상세 "일지" 섹션 (GH-95 R-3, R-7): 헤더 "일지 {개수}" + "＋ 남기기"(홈에서 연 상세, 일지가 있을 때만) / 최신순 3줄 + "모두 보기 (n)"
 struct DetailJournalSection: View {
     let journal: WishJournalViewModel
 
@@ -9,7 +9,7 @@ struct DetailJournalSection: View {
         DocumentSection(
             title: Strings.Detail.Journal.title,
             count: state.journals.isEmpty ? nil : String(state.journals.count),
-            actionTitle: state.isEditable ? Strings.Detail.Journal.add : nil,
+            actionTitle: state.isHeaderAddVisible ? Strings.Detail.Journal.add : nil,
             action: { journal.send(.tapAdd) }
         ) {
             if state.journals.isEmpty {

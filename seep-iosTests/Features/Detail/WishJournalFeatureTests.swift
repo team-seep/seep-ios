@@ -52,7 +52,20 @@ final class WishJournalFeatureTests: ViewModelTestCase {
         XCTAssertTrue(sections.contains(.journal))
         XCTAssertTrue(viewModel.state.journals.isEmpty)
         XCTAssertTrue(viewModel.state.isEditable)
+        XCTAssertFalse(viewModel.state.isHeaderAddVisible)
         XCTAssertFalse(viewModel.state.isViewAllVisible)
+    }
+
+    func test_GH95_TC1_일지가생기면_헤더에남기기버튼이보인다() throws {
+        // Given
+        let wish = try addWish()
+        try addJournals(count: 1, to: wish.id)
+
+        // When
+        let viewModel = makeViewModel(wish: try XCTUnwrap(repository.fetchWish(id: wish.id)))
+
+        // Then
+        XCTAssertTrue(viewModel.state.isHeaderAddVisible)
     }
 
     func test_GH95_TC1_일지섹션은_단계와모은돈사이에있다() {

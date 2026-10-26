@@ -39,6 +39,11 @@ extension WishJournalViewModel {
             isExpanded ? journals : Array(journals.prefix(WishJournalViewModel.collapsedCount))
         }
 
+        /// 헤더 "＋ 남기기". 일지가 없으면 본문 "＋ 오늘 한 줄 남기기"와 겹치므로 숨긴다
+        var isHeaderAddVisible: Bool {
+            isEditable && !journals.isEmpty
+        }
+
         var isViewAllVisible: Bool {
             !isExpanded && journals.count > WishJournalViewModel.collapsedCount
         }
