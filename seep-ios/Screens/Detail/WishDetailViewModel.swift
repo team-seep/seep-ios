@@ -105,6 +105,7 @@ final class WishDetailViewModel {
 
     private(set) var steps: DetailStepsViewModel?
     private(set) var savings: WishSavingsViewModel?
+    private(set) var journal: WishJournalViewModel?
     private(set) var calendar: WishCalendarViewModel?
     private(set) var link: DetailLinkViewModel?
     private(set) var place: DetailPlaceViewModel?
@@ -264,7 +265,8 @@ final class WishDetailViewModel {
             for: wish,
             hasPhoto: dependency.photoStorage.photoURL(fileName: wish.photoFileName) != nil,
             isPhotoEditable: config.mode == .fromFinish,
-            hasChain: state.chain != nil
+            hasChain: state.chain != nil,
+            isJournalEditable: config.mode == .fromHome
         )
         if sections != state.sections {
             state.sections = sections
@@ -300,6 +302,17 @@ final class WishDetailViewModel {
             self?.update { $0.savings = savings }
         }
         self.savings = savings
+
+        let journal = WishJournalViewModel(
+            config: .init(wish: wish, isEditable: config.mode == .fromHome),
+            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager, now: dependency.now)
+        )
+        // 일지를 남기면 점검 시각도 바뀌므로(GH-95 R-6) 위시를 다시 읽어 수정 문서로 넘길 값을 맞춘다
+        journal.onUpdate = { [weak self] in
+            guard let self, let wish = dependency.wishRepository.fetchWish(id: config.wishId) else { return }
+            apply(wish: wish)
+        }
+        self.journal = journal
 
         calendar = WishCalendarViewModel(
             config: .init(wish: wish, isAddable: config.mode == .fromHome),
@@ -345,6 +358,7 @@ final class WishDetailViewModel {
     private func reloadSections(wish: Wish) {
         steps?.send(.reload(wish.steps))
         savings?.send(.reload(wish))
+        journal?.send(.reload(wish))
         calendar?.send(.reload(wish))
         link?.send(.reload(wish))
         place?.send(.reload(wish))

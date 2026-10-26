@@ -41,4 +41,6 @@ extension ScreenName {
     static let widgetGuide = ScreenName(rawValue: "widget_guide")
     static let controlGuide = ScreenName(rawValue: "control_guide")
     static let license = ScreenName(rawValue: "license")
+    /// 상세 일지 한 줄 남기기 시트 (GH-95)
+    static let journalBottomSheet = ScreenName(rawValue: "journal_bottom_sheet")
 }

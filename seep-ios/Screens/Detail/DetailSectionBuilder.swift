@@ -6,6 +6,8 @@ enum DetailSection: CaseIterable, Equatable {
     /// "이어지는 싶" — 메모 다음 (GH-84 R-4)
     case chain
     case steps
+    /// 일지 — 단계와 모은 돈 사이 (GH-95 R-3)
+    case journal
     case savings
     case link
     case place
@@ -22,16 +24,19 @@ enum DetailSectionBuilder {
     ///   - hasPhoto: 사진 파일이 실제로 있는지. nil 이면 파일 이름으로 판단한다 (GH-36 R-7)
     ///   - isPhotoEditable: 수정 버튼이 없는 이룬 싶 탭 상세는 사진 빈 자리를 그대로 둔다 (GH-61 R-12)
     ///   - hasChain: 이어진 싶이 하나라도 있는지 (GH-84 R-4, R-6)
+    ///   - isJournalEditable: 홈에서 연 상세는 일지가 없어도 "＋ 오늘 한 줄 남기기"를 보인다. 이룬 싶 상세는 일지가 있을 때만 (GH-95 R-3)
     static func sections(
         for wish: Wish,
         hasPhoto: Bool? = nil,
         isPhotoEditable: Bool = false,
-        hasChain: Bool = false
+        hasChain: Bool = false,
+        isJournalEditable: Bool = false
     ) -> [DetailSection] {
         let hasPhoto = hasPhoto ?? !wish.photoFileName.isEmpty
         return DetailSection.allCases.filter { section in
             if section == .photo { return hasPhoto || isPhotoEditable }
             if section == .chain { return hasChain }
+            if section == .journal { return isJournalEditable || !wish.journals.isEmpty }
             return isVisible(section, wish: wish)
         }
     }
@@ -48,7 +53,7 @@ enum DetailSectionBuilder {
             return wish.category == .wantToGet && WishLinkInput(text: wish.link).link != nil
         case .place:
             return wish.category == .wantToGo
-        case .photo, .chain:
+        case .photo, .chain, .journal:
             return false
         case .letter:
             return wish.hasFutureLetter

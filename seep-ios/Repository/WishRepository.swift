@@ -23,6 +23,12 @@ protocol WishRepository {
     /// 모은 돈 기록을 지우고, 갱신된 기록 목록(최신순)을 돌려준다 (GH-16 R-5).
     func deleteSaving(wishId: String, savingId: String) -> Result<[WishSaving], RepositoryError>
     
+    /// 일지 한 줄을 남기고, 갱신된 일지 목록(최신순)을 돌려준다. 손댄 것으로 보고 잠든 위시 판정 기준도 갱신한다 (GH-95 R-2, R-6).
+    func addJournal(wishId: String, text: String) -> Result<[WishJournal], RepositoryError>
+
+    /// 일지 한 줄에 삭제 표시를 하고, 갱신된 일지 목록(최신순)을 돌려준다 (GH-95 R-2, R-7).
+    func deleteJournal(wishId: String, journalId: String) -> Result<[WishJournal], RepositoryError>
+
     /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
     
@@ -150,6 +156,27 @@ final class WishRepositoryImpl: WishRepository {
                 try saving.update(db)
             }
             return try Self.savings(wishId: wishId, in: db)
+        }
+    }
+
+    func addJournal(wishId: String, text: String) -> Result<[WishJournal], RepositoryError> {
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { $0.lastCheckedAt = now }
+            let journal = WishJournal(text: text, createdAt: now)
+            try WishJournalRecord(journal: journal, wishId: wishId, updatedAt: now).insert(db)
+            return try Self.journals(wishId: wishId, in: db)
+        }
+    }
+
+    func deleteJournal(wishId: String, journalId: String) -> Result<[WishJournal], RepositoryError> {
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { _ in }
+            if var journal = try WishRecordStore.aliveJournals(wishId: wishId, in: db).first(where: { $0.id == journalId }) {
+                journal.deletedAt = now
+                journal.updatedAt = now
+                try journal.update(db)
+            }
+            return try Self.journals(wishId: wishId, in: db)
         }
     }
 
@@ -345,6 +372,13 @@ final class WishRepositoryImpl: WishRepository {
         WishSaving.latestFirst(
             try WishRecordStore.aliveSavings(wishId: wishId, in: db)
                 .map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }
+        )
+    }
+
+    private static func journals(wishId: String, in db: Database) throws -> [WishJournal] {
+        WishJournal.latestFirst(
+            try WishRecordStore.aliveJournals(wishId: wishId, in: db)
+                .map { WishJournal(id: $0.id, text: $0.text, createdAt: $0.createdAt) }
         )
     }
 }

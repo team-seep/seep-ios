@@ -277,7 +277,7 @@ final class WishDetailFeatureTests: ViewModelTestCase {
         XCTAssertEqual(viewModel.state.summary?.title, "에어팟 프로 3")
         XCTAssertEqual(viewModel.state.summary?.ddayLine.text, "D-61")
         // GH-61 R-9: 사진·편지는 값이 있을 때만
-        XCTAssertEqual(viewModel.state.sections, [.memo])
+        XCTAssertEqual(viewModel.state.sections, [.memo, .journal]) // 홈에서 연 상세는 일지 섹션이 늘 있다 (GH-95 R-3)
         XCTAssertNotNil(viewModel.steps)
         XCTAssertNotNil(viewModel.photo)
     }
