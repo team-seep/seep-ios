@@ -764,6 +764,32 @@ internal enum Strings {
         return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
       }
     }
+    internal enum MigrationNotice {
+      /// 문의하기
+      internal static let contact = Strings.tr("Localization", "home.migration_notice.contact", fallback: "문의하기")
+      /// 오류: %@
+      internal static func contactErrorFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.migration_notice.contact_error_format", String(describing: p1), fallback: "오류: %@")
+      }
+      /// 위시는 이 기기에 그대로 있어요. 다시 시도해 주세요.
+      internal static let message = Strings.tr("Localization", "home.migration_notice.message", fallback: "위시는 이 기기에 그대로 있어요. 다시 시도해 주세요.")
+      /// 앱을 완전히 종료한 뒤 다시 실행해 주세요.
+      internal static let messageRestart = Strings.tr("Localization", "home.migration_notice.message_restart", fallback: "앱을 완전히 종료한 뒤 다시 실행해 주세요.")
+      /// 불러오지 못했던 위시 %d개를 다시 가져왔어요
+      internal static func reimportSuccessFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.migration_notice.reimport_success_format", p1, fallback: "불러오지 못했던 위시 %d개를 다시 가져왔어요")
+      }
+      /// 다시 시도
+      internal static let retry = Strings.tr("Localization", "home.migration_notice.retry", fallback: "다시 시도")
+      /// 다시 불러오지 못했어요. 잠시 뒤에 다시 시도해 주세요
+      internal static let retryFailure = Strings.tr("Localization", "home.migration_notice.retry_failure", fallback: "다시 불러오지 못했어요. 잠시 뒤에 다시 시도해 주세요")
+      /// 예전 위시 %d개를 불러왔어요
+      internal static func retrySuccessFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.migration_notice.retry_success_format", p1, fallback: "예전 위시 %d개를 불러왔어요")
+      }
+      /// GH-96 Realm → GRDB 이전 실패 안내 · 재이전
+      internal static let title = Strings.tr("Localization", "home.migration_notice.title", fallback: "예전 위시를 불러오지 못했어요")
+    }
     internal enum Pin {
       /// 고정은 3개까지 할 수 있어요
       internal static let limitToast = Strings.tr("Localization", "home.pin.limit_toast", fallback: "고정은 3개까지 할 수 있어요")

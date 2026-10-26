@@ -138,3 +138,66 @@ struct HomeEmptyView: View {
             .padding(.top, 180)
     }
 }
+
+/// "예전 위시를 불러오지 못했어요" 카드: 제목 · 안내 · 구분선 · [문의하기 | 다시 시도] (GH-96 R-9, R-12)
+struct HomeMigrationNoticeCardView: View {
+    let state: MigrationNoticeViewModel.State
+    let onContact: () -> Void
+    let onRetry: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.Home.MigrationNotice.title)
+                    .font(.appleBold(size: 14))
+                    .foregroundStyle(Color.gray5)
+                Text(verbatim: state.message)
+                    .font(.appleMedium(size: 12))
+                    .foregroundStyle(Color.gray4)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.top, 16)
+            .padding(.bottom, 14)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if state.isContactVisible || state.isRetryVisible {
+                Rectangle()
+                    .fill(Color.gray2_5)
+                    .frame(height: 1)
+
+                HStack(spacing: 0) {
+                    if state.isContactVisible {
+                        Button(action: onContact) {
+                            Text(Strings.Home.MigrationNotice.contact)
+                                .font(.appleMedium(size: 14))
+                                .foregroundStyle(Color.gray4)
+                                .frame(maxWidth: .infinity, minHeight: 46)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    if state.isRetryVisible {
+                        Button(action: onRetry) {
+                            ZStack {
+                                Text(Strings.Home.MigrationNotice.retry)
+                                    .font(.appleExtraBold(size: 14))
+                                    .foregroundStyle(Color.seepBlue)
+                                    .opacity(state.isRetrying ? 0 : 1)
+                                if state.isRetrying {
+                                    ProgressView()
+                                }
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 46)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(state.isRetrying)
+                    }
+                }
+            }
+        }
+        .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}

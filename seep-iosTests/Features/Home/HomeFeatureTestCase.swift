@@ -102,4 +102,8 @@ struct StubRemoteConfigRepository: RemoteConfigRepository {
     func fetchYearReviewPeriod() -> YearReviewPeriod? {
         period
     }
+
+    func fetchLegacyRealmReimportToken() -> String {
+        ""
+    }
 }

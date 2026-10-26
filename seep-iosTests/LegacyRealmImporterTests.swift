@@ -221,6 +221,13 @@ final class LegacyRealmFixture {
         LegacyRealmImporter(realmFileURL: realmURL, now: { Self.importedAt })
     }
 
+    /// 읽을 수 없는(손상된) Realm 파일을 보는 이전기. 한 번도 열지 않은 파일이라 Realm 이 오류를 던진다 (GH-96 TC-9)
+    func brokenImporter() throws -> LegacyRealmImporter {
+        let brokenURL = directory.appendingPathComponent("broken.realm")
+        try Data("broken".utf8).write(to: brokenURL)
+        return LegacyRealmImporter(realmFileURL: brokenURL, now: { Self.importedAt })
+    }
+
     /// schemaVersion 7 Realm 에 위시를 넣는다. `modify`로 저장 전 DTO 를 망가뜨릴 수 있다
     func seed(_ wishes: [Wish], modify: (WishDTO) -> Void = { _ in }) throws {
         try autoreleasepool {

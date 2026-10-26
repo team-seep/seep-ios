@@ -15,6 +15,10 @@ private struct FinishedStubRemoteConfig: RemoteConfigRepository {
     func fetchYearReviewPeriod() -> YearReviewPeriod? {
         period
     }
+
+    func fetchLegacyRealmReimportToken() -> String {
+        ""
+    }
 }
 
 /// 이룬 싶 탭 (GH-64 R-17 ~ R-22)

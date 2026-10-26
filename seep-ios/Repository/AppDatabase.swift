@@ -152,14 +152,45 @@ final class AppDatabase {
 
     // MARK: - App Group 공유 DB
 
-    private static func openShared() -> AppDatabase? {
+    /// 1회 이전을 앱을 다시 켜지 않고 지금 다시 한다 (GH-96 R-10). 성공하면 실패 기록을 지운다.
+    /// 다른 프로세스(위젯)가 그사이 끝냈으면 nil 을 돌려준다
+    @discardableResult
+    static func retrySharedLegacyImport() throws -> LegacyRealmImporter.Report? {
+        guard let shared, let databaseURL = sharedDatabaseURL() else {
+            throw RepositoryError.noDatabase
+        }
+        var result: Result<LegacyRealmImporter.Report?, Error> = .success(nil)
+        var coordinatorError: NSError?
+        NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: databaseURL, options: .forMerging, error: &coordinatorError) { _ in
+            result = Result { try LegacyRealmImporter().importIfNeeded(into: shared, markWhenNoRealmFile: true) }
+        }
+        if let coordinatorError {
+            result = .failure(coordinatorError)
+        }
+        switch result {
+        case .success:
+            sharedLegacyImportError = nil
+        case .failure(let error):
+            sharedLegacyImportError = error
+            logger.error("Realm 이전 재시도 실패: \(error.localizedDescription, privacy: .public)")
+        }
+        return try result.get()
+    }
+
+    /// App Group 의 DB 파일 위치. 개발 앱·운영 앱이 같은 App Group 을 쓰므로 Realm 이름(dev.realm / default.realm)에서 파일 이름을 딴다
+    private static func sharedDatabaseURL() -> URL? {
         guard let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+            return nil
+        }
+        let fileName = (Bundle.realmName as NSString).deletingPathExtension + ".sqlite"
+        return container.appendingPathComponent(fileName)
+    }
+
+    private static func openShared() -> AppDatabase? {
+        guard let databaseURL = sharedDatabaseURL() else {
             logger.error("App Group 컨테이너를 찾지 못했다")
             return nil
         }
-        // 개발 앱·운영 앱이 같은 App Group 을 쓰므로 Realm 이름(dev.realm / default.realm)에서 파일 이름을 딴다
-        let fileName = (Bundle.realmName as NSString).deletingPathExtension + ".sqlite"
-        let databaseURL = container.appendingPathComponent(fileName)
         let isApp = Bundle.main.bundleURL.pathExtension != "appex"
 
         // 앱·위젯이 동시에 만들거나 마이그레이션하지 않게 파일 코디네이션으로 감싼다 (GRDB "Sharing a Database")
