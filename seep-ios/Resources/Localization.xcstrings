@@ -5,6 +5,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17,6 +23,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passcode"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29,6 +41,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41,6 +59,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Seep"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53,6 +77,12 @@
       "comment" : "앱 잠금. %@ = Face ID 또는 Touch ID",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock with %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65,6 +95,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep is locked"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77,6 +113,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "locked"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89,6 +131,12 @@
       "comment" : "앱 잠금. %@ = Face ID 또는 Touch ID",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock with %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101,6 +149,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113,6 +167,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn off lock"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125,6 +185,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With the lock off, Seep won't ask when you open it.\nWe'll check it's you one more time first."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137,6 +203,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep is\nlocked right now"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149,6 +221,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "locked"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161,6 +239,12 @@
       "comment" : "앱 잠금. %@ = Face ID 또는 Touch ID",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock with %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -173,6 +257,12 @@
       "comment" : "앱 잠금. %@ = Face ID 또는 Touch ID",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep will ask for %@ or your passcode when you open it.\nHome Screen widgets still show while locked."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -185,6 +275,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep will ask for your passcode when you open it.\nHome Screen widgets still show while locked."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -197,6 +293,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just for your eyes?\nLock Seep"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -209,6 +311,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock Seep"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -221,6 +329,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe later"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -233,6 +347,12 @@
       "comment" : "앱 잠금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set a device passcode first"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -245,6 +365,12 @@
       "comment" : "배지 화면. %@ = 배지 이름, %@ = 받은 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -257,6 +383,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nice"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -269,6 +401,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New badge unlocked"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -281,6 +419,24 @@
       "comment" : "배지 화면. %d = 이룬 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You made %d wish come true!\nNew badge unlocked"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You made %d wishes come true!\nNew badge unlocked"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -299,6 +455,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See badges"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -311,6 +473,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A new one unlocks every time a wish comes true"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -323,6 +491,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "collected!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -335,6 +509,24 @@
       "comment" : "배지 화면. %d = 모은 배지 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your wishes came true —\n%d badge collected!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Your wishes came true —\n%d badges collected!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -353,6 +545,24 @@
       "comment" : "배지 화면. %d = 모은 배지 수(굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d badge"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d badges"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -371,6 +581,24 @@
       "comment" : "배지 화면. %d = 이뤄야 하는 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Achieve %d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Achieve %d wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -389,6 +617,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achieve 1 thing to do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -401,6 +635,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achieve 1 thing to get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -413,6 +653,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achieve 1 place to go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -425,6 +671,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achieve one by its due date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -437,6 +689,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-day"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,6 +707,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -461,6 +725,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10th wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -473,6 +743,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30th wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -485,6 +761,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5th wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -497,6 +779,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -509,6 +797,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -521,6 +815,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -533,6 +833,12 @@
       "comment" : "배지 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promise keeper"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -545,6 +851,12 @@
       "comment" : "배지 화면. %d = 지금 값, %d = 목표 값",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d / %d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -557,6 +869,12 @@
       "comment" : "카테고리 이름",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -569,6 +887,12 @@
       "comment" : "카테고리 이름",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -581,6 +905,12 @@
       "comment" : "카테고리 이름",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -593,6 +923,12 @@
       "comment" : "여러 화면 공용 · 원격 설정을 못 받았을 때 오류 문구",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong.\nPlease try again in a moment."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -605,6 +941,12 @@
       "comment" : "여러 화면 공용. %@ = 천 단위 구분한 금액",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "₩%@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -617,6 +959,12 @@
       "comment" : "여러 화면 공용",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "₩"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -629,6 +977,12 @@
       "comment" : "여러 화면 공용",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -641,6 +995,12 @@
       "comment" : "여러 화면 공용",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -653,6 +1013,12 @@
       "comment" : "여러 화면 공용",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -665,6 +1031,12 @@
       "comment" : "여러 화면 공용",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -677,6 +1049,12 @@
       "comment" : "여러 화면 공용",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -689,6 +1067,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add the \"Write a wish\" control to jump straight to writing without finding the app."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -701,6 +1085,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Control Center and tap ＋ in the top left."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -713,6 +1103,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Add a Control, find \"Write a wish\" and place it."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -725,6 +1121,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold the control to pick a category."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -737,6 +1139,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control Center · Lock Screen · Action button"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -749,6 +1157,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can also write right away with the Shortcuts app or Siri."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -761,6 +1175,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the Shortcuts app, tap ＋ to make a new shortcut."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -773,6 +1193,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search actions for \"Seep\" and add \"Write a wish\"."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -785,6 +1211,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or just say \"Write a wish\" to Siri."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -797,6 +1229,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts · Siri"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -809,6 +1247,12 @@
       "comment" : "설정 · 제어 센터 · 단축어 안내",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write from Control Center · Shortcuts"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -821,6 +1265,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to Calendar"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -833,6 +1283,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added to Calendar"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -845,6 +1301,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -857,6 +1319,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add it again?\nYou'll get a duplicate event in your calendar."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -869,6 +1337,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already added to your calendar"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -881,6 +1355,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow calendar access in Settings."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -893,6 +1373,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Settings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -905,6 +1391,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow calendar access to add events"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -917,6 +1409,12 @@
       "comment" : "위시 상세 · 캘린더에 추가",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's no calendar to add the event to."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -929,6 +1427,12 @@
       "comment" : "위시 상세 · 캘린더에 추가. %@ = 캘린더에 추가한 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 Added %@ to your calendar"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -941,6 +1445,12 @@
       "comment" : "위시 상세 · 이어진 위시",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -953,6 +1463,12 @@
       "comment" : "위시 상세 · 이어진 위시. %@ = 이룬 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Came true %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -965,6 +1481,12 @@
       "comment" : "위시 상세 · 이어진 위시. %@ = 이룬 날짜, %@ = 한 줄 소감",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Came true %@ · “%@”"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -977,6 +1499,24 @@
       "comment" : "위시 상세 · 이어진 위시. %d = 숨긴 앞선 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d more earlier wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d more earlier wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -995,6 +1535,12 @@
       "comment" : "위시 상세 · 이어진 위시",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write what's next"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1007,6 +1553,12 @@
       "comment" : "위시 상세 · 이어진 위시. %d = 이어진 위시 안에서의 순서",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1019,6 +1571,12 @@
       "comment" : "위시 상세 · 이어진 위시",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wish chain"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1031,6 +1589,12 @@
       "comment" : "위시 상세 · D-day 날짜. %@ = 지난 마감 날짜. 한국어 '이었어요'는 앞 글자 받침에 맞춘 것",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Was %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1043,6 +1607,12 @@
       "comment" : "위시 상세 · D-day 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-Day"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1055,6 +1625,12 @@
       "comment" : "위시 상세 · D-day 날짜. %@ = 마감 날짜. 한국어는 조사를 붙였으니 번역은 문장 전체로",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1067,6 +1643,12 @@
       "comment" : "위시 상세 · D-day 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By today"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1079,6 +1661,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Add"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1091,6 +1679,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Add a line for today"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1103,6 +1697,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1115,6 +1715,12 @@
       "comment" : "위시 상세 · 일지. DateFormatter 패턴. 일지 목록 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MMM d (E)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1127,6 +1733,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1139,6 +1751,12 @@
       "comment" : "위시 상세 · 일지. %d = 입력한 글자 수, %d = 최대 글자 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1151,6 +1769,12 @@
       "comment" : "위시 상세 · 일지. DateFormatter 패턴. 일지 쓰기 시트 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EEE, MMM d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1163,6 +1787,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sum up today in one line"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1175,6 +1805,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1187,6 +1823,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "how did it go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1199,6 +1841,12 @@
       "comment" : "위시 상세 · 일지. %@ = 이모지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's %@ "
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1211,6 +1859,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ","
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1223,6 +1877,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1235,6 +1895,12 @@
       "comment" : "위시 상세 · 일지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 Journal entry saved"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1247,6 +1913,12 @@
       "comment" : "위시 상세 · 일지. %d = 일지 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all (%d)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1259,6 +1931,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rewrite"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1271,6 +1949,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your old letter will be gone."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1283,6 +1967,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rewrite your sealed letter?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1295,6 +1985,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지. %@ = 봉인한 날짜, %d = 편지 글자 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sealed on %@ · %d chars"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1307,6 +2003,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the day it comes true"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1319,6 +2021,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To future me"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1331,6 +2039,12 @@
       "comment" : "위시 상세 · 미래의 나에게 편지. %@ = 쓴 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Written %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1343,6 +2057,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open product link"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1355,6 +2075,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load a preview. Tap to open"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1367,6 +2093,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1379,6 +2111,12 @@
       "comment" : "위시 상세 화면. %@ = 첫 번째 알림 설명, %d = 나머지 알림 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ + %d more"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1391,6 +2129,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1403,6 +2147,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1415,6 +2165,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Add photo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1427,6 +2183,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1439,6 +2201,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove photo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1451,6 +2219,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load that photo. Try another one."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1463,6 +2237,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't save the photo. Please try again in a moment."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1475,6 +2255,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1487,6 +2273,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove place"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1499,6 +2291,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by place name or address. No location access needed."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1511,6 +2309,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear search"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1523,6 +2327,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No places found"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1535,6 +2345,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place name or address"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1547,6 +2363,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where do you\nwant to go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1559,6 +2381,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "want to go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1571,6 +2399,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1583,6 +2417,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've saved it all! Time to get it"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1595,6 +2435,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete entry"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1607,6 +2453,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1619,6 +2471,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this entry?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1628,25 +2486,37 @@
       }
     },
     "detail.saving.record_format" : {
-      "comment" : "위시 상세 · 저금. %@ = 저금한 금액",
+      "comment" : "위시 상세 · 저금 기록 한 줄. %@ = 통화 표기를 붙인 기록 금액",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+%@원"
+            "value" : "+%@"
           }
         }
       }
     },
     "detail.saving.remaining_format" : {
-      "comment" : "위시 상세 · 저금. %@ = 남은 금액",
+      "comment" : "위시 상세 · 저금. %@ = 통화 표기를 붙인 남은 금액",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ more to go!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@원 더 모으면 돼요!"
+            "value" : "%@ 더 모으면 돼요!"
           }
         }
       }
@@ -1655,6 +2525,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount saved"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1667,6 +2543,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+₩100K"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1679,6 +2561,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+₩10K"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1691,6 +2579,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+₩50K"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1700,13 +2594,19 @@
       }
     },
     "detail.saving.sheet.preview_amount_format" : {
-      "comment" : "위시 상세 · 저금. %@ = 모은 금액, %@ = 목표 금액",
+      "comment" : "위시 상세 · 저금 기록 시트 미리보기. %@ = 통화 표기를 붙인 모은 금액, %@ = 목표 금액",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@원 / %@원"
+            "value" : "%@ / %@"
           }
         }
       }
@@ -1715,6 +2615,12 @@
       "comment" : "위시 상세 · 저금. %@ = 기록 후 금액, %d = 달성 퍼센트(%% 는 퍼센트 기호)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After this: %@ (%d%%)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1727,6 +2633,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All that's left"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1739,6 +2651,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1751,6 +2669,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much have\nyou saved?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1763,6 +2687,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "you saved?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1772,13 +2702,19 @@
       }
     },
     "detail.saving.target_format" : {
-      "comment" : "위시 상세 · 저금. %@ = 목표 금액",
+      "comment" : "위시 상세 · 저금 · 모은 금액 뒤 목표 금액. %@ = 통화 표기를 붙인 목표 금액(예: 1,000,000원, $1,200)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/ %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "/ %@원"
+            "value" : "/ %@"
           }
         }
       }
@@ -1787,6 +2723,12 @@
       "comment" : "위시 상세 · 저금",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 You've hit your savings goal!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1799,6 +2741,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1811,6 +2759,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Add place"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1823,6 +2777,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1835,6 +2795,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Savings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1847,6 +2813,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Add"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1859,6 +2831,12 @@
       "comment" : "위시 상세 화면. %d = 끝낸 단계 수, %d = 전체 단계 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1871,6 +2849,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1883,6 +2867,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. Pick a date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1895,6 +2885,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add step"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1907,6 +2903,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1919,6 +2921,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steps"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1931,6 +2939,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍You can add up to 10 steps"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1943,6 +2957,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍Keep steps to 30 characters"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1955,6 +2975,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1967,6 +2993,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as not done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1979,6 +3011,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1991,6 +3029,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2003,6 +3047,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It'll go back to your\nhome list."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2015,6 +3065,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2027,6 +3083,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes, undo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2039,6 +3101,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark this as not done?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2051,6 +3119,12 @@
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This can't be undone😭\nDelete it anyway?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2063,6 +3137,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activities"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2075,6 +3155,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animals"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2087,6 +3173,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flags"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2099,6 +3191,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2111,6 +3209,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objects"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2123,6 +3227,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "People"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2135,6 +3245,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smileys"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2147,6 +3263,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbols"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2159,6 +3281,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Travel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2171,6 +3299,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2183,6 +3317,12 @@
       "comment" : "이모지 고르기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick an emoji"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2195,6 +3335,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all ›"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2207,6 +3353,12 @@
       "comment" : "이룬 싶 탭. %d = 모은 배지 수, %d = 전체 배지 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Badges %d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2219,6 +3371,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check off wishes in the Wishes tab and they'll show up here"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2231,6 +3389,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No wishes achieved in this category yet"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2243,6 +3407,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No achieved wishes yet"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2255,6 +3425,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2267,6 +3443,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2279,6 +3461,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2291,6 +3479,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2303,6 +3497,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "so far!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2315,6 +3515,24 @@
       "comment" : "이룬 싶 탭. %d = 이룬 위시 수(굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -2333,6 +3551,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No achieved wishes yet\nStart checking them off!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2345,6 +3569,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start checking them off!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2357,6 +3587,24 @@
       "comment" : "이룬 싶 탭. %d = 이룬 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You've made\n%d wish come true so far!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You've made\n%d wishes come true so far!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -2371,22 +3619,16 @@
         }
       }
     },
-    "finished.month_format" : {
-      "comment" : "이룬 싶 탭. %@ = 연도, %d = 월",
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@년 %d월"
-          }
-        }
-      }
-    },
     "finished.row.day_format" : {
       "comment" : "이룬 싶 탭. %d = 이룬 날(일)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day %d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2399,6 +3641,12 @@
       "comment" : "이룬 싶 탭. %@ = 한 줄 소감",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2411,6 +3659,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search achieved wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2423,6 +3677,12 @@
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View ›"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2435,6 +3695,12 @@
       "comment" : "이룬 싶 탭. %@ = 연도",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look back on %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2447,6 +3713,12 @@
       "comment" : "미래의 나에게 편지 쓰기. %d = 입력한 글자 수, %d = 최대 글자 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2459,6 +3731,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letter to future me"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2471,6 +3749,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe later"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2483,6 +3767,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once sealed, you can't read it until this wish comes true"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2495,6 +3785,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to tell yourself when this comes true?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2507,6 +3803,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seal it"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2519,6 +3821,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the day it comes true,\nwrite yourself a letter"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2531,6 +3839,12 @@
       "comment" : "미래의 나에게 편지 쓰기",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "write yourself a letter"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2543,6 +3857,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Career"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2555,6 +3875,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2567,6 +3893,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hobby"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2579,6 +3911,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leisure"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2591,6 +3929,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daily life"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2603,6 +3947,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2615,6 +3965,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sports"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2627,6 +3983,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stocks"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2639,6 +4001,12 @@
       "comment" : "해시태그",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Travel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2651,6 +4019,12 @@
       "comment" : "홈 화면. %d = 모은 배지 수, %d = 전체 배지 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See badges %d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2663,6 +4037,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2675,6 +4055,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing here yet.\nTap Write below to add one!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2687,6 +4073,12 @@
       "comment" : "홈 화면 · 빈 상태 제목에서 굵게 칠할 부분. 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write it down!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2699,6 +4091,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to do?\nWrite it down!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2711,6 +4109,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to get?\nWrite it down!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2723,6 +4127,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where do you want to go?\nWrite it down!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2735,6 +4145,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2747,6 +4163,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places to go map"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2759,6 +4181,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Due soonest"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2771,6 +4199,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Newest first"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2783,6 +4217,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My order"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2795,6 +4235,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change sort"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2807,6 +4253,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick this to drag and reorder on Home"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2819,6 +4271,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid view"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2831,6 +4289,12 @@
       "comment" : "홈 · 정렬 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List view"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2843,6 +4307,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2855,6 +4325,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %@ = 사용자가 쓴 한 줄 소감",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2867,6 +4343,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Write what's next"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2879,6 +4361,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a new wish that follows this one"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2891,6 +4379,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to do next?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2903,6 +4397,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %d = 입력한 글자 수, %d = 최대 글자 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2915,6 +4415,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jot down how you feel in one line so you can look back on it later."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2927,6 +4433,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How it felt"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2939,6 +4451,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %@ = 편지 제목, %@ = 쓴 날짜",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · written %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2951,6 +4469,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How does it feel?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2963,6 +4487,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sent you a letter"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2975,10 +4505,34 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %d = 편지를 쓴 뒤 지난 일수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You from %d day ago\nsent you a letter"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You from %d days ago\nsent you a letter"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d일 전의 내가\n편지를 보냈어요"
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d일 전의 내가\n편지를 보냈어요"
+                }
+              }
+            }
           }
         }
       }
@@ -2987,6 +4541,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You from earlier today\nsent you a letter"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2999,6 +4559,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. Way better than I expected!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3011,6 +4577,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3023,6 +4595,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe later"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3035,6 +4613,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "how does it feel?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3047,6 +4631,12 @@
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %@ = 위시 제목",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@,\nhow does it feel?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3059,6 +4649,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3071,6 +4667,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact us"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3083,6 +4685,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드. %@ = 오류 코드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error: %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3095,6 +4703,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your wishes are still on this device. Please try again."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3107,6 +4721,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fully close the app, then open it again."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3119,6 +4739,24 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드. %d = 다시 가져온 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Brought back %d wish that didn't load before"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Brought back %d wishes that didn't load before"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3137,6 +4775,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3149,6 +4793,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still couldn't load them. Please try again in a bit"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3161,6 +4811,24 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드. %d = 불러온 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Loaded %d older wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Loaded %d older wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3179,6 +4847,12 @@
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load your older wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3191,6 +4865,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can pin up to 3"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3203,6 +4883,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin to top"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3215,6 +4901,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3227,6 +4919,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reorder"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3239,6 +4937,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3251,6 +4955,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drag the handle on the right to move"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3263,6 +4973,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinned wishes stay on top"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3275,6 +4991,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reordering\nthings to do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3287,6 +5009,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reordering\nthings to get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3299,6 +5027,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reordering\nplaces to go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3311,6 +5045,12 @@
       "comment" : "홈 · 순서 바꾸기 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reordering"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3323,6 +5063,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3335,6 +5081,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select all"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3347,6 +5099,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3359,6 +5117,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3371,6 +5135,24 @@
       "comment" : "홈 · 여러 개 선택 모드. %d = 선택한 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d selected"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d selected"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3389,6 +5171,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3401,6 +5189,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleted wishes can't be restored.\nTheir reminders will be removed too."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3413,6 +5207,24 @@
       "comment" : "홈 · 여러 개 선택 모드. %d = 지울 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %d wish?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %d wishes?"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3431,6 +5243,24 @@
       "comment" : "홈 · 여러 개 선택 모드. %d = 지울 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %d"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %d"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3449,6 +5279,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things to do —\nselect to delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3461,6 +5297,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things to get —\nselect to delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3473,6 +5315,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places to go —\nselect to delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3485,6 +5333,12 @@
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "select to delete"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3497,6 +5351,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3509,6 +5369,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It'll be removed from your list, along with its reminders."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3521,6 +5387,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let it go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3533,6 +5405,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let this wish go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3545,6 +5423,24 @@
       "comment" : "홈 · 오래 그대로인 위시 카드. %d = 그대로인 일수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Untouched for %d day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Untouched for %d days"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3563,6 +5459,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still want to do it"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3575,6 +5477,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still want it"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3587,6 +5495,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still want to go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3599,6 +5513,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still want to do this?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3611,6 +5531,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still want this?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3623,6 +5549,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Still want to go here?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3635,6 +5567,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'm over it"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3647,6 +5585,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Got it! We'll ask again in two months"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3659,6 +5603,12 @@
       "comment" : "홈 · 오래 그대로인 위시 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wish let go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3671,6 +5621,12 @@
       "comment" : "홈 화면. %d = 끝낸 단계 수, %d = 전체 단계 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3683,6 +5639,12 @@
       "comment" : "홈 화면 · 남은 개수 제목에서 굵게 칠할 부분. 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3695,6 +5657,24 @@
       "comment" : "홈 화면. %d = 남은 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Things to do:\n%d left!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Things to do:\n%d left!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3713,6 +5693,24 @@
       "comment" : "홈 화면. %d = 남은 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Things to get:\n%d left!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Things to get:\n%d left!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3731,6 +5729,24 @@
       "comment" : "홈 화면. %d = 남은 장소 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Places to go:\n%d left!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Places to go:\n%d left!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3749,6 +5765,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 Added to achieved wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3761,6 +5783,12 @@
       "comment" : "홈 · 올해 돌아보기 카드. %@ = 연도(예: 2026)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your %@ in review"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3773,6 +5801,12 @@
       "comment" : "홈 · 올해 돌아보기 카드",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close year banner"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3785,6 +5819,24 @@
       "comment" : "홈 · 올해 돌아보기 카드. %d = 올해 이룬 개수(굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3803,6 +5855,24 @@
       "comment" : "홈 · 올해 돌아보기 카드. %d = 올해 이룬 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You made %d wish come true this year!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You made %d wishes come true this year!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3821,6 +5891,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Someday"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3833,6 +5909,12 @@
       "comment" : "홈 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3845,6 +5927,12 @@
       "comment" : "오픈소스 라이선스",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep uses the open source software below. You can read each full license in its repository."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3857,6 +5945,12 @@
       "comment" : "오픈소스 라이선스",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open source licenses"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3869,6 +5963,12 @@
       "comment" : "하단 탭 바",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3881,6 +5981,12 @@
       "comment" : "하단 탭 바",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New achieved wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3893,6 +5999,12 @@
       "comment" : "하단 탭 바",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3905,6 +6017,12 @@
       "comment" : "하단 탭 바",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3917,6 +6035,12 @@
       "comment" : "하단 탭 바",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3929,6 +6053,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✔️ Save"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3941,6 +6071,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add reminder"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3953,6 +6089,12 @@
       "comment" : "로컬 알림 본문(잠금화면 알림). %@ = 위시 제목",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't forget about '%@'!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3965,6 +6107,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3977,6 +6125,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit reminder"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3989,6 +6143,12 @@
       "comment" : "알림 편집 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete reminder"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4001,6 +6161,12 @@
       "comment" : "알림 편집 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🔕 This reminder already exists."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4013,6 +6179,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder time"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4025,6 +6197,12 @@
       "comment" : "로컬 알림 제목(잠금화면 알림)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🔔 Hey, over here👀"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4037,6 +6215,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 day before"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4049,6 +6233,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 days before"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4061,6 +6251,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 week before"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4073,6 +6269,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every day"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4085,6 +6287,12 @@
       "comment" : "알림 설정",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On the day"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4097,6 +6305,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a wish from the list"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4109,6 +6323,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick an item on the left"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4121,6 +6341,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Badges"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4133,6 +6359,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4145,6 +6377,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look back"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4157,6 +6395,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishes"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4169,6 +6413,12 @@
       "comment" : "아이패드 레이아웃",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to do?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4181,6 +6431,24 @@
       "comment" : "장소 지도. %d = 장소를 붙인 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d place pinned"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d places pinned"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4199,6 +6467,12 @@
       "comment" : "장소 지도",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No wishes with a place yet."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4211,6 +6485,12 @@
       "comment" : "장소 지도",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places to go map"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4223,6 +6503,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4235,6 +6521,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgets follow your iPhone's appearance"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4247,6 +6539,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgets follow your iPad's appearance"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4259,6 +6557,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4271,6 +6575,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Match system"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4283,6 +6593,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4295,6 +6611,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact us"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4307,6 +6629,12 @@
       "comment" : "설정 탭. %@ = 앱 버전, %@ = iOS 버전, %@ = 기기 모델. 문의 메일 본문",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\n\n\n---\nApp version: %@\niOS version: %@\nDevice: %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4319,6 +6647,12 @@
       "comment" : "설정 탭. %@ = 문의 메일 주소",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't open Mail, so we copied the address. Please write to %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4331,6 +6665,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Seep inquiry]"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4343,6 +6683,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write from Control Center · Shortcuts"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4355,6 +6701,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep has no server — everything stays on this device. Deleting the app deletes your wishes too."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4367,6 +6719,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4379,6 +6737,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock & notifications"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4391,6 +6755,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick write"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4403,6 +6773,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4411,10 +6787,70 @@
         }
       }
     },
+    "settings.language.description" : {
+      "comment" : "설정 탭 · '언어' 줄 아래 설명",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change it in iPhone Settings"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아이폰 설정에서 바꿀 수 있어요"
+          }
+        }
+      }
+    },
+    "settings.language.description_pad" : {
+      "comment" : "설정 탭 · '언어' 줄 아래 설명(아이패드)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change it in iPad Settings"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아이패드 설정에서 바꿀 수 있어요"
+          }
+        }
+      }
+    },
+    "settings.language.title" : {
+      "comment" : "설정 탭 · '언어' 줄 제목. 누르면 iOS 설정의 이 앱 언어 화면이 열린다",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언어"
+          }
+        }
+      }
+    },
     "settings.license" : {
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open source licenses"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4427,6 +6863,12 @@
       "comment" : "설정 탭. %@ = Face ID 또는 Touch ID",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask for %@ or your passcode when opening the app"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4439,6 +6881,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask for your passcode when opening the app"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4451,6 +6899,12 @@
       "comment" : "설정 탭. %@ = Face ID 또는 Touch ID",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock with %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4463,6 +6917,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock with passcode"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4475,6 +6935,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change this in iPhone Settings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4487,6 +6953,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change this in iPad Settings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4499,6 +6971,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4511,6 +6989,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4523,6 +7007,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-day reminders"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4535,6 +7025,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate the app"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4547,6 +7043,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The tab you see first when you open the app"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4559,6 +7061,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last viewed category"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4571,6 +7079,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last viewed"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4583,6 +7097,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start category"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4595,6 +7115,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4607,6 +7133,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4619,6 +7151,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4631,6 +7169,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4643,6 +7187,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4655,6 +7205,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home layout"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4667,6 +7223,12 @@
       "comment" : "설정 탭",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to add widgets"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4679,6 +7241,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4691,6 +7259,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4703,6 +7277,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card to share. Double-tap to change the text color"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4715,6 +7295,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't save the image. Please try again."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4727,6 +7313,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏Image saved to Photos!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4739,6 +7331,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🏞 Photo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4751,6 +7349,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👌 Share this"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4763,6 +7367,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep needs access to Photos so you can share with the photo you want."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4775,6 +7385,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4787,6 +7403,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😀 Emoji"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4799,6 +7421,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4811,6 +7439,12 @@
       "comment" : "사진 공유 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👆Double-tap the screen to change the text color"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4823,6 +7457,12 @@
       "comment" : "스플래시",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the things you truly want"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4835,6 +7475,12 @@
       "comment" : "홈 화면 위젯(바로 체크하기) · 단계가 없거나 마지막 단계인 위시 줄의 보조 문구",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to finish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4847,6 +7493,12 @@
       "comment" : "홈 화면 위젯(바로 체크하기) · 이룬 위시 줄의 보조 문구",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done! · Tap again to undo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4859,6 +7511,12 @@
       "comment" : "홈 화면 위젯(바로 체크하기) · 다음에 체크할 단계. %@ = 단계 이름, %d = 지금 단계 번호, %d = 전체 단계 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next step · %@ %d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4871,6 +7529,12 @@
       "comment" : "제어 센터 컨트롤 · 동작 버튼에 보이는 문구",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a thing to do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4883,6 +7547,12 @@
       "comment" : "제어 센터 컨트롤 · 동작 버튼에 보이는 문구",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a thing to get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4895,6 +7565,12 @@
       "comment" : "제어 센터 컨트롤 · 동작 버튼에 보이는 문구",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a place to go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4907,6 +7583,12 @@
       "comment" : "홈 화면 중형 위젯 · 빈 상태 버튼처럼 보이는 줄",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✍️ Write one now?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4919,6 +7601,12 @@
       "comment" : "홈 화면 중형 위젯 · 빈 상태 둘째 줄(굵게)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write them down."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4931,6 +7619,12 @@
       "comment" : "홈 화면 중형 위젯 · 빈 상태 첫 줄",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things you want to do?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4943,6 +7637,12 @@
       "comment" : "잠금화면 위젯(직사각형) · 날짜를 정한 위시가 없을 때 아래 줄",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Give a wish a date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4955,6 +7655,12 @@
       "comment" : "잠금화면 위젯(직사각형) · 날짜를 정한 위시가 없을 때",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No upcoming D-days"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4967,6 +7673,12 @@
       "comment" : "잠금화면 위젯(직사각형) · D-day 위시가 없을 때 첫 줄",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearest wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4979,6 +7691,12 @@
       "comment" : "잠금화면 위젯(직사각형) · 첫 줄. %@ = D-day 표기(D-3, 먼훗날)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · Nearest wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4991,6 +7709,12 @@
       "comment" : "잠금화면 위젯(원형) · 큰 숫자 위 작은 제목",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishes left"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5003,6 +7727,24 @@
       "comment" : "잠금화면 위젯(한 줄) · %d = 아직 못 이룬 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish left"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes left"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5021,6 +7763,12 @@
       "comment" : "위젯 고르기 화면의 미리보기 · 예시 위시 제목",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play a song on guitar"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5033,6 +7781,12 @@
       "comment" : "위젯 고르기 화면의 미리보기 · 예시 위시의 단계",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Book flights"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5045,6 +7799,12 @@
       "comment" : "위젯 고르기 화면의 미리보기 · 예시 위시의 단계",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Book a stay"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5057,6 +7817,12 @@
       "comment" : "위젯 고르기 화면의 미리보기 · 예시 위시의 단계",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rent a car"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5069,6 +7835,12 @@
       "comment" : "위젯 고르기 화면의 미리보기 · 예시 위시 제목",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spend a month in Jeju"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5081,6 +7853,12 @@
       "comment" : "위젯 고르기 화면의 미리보기 · 예시 위시 제목",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your title goes here."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5093,6 +7871,12 @@
       "comment" : "홈 화면 위젯(남은 개수) · 남은 위시가 0개일 때 아래 줄",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a new wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5105,6 +7889,12 @@
       "comment" : "홈 화면 위젯(남은 개수) · 숫자 위 줄. 아래에 큰 숫자와 '개 남았어요!'가 이어진다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things to do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5117,6 +7907,12 @@
       "comment" : "홈 화면 위젯(남은 개수) · 숫자 위 줄. 아래에 큰 숫자와 '개 남았어요!'가 이어진다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things to get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5129,6 +7925,12 @@
       "comment" : "홈 화면 위젯(남은 개수) · 숫자 위 줄. 아래에 큰 숫자와 '곳 남았어요!'가 이어진다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places to go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5141,6 +7943,12 @@
       "comment" : "홈 화면 위젯(남은 개수) · 큰 숫자 바로 뒤에 붙는 말(가고 싶은 곳)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5153,6 +7961,12 @@
       "comment" : "홈 화면 위젯(남은 개수) · 큰 숫자 바로 뒤에 붙는 말(하고·갖고 싶은 것)",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5165,6 +7979,12 @@
       "comment" : "홈 화면 위젯(작게 쓰기) · 질문 위 작은 말. '지금 뭐 하고 싶어요?'의 앞부분",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right now,"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5177,6 +7997,12 @@
       "comment" : "홈 화면 위젯(작게 쓰기) · 질문 위 작은 말. '연말에 뭐 갖고 싶어요?'의 앞부분",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This holiday season,"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5189,6 +8015,12 @@
       "comment" : "홈 화면 위젯(작게 쓰기) · 질문 위 작은 말. '이번주 주말 어디 가고 싶어요?'의 앞부분",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This weekend,"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5201,6 +8033,12 @@
       "comment" : "홈 화면 위젯(작게 쓰기) · 큰 질문",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "what do you want to do?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5213,6 +8051,12 @@
       "comment" : "홈 화면 위젯(작게 쓰기) · 큰 질문",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "what do you want to get?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5225,6 +8069,12 @@
       "comment" : "홈 화면 위젯(작게 쓰기) · 큰 질문",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "where do you want to go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5237,6 +8087,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Put Quick write, Wishes left, and Quick check widgets on your Home Screen."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5249,6 +8105,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold an empty spot on your Home Screen."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5261,6 +8123,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap Edit in the top left → Add Widget, then search for \"Seep\"."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5273,6 +8141,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a size and tap Add Widget."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5285,6 +8159,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home Screen widgets"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5297,6 +8177,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See upcoming D-days and wishes left right on your Lock Screen."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5309,6 +8195,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold the Lock Screen, then tap Customize."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5321,6 +8213,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Lock Screen and tap the widget area below the clock."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5333,6 +8231,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a widget under \"Seep\"."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5345,6 +8249,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock Screen widgets"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5357,6 +8267,12 @@
       "comment" : "설정 · 위젯 추가하는 법",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to add widgets"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5369,6 +8285,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5381,6 +8303,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change category"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5393,6 +8321,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5405,6 +8339,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To future me"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5417,6 +8357,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5429,6 +8375,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5441,6 +8393,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5453,6 +8411,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5465,6 +8429,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5477,6 +8447,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steps"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5489,6 +8465,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal amount"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5501,6 +8483,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5513,6 +8501,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard what you wrote?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5525,6 +8519,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5537,6 +8537,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard your changes?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5549,6 +8555,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep writing"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5561,6 +8573,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5573,6 +8591,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＃Tag"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5585,6 +8609,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5597,6 +8627,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "https://"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5609,6 +8645,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anything else to note?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5621,6 +8663,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold for a random pick"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5633,6 +8681,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5645,6 +8699,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5657,6 +8717,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminders"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5669,6 +8735,12 @@
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Add"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5681,6 +8753,12 @@
       "comment" : "위시 작성·수정 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5693,6 +8771,12 @@
       "comment" : "위시 작성·수정 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5705,6 +8789,12 @@
       "comment" : "위시 작성·수정 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick an emoji"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5717,6 +8807,12 @@
       "comment" : "위시 작성·수정 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5729,6 +8825,12 @@
       "comment" : "위시 작성·수정 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set a date to turn on reminders."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5741,6 +8843,12 @@
       "comment" : "위시 작성·수정 화면. %@ = 알림 날짜, %@ = 알림 시간",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5753,6 +8861,12 @@
       "comment" : "위시 작성·수정 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Random emoji"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5765,6 +8879,12 @@
       "comment" : "검색 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We searched titles, memos, and hashtags"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5777,6 +8897,12 @@
       "comment" : "검색 화면. %@ = 검색어",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No wishes for ‘%@’ yet."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5789,6 +8915,12 @@
       "comment" : "검색 화면. %@ = 메모 일부",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memo · %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5801,6 +8933,12 @@
       "comment" : "검색 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search titles, memos, hashtags"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5813,6 +8951,24 @@
       "comment" : "검색 화면. %d = 찾은 위시 수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Found %d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Found %d wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5831,6 +8987,24 @@
       "comment" : "검색 화면. %d = 찾은 위시 수(제목에서 굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5849,6 +9023,12 @@
       "comment" : "검색 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5861,6 +9041,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a link that starts with http:// or https://"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5873,6 +9059,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load a preview"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5885,6 +9077,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5897,6 +9095,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steps (optional)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5909,6 +9113,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track your savings on the detail screen"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5917,10 +9127,52 @@
         }
       }
     },
+    "write.target_amount.currency" : {
+      "comment" : "위시 작성·수정 · 목표 금액 옆 통화 고르기 메뉴 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Currency"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "통화"
+          }
+        }
+      }
+    },
+    "write.target_amount.currency_locked" : {
+      "comment" : "위시 작성·수정 · 저금 기록이 있는 위시에서 통화 메뉴를 눌렀을 때 토스트",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can't change the currency after saving money toward this wish"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모은 돈 기록이 있어 통화를 바꿀 수 없어요"
+          }
+        }
+      }
+    },
     "write.target_amount.placeholder" : {
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5933,6 +9185,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal amount"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5945,6 +9203,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add reminder"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5957,6 +9221,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to do?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5969,6 +9239,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to get?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5981,6 +9257,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where do you want to go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5993,6 +9275,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What kind of wish\nshall we write?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6005,6 +9293,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "shall we write?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6017,6 +9311,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍Pick a date"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6029,6 +9329,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍Keep hashtags to 7 characters"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6041,6 +9347,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍Keep memos to 300 characters"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6053,6 +9365,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍Keep titles to 18 characters"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6065,6 +9383,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍Add a title"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6077,6 +9401,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memo"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6089,6 +9419,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6101,6 +9437,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ New tag"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6113,6 +9455,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to do?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6125,6 +9473,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to get?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6137,6 +9491,12 @@
       "comment" : "적기 시트",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where do you want to go?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6146,13 +9506,19 @@
       }
     },
     "year_review.busiest_month.format" : {
-      "comment" : "올해 돌아보기 화면. %d = 월, %d = 이룬 개수",
+      "comment" : "올해 돌아보기 · 가장 많이 이룬 달. %@ = 달 이름(10월, October), %d = 그 달에 이룬 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %d done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d월 · %d개"
+            "value" : "%@ · %d개"
           }
         }
       }
@@ -6161,6 +9527,12 @@
       "comment" : "올해 돌아보기 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your biggest month"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6173,6 +9545,12 @@
       "comment" : "올해 돌아보기 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6185,6 +9563,24 @@
       "comment" : "올해 돌아보기 화면. %d = 이룬 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6203,6 +9599,24 @@
       "comment" : "올해 돌아보기 화면. %d = 올해 이룬 개수(굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish come true!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes come true!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6221,6 +9635,24 @@
       "comment" : "올해 돌아보기 화면. %d = 올해 이룬 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This year, I made\n%d wish come true!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This year, I made\n%d wishes come true!"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6239,6 +9671,24 @@
       "comment" : "올해 돌아보기 화면. %d = 이룬 개수(굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "All %d in one place"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "All %d in one place"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6257,6 +9707,12 @@
       "comment" : "올해 돌아보기 화면. %@ = 연도, %d = 이룬 개수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishes achieved in %@\nAll %d in one place"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6265,22 +9721,28 @@
         }
       }
     },
-    "year_review.list.month_format" : {
-      "comment" : "올해 돌아보기 화면. %d = 월",
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d월"
-          }
-        }
-      }
-    },
     "year_review.longest_held.days_bold_format" : {
       "comment" : "올해 돌아보기 화면. %d = 걸린 일수(굵게 칠할 부분). 굵게 칠할 부분은 같은 화면의 긴 문장 안에 글자 그대로 들어 있어야 한다",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d days"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6299,6 +9761,24 @@
       "comment" : "올해 돌아보기 화면. %d = 걸린 일수",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Came true %d day after you wrote it"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Came true %d days after you wrote it"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6317,6 +9797,12 @@
       "comment" : "올해 돌아보기 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The wish you held onto longest"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6329,6 +9815,12 @@
       "comment" : "올해 돌아보기 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Line of the year"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6341,6 +9833,12 @@
       "comment" : "올해 돌아보기 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share as image"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6353,6 +9851,12 @@
       "comment" : "올해 돌아보기 화면",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all wishes achieved this year"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",

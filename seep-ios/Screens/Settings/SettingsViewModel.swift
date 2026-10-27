@@ -17,6 +17,8 @@ extension SettingsViewModel {
         /// 시작 카테고리 (GH-86 R-1). nil 이면 마지막으로 본 카테고리
         case tapStartCategory
         case selectStartCategory(Category?)
+        /// 언어 (GH-103 R-8). 앱 안에서 고르지 않고 iOS 앱 설정을 연다
+        case tapLanguage
         case tapWidgetGuide
         case tapControlGuide
         case tapRateApp
@@ -55,6 +57,8 @@ extension SettingsViewModel {
         let appStoreID: String?
         let contactEmail: String?
         let pasteboard: PasteboardWriting
+        /// 지금 앱이 보여 주는 언어 이름("한국어", "English") (GH-103 R-8)
+        let languageName: () -> String
 
         init(
             preference: Preference = .shared,
@@ -64,7 +68,8 @@ extension SettingsViewModel {
             deviceInfo: DeviceInfo = .current,
             appStoreID: String? = SettingsLinks.appStoreID,
             contactEmail: String? = SettingsLinks.contactEmail,
-            pasteboard: PasteboardWriting = SystemPasteboard()
+            pasteboard: PasteboardWriting = SystemPasteboard(),
+            languageName: @escaping () -> String = SettingsMenuBuilder.currentLanguageName
         ) {
             self.preference = preference
             self.authenticationManager = authenticationManager
@@ -74,6 +79,7 @@ extension SettingsViewModel {
             self.appStoreID = appStoreID
             self.contactEmail = contactEmail
             self.pasteboard = pasteboard
+            self.languageName = languageName
         }
     }
 }
@@ -135,6 +141,12 @@ final class SettingsViewModel {
             sendClickLog(objectId: .selectStartCategory, extraParameters: [.type: category?.rawValue ?? "last"])
             dependency.preference.startCategory = category
             reloadLocalState()
+
+        case .tapLanguage:
+            sendClickLog(objectId: .language)
+            if let url = SettingsLinks.appSettingsURL {
+                route = .openURL(url)
+            }
 
         case .tapWidgetGuide:
             sendClickLog(objectId: .widgetGuide)
@@ -204,6 +216,7 @@ final class SettingsViewModel {
             viewType: state.viewType,
             appearance: state.appearance,
             startCategory: state.startCategory,
+            language: dependency.languageName(),
             version: dependency.deviceInfo.appVersion,
             isRateAppAvailable: SettingsLinks.reviewURL(appStoreID: dependency.appStoreID) != nil,
             isContactAvailable: !(dependency.contactEmail ?? "").isEmpty

@@ -5,6 +5,12 @@
       "comment" : "권한 팝업 · 캘린더 접근(전체)",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep needs calendar access to add your wish dates as calendar events."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17,6 +23,12 @@
       "comment" : "권한 팝업 · 캘린더 쓰기 전용 접근",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep needs calendar access to add your wish dates as calendar events."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29,6 +41,12 @@
       "comment" : "권한 팝업 · Face ID 사용",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you lock Seep, Face ID is used to confirm it's you when you open the app."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41,6 +59,12 @@
       "comment" : "권한 팝업 · 사진 보관함 접근",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep needs access to your photos to create images for sharing."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",

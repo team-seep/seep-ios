@@ -37,14 +37,15 @@ struct DetailStepsBody: View {
 struct DetailSavingsBody: View {
     let progress: WishSavingProgress
     let savings: [WishSaving]
+    private var currency: String { progress.currency }
     let onDelete: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            (Text(Strings.Common.wonFormat(AmountFormatter.string(from: progress.savedAmount)))
+            (Text(AmountFormatter.money(progress.savedAmount, currency: progress.currency))
                 .font(.appleExtraBold(size: 22))
                 .foregroundStyle(Color.gray5)
-             + Text(verbatim: " " + Strings.Detail.Saving.targetFormat(AmountFormatter.string(from: progress.targetAmount)))
+             + Text(verbatim: " " + Strings.Detail.Saving.targetFormat(AmountFormatter.money(progress.targetAmount, currency: progress.currency)))
                 .font(.appleRegular(size: 14))
                 .foregroundStyle(Color.gray4))
             ThinProgressBar(ratio: progress.ratio)
@@ -69,8 +70,8 @@ struct DetailSavingsBody: View {
                 .font(.appleBold(size: 14))
                 .foregroundStyle(Color.seepBlue)
         } else {
-            let remainingText = Strings.Common.wonFormat(AmountFormatter.string(from: progress.remainingAmount))
-            let message = Strings.Detail.Saving.remainingFormat(AmountFormatter.string(from: progress.remainingAmount))
+            let remainingText = AmountFormatter.money(progress.remainingAmount, currency: progress.currency)
+            let message = Strings.Detail.Saving.remainingFormat(remainingText)
             if let range = message.range(of: remainingText) {
                 (Text(verbatim: String(message[..<range.lowerBound])).foregroundStyle(Color.gray5)
                  + Text(verbatim: remainingText).font(.appleBold(size: 14)).foregroundStyle(Color.seepBlue)
@@ -90,7 +91,7 @@ struct DetailSavingsBody: View {
                 .font(.appleRegular(size: 14))
                 .foregroundStyle(Color.gray4)
                 .frame(width: 56, alignment: .leading)
-            Text(Strings.Detail.Saving.recordFormat(AmountFormatter.string(from: saving.amount)))
+            Text(Strings.Detail.Saving.recordFormat(AmountFormatter.money(saving.amount, currency: currency)))
                 .font(.appleRegular(size: 14))
                 .foregroundStyle(Color.gray5)
             Spacer(minLength: 0)

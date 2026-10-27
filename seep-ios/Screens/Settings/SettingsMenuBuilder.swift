@@ -9,6 +9,8 @@ enum SettingsRow: Equatable, Identifiable {
     case appearance(AppAppearance)
     /// 시작 카테고리. nil 이면 마지막으로 본 카테고리 (GH-86 R-1)
     case startCategory(Category?)
+    /// 지금 앱 언어 이름. 누르면 iOS 앱 설정 (GH-103 R-8)
+    case language(String)
     case widgetGuide
     case controlGuide
     case rateApp
@@ -23,6 +25,7 @@ enum SettingsRow: Equatable, Identifiable {
         case .viewType: return "view_type"
         case .appearance: return "appearance"
         case .startCategory: return "start_category"
+        case .language: return "language"
         case .widgetGuide: return "widget_guide"
         case .controlGuide: return "control_guide"
         case .rateApp: return "rate_app"
@@ -49,6 +52,7 @@ enum SettingsMenuBuilder {
         viewType: ViewType,
         appearance: AppAppearance = .system,
         startCategory: Category? = nil,
+        language: String? = nil,
         version: String,
         isRateAppAvailable: Bool = true,
         isContactAvailable: Bool = true
@@ -73,14 +77,22 @@ enum SettingsMenuBuilder {
             SettingsGroup(title: Strings.Settings.Group.view, rows: [
                 .viewType(viewType),
                 .startCategory(startCategory),
-                .appearance(appearance)
-            ]),
+                .appearance(appearance),
+                language.map(SettingsRow.language)
+            ].compactMap { $0 }),
             SettingsGroup(title: Strings.Settings.Group.quickWrite, rows: [
                 .widgetGuide,
                 .controlGuide
             ]),
             SettingsGroup(title: Strings.Settings.Group.info, rows: infoRows)
         ]
+    }
+
+    /// 앱이 보여 주는 언어를 그 언어로 쓴 이름. 번역이 없는 기기 언어면 원문(한국어)이다
+    static func currentLanguageName() -> String {
+        let code = Bundle.main.preferredLocalizations.first ?? "ko"
+        let name = Locale(identifier: code).localizedString(forIdentifier: code) ?? code
+        return name.prefix(1).uppercased() + name.dropFirst()
     }
 
     /// "Face ID로 잠그기" / "Touch ID로 잠그기" / "암호로 잠그기" (R-25)
