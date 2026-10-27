@@ -9,7 +9,7 @@ enum AmountFormatter {
     static let supportedCurrencies = ["KRW", "USD", "EUR", "JPY", "CNY", "TWD", "HKD", "GBP", "CAD", "AUD", "SGD"]
 
     /// 새로 적는 위시의 기본 통화 (R-15)
-    static func defaultCurrency(locale: Locale = .current) -> String {
+    static func defaultCurrency(locale: Locale = AppLanguage.shared.locale) -> String {
         guard let code = locale.currency?.identifier, supportedCurrencies.contains(code) else { return krw }
         return code
     }
@@ -23,7 +23,7 @@ enum AmountFormatter {
     }
 
     /// 769000 → "769,000" (한국어·영어), "769.000" (독일어)
-    static func string(from amount: Int, locale: Locale = .current) -> String {
+    static func string(from amount: Int, locale: Locale = AppLanguage.shared.locale) -> String {
         let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.numberStyle = .decimal
@@ -32,7 +32,7 @@ enum AmountFormatter {
     }
 
     /// 최소 단위 금액을 통화 표기로. 한국어 원화는 지금처럼 "769,000원", 그 밖은 "$12.50", "₩769,000" (R-16, TC-13)
-    static func money(_ amount: Int, currency: String, locale: Locale = .current) -> String {
+    static func money(_ amount: Int, currency: String, locale: Locale = AppLanguage.shared.locale) -> String {
         if currency == krw, locale.language.languageCode == .korean {
             return Strings.Common.wonFormat(string(from: amount, locale: locale))
         }
@@ -48,7 +48,7 @@ enum AmountFormatter {
     }
 
     /// 입력 칸 옆 단위. 한국어 원화는 "원", 그 밖은 통화 기호
-    static func unit(currency: String, locale: Locale = .current) -> String {
+    static func unit(currency: String, locale: Locale = AppLanguage.shared.locale) -> String {
         if currency == krw, locale.language.languageCode == .korean {
             return Strings.Common.wonUnit
         }
@@ -78,7 +78,7 @@ enum AmountFormatter {
 
     /// 사용자가 친 문자열 → (칸에 다시 보일 문자열, 최소 단위 금액).
     /// 소수가 없는 통화는 지금처럼 콤마를 넣어 다시 쓰고, 소수가 있는 통화는 치는 중인 소수점("12.")을 지우지 않는다 (R-17, TC-12)
-    static func input(_ text: String, currency: String, locale: Locale = .current) -> (text: String, amount: Int) {
+    static func input(_ text: String, currency: String, locale: Locale = AppLanguage.shared.locale) -> (text: String, amount: Int) {
         let digits = fractionDigits(currency)
         guard digits > 0 else {
             let amount = amount(from: text)
@@ -104,7 +104,7 @@ enum AmountFormatter {
     }
 
     /// 저장된 금액을 입력 칸에 처음 보일 문자열로 (수정 화면). 0 이면 빈 문자열
-    static func inputText(from amount: Int, currency: String, locale: Locale = .current) -> String {
+    static func inputText(from amount: Int, currency: String, locale: Locale = AppLanguage.shared.locale) -> String {
         guard amount > 0 else { return "" }
         let digits = fractionDigits(currency)
         guard digits > 0 else { return inputText(from: amount) }

@@ -10,7 +10,7 @@ struct DateUtils {
 
     /// 문구 파일에 둔 날짜 패턴(`detail.journal.row_date_format` 등)으로 보여 준다.
     /// 패턴은 언어마다 번역하고, 요일 이름은 지금 로케일을 따른다
-    static func toString(format: String, date: Date, locale: Locale = .current) -> String {
+    static func toString(format: String, date: Date, locale: Locale = AppLanguage.shared.locale) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .gregorian)
         dateFormatter.dateFormat = format

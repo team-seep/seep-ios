@@ -13,6 +13,7 @@ struct SettingsTabRootView: View {
     @State private var isViewTypeDialogPresented = false
     @State private var isAppearanceDialogPresented = false
     @State private var isStartCategoryDialogPresented = false
+    @State private var isLanguageDialogPresented = false
 
     var body: some View {
         ScrollView {
@@ -100,6 +101,20 @@ struct SettingsTabRootView: View {
         } message: {
             Text(DeviceKind.current == .pad ? Strings.Settings.Appearance.footerPad : Strings.Settings.Appearance.footer)
         }
+        .confirmationDialog(
+            Strings.Settings.Language.title,
+            isPresented: $isLanguageDialogPresented,
+            titleVisibility: .visible
+        ) {
+            Button(Strings.Settings.Language.system) { viewModel.send(.selectLanguage(nil)) }
+            // 언어 이름은 그 언어로 쓴다("English", "日本語")
+            ForEach(viewModel.state.languageOptions, id: \.self) { code in
+                Button(AppLanguage.displayName(of: code)) { viewModel.send(.selectLanguage(code)) }
+            }
+            Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
+        } message: {
+            Text(Strings.Settings.Language.footer)
+        }
     }
 
     static func title(of appearance: AppAppearance) -> String {
@@ -156,7 +171,6 @@ struct SettingsTabRootView: View {
         case .language(let name):
             button(
                 title: Strings.Settings.Language.title,
-                description: DeviceKind.current == .pad ? Strings.Settings.Language.descriptionPad : Strings.Settings.Language.description,
                 value: name,
                 action: .tapLanguage
             )
@@ -236,6 +250,8 @@ struct SettingsTabRootView: View {
             isAppearanceDialogPresented = true
         case .startCategoryDialog:
             isStartCategoryDialogPresented = true
+        case .languageDialog:
+            isLanguageDialogPresented = true
         case .openURL(let url):
             let isContact = url.scheme == "mailto"
             openURL(url) { accepted in

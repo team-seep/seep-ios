@@ -17,8 +17,9 @@ extension SettingsViewModel {
         /// 시작 카테고리 (GH-86 R-1). nil 이면 마지막으로 본 카테고리
         case tapStartCategory
         case selectStartCategory(Category?)
-        /// 언어 (GH-103 R-8). 앱 안에서 고르지 않고 iOS 앱 설정을 연다
+        /// 언어 (GH-103 R-8, R-21). nil 이면 기기 언어 따르기
         case tapLanguage
+        case selectLanguage(String?)
         case tapWidgetGuide
         case tapControlGuide
         case tapRateApp
@@ -36,6 +37,9 @@ extension SettingsViewModel {
         var viewType: ViewType = .list
         var appearance: AppAppearance = .system
         var startCategory: Category?
+        /// 고른 언어. nil 이면 기기 언어 (R-21)
+        var languageCode: String?
+        var languageOptions: [String] = []
     }
 
     enum Route: Equatable {
@@ -43,6 +47,7 @@ extension SettingsViewModel {
         case viewTypeDialog
         case appearanceDialog
         case startCategoryDialog
+        case languageDialog
         case openURL(URL)
         case push(AppDestination)
         case toast(String)
@@ -57,8 +62,8 @@ extension SettingsViewModel {
         let appStoreID: String?
         let contactEmail: String?
         let pasteboard: PasteboardWriting
-        /// 지금 앱이 보여 주는 언어 이름("한국어", "English") (GH-103 R-8)
-        let languageName: () -> String
+        /// 앱 언어 고르기 (GH-103 R-21)
+        let language: LanguageSwitching
 
         init(
             preference: Preference = .shared,
@@ -69,7 +74,7 @@ extension SettingsViewModel {
             appStoreID: String? = SettingsLinks.appStoreID,
             contactEmail: String? = SettingsLinks.contactEmail,
             pasteboard: PasteboardWriting = SystemPasteboard(),
-            languageName: @escaping () -> String = SettingsMenuBuilder.currentLanguageName
+            language: LanguageSwitching = LanguageSwitcher()
         ) {
             self.preference = preference
             self.authenticationManager = authenticationManager
@@ -79,7 +84,7 @@ extension SettingsViewModel {
             self.appStoreID = appStoreID
             self.contactEmail = contactEmail
             self.pasteboard = pasteboard
-            self.languageName = languageName
+            self.language = language
         }
     }
 }
@@ -144,9 +149,14 @@ final class SettingsViewModel {
 
         case .tapLanguage:
             sendClickLog(objectId: .language)
-            if let url = SettingsLinks.appSettingsURL {
-                route = .openURL(url)
-            }
+            route = .languageDialog
+
+        case .selectLanguage(let code):
+            sendClickLog(objectId: .selectLanguage, extraParameters: [.type: code ?? "system"])
+            guard code != dependency.language.selectedCode else { return }
+            // 화면은 루트가 저장값을 보고 새 언어로 다시 그린다
+            dependency.language.select(code)
+            reloadLocalState()
 
         case .tapWidgetGuide:
             sendClickLog(objectId: .widgetGuide)
@@ -194,6 +204,8 @@ final class SettingsViewModel {
         state.viewType = dependency.preference.viewType
         state.appearance = dependency.preference.appearance
         state.startCategory = dependency.preference.startCategory
+        state.languageCode = dependency.language.selectedCode
+        state.languageOptions = dependency.language.availableCodes
         rebuildGroups()
     }
 
@@ -216,7 +228,7 @@ final class SettingsViewModel {
             viewType: state.viewType,
             appearance: state.appearance,
             startCategory: state.startCategory,
-            language: dependency.languageName(),
+            language: state.languageCode.map(AppLanguage.displayName(of:)) ?? Strings.Settings.Language.system,
             version: dependency.deviceInfo.appVersion,
             isRateAppAvailable: SettingsLinks.reviewURL(appStoreID: dependency.appStoreID) != nil,
             isContactAvailable: !(dependency.contactEmail ?? "").isEmpty

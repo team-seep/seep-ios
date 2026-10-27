@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1D0000000000000000000B1 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D0000000000000000000F1 /* AppLanguage.swift */; };
+		A1D0000000000000000000B2 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D0000000000000000000F1 /* AppLanguage.swift */; };
 		A1000000000000000000B001 /* Localization.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F001 /* Localization.xcstrings */; };
 		A1000000000000000000B002 /* Localization.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F001 /* Localization.xcstrings */; };
 		A1000000000000000000B003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F002 /* Localizable.xcstrings */; };
@@ -253,6 +255,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A1D0000000000000000000F1 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		A1000000000000000000F001 /* Localization.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localization.xcstrings; sourceTree = "<group>"; };
 		A1000000000000000000F002 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A1000000000000000000F003 /* AppShortcuts.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = AppShortcuts.xcstrings; sourceTree = "<group>"; };
@@ -578,6 +581,7 @@
 			children = (
 				6E274E6C25F20E8E007DC880 /* Extensions */,
 				A48000010000000000000007 /* WidgetCheckStore.swift */,
+				A1D0000000000000000000F1 /* AppLanguage.swift */,
 				E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */,
 				6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */,
 				6E274E5F25F20D73007DC880 /* DateUtils.swift */,
@@ -1197,6 +1201,7 @@
 				96A000000000000000000002 /* LegacyImportRecovery.swift in Sources */,
 				A48000010000000000000005 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000008 /* WidgetCheckStore.swift in Sources */,
+				A1D0000000000000000000B1 /* AppLanguage.swift in Sources */,
 				A4800001000000000000000B /* WidgetCheckAction.swift in Sources */,
 				A47000010000000000000002 /* LockScreenDday.swift in Sources */,
 				A47000010000000000000005 /* WidgetDeepLink.swift in Sources */,
@@ -1264,6 +1269,7 @@
 				79B00000000000000000000F /* LegacyRealmImporter.swift in Sources */,
 				A48000010000000000000006 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000009 /* WidgetCheckStore.swift in Sources */,
+				A1D0000000000000000000B2 /* AppLanguage.swift in Sources */,
 				A4800001000000000000000C /* WidgetCheckAction.swift in Sources */,
 				A48000010000000000000013 /* CheckWidget.swift in Sources */,
 				A48000010000000000000015 /* CheckWidgetEntry.swift in Sources */,

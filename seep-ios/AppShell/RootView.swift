@@ -9,8 +9,13 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var isSplashFinished = false
+    /// 언어를 바꿔 메인을 다시 만들 때는 콜드 스타트 잠금·맡아 둔 링크 처리를 다시 하지 않는다
+    @State private var hasMainAppeared = false
     /// 설정 "화면 모드". `Preference.appearance`가 같은 키에 쓴다 (GH-85 R-3)
     @AppStorage(AppAppearance.storageKey) private var appearanceRawValue = AppAppearance.system.rawValue
+    /// 설정 "언어". 바뀌면 메인 화면을 새 언어로 다시 만든다 (GH-103 R-21). 위젯과 같이 쓰려고 App Group 에 둔다
+    @AppStorage(AppLanguage.storageKey, store: UserDefaults(suiteName: AppDatabase.appGroupIdentifier))
+    private var languageRawValue = ""
 
     var logManager: LogManagerProtocol = LogManager.shared
 
@@ -18,6 +23,9 @@ struct RootView: View {
         ZStack {
             if isSplashFinished {
                 MainLayoutView(onAppear: mainDidAppear)
+                    // 문구는 화면을 그릴 때 읽으므로, 새로 만들면 열려 있던 탭·화면도 새 언어로 나온다
+                    .id(languageRawValue)
+                    .environment(\.locale, AppLanguage.shared.locale)
                     .transition(.opacity)
             } else {
                 SplashScreen {
@@ -49,6 +57,8 @@ struct RootView: View {
     }
 
     private func mainDidAppear() {
+        guard !hasMainAppeared else { return }
+        hasMainAppeared = true
         // 콜드 스타트 잠금은 스플래시 다음, 메인이 뜨는 순간에 덮는다 (GH-46 R-5)
         appLock.send(.mainDidAppear)
         log(router.mainDidAppear())

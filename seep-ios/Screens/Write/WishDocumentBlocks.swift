@@ -257,9 +257,9 @@ struct WishDocumentBlocks: View {
         }
     }
 
-    /// "KRW · 대한민국 원" (기기 언어로)
+    /// "KRW · 대한민국 원" (앱 언어로)
     private static func currencyTitle(_ code: String) -> String {
-        let name = Locale.current.localizedString(forCurrencyCode: code) ?? code
+        let name = AppLanguage.shared.locale.localizedString(forCurrencyCode: code) ?? code
         return "\(code) · \(name)"
     }
 
