@@ -72,7 +72,18 @@ protocol WishRepository {
     /// "내가 정한 순서"에서 위시를 옮긴다. `orderedIds`는 옮긴 뒤 화면의 순서(고정 위시 제외).
     /// 보통은 앞뒤 값의 중간값으로 옮긴 위시 1건만 바꾸고, 간격이 너무 좁으면 그 목록을 1, 2, 3 … 으로 다시 매긴다 (GH-73 R-7)
     func moveWish(wishId: String, orderedIds: [String]) -> Result<Void, RepositoryError>
+
+    /// DB 가 바뀔 때마다(어느 화면이 썼든) 메인 스레드에서 알린다. 돌려받은 값을 버리거나 `cancel()`하면 멈춘다.
+    /// 아이패드에서 목록과 상세가 함께 보일 때 상세에서 바꾼 내용을 목록에 반영한다 (GH-99 TC-4)
+    func observeChanges(_ onChange: @escaping () -> Void) -> WishChangeObservation?
 }
+
+/// `observeChanges` 구독. GRDB 타입을 화면 쪽에 드러내지 않으려고 감싼다
+protocol WishChangeObservation: AnyObject {
+    func cancel()
+}
+
+extension AnyDatabaseCancellable: WishChangeObservation {}
 
 final class WishRepositoryImpl: WishRepository {
     private let database: AppDatabase?
@@ -81,6 +92,16 @@ final class WishRepositoryImpl: WishRepository {
     init(database: AppDatabase? = AppDatabase.shared, now: @escaping () -> Date = Date.init) {
         self.database = database
         self.now = now
+    }
+
+    func observeChanges(_ onChange: @escaping () -> Void) -> WishChangeObservation? {
+        guard let database else { return nil }
+        let observation = DatabaseRegionObservation(tracking: .fullDatabase)
+        return observation.start(
+            in: database.writer,
+            onError: { _ in },
+            onChange: { _ in DispatchQueue.main.async(execute: onChange) }
+        )
     }
 
     func fetchWishes(category: Category, sort: HomeSortOrder, isOnlyFinished: Bool) -> [Wish] {

@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        DeviceKind.current = UIDevice.current.userInterfaceIdiom == .pad ? .pad : .phone
         self.initilizeFirebase()
         self.copyDefaultToAppGroup()
         self.setupDatabase()

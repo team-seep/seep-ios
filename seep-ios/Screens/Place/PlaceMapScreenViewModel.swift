@@ -9,6 +9,8 @@ extension PlaceMapScreenViewModel {
         case selectPin(wishId: String?)
         /// 아래 위시 카드 탭
         case tapCard
+        /// 아이패드 목록 열에서 위시를 고름 → 지도가 그 핀으로 옮긴다 (GH-99 R-10, TC-11)
+        case selectListWish(wishId: String)
         case routeHandled
     }
 
@@ -18,6 +20,8 @@ extension PlaceMapScreenViewModel {
         var selectedWishId: String?
         /// 처음 불러왔을 때만 모든 핀이 들어오게 영역을 맞춘다 (R-6). 돌아올 때는 보던 영역을 유지한다
         var cameraFit: CameraFit?
+        /// 핀 하나로 옮기는 요청 (아이패드 목록에서 골랐을 때)
+        var cameraFocus: CameraFocus?
 
         var count: Int { wishes.count }
         var isEmpty: Bool { wishes.isEmpty }
@@ -28,6 +32,12 @@ extension PlaceMapScreenViewModel {
     struct CameraFit: Equatable {
         let id: Int
         let wishIds: [String]
+    }
+
+    /// 핀 하나로 옮기기 요청. 같은 위시를 다시 골라도 옮기도록 `id`가 매번 바뀐다
+    struct CameraFocus: Equatable {
+        let id: Int
+        let wishId: String
     }
 
     enum Route: Equatable {
@@ -57,6 +67,7 @@ final class PlaceMapScreenViewModel {
 
     private let dependency: Dependency
     private var fitCount = 0
+    private var focusCount = 0
 
     init(dependency: Dependency = Dependency()) {
         self.dependency = dependency
@@ -75,6 +86,11 @@ final class PlaceMapScreenViewModel {
             select(wishId: wishId)
         case .tapCard:
             pushSelectedWishDetail()
+        case .selectListWish(let wishId):
+            guard state.wishes.contains(where: { $0.id == wishId }) else { return }
+            state.selectedWishId = wishId
+            focusCount += 1
+            state.cameraFocus = CameraFocus(id: focusCount, wishId: wishId)
         case .routeHandled:
             route = nil
         }

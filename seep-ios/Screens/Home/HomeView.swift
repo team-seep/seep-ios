@@ -27,6 +27,9 @@ struct HomeView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.state.isReordering)
         .animation(.easeInOut(duration: 0.2), value: viewModel.state.isSelecting)
         .modifier(HomeViewEvents(viewModel: viewModel))
+        .onChange(of: viewModel.state.viewType, initial: true) { _, viewType in
+            router.padHomeUsesGrid = viewType == .grid
+        }
         .onAppear { noticeViewModel?.send(.onAppear) }
         .onChange(of: noticeViewModel?.route) { _, route in
             handleNoticeRoute(route)
@@ -84,7 +87,8 @@ struct HomeView: View {
                         filterHeader
                     }
                 }
-                .frame(maxWidth: HomeLayout.maxContentWidth)
+                // 아이패드는 열 폭이 곧 기둥이라 가두지 않는다. 그리드가 폭을 채워 4열 이상이 된다 (GH-99 TC-7)
+                .frame(maxWidth: router.isRegularLayout ? .infinity : HomeLayout.maxContentWidth)
                 .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)
@@ -98,8 +102,11 @@ struct HomeView: View {
 
     private var filterHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HomeCategoryTabs(selected: viewModel.state.category) { viewModel.send(.selectCategory($0)) }
-                .padding(.horizontal, 12)
+            // 아이패드는 사이드바가 카테고리를 고른다 (GH-99 R-4)
+            if !router.isRegularLayout {
+                HomeCategoryTabs(selected: viewModel.state.category) { viewModel.send(.selectCategory($0)) }
+                    .padding(.horizontal, 12)
+            }
             HomeFilterBar(
                 sortOrder: viewModel.state.sortOrder,
                 viewType: viewModel.state.viewType,
@@ -111,7 +118,8 @@ struct HomeView: View {
                 onTapSort: { viewModel.send(.tapSortOrder) },
                 onTapPlaceMap: { viewModel.send(.tapPlaceMap) },
                 onTapSearch: { viewModel.send(.tapSearch) },
-                onToggleViewType: { viewModel.send(.toggleViewType) }
+                onToggleViewType: { viewModel.send(.toggleViewType) },
+                sortPopover: router.isRegularLayout ? sortPopover : nil
             )
             .padding(.horizontal, HomeLayout.horizontalInset - 12)
         }
@@ -124,6 +132,19 @@ struct HomeView: View {
                 .offset(y: 10)
                 .allowsHitTesting(false)
         }
+    }
+
+    /// 아이패드는 정렬 버튼에 붙은 팝오버로 고른다 (GH-99 R-9, TC-8)
+    private var sortPopover: HomeFilterBar.SortPopover {
+        HomeFilterBar.SortPopover(
+            isPresented: Binding(
+                get: { viewModel.state.sheet == .sortOrder },
+                set: { isPresented in
+                    if !isPresented, viewModel.state.sheet == .sortOrder { viewModel.send(.sheetDismissed) }
+                }
+            ),
+            onSelect: { viewModel.send(.selectSortOrder($0)) }
+        )
     }
 
     @ViewBuilder
@@ -143,6 +164,7 @@ struct HomeView: View {
                 case .list:
                     ForEach(viewModel.state.items) { item in
                         HomeWishRow(item: item) { viewModel.send(.tapFinish(item.wish)) }
+                            .padSelectionBorder(isSelected: router.padSelection?.id == item.id)
                             .onTapGesture { viewModel.send(.tapWish(item.wish)) }
                             .modifier(HomeWishMenu(item: item, viewModel: viewModel))
                     }
@@ -163,7 +185,8 @@ private struct HomeViewEvents: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .toolbarVisibility(.hidden, for: .navigationBar)
+            // 아이패드는 바에 사이드바 버튼이 있어 바를 남긴다 (GH-99 R-6)
+            .toolbarVisibility(router.isRegularLayout ? .automatic : .hidden, for: .navigationBar)
             .trackScreen(viewModel.screenName)
             .onAppear {
                 viewModel.send(.onAppear)
@@ -242,7 +265,8 @@ private struct HomeViewEvents: ViewModifier {
 
     private var sheetBinding: Binding<HomeSheet?> {
         Binding(
-            get: { viewModel.state.sheet },
+            // 아이패드의 정렬은 시트가 아니라 정렬 버튼의 팝오버다 (GH-99 R-9)
+            get: { router.isRegularLayout && viewModel.state.sheet == .sortOrder ? nil : viewModel.state.sheet },
             set: { newValue in
                 if newValue == nil, viewModel.state.sheet != nil { viewModel.send(.sheetDismissed) }
             }
@@ -290,6 +314,7 @@ private struct HomeViewEvents: ViewModifier {
 private struct HomeWishGrid: View {
     let items: [HomeWishItem]
     let viewModel: HomeViewModel
+    @Environment(AppRouter.self) private var router
     @State private var availableWidth: CGFloat = 0
 
     var body: some View {
@@ -305,6 +330,7 @@ private struct HomeWishGrid: View {
                     onToggle: { viewModel.send(.tapFinish(item.wish)) },
                     onNeedThumbnail: { viewModel.send(.loadThumbnail(wishId: item.id, maxPixelSize: $0)) }
                 )
+                .padSelectionBorder(isSelected: router.padSelection?.id == item.id)
                 .onTapGesture { viewModel.send(.tapWish(item.wish)) }
                 .modifier(HomeWishMenu(item: item, viewModel: viewModel))
             }

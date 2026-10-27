@@ -187,4 +187,35 @@ final class MockWishRepository: WishRepository {
         deleteWishesCalls.append(ids)
         return deleteWishesResult
     }
+
+    // MARK: observeChanges (GH-99)
+
+    private(set) var changeHandlers: [() -> Void] = []
+    private(set) var observeChangesCallCount = 0
+
+    func observeChanges(_ onChange: @escaping () -> Void) -> WishChangeObservation? {
+        observeChangesCallCount += 1
+        changeHandlers.append(onChange)
+        return MockWishChangeObservation { [weak self] in self?.changeHandlers.removeAll() }
+    }
+
+    /// DB 가 바뀐 것처럼 구독자에게 알린다
+    func simulateChange() {
+        changeHandlers.forEach { $0() }
+    }
+
+}
+
+final class MockWishChangeObservation: WishChangeObservation {
+    private let onCancel: () -> Void
+    private(set) var isCancelled = false
+
+    init(onCancel: @escaping () -> Void) {
+        self.onCancel = onCancel
+    }
+
+    func cancel() {
+        isCancelled = true
+        onCancel()
+    }
 }

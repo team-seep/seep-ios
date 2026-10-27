@@ -44,6 +44,7 @@ private struct WishDetailContent: View {
     @Environment(\.openURL) private var openURL
     @Environment(ToastCenter.self) private var toastCenter: ToastCenter?
     @Environment(AppRouter.self) private var router: AppRouter?
+    @Environment(\.isPadDetailPane) private var isPadDetailPane
 
     @State private var isTitleCollapsed = false
     @State private var titleBottom: CGFloat = 0
@@ -321,7 +322,12 @@ private struct WishDetailContent: View {
         case .errorAlert(let message):
             errorMessage = message
         case .close:
-            dismiss()
+            // 아이패드 상세 열은 쌓인 화면이 아니라 열을 비운다 (GH-99 R-5)
+            if isPadDetailPane {
+                router?.closePadDetail()
+            } else {
+                dismiss()
+            }
         }
         viewModel.send(.routeHandled)
     }

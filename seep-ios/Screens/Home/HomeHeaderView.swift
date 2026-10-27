@@ -197,24 +197,17 @@ struct HomeFilterBar: View {
     let onTapPlaceMap: () -> Void
     let onTapSearch: () -> Void
     let onToggleViewType: () -> Void
+    /// 아이패드: 정렬을 시트 대신 이 버튼에 붙은 팝오버로 고른다 (GH-99 R-9). nil 이면 시트
+    var sortPopover: SortPopover?
+
+    struct SortPopover {
+        let isPresented: Binding<Bool>
+        let onSelect: (HomeSortOrder) -> Void
+    }
 
     var body: some View {
         HStack(spacing: 0) {
-            Button(action: onTapSort) {
-                HStack(spacing: 2) {
-                    Text(verbatim: sortOrder.title)
-                        .font(.appleMedium(size: 14))
-                    Assets.Icons.icChevronDown.swiftUIImage
-                        .renderingMode(.template)
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                }
-                .foregroundStyle(Color.gray4)
-                .frame(minHeight: 44)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityHint(Text(Strings.Home.Filter.sortAccessibility))
+            sortButton
 
             Spacer(minLength: 0)
 
@@ -266,6 +259,34 @@ struct HomeFilterBar: View {
             .accessibilityLabel(Text(viewType == .list ? Strings.Home.Filter.viewTypeGrid : Strings.Home.Filter.viewTypeList))
         }
         .padding(.leading, 20)
+    }
+
+    @ViewBuilder
+    private var sortButton: some View {
+        let button = Button(action: onTapSort) {
+            HStack(spacing: 2) {
+                Text(verbatim: sortOrder.title)
+                    .font(.appleMedium(size: 14))
+                Assets.Icons.icChevronDown.swiftUIImage
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
+            .foregroundStyle(Color.gray4)
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(Text(Strings.Home.Filter.sortAccessibility))
+
+        if let sortPopover {
+            button
+                .seepPopover(isPresented: sortPopover.isPresented) {
+                    SortOrderSheet(selected: sortOrder, onSelect: sortPopover.onSelect)
+                }
+        } else {
+            button
+        }
     }
 
     private func iconButton(image: Image, size: CGFloat, label: String, action: @escaping () -> Void) -> some View {

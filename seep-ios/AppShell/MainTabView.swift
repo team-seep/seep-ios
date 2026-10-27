@@ -53,17 +53,7 @@ struct MainTabView: View {
                 )
             }
         }
-        .seepFullScreenCover(item: $router.writeCategory) { category in
-            WishFormScreen(mode: .add(category), previousWishId: router.writePreviousWishId) { savedWish in
-                router.writeCategory = nil
-                if let savedWish {
-                    router.wishesDidChange()
-                    // 작성을 마치면 싶 탭으로 가서 그 카테고리를 보여준다 (R-9)
-                    router.homeCategory = savedWish.category
-                    router.select(.wish)
-                }
-            }
-        }
+        .modifier(WriteScreenPresenter())
         .onAppear {
             if viewModel == nil {
                 viewModel = MainTabViewModel(dependency: .init(router: router))

@@ -98,7 +98,7 @@ struct SettingsTabRootView: View {
             }
             Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
         } message: {
-            Text(Strings.Settings.Appearance.footer)
+            Text(DeviceKind.current == .pad ? Strings.Settings.Appearance.footerPad : Strings.Settings.Appearance.footer)
         }
     }
 
@@ -127,7 +127,7 @@ struct SettingsTabRootView: View {
         case .notification(let status):
             button(
                 title: Strings.Settings.Notification.title,
-                description: Strings.Settings.Notification.description,
+                description: DeviceKind.current == .pad ? Strings.Settings.Notification.descriptionPad : Strings.Settings.Notification.description,
                 value: notificationValue(status),
                 action: .tapNotification
             )

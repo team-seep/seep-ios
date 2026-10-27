@@ -17,9 +17,8 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if isSplashFinished {
-                MainTabView()
+                MainLayoutView(onAppear: mainDidAppear)
                     .transition(.opacity)
-                    .onAppear(perform: mainDidAppear)
             } else {
                 SplashScreen {
                     withAnimation(.easeInOut(duration: 0.3)) {

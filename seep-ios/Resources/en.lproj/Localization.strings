@@ -395,6 +395,7 @@
 "settings.lock.description_passcode" = "앱을 열 때 기기 암호로 확인해요";
 "settings.notification.title" = "D-day 알림";
 "settings.notification.description" = "아이폰 설정에서 바꿀 수 있어요";
+"settings.notification.description_pad" = "아이패드 설정에서 바꿀 수 있어요";
 "settings.notification.on" = "켜짐";
 "settings.notification.off" = "꺼짐";
 "settings.view_type.title" = "홈 보기 방식";
@@ -406,6 +407,7 @@
 "settings.appearance.light" = "라이트";
 "settings.appearance.dark" = "다크";
 "settings.appearance.footer" = "위젯은 아이폰 화면 모드를 따라요";
+"settings.appearance.footer_pad" = "위젯은 아이패드 화면 모드를 따라요";
 "settings.start_category.title" = "시작 카테고리";
 "settings.start_category.description" = "앱을 열면 처음 보일 탭이에요";
 "settings.start_category.last" = "마지막으로 본 카테고리";
@@ -515,3 +517,12 @@
 "wish_document.discard.confirm" = "버리기";
 "wish_document.discard.keep" = "계속 쓰기";
 "wish_document.hashtag_sheet.title" = "태그";
+
+// iPad (GH-99)
+"pad.sidebar.section_wish" = "싶";
+"pad.sidebar.section_look_back" = "돌아보기";
+"pad.sidebar.section_app" = "앱";
+"pad.sidebar.badges" = "배지";
+"pad.sidebar.write" = "뭐 하고 싶어요?";
+"pad.detail.empty" = "목록에서 싶을 골라 보세요";
+"pad.settings_detail.empty" = "왼쪽에서 항목을 골라 보세요";

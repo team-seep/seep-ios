@@ -3,8 +3,18 @@ import SwiftUI
 /// 배지 모아보기 (GH-35 R-5, GH-64 TC-801). 싶 탭의 배지 축하 시트·이룬 싶 탭 배지 카드에서 push 된다
 struct BadgeCollectionScreen: View {
     @State private var viewModel = BadgeCollectionViewModel()
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    @State private var gridWidth: CGFloat = 0
 
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 10, alignment: .top), count: 3)
+    private var isRegular: Bool { sizeClass == .regular }
+
+    /// 아이폰은 3열, 아이패드는 칸 폭이 아이폰과 비슷하게(약 160pt) 폭을 채운다 (GH-99 R-12)
+    private var columns: [GridItem] {
+        let count = isRegular ? max(3, Int(gridWidth / Self.regularColumnWidthUnit)) : 3
+        return Array(repeating: GridItem(.flexible(), spacing: 10, alignment: .top), count: count)
+    }
+
+    private static let regularColumnWidthUnit: CGFloat = 160
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -21,14 +31,15 @@ struct BadgeCollectionScreen: View {
                         .padding(.top, 8)
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(viewModel.state.badges, id: \.type) { badge in
-                            BadgeCard(badge: badge)
+                            BadgeCard(badge: badge, showsDetailPopover: isRegular)
                         }
                     }
+                    .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { gridWidth = $0 }
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
                     .padding(.bottom, 24)
                 }
-                .frame(maxWidth: SeepLayout.maxContentWidth, alignment: .leading)
+                .frame(maxWidth: isRegular ? .infinity : SeepLayout.maxContentWidth, alignment: .leading)
                 .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)
@@ -68,8 +79,41 @@ struct BadgeCollectionScreen: View {
 /// 그리드 칸 하나: gray1 카드, 메달 56 + 이름 + 얻은 날 또는 진행도·조건 문구 (GH-35 R-5)
 private struct BadgeCard: View {
     let badge: Badge
+    /// 아이패드: 칸을 누르면 잘린 조건 문구 전체를 팝오버로 (GH-99 R-12)
+    var showsDetailPopover = false
+
+    @State private var isPopoverPresented = false
 
     var body: some View {
+        if showsDetailPopover {
+            card
+                .contentShape(RoundedRectangle(cornerRadius: 12))
+                .onTapGesture { isPopoverPresented = true }
+                .accessibilityAddTraits(.isButton)
+                .seepPopover(isPresented: $isPopoverPresented, width: 260) {
+                    detail
+                }
+        } else {
+            card
+        }
+    }
+
+    private var detail: some View {
+        VStack(spacing: 8) {
+            BadgeMedal(type: badge.type, isEarned: badge.isEarned, diameter: 56, fillColor: .gray2)
+            Text(verbatim: badge.type.name)
+                .font(.appleBold(size: 16))
+                .foregroundStyle(Color.gray5)
+            Text(verbatim: description)
+                .font(.appleMedium(size: 14))
+                .foregroundStyle(Color.gray4)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(20)
+    }
+
+    private var card: some View {
         VStack(spacing: 0) {
             BadgeMedal(type: badge.type, isEarned: badge.isEarned, diameter: 56, fillColor: .gray2)
                 .padding(.top, 16)
