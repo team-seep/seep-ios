@@ -1,7 +1,5 @@
 import WidgetKit
 
-import RealmSwift
-
 /// 잠금화면 위젯 2종의 타임라인. D-n 이 날마다 바뀌도록 다음 날 0시에 갱신한다 (GH-47 R-9)
 struct LockScreenProvider: TimelineProvider {
     func placeholder(in context: Context) -> LockScreenEntry {
@@ -29,11 +27,8 @@ struct LockScreenProvider: TimelineProvider {
     }
 
     private func generateEntry(now: Date) -> LockScreenEntry {
-        // 앱·다른 위젯과 같은 App Group Realm 설정을 쓴다 (GH-48 RealmConfiguration)
-        guard let realm = try? Realm(configuration: RealmConfiguration.shared) else {
-            return LockScreenEntry(date: now, wish: nil, remainCount: 0)
-        }
-        let wishes = Array(realm.objects(WishDTO.self).filter { !$0.isSuccess }.map { Wish(dto: $0) })
+        // 앱·다른 위젯과 같은 App Group DB 를 읽는다 (GH-79 R-15)
+        let wishes = WidgetWishRepositoryImpl().fetchUnfinishedWishes()
 
         return LockScreenEntry(
             date: now,

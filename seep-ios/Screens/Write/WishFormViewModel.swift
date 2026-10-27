@@ -1,3 +1,4 @@
+// swiftlint:disable file_length - 작성·수정 문서 하나의 블록·검증·저장 규칙(사진 파일 커밋 포함)을 한 ViewModel 에 둔다
 import Foundation
 import Observation
 
@@ -18,6 +19,8 @@ final class WishFormViewModel {
     private let dependency: Dependency
     private var hasSentLinkPreviewImpression = false
     private var linkPreviewTask: Task<Void, Never>?
+    /// 고른 사진을 파일로 쓰는 중. 두 번 눌러 위시가 두 개 생기지 않게 한다
+    private var isSaving = false
     /// 열었을 때의 입력값. 닫을 때 바뀐 게 있는지 본다 (GH-70 R-18)
     private var initialDraft: WishFormDraft?
 
@@ -51,6 +54,11 @@ final class WishFormViewModel {
                 linkText: wish.link,
                 link: WishLinkInput(text: wish.link),
                 place: wish.place,
+                // 파일이 없으면(백업 복원 등) 사진이 없는 것으로 본다 (GH-36 R-7)
+                photo: dependency.photoStorage.photoURL(fileName: wish.photoFileName) == nil
+                    ? .none : .stored(fileName: wish.photoFileName),
+                letter: wish.hasFutureLetter
+                    ? WishFormLetter(text: wish.futureLetter, sealedAt: wish.futureLetterSealedAt) : nil,
                 selectedHashtag: hashtag,
                 customHashtag: hashtag == nil ? wish.hashtag : "",
                 saveButtonState: .active
@@ -84,7 +92,7 @@ final class WishFormViewModel {
     /// 지금 카테고리·날짜에서 쓸 수 있는 칸인지 (R-6, R-8)
     func isAvailable(_ block: WishDocumentBlock) -> Bool {
         switch block {
-        case .date, .memo, .steps: return true
+        case .date, .memo, .steps, .photo, .letter: return true
         case .notification: return state.isDeadlineEnabled && state.deadline != nil
         case .link, .targetAmount: return state.category == .wantToGet
         case .place: return isPlaceVisible
@@ -96,6 +104,8 @@ final class WishFormViewModel {
         case .date: return state.isDeadlineEnabled
         case .notification: return state.isNotificationEnabled
         case .place: return state.place != nil
+        case .photo: return state.photo != .none
+        case .letter: return state.letter != nil
         case .memo, .steps, .link, .targetAmount: return state.revealedBlocks.contains(block)
         }
     }
@@ -108,6 +118,21 @@ final class WishFormViewModel {
     /// 하단 더하기 칩. 아직 안 꺼냈고 쓸 수 있는 칸만 (R-6)
     var chips: [WishDocumentBlock] {
         WishDocumentBlock.allCases.filter { isAvailable($0) && !isRevealed($0) }
+    }
+
+    /// 사진 블록 미리보기 (GH-61 R-10)
+    var photoPreview: WishFormPhotoPreview? {
+        switch state.photo {
+        case .none: return nil
+        case .stored(let fileName): return dependency.photoStorage.photoURL(fileName: fileName).map { .file($0) }
+        case .picked(let data): return .data(data)
+        }
+    }
+
+    /// 봉인 카드 캡션. 이번에 봉인한 편지는 오늘 날짜로 보인다 (GH-61 R-10)
+    var letterCaption: String? {
+        guard let letter = state.letter else { return nil }
+        return DetailLetter.sealedCaption(sealedAt: letter.sealedAt ?? dependency.now(), length: letter.text.count)
     }
 
     /// 열었을 때와 입력이 달라졌는지 (R-18)
@@ -229,6 +254,19 @@ final class WishFormViewModel {
             removeBlock(block)
         case .tapHashtag:
             state.sheet = .hashtag
+        case .pickPhoto(let data):
+            state.photo = .picked(data)
+        case .pickPhotoFailed:
+            route = .toast(WishPhotoStorageError.invalidImage.localizedDescription)
+        case .tapPhoto:
+            route = .photoPicker
+        case .sealLetter(let text):
+            state.letter = WishFormLetter(text: text, sealedAt: nil)
+            state.sheet = nil
+        case .tapLetter:
+            route = .rewriteLetterAlert
+        case .confirmRewriteLetter:
+            presentLetterSheet()
         }
     }
 
@@ -264,7 +302,20 @@ final class WishFormViewModel {
             send(.tapAddStep)
         case .place:
             send(.tapPlace)
+        case .photo:
+            route = .photoPicker
+        case .letter:
+            presentLetterSheet()
         }
+    }
+
+    /// 다시 쓰기도 빈 칸에서 시작한다 (GH-61 R-4)
+    private func presentLetterSheet() {
+        let sheet = FutureLetterViewModel(dependency: .init(logManager: dependency.logManager))
+        sheet.onSeal = { [weak self] text in
+            self?.send(.sealLetter(text))
+        }
+        state.sheet = .letter(sheet)
     }
 
     private func removeBlock(_ block: WishDocumentBlock) {
@@ -290,6 +341,10 @@ final class WishFormViewModel {
             state.targetAmount = 0
         case .place:
             state.place = nil
+        case .photo:
+            state.photo = .none
+        case .letter:
+            state.letter = nil
         }
         state.revealedBlocks.remove(block)
     }
@@ -306,6 +361,8 @@ final class WishFormViewModel {
             targetAmount: state.targetAmount,
             linkText: state.linkText,
             place: state.place,
+            photo: state.photo,
+            letter: state.letter,
             hashtag: hashtag
         )
     }
@@ -464,14 +521,63 @@ final class WishFormViewModel {
             hasError = true
         }
         // 링크 형식 안내는 링크 칸이 이미 보여준다 (GH-29 R-2)
-        guard !hasError, !state.link.blocksSave(category: state.category) else { return }
+        guard !hasError, !state.link.blocksSave(category: state.category), !isSaving else { return }
 
+        let wishId: String
+        switch config.mode {
+        case .add: wishId = UUID().uuidString
+        case .edit(let original): wishId = original.id
+        }
+        switch state.photo {
+        case .none:
+            finishSave(wishId: wishId, photoFileName: "", newFileName: nil)
+        case .stored(let fileName):
+            finishSave(wishId: wishId, photoFileName: fileName, newFileName: nil)
+        case .picked(let data):
+            // 고른 사진은 파일로 먼저 쓰고 그 이름으로 위시를 저장한다 (GH-61 R-11, GH-36 R-3)
+            isSaving = true
+            dependency.photoStorage.savePhoto(imageData: data, wishId: wishId) { [weak self] result in
+                guard let self else { return }
+                isSaving = false
+                switch result {
+                case .success(let fileName):
+                    finishSave(wishId: wishId, photoFileName: fileName, newFileName: fileName)
+                case .failure(let error):
+                    route = .toast(error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    private func finishSave(wishId: String, photoFileName: String, newFileName: String?) {
+        let saved: Wish?
         switch config.mode {
         case .add:
-            addWish()
+            saved = addWish(id: wishId, photoFileName: photoFileName)
         case .edit(let original):
-            updateWish(original: original)
+            saved = updateWish(original: original, photoFileName: photoFileName)
         }
+        guard let saved else {
+            // 위시에 붙이지 못한 파일은 남기지 않는다 (GH-36 R-3)
+            if let newFileName { dependency.photoStorage.deletePhoto(fileName: newFileName) }
+            return
+        }
+        if newFileName != nil {
+            dependency.logManager.sendEvent(event: CustomEvent(screen: screenName, name: .savePhoto))
+        }
+        // 바꾸거나 지운 사진의 이전 파일은 저장이 끝난 뒤 지운다 (GH-61 R-11)
+        if case .edit(let original) = config.mode,
+           !original.photoFileName.isEmpty, original.photoFileName != saved.photoFileName {
+            dependency.photoStorage.deletePhoto(fileName: original.photoFileName)
+        }
+        linkPreviewTask?.cancel()
+        route = .finish(saved)
+    }
+
+    /// 편지 저장 값. 이번에 봉인한 편지는 저장 시각이 봉인일이다 (GH-61 R-11)
+    private var letterToSave: (text: String, sealedAt: Date?) {
+        guard let letter = state.letter else { return ("", nil) }
+        return (letter.text, letter.sealedAt ?? dependency.now())
     }
 
     private var hashtag: String {
@@ -479,8 +585,10 @@ final class WishFormViewModel {
         return state.selectedHashtag?.rawValue ?? ""
     }
 
-    private func addWish() {
+    private func addWish(id: String, photoFileName: String) -> Wish? {
+        let letter = letterToSave
         let wish = Wish(
+            id: id,
             emoji: state.emoji.isEmpty ? dependency.randomEmoji() : state.emoji,
             category: state.category,
             title: state.title,
@@ -495,6 +603,10 @@ final class WishFormViewModel {
             link: state.link.storedLink(category: state.category),
             // 다른 카테고리로 바꿨으면 골랐던 장소는 버린다 (GH-31 R-1)
             place: state.category == .wantToGo ? state.place : nil,
+            photoFileName: photoFileName,
+            futureLetter: letter.text,
+            futureLetterSealedAt: letter.sealedAt,
+            previousWishId: config.previousWishId,
             createdAt: dependency.now()
         )
 
@@ -507,14 +619,18 @@ final class WishFormViewModel {
                 objectId: .write,
                 extraParameters: [.hasTargetAmount: saved.targetAmount > 0]
             ))
-            linkPreviewTask?.cancel()
-            route = .finish(saved)
+            if config.previousWishId != nil {
+                sendClickLog(objectType: .button, objectId: .saveChainedWish)
+            }
+            return saved
         case .failure(let error):
             route = .toast(error.localizedDescription)
+            return nil
         }
     }
 
-    private func updateWish(original: Wish) {
+    private func updateWish(original: Wish, photoFileName: String) -> Wish? {
+        let letter = letterToSave
         let wish = Wish(
             id: original.id,
             emoji: state.emoji.isEmpty ? dependency.randomEmoji() : state.emoji,
@@ -537,9 +653,12 @@ final class WishFormViewModel {
             link: state.link.storedLink(category: state.category),
             // 홈이 돌려받은 위시로 잠든 위시 카드를 다시 판단한다 (GH-30 R-2)
             lastCheckedAt: dependency.now(),
-            // 수정 폼은 장소·사진을 바꾸지 않는다 (GH-31 R-10, GH-36 R-10)
+            // 수정 폼은 장소를 바꾸지 않는다 (GH-31 R-10). 사진·편지는 문서 블록 값 (GH-61 R-11)
             place: original.place,
-            photoFileName: original.photoFileName,
+            photoFileName: photoFileName,
+            futureLetter: letter.text,
+            futureLetterSealedAt: letter.sealedAt,
+            previousWishId: original.previousWishId,
             createdAt: original.createdAt
         )
 
@@ -548,10 +667,10 @@ final class WishFormViewModel {
             // 지운 알림까지 지우도록 수정 전 위시의 알림을 지우고 새로 예약한다
             dependency.notificationManager.cancelNotifications(wish: original)
             dependency.notificationManager.reserveNotifications(wish: saved)
-            linkPreviewTask?.cancel()
-            route = .finish(saved)
+            return saved
         case .failure(let error):
             route = .toast(error.localizedDescription)
+            return nil
         }
     }
 
@@ -576,5 +695,7 @@ struct WishFormDraft: Equatable {
     let targetAmount: Int
     let linkText: String
     let place: WishPlace?
+    let photo: WishFormPhoto
+    let letter: WishFormLetter?
     let hashtag: String
 }

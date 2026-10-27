@@ -102,7 +102,9 @@ struct SharePhotoContent: View {
     // MARK: Subviews
 
     private func card(side: CGFloat) -> some View {
+        // 공유 카드는 화면 모드와 상관없이 라이트로 보이고 저장된다 (GH-85 R-6)
         ShareCardView(state: viewModel.state, side: side, photo: photo)
+            .environment(\.colorScheme, .light)
             .overlay {
                 if viewModel.state.isTooltipVisible {
                     ShareTooltip {
@@ -124,7 +126,8 @@ struct SharePhotoContent: View {
     /// 화면에 보이는 카드를 그대로 그려 PNG 로 만든다
     @MainActor
     private func renderCard(side: CGFloat) -> Data? {
-        let renderer = ImageRenderer(content: ShareCardView(state: viewModel.state, side: side, photo: photo))
+        let renderer = ImageRenderer(content: ShareCardView(state: viewModel.state, side: side, photo: photo)
+            .environment(\.colorScheme, .light))
         renderer.scale = displayScale
         guard let image = renderer.cgImage else { return nil }
         return ShareImageEncoder.pngData(from: image)

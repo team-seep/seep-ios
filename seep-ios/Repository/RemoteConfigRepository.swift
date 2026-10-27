@@ -6,12 +6,15 @@ protocol RemoteConfigRepository {
     func fetchAndActivate() async
     /// 마지막으로 적용된 연말 회고 노출 기간. 값이 없거나 틀리면 nil (GH-34 R-9)
     func fetchYearReviewPeriod() -> YearReviewPeriod?
+    /// 마지막으로 적용된 Realm 재이전 토큰. 비어 있으면 재이전하지 않는다 (GH-96 R-2)
+    func fetchLegacyRealmReimportToken() -> String
 }
 
 struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
     enum Constant {
         static let timeout: TimeInterval = 1800
         static let yearReviewPeriodKey = "year_review_period"
+        static let legacyRealmReimportTokenKey = "legacy_realm_reimport_token"
     }
     
     private let instance = RemoteConfig.remoteConfig()
@@ -40,6 +43,10 @@ struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
     
     func fetchYearReviewPeriod() -> YearReviewPeriod? {
         return YearReviewPeriod.parse(instance[Constant.yearReviewPeriodKey].stringValue)
+    }
+
+    func fetchLegacyRealmReimportToken() -> String {
+        instance[Constant.legacyRealmReimportTokenKey].stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

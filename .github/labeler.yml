@@ -1,4 +1,4 @@
-# 경로 기반 라벨 (actions/labeler v5). 검증 장치·Realm 스키마를 건드리는 PR을 결정론적으로 표시한다.
+# 경로 기반 라벨 (actions/labeler v5). 검증 장치·DB 스키마를 건드리는 PR을 결정론적으로 표시한다.
 # 규칙: docs/process/verification-change.md
 
 verification-change:
@@ -24,6 +24,5 @@ schema-change:
   - changed-files:
       - any-glob-to-any-file:
           - "seep-ios/model/dto/**"
-          - "seep-ios/AppDelegate.swift"
-          - "seep-ios/Repository/RealmConfiguration.swift"
-          - "widget/**/*Provider.swift"
+          - "seep-ios/Repository/AppDatabase.swift"
+          - "seep-ios/Repository/LegacyRealm/**"

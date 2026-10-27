@@ -1,13 +1,16 @@
 import AppIntents
+import os
 import UIKit
 import UserNotifications
+import WidgetKit
 
 import Firebase
+import GRDB
 import RealmSwift
 
-
-/// Firebase·Realm·알림 델리게이트·앱 인텐트 의존성 (UI 없음). 진입점은 SwiftUI `SeepApp` (GH-64 A-1)
+/// Firebase·DB(App Group SQLite)·알림 델리게이트·앱 인텐트 의존성 (UI 없음). 진입점은 SwiftUI `SeepApp` (GH-64 A-1)
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    private static let logger = Logger(subsystem: "macgongmon.seep-ios", category: "AppDelegate")
     
     func application(
         _ application: UIApplication,
@@ -15,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         self.initilizeFirebase()
         self.copyDefaultToAppGroup()
-        self.setupRealmConfig()
+        self.setupDatabase()
         self.registerAppIntentDependencies()
         self.requestNotificationAuthorization()
         application.registerForRemoteNotifications()
@@ -34,7 +37,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 유닛 테스트가 콘솔 값에 흔들리지 않도록 테스트 호스트로 뜰 때는 받지 않는다
         guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
         Task {
-            await RemoteConfigRepositoryImpl().fetchAndActivate()
+            let remoteConfig = RemoteConfigRepositoryImpl()
+            await remoteConfig.fetchAndActivate()
+            await reimportLegacyRealmIfRequested(token: remoteConfig.fetchLegacyRealmReimportToken())
+        }
+    }
+
+    /// Remote Config 재이전 토큰이 새 값이면 원본 Realm 에서 빠진 위시를 다시 가져온다 (GH-96 R-3~R-8).
+    /// DB 를 여는 `setupDatabase`보다 늦게 돌도록 Remote Config 를 받은 뒤에 부른다
+    private func reimportLegacyRealmIfRequested(token: String) async {
+        guard !token.isEmpty, AppDatabase.shared != nil else { return }
+        let restoredCount = DatabaseMigrationFollowUp().reimportIfRequested(token: token)
+        guard restoredCount > 0 else { return }
+        await MainActor.run {
+            WidgetCenter.shared.reloadAllTimelines()
+            AppEnvironment.shared.router.wishesDidChange()
+            AppEnvironment.shared.toastCenter.show(Strings.Home.MigrationNotice.reimportSuccessFormat(restoredCount))
         }
     }
     
@@ -45,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         notificationCenter.delegate = self
         notificationCenter.requestAuthorization(options: authOptions) { success, error in
             if let error = error {
-                print("Error: \(error)")
+                Self.logger.error("알림 권한 요청 실패: \(error.localizedDescription, privacy: .public)")
             }
         }
     }
@@ -60,124 +78,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if fileManager.fileExists(atPath: originalPath.path) {
             do{
                 try fileManager.replaceItemAt(appGroupURL, withItemAt: originalPath)
-                print("Successfully replaced DB file")
+                Self.logger.info("Realm 파일을 App Group 으로 옮겼다")
                 try fileManager.removeItem(at: originalPath)
             }
             catch{
-                print("Error info: \(error)")
+                Self.logger.error("Realm 파일 이동 실패: \(error.localizedDescription, privacy: .public)")
             }
         } else {
-            print("File is not exist on original path")
+            Self.logger.debug("옮길 기존 Realm 파일 없음")
         }
     }
     
-    private func setupRealmConfig() {
-        // 경로·schemaVersion 은 위젯과 같이 쓰는 RealmConfiguration 한 곳에서 정한다 (GH-48 R-6)
-        var config = RealmConfiguration.shared
-        
-        config.migrationBlock = { migration, oldSchemaVersion in
-            if oldSchemaVersion < 3 {
-                migration.enumerateObjects(ofType: "Wish") { oldObject, newObject in
-                    guard let oldObject = oldObject,
-                          let id = oldObject["_id"] as? ObjectId,
-                          let emoji = oldObject["emoji"] as? String,
-                          let category = oldObject["category"] as? String,
-                          let title = oldObject["title"] as? String,
-                          let date = oldObject["date"] as? Date,
-                          let isPushEnable = oldObject["isPushEnable"] as? Bool,
-                          let memo = oldObject["memo"] as? String,
-                          let hashtag = oldObject["hashtag"] as? String,
-                          let isSuccess = oldObject["isSuccess"] as? Bool,
-                          let createdAt = oldObject["createdAt"] as? Date else {
-                        return print("some field is nil")
-                    }
-                    
-                    let wishDTO: MigrationObject = migration.create("WishDTO")
-                    
-                    wishDTO["_id"] = id.stringValue
-                    wishDTO["emoji"] = emoji
-                    wishDTO["category"] = category
-                    wishDTO["title"] = title
-                    wishDTO["date"] = date
-                    wishDTO["finishDate"] = oldObject["finishDate"] as? Date
-                    if isPushEnable {
-                        wishDTO["notifications"] = [
-                            NotificationDTO(seepNotification: SeepNotification(type: .dayAgo)),
-                            NotificationDTO(seepNotification: SeepNotification(type: .twoDayAgo))
-                        ]
-                    } else {
-                        wishDTO["notifications"] = []
-                    }
-                    wishDTO["memo"] = memo
-                    wishDTO["hashtag"] = hashtag
-                    wishDTO["isSuccess"] = isSuccess
-                    wishDTO["createdAt"] = createdAt
-                }
-            }
-            migration.deleteData(forType: "Wish")
-            
-            // 4: WishDTO.steps(List<WishStepDTO>) 추가 — 기존 위시는 단계 0개로 시작한다
-            if oldSchemaVersion < 4 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["steps"] = [WishStepDTO]()
-                }
-            }
-            
-            // 5: WishDTO.targetAmount(Int) + savings(List<SavingDTO>) 추가 — 기존 위시는 목표 금액 0, 기록 없음 (GH-16 R-8)
-            if oldSchemaVersion < 5 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["targetAmount"] = 0
-                    newObject?["savings"] = [SavingDTO]()
-                }
-            }
-            
-            // 6: WishDTO.finishNote(String) 추가 — 기존 위시는 소감 없음(빈 문자열) (GH-25 R-4)
-            if oldSchemaVersion < 6 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["finishNote"] = ""
-                }
-            }
-            
-            // 7: WishDTO.pinnedAt(Date?) 추가 — 기존 위시는 모두 고정 아님 (GH-33 R-1)
-            if oldSchemaVersion < 7 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["pinnedAt"] = nil
-                }
-            }
-            
-            // 7: WishDTO.link(String) 추가 — 기존 위시는 링크 없음(빈 문자열) (GH-29 R-7)
-            if oldSchemaVersion < 7 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["link"] = ""
-                }
-            }
-            
-            // 7: WishDTO.lastCheckedAt(Date?) 추가 — 기존 위시는 점검한 적 없음(nil), 만든 날을 기준으로 잠든 위시를 판정한다 (GH-30 R-1)
-            if oldSchemaVersion < 7 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["lastCheckedAt"] = nil
-                }
-            }
-            
-            // 7: WishDTO.placeName·placeAddress(String) + latitude·longitude(Double) 추가 — 기존 위시는 장소 없음 (GH-31)
-            if oldSchemaVersion < 7 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["placeName"] = ""
-                    newObject?["placeAddress"] = ""
-                    newObject?["latitude"] = 0.0
-                    newObject?["longitude"] = 0.0
-                }
-            }
-            
-            // 7: WishDTO.photoFileName(String) 추가 — 기존 위시는 사진 없음(빈 문자열) (GH-36 R-9)
-            if oldSchemaVersion < 7 {
-                migration.enumerateObjects(ofType: WishDTO.className()) { _, newObject in
-                    newObject?["photoFileName"] = ""
-                }
-            }
+    /// App Group DB 를 열고(필요하면 Realm 에서 1회 이전) 이전 뒤 할 일을 한다 (GH-79)
+    private func setupDatabase() {
+        // 아주 예전 사용자의 Realm 을 App Group 으로 옮긴 뒤(copyDefaultToAppGroup) 연다. 여는 순간 1회 이전이 돈다
+        guard AppDatabase.shared != nil else {
+            Self.logger.error("DB 를 열지 못했다")
+            return
         }
-        
-        Realm.Configuration.defaultConfiguration = config
+        DatabaseMigrationFollowUp().run()
+
+        // 백그라운드로 가면 DB 잠금을 놓아 0xdead10cc 로 죽지 않게 하고, 돌아오면 다시 연다 (GH-79 R-11)
+        let center = NotificationCenter.default
+        center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { _ in
+            center.post(name: Database.suspendNotification, object: nil)
+        }
+        center.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { _ in
+            center.post(name: Database.resumeNotification, object: nil)
+        }
     }
 }
 

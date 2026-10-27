@@ -18,7 +18,7 @@ gh pr list -R team-seep/seep-ios --state merged --label design-system-update \
 ```
 - 없으면 바로 1단계(대상 고르기)로 간다.
 - 오래된 PR부터 하나씩:
-  1. `gh pr diff {pr} -R team-seep/seep-ios`에서 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets` 변경만 본다. 코드 기준은 **origin/develop의 현재 파일**이다(머지 후 더 바뀌었을 수 있다).
+  1. `gh pr diff {pr} -R team-seep/seep-ios`에서 `seep-ios/DesignSystem/**`, `seep-ios/Resources/Icons.xcassets` 변경만 본다. 코드 기준은 **origin/develop의 현재 파일**이다(머지 후 더 바뀌었을 수 있다).
   2. 디자인 시스템을 Artifact `read`로 열고, 결과가 주는 타입 지침의 "Revising" 절차대로 바뀐 것만 고친다.
      - 색·폰트 토큰 → `project/tokens.json`(통째로) + `usage`
      - 공용 컴포넌트 추가·변경 → `project/components/{Name}/README.md`(원본 Swift 경로, 크기·토큰·상태) + `preview.html`(`bundle.css`·토큰으로 그린 미리보기), 필요하면 `bundle.css`
@@ -57,8 +57,8 @@ cd "$WT"
 ```
 이후 모든 명령은 `$WT`에서 실행한다. PR을 올린 뒤 worktree는 그대로 둔다(리뷰 수정 때 재사용). 머지 후 정리는 `git worktree remove`.
 - 이슈의 **"디자인" 섹션이 UI 기준**이다. Design 링크를 Artifact `read`로 열어 After 아트보드를 확인하고, 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)의 토큰·컴포넌트 README에 적힌 원본 Swift 컴포넌트(`DdayLabel`, `HomeWishListCell` 등)를 재사용한다. "새 토큰"이 있으면 `UIColorExtension`/`UIFontExtension`에 먼저 추가한다.
-- `CLAUDE.md`의 규칙(R1~R9)을 지킨다: Combine ViewModel, Repository로만 Realm 접근, 토큰·SwiftGen, Base 클래스 상속.
-- Realm 모델을 바꾸면 R4: schemaVersion을 앱과 위젯 3곳에서 모두 올리고 migrationBlock에 분기를 추가한다.
+- `CLAUDE.md`의 규칙(R1~R9)을 지킨다: `@Observable` ViewModel, Repository로만 DB 접근, 토큰·SwiftGen.
+- DB 레코드를 바꾸면 R4: `AppDatabase.migrator`에 새 마이그레이션을 추가하고 동기화 대비 규칙(UUID PK·`updatedAt`·`deletedAt`·UNIQUE 금지)을 지킨다.
 - **트래킹 이벤트**: `seep-ios/log/`의 `LogObjectId`·`ScreenName`·`EventName`에 케이스를 추가하고, ViewModel에서 `dependency.logManager.sendEvent(event: ClickEvent(...))`로 보낸다. 형식은 기존 `HomeViewModel.sendClickLog` 참고.
 - 새 파일은 `project.pbxproj` 등록이 필요하다 (동기화 폴더는 `seep-ios/model/Error`, `seep-ios/log`, `seep-iosTests/Log`뿐). 가능하면 기존 동기화 폴더 안에 두거나, 등록 후 빌드 결과 수로 포함 여부를 확인한다.
 - 커밋 메시지: `GH-{n} : {설명}`.
@@ -72,7 +72,7 @@ cd "$WT"
 
 ## 4-1. 디자인 시스템 반영 (해당하면, PR 전에)
 
-이번 변경이 `seep-ios/extensions/UIColorExtension.swift`, `UIFontExtension.swift`, `seep-ios/features/shared/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸거나, 화면을 그리는 규칙(레이아웃·간격·넓은 화면 등)을 새로 정했다면 **PR을 올리기 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)을 같이 갱신한다. 다음 기획·디자인이 바로 최신 기준을 쓰게 하기 위해서다.
+이번 변경이 `seep-ios/DesignSystem/**`, `seep-ios/Resources/Icons.xcassets`를 바꾸거나, 화면을 그리는 규칙(레이아웃·간격·넓은 화면 등)을 새로 정했다면 **PR을 올리기 전에** 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)을 같이 갱신한다. 다음 기획·디자인이 바로 최신 기준을 쓰게 하기 위해서다.
 - 방법은 0단계 2번과 같다: Artifact `read` → 타입 지침의 "Revising" 절차로 **바뀐 것만** 고친다(토큰 → `project/tokens.json`, 공용 컴포넌트 → `project/components/{Name}/README.md`·`preview.html`·`bundle.css`, 아이콘 → 에셋 업로드 + `assetGroups`, 규칙 → `project/README.md`). 인덱스 `lastChange`: `via` "seep-run-approved", `note` "GH-{n} {바뀐 것}".
 - 기준은 이 브랜치의 코드다. PR이 리뷰에서 바뀌면 같은 방식으로 다시 맞춘다.
 - 해당 없으면 건너뛴다(대부분의 기능 PR).

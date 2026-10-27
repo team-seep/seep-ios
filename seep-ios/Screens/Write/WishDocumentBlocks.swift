@@ -33,6 +33,10 @@ struct WishDocumentBlocks: View {
             targetAmountBlock
         case .place:
             placeBlock
+        case .photo:
+            photoBlock
+        case .letter:
+            letterBlock
         }
     }
 
@@ -76,6 +80,7 @@ struct WishDocumentBlocks: View {
                     HStack(spacing: 10) {
                         Assets.Icons.icCheckOff.swiftUIImage
                             .resizable()
+                            .foregroundStyle(Color.gray3)
                             .frame(width: 24, height: 24)
                             .accessibilityHidden(true)
                         Text(verbatim: step.title)
@@ -254,6 +259,55 @@ struct WishDocumentBlocks: View {
             }
         }
     }
+
+    /// 사진을 누르면 다시 고른다 (GH-61 R-10)
+    @ViewBuilder
+    private var photoBlock: some View {
+        if let image = photoImage {
+            DocumentSection(
+                title: Strings.Detail.Photo.title,
+                actionTitle: Strings.WishDocument.remove,
+                action: removeAction(.photo)
+            ) {
+                Button {
+                    focus.wrappedValue = nil
+                    viewModel.send(.tapPhoto)
+                } label: {
+                    PhotoFrame(image: image)
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint(Text(Strings.Detail.Photo.change))
+            }
+        }
+    }
+
+    private var photoImage: CGImage? {
+        switch viewModel.photoPreview {
+        case .file(let url): return DetailImageDecoder.cgImage(url: url)
+        case .data(let data): return DetailImageDecoder.cgImage(data: data, maxPixelSize: 1600)
+        case nil: return nil
+        }
+    }
+
+    /// 봉인 카드. 누르면 다시 쓸지 묻는다 (GH-61 R-4, R-10)
+    @ViewBuilder
+    private var letterBlock: some View {
+        if let caption = viewModel.letterCaption {
+            DocumentSection(
+                title: Strings.Detail.Letter.title,
+                actionTitle: Strings.WishDocument.remove,
+                action: removeAction(.letter)
+            ) {
+                Button {
+                    focus.wrappedValue = nil
+                    viewModel.send(.tapLetter)
+                } label: {
+                    SealedLetterCard(caption: caption)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
 }
 
 /// 하단 더하기 칩 줄. 키보드가 올라오면 키보드 위에 붙는다 (GH-70 R-6)
@@ -319,6 +373,8 @@ extension WishDocumentBlock {
         case .link: return Strings.WishDocument.Chip.link
         case .targetAmount: return Strings.WishDocument.Chip.targetAmount
         case .place: return Strings.WishDocument.Chip.place
+        case .photo: return Strings.WishDocument.Chip.photo
+        case .letter: return Strings.WishDocument.Chip.letter
         }
     }
 
@@ -331,6 +387,8 @@ extension WishDocumentBlock {
         case .link: return "link"
         case .targetAmount: return "wonsign"
         case .place: return "mappin.and.ellipse"
+        case .photo: return "photo"
+        case .letter: return "envelope"
         }
     }
 }

@@ -1,17 +1,25 @@
 import SwiftUI
 
-/// 정렬 시트: 완료일 가까운순 / 최근 생성순 (높이 56 두 줄, 사이 gray2 선)
+/// 정렬 시트: 완료일 가까운순 / 최근 생성순 / 내가 정한 순서 (높이 56 세 줄, 사이 gray2 선).
+/// 고른 정렬은 seep-blue ExtraBold, 아래에 "내가 정한 순서" 안내 캡션 (GH-73 R-1)
 struct SortOrderSheet: View {
     let selected: HomeSortOrder
     let onSelect: (HomeSortOrder) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
-            row(.deadlineOrder)
-            Rectangle()
-                .fill(Color.gray2)
-                .frame(height: 1)
-            row(.latestOrder)
+            ForEach(Array(HomeSortOrder.allCases.enumerated()), id: \.element) { index, sortOrder in
+                if index > 0 {
+                    Rectangle()
+                        .fill(Color.gray2)
+                        .frame(height: 1)
+                }
+                row(sortOrder)
+            }
+            Text(Strings.Home.Filter.sortCaption)
+                .font(.appleMedium(size: 12))
+                .foregroundStyle(Color.gray4)
+                .padding(.top, 8)
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)
@@ -19,17 +27,18 @@ struct SortOrderSheet: View {
     }
 
     private func row(_ sortOrder: HomeSortOrder) -> some View {
-        Button {
+        let isSelected = sortOrder == selected
+        return Button {
             onSelect(sortOrder)
         } label: {
             Text(verbatim: sortOrder.title)
-                .font(.appleSemiBold(size: 16))
-                .foregroundStyle(Color.gray5)
+                .font(isSelected ? .appleExtraBold(size: 16) : .appleSemiBold(size: 16))
+                .foregroundStyle(isSelected ? Color.seepBlue : Color.gray5)
                 .frame(maxWidth: .infinity, minHeight: 56)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityAddTraits(sortOrder == selected ? .isSelected : [])
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
@@ -41,18 +50,22 @@ struct FinishNoteSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(verbatim: viewModel.wish.emoji)
-                .font(.system(size: 40))
-                .padding(.top, 24)
-            HeadlineText(
-                text: Strings.Home.FinishNote.titleFormat(viewModel.wish.title),
-                boldPart: Strings.Home.FinishNote.titleBold
-            )
-            .padding(.top, 10)
-            Text(Strings.Home.FinishNote.description)
-                .font(.appleRegular(size: 14))
-                .foregroundStyle(Color.gray4)
-                .padding(.top, 6)
+            if let letter = viewModel.state.openedLetter {
+                openedLetter(letter)
+            } else {
+                Text(verbatim: viewModel.wish.emoji)
+                    .font(.system(size: 40))
+                    .padding(.top, 24)
+                HeadlineText(
+                    text: Strings.Home.FinishNote.titleFormat(viewModel.wish.title),
+                    boldPart: Strings.Home.FinishNote.titleBold
+                )
+                .padding(.top, 10)
+                Text(Strings.Home.FinishNote.description)
+                    .font(.appleRegular(size: 14))
+                    .foregroundStyle(Color.gray4)
+                    .padding(.top, 6)
+            }
 
             TextField(
                 "",
@@ -78,6 +91,9 @@ struct FinishNoteSheet: View {
                 .foregroundStyle(Color.gray4)
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .padding(.top, 8)
+
+            chainRow
+                .padding(.top, 20)
 
             SeepCTA(title: Strings.Home.FinishNote.save, isEnabled: viewModel.state.isSaveEnabled, fillsWidth: true) {
                 viewModel.send(.tapSave)
@@ -221,5 +237,61 @@ struct HomeBadgeMedal: View {
         }
         .frame(width: diameter, height: diameter)
         .accessibilityHidden(true)
+    }
+}
+
+/// 완료 순간 열린 편지 (GH-61 R-5): "{n}일 전의 내가 / **편지를 보냈어요**" + 편지 카드 + "이루고 나니 어때요?"
+private extension FinishNoteSheet {
+    /// "다음엔 뭐 하고 싶어요? / ＋ 이어서 적기" (GH-84 R-1)
+    var chainRow: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .fill(Color.gray2_5)
+                .frame(height: 1)
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(Strings.Home.FinishNote.chainTitle)
+                        .font(.appleBold(size: 15))
+                        .foregroundStyle(Color.gray5)
+                    Text(Strings.Home.FinishNote.chainDescription)
+                        .font(.appleRegular(size: 13))
+                        .foregroundStyle(Color.gray4)
+                }
+                Spacer(minLength: 0)
+                TextActionButton(title: Strings.Home.FinishNote.chainAction) {
+                    viewModel.send(.tapChainNext)
+                }
+            }
+            .padding(.top, 16)
+        }
+    }
+
+    func openedLetter(_ letter: FinishNoteViewModel.OpenedLetter) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HeadlineText(text: letter.headline, boldPart: Strings.Home.FinishNote.letterTitleBold)
+                .padding(.top, 24)
+            VStack(alignment: .leading, spacing: 10) {
+                Text(verbatim: letter.caption)
+                    .font(.appleRegular(size: 12))
+                    .foregroundStyle(Color.gray4)
+                ScrollView {
+                    Text(verbatim: letter.body)
+                        .font(.appleRegular(size: 15))
+                        .foregroundStyle(Color.gray5)
+                        .lineSpacing(6)
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxHeight: 180)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(20)
+            .background(Color.gray2, in: RoundedRectangle(cornerRadius: 16))
+            .padding(.top, 20)
+            Text(Strings.Home.FinishNote.letterQuestion)
+                .font(.appleMedium(size: 14))
+                .foregroundStyle(Color.gray5)
+                .padding(.top, 24)
+        }
     }
 }

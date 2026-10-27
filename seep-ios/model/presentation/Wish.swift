@@ -14,6 +14,8 @@ struct Wish: Equatable, Hashable {
     var targetAmount: Int
     /// 모은 돈 기록, 최신순
     var savings: [WishSaving]
+    /// 이루는 동안 남긴 일지, 최신순 (GH-95)
+    var journals: [WishJournal]
     var memo: String
     var hashtag: String
     var isSuccess: Bool
@@ -29,6 +31,14 @@ struct Wish: Equatable, Hashable {
     var place: WishPlace?
     /// 붙인 사진 파일 이름. 비어 있으면 사진 없음 (GH-36)
     var photoFileName: String
+    /// "미래의 나에게" 편지(최대 300자). 비어 있으면 편지 없음. 이루기 전에는 보여주지 않는다 (GH-61)
+    var futureLetter: String
+    /// 편지를 봉인한 시각. 편지가 없으면 nil (GH-61)
+    var futureLetterSealedAt: Date?
+    /// "내가 정한 순서" 값. 카테고리 안에서 작을수록 위다 (GH-73)
+    var manualOrder: Double
+    /// 이어서 적은 앞 위시 id. nil 이면 처음 싶 (GH-84)
+    var previousWishId: String?
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -36,6 +46,11 @@ struct Wish: Equatable, Hashable {
     
     var isPinned: Bool {
         return pinnedAt != nil
+    }
+
+    /// 봉인한 편지가 있는지 (GH-61)
+    var hasFutureLetter: Bool {
+        return !futureLetter.isEmpty
     }
     
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -82,6 +97,7 @@ struct Wish: Equatable, Hashable {
         steps: [WishStep] = [],
         targetAmount: Int = 0,
         savings: [WishSaving] = [],
+        journals: [WishJournal] = [],
         memo: String = "",
         hashtag: String = "",
         isSuccess: Bool = false,
@@ -91,6 +107,10 @@ struct Wish: Equatable, Hashable {
         lastCheckedAt: Date? = nil,
         place: WishPlace? = nil,
         photoFileName: String = "",
+        futureLetter: String = "",
+        futureLetterSealedAt: Date? = nil,
+        manualOrder: Double = 0,
+        previousWishId: String? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -103,6 +123,7 @@ struct Wish: Equatable, Hashable {
         self.steps = steps
         self.targetAmount = targetAmount
         self.savings = savings
+        self.journals = journals
         self.memo = memo
         self.hashtag = hashtag
         self.isSuccess = isSuccess
@@ -112,34 +133,10 @@ struct Wish: Equatable, Hashable {
         self.lastCheckedAt = lastCheckedAt
         self.place = place
         self.photoFileName = photoFileName
+        self.futureLetter = futureLetter
+        self.futureLetterSealedAt = futureLetterSealedAt
+        self.manualOrder = manualOrder
+        self.previousWishId = previousWishId
         self.createdAt = createdAt
-    }
-    
-    init(dto: WishDTO) {
-        self.id = dto._id
-        self.emoji = dto.emoji
-        self.category = Category(rawValue: dto.category) ?? .wantToDo
-        self.title = dto.title
-        self.endDate = dto.date
-        self.finishDate = dto.finishDate
-        self.notifications = Array(dto.notifications).map(SeepNotification.init)
-        self.steps = Array(dto.steps).map(WishStep.init(dto:)).sorted { $0.order < $1.order }
-        self.targetAmount = dto.targetAmount
-        self.savings = WishSaving.latestFirst(Array(dto.savings).map(WishSaving.init(dto:)))
-        self.memo = dto.memo
-        self.hashtag = dto.hashtag
-        self.isSuccess = dto.isSuccess
-        self.finishNote = dto.finishNote
-        self.pinnedAt = dto.pinnedAt
-        self.link = dto.link
-        self.lastCheckedAt = dto.lastCheckedAt
-        self.place = WishPlace.stored(
-            name: dto.placeName,
-            address: dto.placeAddress,
-            latitude: dto.latitude,
-            longitude: dto.longitude
-        )
-        self.photoFileName = dto.photoFileName
-        self.createdAt = dto.createdAt
     }
 }

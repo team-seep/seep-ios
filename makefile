@@ -1,6 +1,6 @@
 lint:
 	swiftlint lint --quiet
-	scripts/check-realm-schema.sh
+	scripts/check-db-schema.sh
 
 lint-fix:
 	swiftlint --fix --quiet

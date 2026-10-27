@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */; };
+		7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */; };
+		79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000065 /* LegacyRealmImporterTests.swift */; };
+		96A000000000000000000004 /* LegacyRealmReimportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A000000000000000000003 /* LegacyRealmReimportTests.swift */; };
+		79C000000000000000000068 /* WishRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000067 /* WishRepositoryTests.swift */; };
+		79C00000000000000000006A /* DatabaseMigrationFollowUpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000069 /* DatabaseMigrationFollowUpTests.swift */; };
+		79B000000000000000000002 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000001 /* AppDatabase.swift */; };
+		79B000000000000000000003 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000001 /* AppDatabase.swift */; };
+		79B000000000000000000005 /* WishRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000004 /* WishRecordStore.swift */; };
+		79B000000000000000000006 /* WishRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000004 /* WishRecordStore.swift */; };
+		79B000000000000000000008 /* WidgetWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000007 /* WidgetWishRepository.swift */; };
+		79B000000000000000000009 /* WidgetWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000007 /* WidgetWishRepository.swift */; };
+		79B00000000000000000000B /* WishRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B00000000000000000000A /* WishRecord.swift */; };
+		79B00000000000000000000C /* WishRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B00000000000000000000A /* WishRecord.swift */; };
+		79B00000000000000000000E /* LegacyRealmImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B00000000000000000000D /* LegacyRealmImporter.swift */; };
+		79B00000000000000000000F /* LegacyRealmImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B00000000000000000000D /* LegacyRealmImporter.swift */; };
+		79B000000000000000000011 /* DatabaseMigrationFollowUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */; };
+		96A000000000000000000002 /* LegacyImportRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A000000000000000000001 /* LegacyImportRecovery.swift */; };
+		79A0000000000000000000A4 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 79A0000000000000000000A2 /* GRDB */; };
+		79A0000000000000000000A5 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 79A0000000000000000000A3 /* GRDB */; };
 		A74A1C0E2EA9000100A74002 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A74A1C0E2EA9000100A74001 /* AppIcon.icon */; };
 		46A000000000000000000002 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000001 /* AuthenticationManager.swift */; };
 		46A000000000000000000004 /* AppLockPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A000000000000000000003 /* AppLockPolicy.swift */; };
@@ -37,13 +57,11 @@
 		6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */; };
 		6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5F25F20D73007DC880 /* DateUtils.swift */; };
 		6E274E6825F20E3F007DC880 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E274E6A25F20E3F007DC880 /* Localization.strings */; };
-		6E274E7425F20EC6007DC880 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E7325F20EC6007DC880 /* StringExtension.swift */; };
 		6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AF825F2047900955B57 /* AppDelegate.swift */; };
 		6E283B0225F2047A00955B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0125F2047A00955B57 /* Assets.xcassets */; };
 		6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */; };
 		6E318D6C279E875A00E9AA97 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E318D6B279E875A00E9AA97 /* Wish.swift */; };
 		6E318D6D279E8AF800E9AA97 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E318D6B279E875A00E9AA97 /* Wish.swift */; };
-		6E40F697279C2258007D529E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E7325F20EC6007DC880 /* StringExtension.swift */; };
 		6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCE927BF39ED008C1F5F /* FirebaseAnalytics */; };
 		6E42CCEE27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCED27BF39ED008C1F5F /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		6E42CCF027BF39ED008C1F5F /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 6E42CCEF27BF39ED008C1F5F /* FirebaseAppCheck */; };
@@ -108,10 +126,11 @@
 		6EC9BFA226BE0830007C7708 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0125F2047A00955B57 /* Assets.xcassets */; };
 		6EC9BFA526BE0870007C7708 /* WishlistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BFA426BE0870007C7708 /* WishlistItemView.swift */; };
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
-		6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */; };
 		7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
+		95A000000000000000000002 /* WishJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A000000000000000000001 /* WishJournal.swift */; };
 		759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4C358AA2D714E019784ADE /* CalendarManager.swift */; };
 		75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
+		95A000000000000000000003 /* WishJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A000000000000000000001 /* WishJournal.swift */; };
 		7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */; };
 		83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */; };
 		94A8A9FB46DBD094756D06EF /* WishLinkInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBDF57A8E53FC037620A2D /* WishLinkInput.swift */; };
@@ -161,6 +180,8 @@
 		A47000010000000000000002 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
 		A47000010000000000000003 /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000001 /* LockScreenDday.swift */; };
 		A47000010000000000000005 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
+		A47000010000000000000088 /* WidgetCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000087 /* WidgetCopy.swift */; };
+		A47000010000000000000089 /* WidgetCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000087 /* WidgetCopy.swift */; };
 		A47000010000000000000006 /* WidgetDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000004 /* WidgetDeepLink.swift */; };
 		A47000010000000000000008 /* LockScreenEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000007 /* LockScreenEntry.swift */; };
 		A4700001000000000000000A /* LockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47000010000000000000009 /* LockScreenProvider.swift */; };
@@ -223,6 +244,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOrderRepositoryTests.swift; sourceTree = "<group>"; };
+		7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureLetterRepositoryTests.swift; sourceTree = "<group>"; };
+		79C000000000000000000065 /* LegacyRealmImporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImporterTests.swift; sourceTree = "<group>"; };
+		96A000000000000000000003 /* LegacyRealmReimportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmReimportTests.swift; sourceTree = "<group>"; };
+		79C000000000000000000067 /* WishRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRepositoryTests.swift; sourceTree = "<group>"; };
+		79C000000000000000000069 /* DatabaseMigrationFollowUpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationFollowUpTests.swift; sourceTree = "<group>"; };
+		79B000000000000000000001 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
+		79B000000000000000000004 /* WishRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRecordStore.swift; sourceTree = "<group>"; };
+		79B000000000000000000007 /* WidgetWishRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetWishRepository.swift; sourceTree = "<group>"; };
+		79B00000000000000000000A /* WishRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRecord.swift; sourceTree = "<group>"; };
+		79B00000000000000000000D /* LegacyRealmImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImporter.swift; sourceTree = "<group>"; };
+		79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationFollowUp.swift; sourceTree = "<group>"; };
+		96A000000000000000000001 /* LegacyImportRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyImportRecovery.swift; sourceTree = "<group>"; };
 		A74A1C0E2EA9000100A74001 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		46A000000000000000000001 /* AuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		9FF7DB6B3BAB72B61E20AA34 /* DetailSectionBuilderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DetailSectionBuilderTests.swift; sourceTree = "<group>"; };
@@ -246,7 +280,6 @@
 		6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtils.swift; sourceTree = "<group>"; };
 		6E274E5F25F20D73007DC880 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		6E274E6925F20E3F007DC880 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
-		6E274E7325F20EC6007DC880 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		6E283AF525F2047900955B57 /* seep-ios-dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "seep-ios-dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E283AF825F2047900955B57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E283B0125F2047A00955B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -305,8 +338,8 @@
 		6EC9BFA426BE0870007C7708 /* WishlistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItemView.swift; sourceTree = "<group>"; };
 		6EE5A820275512280013B0D4 /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
-		6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWriteWidgetData.swift; sourceTree = "<group>"; };
 		76EC49270480D77773B034E4 /* WishSaving.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSaving.swift; sourceTree = "<group>"; };
+		95A000000000000000000001 /* WishJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishJournal.swift; sourceTree = "<group>"; };
 		7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlace.swift; sourceTree = "<group>"; };
 		82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCalendarManager.swift; sourceTree = "<group>"; };
 		8523AB10C8344B1B16FD9E51 /* LinkMetadataProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LinkMetadataProvider.swift; sourceTree = "<group>"; };
@@ -346,6 +379,7 @@
 		A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepositoryTests.swift; sourceTree = "<group>"; };
 		A47000010000000000000001 /* LockScreenDday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDday.swift; sourceTree = "<group>"; };
 		A47000010000000000000004 /* WidgetDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDeepLink.swift; sourceTree = "<group>"; };
+		A47000010000000000000087 /* WidgetCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCopy.swift; sourceTree = "<group>"; };
 		A47000010000000000000007 /* LockScreenEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenEntry.swift; sourceTree = "<group>"; };
 		A47000010000000000000009 /* LockScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenProvider.swift; sourceTree = "<group>"; };
 		A4700001000000000000000B /* LockScreenDdayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDdayWidget.swift; sourceTree = "<group>"; };
@@ -444,6 +478,7 @@
 				6E42CCEA27BF39ED008C1F5F /* FirebaseAnalytics in Frameworks */,
 				6E42CCF627BF39ED008C1F5F /* FirebaseMessaging in Frameworks */,
 				6E1E400A2CD65EE9008BCC77 /* RealmSwift in Frameworks */,
+				79A0000000000000000000A4 /* GRDB in Frameworks */,
 				6E42CCF427BF39ED008C1F5F /* FirebaseCrashlytics in Frameworks */,
 				6E42CCF827BF39ED008C1F5F /* FirebaseRemoteConfig in Frameworks */,
 			);
@@ -456,6 +491,7 @@
 				6EB50EF326BD548F00F0096E /* SwiftUI.framework in Frameworks */,
 				6EB50EF126BD548F00F0096E /* WidgetKit.framework in Frameworks */,
 				6E45F6DB2CC4BE9000BE6445 /* RealmSwift in Frameworks */,
+				79A0000000000000000000A5 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,12 +507,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		46A000000000000000000019 /* app-lock */ = {
+		79B000000000000000000012 /* LegacyRealm */ = {
+			isa = PBXGroup;
+			children = (
+				A48000010000000000000001 /* RealmConfiguration.swift */,
+				79B00000000000000000000D /* LegacyRealmImporter.swift */,
+				6E441CA02604549F0010A625 /* WishDTO.swift */,
+				6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */,
+				4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */,
+				14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */,
+			);
+			path = LegacyRealm;
+			sourceTree = "<group>";
+		};
+		46A000000000000000000019 /* AppLock */ = {
 			isa = PBXGroup;
 			children = (
 				46A000000000000000000003 /* AppLockPolicy.swift */,
 			);
-			path = "app-lock";
+			path = AppLock;
 			sourceTree = "<group>";
 		};
 		1D3D26FFFCA9B558B88AF544 /* seep-iosTests */ = {
@@ -494,6 +543,12 @@
 				A49000010000000000000060 /* WriteIntentTests.swift */,
 				A4800001000000000000001C /* WidgetCheckActionTests.swift */,
 				A4800001000000000000001E /* WidgetCheckRepositoryTests.swift */,
+				7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */,
+				7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */,
+				79C000000000000000000065 /* LegacyRealmImporterTests.swift */,
+				96A000000000000000000003 /* LegacyRealmReimportTests.swift */,
+				79C000000000000000000067 /* WishRepositoryTests.swift */,
+				79C000000000000000000069 /* DatabaseMigrationFollowUpTests.swift */,
 				A4700001000000000000000F /* LockScreenDdayTests.swift */,
 				A47000010000000000000011 /* WidgetDeepLinkTests.swift */,
 				A30E00010000000000000007 /* SleepingWishPolicyTests.swift */,
@@ -504,16 +559,17 @@
 			path = "seep-iosTests";
 			sourceTree = "<group>";
 		};
-		6E274E5325F20B1E007DC880 /* uilts */ = {
+		6E274E5325F20B1E007DC880 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				6E274E6C25F20E8E007DC880 /* Extensions */,
 				A48000010000000000000007 /* WidgetCheckStore.swift */,
 				E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */,
 				6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */,
 				6E274E5F25F20D73007DC880 /* DateUtils.swift */,
 				6E489D9D2CCE2D8400965995 /* Preference.swift */,
 			);
-			path = uilts;
+			path = Support;
 			sourceTree = "<group>";
 		};
 		6E274E6325F20E20007DC880 /* Resources */ = {
@@ -530,26 +586,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		6E274E6C25F20E8E007DC880 /* extensions */ = {
+		6E274E6C25F20E8E007DC880 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6E274E7325F20EC6007DC880 /* StringExtension.swift */,
 				6E69FD4726468BDC00F0AB60 /* DateExtensions.swift */,
 				6E6D610227587B8C00A0BFD9 /* BundleExtensions.swift */,
 				6E6D19802CCDD8BF008A460C /* PublisherExtension.swift */,
 				6E489DA12CCE4D6E00965995 /* ArrayExtension.swift */,
 			);
-			path = extensions;
-			sourceTree = "<group>";
-		};
-		6E274E7C25F20F45007DC880 /* features */ = {
-			isa = PBXGroup;
-			children = (
-				AA3CB289B5878937BF97BC1C /* wish-link */,
-				FCB9E166A9040B8706F9DB06 /* place */,
-				46A000000000000000000019 /* app-lock */,
-			);
-			path = features;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6E283AEC25F2047900955B57 = {
@@ -584,12 +629,10 @@
 				6E489D902CCDEF2D00965995 /* Generated */,
 				6E69FD49264698E900F0AB60 /* seep-ios.entitlements */,
 				A1B2C3D4E5F6A7B8C9D0E1F2 /* log */,
-				6E9BFEA026453C9C0093CA89 /* manager */,
+				6E9BFEA026453C9C0093CA89 /* Services */,
 				6E66A26D25FB40B600C0C051 /* model */,
-				6E274E7C25F20F45007DC880 /* features */,
-				6E274E6C25F20E8E007DC880 /* extensions */,
 				6E274E6325F20E20007DC880 /* Resources */,
-				6E274E5325F20B1E007DC880 /* uilts */,
+				6E274E5325F20B1E007DC880 /* Support */,
 				6E283AF825F2047900955B57 /* AppDelegate.swift */,
 				6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */,
 				6E283B0625F2047A00955B57 /* Info.plist */,
@@ -610,7 +653,10 @@
 		6E489D9A2CCE25CB00965995 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				A48000010000000000000001 /* RealmConfiguration.swift */,
+				79B000000000000000000012 /* LegacyRealm */,
+				79B000000000000000000001 /* AppDatabase.swift */,
+				79B000000000000000000004 /* WishRecordStore.swift */,
+				79B000000000000000000007 /* WidgetWishRepository.swift */,
 				A48000010000000000000004 /* WidgetCheckRepository.swift */,
 				6E489D9B2CCE25D300965995 /* WishRepository.swift */,
 				6E42CCF927BF4162008C1F5F /* RemoteConfigRepository.swift */,
@@ -683,10 +729,7 @@
 		6E804287279D256E008A0EB4 /* dto */ = {
 			isa = PBXGroup;
 			children = (
-				6E441CA02604549F0010A625 /* WishDTO.swift */,
-				6E4AD34B278AACCB00819C43 /* NotificationDTO.swift */,
-				4DE80B1E87923B37C72372E2 /* WishStepDTO.swift */,
-				14F4BB6C34F4D80FB6D87844 /* SavingDTO.swift */,
+				79B00000000000000000000A /* WishRecord.swift */,
 			);
 			path = dto;
 			sourceTree = "<group>";
@@ -697,11 +740,13 @@
 				A4800001000000000000000A /* WidgetCheckAction.swift */,
 				A47000010000000000000001 /* LockScreenDday.swift */,
 				A47000010000000000000004 /* WidgetDeepLink.swift */,
+				A47000010000000000000087 /* WidgetCopy.swift */,
 				6E804289279D260D008A0EB4 /* SeepNotification.swift */,
 				6E80428F279D3072008A0EB4 /* HashtagType.swift */,
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
 				F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */,
 				76EC49270480D77773B034E4 /* WishSaving.swift */,
+				95A000000000000000000001 /* WishJournal.swift */,
 				A32F00000000000000000001 /* WishSearchMatcher.swift */,
 				A34000010000000000000001 /* YearReviewSummary.swift */,
 				A34000010000000000000091 /* YearReviewPeriod.swift */,
@@ -712,15 +757,20 @@
 			path = presentation;
 			sourceTree = "<group>";
 		};
-		6E9BFEA026453C9C0093CA89 /* manager */ = {
+		6E9BFEA026453C9C0093CA89 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */,
+				96A000000000000000000001 /* LegacyImportRecovery.swift */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
 				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
 				36A000000000000000000001 /* WishPhotoStorage.swift */,
 				46A000000000000000000001 /* AuthenticationManager.swift */,
+				46A000000000000000000019 /* AppLock */,
+				FCB9E166A9040B8706F9DB06 /* Place */,
+				AA3CB289B5878937BF97BC1C /* WishLink */,
 			);
-			path = manager;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		6EB50EF426BD548F00F0096E /* widget */ = {
@@ -768,7 +818,6 @@
 				6EB50F0926BD638C00F0096E /* SmallWriteProvider.swift */,
 				6EB50F0B26BD65BF00F0096E /* SmallWriteEntry.swift */,
 				6EB50F0D26BD6A6E00F0096E /* SmallWriteWidget.swift */,
-				6EF9A6612748E4A8000AE0DD /* SmallWriteWidgetData.swift */,
 			);
 			path = "small-write-widget";
 			sourceTree = "<group>";
@@ -837,23 +886,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AA3CB289B5878937BF97BC1C /* wish-link */ = {
+		AA3CB289B5878937BF97BC1C /* WishLink */ = {
 			isa = PBXGroup;
 			children = (
 				A4862102A58DBC2005CAB641 /* LinkPreviewCache.swift */,
 				8523AB10C8344B1B16FD9E51 /* LinkMetadataProvider.swift */,
 				24CBDF57A8E53FC037620A2D /* WishLinkInput.swift */,
 			);
-			path = "wish-link";
+			path = WishLink;
 			sourceTree = "<group>";
 		};
-		FCB9E166A9040B8706F9DB06 /* place */ = {
+		FCB9E166A9040B8706F9DB06 /* Place */ = {
 			isa = PBXGroup;
 			children = (
 				C7390E6D47D30DA010BF10E9 /* PlaceSearchService.swift */,
 			);
-			name = place;
-			path = place;
+			path = Place;
 			sourceTree = "<group>";
 		};
 		A48000010000000000000080 /* check-widget */ = {
@@ -914,6 +962,7 @@
 				6E42CCF527BF39ED008C1F5F /* FirebaseMessaging */,
 				6E42CCF727BF39ED008C1F5F /* FirebaseRemoteConfig */,
 				6E1E40092CD65EE9008BCC77 /* RealmSwift */,
+				79A0000000000000000000A2 /* GRDB */,
 			);
 			productName = "seep-ios";
 			productReference = 6E283AF525F2047900955B57 /* seep-ios-dev.app */;
@@ -935,6 +984,9 @@
 			fileSystemSynchronizedGroups = (
 				6E59E9422CD500A8006AA02D /* Error */,
 				C64A00000000000000000001 /* DesignSystem */,
+			);
+			packageProductDependencies = (
+				79A0000000000000000000A3 /* GRDB */,
 			);
 			name = widgetExtension;
 			productName = widgetExtension;
@@ -995,6 +1047,7 @@
 			packageReferences = (
 				6E42CCE827BF39ED008C1F5F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6E1E40082CD65EE9008BCC77 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				79A0000000000000000000A1 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			productRefGroup = 6E283AF625F2047900955B57 /* Products */;
 			projectDirPath = "";
@@ -1069,6 +1122,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */,
+				7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */,
+				79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */,
+				96A000000000000000000004 /* LegacyRealmReimportTests.swift in Sources */,
+				79C000000000000000000068 /* WishRepositoryTests.swift in Sources */,
+				79C00000000000000000006A /* DatabaseMigrationFollowUpTests.swift in Sources */,
 				A4800001000000000000001D /* WidgetCheckActionTests.swift in Sources */,
 				A4800001000000000000001F /* WidgetCheckRepositoryTests.swift in Sources */,
 				A47000010000000000000010 /* LockScreenDdayTests.swift in Sources */,
@@ -1099,15 +1158,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				A48000010000000000000002 /* RealmConfiguration.swift in Sources */,
+				79B000000000000000000002 /* AppDatabase.swift in Sources */,
+				79B000000000000000000005 /* WishRecordStore.swift in Sources */,
+				79B000000000000000000008 /* WidgetWishRepository.swift in Sources */,
+				79B00000000000000000000B /* WishRecord.swift in Sources */,
+				79B00000000000000000000E /* LegacyRealmImporter.swift in Sources */,
+				79B000000000000000000011 /* DatabaseMigrationFollowUp.swift in Sources */,
+				96A000000000000000000002 /* LegacyImportRecovery.swift in Sources */,
 				A48000010000000000000005 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000008 /* WidgetCheckStore.swift in Sources */,
 				A4800001000000000000000B /* WidgetCheckAction.swift in Sources */,
 				A47000010000000000000002 /* LockScreenDday.swift in Sources */,
 				A47000010000000000000005 /* WidgetDeepLink.swift in Sources */,
+				A47000010000000000000088 /* WidgetCopy.swift in Sources */,
 				6EB50EFC26BD549000F0096E /* widget.intentdefinition in Sources */,
 				6E318D6C279E875A00E9AA97 /* Wish.swift in Sources */,
 				6E091579264FA94E0048EB79 /* CommonError.swift in Sources */,
-				6E274E7425F20EC6007DC880 /* StringExtension.swift in Sources */,
 				6E66A27225FB416700C0C051 /* ViewType.swift in Sources */,
 				6E42CCFA27BF4162008C1F5F /* RemoteConfigRepository.swift in Sources */,
 				6E441CA12604549F0010A625 /* WishDTO.swift in Sources */,
@@ -1131,6 +1197,7 @@
 				33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */,
 				83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */,
 				7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */,
+				95A000000000000000000002 /* WishJournal.swift in Sources */,
 				050C71F5903092578149F737 /* SavingDTO.swift in Sources */,
 				759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */,
 				A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */,
@@ -1158,6 +1225,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A48000010000000000000003 /* RealmConfiguration.swift in Sources */,
+				79B000000000000000000003 /* AppDatabase.swift in Sources */,
+				79B000000000000000000006 /* WishRecordStore.swift in Sources */,
+				79B000000000000000000009 /* WidgetWishRepository.swift in Sources */,
+				79B00000000000000000000C /* WishRecord.swift in Sources */,
+				79B00000000000000000000F /* LegacyRealmImporter.swift in Sources */,
 				A48000010000000000000006 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000009 /* WidgetCheckStore.swift in Sources */,
 				A4800001000000000000000C /* WidgetCheckAction.swift in Sources */,
@@ -1168,6 +1240,7 @@
 				A4800001000000000000001B /* CheckWishIntents.swift in Sources */,
 				A47000010000000000000003 /* LockScreenDday.swift in Sources */,
 				A47000010000000000000006 /* WidgetDeepLink.swift in Sources */,
+				A47000010000000000000089 /* WidgetCopy.swift in Sources */,
 				A47000010000000000000008 /* LockScreenEntry.swift in Sources */,
 				A4700001000000000000000A /* LockScreenProvider.swift in Sources */,
 				A4700001000000000000000C /* LockScreenDdayWidget.swift in Sources */,
@@ -1176,7 +1249,6 @@
 				6E7206CA275B3374009C7AFC /* ViewExtensions.swift in Sources */,
 				6E7206D7275B48C6009C7AFC /* WishHorizontalItemView.swift in Sources */,
 				6EC9BFA526BE0870007C7708 /* WishlistItemView.swift in Sources */,
-				6E40F697279C2258007D529E /* StringExtension.swift in Sources */,
 				6EC9BF9F26BE05D8007C7708 /* MediumVerticalWidget.swift in Sources */,
 				6E318D6D279E8AF800E9AA97 /* Wish.swift in Sources */,
 				6E6CBE38274A0B9B005D7BFE /* SmallRemainWidget.swift in Sources */,
@@ -1201,11 +1273,11 @@
 				6E6D610727587C8500A0BFD9 /* BundleExtensions.swift in Sources */,
 				6E4AD34D278ABE1100819C43 /* NotificationDTO.swift in Sources */,
 				6EC9BF9D26BE0456007C7708 /* MediumVerticalEntry.swift in Sources */,
-				6EF9A6622748E4A8000AE0DD /* SmallWriteWidgetData.swift in Sources */,
 				6E7206D4275B4801009C7AFC /* MediumHorizontalEntryView.swift in Sources */,
 				6E7206CE275B4588009C7AFC /* MediumHorizontalProvider.swift in Sources */,
 				582A5AA71ACAA592A4DFCC8C /* WishStepDTO.swift in Sources */,
 				75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */,
+				95A000000000000000000003 /* WishJournal.swift in Sources */,
 				41FEE210BA2773236C785FD0 /* SavingDTO.swift in Sources */,
 				D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */,
 				C3D8AD70BB8D652B921763D5 /* WishPlace.swift in Sources */,
@@ -1404,7 +1476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.5.0;
+				MARKETING_VERSION = 2.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev";
 				PRODUCT_NAME = "seep-ios-dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1432,7 +1504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.5.0;
+				MARKETING_VERSION = 2.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1459,7 +1531,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.5.0;
+				MARKETING_VERSION = 2.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.dev.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = dev.realm;
@@ -1486,7 +1558,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.5.0;
+				MARKETING_VERSION = 2.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "macgongmon.seep-ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REALM_NAME = default.realm;
@@ -1580,6 +1652,14 @@
 				version = 20.0.6;
 			};
 		};
+		79A0000000000000000000A1 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 7.11.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1627,6 +1707,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E1E40082CD65EE9008BCC77 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		79A0000000000000000000A2 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79A0000000000000000000A1 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+		79A0000000000000000000A3 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79A0000000000000000000A1 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

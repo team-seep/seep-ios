@@ -27,7 +27,7 @@ gh issue list -R team-seep/seep-ios --label idea --state all --limit 1 --json nu
 
 ## 2. 현재 앱 파악 (중복 방지)
 
-- `CLAUDE.md`의 "디렉터리 구조"와 `seep-ios/features/*`를 훑어 **이미 있는 기능**을 목록으로 만든다 (카테고리 3종, D-day·알림, 해시태그·메모·이모지, 완료/완료 취소, 정렬·완료만 보기·리스트/그리드, 사진 공유, 위젯 4종 등).
+- `CLAUDE.md`의 "디렉터리 구조"와 `seep-ios/Screens/*`·`seep-ios/Services/*`를 훑어 **이미 있는 기능**을 목록으로 만든다 (카테고리 3종, D-day·알림, 해시태그·메모·이모지, 완료/완료 취소, 정렬·완료만 보기·리스트/그리드, 사진 공유, 위젯 4종 등).
 - 기존 기획을 전부 읽는다. 열린 것, 승인된 것, 닫힌 것 모두. **반려 사유(닫힌 이슈의 마지막 코멘트)는 다음 추천의 제약으로 쓴다.**
   ```bash
   gh issue list -R team-seep/seep-ios --label idea --state all --limit 100 --json number,title,state,labels,comments
@@ -58,7 +58,7 @@ seep은 서버가 없다. 아래 **허용 수단만으로** 구현되는 기획�
 
 | 허용 | 불가 |
 |---|---|
-| 로컬 Realm, UserDefaults, App Group 공유 | 자체 서버·DB·API |
+| 로컬 DB(GRDB), UserDefaults, App Group 공유 | 자체 서버·DB·API |
 | WidgetKit, App Intents, 단축어(Shortcuts), Live Activity(로컬 업데이트) | 원격 푸시(APNs 서버 발송) |
 | 로컬 알림(UNUserNotificationCenter) | 사용자 간 소셜·공유 피드·친구 |
 | 사진·카메라·공유 시트(UIActivityViewController) | 로그인·계정 |
@@ -71,8 +71,8 @@ seep은 서버가 없다. 아래 **허용 수단만으로** 구현되는 기획�
 ## 5. 크기 판단
 
 코드를 읽고 판단한다.
-- **S**: 화면 하나 안의 UI·로직, Realm 모델 변경 없음
-- **M**: 화면 2개 이상 또는 Realm 모델 변경(R4 마이그레이션)
+- **S**: 화면 하나 안의 UI·로직, DB 레코드 변경 없음
+- **M**: 화면 2개 이상 또는 DB 레코드 변경(R4 마이그레이션)
 - **L**: 새 프레임워크·새 타깃(위젯 추가, App Intents, CloudKit)
 
 사이드 프로젝트이므로 **S·M을 우선**한다. L은 다른 후보가 없을 때만.
@@ -129,11 +129,11 @@ gh issue create -R team-seep/seep-ios \
 2~3줄
 
 ## 서버리스 근거
-예: 로컬 Realm 필드 추가 + 로컬 알림만 사용
+예: 로컬 DB 컬럼 추가 + 로컬 알림만 사용
 
 ## 크기 · 영향 영역
 - 크기: S / M / L
-- 영향: [ ] Realm 스키마(R4) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
+- 영향: [ ] DB 스키마(R4) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
 
 ## 요구사항
 - ...

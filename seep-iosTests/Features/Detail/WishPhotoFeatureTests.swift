@@ -21,10 +21,11 @@ final class WishPhotoFeatureTests: ViewModelTestCase {
         super.tearDown()
     }
 
-    private func makeViewModel(photoFileName: String = "") -> WishPhotoViewModel {
+    /// 상세에서 사진을 붙이고 바꾸는 곳은 이룬 싶 탭 상세뿐이다 (GH-61 R-12)
+    private func makeViewModel(photoFileName: String = "", isEditable: Bool = true) -> WishPhotoViewModel {
         let wish = Wish(id: "wish-1", emoji: "🏝️", category: .wantToGo, title: "제주도 한 달 살기", photoFileName: photoFileName)
         let viewModel = WishPhotoViewModel(
-            config: .init(wish: wish),
+            config: .init(wish: wish, isEditable: isEditable),
             dependency: .init(wishRepository: mockRepository, photoStorage: mockStorage, logManager: logManager)
         )
         viewModel.onUpdate = { [unowned self] in updates.append($0) }
@@ -283,5 +284,33 @@ final class WishPhotoFeatureTests: ViewModelTestCase {
 
         // Then
         XCTAssertEqual(viewModel.state.photoURL?.lastPathComponent, "wish-1-b.jpg")
+    }
+
+    // MARK: GH-61 TC25
+
+    func test_GH61_TC25_홈에서연상세의사진섹션은_붙이기바꾸기지우기를하지않는다() {
+        // Given
+        mockStorage.existingFileNames = ["wish-1-a.jpg"]
+        let viewModel = makeViewModel(photoFileName: "wish-1-a.jpg", isEditable: false)
+
+        // When
+        viewModel.send(.tapAdd)
+        viewModel.send(.tapChange)
+        viewModel.send(.tapDelete)
+
+        // Then
+        XCTAssertNil(viewModel.route)
+        XCTAssertTrue(mockRepository.updatePhotoCalls.isEmpty)
+        XCTAssertTrue(logManager.sentEvents.isEmpty)
+    }
+
+    func test_GH61_TC25_이룬싶탭상세는_더보기메뉴에사진지우기가있다() {
+        // Given / When
+        let items = DetailMoreMenu.items(context: .init(
+            mode: .fromFinish, isCalendarVisible: false, isCalendarAdded: false, hasPhoto: true
+        ))
+
+        // Then
+        XCTAssertEqual(items, [.cancelFinish, .chainNext, .deletePhoto, .share])
     }
 }

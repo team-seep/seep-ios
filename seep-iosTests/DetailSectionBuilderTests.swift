@@ -39,7 +39,7 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.memo, .steps, .savings, .link, .photo])
+        XCTAssertEqual(sections, [.memo, .steps, .savings, .link])
     }
 
     func test_GH59_TC5_갖고싶어요도_목표금액링크가없으면_그섹션이없다() {
@@ -50,7 +50,7 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.photo])
+        XCTAssertEqual(sections, [])
     }
 
     func test_GH59_TC5_가고싶어요는_장소섹션이_사진앞에나온다() {
@@ -61,15 +61,43 @@ final class DetailSectionBuilderTests: XCTestCase {
         let sections = DetailSectionBuilder.sections(for: wish)
 
         // Then
-        XCTAssertEqual(sections, [.memo, .steps, .place, .photo])
+        XCTAssertEqual(sections, [.memo, .steps, .place])
     }
 
-    func test_GH59_TC5_하고싶어요는_단계가없으면_사진만나온다() {
+    func test_GH59_TC5_하고싶어요는_단계가없으면_섹션이없다() {
         // Given
         let wish = Wish(category: .wantToDo)
 
         // When
         let sections = DetailSectionBuilder.sections(for: wish)
+
+        // Then
+        XCTAssertEqual(sections, [])
+    }
+
+    // MARK: GH-61 TC17
+
+    func test_GH61_TC17_사진파일이있을때만_사진섹션이_장소다음에나온다() {
+        // Given
+        let wish = Wish(category: .wantToGo, photoFileName: "wish-1-a.jpg")
+
+        // When
+        let withFile = DetailSectionBuilder.sections(for: wish, hasPhoto: true)
+        let missingFile = DetailSectionBuilder.sections(for: wish, hasPhoto: false)
+
+        // Then
+        XCTAssertEqual(withFile, [.place, .photo])
+        XCTAssertEqual(missingFile, [.place])
+    }
+
+    // MARK: GH-61 TC25
+
+    func test_GH61_TC25_이룬싶탭상세는_사진이없어도사진빈자리가있다() {
+        // Given
+        let wish = Wish(category: .wantToDo, isSuccess: true)
+
+        // When
+        let sections = DetailSectionBuilder.sections(for: wish, hasPhoto: false, isPhotoEditable: true)
 
         // Then
         XCTAssertEqual(sections, [.photo])

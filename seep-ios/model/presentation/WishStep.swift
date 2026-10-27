@@ -20,13 +20,6 @@ struct WishStep: Equatable, Hashable {
         self.isDone = isDone
         self.order = order
     }
-
-    init(dto: WishStepDTO) {
-        self.id = dto._id
-        self.title = dto.title
-        self.isDone = dto.isDone
-        self.order = dto.order
-    }
 }
 
 /// 단계 진행도. 단계가 없으면 표시하지 않으므로 nil 이 된다.

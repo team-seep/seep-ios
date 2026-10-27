@@ -1,38 +1,31 @@
-// swiftlint:disable realm_only_in_repository - 저장소 테스트라 인메모리 Realm 에 시드 데이터를 직접 넣는다 (R3 대상은 앱 코드)
 import XCTest
-
-import RealmSwift
 
 @testable import seep_ios_dev
 
-/// 체크 위젯 저장소 (GH-48 R-3, R-4, R-6, R-7). 인메모리 Realm 과 테스트용 UserDefaults 로 돌린다.
+/// 체크 위젯 저장소 (GH-48 R-3, R-4, R-6, R-7). 메모리 DB(GH-79)와 테스트용 UserDefaults 로 돌린다.
 final class WidgetCheckRepositoryTests: XCTestCase {
     private let suiteName = "test.widgetCheckRepository"
-    private var realm: Realm!
+    private var database: AppDatabase!
     private var store: WidgetCheckStore!
     private var sut: WidgetCheckRepositoryImpl!
     private let now = Date(timeIntervalSince1970: 1_790_000_000)
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let configuration = Realm.Configuration(inMemoryIdentifier: UUID().uuidString)
-        // 인메모리 Realm 은 인스턴스가 하나라도 살아 있어야 내용이 남는다
-        realm = try Realm(configuration: configuration)
+        database = try AppDatabase.makeInMemory()
         UserDefaults().removePersistentDomain(forName: suiteName)
         store = WidgetCheckStore(userDefaults: UserDefaults(suiteName: suiteName))
-        sut = WidgetCheckRepositoryImpl(configuration: configuration, store: store, now: { [now] in now })
+        sut = WidgetCheckRepositoryImpl(database: database, store: store, now: { [now] in now })
     }
 
     override func tearDown() {
         UserDefaults().removePersistentDomain(forName: suiteName)
-        realm = nil
+        database = nil
         super.tearDown()
     }
 
     private func save(_ wish: Wish) throws {
-        try realm.write {
-            realm.add(WishDTO(wish: wish))
-        }
+        _ = try WishRepositoryImpl(database: database).addWish(wish).get()
     }
 
     // MARK: GH-48 TC6
@@ -126,7 +119,7 @@ final class WidgetCheckRepositoryTests: XCTestCase {
         _ = sut.finishWish(wishId: "done-in-widget", lastStepId: nil)
         let tomorrow = now.addingTimeInterval(60 * 60 * 24)
         let tomorrowRepository = WidgetCheckRepositoryImpl(
-            configuration: realm.configuration,
+            database: database,
             store: store,
             now: { tomorrow }
         )

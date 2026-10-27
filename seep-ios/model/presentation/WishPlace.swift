@@ -7,7 +7,7 @@ struct WishPlace: Equatable, Hashable {
     let latitude: Double
     let longitude: Double
 
-    /// Realm 에 저장된 값에서 만든다. 이름이 비어 있으면 장소 없음(nil)이다.
+    /// DB 에 저장된 값에서 만든다. 이름이 비어 있으면 장소 없음(nil)이다.
     static func stored(name: String, address: String, latitude: Double, longitude: Double) -> WishPlace? {
         guard !name.isEmpty else { return nil }
         return WishPlace(name: name, address: address, latitude: latitude, longitude: longitude)

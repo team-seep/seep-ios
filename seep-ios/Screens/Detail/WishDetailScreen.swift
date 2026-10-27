@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 /// 위시 상세 — 읽는 문서 (GH-59 D2, GH-64 TC-601~609).
-/// 흰 바탕 한 장 문서: 상단 바(뒤로·수정·⋯) / 제목 블록 / 메모 / 단계 · 모은 돈 · 링크 · 장소 · 사진 섹션.
+/// 흰 바탕 한 장 문서: 상단 바(뒤로·수정·⋯) / 제목 블록 / 메모 / 단계 · 일지 · 모은 돈 · 링크 · 장소 · 사진 섹션.
 /// 작성용 입력 컴포넌트·카드·구분선 없이 섹션 사이 40pt 여백으로 나눈다 (R-1)
 struct WishDetailScreen: View {
     let wishId: String
@@ -43,6 +43,7 @@ private struct WishDetailContent: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(ToastCenter.self) private var toastCenter: ToastCenter?
+    @Environment(AppRouter.self) private var router: AppRouter?
 
     @State private var isTitleCollapsed = false
     @State private var titleBottom: CGFloat = 0
@@ -91,6 +92,7 @@ private struct WishDetailContent: View {
         .onChange(of: viewModel.place?.route) { _, route in handlePlace(route) }
         .onChange(of: viewModel.photo?.route) { _, route in handlePhoto(route) }
         .onChange(of: pickedPhoto) { _, item in loadPickedPhoto(item) }
+        .modifier(DetailJournalEvents(journal: viewModel.journal, errorMessage: $errorMessage))
         .confirmationDialog("", isPresented: $isMoreMenuPresented, titleVisibility: .hidden) {
             ForEach(moreMenuItems, id: \.title) { item in
                 Button(role: item.isDestructive ? .destructive : nil) {
@@ -219,6 +221,10 @@ private struct WishDetailContent: View {
         switch section {
         case .memo:
             EmptyView()
+        case .chain:
+            if let chain = viewModel.state.chain {
+                DetailChainSection(chain: chain) { viewModel.send(.tapChainWish(id: $0)) }
+            }
         case .steps:
             if let steps = viewModel.steps {
                 DocumentSection(
@@ -229,6 +235,10 @@ private struct WishDetailContent: View {
                 ) {
                     DetailStepsBody(steps: steps.state.steps) { steps.send(.tapStep($0)) }
                 }
+            }
+        case .journal:
+            if let journal = viewModel.journal {
+                DetailJournalSection(journal: journal)
             }
         case .savings:
             if let savings = viewModel.savings, savings.state.isVisible, let progress = savings.state.progress {
@@ -267,14 +277,20 @@ private struct WishDetailContent: View {
                     )
                 }
             }
+        case .letter:
+            DetailLetterSection(letter: viewModel.state.letter)
         case .photo:
             if let photo = viewModel.photo {
+                // 바꾸기·빈 자리는 이룬 싶 탭 상세에만 (GH-61 R-12)
                 DocumentSection(
                     title: Strings.Detail.Photo.title,
-                    actionTitle: photo.hasPhoto ? Strings.Detail.Photo.change : nil,
+                    actionTitle: photo.isEditable && photo.hasPhoto ? Strings.Detail.Photo.change : nil,
                     action: { photo.send(.tapChange) }
                 ) {
-                    DetailPhotoBody(photoURL: photo.state.photoURL) { photo.send(.tapAdd) }
+                    DetailPhotoBody(
+                        photoURL: photo.state.photoURL,
+                        onAdd: photo.isEditable ? { photo.send(.tapAdd) } : nil
+                    )
                 }
             }
         }
@@ -298,6 +314,10 @@ private struct WishDetailContent: View {
             isCancelFinishAlertPresented = true
         case .sharePhoto(let wish):
             sharingWish = SharingWish(wish: wish)
+        case .chainedWrite(let wish):
+            router?.openChainedWrite(from: wish)
+        case .wishDetail(let id, let isFinished):
+            router?.push(.wishDetail(id: id, isFinished: isFinished))
         case .errorAlert(let message):
             errorMessage = message
         case .close:

@@ -141,26 +141,25 @@ final class SleepingWishPolicyTests: XCTestCase {
 
     // MARK: GH-30 TC11
 
-    func test_GH30_TC11_DTO의lastCheckedAt이nil이면_위시도nil이고_되돌려도nil이다() {
-        // Given: 마이그레이션 직후 기존 위시 (R-1)
-        let dto = WishDTO()
-        dto.createdAt = daysAgo(80)
+    func test_GH30_TC11_레코드의lastCheckedAt이nil이면_위시도nil이고_되돌려도nil이다() {
+        // Given: 점검한 적 없는 기존 위시 (R-1). GH-79 에서 Realm DTO → GRDB 레코드
+        let record = WishRecord(wish: Wish(createdAt: daysAgo(80)), updatedAt: Date())
 
         // When
-        let wish = Wish(dto: dto)
-        let roundTrip = WishDTO(wish: wish)
+        let wish = Wish(record: record, steps: [], savings: [], notifications: [])
+        let roundTrip = WishRecord(wish: wish, updatedAt: Date())
 
         // Then
         XCTAssertNil(wish.lastCheckedAt)
         XCTAssertNil(roundTrip.lastCheckedAt)
     }
 
-    func test_GH30_TC11_lastCheckedAt은_DTO와위시사이에서그대로옮겨진다() {
+    func test_GH30_TC11_lastCheckedAt은_레코드와위시사이에서그대로옮겨진다() {
         // Given
         let wish = Wish(lastCheckedAt: daysAgo(3), createdAt: daysAgo(80))
 
         // When
-        let restored = Wish(dto: WishDTO(wish: wish))
+        let restored = Wish(record: WishRecord(wish: wish, updatedAt: Date()), steps: [], savings: [], notifications: [])
 
         // Then
         XCTAssertEqual(restored.lastCheckedAt, daysAgo(3))

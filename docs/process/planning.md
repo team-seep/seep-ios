@@ -23,9 +23,9 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
   | `src:competitor` | 경쟁 앱(위시리스트·버킷리스트·D-day·목표 앱) 분석 → seep에 없는 기능 |
   | `src:fusion` | 접점 없는 분야(게임·피트니스·가계부·여행·수집 등)의 메커니즘을 위시에 융합 |
   | `src:research` | 커뮤니티·리뷰·트렌드 글 여러 곳을 조사해 공통 니즈로 기획 |
-- **서버리스 조건**: 로컬 Realm·App Group·WidgetKit·App Intents·로컬 알림·기기 내 프레임워크·CloudKit(본인 iCloud)·Firebase Remote Config/Analytics만으로 되는 기획만. 자체 서버, 원격 푸시, 계정·소셜, 서버가 필요한 외부 API는 제외.
+- **서버리스 조건**: 로컬 DB(GRDB)·App Group·WidgetKit·App Intents·로컬 알림·기기 내 프레임워크·CloudKit(본인 iCloud)·Firebase Remote Config/Analytics만으로 되는 기획만. 자체 서버, 원격 푸시, 계정·소셜, 서버가 필요한 외부 API는 제외.
 - **중복 방지**: 이미 있는 기능, 기존 기획(열림·닫힘 전부)과 겹치면 버린다. **반려 사유는 다음 추천의 제약이 된다.**
-- **크기**: `size:S`(화면 하나) / `size:M`(여러 화면 또는 Realm 모델 변경) / `size:L`(새 프레임워크·타깃). S·M 우선.
+- **크기**: `size:S`(화면 하나) / `size:M`(여러 화면 또는 DB 레코드 변경) / `size:L`(새 프레임워크·타깃). S·M 우선.
 
 ## 1-1. 디자인 제안
 

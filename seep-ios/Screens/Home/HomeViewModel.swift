@@ -10,7 +10,21 @@ extension HomeViewModel {
         case selectCategory(Category)
         case tapSortOrder
         case selectSortOrder(HomeSortOrder)
+        /// 필터 바 "순서 바꾸기" → 순서 바꾸기 모드 (GH-73 R-4)
+        case tapReorder
+        /// 순서 바꾸기 모드 "완료" (R-7)
+        case finishReorder
+        /// 순서 바꾸기 모드에서 옮길 수 있는 위시(고정 제외) 안의 이동 (R-5~R-7)
+        case moveWish(from: IndexSet, to: Int)
         case toggleViewType
+        /// 필터 바 "선택" → 여러 개 골라 지우기 (GH-86 R-3)
+        case tapSelect
+        case cancelSelection
+        case selectAll
+        /// 선택 모드 "{n}개 삭제" → 확인 알럿 (R-4)
+        case tapDeleteSelected
+        case confirmDeleteSelected
+        case cancelDeleteSelected
         case tapWish(Wish)
         case tapFinish(Wish)
         case tapPinMenu(Wish)
@@ -39,8 +53,15 @@ extension HomeViewModel {
 
     struct State: Equatable {
         var category: Category = .wantToDo
-        var sortOrder: HomeSortOrder = .deadlineOrder
+        var sortOrder: HomeSortOrder
         var viewType: ViewType
+        /// 순서 바꾸기 모드. 리스트 셀 + 손잡이, 탭 바·배너·잠든 위시 카드를 숨긴다 (GH-73 R-5)
+        var isReordering = false
+        /// 여러 개 골라 지우기 모드. 리스트 셀 + 체크, 탭 바를 숨긴다 (GH-86 R-3)
+        var isSelecting = false
+        var selectedIds: Set<String> = []
+        /// 일괄 삭제 확인 알럿에 보일 개수. nil 이면 알럿 없음 (R-4)
+        var deleteConfirmCount: Int?
         /// 헤드라인의 남은 개수. 첫 로드 전에는 nil
         var notFinishedCount: Int?
         var items: [HomeWishItem] = []
@@ -63,6 +84,31 @@ extension HomeViewModel {
         /// 리스트·그리드 모두 비었으면 빈 상태를 그린다
         var isEmpty: Bool {
             items.isEmpty && sleepingWishCard == nil
+        }
+
+        /// 순서 바꾸기 모드에서 맨 위에 흐리게 고정된 위시 (끌 수 없다, R-6)
+        var pinnedItems: [HomeWishItem] {
+            items.filter { $0.isPinned && !$0.wish.isSuccess }
+        }
+
+        /// 순서 바꾸기 모드에서 옮길 수 있는 위시. 방금 완료해 흐린 위시는 뺀다 (R-6)
+        var movableItems: [HomeWishItem] {
+            items.filter { !$0.isPinned && !$0.wish.isSuccess }
+        }
+
+        /// 선택 모드에서 고를 수 있는 위시. 방금 완료해 흐린 위시는 뺀다 (GH-86 R-5)
+        var selectableItems: [HomeWishItem] {
+            items.filter { !$0.wish.isSuccess }
+        }
+
+        /// 위시가 하나라도 있고 다른 모드가 아닐 때 "선택"이 보인다 (GH-86 R-3)
+        var isSelectButtonVisible: Bool {
+            !selectableItems.isEmpty && !isReordering && !isSelecting
+        }
+
+        /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11)
+        var isReorderButtonVisible: Bool {
+            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering
         }
     }
 
@@ -157,6 +203,8 @@ final class HomeViewModel {
     private var finishingWishIds: Set<String> = []
     /// 이번 완료 흐름이 홈 체크에서 시작했는지. 위젯에서 완료한 위시의 소감은 토스트·점을 붙이지 않는다
     private var isHomeFinishFlow = false
+    /// 소감 시트에서 "이어서 적기"를 고른 앞 위시. 시트가 닫히면 작성 화면을 연다 (GH-84)
+    private var pendingChainWish: Wish?
     private var toastId = 0
     private var didSendYearReviewImpression = false
     /// 이번 실행에서 카테고리별로 카드에 올리기로 고른 위시 id — 실행당 카테고리별 1번만 고른다
@@ -170,7 +218,7 @@ final class HomeViewModel {
 
     init(dependency: Dependency = Dependency()) {
         self.dependency = dependency
-        self.state = State(viewType: dependency.preference.viewType)
+        self.state = State(sortOrder: dependency.preference.homeSortOrder, viewType: dependency.preference.viewType)
         if let router = dependency.router {
             state.category = router.homeCategory
         }
@@ -188,6 +236,8 @@ final class HomeViewModel {
 
         case .selectCategory(let category):
             state.category = category
+            // 다른 카테고리의 선택은 이어가지 않는다 (GH-86)
+            state.selectedIds = []
             dependency.router?.homeCategory = category
             fetchWishes()
 
@@ -195,16 +245,55 @@ final class HomeViewModel {
             state.sheet = .sortOrder
 
         case .selectSortOrder(let sortOrder):
-            state.sortOrder = sortOrder
-            state.sheet = nil
-            fetchWishes()
+            selectSortOrder(sortOrder)
+
+        case .tapReorder:
+            guard state.isReorderButtonVisible else { return }
+            sendClickLog(objectId: .reorderWishes)
+            state.isReordering = true
+
+        case .finishReorder:
+            state.isReordering = false
+
+        case .moveWish(let source, let destination):
+            moveWish(from: source, to: destination)
 
         case .toggleViewType:
             let viewType = state.viewType.toggle()
             state.viewType = viewType
             dependency.preference.viewType = viewType
 
+        case .tapSelect:
+            guard state.isSelectButtonVisible else { return }
+            sendClickLog(objectId: .selectWishes)
+            state.selectedIds = []
+            state.isSelecting = true
+
+        case .cancelSelection:
+            state.isSelecting = false
+            state.selectedIds = []
+
+        case .selectAll:
+            let all = Set(state.selectableItems.map(\.id))
+            state.selectedIds = state.selectedIds == all ? [] : all
+
+        case .tapDeleteSelected:
+            guard !state.selectedIds.isEmpty else { return }
+            state.deleteConfirmCount = state.selectedIds.count
+
+        case .confirmDeleteSelected:
+            state.deleteConfirmCount = nil
+            deleteSelected()
+
+        case .cancelDeleteSelected:
+            state.deleteConfirmCount = nil
+
         case .tapWish(let wish):
+            // 선택 모드에서는 상세 대신 선택/해제 (GH-86 R-5, TC-7)
+            if state.isSelecting {
+                toggleSelection(wish)
+                return
+            }
             // 잠든 위시 카드는 상세로 가지 않는다(카드에는 버튼만 있다)
             dependency.router?.push(.wishDetail(id: wish.id, isFinished: wish.isSuccess))
 
@@ -360,6 +449,33 @@ extension HomeViewModel {
         }
     }
 
+    private func toggleSelection(_ wish: Wish) {
+        guard !wish.isSuccess else { return }
+        if state.selectedIds.contains(wish.id) {
+            state.selectedIds.remove(wish.id)
+        } else {
+            state.selectedIds.insert(wish.id)
+        }
+    }
+
+    /// 한 트랜잭션으로 지우고, 성공하면 알림·사진·링크 캐시를 정리한다. 실패하면 아무것도 지우지 않는다 (GH-86 R-4)
+    private func deleteSelected() {
+        let targets = wishes.filter { state.selectedIds.contains($0.id) }
+        guard !targets.isEmpty else { return }
+        switch dependency.wishRepository.deleteWishes(ids: targets.map(\.id)) {
+        case .success:
+            sendClickLog(objectId: .deleteSelectedWishes, extraParameters: [.count: targets.count])
+            for wish in targets {
+                dependency.notificationManager.cancelNotifications(wish: wish)
+                cleanUpDeleted(wish)
+            }
+            state.isSelecting = false
+            state.selectedIds = []
+        case .failure(let error):
+            showError(error)
+        }
+    }
+
     private func cleanUpDeleted(_ wish: Wish) {
         WishDeletionCleanup(
             preference: dependency.preference,
@@ -381,7 +497,9 @@ extension HomeViewModel {
         guard let targetIndex = wishes.firstIndex(where: { $0.id == wish.id }) else { return }
 
         switch dependency.wishRepository.finishWish(wish: wish) {
-        case .success(let finishedWish):
+        case .success(let result):
+            // 목록이 들고 있던 값은 상세에서 바뀌기 전일 수 있어(예: 방금 봉인한 편지) 저장소에서 다시 읽는다 (GH-61 R-5)
+            let finishedWish = dependency.wishRepository.fetchWish(id: result.id).flatMap { $0.isSuccess ? $0 : nil } ?? result
             dependency.notificationManager.cancelNotifications(wish: finishedWish)
             finishingWishIds.insert(finishedWish.id)
             isHomeFinishFlow = true
@@ -399,10 +517,18 @@ extension HomeViewModel {
     private func presentFinishNote(wish: Wish) {
         let viewModel = FinishNoteViewModel(
             config: .init(wish: wish),
-            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+            dependency: .init(
+                wishRepository: dependency.wishRepository,
+                logManager: dependency.logManager,
+                now: dependency.now,
+                calendar: dependency.calendar
+            )
         )
         viewModel.onSave = { [weak self] savedWish in
             self?.updateWish(savedWish)
+        }
+        viewModel.onChainNext = { [weak self] previous in
+            self?.pendingChainWish = previous
         }
         state.sheet = .finishNote(viewModel)
     }
@@ -418,8 +544,13 @@ extension HomeViewModel {
         state.sheet = nil
         switch dismissedSheet {
         case .finishNote:
-            // 소감 시트가 닫힌 뒤에만 배지 축하를 띄운다 (GH-35 R-7)
-            if !presentBadgeCelebrationIfNeeded() {
+            // 이어서 적기를 골랐으면 배지 축하 대신 작성 화면을 연다. 배지는 다음 완료 때 축하한다 (GH-84 R-1)
+            if let previous = pendingChainWish {
+                pendingChainWish = nil
+                completeFinishFlow()
+                dependency.router?.openChainedWrite(from: previous)
+            } else if !presentBadgeCelebrationIfNeeded() {
+                // 소감 시트가 닫힌 뒤에만 배지 축하를 띄운다 (GH-35 R-7)
                 completeFinishFlow()
             }
         case .badgeCelebration:
@@ -615,6 +746,38 @@ extension HomeViewModel {
         }
         if let wish = result.finishNoteWish, state.sheet == nil {
             presentFinishNote(wish: wish)
+        }
+    }
+}
+
+// MARK: 내가 정한 순서 (GH-73)
+extension HomeViewModel {
+    private func selectSortOrder(_ sortOrder: HomeSortOrder) {
+        sendClickLog(objectId: .sortOrder, extraParameters: [.type: sortOrder.rawValue])
+        state.sortOrder = sortOrder
+        dependency.preference.homeSortOrder = sortOrder
+        state.sheet = nil
+        fetchWishes()
+    }
+
+    private func moveWish(from source: IndexSet, to destination: Int) {
+        guard state.isReordering, let sourceIndex = source.first else { return }
+        var ids = state.movableItems.map(\.id)
+        guard ids.indices.contains(sourceIndex) else { return }
+        let movedId = ids[sourceIndex]
+        ids.move(fromOffsets: source, toOffset: destination)
+        guard ids != state.movableItems.map(\.id) else { return }
+
+        switch dependency.wishRepository.moveWish(wishId: movedId, orderedIds: ids) {
+        case .success:
+            dependency.logManager.sendEvent(event: ClickEvent(
+                screen: screenName,
+                objectType: .card,
+                objectId: .moveWish
+            ))
+            fetchWishes()
+        case .failure(let error):
+            showError(error)
         }
     }
 }

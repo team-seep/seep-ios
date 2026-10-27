@@ -14,6 +14,10 @@ final class MockWishRepository: WishRepository {
     var deleteSavingResult: Result<[WishSaving], RepositoryError> = .success([])
     private(set) var addSavingCalls: [(wishId: String, amount: Int)] = []
     private(set) var deleteSavingCalls: [(wishId: String, savingId: String)] = []
+    var addJournalResult: Result<[WishJournal], RepositoryError> = .success([])
+    var deleteJournalResult: Result<[WishJournal], RepositoryError> = .success([])
+    private(set) var addJournalCalls: [(wishId: String, text: String)] = []
+    private(set) var deleteJournalCalls: [(wishId: String, journalId: String)] = []
     /// nil 이면 호출된 위시 id·소감으로 만든 위시를 성공으로 돌려준다
     var updateFinishNoteResult: Result<Wish, RepositoryError>?
     private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
@@ -75,6 +79,16 @@ final class MockWishRepository: WishRepository {
         return deleteSavingResult
     }
 
+    func addJournal(wishId: String, text: String) -> Result<[WishJournal], RepositoryError> {
+        addJournalCalls.append((wishId, text))
+        return addJournalResult
+    }
+
+    func deleteJournal(wishId: String, journalId: String) -> Result<[WishJournal], RepositoryError> {
+        deleteJournalCalls.append((wishId, journalId))
+        return deleteJournalResult
+    }
+
     func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
         updateFinishNoteCalls.append((wishId, note))
         return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note))
@@ -122,6 +136,14 @@ final class MockWishRepository: WishRepository {
         return fetchWishResult.first { $0.id == id }
     }
 
+    /// nil 이면 체인 없음(지금 위시만) (GH-84)
+    var fetchWishChainResult: WishChain?
+
+    func fetchWishChain(wishId: String) -> WishChain? {
+        if let fetchWishChainResult { return fetchWishChainResult }
+        return fetchWishResult.first { $0.id == wishId }.map { WishChain(previous: [], current: $0, next: []) }
+    }
+
     // MARK: 작성·수정 폼 (GH-64 P2)
 
     private(set) var addedWishes: [Wish] = []
@@ -148,5 +170,21 @@ final class MockWishRepository: WishRepository {
         wish.finishDate = nil
         wish.finishNote = ""
         return .success(wish)
+    }
+
+    var moveWishResult: Result<Void, RepositoryError> = .success(())
+    private(set) var moveWishCalls: [(wishId: String, orderedIds: [String])] = []
+
+    func moveWish(wishId: String, orderedIds: [String]) -> Result<Void, RepositoryError> {
+        moveWishCalls.append((wishId, orderedIds))
+        return moveWishResult
+    }
+
+    var deleteWishesResult: Result<Void, RepositoryError> = .success(())
+    private(set) var deleteWishesCalls: [[String]] = []
+
+    func deleteWishes(ids: [String]) -> Result<Void, RepositoryError> {
+        deleteWishesCalls.append(ids)
+        return deleteWishesResult
     }
 }

@@ -14,6 +14,7 @@ struct DetailStepsBody: View {
                     HStack(spacing: 10) {
                         (step.isDone ? Assets.Icons.icCheckOn : Assets.Icons.icCheckOff).swiftUIImage
                             .resizable()
+                            .foregroundStyle(Color.gray3)
                             .frame(width: 24, height: 24)
                         Text(verbatim: step.title)
                             .font(.appleRegular(size: 16))
@@ -232,26 +233,39 @@ struct DetailPlaceBody: View {
     }
 }
 
-/// 사진 본문 (GH-36, GH-59 R-6): 16:9 사진(라운드 12). 없으면 파란 글자 "＋ 사진 붙이기" 한 줄
+/// 사진 본문 (GH-36, GH-59 R-6): 16:9 사진(라운드 12). 없으면 파란 글자 "＋ 사진 붙이기" 한 줄.
+/// 빈 자리는 이룬 싶 탭 상세에만 있다 — 나머지는 작성/수정 문서에서 붙인다 (GH-61 R-9, R-12)
 struct DetailPhotoBody: View {
     let photoURL: URL?
-    let onAdd: () -> Void
+    var onAdd: (() -> Void)?
 
     var body: some View {
         if let image = photoURL.flatMap({ DetailImageDecoder.cgImage(url: $0) }) {
-            Color.gray2
-                .aspectRatio(16 / 9, contentMode: .fit)
-                .overlay {
-                    Image(decorative: image, scale: 1)
-                        .resizable()
-                        .scaledToFill()
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .accessibilityElement()
-                .accessibilityLabel(Text(Strings.Detail.Photo.title))
-        } else {
+            PhotoFrame(image: image)
+        } else if let onAdd {
             // 파일이 없거나 읽지 못하면 빈 상태로 보여준다 (GH-36 R-7)
             TextActionButton(title: Strings.Detail.Photo.add, action: onAdd)
         }
+    }
+}
+
+/// 16:9로 잘라 보여주는 사진 (상세 사진 섹션·문서 사진 블록)
+struct PhotoFrame: View {
+    let image: CGImage
+
+    var body: some View {
+        Color.gray2
+            .aspectRatio(16 / 9, contentMode: .fit)
+            .overlay {
+                // scaledToFill 로 넘친 부분은 clipShape 로 안 보일 뿐 터치는 받는다.
+                // 세로로 긴 사진이 위 섹션(일지·링크 등)의 버튼을 덮어 눌리지 않게 막는다 (GH-95)
+                Image(decorative: image, scale: 1)
+                    .resizable()
+                    .scaledToFill()
+                    .allowsHitTesting(false)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .accessibilityElement()
+            .accessibilityLabel(Text(Strings.Detail.Photo.title))
     }
 }

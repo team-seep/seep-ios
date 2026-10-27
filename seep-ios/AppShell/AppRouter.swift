@@ -32,6 +32,14 @@ protocol ReservedDeepLinkStoring: AnyObject {
 
 extension Preference: ReservedDeepLinkStoring {}
 
+/// 홈 시작 카테고리 설정과 마지막으로 본 카테고리 (GH-86 R-1, R-2)
+protocol HomeCategoryStoring: AnyObject {
+    var startCategory: Category? { get }
+    var lastHomeCategory: Category { get set }
+}
+
+extension Preference: HomeCategoryStoring {}
+
 /// 탭 선택·탭별 내비게이션 path·작성 화면 표시를 한 곳에서 들고, 위젯·컨트롤 링크를 화면 이동으로 바꾼다 (GH-64 A-4, R-30).
 /// 로그는 이동을 결정한 쪽(`handle`의 반환값을 받은 곳)이 남긴다
 @Observable
@@ -54,13 +62,22 @@ final class AppRouter {
     var finishedPath: [AppDestination] = []
     var settingsPath: [AppDestination] = []
     /// 작성 화면을 띄울 카테고리. nil 이면 닫혀 있다
-    var writeCategory: Category?
+    var writeCategory: Category? {
+        didSet {
+            if writeCategory == nil { writePreviousWishId = nil }
+        }
+    }
+    /// "이어서 적기"로 연 작성 화면의 앞 위시 id. 작성 화면이 닫히면 비운다 (GH-84 R-2)
+    private(set) var writePreviousWishId: String?
     /// 스플래시가 끝나 메인 탭이 보이는지. 그 전에 온 링크는 맡아 뒀다가 메인이 뜰 때 처리한다
     private(set) var isMainReady = false
     /// `seepSheet`로 띄운 시트 수. 시트가 떠 있으면 위젯 링크를 무시한다
     private(set) var presentedModalCount = 0
-    /// 싶 탭에서 마지막으로 고른 카테고리. 적기 시트가 기본 선택으로 쓴다 (R-8)
-    var homeCategory: Category = .wantToDo
+    /// 싶 탭에서 마지막으로 고른 카테고리. 적기 시트가 기본 선택으로 쓴다 (R-8).
+    /// 앱을 켤 때는 설정의 시작 카테고리(없으면 마지막으로 본 카테고리)로 시작한다 (GH-86 R-2)
+    var homeCategory: Category = .wantToDo {
+        didSet { categoryStore?.lastHomeCategory = homeCategory }
+    }
     /// 싶 탭에서 완료한 뒤 이룬 싶 탭 아이콘에 붙는 점 (R-14)
     var showsFinishedDot = false
     /// 값이 바뀌면 떠 있는 `seepSheet`·풀스크린이 모두 닫힌다 (단축어로 작성 화면을 맨 위에 띄울 때)
@@ -72,8 +89,16 @@ final class AppRouter {
 
     private let dependency: Dependency
 
+    /// 링크를 맡아 두는 `Preference`가 카테고리도 기억한다. 테스트 스텁이면 nil (GH-86)
+    private var categoryStore: HomeCategoryStoring? {
+        dependency.deepLinkStore as? HomeCategoryStoring
+    }
+
     init(dependency: Dependency = Dependency()) {
         self.dependency = dependency
+        if let store = dependency.deepLinkStore as? HomeCategoryStoring {
+            homeCategory = store.startCategory ?? store.lastHomeCategory
+        }
     }
 
     /// 탭 루트 위에 무언가 떠 있는지(어느 탭의 push 든, 시트·작성 화면이든)
@@ -159,6 +184,17 @@ final class AppRouter {
         }
         writeCategory = category
         return deepLink
+    }
+
+    /// 이룬 위시에 이어서 같은 카테고리의 작성 화면을 연다. 닫히는 시트가 있으면 다 닫힌 뒤 연다 (GH-84 R-1~R-3)
+    func openChainedWrite(from wish: Wish) {
+        guard writeCategory == nil else { return }
+        writePreviousWishId = wish.id
+        if presentedModalCount > 0 {
+            pendingIntentCategory = wish.category
+            return
+        }
+        writeCategory = wish.category
     }
 
     /// 시트가 모두 닫힌 뒤(`modalDidDisappear`로 0이 되면) 미뤄 둔 작성 화면을 띄운다

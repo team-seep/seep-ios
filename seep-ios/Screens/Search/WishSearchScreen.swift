@@ -172,6 +172,7 @@ private struct WishSearchResultRow: View {
             .opacity(wish.isSuccess ? 0.5 : 1)
 
             (wish.isSuccess ? Assets.Icons.icCheckOn : Assets.Icons.icCheckOff).swiftUIImage
+                .foregroundStyle(Color.gray3)
                 .accessibilityHidden(true)
         }
         .padding(.leading, 14)

@@ -7,25 +7,6 @@ struct SeepNotification: Equatable, Hashable {
         case twoDayAgo
         case weekAgo
         case everyDay
-        
-        var toString: String {
-            switch self {
-            case .targetDay:
-                return "notification_type_targat_day".localized
-                
-            case .dayAgo:
-                return "notification_type_before_day".localized
-                
-            case .twoDayAgo:
-                return "notification_type_before_two_day".localized
-                
-            case .weekAgo:
-                return "notification_type_before_week".localized
-                
-            case .everyDay:
-                return "notification_type_everyday".localized
-            }
-        }
     }
     
     var id = UUID().uuidString
@@ -45,11 +26,11 @@ struct SeepNotification: Equatable, Hashable {
         self.time = time
     }
     
-    init(dto: NotificationDTO) {
-        // 예약할 때 쓴 id 를 그대로 써야 완료·삭제 때 대기 중 알림을 지울 수 있다 (GH-48 에서 발견)
-        self.id = dto.id
-        self.type = NotificationType(rawValue: dto.type) ?? .targetDay
-        self.time = dto.time
+    /// 저장된 알림에서 만든다. 예약할 때 쓴 id 를 그대로 써야 완료·삭제 때 대기 중 알림을 지울 수 있다 (GH-48 에서 발견)
+    init(id: String, type: NotificationType, time: Date) {
+        self.id = id
+        self.type = type
+        self.time = time
     }
     
     static func == (lhs: Self, rhs: Self) -> Bool {
