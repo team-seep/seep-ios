@@ -130,7 +130,7 @@ struct WishDocumentBlocks: View {
                                 .accessibilityHidden(true)
                             Text(Strings.WishForm.notificationRowFormat(
                                 notification.type.toString,
-                                notification.time.toString(format: "a h시 mm분")
+                                DisplayDate.time(notification.time)
                             ))
                             .font(.appleRegular(size: 16))
                             .foregroundStyle(Color.gray5)

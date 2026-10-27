@@ -86,7 +86,7 @@ struct DetailSavingsBody: View {
 
     private func recordRow(_ saving: WishSaving) -> some View {
         HStack(spacing: 0) {
-            Text(verbatim: DateUtils.toString(format: "MM.dd", date: saving.createdAt))
+            Text(verbatim: DisplayDate.fixed(saving.createdAt, pattern: "MM.dd"))
                 .font(.appleRegular(size: 14))
                 .foregroundStyle(Color.gray4)
                 .frame(width: 56, alignment: .leading)

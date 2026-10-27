@@ -58,8 +58,8 @@ struct HomeOverviewView: View {
         return String(text[start..<end])
     }
 
-    private static let emptyBold = "적어봐요!"
-    private static let countBold = "남았어요!"
+    private static var emptyBold: String { Strings.Home.EmptyTitle.bold }
+    private static var countBold: String { Strings.Home.TitleFormat.bold }
 
     /// 문자열을 Light 22 로 그리고, 굵게 할 부분은 Bold 22, 개수는 Bold 22 tennis-green 으로 그린다
     private static func styled(text: String, bold: [String], green: String?) -> Text {

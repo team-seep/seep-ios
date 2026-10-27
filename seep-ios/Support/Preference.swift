@@ -106,6 +106,16 @@ final class Preference {
         }
     }
     
+    /// 예약해 둔 D-day 알림 문구의 언어("ko" 등). 없으면 한국어로 예약된 것으로 본다 (GH-100 R-14)
+    var notificationLanguage: String? {
+        set {
+            instance.set(newValue, forKey: "notificationLanguage")
+        }
+        get {
+            instance.string(forKey: "notificationLanguage")
+        }
+    }
+
     /// 앱 잠금(Face ID·기기 암호)을 켰는지 (GH-46 R-9)
     var isAppLockEnabled: Bool {
         set {

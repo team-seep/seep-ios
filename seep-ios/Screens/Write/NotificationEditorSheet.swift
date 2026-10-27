@@ -63,7 +63,6 @@ struct NotificationEditorSheet: View {
             )
             .datePickerStyle(.wheel)
             .labelsHidden()
-            .environment(\.locale, Locale(identifier: "ko_KR"))
             .frame(maxWidth: .infinity)
             .frame(height: 150)
             .clipped()

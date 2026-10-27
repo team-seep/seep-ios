@@ -30,7 +30,7 @@ struct DetailChainRow: Equatable, Identifiable {
 
     private static func finishedCaption(_ wish: Wish) -> String? {
         guard wish.isSuccess else { return nil }
-        let date = wish.finishDate.map { DateUtils.toString(format: "yyyy. M. d.", date: $0) } ?? ""
+        let date = wish.finishDate.map { DisplayDate.numericYearMonthDay($0) } ?? ""
         let note = wish.finishNote.trimmingCharacters(in: .whitespacesAndNewlines)
         return note.isEmpty
             ? Strings.Detail.Chain.finishedFormat(date)
