@@ -6,18 +6,38 @@ import MapKit
 struct PlaceMapScreen: View {
     private enum Layout {
         static let horizontalInset: CGFloat = 20
+        /// 아이패드 목록 열 폭
+        static let listWidth: CGFloat = 340
+        /// 목록에서 고른 핀으로 옮길 때 카메라 높이(m)
+        static let focusDistance: CLLocationDistance = 3000
     }
 
     @Environment(AppRouter.self) private var router
+    @Environment(\.horizontalSizeClass) private var sizeClass
     @State private var viewModel = PlaceMapScreenViewModel()
     @State private var position: MapCameraPosition = .automatic
     /// 이미 맞춘 영역 요청. 같은 요청으로 다시 옮기지 않는다
     @State private var appliedFitId: Int?
 
     var body: some View {
-        ZStack {
-            map
-            overlays
+        Group {
+            // 아이패드(regular)는 목록 · 지도를 나란히 (GH-99 R-10)
+            if sizeClass == .regular {
+                HStack(spacing: 0) {
+                    PlaceMapList(
+                        wishes: viewModel.state.wishes,
+                        selectedWishId: viewModel.state.selectedWishId,
+                        onSelect: { viewModel.send(.selectListWish(wishId: $0)) }
+                    )
+                    .frame(width: Layout.listWidth)
+                    Rectangle()
+                        .fill(Color.gray2_5)
+                        .frame(width: 1)
+                    mapWithOverlays
+                }
+            } else {
+                mapWithOverlays
+            }
         }
         .background(Color.gray1)
         .navigationTitle(Strings.PlaceMap.title)
@@ -29,8 +49,21 @@ struct PlaceMapScreen: View {
             appliedFitId = fit.id
             fitAllPins()
         }
+        .onChange(of: viewModel.state.cameraFocus) { _, focus in
+            guard let focus, let coordinate = viewModel.state.wishes.first(where: { $0.id == focus.wishId })?.placeCoordinate else { return }
+            withAnimation(.easeInOut(duration: 0.4)) {
+                position = .camera(MapCamera(centerCoordinate: coordinate, distance: Layout.focusDistance))
+            }
+        }
         .onChange(of: viewModel.route) { _, route in
             handle(route)
+        }
+    }
+
+    private var mapWithOverlays: some View {
+        ZStack {
+            map
+            overlays
         }
     }
 
@@ -124,5 +157,61 @@ struct PlaceMapScreen: View {
             router.push(.wishDetail(id: id, isFinished: false))
         }
         viewModel.send(.routeHandled)
+    }
+}
+
+/// 아이패드 목록 열: 핀이 있는 위시. 고른 줄은 seep-blue 테두리, 핀을 고르면 그 줄로 스크롤한다 (GH-99 R-10, TC-11)
+private struct PlaceMapList: View {
+    let wishes: [Wish]
+    let selectedWishId: String?
+    let onSelect: (String) -> Void
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(spacing: 10) {
+                    ForEach(wishes, id: \.id) { wish in
+                        Button {
+                            onSelect(wish.id)
+                        } label: {
+                            row(wish)
+                        }
+                        .buttonStyle(.plain)
+                        .padSelectionBorder(isSelected: wish.id == selectedWishId)
+                        .id(wish.id)
+                    }
+                }
+                .padding(20)
+            }
+            .onChange(of: selectedWishId) { _, id in
+                guard let id else { return }
+                withAnimation { proxy.scrollTo(id, anchor: .center) }
+            }
+        }
+        .background(Color.gray2)
+    }
+
+    private func row(_ wish: Wish) -> some View {
+        HStack(spacing: 12) {
+            Text(verbatim: wish.emoji)
+                .font(.system(size: 30))
+            VStack(alignment: .leading, spacing: 4) {
+                Text(verbatim: wish.title)
+                    .font(.appleBold(size: 15))
+                    .foregroundStyle(Color.gray5)
+                    .lineLimit(1)
+                if let placeName = wish.place?.name {
+                    Text(verbatim: placeName)
+                        .font(.appleRegular(size: 13))
+                        .foregroundStyle(Color.gray4)
+                        .lineLimit(1)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 14)
+        .frame(minHeight: 64)
+        .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
+        .contentShape(RoundedRectangle(cornerRadius: 12))
     }
 }

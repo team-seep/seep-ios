@@ -70,6 +70,9 @@ struct SharePhotoContent: View {
                 .padding(.bottom, SharePhotoLayout.shareButtonBottomOffset)
             }
         }
+        // 넓은 화면(아이패드)은 카드·목록을 가운데 600pt 기둥에 둔다 (GH-99 R-12)
+        .frame(maxWidth: SeepLayout.maxContentWidth)
+        .frame(maxWidth: .infinity)
         .background(Color.gray1)
         .navigationTitle(Strings.sharePhotoTitle)
         .navigationBarTitleDisplayMode(.inline)

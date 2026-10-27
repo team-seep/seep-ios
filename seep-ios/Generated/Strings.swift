@@ -1009,6 +1009,28 @@ internal enum Strings {
     /// 🔕 이미 설정된 알림입니다.
     internal static let duplicate = Strings.tr("Localization", "notification_editor.duplicate", fallback: "🔕 이미 설정된 알림입니다.")
   }
+  internal enum Pad {
+    internal enum Detail {
+      /// 목록에서 싶을 골라 보세요
+      internal static let empty = Strings.tr("Localization", "pad.detail.empty", fallback: "목록에서 싶을 골라 보세요")
+    }
+    internal enum SettingsDetail {
+      /// 왼쪽에서 항목을 골라 보세요
+      internal static let empty = Strings.tr("Localization", "pad.settings_detail.empty", fallback: "왼쪽에서 항목을 골라 보세요")
+    }
+    internal enum Sidebar {
+      /// 배지
+      internal static let badges = Strings.tr("Localization", "pad.sidebar.badges", fallback: "배지")
+      /// 앱
+      internal static let sectionApp = Strings.tr("Localization", "pad.sidebar.section_app", fallback: "앱")
+      /// 돌아보기
+      internal static let sectionLookBack = Strings.tr("Localization", "pad.sidebar.section_look_back", fallback: "돌아보기")
+      /// 싶
+      internal static let sectionWish = Strings.tr("Localization", "pad.sidebar.section_wish", fallback: "싶")
+      /// 뭐 하고 싶어요?
+      internal static let write = Strings.tr("Localization", "pad.sidebar.write", fallback: "뭐 하고 싶어요?")
+    }
+  }
   internal enum PlaceMap {
     /// 장소를 붙인 곳 %d곳
     internal static func countFormat(_ p1: Int) -> String {
@@ -1041,6 +1063,8 @@ internal enum Strings {
       internal static let dark = Strings.tr("Localization", "settings.appearance.dark", fallback: "다크")
       /// 위젯은 아이폰 화면 모드를 따라요
       internal static let footer = Strings.tr("Localization", "settings.appearance.footer", fallback: "위젯은 아이폰 화면 모드를 따라요")
+      /// 위젯은 아이패드 화면 모드를 따라요
+      internal static let footerPad = Strings.tr("Localization", "settings.appearance.footer_pad", fallback: "위젯은 아이패드 화면 모드를 따라요")
       /// 라이트
       internal static let light = Strings.tr("Localization", "settings.appearance.light", fallback: "라이트")
       /// 시스템 설정 따르기
@@ -1093,6 +1117,8 @@ internal enum Strings {
     internal enum Notification {
       /// 아이폰 설정에서 바꿀 수 있어요
       internal static let description = Strings.tr("Localization", "settings.notification.description", fallback: "아이폰 설정에서 바꿀 수 있어요")
+      /// 아이패드 설정에서 바꿀 수 있어요
+      internal static let descriptionPad = Strings.tr("Localization", "settings.notification.description_pad", fallback: "아이패드 설정에서 바꿀 수 있어요")
       /// 꺼짐
       internal static let off = Strings.tr("Localization", "settings.notification.off", fallback: "꺼짐")
       /// 켜짐

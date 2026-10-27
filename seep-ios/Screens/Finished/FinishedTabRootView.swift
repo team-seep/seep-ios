@@ -48,8 +48,13 @@ struct FinishedTabRootView: View {
         }
         .background(Color.gray2)
         // 루트는 헤드라인이 제목이라 내비게이션 바를 두지 않는다
-        .toolbarVisibility(.hidden, for: .navigationBar)
+        // 아이패드는 바에 사이드바 버튼이 있어 바를 남긴다 (GH-99 R-6)
+        .toolbarVisibility(router.isRegularLayout ? .automatic : .hidden, for: .navigationBar)
         .onAppear { viewModel.send(.onAppear) }
+        // 아이패드에서 상세 열이 완료를 취소하거나 지우면 목록이 보이는 채로 다시 읽는다 (GH-99 TC-4)
+        .onChange(of: router.wishesChangedToken) { _, _ in
+            viewModel.send(.onAppear)
+        }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in
             handle(route)
@@ -154,6 +159,7 @@ struct FinishedTabRootView: View {
                                 noDateText: Strings.homeNoDeanline,
                                 dimsFinished: false
                             )
+                            .padSelectionBorder(isSelected: router.padSelection?.id == row.id)
                         }
                         .buttonStyle(.plain)
                     }
