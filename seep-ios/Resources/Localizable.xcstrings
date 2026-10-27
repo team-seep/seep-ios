@@ -21,6 +21,18 @@
             "state" : "translated",
             "value" : "${target} 적기"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写心愿：${target}"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寫心願：${target}"
+          }
         }
       }
     },
@@ -43,6 +55,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "가고 싶어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想去"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想去"
           }
         }
       }
@@ -67,6 +91,18 @@
             "state" : "translated",
             "value" : "가고 싶은 곳 적기"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写下想去的地方"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寫下想去的地方"
+          }
         }
       }
     },
@@ -89,6 +125,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "가장 가까운 D-day 위시를 잠금화면에서 봐요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在锁定屏幕上查看最近 D-day 的心愿"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在鎖定畫面上查看最近 D-day 的心願"
           }
         }
       }
@@ -113,6 +161,18 @@
             "state" : "translated",
             "value" : "갖고 싶어요"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想要"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想要"
+          }
         }
       }
     },
@@ -135,6 +195,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "갖고 싶은 것 적기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写下想要的东西"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寫下想要的東西"
           }
         }
       }
@@ -159,6 +231,18 @@
             "state" : "translated",
             "value" : "깔-끔하게 보기👻"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一目了然👻"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一目了然👻"
+          }
         }
       }
     },
@@ -181,6 +265,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "나의 꿈을 향해 한걸음 쉽게 다가가요!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向梦想轻松迈进一步！"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向夢想輕鬆邁進一步！"
           }
         }
       }
@@ -205,6 +301,18 @@
             "state" : "translated",
             "value" : "남은 싶"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剩余心愿"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剩餘心願"
+          }
         }
       }
     },
@@ -227,6 +335,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "남은 위시는 몇개!?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还剩几个心愿！？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還剩幾個心願！？"
           }
         }
       }
@@ -251,6 +371,18 @@
             "state" : "translated",
             "value" : "누구보다 빠르게 나의 위시 리스트를 등록해보는건 어때요?"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要不要比谁都快地记下你的心愿清单？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要不要比誰都快地記下你的心願清單？"
+          }
         }
       }
     },
@@ -273,6 +405,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "다가오는 싶 D-day"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即将到来的心愿 D-day"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即將到來的心願 D-day"
           }
         }
       }
@@ -297,6 +441,18 @@
             "state" : "translated",
             "value" : "단축어"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷指令"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "捷徑"
+          }
         }
       }
     },
@@ -319,6 +475,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "등록해놓은 위시리스트를 깔끔하게 볼래요?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想清清爽爽地查看已记下的心愿清单吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想清清爽爽地查看已記下的心願清單嗎？"
           }
         }
       }
@@ -343,6 +511,18 @@
             "state" : "translated",
             "value" : "바로 체크하기"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速打勾"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速打勾"
+          }
         }
       }
     },
@@ -365,6 +545,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "빠르게 등록하기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速记下"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速記下"
           }
         }
       }
@@ -389,6 +581,18 @@
             "state" : "translated",
             "value" : "생각났을 때 바로 위시를 적어요"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想到就马上记下心愿"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想到就馬上記下心願"
+          }
         }
       }
     },
@@ -411,6 +615,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "싶 적기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写下心愿"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寫下心願"
           }
         }
       }
@@ -435,6 +651,18 @@
             "state" : "translated",
             "value" : "아직 못 이룬 위시가 몇 개인지 봐요"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "看看还有几个心愿没实现"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "看看還有幾個心願沒實現"
+          }
         }
       }
     },
@@ -457,6 +685,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "앱을 열지 않고 다음 단계와 위시를 체크해요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无需打开 App，就能为下一步和心愿打勾"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不用打開 App，就能為下一步和心願打勾"
           }
         }
       }
@@ -481,6 +721,18 @@
             "state" : "translated",
             "value" : "여는 곳"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来源"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "來源"
+          }
         }
       }
     },
@@ -503,6 +755,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "위시 ID"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "心愿 ID"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "心願 ID"
           }
         }
       }
@@ -527,6 +791,18 @@
             "state" : "translated",
             "value" : "위시 완료 취소하기"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消心愿完成"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消心願完成"
+          }
         }
       }
     },
@@ -549,6 +825,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "위시 체크하기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "为心愿打勾"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為心願打勾"
           }
         }
       }
@@ -573,6 +861,18 @@
             "state" : "translated",
             "value" : "카테고리"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分类"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "類別"
+          }
         }
       }
     },
@@ -595,6 +895,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "컨트롤"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "控制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "控制項"
           }
         }
       }
@@ -619,6 +931,18 @@
             "state" : "translated",
             "value" : "하고 싶어요"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想做"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想做"
+          }
         }
       }
     },
@@ -641,6 +965,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "하고 싶은 것 적기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写下想做的事"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寫下想做的事"
           }
         }
       }
