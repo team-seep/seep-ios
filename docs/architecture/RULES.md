@@ -181,9 +181,12 @@ migrator.registerMigration("v2") { db in
 - 색은 `seep-ios/DesignSystem/SeepColor.swift`의 토큰(`Color.gray5`, `.seepBlue` …)만. `Color(red:…)`·`Color(r:…)`·`Color(hex:)` 직접 생성 금지.
 - 폰트는 `SeepFont.swift`(`Font.appleBold(size:)` …)만. `Font.custom(…)` 직접 호출 금지.
 - 화면 문구는 `Text(Strings.xxx)`. `Text("문구")` 리터럴 금지(숫자·고유명사처럼 번역하지 않는 값은 `Text(verbatim:)`).
+- 문구 원본은 String Catalog `seep-ios/Resources/Localization.xcstrings`(원문 `ko`)다. 새 키는 카탈로그에 원문과 **번역자용 comment(어느 화면 어느 자리, 자리표시자 뜻)** 를 같이 넣고 `make swiftgen`으로 `Strings.swift`를 만든다. 개수를 넣는 문구는 복수형 변형(plural)으로 둔다. 용어·어조는 `docs/i18n/TRANSLATION.md`.
+- 문장을 이어 붙이지 않는다(`"\(날짜)" + "까지"` ❌ → `Strings.Detail.Dday.untilFormat(날짜)`). 변수 뒤에 조사를 코드로 붙이지 않는다.
+- 사람에게 보여 주는 날짜·시간은 `DisplayDate`(로케일 템플릿)로 쓴다. `"M월 d일"` 같은 고정 패턴·`Locale(identifier: "ko_KR")` 고정 금지. 저장·파싱용 날짜는 `en_US_POSIX` + 그레고리력(`DateUtils`).
 - 레이아웃 크기는 `UIScreen`이 아니라 컨테이너 기준(`containerRelativeFrame`, `GeometryReader`는 꼭 필요할 때만)으로 정한다. 넓은 화면 기둥은 `SeepLayout.maxContentWidth`.
 
-**이유** — 디자인 토큰을 거치지 않은 값은 리뷰에서 눈으로 잡을 수 없고, 다크모드·디자인 변경 때 전수 검색이 필요해진다. SwiftGen은 키 오타를 컴파일 에러로 바꾼다. 화면 크기로 고정한 값은 폴더블(아이폰 듀오)처럼 실행 중에 창 크기가 바뀌면 틀어진다 (GH-9).
+**이유** — 디자인 토큰을 거치지 않은 값은 리뷰에서 눈으로 잡을 수 없고, 다크모드·디자인 변경 때 전수 검색이 필요해진다. SwiftGen은 키 오타를 컴파일 에러로 바꾼다. SwiftGen은 `.xcstrings`를 읽지 못해 `scripts/generate-strings.py`가 카탈로그 원문을 넘겨 준다 — 호출부(`Strings.xxx`)와 테이블 이름(`Localization`)은 그대로다 (GH-100). 화면 크기로 고정한 값은 폴더블(아이폰 듀오)처럼 실행 중에 창 크기가 바뀌면 틀어진다 (GH-9).
 
 **좋은 예**
 ```swift
@@ -201,7 +204,7 @@ Text("하고 싶은 것들이")                         // ❌ 문자열 리터�
 
 **강제 수단** — SwiftLint `no_color_literal`, `no_font_custom`, `no_text_literal`, `no_localized_literal`.
 
-**예외** — 위젯은 색·폰트·문자열 규칙에서 제외한다(위젯 문구는 위젯 타깃 안에 있다). 위젯 색 토큰은 앱과 같은 `seep-ios/DesignSystem/SeepColor.swift`를 쓴다(앱·위젯 두 타깃 멤버). 토큰 정의 파일(`SeepColor.swift`·`SeepFont.swift`)은 색·폰트 규칙에서 제외. 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
+**예외** — 위젯은 린트 대상에서 빠지지만 문구는 앱과 같은 `Localization.xcstrings`·`Strings.swift`(앱·위젯 두 타깃 멤버)를 쓴다(GH-100). App Intents·App Shortcuts·위젯 설정 이름처럼 빌드 때 상수 문자열로 뽑히는 곳은 원문이 곧 키인 `Localizable.xcstrings`·`AppShortcuts.xcstrings`에 둔다. 권한 문구는 `InfoPlist.xcstrings`. 위젯 색 토큰은 앱과 같은 `seep-ios/DesignSystem/SeepColor.swift`를 쓴다(앱·위젯 두 타깃 멤버). 토큰 정의 파일(`SeepColor.swift`·`SeepFont.swift`)은 색·폰트 규칙에서 제외. 문자열을 추가하면 `make swiftgen`으로 `Generated/Strings.swift`를 갱신해 같이 커밋한다.
 
 ---
 
