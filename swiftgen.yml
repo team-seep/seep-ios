@@ -1,11 +1,4 @@
-strings:
-  inputs: seep-ios/Resources/en.lproj/Localization.strings
-  outputs:
-    - templateName: structured-swift5
-      output: seep-ios/Generated/Strings.swift
-      params:
-          enumName: Strings
-
+# 문구(Strings.swift)는 scripts/generate-strings.py 가 Localization.xcstrings 에서 만든다 (GH-100)
 xcassets:
   inputs:
     - seep-ios/Resources/Images.xcassets

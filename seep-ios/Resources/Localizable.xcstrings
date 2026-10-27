@@ -1,0 +1,314 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "${target} 적기" : {
+      "comment" : "단축어 앱 · '싶 적기' 동작 요약. ${target} = 고른 카테고리(하고 싶어요 등)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${target} 적기"
+          }
+        }
+      }
+    },
+    "가고 싶어요" : {
+      "comment" : "단축어·제어 센터 · 카테고리 선택지",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가고 싶어요"
+          }
+        }
+      }
+    },
+    "가고 싶은 곳 적기" : {
+      "comment" : "단축어 · 앱 단축어 짧은 이름(Spotlight·단축어 앱)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가고 싶은 곳 적기"
+          }
+        }
+      }
+    },
+    "가장 가까운 D-day 위시를 잠금화면에서 봐요" : {
+      "comment" : "위젯 고르기 화면 · 잠금화면 D-day 위젯 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가장 가까운 D-day 위시를 잠금화면에서 봐요"
+          }
+        }
+      }
+    },
+    "갖고 싶어요" : {
+      "comment" : "단축어·제어 센터 · 카테고리 선택지",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "갖고 싶어요"
+          }
+        }
+      }
+    },
+    "갖고 싶은 것 적기" : {
+      "comment" : "단축어 · 앱 단축어 짧은 이름(Spotlight·단축어 앱)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "갖고 싶은 것 적기"
+          }
+        }
+      }
+    },
+    "깔-끔하게 보기👻" : {
+      "comment" : "위젯 고르기 화면 · 중형 목록 위젯 이름. '깔-끔'은 말장난이라 그대로 옮기지 않아도 된다",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "깔-끔하게 보기👻"
+          }
+        }
+      }
+    },
+    "나의 꿈을 향해 한걸음 쉽게 다가가요!" : {
+      "comment" : "위젯 고르기 화면 · 남은 개수 위젯 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나의 꿈을 향해 한걸음 쉽게 다가가요!"
+          }
+        }
+      }
+    },
+    "남은 싶" : {
+      "comment" : "위젯 고르기 화면 · 잠금화면 남은 개수 위젯 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "남은 싶"
+          }
+        }
+      }
+    },
+    "남은 위시는 몇개!?" : {
+      "comment" : "위젯 고르기 화면 · 남은 개수 위젯 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "남은 위시는 몇개!?"
+          }
+        }
+      }
+    },
+    "누구보다 빠르게 나의 위시 리스트를 등록해보는건 어때요?" : {
+      "comment" : "위젯 고르기 화면 · 작게 쓰기 위젯 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "누구보다 빠르게 나의 위시 리스트를 등록해보는건 어때요?"
+          }
+        }
+      }
+    },
+    "다가오는 싶 D-day" : {
+      "comment" : "위젯 고르기 화면 · 잠금화면 D-day 위젯 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다가오는 싶 D-day"
+          }
+        }
+      }
+    },
+    "단축어" : {
+      "comment" : "단축어 · '여는 곳' 선택지: 단축어 앱",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단축어"
+          }
+        }
+      }
+    },
+    "등록해놓은 위시리스트를 깔끔하게 볼래요?" : {
+      "comment" : "위젯 고르기 화면 · 중형 목록 위젯 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "등록해놓은 위시리스트를 깔끔하게 볼래요?"
+          }
+        }
+      }
+    },
+    "바로 체크하기" : {
+      "comment" : "위젯 고르기 화면 · 바로 체크하기 위젯 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바로 체크하기"
+          }
+        }
+      }
+    },
+    "빠르게 등록하기" : {
+      "comment" : "위젯 고르기 화면 · 작게 쓰기 위젯 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "빠르게 등록하기"
+          }
+        }
+      }
+    },
+    "생각났을 때 바로 위시를 적어요" : {
+      "comment" : "제어 센터 컨트롤·단축어 동작 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생각났을 때 바로 위시를 적어요"
+          }
+        }
+      }
+    },
+    "싶 적기" : {
+      "comment" : "제어 센터 컨트롤 이름이자 단축어 동작 이름. '싶'은 앱 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "싶 적기"
+          }
+        }
+      }
+    },
+    "아직 못 이룬 위시가 몇 개인지 봐요" : {
+      "comment" : "위젯 고르기 화면 · 잠금화면 남은 개수 위젯 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 못 이룬 위시가 몇 개인지 봐요"
+          }
+        }
+      }
+    },
+    "앱을 열지 않고 다음 단계와 위시를 체크해요" : {
+      "comment" : "위젯 고르기 화면 · 바로 체크하기 위젯 설명",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱을 열지 않고 다음 단계와 위시를 체크해요"
+          }
+        }
+      }
+    },
+    "여는 곳" : {
+      "comment" : "단축어 · 인텐트를 어디서 열었는지 나타내는 매개변수 이름(사용자에게 거의 안 보임)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여는 곳"
+          }
+        }
+      }
+    },
+    "위시 ID" : {
+      "comment" : "홈 화면 위젯(바로 체크하기) · 인텐트 매개변수 이름(사용자에게 거의 안 보임)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위시 ID"
+          }
+        }
+      }
+    },
+    "위시 완료 취소하기" : {
+      "comment" : "홈 화면 위젯(바로 체크하기) · 완료 취소 인텐트 이름(사용자에게 거의 안 보임)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위시 완료 취소하기"
+          }
+        }
+      }
+    },
+    "위시 체크하기" : {
+      "comment" : "홈 화면 위젯(바로 체크하기) · 체크 버튼 인텐트 이름(사용자에게 거의 안 보임)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위시 체크하기"
+          }
+        }
+      }
+    },
+    "카테고리" : {
+      "comment" : "단축어·제어 센터 · '카테고리' 매개변수 이름",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카테고리"
+          }
+        }
+      }
+    },
+    "컨트롤" : {
+      "comment" : "단축어 · '여는 곳' 선택지: 제어 센터 컨트롤",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "컨트롤"
+          }
+        }
+      }
+    },
+    "하고 싶어요" : {
+      "comment" : "단축어·제어 센터 · 카테고리 선택지",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하고 싶어요"
+          }
+        }
+      }
+    },
+    "하고 싶은 것 적기" : {
+      "comment" : "단축어 · 앱 단축어 짧은 이름(Spotlight·단축어 앱)",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하고 싶은 것 적기"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

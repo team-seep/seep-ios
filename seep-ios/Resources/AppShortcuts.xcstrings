@@ -1,0 +1,39 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "${applicationName}에 가고 싶은 곳 적기" : {
+      "comment" : "Siri·단축어 · 말해서 실행하는 문장. ${applicationName} = 앱 이름(싶). 언어마다 자연스러운 문장으로",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}에 가고 싶은 곳 적기"
+          }
+        }
+      }
+    },
+    "${applicationName}에 갖고 싶은 것 적기" : {
+      "comment" : "Siri·단축어 · 말해서 실행하는 문장. ${applicationName} = 앱 이름(싶). 언어마다 자연스러운 문장으로",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}에 갖고 싶은 것 적기"
+          }
+        }
+      }
+    },
+    "${applicationName}에 하고 싶은 것 적기" : {
+      "comment" : "Siri·단축어 · 말해서 실행하는 문장. ${applicationName} = 앱 이름(싶). 언어마다 자연스러운 문장으로",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}에 하고 싶은 것 적기"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
