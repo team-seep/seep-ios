@@ -15,15 +15,26 @@ enum SettingsLinks {
         return URL(string: "itms-apps://apps.apple.com/app/id\(appStoreID)?action=write-review")
     }
 
-    /// 제목 "[싶 문의]", 본문에 앱 버전·iOS 버전·기기 모델을 미리 채운 `mailto:` (TC-302)
-    static func contactMailURL(email: String?, appVersion: String, osVersion: String, deviceModel: String) -> URL? {
+    /// 제목 "[싶 문의]", 본문에 앱 버전·iOS 버전·기기 모델을 미리 채운 `mailto:` (TC-302).
+    /// `extraLine`이 있으면 기기 정보 아래에 한 줄 덧붙인다 (GH-96 R-11: 이전 오류 종류)
+    static func contactMailURL(
+        email: String?,
+        appVersion: String,
+        osVersion: String,
+        deviceModel: String,
+        extraLine: String? = nil
+    ) -> URL? {
         guard let email, !email.isEmpty else { return nil }
+        var body = Strings.Settings.Contact.bodyFormat(appVersion, osVersion, deviceModel)
+        if let extraLine {
+            body += "\n" + extraLine
+        }
         var components = URLComponents()
         components.scheme = "mailto"
         components.path = email
         components.queryItems = [
             URLQueryItem(name: "subject", value: Strings.Settings.Contact.subject),
-            URLQueryItem(name: "body", value: Strings.Settings.Contact.bodyFormat(appVersion, osVersion, deviceModel))
+            URLQueryItem(name: "body", value: body)
         ]
         return components.url
     }

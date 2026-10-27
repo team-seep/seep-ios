@@ -2,6 +2,7 @@ import AppIntents
 import os
 import UIKit
 import UserNotifications
+import WidgetKit
 
 import Firebase
 import GRDB
@@ -36,7 +37,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 유닛 테스트가 콘솔 값에 흔들리지 않도록 테스트 호스트로 뜰 때는 받지 않는다
         guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
         Task {
-            await RemoteConfigRepositoryImpl().fetchAndActivate()
+            let remoteConfig = RemoteConfigRepositoryImpl()
+            await remoteConfig.fetchAndActivate()
+            await reimportLegacyRealmIfRequested(token: remoteConfig.fetchLegacyRealmReimportToken())
+        }
+    }
+
+    /// Remote Config 재이전 토큰이 새 값이면 원본 Realm 에서 빠진 위시를 다시 가져온다 (GH-96 R-3~R-8).
+    /// DB 를 여는 `setupDatabase`보다 늦게 돌도록 Remote Config 를 받은 뒤에 부른다
+    private func reimportLegacyRealmIfRequested(token: String) async {
+        guard !token.isEmpty, AppDatabase.shared != nil else { return }
+        let restoredCount = DatabaseMigrationFollowUp().reimportIfRequested(token: token)
+        guard restoredCount > 0 else { return }
+        await MainActor.run {
+            WidgetCenter.shared.reloadAllTimelines()
+            AppEnvironment.shared.router.wishesDidChange()
+            AppEnvironment.shared.toastCenter.show(Strings.Home.MigrationNotice.reimportSuccessFormat(restoredCount))
         }
     }
     

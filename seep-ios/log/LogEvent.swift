@@ -208,4 +208,10 @@ enum LogObjectId: String {
     case reorderWishes = "reorder_wishes"
     /// 순서 바꾸기 모드에서 위시를 옮겨 놓음 (GH-73)
     case moveWish = "move_wish"
+    /// 홈 "예전 위시를 불러오지 못했어요" 카드 노출 (GH-96)
+    case migrationNotice = "migration_notice"
+    /// 이전 실패 카드 [다시 시도] (GH-96)
+    case migrationRetry = "migration_retry"
+    /// 이전 실패 카드 [문의하기] (GH-96)
+    case migrationContact = "migration_contact"
 }
