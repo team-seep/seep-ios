@@ -11,6 +11,12 @@
             "value" : "Face ID"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29,6 +35,12 @@
             "value" : "Passcode"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デバイスのパスコード"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42,6 +54,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
@@ -65,6 +83,12 @@
             "value" : "Unlock Seep"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepのロックを確認します"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unlock with %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@で確認すると開きます"
           }
         },
         "ko" : {
@@ -101,6 +131,12 @@
             "value" : "Seep is locked"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepはロックされています"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117,6 +153,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "locked"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロックされています"
           }
         },
         "ko" : {
@@ -137,6 +179,12 @@
             "value" : "Unlock with %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@で開く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -153,6 +201,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
           }
         },
         "ko" : {
@@ -173,6 +227,12 @@
             "value" : "Turn off lock"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロックをオフにする"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -189,6 +249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "With the lock off, Seep won't ask when you open it.\nWe'll check it's you one more time first."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロックをオフにすると、アプリを開くときに確認しなくなります。\nオフにする前にもう一度確認します。"
           }
         },
         "ko" : {
@@ -209,6 +275,12 @@
             "value" : "Seep is\nlocked right now"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いまSeepは\nロックされています"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -225,6 +297,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "locked"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロックされています"
           }
         },
         "ko" : {
@@ -245,6 +323,12 @@
             "value" : "Lock with %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@でロック"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -261,6 +345,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seep will ask for %@ or your passcode when you open it.\nHome Screen widgets still show while locked."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを開くときに%@かデバイスのパスコードで確認します。\nホーム画面のウィジェットはロックに関係なく表示されます。"
           }
         },
         "ko" : {
@@ -281,6 +371,12 @@
             "value" : "Seep will ask for your passcode when you open it.\nHome Screen widgets still show while locked."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを開くときにデバイスのパスコードで確認します。\nホーム画面のウィジェットはロックに関係なく表示されます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -297,6 +393,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Just for your eyes?\nLock Seep"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepを自分だけが見られるように\nロックしますか？"
           }
         },
         "ko" : {
@@ -317,6 +419,12 @@
             "value" : "Lock Seep"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロックしますか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -333,6 +441,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maybe later"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで"
           }
         },
         "ko" : {
@@ -353,6 +467,12 @@
             "value" : "Set a device passcode first"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先にデバイスのパスコードを設定してください"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -366,6 +486,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ · %@"
@@ -389,6 +515,12 @@
             "value" : "Nice"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やった！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -405,6 +537,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "New badge unlocked"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいバッジをもらいました"
           }
         },
         "ko" : {
@@ -437,6 +575,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ウィッシュを%d個も叶えました！\n新しいバッジをもらいました"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -461,6 +611,12 @@
             "value" : "See badges"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バッジを見る"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -479,6 +635,12 @@
             "value" : "A new one unlocks every time a wish comes true"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュを叶えるたびにひとつずつ開きます"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -495,6 +657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "collected!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "集めました！"
           }
         },
         "ko" : {
@@ -522,6 +690,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Your wishes came true —\n%d badges collected!"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "叶えたウィッシュが集まって\nバッジを%d個集めました！"
                 }
               }
             }
@@ -563,6 +743,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -599,6 +791,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ウィッシュを%d個叶える"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -623,6 +827,12 @@
             "value" : "Achieve 1 thing to do"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことを1つ叶える"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -639,6 +849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Achieve 1 thing to get"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものを1つ叶える"
           }
         },
         "ko" : {
@@ -659,6 +875,12 @@
             "value" : "Achieve 1 place to go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所を1つ叶える"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -677,6 +899,12 @@
             "value" : "Achieve one by its due date"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期日までに叶える"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -690,6 +918,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-day"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "D-day"
@@ -713,6 +947,12 @@
             "value" : "First wish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめてのウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -729,6 +969,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "10th wish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10個目のウィッシュ"
           }
         },
         "ko" : {
@@ -749,6 +995,12 @@
             "value" : "30th wish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30個目のウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -765,6 +1017,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "5th wish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5個目のウィッシュ"
           }
         },
         "ko" : {
@@ -785,6 +1043,12 @@
             "value" : "First Do"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめてのやりたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -801,6 +1065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "First Get"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめてのほしい"
           }
         },
         "ko" : {
@@ -821,6 +1091,12 @@
             "value" : "First Go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめての行きたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -839,6 +1115,12 @@
             "value" : "Promise keeper"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "約束を守る人"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -852,6 +1134,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d / %d"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d / %d"
@@ -875,6 +1163,12 @@
             "value" : "Do"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -891,6 +1185,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしい"
           }
         },
         "ko" : {
@@ -911,6 +1211,12 @@
             "value" : "Go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -927,6 +1233,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Something went wrong.\nPlease try again in a moment."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一時的なエラーが発生しました。\nしばらくしてからもう一度お試しください。"
           }
         },
         "ko" : {
@@ -947,6 +1259,12 @@
             "value" : "₩%@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ウォン"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -963,6 +1281,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "₩"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウォン"
           }
         },
         "ko" : {
@@ -983,6 +1307,12 @@
             "value" : "Cancel"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -999,6 +1329,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたい"
           }
         },
         "ko" : {
@@ -1019,6 +1355,12 @@
             "value" : "Get"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1037,6 +1379,12 @@
             "value" : "Go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1050,6 +1398,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1073,6 +1427,12 @@
             "value" : "Add the \"Write a wish\" control to jump straight to writing without finding the app."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「Seepに書く」コントロールを置くと、アプリを探さずにすぐ作成画面を開けます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1089,6 +1449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Control Center and tap ＋ in the top left."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロールセンターを開き、左上の＋をタップします。"
           }
         },
         "ko" : {
@@ -1109,6 +1475,12 @@
             "value" : "In Add a Control, find \"Write a wish\" and place it."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「コントロールを追加」で「Seepに書く」を探して配置します。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1125,6 +1497,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch and hold the control to pick a category."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロールを長押しするとカテゴリを選べます。"
           }
         },
         "ko" : {
@@ -1145,6 +1523,12 @@
             "value" : "Control Center · Lock Screen · Action button"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロールセンター · ロック画面 · アクションボタン"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1161,6 +1545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can also write right away with the Shortcuts app or Siri."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショートカットアプリやSiriからもすぐ書けます。"
           }
         },
         "ko" : {
@@ -1181,6 +1571,12 @@
             "value" : "In the Shortcuts app, tap ＋ to make a new shortcut."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショートカットアプリで＋をタップして新しいショートカットを作ります。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1197,6 +1593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search actions for \"Seep\" and add \"Write a wish\"."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクションの検索で「Seep」を探し、「Seepに書く」を追加します。"
           }
         },
         "ko" : {
@@ -1217,6 +1619,12 @@
             "value" : "Or just say \"Write a wish\" to Siri."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siriに「Seepに書く」と話しかけてもOKです。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1233,6 +1641,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shortcuts · Siri"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショートカット · Siri"
           }
         },
         "ko" : {
@@ -1253,6 +1667,12 @@
             "value" : "Write from Control Center · Shortcuts"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロールセンター · ショートカットで書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1269,6 +1689,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add to Calendar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カレンダーに追加"
           }
         },
         "ko" : {
@@ -1289,6 +1715,12 @@
             "value" : "Added to Calendar"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カレンダーに追加済み"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1305,6 +1737,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加する"
           }
         },
         "ko" : {
@@ -1325,6 +1763,12 @@
             "value" : "Add it again?\nYou'll get a duplicate event in your calendar."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もう一度追加しますか？\nカレンダーに同じ予定がもうひとつできます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1341,6 +1785,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Already added to your calendar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すでにカレンダーに追加しています"
           }
         },
         "ko" : {
@@ -1361,6 +1811,12 @@
             "value" : "Allow calendar access in Settings."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定でカレンダーへのアクセスを許可してください。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1377,6 +1833,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go to Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定を開く"
           }
         },
         "ko" : {
@@ -1397,6 +1859,12 @@
             "value" : "Allow calendar access to add events"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カレンダーへのアクセスを許可すると追加できます"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1413,6 +1881,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "There's no calendar to add the event to."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "予定を追加できるカレンダーがありません。"
           }
         },
         "ko" : {
@@ -1433,6 +1907,12 @@
             "value" : "👏 Added %@ to your calendar"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 %@をカレンダーに追加しました！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1449,6 +1929,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This wish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いまのウィッシュ"
           }
         },
         "ko" : {
@@ -1469,6 +1955,12 @@
             "value" : "Came true %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に叶えました"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1485,6 +1977,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Came true %@ · “%@”"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に叶えました · 「%@」"
           }
         },
         "ko" : {
@@ -1517,6 +2015,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "前のウィッシュをあと%d個表示"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1541,6 +2051,12 @@
             "value" : "Write what's next"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "続けて書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1557,6 +2073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "#%d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d番目"
           }
         },
         "ko" : {
@@ -1577,6 +2099,12 @@
             "value" : "Wish chain"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "つながるウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1595,6 +2123,12 @@
             "value" : "Was %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@でした"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1608,6 +2142,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-Day"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "D-Day"
@@ -1631,6 +2171,12 @@
             "value" : "By %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@まで"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1647,6 +2193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "By today"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日まで"
           }
         },
         "ko" : {
@@ -1667,6 +2219,12 @@
             "value" : "＋ Add"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 記録する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1683,6 +2241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "＋ Add a line for today"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 今日のひとことを記録"
           }
         },
         "ko" : {
@@ -1703,6 +2267,12 @@
             "value" : "Delete"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1719,6 +2289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "MMM d (E)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M/d(E)"
           }
         },
         "ko" : {
@@ -1739,6 +2315,12 @@
             "value" : "Close"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1752,6 +2334,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d/%d"
@@ -1775,6 +2363,12 @@
             "value" : "EEE, MMM d"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M月d日(E)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1791,6 +2385,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sum up today in one line"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日やったことをひとことで残しましょう"
           }
         },
         "ko" : {
@@ -1811,6 +2411,12 @@
             "value" : "Save"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1827,6 +2433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "how did it go?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どうでしたか？"
           }
         },
         "ko" : {
@@ -1847,6 +2459,12 @@
             "value" : "Today's %@ "
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日の%@ "
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1863,6 +2481,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : ","
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "は"
           }
         },
         "ko" : {
@@ -1883,6 +2507,12 @@
             "value" : "Journal"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日記"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1899,6 +2529,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "👏 Journal entry saved"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 日記を記録しました"
           }
         },
         "ko" : {
@@ -1919,6 +2555,12 @@
             "value" : "See all (%d)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて見る (%d)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1935,6 +2577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rewrite"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書き直す"
           }
         },
         "ko" : {
@@ -1955,6 +2603,12 @@
             "value" : "Your old letter will be gone."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前の手紙は消えます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1971,6 +2625,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rewrite your sealed letter?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "封印した手紙を書き直しますか？"
           }
         },
         "ko" : {
@@ -1991,6 +2651,12 @@
             "value" : "Sealed on %@ · %d chars"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に封印 · %d文字"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2007,6 +2673,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the day it comes true"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えた日に開きます"
           }
         },
         "ko" : {
@@ -2027,6 +2699,12 @@
             "value" : "To future me"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未来の自分へ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2043,6 +2721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Written %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に書きました"
           }
         },
         "ko" : {
@@ -2063,6 +2747,12 @@
             "value" : "Open product link"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "商品リンクを開く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2079,6 +2769,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Couldn't load a preview. Tap to open"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレビューを読み込めませんでした。タップすると開けます"
           }
         },
         "ko" : {
@@ -2099,6 +2795,12 @@
             "value" : "Link"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンク"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2115,6 +2817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ + %d more"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ほか%d件"
           }
         },
         "ko" : {
@@ -2135,6 +2843,12 @@
             "value" : "Edit"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2151,6 +2865,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "More"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
           }
         },
         "ko" : {
@@ -2171,6 +2891,12 @@
             "value" : "＋ Add photo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 写真を追加"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2187,6 +2913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更"
           }
         },
         "ko" : {
@@ -2207,6 +2939,12 @@
             "value" : "Remove photo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2223,6 +2961,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Couldn't load that photo. Try another one."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を読み込めませんでした。別の写真を選んでください。"
           }
         },
         "ko" : {
@@ -2243,6 +2987,12 @@
             "value" : "Couldn't save the photo. Please try again in a moment."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を保存できませんでした。しばらくしてからもう一度お試しください。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2259,6 +3009,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Photo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真"
           }
         },
         "ko" : {
@@ -2279,6 +3035,12 @@
             "value" : "Remove place"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所を削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2295,6 +3057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search by place name or address. No location access needed."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所の名前や住所で探せます。位置情報の許可は不要です。"
           }
         },
         "ko" : {
@@ -2315,6 +3083,12 @@
             "value" : "Clear search"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索語を消去"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2331,6 +3105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No places found"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "該当する場所がありません"
           }
         },
         "ko" : {
@@ -2351,6 +3131,12 @@
             "value" : "Place name or address"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所の名前や住所"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2367,6 +3153,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Where do you\nwant to go?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どこに\n行きたいですか？"
           }
         },
         "ko" : {
@@ -2387,6 +3179,12 @@
             "value" : "want to go?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2403,6 +3201,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Place"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所"
           }
         },
         "ko" : {
@@ -2423,6 +3227,12 @@
             "value" : "You've saved it all! Time to get it"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全額貯まりました！いよいよゲットする時です"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2439,6 +3249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete entry"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録を削除"
           }
         },
         "ko" : {
@@ -2459,6 +3275,12 @@
             "value" : "Delete"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2477,6 +3299,12 @@
             "value" : "Delete this entry?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この記録を削除しますか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2490,6 +3318,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%@"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%@"
@@ -2513,6 +3347,12 @@
             "value" : "%@ more to go!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あと%@で達成です！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2529,6 +3369,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Amount saved"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯めた金額"
           }
         },
         "ko" : {
@@ -2549,6 +3395,12 @@
             "value" : "+₩100K"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+10万"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2565,6 +3417,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+₩10K"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+1万"
           }
         },
         "ko" : {
@@ -2585,6 +3443,12 @@
             "value" : "+₩50K"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+5万"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2598,6 +3462,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / %@"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ / %@"
@@ -2621,6 +3491,12 @@
             "value" : "After this: %@ (%d%%)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録すると%@ (%d%%)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2637,6 +3513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "All that's left"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "残りの金額すべて"
           }
         },
         "ko" : {
@@ -2657,6 +3539,12 @@
             "value" : "Save"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2673,6 +3561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How much have\nyou saved?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いくら\n貯まりましたか？"
           }
         },
         "ko" : {
@@ -2693,6 +3587,12 @@
             "value" : "you saved?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯まりましたか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2706,6 +3606,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/ %@"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "/ %@"
@@ -2729,6 +3635,12 @@
             "value" : "👏 You've hit your savings goal!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 目標金額が全部貯まりました！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2745,6 +3657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開く"
           }
         },
         "ko" : {
@@ -2765,6 +3683,12 @@
             "value" : "＋ Add place"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 場所を追加"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2781,6 +3705,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更"
           }
         },
         "ko" : {
@@ -2801,6 +3731,12 @@
             "value" : "Savings"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯めたお金"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2819,6 +3755,12 @@
             "value" : "＋ Add"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 記録"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2832,6 +3774,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d/%d"
@@ -2855,6 +3803,12 @@
             "value" : "Add"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2871,6 +3825,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "e.g. Pick a date"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例）日にちを決める"
           }
         },
         "ko" : {
@@ -2891,6 +3851,12 @@
             "value" : "Add step"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ステップを追加"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2907,6 +3873,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
           }
         },
         "ko" : {
@@ -2927,6 +3899,12 @@
             "value" : "Steps"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ステップ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2943,6 +3921,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "📍You can add up to 10 steps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍ステップは10個まで追加できます！"
           }
         },
         "ko" : {
@@ -2963,6 +3947,12 @@
             "value" : "📍Keep steps to 30 characters"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍ステップは30文字以内で入力してください！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2979,6 +3969,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
           }
         },
         "ko" : {
@@ -2999,6 +3995,12 @@
             "value" : "Mark as not done"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了を取り消す"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3015,6 +4017,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除する"
           }
         },
         "ko" : {
@@ -3035,6 +4043,12 @@
             "value" : "Share"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3051,6 +4065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "It'll go back to your\nhome list."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取り消すと、またホームで\n確認できます！"
           }
         },
         "ko" : {
@@ -3071,6 +4091,12 @@
             "value" : "No"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いいえ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3087,6 +4113,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yes, undo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取り消す"
           }
         },
         "ko" : {
@@ -3107,6 +4139,12 @@
             "value" : "Mark this as not done?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了した項目を取り消しますか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3123,6 +4161,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This can't be undone😭\nDelete it anyway?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除すると元に戻せません😭\n削除してもいいですか？"
           }
         },
         "ko" : {
@@ -3143,6 +4187,12 @@
             "value" : "Activities"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクティビティ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3159,6 +4209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Animals"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動物"
           }
         },
         "ko" : {
@@ -3179,6 +4235,12 @@
             "value" : "Flags"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旗"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3195,6 +4257,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Food"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食べ物"
           }
         },
         "ko" : {
@@ -3215,6 +4283,12 @@
             "value" : "Objects"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モノ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3231,6 +4305,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "People"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "人"
           }
         },
         "ko" : {
@@ -3251,6 +4331,12 @@
             "value" : "Smileys"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表情"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3267,6 +4353,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Symbols"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記号"
           }
         },
         "ko" : {
@@ -3287,6 +4379,12 @@
             "value" : "Travel"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旅行"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3303,6 +4401,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recent"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近使った項目"
           }
         },
         "ko" : {
@@ -3323,6 +4427,12 @@
             "value" : "Pick an emoji"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "絵文字を選ぶ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3339,6 +4449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See all ›"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "見る ›"
           }
         },
         "ko" : {
@@ -3359,6 +4475,12 @@
             "value" : "Badges %d/%d"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バッジ %d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3375,6 +4497,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Check off wishes in the Wishes tab and they'll show up here"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュタブでチェックするとここに集まります"
           }
         },
         "ko" : {
@@ -3395,6 +4523,12 @@
             "value" : "No wishes achieved in this category yet"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このカテゴリで叶えたウィッシュはまだありません"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3411,6 +4545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No achieved wishes yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ叶えたウィッシュはありません"
           }
         },
         "ko" : {
@@ -3431,6 +4571,12 @@
             "value" : "All"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3447,6 +4593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたい"
           }
         },
         "ko" : {
@@ -3467,6 +4619,12 @@
             "value" : "Get"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3485,6 +4643,12 @@
             "value" : "Go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3501,6 +4665,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "so far!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "集まりました！"
           }
         },
         "ko" : {
@@ -3533,6 +4703,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3557,6 +4739,12 @@
             "value" : "No achieved wishes yet\nStart checking them off!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ叶えたウィッシュはありません\nひとつずつチェックしてみましょう！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3573,6 +4761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start checking them off!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ひとつずつチェックしてみましょう！"
           }
         },
         "ko" : {
@@ -3605,6 +4799,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "これまでに叶えたウィッシュが\n%d個集まりました！"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3629,6 +4835,12 @@
             "value" : "Day %d"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d日に叶えた"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3645,6 +4857,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%@”"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」"
           }
         },
         "ko" : {
@@ -3665,6 +4883,12 @@
             "value" : "Search achieved wishes"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えたウィッシュを検索"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3681,6 +4905,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View ›"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "見る ›"
           }
         },
         "ko" : {
@@ -3701,6 +4931,12 @@
             "value" : "Look back on %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@年に叶えたウィッシュをふり返る"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3714,6 +4950,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d/%d"
@@ -3737,6 +4979,12 @@
             "value" : "Letter to future me"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未来の自分への手紙"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3753,6 +5001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maybe later"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで"
           }
         },
         "ko" : {
@@ -3773,6 +5027,12 @@
             "value" : "Once sealed, you can't read it until this wish comes true"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "封印すると、このウィッシュを叶えるまで読み返せません"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3789,6 +5049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What do you want to tell yourself when this comes true?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このウィッシュを叶えた自分に伝えたいことを書きましょう"
           }
         },
         "ko" : {
@@ -3809,6 +5075,12 @@
             "value" : "Seal it"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "封印する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3825,6 +5097,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "For the day it comes true,\nwrite yourself a letter"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えた日の自分へ\n手紙を残しましょう"
           }
         },
         "ko" : {
@@ -3845,6 +5123,12 @@
             "value" : "write yourself a letter"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手紙を残しましょう"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3861,6 +5145,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Career"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャリア"
           }
         },
         "ko" : {
@@ -3881,6 +5171,12 @@
             "value" : "Date"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デート"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3897,6 +5193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hobby"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "趣味"
           }
         },
         "ko" : {
@@ -3917,6 +5219,12 @@
             "value" : "Leisure"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "レジャー"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3933,6 +5241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daily life"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日常"
           }
         },
         "ko" : {
@@ -3953,6 +5267,12 @@
             "value" : "Shopping"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショッピング"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3969,6 +5289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sports"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スポーツ"
           }
         },
         "ko" : {
@@ -3989,6 +5315,12 @@
             "value" : "Stocks"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "株"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4005,6 +5337,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Travel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旅行"
           }
         },
         "ko" : {
@@ -4025,6 +5363,12 @@
             "value" : "See badges %d/%d"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バッジ %d/%d を見る"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4041,6 +5385,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
           }
         },
         "ko" : {
@@ -4061,6 +5411,12 @@
             "value" : "Nothing here yet.\nTap Write below to add one!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ何も登録されていません。\n下の「書く」ボタンから作成できます！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4077,6 +5433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write it down!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書いてみましょう！"
           }
         },
         "ko" : {
@@ -4097,6 +5459,12 @@
             "value" : "What do you want to do?\nWrite it down!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことを\n書いてみましょう！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4113,6 +5481,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What do you want to get?\nWrite it down!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものを\n書いてみましょう！"
           }
         },
         "ko" : {
@@ -4133,6 +5507,12 @@
             "value" : "Where do you want to go?\nWrite it down!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所を\n書いてみましょう！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4146,6 +5526,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -4169,6 +5555,12 @@
             "value" : "Places to go map"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所マップ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4185,6 +5577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Due soonest"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期日が近い順"
           }
         },
         "ko" : {
@@ -4205,6 +5603,12 @@
             "value" : "Newest first"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "作成が新しい順"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4221,6 +5625,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "My order"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分で決めた順"
           }
         },
         "ko" : {
@@ -4241,6 +5651,12 @@
             "value" : "Change sort"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "並べ替えを変更"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4257,6 +5673,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pick this to drag and reorder on Home"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選ぶとホームでドラッグして順番を変えられます"
           }
         },
         "ko" : {
@@ -4277,6 +5699,12 @@
             "value" : "Grid view"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グリッドで表示"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4293,6 +5721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "List view"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リストで表示"
           }
         },
         "ko" : {
@@ -4313,6 +5747,12 @@
             "value" : "Mark as done"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了にする"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4329,6 +5769,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%@”"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」"
           }
         },
         "ko" : {
@@ -4349,6 +5795,12 @@
             "value" : "＋ Write what's next"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 続けて書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4365,6 +5817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write a new wish that follows this one"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このウィッシュに続けて新しいウィッシュを書きます"
           }
         },
         "ko" : {
@@ -4385,6 +5843,12 @@
             "value" : "What do you want to do next?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次は何がしたいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4398,6 +5862,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d/%d"
@@ -4421,6 +5891,12 @@
             "value" : "Jot down how you feel in one line so you can look back on it later."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いまの気持ちをひとことで残しておくと、あとで読み返せます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4437,6 +5913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How it felt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えた感想"
           }
         },
         "ko" : {
@@ -4457,6 +5939,12 @@
             "value" : "%@ · written %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@に書きました"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4475,6 +5963,12 @@
             "value" : "How does it feel?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えてみてどうですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4491,6 +5985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "sent you a letter"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手紙を送りました"
           }
         },
         "ko" : {
@@ -4523,6 +6023,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d日前の自分が\n手紙を送りました"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4547,6 +6059,12 @@
             "value" : "You from earlier today\nsent you a letter"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日の自分が\n手紙を送りました"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4563,6 +6081,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "e.g. Way better than I expected!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例）思っていたよりずっとよかった！"
           }
         },
         "ko" : {
@@ -4583,6 +6107,12 @@
             "value" : "Save"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4599,6 +6129,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maybe later"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで"
           }
         },
         "ko" : {
@@ -4619,6 +6155,12 @@
             "value" : "how does it feel?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えてみてどうですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4635,6 +6177,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@,\nhow does it feel?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@、\n叶えてみてどうですか？"
           }
         },
         "ko" : {
@@ -4655,6 +6203,12 @@
             "value" : "Done"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了済み"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4671,6 +6225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contact us"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お問い合わせ"
           }
         },
         "ko" : {
@@ -4691,6 +6251,12 @@
             "value" : "Error: %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラー: %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4709,6 +6275,12 @@
             "value" : "Your wishes are still on this device. Please try again."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュはこのデバイスにそのまま残っています。もう一度お試しください。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4725,6 +6297,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fully close the app, then open it again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを完全に終了してから、もう一度起動してください。"
           }
         },
         "ko" : {
@@ -4757,6 +6335,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "読み込めなかったウィッシュを%d個取り戻しました"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4781,6 +6371,12 @@
             "value" : "Try again"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再試行"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4797,6 +6393,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Still couldn't load them. Please try again in a bit"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読み込めませんでした。しばらくしてからもう一度お試しください"
           }
         },
         "ko" : {
@@ -4829,6 +6431,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "以前のウィッシュを%d個読み込みました"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4853,6 +6467,12 @@
             "value" : "Couldn't load your older wishes"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以前のウィッシュを読み込めませんでした"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4869,6 +6489,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You can pin up to 3"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "固定できるのは3個までです"
           }
         },
         "ko" : {
@@ -4889,6 +6515,12 @@
             "value" : "Pin to top"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いちばん上に固定"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4905,6 +6537,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unpin"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "固定を解除"
           }
         },
         "ko" : {
@@ -4925,6 +6563,12 @@
             "value" : "Reorder"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "並べ替え"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4941,6 +6585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
           }
         },
         "ko" : {
@@ -4961,6 +6611,12 @@
             "value" : "Drag the handle on the right to move"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右側のハンドルをドラッグして移動します"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4977,6 +6633,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pinned wishes stay on top"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "固定したウィッシュはいちばん上にあります"
           }
         },
         "ko" : {
@@ -4997,6 +6659,12 @@
             "value" : "Reordering\nthings to do"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことの\n順番を並べ替えています"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5013,6 +6681,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reordering\nthings to get"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものの\n順番を並べ替えています"
           }
         },
         "ko" : {
@@ -5033,6 +6707,12 @@
             "value" : "Reordering\nplaces to go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所の\n順番を並べ替えています"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5049,6 +6729,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reordering"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "順番を並べ替えています"
           }
         },
         "ko" : {
@@ -5069,6 +6755,12 @@
             "value" : "Search wishes"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュを検索"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5085,6 +6777,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select all"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて選択"
           }
         },
         "ko" : {
@@ -5105,6 +6803,12 @@
             "value" : "Select"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5121,6 +6825,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
           }
         },
         "ko" : {
@@ -5153,6 +6863,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個選択中"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5177,6 +6899,12 @@
             "value" : "Delete"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5193,6 +6921,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deleted wishes can't be restored.\nTheir reminders will be removed too."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除したウィッシュは元に戻せません。\n予約した通知も一緒に消えます。"
           }
         },
         "ko" : {
@@ -5220,6 +6954,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Delete %d wishes?"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個のウィッシュを削除しますか？"
                 }
               }
             }
@@ -5261,6 +7007,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個削除"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5285,6 +7043,12 @@
             "value" : "Things to do —\nselect to delete"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことを\n選んで削除します"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5301,6 +7065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Things to get —\nselect to delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものを\n選んで削除します"
           }
         },
         "ko" : {
@@ -5321,6 +7091,12 @@
             "value" : "Places to go —\nselect to delete"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所を\n選んで削除します"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5337,6 +7113,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "select to delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選んで削除します"
           }
         },
         "ko" : {
@@ -5357,6 +7139,12 @@
             "value" : "Cancel"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5373,6 +7161,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "It'll be removed from your list, along with its reminders."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リストから消え、予約した通知も一緒に消えます。"
           }
         },
         "ko" : {
@@ -5393,6 +7187,12 @@
             "value" : "Let it go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手放す"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5409,6 +7209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Let this wish go?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このウィッシュを手放しますか？"
           }
         },
         "ko" : {
@@ -5441,6 +7247,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d日間そのままです"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5465,6 +7283,12 @@
             "value" : "Still want to do it"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだやりたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5481,6 +7305,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Still want it"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだほしい"
           }
         },
         "ko" : {
@@ -5501,6 +7331,12 @@
             "value" : "Still want to go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ行きたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5517,6 +7353,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Still want to do this?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだやりたいですか？"
           }
         },
         "ko" : {
@@ -5537,6 +7379,12 @@
             "value" : "Still want this?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだほしいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5553,6 +7401,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Still want to go here?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ行きたいですか？"
           }
         },
         "ko" : {
@@ -5573,6 +7427,12 @@
             "value" : "I'm over it"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もういいかな"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5589,6 +7449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Got it! We'll ask again in two months"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "了解です！2か月後にまた聞きますね"
           }
         },
         "ko" : {
@@ -5609,6 +7475,12 @@
             "value" : "Wish let go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュを手放しました"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5622,6 +7494,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d/%d"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d/%d"
@@ -5643,6 +7521,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "left!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "残っています！"
           }
         },
         "ko" : {
@@ -5670,6 +7554,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Things to do:\n%d left!"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "やりたいことが\nあと%d個残っています！"
                 }
               }
             }
@@ -5711,6 +7607,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ほしいものが\nあと%d個残っています！"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5747,6 +7655,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "行きたい場所が\nあと%dか所残っています！"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5771,6 +7691,12 @@
             "value" : "👏 Added to achieved wishes"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 叶えたウィッシュに入れました"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5789,6 +7715,12 @@
             "value" : "Your %@ in review"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@年をふり返る"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5805,6 +7737,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close year banner"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今年のバナーを閉じる"
           }
         },
         "ko" : {
@@ -5832,6 +7770,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
                 }
               }
             }
@@ -5873,6 +7823,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "今年はウィッシュを%d個叶えました！"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -5897,6 +7859,12 @@
             "value" : "Someday"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いつか"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5913,6 +7881,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No date"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付なし"
           }
         },
         "ko" : {
@@ -5933,6 +7907,12 @@
             "value" : "Seep uses the open source software below. You can read each full license in its repository."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepは以下のオープンソースを使用しています。各ライセンスの全文はリポジトリで確認できます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5949,6 +7929,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open source licenses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オープンソースライセンス"
           }
         },
         "ko" : {
@@ -5969,6 +7955,12 @@
             "value" : "Done"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えたウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5985,6 +7977,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "New achieved wishes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しく叶えたウィッシュがあります"
           }
         },
         "ko" : {
@@ -6005,6 +8003,12 @@
             "value" : "Settings"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6021,6 +8025,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wishes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュ"
           }
         },
         "ko" : {
@@ -6041,6 +8051,12 @@
             "value" : "Write"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6057,6 +8073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "✔️ Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✔️ 保存"
           }
         },
         "ko" : {
@@ -6077,6 +8099,12 @@
             "value" : "Add reminder"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知を追加"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6093,6 +8121,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Don't forget about '%@'!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」をすること、忘れていませんか？"
           }
         },
         "ko" : {
@@ -6113,6 +8147,12 @@
             "value" : "Reminder date"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知日"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6129,6 +8169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Edit reminder"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知を編集"
           }
         },
         "ko" : {
@@ -6149,6 +8195,12 @@
             "value" : "Delete reminder"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知を削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6165,6 +8217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "🔕 This reminder already exists."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🔕 すでに設定されている通知です。"
           }
         },
         "ko" : {
@@ -6185,6 +8243,12 @@
             "value" : "Reminder time"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知時刻"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6201,6 +8265,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "🔔 Hey, over here👀"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🔔 お知らせです👀"
           }
         },
         "ko" : {
@@ -6221,6 +8291,12 @@
             "value" : "1 day before"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1日前"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6237,6 +8313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "2 days before"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2日前"
           }
         },
         "ko" : {
@@ -6257,6 +8339,12 @@
             "value" : "1 week before"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1週間前"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6273,6 +8361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎日"
           }
         },
         "ko" : {
@@ -6293,6 +8387,12 @@
             "value" : "On the day"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当日"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6309,6 +8409,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pick a wish from the list"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リストからウィッシュを選んでください"
           }
         },
         "ko" : {
@@ -6329,6 +8435,12 @@
             "value" : "Pick an item on the left"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左から項目を選んでください"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6345,6 +8457,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Badges"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バッジ"
           }
         },
         "ko" : {
@@ -6365,6 +8483,12 @@
             "value" : "App"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6381,6 +8505,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Look back"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ふり返り"
           }
         },
         "ko" : {
@@ -6401,6 +8531,12 @@
             "value" : "Wishes"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6417,6 +8553,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What do you want to do?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がしたいですか？"
           }
         },
         "ko" : {
@@ -6449,6 +8591,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "場所を追加したウィッシュ %d件"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -6473,6 +8627,12 @@
             "value" : "No wishes with a place yet."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ場所を追加したウィッシュはありません。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6489,6 +8649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Places to go map"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所マップ"
           }
         },
         "ko" : {
@@ -6509,6 +8675,12 @@
             "value" : "Dark"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ダーク"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6525,6 +8697,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Widgets follow your iPhone's appearance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィジェットはiPhoneの外観モードに従います"
           }
         },
         "ko" : {
@@ -6545,6 +8723,12 @@
             "value" : "Widgets follow your iPad's appearance"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィジェットはiPadの外観モードに従います"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6561,6 +8745,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Light"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライト"
           }
         },
         "ko" : {
@@ -6581,6 +8771,12 @@
             "value" : "Match system"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システム設定に従う"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6597,6 +8793,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appearance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外観モード"
           }
         },
         "ko" : {
@@ -6617,6 +8819,12 @@
             "value" : "Contact us"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お問い合わせ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6633,6 +8841,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\n\n\n---\nApp version: %@\niOS version: %@\nDevice: %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\n\n\n---\nアプリのバージョン: %@\niOSのバージョン: %@\nデバイス: %@"
           }
         },
         "ko" : {
@@ -6653,6 +8867,12 @@
             "value" : "Couldn't open Mail, so we copied the address. Please write to %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールアプリを開けなかったので、アドレスをコピーしました。%@ 宛てに送ってください"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6669,6 +8889,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "[Seep inquiry]"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Seep お問い合わせ]"
           }
         },
         "ko" : {
@@ -6689,6 +8915,12 @@
             "value" : "Write from Control Center · Shortcuts"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロールセンター · ショートカットで書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6705,6 +8937,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seep has no server — everything stays on this device. Deleting the app deletes your wishes too."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepはサーバーを使わず、このデバイスにだけ保存されます。アプリを削除すると、書いたウィッシュも一緒に消えます。"
           }
         },
         "ko" : {
@@ -6725,6 +8963,12 @@
             "value" : "Info"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "情報"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6741,6 +8985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lock & notifications"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロックと通知"
           }
         },
         "ko" : {
@@ -6761,6 +9011,12 @@
             "value" : "Quick write"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すぐ書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6777,6 +9033,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示"
           }
         },
         "ko" : {
@@ -6797,6 +9059,12 @@
             "value" : "Change it in iPhone Settings"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhoneの設定で変更できます"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6813,6 +9081,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change it in iPad Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPadの設定で変更できます"
           }
         },
         "ko" : {
@@ -6833,6 +9107,12 @@
             "value" : "Language"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6849,6 +9129,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open source licenses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オープンソースライセンス"
           }
         },
         "ko" : {
@@ -6869,6 +9155,12 @@
             "value" : "Ask for %@ or your passcode when opening the app"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを開くときに%@かデバイスのパスコードで確認します"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6885,6 +9177,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask for your passcode when opening the app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを開くときにデバイスのパスコードで確認します"
           }
         },
         "ko" : {
@@ -6905,6 +9203,12 @@
             "value" : "Lock with %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@でロック"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6921,6 +9225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lock with passcode"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスコードでロック"
           }
         },
         "ko" : {
@@ -6941,6 +9251,12 @@
             "value" : "Change this in iPhone Settings"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhoneの設定で変更できます"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6957,6 +9273,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change this in iPad Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPadの設定で変更できます"
           }
         },
         "ko" : {
@@ -6977,6 +9299,12 @@
             "value" : "Off"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オフ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6993,6 +9321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "On"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オン"
           }
         },
         "ko" : {
@@ -7013,6 +9347,12 @@
             "value" : "D-day reminders"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-day通知"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7029,6 +9369,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rate the app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを評価する"
           }
         },
         "ko" : {
@@ -7049,6 +9395,12 @@
             "value" : "The tab you see first when you open the app"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを開いたときに最初に表示されるタブです"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7065,6 +9417,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Last viewed category"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最後に見たカテゴリ"
           }
         },
         "ko" : {
@@ -7085,6 +9443,12 @@
             "value" : "Last viewed"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前回のまま"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7101,6 +9465,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start category"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最初のカテゴリ"
           }
         },
         "ko" : {
@@ -7121,6 +9491,12 @@
             "value" : "Settings"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7137,6 +9513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バージョン"
           }
         },
         "ko" : {
@@ -7157,6 +9539,12 @@
             "value" : "Cancel"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7173,6 +9561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grid"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グリッド"
           }
         },
         "ko" : {
@@ -7193,6 +9587,12 @@
             "value" : "List"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リスト"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7209,6 +9609,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Home layout"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホームの表示方法"
           }
         },
         "ko" : {
@@ -7229,6 +9635,12 @@
             "value" : "How to add widgets"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィジェットの追加方法"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7245,6 +9657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
           }
         },
         "ko" : {
@@ -7265,6 +9683,12 @@
             "value" : "Settings"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7281,6 +9705,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Card to share. Double-tap to change the text color"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有するカード。ダブルタップすると文字の色が変わります"
           }
         },
         "ko" : {
@@ -7301,6 +9731,12 @@
             "value" : "Couldn't save the image. Please try again."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を保存できませんでした。もう一度お試しください。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7317,6 +9753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "👏Image saved to Photos!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏画像をアルバムに保存しました！"
           }
         },
         "ko" : {
@@ -7337,6 +9779,12 @@
             "value" : "🏞 Photo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🏞 写真"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7353,6 +9801,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "👌 Share this"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👌 これで共有する"
           }
         },
         "ko" : {
@@ -7373,6 +9827,12 @@
             "value" : "Seep needs access to Photos so you can share with the photo you want."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好きな写真で共有するには、写真へのアクセス許可が必要です。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7389,6 +9849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
           }
         },
         "ko" : {
@@ -7409,6 +9875,12 @@
             "value" : "😀 Emoji"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😀 絵文字"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7425,6 +9897,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有する"
           }
         },
         "ko" : {
@@ -7445,6 +9923,12 @@
             "value" : "👆Double-tap the screen to change the text color"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👆画面をダブルタップすると文字の色を変えられます"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7461,6 +9945,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "For the things you truly want"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当の自分のための、やりたいこと"
           }
         },
         "ko" : {
@@ -7481,6 +9971,12 @@
             "value" : "Tap to finish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップで完了"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7497,6 +9993,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done! · Tap again to undo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "叶えました！ · もう一度タップで取り消し"
           }
         },
         "ko" : {
@@ -7517,6 +10019,12 @@
             "value" : "Next step · %@ %d/%d"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のステップ · %@ %d/%d"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7533,6 +10041,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write a thing to do"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことを書く"
           }
         },
         "ko" : {
@@ -7553,6 +10067,12 @@
             "value" : "Write a thing to get"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものを書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7569,6 +10089,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write a place to go"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所を書く"
           }
         },
         "ko" : {
@@ -7589,6 +10115,12 @@
             "value" : "✍️ Write one now?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✍️ いますぐ書きに行きますか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7605,6 +10137,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write them down."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書いてみましょう。"
           }
         },
         "ko" : {
@@ -7625,6 +10163,12 @@
             "value" : "Things you want to do?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことを"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7641,6 +10185,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give a wish a date"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュに日付を決めましょう"
           }
         },
         "ko" : {
@@ -7661,6 +10211,12 @@
             "value" : "No upcoming D-days"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近づくD-dayはありません"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7677,6 +10233,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nearest wish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いちばん近いウィッシュ"
           }
         },
         "ko" : {
@@ -7697,6 +10259,12 @@
             "value" : "%@ · Nearest wish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · いちばん近いウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7713,6 +10281,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wishes left"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "残りのウィッシュ"
           }
         },
         "ko" : {
@@ -7745,6 +10319,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "残りのウィッシュ %d個"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -7769,6 +10355,12 @@
             "value" : "Play a song on guitar"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ギターで1曲弾く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7785,6 +10377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Book flights"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "航空券を買う"
           }
         },
         "ko" : {
@@ -7805,6 +10403,12 @@
             "value" : "Book a stay"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "宿を予約する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7821,6 +10425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rent a car"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "レンタカーを予約する"
           }
         },
         "ko" : {
@@ -7841,6 +10451,12 @@
             "value" : "Spend a month in Jeju"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沖縄で1か月暮らす"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7857,6 +10473,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your title goes here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトルが入ります。"
           }
         },
         "ko" : {
@@ -7877,6 +10499,12 @@
             "value" : "Write a new wish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいウィッシュを書きましょう"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7893,6 +10521,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Things to do"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことが"
           }
         },
         "ko" : {
@@ -7913,6 +10547,12 @@
             "value" : "Things to get"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものが"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7929,6 +10569,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Places to go"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所が"
           }
         },
         "ko" : {
@@ -7949,6 +10595,12 @@
             "value" : "left!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "か所残っています！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7965,6 +10617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "left!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "個残っています！"
           }
         },
         "ko" : {
@@ -7985,6 +10643,12 @@
             "value" : "Right now,"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いま"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8001,6 +10665,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This holiday season,"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年末に"
           }
         },
         "ko" : {
@@ -8021,6 +10691,12 @@
             "value" : "This weekend,"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週末"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8037,6 +10713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "what do you want to do?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がしたいですか？"
           }
         },
         "ko" : {
@@ -8057,6 +10739,12 @@
             "value" : "what do you want to get?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がほしいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8073,6 +10761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "where do you want to go?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どこに行きたいですか？"
           }
         },
         "ko" : {
@@ -8093,6 +10787,12 @@
             "value" : "Put Quick write, Wishes left, and Quick check widgets on your Home Screen."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すぐ書く · 残りのウィッシュ · すぐチェックのウィジェットをホーム画面に置けます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8109,6 +10809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch and hold an empty spot on your Home Screen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホーム画面の何もないところを長押しします。"
           }
         },
         "ko" : {
@@ -8129,6 +10835,12 @@
             "value" : "Tap Edit in the top left → Add Widget, then search for \"Seep\"."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左上の「編集」→「ウィジェットを追加」をタップし、「Seep」を探します。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8145,6 +10857,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose a size and tap Add Widget."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好きなサイズを選んで「ウィジェットを追加」をタップします。"
           }
         },
         "ko" : {
@@ -8165,6 +10883,12 @@
             "value" : "Home Screen widgets"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホーム画面ウィジェット"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8181,6 +10905,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See upcoming D-days and wishes left right on your Lock Screen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近づくD-dayと残りのウィッシュをロック画面ですぐ確認できます。"
           }
         },
         "ko" : {
@@ -8201,6 +10931,12 @@
             "value" : "Touch and hold the Lock Screen, then tap Customize."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロック画面を長押しして「カスタマイズ」をタップします。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8217,6 +10953,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose Lock Screen and tap the widget area below the clock."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロック画面を選び、時計の下のウィジェット欄をタップします。"
           }
         },
         "ko" : {
@@ -8237,6 +10979,12 @@
             "value" : "Pick a widget under \"Seep\"."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「Seep」から好きなウィジェットを選びます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8253,6 +11001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lock Screen widgets"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ロック画面ウィジェット"
           }
         },
         "ko" : {
@@ -8273,6 +11027,12 @@
             "value" : "How to add widgets"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィジェットの追加方法"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8289,6 +11049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
           }
         },
         "ko" : {
@@ -8309,6 +11075,12 @@
             "value" : "Change category"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カテゴリを変更"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8325,6 +11097,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付"
           }
         },
         "ko" : {
@@ -8345,6 +11123,12 @@
             "value" : "To future me"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未来の自分へ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8361,6 +11145,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Link"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンク"
           }
         },
         "ko" : {
@@ -8381,6 +11171,12 @@
             "value" : "Memo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メモ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8397,6 +11193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reminder"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
           }
         },
         "ko" : {
@@ -8417,6 +11219,12 @@
             "value" : "Photo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8433,6 +11241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Place"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所"
           }
         },
         "ko" : {
@@ -8453,6 +11267,12 @@
             "value" : "Steps"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ステップ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8469,6 +11289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Goal amount"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目標金額"
           }
         },
         "ko" : {
@@ -8489,6 +11315,12 @@
             "value" : "Remove date"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付をなくす"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8505,6 +11337,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Discard what you wrote?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書いた内容を破棄しますか？"
           }
         },
         "ko" : {
@@ -8525,6 +11363,12 @@
             "value" : "Discard"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "破棄"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8541,6 +11385,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Discard your changes?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更した内容を破棄しますか？"
           }
         },
         "ko" : {
@@ -8561,6 +11411,12 @@
             "value" : "Keep writing"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書き続ける"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8577,6 +11433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
           }
         },
         "ko" : {
@@ -8597,6 +11459,12 @@
             "value" : "＃Tag"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＃タグ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8615,6 +11483,12 @@
             "value" : "Tags"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タグ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8628,6 +11502,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "https://"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "https://"
@@ -8651,6 +11531,12 @@
             "value" : "Anything else to note?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほかに必要な情報はありますか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8667,6 +11553,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch and hold for a random pick"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "長押しでランダムに選びます"
           }
         },
         "ko" : {
@@ -8687,6 +11579,12 @@
             "value" : "Remove"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8703,6 +11601,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
           }
         },
         "ko" : {
@@ -8723,6 +11627,12 @@
             "value" : "Reminders"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8739,6 +11649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "＋ Add"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 追加"
           }
         },
         "ko" : {
@@ -8759,6 +11675,12 @@
             "value" : "Close"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8772,6 +11694,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -8795,6 +11723,12 @@
             "value" : "Pick an emoji"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "絵文字を選ぶ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8811,6 +11745,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
           }
         },
         "ko" : {
@@ -8831,6 +11771,12 @@
             "value" : "Set a date to turn on reminders."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知を設定するには日付が必要です。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8847,6 +11793,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@, %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@、%@"
           }
         },
         "ko" : {
@@ -8867,6 +11819,12 @@
             "value" : "Random emoji"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ランダムな絵文字"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8883,6 +11841,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "We searched titles, memos, and hashtags"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトル・メモ・ハッシュタグから探しました"
           }
         },
         "ko" : {
@@ -8903,6 +11867,12 @@
             "value" : "No wishes for ‘%@’ yet."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」のウィッシュはまだありません。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8921,6 +11891,12 @@
             "value" : "Memo · %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メモ · %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8937,6 +11913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search titles, memos, hashtags"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトル・メモ・ハッシュタグで検索"
           }
         },
         "ko" : {
@@ -8964,6 +11946,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Found %d wishes"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ウィッシュが%d個見つかりました"
                 }
               }
             }
@@ -9005,6 +11999,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -9029,6 +12035,12 @@
             "value" : "Search"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9045,6 +12057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter a link that starts with http:// or https://"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "http:// または https:// で始まるリンクを入力してください"
           }
         },
         "ko" : {
@@ -9065,6 +12083,12 @@
             "value" : "Couldn't load a preview"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレビューを読み込めませんでした"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9081,6 +12105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Link"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンク"
           }
         },
         "ko" : {
@@ -9101,6 +12131,12 @@
             "value" : "Steps (optional)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ステップ（任意）"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9117,6 +12153,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Track your savings on the detail screen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "詳細画面で貯めたお金を記録できます"
           }
         },
         "ko" : {
@@ -9137,6 +12179,12 @@
             "value" : "Currency"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通貨"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9155,6 +12203,12 @@
             "value" : "You can't change the currency after saving money toward this wish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯金の記録があるため通貨は変更できません"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9168,6 +12222,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "0"
@@ -9191,6 +12251,12 @@
             "value" : "Goal amount"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目標金額"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9207,6 +12273,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add reminder"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知を追加"
           }
         },
         "ko" : {
@@ -9227,6 +12299,12 @@
             "value" : "What do you want to do?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がしたいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9243,6 +12321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What do you want to get?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がほしいですか？"
           }
         },
         "ko" : {
@@ -9263,6 +12347,12 @@
             "value" : "Where do you want to go?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どこに行きたいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9279,6 +12369,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What kind of wish\nshall we write?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どんなウィッシュを\n書いてみますか？"
           }
         },
         "ko" : {
@@ -9299,6 +12395,12 @@
             "value" : "shall we write?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書いてみますか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9315,6 +12417,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "📍Pick a date"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍日付を選んでください！"
           }
         },
         "ko" : {
@@ -9335,6 +12443,12 @@
             "value" : "📍Keep hashtags to 7 characters"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍ハッシュタグは7文字以内で入力してください！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9351,6 +12465,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "📍Keep memos to 300 characters"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍メモは300文字以内で入力してください！"
           }
         },
         "ko" : {
@@ -9371,6 +12491,12 @@
             "value" : "📍Keep titles to 18 characters"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍タイトルは18文字以内で入力してください！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9387,6 +12513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "📍Add a title"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📍タイトルを入力してください！"
           }
         },
         "ko" : {
@@ -9407,6 +12539,12 @@
             "value" : "Memo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メモ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9423,6 +12561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Title"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトル"
           }
         },
         "ko" : {
@@ -9443,6 +12587,12 @@
             "value" : "+ New tag"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ 新しいタグ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9459,6 +12609,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What do you want to do?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がしたいですか？"
           }
         },
         "ko" : {
@@ -9479,6 +12635,12 @@
             "value" : "What do you want to get?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "何がほしいですか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9495,6 +12657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Where do you want to go?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どこに行きたいですか？"
           }
         },
         "ko" : {
@@ -9515,6 +12683,12 @@
             "value" : "%@ · %d done"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %d個"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9533,6 +12707,12 @@
             "value" : "Your biggest month"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いちばん多く叶えた月"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9549,6 +12729,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
           }
         },
         "ko" : {
@@ -9576,6 +12762,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
                 }
               }
             }
@@ -9617,6 +12815,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ウィッシュを%d個叶えました！"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -9648,6 +12858,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "This year, I made\n%d wishes come true!"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "今年の私は\nウィッシュを%d個叶えました！"
                 }
               }
             }
@@ -9689,6 +12911,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個をすべて集めました"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -9711,6 +12945,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wishes achieved in %@\nAll %d in one place"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@年に叶えたウィッシュ\n%d個をすべて集めました"
           }
         },
         "ko" : {
@@ -9738,6 +12978,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%d days"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d日"
                 }
               }
             }
@@ -9779,6 +13031,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "書いてから%d日で叶えました"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -9803,6 +13067,12 @@
             "value" : "The wish you held onto longest"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いちばん長く温めて叶えたウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9819,6 +13089,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Line of the year"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今年のひとこと"
           }
         },
         "ko" : {
@@ -9839,6 +13115,12 @@
             "value" : "Share as image"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像で共有する"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9855,6 +13137,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See all wishes achieved this year"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今年叶えたウィッシュをすべて見る"
           }
         },
         "ko" : {

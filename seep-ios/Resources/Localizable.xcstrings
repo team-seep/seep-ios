@@ -10,6 +10,12 @@
             "value" : "Write a ${target} wish"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュを書く（${target}）"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25,6 +31,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい"
           }
         },
         "ko" : {
@@ -44,6 +56,12 @@
             "value" : "Write a place to go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所を書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59,6 +77,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See your nearest D-day wish on the Lock Screen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いちばん近いD-dayのウィッシュをロック画面で確認"
           }
         },
         "ko" : {
@@ -78,6 +102,12 @@
             "value" : "Get"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93,6 +123,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write a thing to get"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいものを書く"
           }
         },
         "ko" : {
@@ -112,6 +148,12 @@
             "value" : "Clean view👻"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すっきり表示👻"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127,6 +169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "One easy step closer to your dreams"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "夢に向かって、気軽に一歩近づきましょう！"
           }
         },
         "ko" : {
@@ -146,6 +194,12 @@
             "value" : "Wishes left"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "残りのウィッシュ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161,6 +215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How many left?!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "残りのウィッシュはいくつ!?"
           }
         },
         "ko" : {
@@ -180,6 +240,12 @@
             "value" : "Add to your wishlist faster than anyone"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "誰よりも早くウィッシュリストに登録してみませんか？"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -195,6 +261,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upcoming wish D-day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近づくウィッシュのD-day"
           }
         },
         "ko" : {
@@ -214,6 +286,12 @@
             "value" : "Shortcuts"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショートカット"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -229,6 +307,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See your wishlist at a glance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登録したウィッシュリストをすっきり見ませんか？"
           }
         },
         "ko" : {
@@ -248,6 +332,12 @@
             "value" : "Quick check"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すぐチェック"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -263,6 +353,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quick write"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すばやく登録"
           }
         },
         "ko" : {
@@ -282,6 +378,12 @@
             "value" : "Write a wish the moment it comes to mind"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "思いついたらすぐウィッシュを書けます"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -297,6 +399,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write a wish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepに書く"
           }
         },
         "ko" : {
@@ -316,6 +424,12 @@
             "value" : "See how many wishes are still waiting"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ叶えていないウィッシュの数を確認"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -331,6 +445,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Check off steps and wishes without opening the app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを開かずに次のステップやウィッシュをチェック"
           }
         },
         "ko" : {
@@ -350,6 +470,12 @@
             "value" : "Source"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開いた場所"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -365,6 +491,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wish ID"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュID"
           }
         },
         "ko" : {
@@ -384,6 +516,12 @@
             "value" : "Mark wish as not done"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュの完了を取り消す"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -399,6 +537,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Check off wish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィッシュをチェック"
           }
         },
         "ko" : {
@@ -418,6 +562,12 @@
             "value" : "Category"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カテゴリ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -433,6 +583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Control"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロール"
           }
         },
         "ko" : {
@@ -452,6 +608,12 @@
             "value" : "Do"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたい"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -467,6 +629,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write a thing to do"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいことを書く"
           }
         },
         "ko" : {
