@@ -139,8 +139,8 @@ final class LocalizationFoundationTests: XCTestCase {
     }
 
     func test_GH100_TC6_불교력·일본연호로케일에서도_고정숫자날짜는_그레고리력이다() {
-        // Given: 불교력을 기본으로 쓰는 태국 로케일, 일본 연호
-        let day = date(2026, 12, 25)
+        // Given: 불교력을 기본으로 쓰는 태국 로케일, 일본 연호. 시간대가 달라도 날짜가 넘어가지 않게 낮 12시로 둔다
+        let day = date(2026, 12, 25, hour: 12)
 
         // When
         let thai = DateUtils.toString(format: "yyyy.MM.dd", date: day, locale: Locale(identifier: "th_TH"))
