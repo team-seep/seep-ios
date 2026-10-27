@@ -257,9 +257,12 @@ struct PhotoFrame: View {
         Color.gray2
             .aspectRatio(16 / 9, contentMode: .fit)
             .overlay {
+                // scaledToFill 로 넘친 부분은 clipShape 로 안 보일 뿐 터치는 받는다.
+                // 세로로 긴 사진이 위 섹션(일지·링크 등)의 버튼을 덮어 눌리지 않게 막는다 (GH-95)
                 Image(decorative: image, scale: 1)
                     .resizable()
                     .scaledToFill()
+                    .allowsHitTesting(false)
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .accessibilityElement()

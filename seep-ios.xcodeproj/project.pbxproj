@@ -127,8 +127,10 @@
 		6EC9BFA526BE0870007C7708 /* WishlistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC9BFA426BE0870007C7708 /* WishlistItemView.swift */; };
 		6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */; };
 		7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
+		95A000000000000000000002 /* WishJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A000000000000000000001 /* WishJournal.swift */; };
 		759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4C358AA2D714E019784ADE /* CalendarManager.swift */; };
 		75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC49270480D77773B034E4 /* WishSaving.swift */; };
+		95A000000000000000000003 /* WishJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A000000000000000000001 /* WishJournal.swift */; };
 		7F46D9992E0E0F3A7368E40C /* MockWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF4A78EEF04975D58837A8 /* MockWishRepository.swift */; };
 		83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */; };
 		94A8A9FB46DBD094756D06EF /* WishLinkInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBDF57A8E53FC037620A2D /* WishLinkInput.swift */; };
@@ -337,6 +339,7 @@
 		6EE5A820275512280013B0D4 /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 		6EE5CE6F25FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB00.ttf; sourceTree = "<group>"; };
 		76EC49270480D77773B034E4 /* WishSaving.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishSaving.swift; sourceTree = "<group>"; };
+		95A000000000000000000001 /* WishJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishJournal.swift; sourceTree = "<group>"; };
 		7BAB0FBDBBA8741E41A8F065 /* WishPlace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WishPlace.swift; sourceTree = "<group>"; };
 		82DB5764FE2DF234614ACCBF /* MockCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCalendarManager.swift; sourceTree = "<group>"; };
 		8523AB10C8344B1B16FD9E51 /* LinkMetadataProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LinkMetadataProvider.swift; sourceTree = "<group>"; };
@@ -743,6 +746,7 @@
 				6E318D6B279E875A00E9AA97 /* Wish.swift */,
 				F0B6C9D87359BB7F6DDBC6C1 /* WishStep.swift */,
 				76EC49270480D77773B034E4 /* WishSaving.swift */,
+				95A000000000000000000001 /* WishJournal.swift */,
 				A32F00000000000000000001 /* WishSearchMatcher.swift */,
 				A34000010000000000000001 /* YearReviewSummary.swift */,
 				A34000010000000000000091 /* YearReviewPeriod.swift */,
@@ -1193,6 +1197,7 @@
 				33AA0AF6E3859DD48AF01585 /* WishStep.swift in Sources */,
 				83B86210A7B674769B2EC180 /* AmountFormatter.swift in Sources */,
 				7159505AFB3FC90578CD0AE8 /* WishSaving.swift in Sources */,
+				95A000000000000000000002 /* WishJournal.swift in Sources */,
 				050C71F5903092578149F737 /* SavingDTO.swift in Sources */,
 				759EC38622F0B1259E8EE1B3 /* CalendarManager.swift in Sources */,
 				A32F00000000000000000002 /* WishSearchMatcher.swift in Sources */,
@@ -1272,6 +1277,7 @@
 				6E7206CE275B4588009C7AFC /* MediumHorizontalProvider.swift in Sources */,
 				582A5AA71ACAA592A4DFCC8C /* WishStepDTO.swift in Sources */,
 				75B4459E917CA921D08DE7ED /* WishSaving.swift in Sources */,
+				95A000000000000000000003 /* WishJournal.swift in Sources */,
 				41FEE210BA2773236C785FD0 /* SavingDTO.swift in Sources */,
 				D71968388A78B47DF1A3E02B /* WishStep.swift in Sources */,
 				C3D8AD70BB8D652B921763D5 /* WishPlace.swift in Sources */,

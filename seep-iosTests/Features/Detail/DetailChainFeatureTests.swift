@@ -45,7 +45,7 @@ final class DetailChainFeatureTests: ViewModelTestCase {
         let rows = sut.state.chain.map(DetailChainRow.rows) ?? []
 
         // Then
-        XCTAssertEqual(sut.state.sections, [.chain, .place]) // 가고 싶어요는 장소 섹션이 늘 있다
+        XCTAssertEqual(sut.state.sections, [.chain, .journal, .place]) // 가고 싶어요는 장소, 홈에서 연 상세는 일지(GH-95) 섹션이 늘 있다
         XCTAssertEqual(sut.state.chain?.position, 2)
         XCTAssertEqual(rows.map(\.id), ["a", "b"])
         XCTAssertEqual(rows.first?.caption, "2026. 10. 24. 이뤘어요 · “생각보다 훨씬 좋았어요”")

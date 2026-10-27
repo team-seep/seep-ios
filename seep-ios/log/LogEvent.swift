@@ -214,4 +214,10 @@ enum LogObjectId: String {
     case migrationRetry = "migration_retry"
     /// 이전 실패 카드 [문의하기] (GH-96)
     case migrationContact = "migration_contact"
+    /// 상세 일지 "＋ 남기기"·"＋ 오늘 한 줄 남기기" (GH-95)
+    case addJournal = "add_journal"
+    /// 일지 시트 "남기기" 저장 성공 (GH-95)
+    case saveJournal = "save_journal"
+    /// 상세 일지 "모두 보기" (GH-95)
+    case viewAllJournals = "view_all_journals"
 }

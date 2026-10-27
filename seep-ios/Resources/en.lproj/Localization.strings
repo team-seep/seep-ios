@@ -260,6 +260,23 @@
 "detail.section.link_open" = "열기";
 "detail.section.place_change" = "변경";
 "detail.section.place_add" = "＋ 장소 붙이기";
+
+/* GH-95 싶 일지 */
+"detail.journal.title" = "일지";
+"detail.journal.add" = "＋ 남기기";
+"detail.journal.add_today" = "＋ 오늘 한 줄 남기기";
+"detail.journal.view_all_format" = "모두 보기 (%d)";
+"detail.journal.delete" = "지우기";
+"detail.journal.row_date_format" = "M.d (E)";
+"detail.journal.toast.saved" = "👏 일지를 남겼어요";
+"detail.journal.sheet.title_prefix_format" = "오늘 %@ ";
+"detail.journal.sheet.title_suffix" = "는";
+"detail.journal.sheet.title_bold" = "어땠나요?";
+"detail.journal.sheet.date_format" = "M월 d일 (E)";
+"detail.journal.sheet.placeholder" = "오늘 한 일을 한 줄로 남겨 보세요";
+"detail.journal.sheet.count_format" = "%d/%d";
+"detail.journal.sheet.save" = "남기기";
+"detail.journal.sheet.close" = "닫기";
 "place_map.title" = "가고 싶은 곳 지도";
 "place_map.count_format" = "장소를 붙인 곳 %d곳";
 "place_map.empty" = "아직 장소를 붙인 곳이 없어요.";

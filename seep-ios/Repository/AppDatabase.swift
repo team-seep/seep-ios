@@ -133,6 +133,19 @@ final class AppDatabase {
             try db.create(index: "wish_on_previousWishId", on: WishRecord.databaseTableName, columns: ["previousWishId"])
         }
 
+        // GH-95: 싶 일지. 동기화 대비로 wishId 에 FK 를 두지 않고 일반 인덱스만 둔다. 기존 위시는 일지 0개
+        migrator.registerMigration("v5") { db in
+            try db.create(table: WishJournalRecord.databaseTableName) { table in
+                table.primaryKey("id", .text)
+                table.column("wishId", .text).notNull()
+                table.column("text", .text).notNull().defaults(to: "")
+                table.column("createdAt", .double).notNull()
+                table.column("updatedAt", .double).notNull()
+                table.column("deletedAt", .double)
+            }
+            try db.create(index: "wishJournal_on_wishId", on: WishJournalRecord.databaseTableName, columns: ["wishId"])
+        }
+
         return migrator
     }
 
@@ -250,6 +263,7 @@ extension AppDatabase {
         let steps: [WishStepRecord]
         let savings: [WishSavingRecord]
         let notifications: [WishNotificationRecord]
+        let journals: [WishJournalRecord]
         let metadata: [String: String]
     }
 
@@ -260,6 +274,7 @@ extension AppDatabase {
                 steps: try WishStepRecord.fetchAll(db),
                 savings: try WishSavingRecord.fetchAll(db),
                 notifications: try WishNotificationRecord.fetchAll(db),
+                journals: try WishJournalRecord.fetchAll(db),
                 metadata: Dictionary(
                     uniqueKeysWithValues: try Row.fetchAll(db, sql: "SELECT key, value FROM appMetadata")
                         .map { (row: Row) -> (String, String) in (row["key"], row["value"]) }

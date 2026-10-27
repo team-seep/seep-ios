@@ -14,6 +14,8 @@ struct Wish: Equatable, Hashable {
     var targetAmount: Int
     /// 모은 돈 기록, 최신순
     var savings: [WishSaving]
+    /// 이루는 동안 남긴 일지, 최신순 (GH-95)
+    var journals: [WishJournal]
     var memo: String
     var hashtag: String
     var isSuccess: Bool
@@ -95,6 +97,7 @@ struct Wish: Equatable, Hashable {
         steps: [WishStep] = [],
         targetAmount: Int = 0,
         savings: [WishSaving] = [],
+        journals: [WishJournal] = [],
         memo: String = "",
         hashtag: String = "",
         isSuccess: Bool = false,
@@ -120,6 +123,7 @@ struct Wish: Equatable, Hashable {
         self.steps = steps
         self.targetAmount = targetAmount
         self.savings = savings
+        self.journals = journals
         self.memo = memo
         self.hashtag = hashtag
         self.isSuccess = isSuccess

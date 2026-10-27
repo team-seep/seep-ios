@@ -39,13 +39,20 @@ enum WishRecordStore {
                 .fetchAll(db),
             by: \.wishId
         )
+        let journals = try Dictionary(
+            grouping: WishJournalRecord
+                .filter(ids.contains(WishJournalRecord.Columns.wishId) && WishJournalRecord.Columns.deletedAt == nil)
+                .fetchAll(db),
+            by: \.wishId
+        )
 
         return records.map { record in
             Wish(
                 record: record,
                 steps: steps[record.id] ?? [],
                 savings: savings[record.id] ?? [],
-                notifications: notifications[record.id] ?? []
+                notifications: notifications[record.id] ?? [],
+                journals: journals[record.id] ?? []
             )
         }
     }
@@ -66,6 +73,9 @@ enum WishRecordStore {
         }
         for (order, notification) in wish.notifications.enumerated() {
             try WishNotificationRecord(notification: notification, wishId: wish.id, order: order, updatedAt: now).insert(db)
+        }
+        for journal in wish.journals {
+            try WishJournalRecord(journal: journal, wishId: wish.id, updatedAt: now).insert(db)
         }
     }
 
@@ -88,11 +98,18 @@ enum WishRecordStore {
         try WishStepRecord.filter(WishStepRecord.Columns.wishId == id && WishStepRecord.Columns.deletedAt == nil).updateAll(db, assignments)
         try WishSavingRecord.filter(WishSavingRecord.Columns.wishId == id && WishSavingRecord.Columns.deletedAt == nil).updateAll(db, assignments)
         try WishNotificationRecord.filter(WishNotificationRecord.Columns.wishId == id && WishNotificationRecord.Columns.deletedAt == nil).updateAll(db, assignments)
+        try WishJournalRecord.filter(WishJournalRecord.Columns.wishId == id && WishJournalRecord.Columns.deletedAt == nil).updateAll(db, assignments)
     }
 
     static func aliveSteps(wishId: String, in db: Database) throws -> [WishStepRecord] {
         try WishStepRecord
             .filter(WishStepRecord.Columns.wishId == wishId && WishStepRecord.Columns.deletedAt == nil)
+            .fetchAll(db)
+    }
+
+    static func aliveJournals(wishId: String, in db: Database) throws -> [WishJournalRecord] {
+        try WishJournalRecord
+            .filter(WishJournalRecord.Columns.wishId == wishId && WishJournalRecord.Columns.deletedAt == nil)
             .fetchAll(db)
     }
 

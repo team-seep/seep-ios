@@ -377,6 +377,48 @@ internal enum Strings {
       /// 오늘까지
       internal static let untilToday = Strings.tr("Localization", "detail.dday.until_today", fallback: "오늘까지")
     }
+    internal enum Journal {
+      /// ＋ 남기기
+      internal static let add = Strings.tr("Localization", "detail.journal.add", fallback: "＋ 남기기")
+      /// ＋ 오늘 한 줄 남기기
+      internal static let addToday = Strings.tr("Localization", "detail.journal.add_today", fallback: "＋ 오늘 한 줄 남기기")
+      /// 지우기
+      internal static let delete = Strings.tr("Localization", "detail.journal.delete", fallback: "지우기")
+      /// M.d (E)
+      internal static let rowDateFormat = Strings.tr("Localization", "detail.journal.row_date_format", fallback: "M.d (E)")
+      /// GH-95 싶 일지
+      internal static let title = Strings.tr("Localization", "detail.journal.title", fallback: "일지")
+      /// 모두 보기 (%d)
+      internal static func viewAllFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.journal.view_all_format", p1, fallback: "모두 보기 (%d)")
+      }
+      internal enum Sheet {
+        /// 닫기
+        internal static let close = Strings.tr("Localization", "detail.journal.sheet.close", fallback: "닫기")
+        /// %d/%d
+        internal static func countFormat(_ p1: Int, _ p2: Int) -> String {
+          return Strings.tr("Localization", "detail.journal.sheet.count_format", p1, p2, fallback: "%d/%d")
+        }
+        /// M월 d일 (E)
+        internal static let dateFormat = Strings.tr("Localization", "detail.journal.sheet.date_format", fallback: "M월 d일 (E)")
+        /// 오늘 한 일을 한 줄로 남겨 보세요
+        internal static let placeholder = Strings.tr("Localization", "detail.journal.sheet.placeholder", fallback: "오늘 한 일을 한 줄로 남겨 보세요")
+        /// 남기기
+        internal static let save = Strings.tr("Localization", "detail.journal.sheet.save", fallback: "남기기")
+        /// 어땠나요?
+        internal static let titleBold = Strings.tr("Localization", "detail.journal.sheet.title_bold", fallback: "어땠나요?")
+        /// 오늘 %@ 
+        internal static func titlePrefixFormat(_ p1: Any) -> String {
+          return Strings.tr("Localization", "detail.journal.sheet.title_prefix_format", String(describing: p1), fallback: "오늘 %@ ")
+        }
+        /// 는
+        internal static let titleSuffix = Strings.tr("Localization", "detail.journal.sheet.title_suffix", fallback: "는")
+      }
+      internal enum Toast {
+        /// 👏 일지를 남겼어요
+        internal static let saved = Strings.tr("Localization", "detail.journal.toast.saved", fallback: "👏 일지를 남겼어요")
+      }
+    }
     internal enum Letter {
       /// %@에 봉인했어요 · %d자
       internal static func sealedCaptionFormat(_ p1: Any, _ p2: Int) -> String {

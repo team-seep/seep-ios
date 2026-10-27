@@ -92,6 +92,25 @@ struct WishSavingRecord: Codable, Equatable, FetchableRecord, PersistableRecord,
     }
 }
 
+/// `wishJournal` 테이블 한 줄. 이루는 동안 남긴 일지 (GH-95, 마이그레이션 v5).
+/// 동기화 대비로 `wishId`에 FK 를 두지 않는다 — 다른 기기의 일지가 위시보다 먼저 와도 들어갈 수 있게 (R-1)
+struct WishJournalRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
+    static let databaseTableName = "wishJournal"
+
+    var id: String
+    var wishId: String
+    var text: String
+    var createdAt: Date
+    var updatedAt: Date
+    var deletedAt: Date?
+
+    enum Columns {
+        static let id = Column(CodingKeys.id)
+        static let wishId = Column(CodingKeys.wishId)
+        static let deletedAt = Column(CodingKeys.deletedAt)
+    }
+}
+
 /// `wishNotification` 테이블 한 줄. id 는 예약한 로컬 알림의 identifier 와 같다 (GH-48)
 struct WishNotificationRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
     static let databaseTableName = "wishNotification"
@@ -165,6 +184,17 @@ extension WishSavingRecord {
     }
 }
 
+extension WishJournalRecord {
+    init(journal: WishJournal, wishId: String, updatedAt: Date) {
+        self.id = journal.id
+        self.wishId = wishId
+        self.text = journal.text
+        self.createdAt = journal.createdAt
+        self.updatedAt = updatedAt
+        self.deletedAt = nil
+    }
+}
+
 extension WishNotificationRecord {
     init(notification: SeepNotification, wishId: String, order: Int, updatedAt: Date) {
         self.id = notification.id
@@ -193,6 +223,11 @@ extension WishSavingRecord {
     static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
 }
 
+extension WishJournalRecord {
+    static func databaseDateEncodingStrategy(for column: String) -> DatabaseDateEncodingStrategy { .timeIntervalSinceReferenceDate }
+    static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
+}
+
 extension WishNotificationRecord {
     static func databaseDateEncodingStrategy(for column: String) -> DatabaseDateEncodingStrategy { .timeIntervalSinceReferenceDate }
     static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
@@ -204,7 +239,8 @@ extension Wish {
         record: WishRecord,
         steps: [WishStepRecord],
         savings: [WishSavingRecord],
-        notifications: [WishNotificationRecord]
+        notifications: [WishNotificationRecord],
+        journals: [WishJournalRecord] = []
     ) {
         self.init(
             id: record.id,
@@ -221,6 +257,7 @@ extension Wish {
                 .sorted { $0.order < $1.order },
             targetAmount: record.targetAmount,
             savings: WishSaving.latestFirst(savings.map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }),
+            journals: WishJournal.latestFirst(journals.map { WishJournal(id: $0.id, text: $0.text, createdAt: $0.createdAt) }),
             memo: record.memo,
             hashtag: record.hashtag,
             isSuccess: record.isSuccess,
