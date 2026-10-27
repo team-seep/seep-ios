@@ -23,12 +23,13 @@ final class DatabaseMigrationFollowUpTests: XCTestCase {
         super.tearDown()
     }
 
-    private func makeFollowUp(importError: Error? = nil) -> DatabaseMigrationFollowUp {
+    private func makeFollowUp(importError: Error? = nil, importer: LegacyRealmImporter? = nil) -> DatabaseMigrationFollowUp {
         DatabaseMigrationFollowUp(dependency: .init(
             database: database,
             importError: importError,
             logManager: logManager,
-            notificationManager: notificationManager
+            notificationManager: notificationManager,
+            importer: importer ?? fixture.importer()
         ))
     }
 
@@ -98,5 +99,84 @@ final class DatabaseMigrationFollowUpTests: XCTestCase {
 
         // Then
         XCTAssertTrue(migrationEvents.isEmpty)
+    }
+
+    // MARK: GH-96 TC10
+
+    func test_GH96_TC10_재이전으로돌아온위시는_로컬알림이다시예약된다() throws {
+        // Given
+        let notification = SeepNotification(id: "noti-lost", type: .dayAgo, time: LegacyRealmFixture.day(4))
+        try fixture.seed([
+            Wish(id: "lost", title: "빠진 위시", endDate: LegacyRealmFixture.day(5), notifications: [notification]),
+            Wish(id: "kept", title: "남은 위시")
+        ])
+        try fixture.importer().importIfNeeded(into: database, markWhenNoRealmFile: true)
+        makeFollowUp().run()
+        let lost = try XCTUnwrap(database.snapshot().wishes.first { $0.id == "lost" })
+        try database.deleteRecord(lost)
+
+        // When
+        let restoredCount = makeFollowUp().reimportIfRequested(token: "t1")
+
+        // Then
+        XCTAssertEqual(restoredCount, 1)
+        XCTAssertEqual(notificationManager.reservedWishes.map(\.id), ["lost"])
+        XCTAssertEqual(notificationManager.reservedWishes.first?.notifications.map(\.id), ["noti-lost"])
+    }
+
+    // MARK: GH-96 TC12
+
+    func test_GH96_TC12_재이전이끝나면_db_migration재이전이벤트가복구개수와함께한번전송된다() throws {
+        // Given
+        try fixture.seed([LegacyRealmFixture.fullWish(id: "lost")])
+        try fixture.importer().importIfNeeded(into: database, markWhenNoRealmFile: true)
+        makeFollowUp().run()
+        let lost = try XCTUnwrap(database.snapshot().wishes.first)
+        try database.deleteRecord(lost)
+
+        // When
+        makeFollowUp().reimportIfRequested(token: "t1")
+        makeFollowUp().reimportIfRequested(token: "t1")
+
+        // Then
+        let reimportEvents = migrationEvents.filter { $0.parameters["trigger"] as? String == "reimport" }
+        XCTAssertEqual(reimportEvents.count, 1)
+        let parameters = try XCTUnwrap(reimportEvents.first?.parameters)
+        XCTAssertEqual(parameters["result"] as? String, "success")
+        XCTAssertEqual(parameters["restored_wish_count"] as? Int, 1)
+        XCTAssertEqual(parameters["restored_row_count"] as? Int, 6)
+    }
+
+    func test_GH96_TC12_재이전이실패하면_db_migration재이전실패이벤트를보내고0을돌려준다() throws {
+        // Given
+        try fixture.seed([Wish(id: "lost", title: "빠진 위시")])
+        try fixture.importer().importIfNeeded(into: database, markWhenNoRealmFile: true)
+        let brokenImporter = try fixture.brokenImporter()
+
+        // When
+        let restoredCount = makeFollowUp(importer: brokenImporter).reimportIfRequested(token: "t1")
+
+        // Then
+        XCTAssertEqual(restoredCount, 0)
+        let event = try XCTUnwrap(migrationEvents.last)
+        XCTAssertEqual(event.parameters["result"] as? String, "failure")
+        XCTAssertEqual(event.parameters["trigger"] as? String, "reimport")
+    }
+
+    // MARK: GH-96 TC21
+
+    func test_GH96_TC21_1회이전성공이벤트에_원본Realm위시수가같이전송된다() throws {
+        // Given
+        try fixture.seed([Wish(id: "a", title: "첫째"), Wish(id: "b", title: "둘째")])
+        try fixture.importer().importIfNeeded(into: database, markWhenNoRealmFile: true)
+
+        // When
+        makeFollowUp().run()
+
+        // Then
+        let parameters = try XCTUnwrap(migrationEvents.first?.parameters)
+        XCTAssertEqual(parameters["trigger"] as? String, "launch")
+        XCTAssertEqual(parameters["wish_count"] as? Int, 2)
+        XCTAssertEqual(parameters["realm_wish_count"] as? Int, 2)
     }
 }

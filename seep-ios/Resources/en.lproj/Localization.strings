@@ -131,6 +131,17 @@
 "home.sleeping_wish.keep.want_to_get" = "여전히 갖고 싶어요";
 "home.sleeping_wish.keep.want_to_go" = "여전히 가고 싶어요";
 "home.sleeping_wish.release" = "이제 됐어요";
+
+/* GH-96 Realm → GRDB 이전 실패 안내 · 재이전 */
+"home.migration_notice.title" = "예전 위시를 불러오지 못했어요";
+"home.migration_notice.message" = "위시는 이 기기에 그대로 있어요. 다시 시도해 주세요.";
+"home.migration_notice.message_restart" = "앱을 완전히 종료한 뒤 다시 실행해 주세요.";
+"home.migration_notice.retry" = "다시 시도";
+"home.migration_notice.contact" = "문의하기";
+"home.migration_notice.retry_success_format" = "예전 위시 %d개를 불러왔어요";
+"home.migration_notice.retry_failure" = "다시 불러오지 못했어요. 잠시 뒤에 다시 시도해 주세요";
+"home.migration_notice.contact_error_format" = "오류: %@";
+"home.migration_notice.reimport_success_format" = "불러오지 못했던 위시 %d개를 다시 가져왔어요";
 "home.sleeping_wish.alert.title" = "이 위시를 보내줄까요?";
 "home.sleeping_wish.alert.message" = "목록에서 지워지고 예약된 알림도 함께 사라져요.";
 "home.sleeping_wish.alert.cancel" = "취소";

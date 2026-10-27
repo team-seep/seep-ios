@@ -10,6 +10,7 @@
 		7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */; };
 		7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */; };
 		79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000065 /* LegacyRealmImporterTests.swift */; };
+		96A000000000000000000004 /* LegacyRealmReimportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A000000000000000000003 /* LegacyRealmReimportTests.swift */; };
 		79C000000000000000000068 /* WishRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000067 /* WishRepositoryTests.swift */; };
 		79C00000000000000000006A /* DatabaseMigrationFollowUpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000069 /* DatabaseMigrationFollowUpTests.swift */; };
 		79B000000000000000000002 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000001 /* AppDatabase.swift */; };
@@ -23,6 +24,7 @@
 		79B00000000000000000000E /* LegacyRealmImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B00000000000000000000D /* LegacyRealmImporter.swift */; };
 		79B00000000000000000000F /* LegacyRealmImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B00000000000000000000D /* LegacyRealmImporter.swift */; };
 		79B000000000000000000011 /* DatabaseMigrationFollowUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */; };
+		96A000000000000000000002 /* LegacyImportRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A000000000000000000001 /* LegacyImportRecovery.swift */; };
 		79A0000000000000000000A4 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 79A0000000000000000000A2 /* GRDB */; };
 		79A0000000000000000000A5 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 79A0000000000000000000A3 /* GRDB */; };
 		A74A1C0E2EA9000100A74002 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A74A1C0E2EA9000100A74001 /* AppIcon.icon */; };
@@ -245,6 +247,7 @@
 		7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOrderRepositoryTests.swift; sourceTree = "<group>"; };
 		7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureLetterRepositoryTests.swift; sourceTree = "<group>"; };
 		79C000000000000000000065 /* LegacyRealmImporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImporterTests.swift; sourceTree = "<group>"; };
+		96A000000000000000000003 /* LegacyRealmReimportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmReimportTests.swift; sourceTree = "<group>"; };
 		79C000000000000000000067 /* WishRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRepositoryTests.swift; sourceTree = "<group>"; };
 		79C000000000000000000069 /* DatabaseMigrationFollowUpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationFollowUpTests.swift; sourceTree = "<group>"; };
 		79B000000000000000000001 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
@@ -253,6 +256,7 @@
 		79B00000000000000000000A /* WishRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRecord.swift; sourceTree = "<group>"; };
 		79B00000000000000000000D /* LegacyRealmImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImporter.swift; sourceTree = "<group>"; };
 		79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationFollowUp.swift; sourceTree = "<group>"; };
+		96A000000000000000000001 /* LegacyImportRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyImportRecovery.swift; sourceTree = "<group>"; };
 		A74A1C0E2EA9000100A74001 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		46A000000000000000000001 /* AuthenticationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		9FF7DB6B3BAB72B61E20AA34 /* DetailSectionBuilderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DetailSectionBuilderTests.swift; sourceTree = "<group>"; };
@@ -542,6 +546,7 @@
 				7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */,
 				7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */,
 				79C000000000000000000065 /* LegacyRealmImporterTests.swift */,
+				96A000000000000000000003 /* LegacyRealmReimportTests.swift */,
 				79C000000000000000000067 /* WishRepositoryTests.swift */,
 				79C000000000000000000069 /* DatabaseMigrationFollowUpTests.swift */,
 				A4700001000000000000000F /* LockScreenDdayTests.swift */,
@@ -756,6 +761,7 @@
 			isa = PBXGroup;
 			children = (
 				79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */,
+				96A000000000000000000001 /* LegacyImportRecovery.swift */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
 				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
 				36A000000000000000000001 /* WishPhotoStorage.swift */,
@@ -1119,6 +1125,7 @@
 				7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */,
 				7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */,
 				79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */,
+				96A000000000000000000004 /* LegacyRealmReimportTests.swift in Sources */,
 				79C000000000000000000068 /* WishRepositoryTests.swift in Sources */,
 				79C00000000000000000006A /* DatabaseMigrationFollowUpTests.swift in Sources */,
 				A4800001000000000000001D /* WidgetCheckActionTests.swift in Sources */,
@@ -1157,6 +1164,7 @@
 				79B00000000000000000000B /* WishRecord.swift in Sources */,
 				79B00000000000000000000E /* LegacyRealmImporter.swift in Sources */,
 				79B000000000000000000011 /* DatabaseMigrationFollowUp.swift in Sources */,
+				96A000000000000000000002 /* LegacyImportRecovery.swift in Sources */,
 				A48000010000000000000005 /* WidgetCheckRepository.swift in Sources */,
 				A48000010000000000000008 /* WidgetCheckStore.swift in Sources */,
 				A4800001000000000000000B /* WidgetCheckAction.swift in Sources */,

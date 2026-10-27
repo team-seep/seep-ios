@@ -3,7 +3,11 @@ import SwiftUI
 /// 싶 탭(홈). 헤드라인 → 연말 회고 배너 → [카테고리 탭 · 정렬/검색/보기] 고정 헤더 → 잠든 위시 카드 + 위시 리스트·그리드 (GH-64 R-12 ~ R-16)
 struct HomeView: View {
     @Bindable var viewModel: HomeViewModel
+    /// 1회 이전 실패 안내 카드 (GH-96). 미리보기·테스트에서는 없어도 된다
+    var noticeViewModel: MigrationNoticeViewModel?
     @Environment(AppRouter.self) private var router
+    @Environment(ToastCenter.self) private var toastCenter
+    @Environment(\.openURL) private var openURL
 
     private static let topAnchorId = "home-top"
 
@@ -23,6 +27,25 @@ struct HomeView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.state.isReordering)
         .animation(.easeInOut(duration: 0.2), value: viewModel.state.isSelecting)
         .modifier(HomeViewEvents(viewModel: viewModel))
+        .onAppear { noticeViewModel?.send(.onAppear) }
+        .onChange(of: noticeViewModel?.route) { _, route in
+            handleNoticeRoute(route)
+        }
+    }
+
+    // MARK: 이전 실패 카드 Route (GH-96)
+    private func handleNoticeRoute(_ route: MigrationNoticeViewModel.Route?) {
+        guard let route, let noticeViewModel else { return }
+        switch route {
+        case .restored(let toast):
+            router.wishesDidChange()
+            if let toast { toastCenter.show(toast) }
+        case .toast(let message):
+            toastCenter.show(message)
+        case .openURL(let url):
+            openURL(url)
+        }
+        noticeViewModel.send(.routeHandled)
     }
 
     private var homeList: some View {
@@ -31,6 +54,16 @@ struct HomeView: View {
                 LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                     HomeOverviewView(category: viewModel.state.category, count: viewModel.state.notFinishedCount)
                         .id(Self.topAnchorId)
+
+                    if let noticeViewModel, noticeViewModel.state.problem != nil {
+                        HomeMigrationNoticeCardView(
+                            state: noticeViewModel.state,
+                            onContact: { noticeViewModel.send(.tapContact) },
+                            onRetry: { noticeViewModel.send(.tapRetry) }
+                        )
+                        .padding(.horizontal, HomeLayout.horizontalInset)
+                        .padding(.bottom, 16)
+                    }
 
                     if let banner = viewModel.state.yearReviewBanner {
                         HomeYearReviewBannerView(

@@ -4,11 +4,12 @@ import SwiftUI
 struct WishTabRootView: View {
     @Environment(AppRouter.self) private var router
     @State private var viewModel: HomeViewModel?
+    @State private var noticeViewModel = MigrationNoticeViewModel()
 
     var body: some View {
         Group {
             if let viewModel {
-                HomeView(viewModel: viewModel)
+                HomeView(viewModel: viewModel, noticeViewModel: noticeViewModel)
             } else {
                 Color.gray2.ignoresSafeArea()
             }
