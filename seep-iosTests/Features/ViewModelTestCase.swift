@@ -1,7 +1,7 @@
 import XCTest
 import Observation
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 화면별 기능 테스트(GH-64 R-44)의 공용 바탕.
 /// SwiftUI ViewModel(`@Observable`, `send(_:)` → `state`/`route`)을 같은 방식으로 단언한다

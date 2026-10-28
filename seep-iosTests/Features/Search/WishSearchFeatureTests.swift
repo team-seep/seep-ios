@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위시 검색 화면 (GH-32, GH-64 TC-202·701~703)
 final class WishSearchFeatureTests: ViewModelTestCase {

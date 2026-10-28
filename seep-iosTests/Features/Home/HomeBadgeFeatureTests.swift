@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈의 배지 축하 시점·축하 시트 (GH-35). 기존 HomeViewModelBadgeTests·BadgeCelebrationViewModelTests 이전.
 /// "배지 n/8 모아보기" 링크는 이룬 싶 탭으로 옮겨 갔다 (GH-64 R-12, R-18)
@@ -21,7 +21,7 @@ final class HomeBadgeFeatureTests: HomeFeatureTestCase {
         sut = makeSut()
     }
 
-    private func finished(_ category: seep_ios_dev.Category = .wantToGet, endDate: Date? = nil, finishDate: Date = Date()) -> Wish {
+    private func finished(_ category: seep_ios.Category = .wantToGet, endDate: Date? = nil, finishDate: Date = Date()) -> Wish {
         Wish(category: category, endDate: endDate, finishDate: finishDate, isSuccess: true)
     }
 

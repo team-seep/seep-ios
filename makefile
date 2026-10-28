@@ -1,3 +1,7 @@
+# project.yml → seep-ios.xcodeproj (GH-112). 프로젝트 파일은 직접 고치지 않는다
+project:
+	scripts/xcodegen.sh
+
 lint:
 	swiftlint lint --quiet
 	scripts/check-db-schema.sh

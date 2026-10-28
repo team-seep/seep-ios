@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 연말 회고 기간만 돌려주는 Remote Config 대역
 private struct FinishedStubRemoteConfig: RemoteConfigRepository {
@@ -42,7 +42,7 @@ final class FinishedFeatureTests: ViewModelTestCase {
 
     private func finishedWish(
         id: String,
-        category: seep_ios_dev.Category = .wantToDo,
+        category: seep_ios.Category = .wantToDo,
         title: String = "위시",
         finishDate: Date,
         note: String = ""

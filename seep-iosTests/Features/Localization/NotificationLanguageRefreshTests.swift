@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 기기 언어를 바꾸면 D-day 알림을 다시 예약한다 (GH-100 R-14)
 final class NotificationLanguageRefreshTests: XCTestCase {

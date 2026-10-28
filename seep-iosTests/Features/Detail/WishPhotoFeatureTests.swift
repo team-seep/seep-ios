@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "사진" 섹션 (GH-36 R-1~R-4, R-7, GH-64 TC-608)
 final class WishPhotoFeatureTests: ViewModelTestCase {

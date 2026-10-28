@@ -1,0 +1,347 @@
+# 싶 Xcode 프로젝트 원본 (GH-112). `seep-ios.xcodeproj`는 이 파일에서 만든다 — 직접 고치지 않는다.
+# 바꾼 뒤 `make project` 로 다시 만들고 둘 다 커밋한다. CI 가 둘이 다르면 실패한다.
+name: seep-ios
+
+options:
+  developmentLanguage: ko
+  deploymentTarget:
+    iOS: "18.0"
+  # 기본값 대신 아래에 적은 설정만 쓴다(옮기기 전 프로젝트와 같게)
+  settingPresets: none
+  createIntermediateGroups: true
+  groupSortPosition: top
+  generateEmptyDirectories: false
+
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    exactVersion: 11.3.0
+  Realm:
+    url: https://github.com/realm/realm-swift.git
+    exactVersion: 20.0.6
+  GRDB:
+    url: https://github.com/groue/GRDB.swift.git
+    exactVersion: 7.11.1
+
+settings:
+  base:
+    ALWAYS_SEARCH_USER_PATHS: NO
+    CLANG_ANALYZER_NONNULL: YES
+    CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: YES_AGGRESSIVE
+    CLANG_CXX_LANGUAGE_STANDARD: gnu++14
+    CLANG_CXX_LIBRARY: libc++
+    CLANG_ENABLE_MODULES: YES
+    CLANG_ENABLE_OBJC_ARC: YES
+    CLANG_ENABLE_OBJC_WEAK: YES
+    CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING: YES
+    CLANG_WARN_BOOL_CONVERSION: YES
+    CLANG_WARN_COMMA: YES
+    CLANG_WARN_CONSTANT_CONVERSION: YES
+    CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS: YES
+    CLANG_WARN_DIRECT_OBJC_ISA_USAGE: YES_ERROR
+    CLANG_WARN_DOCUMENTATION_COMMENTS: YES
+    CLANG_WARN_EMPTY_BODY: YES
+    CLANG_WARN_ENUM_CONVERSION: YES
+    CLANG_WARN_INFINITE_RECURSION: YES
+    CLANG_WARN_INT_CONVERSION: YES
+    CLANG_WARN_NON_LITERAL_NULL_CONVERSION: YES
+    CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF: YES
+    CLANG_WARN_OBJC_LITERAL_CONVERSION: YES
+    CLANG_WARN_OBJC_ROOT_CLASS: YES_ERROR
+    CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+    CLANG_WARN_RANGE_LOOP_ANALYSIS: YES
+    CLANG_WARN_STRICT_PROTOTYPES: YES
+    CLANG_WARN_SUSPICIOUS_MOVE: YES
+    CLANG_WARN_UNGUARDED_AVAILABILITY: YES_AGGRESSIVE
+    CLANG_WARN_UNREACHABLE_CODE: YES
+    CLANG_WARN__DUPLICATE_METHOD_MATCH: YES
+    COPY_PHASE_STRIP: NO
+    ENABLE_STRICT_OBJC_MSGSEND: YES
+    GCC_C_LANGUAGE_STANDARD: gnu11
+    GCC_NO_COMMON_BLOCKS: YES
+    GCC_WARN_64_TO_32_BIT_CONVERSION: YES
+    GCC_WARN_ABOUT_RETURN_TYPE: YES_ERROR
+    GCC_WARN_UNDECLARED_SELECTOR: YES
+    GCC_WARN_UNINITIALIZED_AUTOS: YES_AGGRESSIVE
+    GCC_WARN_UNUSED_FUNCTION: YES
+    GCC_WARN_UNUSED_VARIABLE: YES
+    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+    MTL_FAST_MATH: YES
+    SDKROOT: iphoneos
+  configs:
+    Debug:
+      DEBUG_INFORMATION_FORMAT: dwarf
+      ENABLE_TESTABILITY: YES
+      GCC_DYNAMIC_NO_PIC: NO
+      GCC_OPTIMIZATION_LEVEL: "0"
+      GCC_PREPROCESSOR_DEFINITIONS: ["DEBUG=1", "$(inherited)"]
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      ONLY_ACTIVE_ARCH: YES
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+    Release:
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: NO
+      MTL_ENABLE_DEBUG_INFO: NO
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      VALIDATE_PRODUCT: YES
+
+# 앱·위젯 공통 서명·버전
+settingGroups:
+  signing:
+    CODE_SIGN_IDENTITY: Apple Development
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: X975A2HM62
+  version:
+    MARKETING_VERSION: 2.6.0
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  seep-ios:
+    type: application
+    platform: iOS
+    sources:
+      - path: seep-ios
+        excludes:
+          - Resources/AppIcon.icon
+          - DesignSystem
+          - AppShell
+          - Screens
+          - model/Error
+          - log
+      # 동기화 폴더: 파일을 넣기만 하면 된다(make project 필요 없음)
+      - path: seep-ios/DesignSystem
+        type: syncedFolder
+      - path: seep-ios/AppShell
+        type: syncedFolder
+      - path: seep-ios/Screens
+        type: syncedFolder
+      - path: seep-ios/model/Error
+        type: syncedFolder
+      - path: seep-ios/log
+        type: syncedFolder
+      # Icon Composer 아이콘은 폴더가 아니라 파일 하나로 넣는다
+      - path: seep-ios/Resources/AppIcon.icon
+        type: file
+        buildPhase: resources
+      # 단축어·제어 센터가 앱 안에서도 쓰는 위젯 파일
+      - widget/control-widget/OpenWriteIntent.swift
+      - widget/control-widget/WriteCategoryAppEnum.swift
+      - widget/widget.intentdefinition
+    preBuildScripts:
+      - name: Setup Firebase GoogleService-Info
+        basedOnDependencyAnalysis: false
+        script: |
+          case "${CONFIGURATION}" in
+            "Debug" )
+          cp -r "$SRCROOT/seep-ios/resources/firebase/GoogleService-Info-Dev.plist" "${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist" ;;
+            "Release" )
+          cp -r "$SRCROOT/seep-ios/resources/firebase/GoogleService-Info-Prod.plist" "${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist" ;;
+          *)
+          ;;
+          esac
+    dependencies:
+      - target: widgetExtension
+      - package: Firebase
+        product: FirebaseAnalytics
+      - package: Firebase
+        product: FirebaseAnalyticsWithoutAdIdSupport
+      - package: Firebase
+        product: FirebaseAppCheck
+      - package: Firebase
+        product: FirebaseCrashlytics
+      - package: Firebase
+        product: FirebaseMessaging
+      - package: Firebase
+        product: FirebaseRemoteConfig
+      - package: Realm
+        product: RealmSwift
+        embed: true
+      - package: GRDB
+    settings:
+      groups: [signing, version]
+      base:
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_ENTITLEMENTS: seep-ios/seep-ios.entitlements
+        INFOPLIST_FILE: seep-ios/Info.plist
+        LD_RUNPATH_SEARCH_PATHS: ["$(inherited)", "@executable_path/Frameworks"]
+        # 구성마다 이름이 다르면 Xcode 가 스킴을 열 때마다 다시 쓴다(R-4). 앱 이름은 DISPLAY_NAME 이 정한다
+        PRODUCT_NAME: $(TARGET_NAME)
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+      configs:
+        Debug:
+          DISPLAY_NAME: 싶Dev
+          PRODUCT_BUNDLE_IDENTIFIER: macgongmon.seep-ios.dev
+          REALM_NAME: dev.realm
+        Release:
+          DISPLAY_NAME: 싶
+          PRODUCT_BUNDLE_IDENTIFIER: macgongmon.seep-ios
+          REALM_NAME: default.realm
+
+  widgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: widget
+      # 앱과 같이 쓰는 폴더·파일 (CLAUDE.md "위젯과 같이 쓰는 파일")
+      - path: seep-ios/DesignSystem
+        type: syncedFolder
+      - path: seep-ios/model/Error
+        type: syncedFolder
+      - seep-ios/Generated/Strings.swift
+      - seep-ios/Repository/AppDatabase.swift
+      - seep-ios/Repository/LegacyRealm/LegacyRealmImporter.swift
+      - seep-ios/Repository/LegacyRealm/NotificationDTO.swift
+      - seep-ios/Repository/LegacyRealm/RealmConfiguration.swift
+      - seep-ios/Repository/LegacyRealm/SavingDTO.swift
+      - seep-ios/Repository/LegacyRealm/WishDTO.swift
+      - seep-ios/Repository/LegacyRealm/WishStepDTO.swift
+      - seep-ios/Repository/WidgetCheckRepository.swift
+      - seep-ios/Repository/WidgetWishRepository.swift
+      - seep-ios/Repository/WishRecordStore.swift
+      - seep-ios/Support/AppLanguage.swift
+      - seep-ios/Support/DisplayDate.swift
+      - seep-ios/Support/Extensions/DateExtensions.swift
+      - seep-ios/Support/WidgetCheckStore.swift
+      - seep-ios/model/Category.swift
+      - seep-ios/model/dto/WishRecord.swift
+      - seep-ios/model/presentation/LockScreenDday.swift
+      - seep-ios/model/presentation/SeepNotification.swift
+      - seep-ios/model/presentation/WidgetCheckAction.swift
+      - seep-ios/model/presentation/WidgetCopy.swift
+      - seep-ios/model/presentation/WidgetDeepLink.swift
+      - seep-ios/model/presentation/Wish.swift
+      - seep-ios/model/presentation/WishJournal.swift
+      - seep-ios/model/presentation/WishPlace.swift
+      - seep-ios/model/presentation/WishSaving.swift
+      - seep-ios/model/presentation/WishStep.swift
+      - seep-ios/Resources/Assets.xcassets
+      - seep-ios/Resources/Font/AppleSDGothicNeoEB00.ttf
+      - seep-ios/Resources/Localizable.xcstrings
+      - seep-ios/Resources/Localization.xcstrings
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+      - package: Realm
+        product: RealmSwift
+        embed: false
+      - package: GRDB
+    settings:
+      groups: [signing, version]
+      base:
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+        CODE_SIGN_ENTITLEMENTS: widgetExtension.entitlements
+        INFOPLIST_FILE: widget/Info.plist
+        LD_RUNPATH_SEARCH_PATHS: ["$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks"]
+        PRODUCT_NAME: $(TARGET_NAME)
+        SKIP_INSTALL: YES
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+      configs:
+        Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: macgongmon.seep-ios.dev.widget
+          REALM_NAME: dev.realm
+        Release:
+          PRODUCT_BUNDLE_IDENTIFIER: macgongmon.seep-ios.widget
+          REALM_NAME: default.realm
+
+  seep-iosTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: seep-iosTests
+        excludes:
+          # 예전 UIKit 시트 테스트. 옮기기 전부터 어느 타깃에도 없었다
+          - AppLockBottomSheetViewModelTests.swift
+          - Features
+          - Log
+      - path: seep-iosTests/Features
+        type: syncedFolder
+      - path: seep-iosTests/Log
+        type: syncedFolder
+    dependencies:
+      - target: seep-ios
+      - package: Realm
+        product: RealmSwift
+        embed: false
+    settings:
+      base:
+        BUNDLE_LOADER: $(TEST_HOST)
+        CLANG_ENABLE_OBJC_WEAK: NO
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: X975A2HM62
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.macgongmon.seep-iosTests
+        PRODUCT_MODULE_NAME: seep_iosTests
+        PRODUCT_NAME: seep-iosTests
+        SWIFT_VERSION: "5.0"
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/seep-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/seep-ios
+      configs:
+        Release:
+          VALIDATE_PRODUCT: YES
+
+schemeTemplates:
+  App:
+    build:
+      targets:
+        seep-ios: all
+        seep-iosTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      # 영어 번역이 들어간 뒤에도 문구 단언은 원문(ko) 기준이다 (GH-103)
+      language: ko
+      region: KR
+      targets: [seep-iosTests]
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+schemes:
+  seep-ios:
+    templates: [App]
+  # Xcode Cloud "개발앱 배포"가 이 이름으로 아카이브한다. Debug 로 아카이브하면 업로드가 실패해 Release 로 둔다
+  seep-ios-dev:
+    templates: [App]
+  # 번역이 빠진 문구를 대문자로 보여 준다 (GH-100 R-15)
+  seep-ios-i18n-check:
+    templates: [App]
+    run:
+      config: Debug
+      commandLineArguments:
+        "-NSShowNonLocalizedStrings YES": true
+  widgetExtension:
+    build:
+      targets:
+        widgetExtension: all
+        seep-ios: all
+    run:
+      config: Debug
+      askForAppToLaunch: true
+      launchAutomaticallySubstyle: "2"
+      environmentVariables:
+        - variable: _XCWidgetKind
+          value: MediumHorizontalWidget
+          isEnabled: true
+        - variable: _XCWidgetDefaultView
+          value: timeline
+          isEnabled: false
+        - variable: _XCWidgetFamily
+          value: medium
+          isEnabled: false
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

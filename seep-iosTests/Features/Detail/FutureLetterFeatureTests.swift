@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// "미래의 나에게" 편지 — 상세 섹션·문서 블록·편지 시트·완료 소감 시트 (GH-61)
 final class FutureLetterFeatureTests: WishFormFeatureTestCase {

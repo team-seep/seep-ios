@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 싶 적기 컨트롤·단축어 인텐트 (GH-49)
 final class WriteIntentTests: XCTestCase {
@@ -8,7 +8,7 @@ final class WriteIntentTests: XCTestCase {
 
     func test_GH49_TC1_카테고리AppEnum세값은_Category와1대1로맞는다() {
         // Given
-        let expected: [(WriteCategoryAppEnum, seep_ios_dev.Category)] = [
+        let expected: [(WriteCategoryAppEnum, seep_ios.Category)] = [
             (.wantToDo, .wantToDo),
             (.wantToGet, .wantToGet),
             (.wantToGo, .wantToGo)

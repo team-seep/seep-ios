@@ -1,6 +1,6 @@
 import struct Foundation.Date
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class MockWishRepository: WishRepository {
     var fetchWishesResult: [Wish] = []

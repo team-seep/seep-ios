@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class BadgeCalculatorTests: XCTestCase {
     private var calendar: Calendar = {
@@ -15,7 +15,7 @@ final class BadgeCalculatorTests: XCTestCase {
 
     private func finishedWish(
         id: String = UUID().uuidString,
-        category: seep_ios_dev.Category = .wantToGet,
+        category: seep_ios.Category = .wantToGet,
         endDate: Date? = nil,
         finishDate: Date
     ) -> Wish {

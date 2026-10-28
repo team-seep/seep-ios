@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "이어지는 싶" 섹션과 이룬 싶 상세의 "이어서 적기" (GH-84 R-3~R-5)
 final class DetailChainFeatureTests: ViewModelTestCase {

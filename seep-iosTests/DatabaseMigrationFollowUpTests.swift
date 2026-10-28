@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 1회 이전 뒤 앱이 할 일 — `db_migration` 이벤트와 알림 재예약 (GH-79 R-22, R-23)
 final class DatabaseMigrationFollowUpTests: XCTestCase {

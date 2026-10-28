@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 ⋯ 메뉴 "캘린더에 추가" (GH-28, GH-64 TC-609)
 final class WishCalendarFeatureTests: ViewModelTestCase {

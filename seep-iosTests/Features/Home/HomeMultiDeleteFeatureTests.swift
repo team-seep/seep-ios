@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈 여러 개 골라 지우기 (GH-86 R-3~R-5)
 final class HomeMultiDeleteFeatureTests: HomeFeatureTestCase {

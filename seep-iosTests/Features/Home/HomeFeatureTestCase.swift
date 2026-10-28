@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈 기능 테스트 공용 바탕. 목 저장소·알림·라우터를 묶어 `HomeViewModel`을 만든다
 class HomeFeatureTestCase: ViewModelTestCase {

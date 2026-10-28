@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 번역 언어 전체 검사 — 모든 키가 번역됐고, 자리표시자·굵게 칠할 부분이 원문과 맞는다 (GH-104·GH-105 TC-2·TC-3)
 /// 언어를 더하면 카탈로그만 채우면 된다. 이 테스트가 그 언어도 같이 본다

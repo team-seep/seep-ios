@@ -1,4 +1,4 @@
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class MockNotificationManager: NotificationManagerProtocol {
     var cancelledWishes: [Wish] = []
