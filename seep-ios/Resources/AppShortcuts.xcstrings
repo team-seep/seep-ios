@@ -10,6 +10,12 @@
             "value" : "Add a place to go in ${applicationName}"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}に行きたい場所を書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27,6 +33,12 @@
             "value" : "Add a thing to get in ${applicationName}"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}にほしいものを書く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42,6 +54,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add a thing to do in ${applicationName}"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}にやりたいことを書く"
           }
         },
         "ko" : {
