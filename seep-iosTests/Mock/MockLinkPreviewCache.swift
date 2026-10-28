@@ -1,4 +1,4 @@
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// LinkPreviewCaching 스파이. 메모리에만 둔다.
 final class MockLinkPreviewCache: LinkPreviewCaching {

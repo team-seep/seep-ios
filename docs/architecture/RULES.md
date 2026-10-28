@@ -1,6 +1,6 @@
 # 아키텍처 규칙 (RULES.md)
 
-이 문서는 seep(싶) iOS 레포의 **아키텍처 규칙 9개**다.
+이 문서는 seep(싶) iOS 레포의 **아키텍처 규칙 10개**다.
 AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **의도(TC)·경계·검증 증거**만 본다.
 그래서 경계에 관한 규칙은 엄격하게, 화면 내부 구현은 관대하게 둔다.
 
@@ -27,6 +27,7 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 | R7 | 타입은 책임 하나만 진다 (타입 400·파일 600줄 초과는 사유 필수) | 린트 `type_body_length`·`file_length` + `length_disable_reason` | 0건 |
 | R8 | `print`·`try!`·`as!` 금지 | 린트 `no_print`, `force_try`, `force_cast` | 0건 |
 | R9 | ViewModel 구조(Action/State/Route/Config/Dependency, `send(_:)`)·Route는 View에서 처리 | 문서 + AI 리뷰 | — |
+| R10 | 프로젝트 구성(파일·타깃·설정·스킴)은 `project.yml`로만 바꾼다. `project.pbxproj`를 직접 고치지 않는다 | 스크립트 `xcodegen.sh --check`(CI 드리프트) | — |
 
 린트 대상은 `seep-ios/`, `seep-iosTests/`, `widget/`(R1·R7·R8·`snapkit`·`then`만). `seep-ios/Generated/`(SwiftGen 산출물)는 제외.
 
@@ -261,6 +262,22 @@ do {
 ```
 
 **강제 수단** — 이 문서 + `CLAUDE.md` + AI 리뷰. 반복 지적이 쌓이면 부분 규칙을 린트로 승격한다.
+
+---
+
+## R10. 프로젝트 구성은 `project.yml`로만 바꾼다
+
+파일 추가·삭제, 타깃 소속, 빌드 설정, 스킴, 패키지는 루트 `project.yml`을 고치고 `make project`로 `seep-ios.xcodeproj`를 다시 만든다. 둘을 같이 커밋한다(GH-112).
+
+**이유** — `project.pbxproj`는 손으로 고치기 어렵고(ID·여러 섹션), 도구로 고치면 파일 전체가 다시 정렬돼 diff가 커지며, 브랜치끼리 충돌이 잦았다. 구성마다 결과물 이름이 달라 Xcode가 열 때마다 스킴을 다시 쓰기도 했다. `project.yml` 하나를 원본으로 두면 같은 입력에서 항상 같은 프로젝트가 나온다.
+
+**좋은 예** — `widget/`에 새 파일을 넣고 `make project`. 앱 파일을 위젯에서도 쓰려면 `project.yml`의 `widgetExtension` sources에 경로를 한 줄 더한다.
+
+**나쁜 예** — Xcode의 File Inspector에서 Target Membership을 체크하거나 Build Settings를 바꾸고 그대로 커밋한다(다음 `make project`에서 사라지고, CI 드리프트 검사가 실패한다).
+
+**강제 수단** — CI 테스트 워크플로의 "프로젝트 드리프트" 스텝(`scripts/xcodegen.sh --check`). XcodeGen 버전은 스크립트에 고정한다.
+
+**예외** — 없음. Xcode가 프로젝트 파일을 바꿔 놓았으면 커밋하지 않고 `make project`로 되돌린다.
 
 ---
 

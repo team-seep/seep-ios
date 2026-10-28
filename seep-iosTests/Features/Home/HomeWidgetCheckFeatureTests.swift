@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 체크 위젯이 남긴 기록을 싶 탭이 처리한다 (GH-48 R-7, R-8, 트래킹 이벤트). 기존 HomeViewModelWidgetCheckTests 이전
 final class HomeWidgetCheckFeatureTests: HomeFeatureTestCase {

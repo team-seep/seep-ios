@@ -1,6 +1,6 @@
 import Foundation
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class MockAuthenticationManager: AuthenticationManagerProtocol {
     var isAuthenticating = false

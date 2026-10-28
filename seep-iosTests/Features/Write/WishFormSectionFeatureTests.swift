@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 작성·수정 폼의 단계(GH-5)·링크(GH-29)·장소(GH-31) 섹션.
 /// 레거시 `WishStepsViewModel`·`WishLinkViewModel`·`WishPlaceViewModel`의 작성·수정 케이스를 폼 ViewModel 로 옮겼다

@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 다국어 2단계 — 영어 번역·설정 언어 줄·위시별 통화 (GH-103)
 final class EnglishStageTests: WishFormFeatureTestCase {

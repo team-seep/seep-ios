@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 앱 안에서 언어 바꾸기 (GH-103 R-21~R-23)
 final class InAppLanguageTests: ViewModelTestCase {

@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 잠금화면 D-day 위젯의 위시 고르기·문구 (GH-47). 위젯과 앱이 같이 쓰는 순수 타입이다.
 final class LockScreenDdayTests: XCTestCase {

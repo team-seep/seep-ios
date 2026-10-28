@@ -1,4 +1,4 @@
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// LogManagerProtocol 스파이. 전송된 로그를 기록만 하고 실제로 보내지 않는다.
 final class MockLogManager: LogManagerProtocol {

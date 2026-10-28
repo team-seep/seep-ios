@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "링크" 섹션 (GH-29 R-4·R-5, GH-59 R-6).
 /// 작성·수정의 링크 칸은 `WishLinkViewModelTests`(작성 폼) 쪽에 남는다
@@ -23,7 +23,7 @@ final class DetailLinkFeatureTests: ViewModelTestCase {
         super.tearDown()
     }
 
-    private func makeViewModel(category: seep_ios_dev.Category = .wantToGet, link: String) -> DetailLinkViewModel {
+    private func makeViewModel(category: seep_ios.Category = .wantToGet, link: String) -> DetailLinkViewModel {
         DetailLinkViewModel(
             config: .init(wish: Wish(id: "wish-1", category: category, title: "헤드폰", link: link)),
             dependency: .init(linkMetadataProvider: mockProvider, linkPreviewCache: mockCache, logManager: logManager)

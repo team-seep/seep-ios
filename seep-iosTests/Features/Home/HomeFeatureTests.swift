@@ -1,7 +1,7 @@
 // swiftlint:disable file_length - 홈 기본 동작·완료 흐름·고정·삭제와 화면별 기능 TC(TC-101~113)를 한 화면 단위로 모았다
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 싶 탭(홈) — 완료·소감·삭제·검색 (기존 HomeViewModelTests 이전) + 화면별 기능 TC (GH-64)
 final class HomeFeatureTests: HomeFeatureTestCase {
@@ -447,7 +447,7 @@ final class HomeFeatureTests: HomeFeatureTestCase {
         XCTAssertEqual(event?.parameters[ParameterName.screen.rawValue] as? String, "home")
         XCTAssertEqual(event?.parameters[ParameterName.objectType.rawValue] as? String, "button")
         XCTAssertEqual(objectId(event), "pin_wish")
-        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios.Category.wantToDo.rawValue)
         XCTAssertEqual(event?.parameters[ParameterName.count.rawValue] as? Int, 2)
     }
 
@@ -465,7 +465,7 @@ final class HomeFeatureTests: HomeFeatureTestCase {
         let event = logManager.sentEvents.first
         XCTAssertEqual(event?.name, .click)
         XCTAssertEqual(objectId(event), "unpin_wish")
-        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios.Category.wantToDo.rawValue)
     }
 
     func test_GH33_TC9_3개초과로토스트가뜨면_pin_limit_toast노출로그가1건전송된다() {
@@ -484,7 +484,7 @@ final class HomeFeatureTests: HomeFeatureTestCase {
         XCTAssertEqual(event?.name, .impression)
         XCTAssertEqual(event?.parameters[ParameterName.objectType.rawValue] as? String, "banner")
         XCTAssertEqual(objectId(event), "pin_limit_toast")
-        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+        XCTAssertEqual(event?.parameters[ParameterName.category.rawValue] as? String, seep_ios.Category.wantToDo.rawValue)
     }
 }
 

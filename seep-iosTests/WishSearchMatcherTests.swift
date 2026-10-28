@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위시 검색 일치 판단·강조 범위 (GH-32 R-3, R-6).
 final class WishSearchMatcherTests: XCTestCase {

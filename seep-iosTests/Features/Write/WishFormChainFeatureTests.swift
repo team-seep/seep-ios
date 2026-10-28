@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 이어서 연 작성 화면 (GH-84 R-2)
 final class WishFormChainFeatureTests: WishFormFeatureTestCase {

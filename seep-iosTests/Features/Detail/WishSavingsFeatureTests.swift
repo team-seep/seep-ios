@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "모은 돈" 섹션과 기록 시트 (GH-16 R-3·R-4·R-5·R-6·R-7, GH-64 TC-607)
 final class WishSavingsFeatureTests: ViewModelTestCase {
@@ -17,7 +17,7 @@ final class WishSavingsFeatureTests: ViewModelTestCase {
     }
 
     private func makeWish(
-        category: seep_ios_dev.Category = .wantToGet,
+        category: seep_ios.Category = .wantToGet,
         targetAmount: Int,
         savings: [WishSaving] = []
     ) -> Wish {

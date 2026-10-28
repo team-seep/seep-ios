@@ -1,7 +1,7 @@
 import XCTest
 import MapKit
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 가고 싶은 곳 지도 (GH-31 R-6~R-8, GH-64 TC-38·TC-1001~1002)
 final class PlaceMapFeatureTests: ViewModelTestCase {

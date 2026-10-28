@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 다국어 전환 1단계 — 원문 ko·String Catalog·날짜 포맷 (GH-100)
 final class LocalizationFoundationTests: XCTestCase {

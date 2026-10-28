@@ -1,6 +1,6 @@
 import Combine
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// PlaceSearchServiceProtocol 스텁. 검색어를 기록하고, 후보는 테스트가 `sendCandidates` 로 직접 흘린다.
 final class MockPlaceSearchService: PlaceSearchServiceProtocol {

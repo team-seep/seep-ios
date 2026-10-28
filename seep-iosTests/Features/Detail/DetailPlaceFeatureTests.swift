@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "장소" 섹션 (GH-31 R-1·R-2·R-4, GH-59 R-6).
 /// 작성 화면의 장소 칸은 `WishPlaceViewModelTests`(작성 폼) 쪽에 남는다
@@ -19,7 +19,7 @@ final class DetailPlaceFeatureTests: ViewModelTestCase {
         super.tearDown()
     }
 
-    private func makeWish(category: seep_ios_dev.Category, place: WishPlace? = nil) -> Wish {
+    private func makeWish(category: seep_ios.Category, place: WishPlace? = nil) -> Wish {
         Wish(id: "wish-1", emoji: "🌅", category: category, title: "성산일출봉에서 새해 일출 보기", place: place)
     }
 
@@ -46,7 +46,7 @@ final class DetailPlaceFeatureTests: ViewModelTestCase {
 
     func test_GH31_TC1_하고싶어요_갖고싶어요위시상세면_장소섹션이보이지않는다() {
         // Given / When
-        let visibilities = [seep_ios_dev.Category.wantToDo, .wantToGet].map {
+        let visibilities = [seep_ios.Category.wantToDo, .wantToGet].map {
             DetailSectionBuilder.sections(for: makeWish(category: $0)).contains(.place)
         }
 

@@ -1,7 +1,7 @@
 import XCTest
 import SwiftUI
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 private final class MockPhotoLibrary: PhotoLibraryProviding {
     var status: PhotoLibraryAuthorization = .authorized
