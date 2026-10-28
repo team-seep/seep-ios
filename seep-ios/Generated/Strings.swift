@@ -506,17 +506,17 @@ internal enum Strings {
       internal static let completed = Strings.tr("Localization", "detail.saving.completed", fallback: "다 모았어요! 이제 겟할 시간이에요")
       /// 기록 삭제
       internal static let delete = Strings.tr("Localization", "detail.saving.delete", fallback: "기록 삭제")
-      /// +%@원
+      /// +%@
       internal static func recordFormat(_ p1: Any) -> String {
-        return Strings.tr("Localization", "detail.saving.record_format", String(describing: p1), fallback: "+%@원")
+        return Strings.tr("Localization", "detail.saving.record_format", String(describing: p1), fallback: "+%@")
       }
-      /// %@원 더 모으면 돼요!
+      /// %@ 더 모으면 돼요!
       internal static func remainingFormat(_ p1: Any) -> String {
-        return Strings.tr("Localization", "detail.saving.remaining_format", String(describing: p1), fallback: "%@원 더 모으면 돼요!")
+        return Strings.tr("Localization", "detail.saving.remaining_format", String(describing: p1), fallback: "%@ 더 모으면 돼요!")
       }
-      /// / %@원
+      /// / %@
       internal static func targetFormat(_ p1: Any) -> String {
-        return Strings.tr("Localization", "detail.saving.target_format", String(describing: p1), fallback: "/ %@원")
+        return Strings.tr("Localization", "detail.saving.target_format", String(describing: p1), fallback: "/ %@")
       }
       internal enum DeleteAlert {
         /// 삭제
@@ -533,9 +533,9 @@ internal enum Strings {
         internal static let plus10k = Strings.tr("Localization", "detail.saving.sheet.plus_10k", fallback: "+1만")
         /// +5만
         internal static let plus50k = Strings.tr("Localization", "detail.saving.sheet.plus_50k", fallback: "+5만")
-        /// %@원 / %@원
+        /// %@ / %@
         internal static func previewAmountFormat(_ p1: Any, _ p2: Any) -> String {
-          return Strings.tr("Localization", "detail.saving.sheet.preview_amount_format", String(describing: p1), String(describing: p2), fallback: "%@원 / %@원")
+          return Strings.tr("Localization", "detail.saving.sheet.preview_amount_format", String(describing: p1), String(describing: p2), fallback: "%@ / %@")
         }
         /// 기록하면 %@ (%d%%)
         internal static func previewFormat(_ p1: Any, _ p2: Int) -> String {
@@ -635,10 +635,6 @@ internal enum Strings {
     /// %d개 모였어요!
     internal static func headlineFormat(_ p1: Int) -> String {
       return Strings.tr("Localization", "finished.headline_format", p1, fallback: "지금까지 이룬 싶이\n%d개 모였어요!")
-    }
-    /// %@년 %d월
-    internal static func monthFormat(_ p1: Any, _ p2: Int) -> String {
-      return Strings.tr("Localization", "finished.month_format", String(describing: p1), p2, fallback: "%@년 %d월")
     }
     /// 이룬 싶 검색
     internal static let search = Strings.tr("Localization", "finished.search", fallback: "이룬 싶 검색")
@@ -1108,6 +1104,14 @@ internal enum Strings {
       /// 보기
       internal static let view = Strings.tr("Localization", "settings.group.view", fallback: "보기")
     }
+    internal enum Language {
+      /// 아이폰 설정에서 바꿀 수 있어요
+      internal static let description = Strings.tr("Localization", "settings.language.description", fallback: "아이폰 설정에서 바꿀 수 있어요")
+      /// 아이패드 설정에서 바꿀 수 있어요
+      internal static let descriptionPad = Strings.tr("Localization", "settings.language.description_pad", fallback: "아이패드 설정에서 바꿀 수 있어요")
+      /// 언어
+      internal static let title = Strings.tr("Localization", "settings.language.title", fallback: "언어")
+    }
     internal enum Lock {
       /// 앱을 열 때 %@나 기기 암호로 확인해요
       internal static func descriptionFormat(_ p1: Any) -> String {
@@ -1413,6 +1417,10 @@ internal enum Strings {
     internal enum TargetAmount {
       /// 상세 화면에서 모은 돈을 기록할 수 있어요
       internal static let caption = Strings.tr("Localization", "write.target_amount.caption", fallback: "상세 화면에서 모은 돈을 기록할 수 있어요")
+      /// 통화
+      internal static let currency = Strings.tr("Localization", "write.target_amount.currency", fallback: "통화")
+      /// 모은 돈 기록이 있어 통화를 바꿀 수 없어요
+      internal static let currencyLocked = Strings.tr("Localization", "write.target_amount.currency_locked", fallback: "모은 돈 기록이 있어 통화를 바꿀 수 없어요")
       /// 0
       internal static let placeholder = Strings.tr("Localization", "write.target_amount.placeholder", fallback: "0")
       /// 목표 금액
@@ -1453,9 +1461,9 @@ internal enum Strings {
     /// 올해 이룬 싶 모두 보기
     internal static let showAll = Strings.tr("Localization", "year_review.show_all", fallback: "올해 이룬 싶 모두 보기")
     internal enum BusiestMonth {
-      /// %d월 · %d개
-      internal static func format(_ p1: Int, _ p2: Int) -> String {
-        return Strings.tr("Localization", "year_review.busiest_month.format", p1, p2, fallback: "%d월 · %d개")
+      /// %@ · %d개
+      internal static func format(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "year_review.busiest_month.format", String(describing: p1), p2, fallback: "%@ · %d개")
       }
       /// 가장 많이 이룬 달
       internal static let title = Strings.tr("Localization", "year_review.busiest_month.title", fallback: "가장 많이 이룬 달")
@@ -1469,10 +1477,6 @@ internal enum Strings {
       /// %d개 모두 모아봤어요
       internal static func headlineFormat(_ p1: Any, _ p2: Int) -> String {
         return Strings.tr("Localization", "year_review.list.headline_format", String(describing: p1), p2, fallback: "%@년에 이룬 싶\n%d개 모두 모아봤어요")
-      }
-      /// %d월
-      internal static func monthFormat(_ p1: Int) -> String {
-        return Strings.tr("Localization", "year_review.list.month_format", p1, fallback: "%d월")
       }
     }
     internal enum LongestHeld {

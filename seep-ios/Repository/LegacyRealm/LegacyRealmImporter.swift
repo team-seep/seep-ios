@@ -164,6 +164,8 @@ struct LegacyRealmImporter {
                 date: dto.date,
                 finishDate: dto.finishDate,
                 targetAmount: dto.targetAmount,
+                // Realm 시절 금액은 모두 원화였다 (GH-103)
+                currency: "KRW",
                 memo: dto.memo,
                 hashtag: dto.hashtag,
                 isSuccess: dto.isSuccess,

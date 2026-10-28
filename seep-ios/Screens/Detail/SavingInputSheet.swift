@@ -45,10 +45,10 @@ struct SavingInputSheet: View {
             TextField(Strings.Write.TargetAmount.placeholder, text: $text)
                 .font(.appleRegular(size: 16))
                 .foregroundStyle(Color.gray5)
-                .keyboardType(.numberPad)
+                .keyboardType(AmountFormatter.fractionDigits(viewModel.currency) > 0 ? .decimalPad : .numberPad)
                 .focused($isFocused)
                 .accessibilityLabel(Text(Strings.Detail.Saving.Sheet.amount))
-            Text(Strings.Common.wonUnit)
+            Text(verbatim: AmountFormatter.unit(currency: viewModel.currency))
                 .font(.appleRegular(size: 16))
                 .foregroundStyle(Color.gray5)
         }
@@ -59,11 +59,19 @@ struct SavingInputSheet: View {
 
     private var quickButtons: some View {
         HStack(spacing: 8) {
-            quickButton(Strings.Detail.Saving.Sheet.plus10k, .plus(10_000))
-            quickButton(Strings.Detail.Saving.Sheet.plus50k, .plus(50_000))
-            quickButton(Strings.Detail.Saving.Sheet.plus100k, .plus(100_000))
+            ForEach(Array(viewModel.quickAmounts.enumerated()), id: \.offset) { index, amount in
+                quickButton(quickTitle(index: index, amount: amount), .plus(amount))
+            }
             quickButton(Strings.Detail.Saving.Sheet.remainingAll, .remainingAll)
         }
+    }
+
+    /// 원화는 지금 문구(+1만·+5만·+10만), 그 밖은 "+$10"처럼 통화 표기 (GH-103)
+    private func quickTitle(index: Int, amount: Int) -> String {
+        if viewModel.currency == AmountFormatter.krw {
+            return [Strings.Detail.Saving.Sheet.plus10k, Strings.Detail.Saving.Sheet.plus50k, Strings.Detail.Saving.Sheet.plus100k][index]
+        }
+        return "+" + AmountFormatter.money(amount, currency: viewModel.currency)
     }
 
     private func quickButton(_ title: String, _ amount: SavingInputViewModel.QuickAmount) -> some View {
@@ -85,8 +93,8 @@ struct SavingInputSheet: View {
     private var preview: some View {
         if let preview = viewModel.state.preview {
             let amountText = Strings.Detail.Saving.Sheet.previewAmountFormat(
-                AmountFormatter.string(from: preview.savedAmount),
-                AmountFormatter.string(from: preview.targetAmount)
+                AmountFormatter.money(preview.savedAmount, currency: preview.currency),
+                AmountFormatter.money(preview.targetAmount, currency: preview.currency)
             )
             let text = Strings.Detail.Saving.Sheet.previewFormat(amountText, preview.percent)
             if let range = text.range(of: amountText) {

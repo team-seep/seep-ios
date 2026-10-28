@@ -141,6 +141,9 @@ struct HomeCategoryTabs: View {
                     Text(verbatim: category.title)
                         .font(isSelected ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
                         .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
+                        // 언어에 따라 길어져도 세 탭이 한 줄에 들어가게 줄인다 (GH-103 R-10)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                         .frame(height: 30)
                         .background {
                             if isSelected {

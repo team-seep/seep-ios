@@ -153,6 +153,14 @@ struct SettingsTabRootView: View {
                 action: .tapStartCategory
             )
 
+        case .language(let name):
+            button(
+                title: Strings.Settings.Language.title,
+                description: DeviceKind.current == .pad ? Strings.Settings.Language.descriptionPad : Strings.Settings.Language.description,
+                value: name,
+                action: .tapLanguage
+            )
+
         case .widgetGuide:
             button(title: Strings.Settings.widgetGuide, action: .tapWidgetGuide)
         case .controlGuide:

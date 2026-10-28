@@ -4,6 +4,12 @@
     "${target} 적기" : {
       "comment" : "단축어 앱 · '싶 적기' 동작 요약. ${target} = 고른 카테고리(하고 싶어요 등)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a ${target} wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15,6 +21,12 @@
     "가고 싶어요" : {
       "comment" : "단축어·제어 센터 · 카테고리 선택지",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26,6 +38,12 @@
     "가고 싶은 곳 적기" : {
       "comment" : "단축어 · 앱 단축어 짧은 이름(Spotlight·단축어 앱)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a place to go"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37,6 +55,12 @@
     "가장 가까운 D-day 위시를 잠금화면에서 봐요" : {
       "comment" : "위젯 고르기 화면 · 잠금화면 D-day 위젯 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See your nearest D-day wish on the Lock Screen"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48,6 +72,12 @@
     "갖고 싶어요" : {
       "comment" : "단축어·제어 센터 · 카테고리 선택지",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59,6 +89,12 @@
     "갖고 싶은 것 적기" : {
       "comment" : "단축어 · 앱 단축어 짧은 이름(Spotlight·단축어 앱)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a thing to get"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70,6 +106,12 @@
     "깔-끔하게 보기👻" : {
       "comment" : "위젯 고르기 화면 · 중형 목록 위젯 이름. '깔-끔'은 말장난이라 그대로 옮기지 않아도 된다",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean view👻"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +123,12 @@
     "나의 꿈을 향해 한걸음 쉽게 다가가요!" : {
       "comment" : "위젯 고르기 화면 · 남은 개수 위젯 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One easy step closer to your dreams"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,6 +140,12 @@
     "남은 싶" : {
       "comment" : "위젯 고르기 화면 · 잠금화면 남은 개수 위젯 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishes left"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +157,12 @@
     "남은 위시는 몇개!?" : {
       "comment" : "위젯 고르기 화면 · 남은 개수 위젯 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How many left?!"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114,6 +174,12 @@
     "누구보다 빠르게 나의 위시 리스트를 등록해보는건 어때요?" : {
       "comment" : "위젯 고르기 화면 · 작게 쓰기 위젯 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to your wishlist faster than anyone"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125,6 +191,12 @@
     "다가오는 싶 D-day" : {
       "comment" : "위젯 고르기 화면 · 잠금화면 D-day 위젯 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming wish D-day"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136,6 +208,12 @@
     "단축어" : {
       "comment" : "단축어 · '여는 곳' 선택지: 단축어 앱",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -147,6 +225,12 @@
     "등록해놓은 위시리스트를 깔끔하게 볼래요?" : {
       "comment" : "위젯 고르기 화면 · 중형 목록 위젯 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See your wishlist at a glance"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -158,6 +242,12 @@
     "바로 체크하기" : {
       "comment" : "위젯 고르기 화면 · 바로 체크하기 위젯 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick check"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -169,6 +259,12 @@
     "빠르게 등록하기" : {
       "comment" : "위젯 고르기 화면 · 작게 쓰기 위젯 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick write"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -180,6 +276,12 @@
     "생각났을 때 바로 위시를 적어요" : {
       "comment" : "제어 센터 컨트롤·단축어 동작 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a wish the moment it comes to mind"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -191,6 +293,12 @@
     "싶 적기" : {
       "comment" : "제어 센터 컨트롤 이름이자 단축어 동작 이름. '싶'은 앱 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -202,6 +310,12 @@
     "아직 못 이룬 위시가 몇 개인지 봐요" : {
       "comment" : "위젯 고르기 화면 · 잠금화면 남은 개수 위젯 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See how many wishes are still waiting"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -213,6 +327,12 @@
     "앱을 열지 않고 다음 단계와 위시를 체크해요" : {
       "comment" : "위젯 고르기 화면 · 바로 체크하기 위젯 설명",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check off steps and wishes without opening the app"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -224,6 +344,12 @@
     "여는 곳" : {
       "comment" : "단축어 · 인텐트를 어디서 열었는지 나타내는 매개변수 이름(사용자에게 거의 안 보임)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Source"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -235,6 +361,12 @@
     "위시 ID" : {
       "comment" : "홈 화면 위젯(바로 체크하기) · 인텐트 매개변수 이름(사용자에게 거의 안 보임)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wish ID"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -246,6 +378,12 @@
     "위시 완료 취소하기" : {
       "comment" : "홈 화면 위젯(바로 체크하기) · 완료 취소 인텐트 이름(사용자에게 거의 안 보임)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark wish as not done"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -257,6 +395,12 @@
     "위시 체크하기" : {
       "comment" : "홈 화면 위젯(바로 체크하기) · 체크 버튼 인텐트 이름(사용자에게 거의 안 보임)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check off wish"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -268,6 +412,12 @@
     "카테고리" : {
       "comment" : "단축어·제어 센터 · '카테고리' 매개변수 이름",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -279,6 +429,12 @@
     "컨트롤" : {
       "comment" : "단축어 · '여는 곳' 선택지: 제어 센터 컨트롤",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -290,6 +446,12 @@
     "하고 싶어요" : {
       "comment" : "단축어·제어 센터 · 카테고리 선택지",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -301,6 +463,12 @@
     "하고 싶은 것 적기" : {
       "comment" : "단축어 · 앱 단축어 짧은 이름(Spotlight·단축어 앱)",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a thing to do"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",

@@ -34,7 +34,7 @@ enum FinishedSectionBuilder {
             } else {
                 sections.append(FinishedSection(
                     id: id,
-                    title: Strings.Finished.monthFormat(String(year), month),
+                    title: DisplayDate.yearMonth(year: year, month: month, calendar: calendar),
                     rows: [row]
                 ))
             }

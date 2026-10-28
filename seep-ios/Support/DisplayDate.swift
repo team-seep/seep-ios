@@ -28,6 +28,19 @@ enum DisplayDate {
         return string(date, template: "yMd", locale: locale, calendar: calendar)
     }
 
+    /// "2026년 10월" / "October 2026" (GH-103)
+    static func yearMonth(year: Int, month: Int, locale: Locale = .current, calendar: Calendar = .current) -> String {
+        let date = calendar.date(from: DateComponents(year: year, month: month, day: 1, hour: 12)) ?? Date()
+        return string(date, template: "yMMMM", locale: locale, calendar: calendar)
+    }
+
+    /// "10월" / "October" (GH-103)
+    static func month(_ month: Int, locale: Locale = .current) -> String {
+        let calendar = Calendar(identifier: .gregorian)
+        let date = calendar.date(from: DateComponents(year: 2001, month: month, day: 1, hour: 12)) ?? Date()
+        return string(date, template: "MMMM", locale: locale, calendar: calendar)
+    }
+
     /// "오후 9시 00분" / "9:00 PM" (TC-7)
     static func time(_ date: Date, locale: Locale = .current, calendar: Calendar = .current) -> String {
         let formatter = makeFormatter(locale: locale, calendar: calendar)
