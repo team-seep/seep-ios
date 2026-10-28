@@ -42,7 +42,7 @@ struct DdayText: Equatable {
 
     static let farFutureDays = 365
 
-    static func make(endDate: Date, now: Date, calendar: Calendar = .current, locale: Locale = .current) -> DdayText {
+    static func make(endDate: Date, now: Date, calendar: Calendar = .current, locale: Locale = AppLanguage.shared.locale) -> DdayText {
         let remainDay = calendar.dateComponents(
             [.day],
             from: calendar.startOfDay(for: now),

@@ -27,7 +27,7 @@ struct WishDetailSummary: Equatable {
     /// 비어 있으면 nil — 메모 칸을 숨긴다 (R-5)
     let memo: String?
 
-    init(wish: Wish, now: Date = Date(), calendar: Calendar = .current, locale: Locale = .current) {
+    init(wish: Wish, now: Date = Date(), calendar: Calendar = .current, locale: Locale = AppLanguage.shared.locale) {
         self.emoji = wish.emoji
         self.title = wish.title
         self.ddayLine = Self.ddayLine(endDate: wish.endDate, now: now, calendar: calendar, locale: locale)
@@ -37,7 +37,7 @@ struct WishDetailSummary: Equatable {
     }
 
     /// D-day 줄. 작성·수정 문서 머리도 같은 줄을 쓴다 (GH-70 R-2)
-    static func ddayLine(endDate: Date?, now: Date = Date(), calendar: Calendar = .current, locale: Locale = .current) -> DdayLine {
+    static func ddayLine(endDate: Date?, now: Date = Date(), calendar: Calendar = .current, locale: Locale = AppLanguage.shared.locale) -> DdayLine {
         let style = DdayStyle(endDate: endDate, now: now, calendar: calendar)
         return DdayLine(
             text: style.text,

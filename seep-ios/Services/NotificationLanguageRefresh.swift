@@ -1,6 +1,6 @@
 import Foundation
 
-/// 기기 언어를 바꾼 뒤 처음 앱을 열면 예약해 둔 D-day 알림을 다시 만든다 (GH-100 R-14).
+/// 기기 언어(또는 앱 안 언어, GH-103 R-22)를 바꾼 뒤 처음 앱을 열면 예약해 둔 D-day 알림을 다시 만든다 (GH-100 R-14).
 /// 로컬 알림 문구는 예약할 때 정해져서, 다시 예약하지 않으면 예전 언어로 울린다. 같은 알림 id 로 덮어써서 개수·시간은 그대로다
 struct NotificationLanguageRefresh {
     /// 이 버전 전에 예약한 알림은 모두 한국어였다
@@ -17,7 +17,7 @@ struct NotificationLanguageRefresh {
             wishRepository: WishRepository = WishRepositoryImpl(),
             notificationManager: NotificationManagerProtocol = NotificationManager.shared,
             preference: Preference = .shared,
-            currentLanguage: @escaping () -> String = { Bundle.main.preferredLocalizations.first ?? NotificationLanguageRefresh.legacyLanguage }
+            currentLanguage: @escaping () -> String = { AppLanguage.shared.code }
         ) {
             self.wishRepository = wishRepository
             self.notificationManager = notificationManager

@@ -88,13 +88,6 @@ enum SettingsMenuBuilder {
         ]
     }
 
-    /// 앱이 보여 주는 언어를 그 언어로 쓴 이름. 번역이 없는 기기 언어면 원문(한국어)이다
-    static func currentLanguageName() -> String {
-        let code = Bundle.main.preferredLocalizations.first ?? "ko"
-        let name = Locale(identifier: code).localizedString(forIdentifier: code) ?? code
-        return name.prefix(1).uppercased() + name.dropFirst()
-    }
-
     /// "Face ID로 잠그기" / "Touch ID로 잠그기" / "암호로 잠그기" (R-25)
     static func lockTitle(biometry: AppLockBiometry) -> String {
         switch biometry {

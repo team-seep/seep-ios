@@ -11,6 +11,8 @@ class ViewModelTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         logManager = MockLogManager()
+        // 시뮬레이터에서 앱 안 언어를 바꿔 뒀어도 문구 단언은 원문(ko) 기준이다 (GH-103 R-21)
+        AppLanguage.shared.select(nil)
     }
 
     override func tearDown() {

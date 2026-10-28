@@ -180,6 +180,7 @@ enum LogObjectId: String {
     case selectStartCategory = "select_start_category"
     /// 설정 "언어" → iOS 앱 설정 (GH-103 R-9)
     case language = "language"
+    case selectLanguage = "select_language"
     /// 홈 "선택" → 선택 모드 (GH-86)
     case selectWishes = "select_wishes"
     /// 선택 모드 일괄 삭제 확인 (+count) (GH-86)

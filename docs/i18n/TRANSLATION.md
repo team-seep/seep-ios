@@ -13,6 +13,7 @@
 | `InfoPlist.xcstrings` | 권한 팝업 문구(캘린더·Face ID·사진) | Info.plist 키 |
 
 - 지원 언어: ko(원문), en(GH-103), ja(GH-104), zh-Hans·zh-Hant(GH-105). 번역이 없는 기기 언어는 원문(ko)으로 보인다.
+- 사용자는 설정 › 언어에서 기기 언어와 따로 앱 언어를 고를 수 있다(`AppLanguage`, GH-103 R-21). 문구는 `Strings`가, 날짜·금액은 `AppLanguage.shared.locale`이 그 언어를 따른다. 새 코드에서 `Locale.current`·`Bundle.main.preferredLocalizations`로 언어를 읽지 않는다.
 - 금액 문구(`detail.saving.*`)의 `%@`는 통화 기호까지 붙은 금액이다(`AmountFormatter.money`). 번역에 "원"·"$"를 넣지 않는다.
 - 앱 이름(`CFBundleDisplayName`)은 빌드 설정 `DISPLAY_NAME`을 쓴다. 다른 언어 스토어 이름은 "Seep – Wishlist & Bucket List"처럼 이름 뒤에 일반 명사를 붙인다(5단계에서 확정).
 

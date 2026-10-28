@@ -13573,74 +13573,72 @@
         }
       }
     },
-    "settings.language.description" : {
-      "comment" : "설정 탭 · '언어' 줄 아래 설명",
+    "settings.language.footer" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Change it in iPhone Settings"
+            "value" : "Widget gallery and Shortcuts names follow your device language."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhoneの設定で変更できます"
+            "value" : "ウィジェット一覧とショートカットの名前は端末の言語で表示されます"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "아이폰 설정에서 바꿀 수 있어요"
+            "value" : "위젯 목록과 단축어 이름은 기기 언어로 보여요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "可在 iPhone 设置中更改"
+            "value" : "小组件列表和快捷指令名称会以系统语言显示"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "可在 iPhone 設定中更改"
+            "value" : "小工具列表和捷徑名稱會以系統語言顯示"
           }
         }
       }
     },
-    "settings.language.description_pad" : {
-      "comment" : "설정 탭 · '언어' 줄 아래 설명(아이패드)",
+    "settings.language.system" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Change it in iPad Settings"
+            "value" : "Use Device Language"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPadの設定で変更できます"
+            "value" : "端末の言語に合わせる"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "아이패드 설정에서 바꿀 수 있어요"
+            "value" : "기기 언어 따르기"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "可在 iPad 设置中更改"
+            "value" : "跟随系统语言"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "可在 iPad 設定中更改"
+            "value" : "跟隨系統語言"
           }
         }
       }

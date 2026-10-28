@@ -56,14 +56,14 @@ final class EnglishStageTests: WishFormFeatureTestCase {
 
     // MARK: GH-103 TC7·TC8
 
-    func test_GH103_TC7_TC8_설정언어줄은_지금언어를보여주고_누르면앱설정을연다() {
-        // Given
+    func test_GH103_TC7_TC8_설정언어줄은_고른언어를보여주고_누르면언어목록을띄운다() {
+        // Given: 앱 안에서 English 를 고른 상태
         let sut = SettingsViewModel(dependency: .init(
             preference: Preference(name: "test-gh103-settings"),
             authenticationManager: MockAuthenticationManager(),
             notificationManager: notificationManager,
             logManager: logManager,
-            languageName: { "English" }
+            language: MockLanguageSwitcher(selectedCode: "en")
         ))
 
         // When
@@ -71,7 +71,7 @@ final class EnglishStageTests: WishFormFeatureTestCase {
 
         // Then
         XCTAssertTrue(sut.state.groups.flatMap(\.rows).contains(.language("English")))
-        XCTAssertEqual(sut.route, SettingsLinks.appSettingsURL.map(SettingsViewModel.Route.openURL))
+        XCTAssertEqual(sut.route, .languageDialog)
         XCTAssertEqual(clickEvents(objectId: .language).count, 1)
     }
 
