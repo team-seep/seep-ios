@@ -1,18 +1,14 @@
 import Foundation
 
-/// 원화 금액 입력·표시 (GH-16 R-2·R-4). 천 단위 콤마, 상한 `WishSaving.maxAmount`.
+/// 원화 금액 입력·표시 (GH-16 R-2·R-4). 천 단위 구분, 상한 `WishSaving.maxAmount`.
+/// 통화는 원화 그대로이고, 천 단위 구분자만 로케일을 따른다 (GH-100 R-13)
 enum AmountFormatter {
-    private static let formatter: NumberFormatter = {
+    /// 769000 → "769,000" (한국어·영어), "769.000" (독일어)
+    static func string(from amount: Int, locale: Locale = .current) -> String {
         let formatter = NumberFormatter()
+        formatter.locale = locale
         formatter.numberStyle = .decimal
-        formatter.groupingSeparator = ","
-        formatter.groupingSize = 3
         formatter.usesGroupingSeparator = true
-        return formatter
-    }()
-
-    /// 769000 → "769,000"
-    static func string(from amount: Int) -> String {
         return formatter.string(from: NSNumber(value: amount)) ?? String(amount)
     }
 

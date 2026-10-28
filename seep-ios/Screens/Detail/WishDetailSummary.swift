@@ -27,23 +27,23 @@ struct WishDetailSummary: Equatable {
     /// 비어 있으면 nil — 메모 칸을 숨긴다 (R-5)
     let memo: String?
 
-    init(wish: Wish, now: Date = Date(), calendar: Calendar = .current) {
+    init(wish: Wish, now: Date = Date(), calendar: Calendar = .current, locale: Locale = .current) {
         self.emoji = wish.emoji
         self.title = wish.title
-        self.ddayLine = Self.ddayLine(endDate: wish.endDate, now: now, calendar: calendar)
-        self.metaItems = Self.metaItems(wish: wish, calendar: calendar)
+        self.ddayLine = Self.ddayLine(endDate: wish.endDate, now: now, calendar: calendar, locale: locale)
+        self.metaItems = Self.metaItems(wish: wish, calendar: calendar, locale: locale)
         let memo = wish.memo.trimmingCharacters(in: .whitespacesAndNewlines)
         self.memo = memo.isEmpty ? nil : wish.memo
     }
 
     /// D-day 줄. 작성·수정 문서 머리도 같은 줄을 쓴다 (GH-70 R-2)
-    static func ddayLine(endDate: Date?, now: Date = Date(), calendar: Calendar = .current) -> DdayLine {
+    static func ddayLine(endDate: Date?, now: Date = Date(), calendar: Calendar = .current, locale: Locale = .current) -> DdayLine {
         let style = DdayStyle(endDate: endDate, now: now, calendar: calendar)
         return DdayLine(
             text: style.text,
             tone: style.tone,
             isWord: style.isWord,
-            dateText: dateText(style: style, endDate: endDate, calendar: calendar)
+            dateText: dateText(style: style, endDate: endDate, calendar: calendar, locale: locale)
         )
     }
 
@@ -63,7 +63,8 @@ struct WishDetailSummary: Equatable {
         .joined(separator: " · ")
     }
 
-    private static func dateText(style: DdayStyle, endDate: Date?, calendar: Calendar) -> String? {
+    /// 날짜는 로케일 템플릿으로 쓴다. 한국어는 "12월 20일 (일)", 올해를 넘는 먼훗날은 "2027년 1월 3일 (일)" (GH-100 TC-4)
+    private static func dateText(style: DdayStyle, endDate: Date?, calendar: Calendar, locale: Locale) -> String? {
         guard let endDate else { return nil }
 
         switch style.kind {
@@ -72,19 +73,19 @@ struct WishDetailSummary: Equatable {
         case .today:
             return Strings.Detail.Dday.untilToday
         case .past:
-            return Strings.Detail.Dday.pastFormat(format(endDate, pattern: "M월 d일 (E)", calendar: calendar))
+            return Strings.Detail.Dday.pastFormat(DisplayDate.monthDayWeekday(endDate, locale: locale, calendar: calendar))
         case .remaining:
-            return Strings.Detail.Dday.untilFormat(format(endDate, pattern: "M월 d일 (E)", calendar: calendar))
+            return Strings.Detail.Dday.untilFormat(DisplayDate.monthDayWeekday(endDate, locale: locale, calendar: calendar))
         case .farFuture:
-            return Strings.Detail.Dday.untilFormat(format(endDate, pattern: "yyyy년 M월 d일 (E)", calendar: calendar))
+            return Strings.Detail.Dday.untilFormat(DisplayDate.yearMonthDayWeekday(endDate, locale: locale, calendar: calendar))
         }
     }
 
-    private static func metaItems(wish: Wish, calendar: Calendar) -> [MetaItem] {
+    private static func metaItems(wish: Wish, calendar: Calendar, locale: Locale) -> [MetaItem] {
         var items: [MetaItem] = [.category(categoryText(wish.category))]
 
         if let first = wish.notifications.first {
-            let firstText = "\(notificationTypeText(first.type)) \(format(first.time, pattern: "a h:mm", calendar: calendar))"
+            let firstText = "\(notificationTypeText(first.type)) \(DisplayDate.string(first.time, template: "jmm", locale: locale, calendar: calendar))"
             let extraCount = wish.notifications.count - 1
             items.append(.notification(
                 extraCount > 0 ? Strings.Detail.Meta.notificationMoreFormat(firstText, extraCount) : firstText
@@ -123,14 +124,5 @@ struct WishDetailSummary: Equatable {
         case .everyDay:
             return Strings.notificationTypeEveryday
         }
-    }
-
-    private static func format(_ date: Date, pattern: String, calendar: Calendar) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.calendar = calendar
-        formatter.timeZone = calendar.timeZone
-        formatter.dateFormat = pattern
-        return formatter.string(from: date)
     }
 }

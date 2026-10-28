@@ -1,0 +1,54 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "NSCalendarsUsageDescription" : {
+      "comment" : "권한 팝업 · 캘린더 접근(전체)",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위시 날짜를 캘린더에 일정으로 추가하기 위해 캘린더 접근이 필요해요."
+          }
+        }
+      }
+    },
+    "NSCalendarsWriteOnlyAccessUsageDescription" : {
+      "comment" : "권한 팝업 · 캘린더 쓰기 전용 접근",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위시 날짜를 캘린더에 일정으로 추가하기 위해 캘린더 접근이 필요해요."
+          }
+        }
+      }
+    },
+    "NSFaceIDUsageDescription" : {
+      "comment" : "권한 팝업 · Face ID 사용",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "싶을 잠가두면 앱을 열 때 Face ID로 확인해요."
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "comment" : "권한 팝업 · 사진 보관함 접근",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유할 이미지를 만들기 위해 앨범에 접근이 필요해요."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

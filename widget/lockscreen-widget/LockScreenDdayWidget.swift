@@ -41,10 +41,10 @@ struct LockScreenDdayEntryView: View {
     private var rectangular: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let wish = entry.wish, let ddayText = entry.ddayText {
-                Text("\(ddayText.dday) · 가장 가까운 싶")
+                Text(verbatim: Strings.Widget.LockScreen.nearestFormat(ddayText.dday))
                     .font(.custom("AppleSDGothicNeoEB00", size: 13))
                     .widgetAccentable()
-                Text("\(wish.emoji) \(wish.title)")
+                Text(verbatim: "\(wish.emoji) \(wish.title)")
                     .font(.custom("AppleSDGothicNeo-SemiBold", size: 16))
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -52,14 +52,14 @@ struct LockScreenDdayEntryView: View {
                     .font(.custom("AppleSDGothicNeo-Medium", size: 12))
                     .opacity(0.6)
             } else {
-                Text("가장 가까운 싶")
+                Text(verbatim: Strings.Widget.LockScreen.nearest)
                     .font(.custom("AppleSDGothicNeoEB00", size: 13))
                     .widgetAccentable()
-                Text("다가오는 D-day가 없어요")
+                Text(verbatim: Strings.Widget.LockScreen.emptyTitle)
                     .font(.custom("AppleSDGothicNeo-SemiBold", size: 16))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
-                Text("위시에 날짜를 정해봐요")
+                Text(verbatim: Strings.Widget.LockScreen.emptyCaption)
                     .font(.custom("AppleSDGothicNeo-Medium", size: 12))
                     .opacity(0.6)
             }
@@ -80,10 +80,10 @@ struct LockScreenDdayEntryView: View {
                         .minimumScaleFactor(0.6)
                         .widgetAccentable()
                 } else {
-                    Text("D-day")
+                    Text(verbatim: "D-day")
                         .font(.custom("AppleSDGothicNeo-SemiBold", size: 10))
                         .opacity(0.7)
-                    Text("–")
+                    Text(verbatim: "–")
                         .font(.custom("AppleSDGothicNeoEB00", size: 18))
                 }
             }
@@ -93,7 +93,7 @@ struct LockScreenDdayEntryView: View {
 
     private var inline: some View {
         if let wish = entry.wish, let ddayText = entry.ddayText {
-            return Text("\(wish.emoji) \(ddayText.dday) \(wish.title)")
+            return Text(verbatim: "\(wish.emoji) \(ddayText.dday) \(wish.title)")
         }
         return Text(LockScreenDdayPicker.remainText(count: entry.remainCount))
     }

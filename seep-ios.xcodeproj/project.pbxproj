@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1000000000000000000B001 /* Localization.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F001 /* Localization.xcstrings */; };
+		A1000000000000000000B002 /* Localization.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F001 /* Localization.xcstrings */; };
+		A1000000000000000000B003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F002 /* Localizable.xcstrings */; };
+		A1000000000000000000B004 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F002 /* Localizable.xcstrings */; };
+		A1000000000000000000B005 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F003 /* AppShortcuts.xcstrings */; };
+		A1000000000000000000B006 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F004 /* InfoPlist.xcstrings */; };
+		A1000000000000000000B007 /* DisplayDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F005 /* DisplayDate.swift */; };
+		A1000000000000000000B008 /* DisplayDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F005 /* DisplayDate.swift */; };
+		A1000000000000000000B009 /* NotificationLanguageRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000F006 /* NotificationLanguageRefresh.swift */; };
+		A1000000000000000000B00A /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E489D8F2CCDEF2D00965995 /* Strings.swift */; };
 		7B63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */; };
 		7BA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */; };
 		79C000000000000000000066 /* LegacyRealmImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C000000000000000000065 /* LegacyRealmImporterTests.swift */; };
@@ -56,7 +66,6 @@
 		6E1E400B2CD65F00008BCC77 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 6E1E40092CD65EE9008BCC77 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6E274E5925F20D31007DC880 /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */; };
 		6E274E6025F20D73007DC880 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E274E5F25F20D73007DC880 /* DateUtils.swift */; };
-		6E274E6825F20E3F007DC880 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E274E6A25F20E3F007DC880 /* Localization.strings */; };
 		6E283AF925F2047900955B57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E283AF825F2047900955B57 /* AppDelegate.swift */; };
 		6E283B0225F2047A00955B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0125F2047A00955B57 /* Assets.xcassets */; };
 		6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */; };
@@ -244,6 +253,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A1000000000000000000F001 /* Localization.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localization.xcstrings; sourceTree = "<group>"; };
+		A1000000000000000000F002 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A1000000000000000000F003 /* AppShortcuts.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = AppShortcuts.xcstrings; sourceTree = "<group>"; };
+		A1000000000000000000F004 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		A1000000000000000000F005 /* DisplayDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDate.swift; sourceTree = "<group>"; };
+		A1000000000000000000F006 /* NotificationLanguageRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLanguageRefresh.swift; sourceTree = "<group>"; };
 		7A63560046740F5F2A8C63BF /* ManualOrderRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOrderRepositoryTests.swift; sourceTree = "<group>"; };
 		7AA32D613E0A5AF680F786B9 /* FutureLetterRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureLetterRepositoryTests.swift; sourceTree = "<group>"; };
 		79C000000000000000000065 /* LegacyRealmImporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImporterTests.swift; sourceTree = "<group>"; };
@@ -279,7 +294,6 @@
 		6E091578264FA94E0048EB79 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
 		6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtils.swift; sourceTree = "<group>"; };
 		6E274E5F25F20D73007DC880 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
-		6E274E6925F20E3F007DC880 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
 		6E283AF525F2047900955B57 /* seep-ios-dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "seep-ios-dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E283AF825F2047900955B57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E283B0125F2047A00955B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -567,6 +581,7 @@
 				E68858320F2F2F12DF2FF32D /* AmountFormatter.swift */,
 				6E274E5825F20D31007DC880 /* UserDefaultsUtils.swift */,
 				6E274E5F25F20D73007DC880 /* DateUtils.swift */,
+				A1000000000000000000F005 /* DisplayDate.swift */,
 				6E489D9D2CCE2D8400965995 /* Preference.swift */,
 			);
 			path = Support;
@@ -581,7 +596,10 @@
 				6E6D19822CCDDBFA008A460C /* Icons.xcassets */,
 				6E6D610B27587F6D00A0BFD9 /* Firebase */,
 				6EE5CE6E25FB1EB500A737DF /* Font */,
-				6E274E6A25F20E3F007DC880 /* Localization.strings */,
+				A1000000000000000000F001 /* Localization.xcstrings */,
+				A1000000000000000000F002 /* Localizable.xcstrings */,
+				A1000000000000000000F003 /* AppShortcuts.xcstrings */,
+				A1000000000000000000F004 /* InfoPlist.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -763,6 +781,7 @@
 				79B000000000000000000010 /* DatabaseMigrationFollowUp.swift */,
 				96A000000000000000000001 /* LegacyImportRecovery.swift */,
 				6E9BFEA126453CAC0093CA89 /* NotificationManager.swift */,
+				A1000000000000000000F006 /* NotificationLanguageRefresh.swift */,
 				CB4C358AA2D714E019784ADE /* CalendarManager.swift */,
 				36A000000000000000000001 /* WishPhotoStorage.swift */,
 				46A000000000000000000001 /* AuthenticationManager.swift */,
@@ -1037,11 +1056,12 @@
 			};
 			buildConfigurationList = 6E283AF025F2047900955B57 /* Build configuration list for PBXProject "seep-ios" */;
 			compatibilityVersion = "Xcode 9.3";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 6E283AEC25F2047900955B57;
 			packageReferences = (
@@ -1065,13 +1085,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000000000000000000B001 /* Localization.xcstrings in Resources */,
+				A1000000000000000000B003 /* Localizable.xcstrings in Resources */,
+				A1000000000000000000B005 /* AppShortcuts.xcstrings in Resources */,
+				A1000000000000000000B006 /* InfoPlist.xcstrings in Resources */,
 				6E6D610927587F4300A0BFD9 /* GoogleService-Info-Dev.plist in Resources */,
 				6EE5CE7025FB1EE100A737DF /* AppleSDGothicNeoEB00.ttf in Resources */,
 				6E6D19852CCDDC24008A460C /* Images.xcassets in Resources */,
 				6E6D19832CCDDBFA008A460C /* Icons.xcassets in Resources */,
 				6E283B0525F2047A00955B57 /* LaunchScreen.storyboard in Resources */,
 				6E600149260831F1000065C8 /* GoogleService-Info-Prod.plist in Resources */,
-				6E274E6825F20E3F007DC880 /* Localization.strings in Resources */,
 				6E283B0225F2047A00955B57 /* Assets.xcassets in Resources */,
 				A74A1C0E2EA9000100A74002 /* AppIcon.icon in Resources */,
 			);
@@ -1081,6 +1104,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000000000000000000B002 /* Localization.xcstrings in Resources */,
+				A1000000000000000000B004 /* Localizable.xcstrings in Resources */,
 				6EB50F0826BD5F9C00F0096E /* AppleSDGothicNeoEB00.ttf in Resources */,
 				6EC9BFA226BE0830007C7708 /* Assets.xcassets in Resources */,
 				6EB50EF926BD549000F0096E /* Assets.xcassets in Resources */,
@@ -1157,6 +1182,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000000000000000000B007 /* DisplayDate.swift in Sources */,
+				A1000000000000000000B009 /* NotificationLanguageRefresh.swift in Sources */,
 				A48000010000000000000002 /* RealmConfiguration.swift in Sources */,
 				79B000000000000000000002 /* AppDatabase.swift in Sources */,
 				79B000000000000000000005 /* WishRecordStore.swift in Sources */,
@@ -1224,6 +1251,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000000000000000000B008 /* DisplayDate.swift in Sources */,
+				A1000000000000000000B00A /* Strings.swift in Sources */,
 				A48000010000000000000003 /* RealmConfiguration.swift in Sources */,
 				79B000000000000000000003 /* AppDatabase.swift in Sources */,
 				79B000000000000000000006 /* WishRecordStore.swift in Sources */,
@@ -1304,14 +1333,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		6E274E6A25F20E3F007DC880 /* Localization.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6E274E6925F20E3F007DC880 /* en */,
-			);
-			name = Localization.strings;
-			sourceTree = "<group>";
-		};
 		6E283B0325F2047A00955B57 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

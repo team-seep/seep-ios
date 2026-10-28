@@ -7,7 +7,7 @@ struct MediumVerticalEntry: TimelineEntry {
     static var preview: MediumVerticalEntry {
         let wish = Wish(
             emoji: "🙈",
-            title: "제목이 들어갑니다.",
+            title: Strings.Widget.Preview.wishTitle,
             endDate: Date()
         )
         

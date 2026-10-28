@@ -110,7 +110,7 @@ custom_rules:
     name: "R6 \"key\".localized 금지"
     excluded: "widget/.*"
     regex: "\"[A-Za-z0-9_]+\"\\.localized\\b"
-    message: "R6: 문자열은 SwiftGen 의 Strings.xxx 를 쓴다 (키 오타가 컴파일 에러로 잡힌다). 새 키는 Localization.strings 에 추가 후 swiftgen."
+    message: "R6: 문자열은 SwiftGen 의 Strings.xxx 를 쓴다 (키 오타가 컴파일 에러로 잡힌다). 새 키는 Localization.xcstrings 에 comment 와 함께 추가 후 make swiftgen."
     severity: error
 
   length_disable_reason:                    # R7

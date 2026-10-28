@@ -9,13 +9,13 @@ struct CheckWidgetEntry: TimelineEntry {
 
     static var preview: CheckWidgetEntry {
         let steps = [
-            WishStep(title: "항공권 사기", isDone: true, order: 0),
-            WishStep(title: "숙소 예약하기", order: 1),
-            WishStep(title: "렌터카 예약하기", order: 2)
+            WishStep(title: Strings.Widget.Preview.step1, isDone: true, order: 0),
+            WishStep(title: Strings.Widget.Preview.step2, order: 1),
+            WishStep(title: Strings.Widget.Preview.step3, order: 2)
         ]
         return CheckWidgetEntry(date: Date(), wishes: [
-            Wish(emoji: "🌴", title: "제주도 한 달 살기", endDate: Date(), steps: steps),
-            Wish(emoji: "🎸", title: "기타로 노래 한 곡 치기")
+            Wish(emoji: "🌴", title: Strings.Widget.Preview.travelWish, endDate: Date(), steps: steps),
+            Wish(emoji: "🎸", title: Strings.Widget.Preview.guitarWish)
         ])
     }
 }

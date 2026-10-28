@@ -11,7 +11,9 @@ lint-baseline:
 	swiftlint lint --quiet --config .swiftlint.tmp.yml --write-baseline .swiftlint-baseline.json || true
 	rm -f .swiftlint.tmp.yml
 
+# 문구는 String Catalog(.xcstrings)라 SwiftGen 이 직접 못 읽어 스크립트가 넘겨 준다 (GH-100 R-5). 이미지는 그대로 SwiftGen
 swiftgen:
+	scripts/generate-strings.py
 	swiftgen config run --config swiftgen.yml
 
 test:

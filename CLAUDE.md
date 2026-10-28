@@ -17,7 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 make lint            # SwiftLint(새 위반만) + scripts/check-db-schema.sh — 코드 작성 후 반드시
 make lint-fix        # SwiftLint 자동 수정
 make test            # 유닛 테스트 + build/summary.md (결과 수·실패 목록)
-make swiftgen        # Localization.strings / xcassets 변경 후 Generated/ 갱신
+make swiftgen        # Localization.xcstrings / xcassets 변경 후 Generated/ 갱신
 make lint-baseline   # 베이스라인 재생성 (custom_rules 메시지를 바꿨을 때만)
 ```
 
@@ -99,7 +99,7 @@ seep-ios/
 ├── Support/                  # Preference(UserDefaults), DateUtils, AmountFormatter, WidgetCheckStore …
 │   └── Extensions/           # Foundation 확장(Date·Bundle·Array …). 색·폰트 토큰은 DesignSystem/
 ├── Generated/                # SwiftGen 산출물 (Strings.swift, Assets.swift) — 직접 수정 금지
-└── Resources/                # xcassets, en.lproj/Localization.strings, Firebase plist, Lottie
+└── Resources/                # xcassets, Localization.xcstrings(원문 ko)·Localizable·AppShortcuts·InfoPlist 카탈로그, Firebase plist, Lottie
 widget/                       # small-write / small-remain / medium-horizontal / medium-vertical 위젯
 seep-iosTests/                # {ViewModel}Tests.swift, Mock/Mock{Protocol}.swift
 ├── Features/{화면}/          # 화면별 기능 테스트 (GH-64 R-44) — 동기화 폴더, ViewModelTestCase 상속
@@ -236,7 +236,7 @@ struct MyView: View {
 ### UI
 
 - SwiftUI. 공용 컴포넌트는 `DesignSystem/`(앱·위젯 공용이라 도메인 타입·`Strings`에 의존하지 않는다 — 문구는 인자로 받는다), 앱 기반은 `AppShell/`.
-- 색·폰트·문자열·이미지는 토큰/SwiftGen만 (R6). 새 색은 `SeepColor`에 토큰부터, 새 문자열은 `Localization.strings`에 키 추가 → `make swiftgen`.
+- 색·폰트·문자열·이미지는 토큰/SwiftGen만 (R6). 새 색은 `SeepColor`에 토큰부터, 새 문자열은 `Localization.xcstrings`에 키·comment 추가 → `make swiftgen`(GH-100). 날짜는 `DisplayDate`(로케일 템플릿), 문장 이어 붙이기 금지. 용어·어조는 `docs/i18n/TRANSLATION.md`.
 - 넓은 화면은 콘텐츠를 `WideScreenLayout.maxContentWidth`(600) 기둥으로 가운데 둔다.
 
 ## 코드 스타일
