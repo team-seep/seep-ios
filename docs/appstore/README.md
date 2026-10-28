@@ -19,3 +19,23 @@
 - [ ] 언어별 스크린샷(없으면 ko 스크린샷이 쓰인다)
 - [ ] 심사 제출(버전 2.7.0 초안)
 - [ ] 출시 국가 확대(가격 및 사용 가능 여부)
+
+## 스크린샷·헤더·검색 결과 이미지 (GH-113)
+
+`assets/`는 App Store Connect에 올린 이미지의 원본이다. 아이폰 7장(2.6.0)과 같은 장면·카피 순서로 기기 크기만 바꿨다.
+
+| 폴더 | ASC 자리 | 크기 |
+|---|---|---|
+| `ipad-13/` | iPad 13″ 스크린샷 7장 | 2064×2752 |
+| `duo-inner/` | iPhone Duo 펼친 화면 7장 (가로) | 2853×2007 |
+| `duo-outer/` | iPhone Duo 바깥 화면 7장 | 1398×2034 |
+| `banner/header-3840x1646.png` | 제품 페이지 헤더 (21:9) | 3840×1646 |
+| `banner/search-2400x1600.png` | 검색 결과 이미지 (3:2) | 2400×1600 |
+
+1·2번은 초록 배경이 두 장에 이어지는 첫 화면이다. 3D 오브젝트는 앱 에셋(`Images.xcassets/category_*`)의 PDF 원본을 그대로 쓴다.
+
+**다시 만들 때** (`scripts/`)
+1. 시뮬레이터(iPad Pro 13″, iPhone Duo)에 Debug 앱을 설치하고 한 번 실행한 뒤 `seed.py <App Group dev.sqlite>`로 예시 위시를 넣는다. 상태 바는 `xcrun simctl status_bar <udid> override --time 9:41 …`.
+2. 장면별로 찍어 작업 폴더 `raw/{pad|duo-in|duo-out}-{home|detail|write|edit|finished|widget}.png`로 둔다. 쓰기 장면은 편집 화면(노이즈캔슬링 헤드폰)으로 찍는다.
+3. `swiftc scripts/pdf2png.swift -o pdf2png` 후 오브젝트 PDF를 `obj/{car,tent,piano,books,plant,palette,chair,airplane,cake}.png`(1500px)로 뽑는다. 지금 아이폰 스크린샷은 `iphone/01.png`(로고를 여기서 잘라 쓴다).
+4. `STORE_WORKDIR=<작업 폴더> python3 scripts/compose.py pad|duo-in|duo-out`, `python3 scripts/banner.py` (Pillow 필요).
