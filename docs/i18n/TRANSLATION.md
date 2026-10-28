@@ -12,7 +12,7 @@
 | `AppShortcuts.xcstrings` | Siri·단축어에서 말해서 실행하는 문장 | 원문 그대로, `${applicationName}` 포함 |
 | `InfoPlist.xcstrings` | 권한 팝업 문구(캘린더·Face ID·사진) | Info.plist 키 |
 
-- 지원 언어: ko(원문), en(GH-103), ja(GH-104). 번역이 없는 기기 언어는 원문(ko)으로 보인다.
+- 지원 언어: ko(원문), en(GH-103), ja(GH-104), zh-Hans·zh-Hant(GH-105). 번역이 없는 기기 언어는 원문(ko)으로 보인다.
 - 금액 문구(`detail.saving.*`)의 `%@`는 통화 기호까지 붙은 금액이다(`AmountFormatter.money`). 번역에 "원"·"$"를 넣지 않는다.
 - 앱 이름(`CFBundleDisplayName`)은 빌드 설정 `DISPLAY_NAME`을 쓴다. 다른 언어 스토어 이름은 "Seep – Wishlist & Bucket List"처럼 이름 뒤에 일반 명사를 붙인다(5단계에서 확정).
 

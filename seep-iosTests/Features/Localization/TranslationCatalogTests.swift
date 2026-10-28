@@ -53,7 +53,7 @@ final class TranslationCatalogTests: XCTestCase {
     func test_GH104_TC2_번역언어마다_모든키가번역되고_자리표시자가원문과같다() throws {
         let localization = try catalog("Localization")
         let languages = languages(in: localization)
-        XCTAssertTrue(languages.isSuperset(of: ["en", "ja"]), "\(languages)")
+        XCTAssertTrue(languages.isSuperset(of: ["en", "ja", "zh-Hans", "zh-Hant"]), "\(languages)")
 
         for table in Self.tables {
             for (key, entry) in try catalog(table) {
