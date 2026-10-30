@@ -1,0 +1,111 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "${applicationName}에 가고 싶은 곳 적기" : {
+      "comment" : "Siri·단축어 · 말해서 실행하는 문장. ${applicationName} = 앱 이름(싶). 언어마다 자연스러운 문장으로",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a place to go in ${applicationName}"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}に行きたい場所を書く"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}에 가고 싶은 곳 적기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在${applicationName}中写下想去的地方"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在${applicationName}中寫下想去的地方"
+          }
+        }
+      }
+    },
+    "${applicationName}에 갖고 싶은 것 적기" : {
+      "comment" : "Siri·단축어 · 말해서 실행하는 문장. ${applicationName} = 앱 이름(싶). 언어마다 자연스러운 문장으로",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a thing to get in ${applicationName}"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}にほしいものを書く"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}에 갖고 싶은 것 적기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在${applicationName}中写下想要的东西"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在${applicationName}中寫下想要的東西"
+          }
+        }
+      }
+    },
+    "${applicationName}에 하고 싶은 것 적기" : {
+      "comment" : "Siri·단축어 · 말해서 실행하는 문장. ${applicationName} = 앱 이름(싶). 언어마다 자연스러운 문장으로",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a thing to do in ${applicationName}"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}にやりたいことを書く"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName}에 하고 싶은 것 적기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在${applicationName}中写下想做的事"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在${applicationName}中寫下想做的事"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

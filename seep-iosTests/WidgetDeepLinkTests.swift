@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위젯 링크(`widget://…`) 파싱·생성 (GH-47 R-11)
 final class WidgetDeepLinkTests: XCTestCase {

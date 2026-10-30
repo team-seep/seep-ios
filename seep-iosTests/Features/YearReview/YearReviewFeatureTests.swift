@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 연말 회고 · 전체 보기 (GH-34, GH-64 TC-901~903)
 final class YearReviewFeatureTests: ViewModelTestCase {

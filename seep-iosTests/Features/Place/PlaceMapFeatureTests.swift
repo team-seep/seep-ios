@@ -1,7 +1,7 @@
 import XCTest
 import MapKit
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 가고 싶은 곳 지도 (GH-31 R-6~R-8, GH-64 TC-38·TC-1001~1002)
 final class PlaceMapFeatureTests: ViewModelTestCase {
@@ -252,5 +252,68 @@ final class PlaceMapFeatureTests: ViewModelTestCase {
         let didChange = observeChange { _ = self.sut.state.selectedWishId }
         sut.send(.selectPin(wishId: "1"))
         XCTAssertTrue(didChange())
+    }
+}
+
+// MARK: - GH-99 아이패드 목록 · 지도
+
+extension PlaceMapFeatureTests {
+    private func pinnedWish(id: String) -> Wish {
+        Wish(
+            id: id,
+            emoji: "🌅",
+            category: .wantToGo,
+            title: "위시 \(id)",
+            isSuccess: false,
+            place: WishPlace(name: "장소 \(id)", address: "제주", latitude: 33.4, longitude: 126.5)
+        )
+    }
+
+    func test_GH99_TC11_목록에서장소를고르면_그핀이선택되고_지도가그핀으로옮긴다() {
+        // Given
+        let repository = MockWishRepository()
+        repository.fetchWishesResult = [pinnedWish(id: "1"), pinnedWish(id: "2")]
+        let viewModel = PlaceMapScreenViewModel(dependency: .init(wishRepository: repository, logManager: logManager))
+        viewModel.send(.onAppear)
+
+        // When
+        viewModel.send(.selectListWish(wishId: "2"))
+        let firstFocus = viewModel.state.cameraFocus
+        viewModel.send(.selectListWish(wishId: "2"))
+
+        // Then
+        XCTAssertEqual(viewModel.state.selectedWishId, "2")
+        XCTAssertEqual(firstFocus?.wishId, "2")
+        XCTAssertNotEqual(viewModel.state.cameraFocus?.id, firstFocus?.id, "같은 위시를 다시 골라도 다시 옮긴다")
+    }
+
+    func test_GH99_TC11_핀을누르면_목록에서도그위시가선택된다() {
+        // Given
+        let repository = MockWishRepository()
+        repository.fetchWishesResult = [pinnedWish(id: "1"), pinnedWish(id: "2")]
+        let viewModel = PlaceMapScreenViewModel(dependency: .init(wishRepository: repository, logManager: logManager))
+        viewModel.send(.onAppear)
+
+        // When
+        viewModel.send(.selectPin(wishId: "1"))
+
+        // Then
+        XCTAssertEqual(viewModel.state.selectedWishId, "1", "목록 열은 같은 selectedWishId 로 테두리를 그린다")
+        XCTAssertNil(viewModel.state.cameraFocus, "핀을 누른 것은 이미 보이는 곳이라 카메라를 옮기지 않는다")
+    }
+
+    func test_GH99_TC11_핀이없는위시는_목록에서고를수없다() {
+        // Given
+        let repository = MockWishRepository()
+        repository.fetchWishesResult = [pinnedWish(id: "1")]
+        let viewModel = PlaceMapScreenViewModel(dependency: .init(wishRepository: repository, logManager: logManager))
+        viewModel.send(.onAppear)
+
+        // When
+        viewModel.send(.selectListWish(wishId: "gone"))
+
+        // Then
+        XCTAssertNil(viewModel.state.selectedWishId)
+        XCTAssertNil(viewModel.state.cameraFocus)
     }
 }

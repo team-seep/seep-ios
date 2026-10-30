@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 토스트·앱 잠금 오버레이·시트 높이·이모지 최근 사용·페이지뷰 (GH-64 P0)
 final class AppShellFeatureTests: ViewModelTestCase {

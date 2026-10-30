@@ -178,6 +178,9 @@ enum LogObjectId: String {
     case selectAppearance = "select_appearance"
     /// 설정 "시작 카테고리"에서 고름 (+type) (GH-86)
     case selectStartCategory = "select_start_category"
+    /// 설정 "언어" → iOS 앱 설정 (GH-103 R-9)
+    case language = "language"
+    case selectLanguage = "select_language"
     /// 홈 "선택" → 선택 모드 (GH-86)
     case selectWishes = "select_wishes"
     /// 선택 모드 일괄 삭제 확인 (+count) (GH-86)
@@ -220,4 +223,8 @@ enum LogObjectId: String {
     case saveJournal = "save_journal"
     /// 상세 일지 "모두 보기" (GH-95)
     case viewAllJournals = "view_all_journals"
+    /// 아이패드 사이드바 항목 (+type: category·finished·badge·map·settings) (GH-99)
+    case sidebarItem = "sidebar_item"
+    /// 아이패드 레이아웃으로 처음 보일 때 (+type: three_column·two_column) (GH-99)
+    case padLayout = "pad_layout"
 }

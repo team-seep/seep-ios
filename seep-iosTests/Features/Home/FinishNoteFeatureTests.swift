@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 완료 소감 시트 (GH-25 R-1~R-3, R-7). 기존 FinishNoteViewModelTests 이전
 final class FinishNoteFeatureTests: ViewModelTestCase {

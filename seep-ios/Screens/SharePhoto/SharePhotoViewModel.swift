@@ -188,7 +188,8 @@ final class SharePhotoViewModel {
     static func dateText(_ date: Date, calendar: Calendar) -> String {
         let formatter = DateFormatter()
         formatter.calendar = calendar
-        formatter.locale = Locale(identifier: "ko")
+        // 카드 디자인으로 정한 숫자 표기라 언어와 상관없이 같은 모양으로 쓴다 (GH-100)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = calendar.timeZone
         formatter.dateFormat = "yyyy.MM.dd"
         return formatter.string(from: date)

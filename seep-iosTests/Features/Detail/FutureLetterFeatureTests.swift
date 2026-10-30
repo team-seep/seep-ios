@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// "미래의 나에게" 편지 — 상세 섹션·문서 블록·편지 시트·완료 소감 시트 (GH-61)
 final class FutureLetterFeatureTests: WishFormFeatureTestCase {
@@ -113,7 +113,7 @@ final class FutureLetterFeatureTests: WishFormFeatureTestCase {
         // Then
         XCTAssertNil(form.state.sheet)
         XCTAssertEqual(form.visibleBlocks.last, .letter)
-        XCTAssertEqual(caption, "\(DateUtils.toString(format: "M월 d일", date: now))에 봉인했어요 · 18자")
+        XCTAssertEqual(caption, "\(DisplayDate.monthDay(now))에 봉인했어요 · 18자")
         XCTAssertEqual(wishRepository.addedWishes.first?.futureLetter, "왜 이걸 하고 싶었는지 잊지 마.")
         XCTAssertEqual(wishRepository.addedWishes.first?.futureLetterSealedAt, now)
     }

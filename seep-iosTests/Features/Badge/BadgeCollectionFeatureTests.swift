@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 배지 모아보기 (GH-35 R-5, GH-64 TC-801)
 final class BadgeCollectionFeatureTests: ViewModelTestCase {

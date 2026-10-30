@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "단계" 섹션 — 체크/해제만 (GH-5 R-1·R-6, GH-64 TC-606).
 /// 작성·수정 화면의 단계 추가·삭제는 `WishStepsViewModelTests`(작성 폼) 쪽에 남는다

@@ -13,6 +13,7 @@ struct SettingsTabRootView: View {
     @State private var isViewTypeDialogPresented = false
     @State private var isAppearanceDialogPresented = false
     @State private var isStartCategoryDialogPresented = false
+    @State private var isLanguageDialogPresented = false
 
     var body: some View {
         ScrollView {
@@ -98,7 +99,21 @@ struct SettingsTabRootView: View {
             }
             Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
         } message: {
-            Text(Strings.Settings.Appearance.footer)
+            Text(DeviceKind.current == .pad ? Strings.Settings.Appearance.footerPad : Strings.Settings.Appearance.footer)
+        }
+        .confirmationDialog(
+            Strings.Settings.Language.title,
+            isPresented: $isLanguageDialogPresented,
+            titleVisibility: .visible
+        ) {
+            Button(Strings.Settings.Language.system) { viewModel.send(.selectLanguage(nil)) }
+            // 언어 이름은 그 언어로 쓴다("English", "日本語")
+            ForEach(viewModel.state.languageOptions, id: \.self) { code in
+                Button(AppLanguage.displayName(of: code)) { viewModel.send(.selectLanguage(code)) }
+            }
+            Button(Strings.Settings.ViewType.cancel, role: .cancel) {}
+        } message: {
+            Text(Strings.Settings.Language.footer)
         }
     }
 
@@ -127,7 +142,7 @@ struct SettingsTabRootView: View {
         case .notification(let status):
             button(
                 title: Strings.Settings.Notification.title,
-                description: Strings.Settings.Notification.description,
+                description: DeviceKind.current == .pad ? Strings.Settings.Notification.descriptionPad : Strings.Settings.Notification.description,
                 value: notificationValue(status),
                 action: .tapNotification
             )
@@ -151,6 +166,13 @@ struct SettingsTabRootView: View {
                 title: Strings.Settings.StartCategory.title,
                 value: category?.title ?? Strings.Settings.StartCategory.lastShort,
                 action: .tapStartCategory
+            )
+
+        case .language(let name):
+            button(
+                title: Strings.Settings.Language.title,
+                value: name,
+                action: .tapLanguage
             )
 
         case .widgetGuide:
@@ -228,6 +250,8 @@ struct SettingsTabRootView: View {
             isAppearanceDialogPresented = true
         case .startCategoryDialog:
             isStartCategoryDialogPresented = true
+        case .languageDialog:
+            isLanguageDialogPresented = true
         case .openURL(let url):
             let isContact = url.scheme == "mailto"
             openURL(url) { accepted in

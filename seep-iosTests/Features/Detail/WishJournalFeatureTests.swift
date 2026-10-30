@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "일지" 섹션 · 한 줄 남기기 시트 (GH-95 R-3 ~ R-7)
 final class WishJournalFeatureTests: ViewModelTestCase {

@@ -47,7 +47,7 @@ struct YearReviewCard: View {
                 if let busiestMonth = summary.busiestMonth {
                     VStack(alignment: .leading, spacing: 4) {
                         YearReviewCaption(text: Strings.YearReview.BusiestMonth.title)
-                        Text(verbatim: Strings.YearReview.BusiestMonth.format(busiestMonth.month, busiestMonth.count))
+                        Text(verbatim: Strings.YearReview.BusiestMonth.format(DisplayDate.month(busiestMonth.month), busiestMonth.count))
                             .font(.appleSemiBold(size: 16))
                             .foregroundStyle(Color.gray5)
                     }

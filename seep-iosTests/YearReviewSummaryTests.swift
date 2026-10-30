@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class YearReviewSummaryTests: XCTestCase {
     private var calendar: Calendar!
@@ -19,7 +19,7 @@ final class YearReviewSummaryTests: XCTestCase {
 
     private func finished(
         id: String,
-        category: seep_ios_dev.Category = .wantToDo,
+        category: seep_ios.Category = .wantToDo,
         createdAt: Date? = nil,
         finishedAt: Date,
         note: String = ""

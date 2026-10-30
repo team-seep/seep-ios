@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 알림 추가·수정 시트 (GH-64 TC-1301, TC-1303, R-41)
 final class NotificationEditorFeatureTests: ViewModelTestCase {

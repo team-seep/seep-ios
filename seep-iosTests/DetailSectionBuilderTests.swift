@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위시 상세 문서의 섹션 노출·순서 (GH-59 R-10).
 final class DetailSectionBuilderTests: XCTestCase {

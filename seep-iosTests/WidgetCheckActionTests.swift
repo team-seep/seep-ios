@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 체크 위젯의 체크 판정·보조 문구 (GH-48 R-2, R-3, R-11)
 final class WidgetCheckActionTests: XCTestCase {

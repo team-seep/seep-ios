@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// "미래의 나에게" 편지 저장소·마이그레이션 (GH-61 R-1). 메모리 DB·임시 Realm 파일로 돌린다
 final class FutureLetterRepositoryTests: XCTestCase {

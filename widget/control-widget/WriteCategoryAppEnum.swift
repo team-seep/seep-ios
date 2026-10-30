@@ -1,7 +1,7 @@
 import AppIntents
 
 /// 싶 적기 컨트롤·단축어에서 고르는 카테고리. `Category` 와 1:1 (GH-49 R-2)
-/// App Intents 메타데이터는 빌드 때 상수 문자열로 뽑히므로 SwiftGen 대신 문자열을 직접 쓴다(위젯 타깃에도 SwiftGen 이 없다)
+/// App Intents 메타데이터는 빌드 때 상수 문자열로 뽑히므로 원문이 곧 키인 `Localizable.xcstrings` 를 쓴다 (GH-100 R-7)
 enum WriteCategoryAppEnum: String, AppEnum {
     case wantToDo
     case wantToGet
@@ -41,11 +41,11 @@ enum WriteCategoryAppEnum: String, AppEnum {
     var title: String {
         switch self {
         case .wantToDo:
-            return "하고 싶어요"
+            return Strings.categoryWantToDo
         case .wantToGet:
-            return "갖고 싶어요"
+            return Strings.categoryWantToGet
         case .wantToGo:
-            return "가고 싶어요"
+            return Strings.categoryWantToGo
         }
     }
 
@@ -53,11 +53,11 @@ enum WriteCategoryAppEnum: String, AppEnum {
     var actionHint: String {
         switch self {
         case .wantToDo:
-            return "하고 싶은 것 적기"
+            return Strings.Widget.Control.ActionHint.wantToDo
         case .wantToGet:
-            return "갖고 싶은 것 적기"
+            return Strings.Widget.Control.ActionHint.wantToGet
         case .wantToGo:
-            return "가고 싶은 곳 적기"
+            return Strings.Widget.Control.ActionHint.wantToGo
         }
     }
 }

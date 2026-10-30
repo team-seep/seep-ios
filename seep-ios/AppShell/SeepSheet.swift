@@ -17,6 +17,14 @@ enum SeepSheetDetent: Equatable {
     }
 }
 
+/// 풀스크린 화면을 넓은 화면(아이패드 regular)에서 어떻게 띄울지 (GH-99 R-8, R-12)
+enum SeepFullScreenStyle: Equatable {
+    /// 어디서나 전체 화면 (연말 회고·사진 공유처럼 화면을 다 쓰는 것)
+    case fullScreen
+    /// regular 에서는 뒤가 보이는 가운데 큰 시트, compact 에서는 전체 화면 (작성·수정 문서)
+    case pageSheetOnRegular
+}
+
 extension View {
     /// 앱의 모든 시트는 이 modifier 로만 띄운다 (R5, 린트 `no_raw_sheet`).
     /// 잠금 오버레이·인디케이터·높이 규칙을 붙이고, 떠 있는 동안 `AppRouter`에 알려 위젯 링크를 막는다
@@ -44,12 +52,56 @@ extension View {
 
     func seepFullScreenCover<Item: Identifiable, Content: View>(
         item: Binding<Item?>,
+        style: SeepFullScreenStyle = .fullScreen,
         onDismiss: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (Item) -> Content
     ) -> some View {
-        fullScreenCover(item: item, onDismiss: onDismiss) { item in
-            content(item).modifier(SeepModalTrackingModifier()).appLockOverlay()
+        modifier(SeepFullScreenModifier(item: item, style: style, onDismiss: onDismiss, cover: content))
+    }
+
+    /// 고르기만 하는 시트(정렬·카테고리 고르기)를 아이패드에서 누른 버튼에 붙여 띄운다 (GH-99 R-9).
+    /// 이 modifier 는 버튼에 붙인다. compact 에서는 쓰지 않고 지금처럼 `seepSheet`로 띄운다
+    func seepPopover<Content: View>(
+        isPresented: Binding<Bool>,
+        width: CGFloat = 320,
+        arrowEdge: Edge = .top,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        popover(isPresented: isPresented, arrowEdge: arrowEdge) {
+            content()
+                .frame(width: width)
+                // 팝오버는 내용의 고유 높이로 크기를 정한다. 없으면 높이 0 으로 뜬다
+                .fixedSize(horizontal: false, vertical: true)
+                .presentationCompactAdaptation(.popover)
+                .modifier(SeepModalTrackingModifier())
+                .appLockOverlay()
         }
+    }
+}
+
+/// 두 presentation 을 늘 붙여 두고 바인딩만 나눠, size class 가 바뀌어도 화면이 다시 만들어지지 않게 한다
+private struct SeepFullScreenModifier<Item: Identifiable, Cover: View>: ViewModifier {
+    let item: Binding<Item?>
+    let style: SeepFullScreenStyle
+    let onDismiss: (() -> Void)?
+    let cover: (Item) -> Cover
+
+    @Environment(\.horizontalSizeClass) private var sizeClass
+
+    func body(content: Content) -> some View {
+        let usesPageSheet = style == .pageSheetOnRegular && sizeClass == .regular
+        content
+            .fullScreenCover(item: usesPageSheet ? .constant(nil) : item, onDismiss: onDismiss) { item in
+                cover(item).modifier(SeepModalTrackingModifier()).appLockOverlay()
+            }
+            .sheet(item: usesPageSheet ? item : .constant(nil), onDismiss: onDismiss) { item in
+                cover(item)
+                    .modifier(SeepModalTrackingModifier())
+                    .appLockOverlay()
+                    .presentationSizing(.page)
+                    // 작성 중인 문서를 밀어서 닫아 잃지 않게 한다. 닫기는 문서의 버튼으로만
+                    .interactiveDismissDisabled()
+            }
     }
 }
 
@@ -66,6 +118,8 @@ private struct SeepSheetContentModifier: ViewModifier {
                 contentHeight = height
             }
             .presentationDetents(presentationDetents)
+            // 아이패드(regular)는 detent 를 쓰지 않고 가운데 시트로 뜬다. fitContent 는 내용 높이에 맞춘 작은 시트로 (GH-99 R-9)
+            .presentationSizing(.form.fitted(horizontal: false, vertical: detent == .fitContent))
             .presentationDragIndicator(.visible)
             .presentationCornerRadius(20)
             .modifier(SeepModalTrackingModifier())

@@ -130,7 +130,7 @@ struct WishDocumentBlocks: View {
                                 .accessibilityHidden(true)
                             Text(Strings.WishForm.notificationRowFormat(
                                 notification.type.toString,
-                                notification.time.toString(format: "a h시 mm분")
+                                DisplayDate.time(notification.time)
                             ))
                             .font(.appleRegular(size: 16))
                             .foregroundStyle(Color.gray5)
@@ -199,27 +199,68 @@ struct WishDocumentBlocks: View {
                 TextField(
                     "",
                     text: Binding(
-                        get: { AmountFormatter.inputText(from: state.targetAmount) },
+                        get: { state.targetAmountText },
                         set: { viewModel.send(.inputTargetAmount($0)) }
                     ),
                     prompt: Text(Strings.Write.TargetAmount.placeholder).foregroundStyle(Color.gray3)
                 )
-                .keyboardType(.numberPad)
+                .keyboardType(AmountFormatter.fractionDigits(state.currency) > 0 ? .decimalPad : .numberPad)
                 .font(.appleExtraBold(size: 22))
                 .foregroundStyle(Color.gray5)
                 .tint(Color.seepBlue)
                 .focused(focus, equals: .targetAmount)
                 .fixedSize()
                 .accessibilityLabel(Text(Strings.Write.TargetAmount.title))
-                Text(Strings.Common.wonUnit)
-                    .font(.appleRegular(size: 16))
-                    .foregroundStyle(Color.gray4)
+                currencyMenu
             }
             .frame(minHeight: 44)
             Text(Strings.Write.TargetAmount.caption)
                 .font(.appleMedium(size: 12))
                 .foregroundStyle(Color.gray4)
         }
+    }
+
+    /// 금액 단위이자 통화 고르기 (GH-103 R-15). 저금 기록이 있으면 메뉴 대신 안내 토스트 (R-18)
+    @ViewBuilder
+    private var currencyMenu: some View {
+        let unit = Text(verbatim: AmountFormatter.unit(currency: state.currency))
+            .font(.appleRegular(size: 16))
+            .foregroundStyle(Color.gray4)
+        if state.isCurrencyLocked {
+            Button {
+                viewModel.send(.selectCurrency(state.currency))
+            } label: {
+                unit
+            }
+            .buttonStyle(.plain)
+        } else {
+            Menu {
+                Picker(selection: Binding(
+                    get: { state.currency },
+                    set: { viewModel.send(.selectCurrency($0)) }
+                )) {
+                    ForEach(AmountFormatter.supportedCurrencies, id: \.self) { code in
+                        Text(verbatim: Self.currencyTitle(code)).tag(code)
+                    }
+                } label: {
+                    Text(Strings.Write.TargetAmount.currency)
+                }
+            } label: {
+                HStack(spacing: 2) {
+                    unit
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(Color.gray3)
+                }
+            }
+            .accessibilityLabel(Text(Strings.Write.TargetAmount.currency))
+        }
+    }
+
+    /// "KRW · 대한민국 원" (앱 언어로)
+    private static func currencyTitle(_ code: String) -> String {
+        let name = AppLanguage.shared.locale.localizedString(forCurrencyCode: code) ?? code
+        return "\(code) · \(name)"
     }
 
     @ViewBuilder

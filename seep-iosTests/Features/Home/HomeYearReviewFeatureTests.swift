@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈 연말 회고 배너 (GH-34 R-1, R-2). 오늘 날짜는 Dependency.now 로 주입한다 (기존 HomeViewModelYearReviewTests 이전)
 final class HomeYearReviewFeatureTests: HomeFeatureTestCase {

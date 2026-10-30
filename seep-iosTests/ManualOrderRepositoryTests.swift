@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// "내가 정한 순서" 저장소·마이그레이션 (GH-73 R-3, R-7, R-8). 메모리 DB·임시 Realm 파일로 돌린다
 final class ManualOrderRepositoryTests: XCTestCase {
@@ -20,12 +20,12 @@ final class ManualOrderRepositoryTests: XCTestCase {
         super.tearDown()
     }
 
-    private func manualIds(_ category: seep_ios_dev.Category = .wantToDo) -> [String] {
+    private func manualIds(_ category: seep_ios.Category = .wantToDo) -> [String] {
         sut.fetchWishes(category: category, sort: .manualOrder, isOnlyFinished: false).map(\.id)
     }
 
     /// 만든 순서대로 넣는다. 새 위시는 맨 위로 가므로 마지막에 넣은 것이 맨 위다
-    private func add(_ ids: [String], category: seep_ios_dev.Category = .wantToDo) throws {
+    private func add(_ ids: [String], category: seep_ios.Category = .wantToDo) throws {
         for id in ids {
             clock = clock.addingTimeInterval(1)
             _ = try sut.addWish(Wish(id: id, category: category, title: id, createdAt: clock)).get()

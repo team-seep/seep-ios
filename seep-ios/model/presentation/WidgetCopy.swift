@@ -18,11 +18,11 @@ struct SmallWriteCopy: Equatable {
     init(category: Category) {
         switch category {
         case .wantToDo:
-            (emoji, caption, question) = ("😍", "지금", "뭐 하고 싶어요?")
+            (emoji, caption, question) = ("😍", Strings.Widget.SmallWrite.Caption.wantToDo, Strings.Widget.SmallWrite.Question.wantToDo)
         case .wantToGet:
-            (emoji, caption, question) = ("🤩", "연말에", "뭐 갖고 싶어요?")
+            (emoji, caption, question) = ("🤩", Strings.Widget.SmallWrite.Caption.wantToGet, Strings.Widget.SmallWrite.Question.wantToGet)
         case .wantToGo:
-            (emoji, caption, question) = ("😆", "이번주 주말", "어디 가고 싶어요?")
+            (emoji, caption, question) = ("😆", Strings.Widget.SmallWrite.Caption.wantToGo, Strings.Widget.SmallWrite.Question.wantToGo)
         }
         url = URL(string: "widget://add?category=\(category.rawValue)")
     }
@@ -39,20 +39,21 @@ struct SmallRemainCopy: Equatable {
 
     init(category: Category, count: Int) {
         switch category {
-        case .wantToDo: headline = "하고 싶은 것들이"
-        case .wantToGet: headline = "갖고 싶은 것들이"
-        case .wantToGo: headline = "가고 싶은 곳들이"
+        case .wantToDo: headline = Strings.Widget.SmallRemain.Headline.wantToDo
+        case .wantToGet: headline = Strings.Widget.SmallRemain.Headline.wantToGet
+        case .wantToGo: headline = Strings.Widget.SmallRemain.Headline.wantToGo
         }
         self.count = "\(count)"
-        suffix = category == .wantToGo ? "곳 남았어요!" : "개 남았어요!"
-        emptyCaption = count == 0 ? "새 싶을 적어봐요" : nil
+        // 숫자만 크게 그려서 문장을 나눠 둔다. 단위는 개수와 상관없는 말로 둔다(복수형은 2단계 번역 때 다시 본다)
+        suffix = category == .wantToGo ? Strings.Widget.SmallRemain.suffixPlaces : Strings.Widget.SmallRemain.suffixThings
+        emptyCaption = count == 0 ? Strings.Widget.SmallRemain.emptyCaption : nil
         url = URL(string: "widget://home")
     }
 }
 
 /// 중형 위젯의 빈 상태 문구 (GH-87 R-3, TC-3)
 enum WidgetEmptyCopy {
-    static let title = "하고 싶은 것들을"
-    static let bold = "적어봐요."
-    static let action = "✍️ 지금 쓰러 갈까요?"
+    static var title: String { Strings.Widget.Empty.title }
+    static var bold: String { Strings.Widget.Empty.bold }
+    static var action: String { Strings.Widget.Empty.action }
 }

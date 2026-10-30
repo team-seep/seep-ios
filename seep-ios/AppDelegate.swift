@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        DeviceKind.current = UIDevice.current.userInterfaceIdiom == .pad ? .pad : .phone
         self.initilizeFirebase()
         self.copyDefaultToAppGroup()
         self.setupDatabase()
@@ -97,6 +98,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         DatabaseMigrationFollowUp().run()
+        LanguageSwitcher.syncWithSystem()
+        NotificationLanguageRefresh().run()
 
         // 백그라운드로 가면 DB 잠금을 놓아 0xdead10cc 로 죽지 않게 하고, 돌아오면 다시 연다 (GH-79 R-11)
         let center = NotificationCenter.default
