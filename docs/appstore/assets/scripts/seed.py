@@ -1,40 +1,46 @@
-import sqlite3,sys,uuid,datetime as dt
+"""예시 위시를 넣는다. 사용: seed.py <App Group dev.sqlite> [언어(ko|en-US|ja|zh-Hans|zh-Hant)]
+제목·메모·단계 문구는 l10n/copy.json의 언어별 seed·memo·steps에서 읽는다 (GH-117)."""
+import sqlite3,sys,uuid,json,os,datetime as dt
 REF=dt.datetime(2001,1,1)
 def t(d): return (d-REF).total_seconds()
-now=dt.datetime(2026,10,28,9,41)
+now=dt.datetime.now().replace(hour=9,minute=41,second=0,microsecond=0)
 def day(n,h=23,m=59): return t((now+dt.timedelta(days=n)).replace(hour=h,minute=m,second=0))
+lang=sys.argv[2] if len(sys.argv)>2 else "ko"
+copy=json.load(open(os.path.join(os.path.dirname(__file__),"..","l10n","copy.json")))[lang]
+currency={"ko":"KRW","en-US":"USD","ja":"JPY","zh-Hans":"CNY","zh-Hant":"TWD"}[lang]
 db=sqlite3.connect(sys.argv[1]); c=db.cursor()
 c.execute("delete from wish"); c.execute("delete from wishStep"); c.execute("delete from wishNotification"); c.execute("delete from wishSaving"); c.execute("delete from wishJournal")
-W=[ # cat, emoji, title, dday, hashtag, finishedDaysAgo, memo, steps
-("do","🏃","10km 마라톤 완주하기",12,"sports",None,"",[]),
-("do","🏄","양양에서 서핑 배우기",24,"trip",None,"오전반 강습이 파도가 잔잔하대요. 첫날은 보드 대여까지 포함된 패키지로!",[("서핑 강습 예약하기",1),("래시가드 사기",0),("양양 숙소 잡기",0)]),
-("do","📷","필름 카메라로 한 롤 찍기",40,"hobby",None,"",[]),
-("do","🎹","피아노로 한 곡 완주하기",60,"hobby",None,"",[]),
-("do","🧶","목도리 직접 떠보기",None,"hobby",None,"",[]),
-("do","🍷","와인 클래스 들어보기",None,"life",None,"",[]),
-("get","🎧","노이즈캔슬링 헤드폰",2,"shopping",None,"",[]),
-("get","⌚️","러닝용 스마트워치",30,"sports",None,"",[]),
-("get","🪴","거실에 둘 큰 화분",None,"life",None,"",[]),
-("go","⛺️","가을 캠핑 가기",18,"leisure",None,"",[]),
-("go","🗻","교토 단풍 보러 가기",35,"trip",None,"",[]),
-("do","📚","올해 책 20권 읽기",None,"hobby",13,"",[]),
-("do","🍰","홈베이킹으로 케이크 굽기",None,"hobby",28,"",[]),
-("do","🚴","한강 자전거 완주",None,"sports",43,"",[]),
-("go","🌅","정동진 일출 보기",None,"trip",75,"",[]),
-("get","🎒","여행용 백팩",None,"shopping",100,"",[]),
-("do","🏊","수영 자유형 배우기",None,"sports",130,"",[]),
+W=[ # cat, emoji, dday, hashtag, finishedDaysAgo, 서핑 위시(메모·단계·알림)
+("do","🏃",12,"sports",None,False),
+("do","🏄",24,"trip",None,True),
+("do","📷",40,"hobby",None,False),
+("do","🎹",60,"hobby",None,False),
+("do","🧶",None,"hobby",None,False),
+("do","🍷",None,"life",None,False),
+("get","🎧",2,"shopping",None,False),
+("get","⌚️",30,"sports",None,False),
+("get","🪴",None,"life",None,False),
+("go","⛺️",18,"leisure",None,False),
+("go","🗻",35,"trip",None,False),
+("do","📚",None,"hobby",13,False),
+("do","🍰",None,"hobby",28,False),
+("do","🚴",None,"sports",43,False),
+("go","🌅",None,"trip",75,False),
+("get","🎒",None,"shopping",100,False),
+("do","🏊",None,"sports",130,False),
 ]
 cat={"do":"category_want_to_do","get":"category_want_to_get","go":"category_want_to_go"}
 order={}
-for i,(k,e,title,dd,tag,fin,memo,steps) in enumerate(W):
+for i,((k,e,dd,tag,fin,surf),title) in enumerate(zip(W,copy["seed"])):
     wid=str(uuid.uuid4()).upper(); order[k]=order.get(k,0)+1
     created=t(now-dt.timedelta(days=60-i))
     date=day(dd) if dd is not None else (day(-fin) if fin else None)
     finish=day(-fin,20,0) if fin else None
     c.execute("insert into wish(id,category,emoji,title,date,finishDate,memo,hashtag,isSuccess,createdAt,updatedAt,manualOrder,currency) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-      (wid,cat[k],e,title,date,finish,memo,tag,1 if fin else 0,created,created,order[k],"KRW"))
-    for j,(s,done) in enumerate(steps):
-        c.execute('insert into wishStep(id,wishId,title,isDone,"order",updatedAt) values(?,?,?,?,?,?)',(str(uuid.uuid4()).upper(),wid,s,done,j,created))
-    if title.startswith("양양"):
+      (wid,cat[k],e,title,date,finish,copy["memo"] if surf else "",tag,1 if fin else 0,created,created,order[k],currency))
+    if surf:
+        for j,s in enumerate(copy["steps"]):
+            c.execute('insert into wishStep(id,wishId,title,isDone,"order",updatedAt) values(?,?,?,?,?,?)',(str(uuid.uuid4()).upper(),wid,s,1 if j==0 else 0,j,created))
         c.execute('insert into wishNotification(id,wishId,type,time,"order",updatedAt) values(?,?,?,?,?,?)',(str(uuid.uuid4()).upper(),wid,"dayAgo",t(now.replace(hour=11,minute=0)),0,created))
-db.commit(); print(c.execute("select count(*) from wish").fetchone())
+    print(wid,title)
+db.commit()
