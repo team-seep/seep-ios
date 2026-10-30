@@ -94,7 +94,7 @@ settingGroups:
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: X975A2HM62
   version:
-    MARKETING_VERSION: 2.6.0
+    MARKETING_VERSION: 2.7.0
     CURRENT_PROJECT_VERSION: "1"
 
 targets:
