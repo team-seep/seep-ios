@@ -40,6 +40,8 @@ extension ScreenName {
     static let settings = ScreenName(rawValue: "settings")
     /// 마이 탭 > 계정 화면 (GH-93)
     static let account = ScreenName(rawValue: "account")
+    /// 화면과 무관한 동기화 이벤트 (GH-93 sync_push·sync_pull·sync_error)
+    static let sync = ScreenName(rawValue: "sync")
     static let widgetGuide = ScreenName(rawValue: "widget_guide")
     static let controlGuide = ScreenName(rawValue: "control_guide")
     static let license = ScreenName(rawValue: "license")

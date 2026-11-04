@@ -57,6 +57,39 @@ private struct MockRemoteDataEraser: RemoteAccountDataEraser {
     }
 }
 
+private final class MockSyncEngine: SyncEngineProtocol, @unchecked Sendable {
+    let log: AccountCallLog
+    var startOutcome: SyncSessionOutcome = .merged
+    var syncReport = SyncReport()
+    var currentStatus = SyncStatus(isSignedIn: false, lastSyncedAt: nil, pendingCount: 0)
+    private(set) var startedUids: [String] = []
+
+    init(log: AccountCallLog) {
+        self.log = log
+    }
+
+    func status() async -> SyncStatus { currentStatus }
+
+    func startSession(uid: String, progress: @escaping @Sendable (Int, Int) -> Void) async -> SyncSessionOutcome {
+        startedUids.append(uid)
+        progress(1, 2)
+        return startOutcome
+    }
+
+    func forgetBoundAccount() async {
+        log.calls.append("forgetBoundAccount")
+    }
+
+    func endSession(unbindDevice: Bool, flushPending: Bool) async {
+        log.calls.append("endSession(unbind:\(unbindDevice),flush:\(flushPending))")
+    }
+
+    func sync(trigger: SyncTrigger) async -> SyncReport {
+        log.calls.append("sync:\(trigger.rawValue)")
+        return syncReport
+    }
+}
+
 private final class MockNetwork: NetworkStatusProviding {
     var isConnected = true
 }
@@ -79,6 +112,7 @@ final class AccountFeatureTests: ViewModelTestCase {
     private var notificationManager: MockNotificationManager!
     private var photoStorage: MockWishPhotoStorage!
     private var network: MockNetwork!
+    private var syncEngine: MockSyncEngine!
 
     private let credential = AppleCredential(idToken: "token", authorizationCode: "code-1", fullName: nil)
     private let member = Account(uid: "uid-1", email: "a@privaterelay.appleid.com", createdAt: nil)
@@ -91,6 +125,7 @@ final class AccountFeatureTests: ViewModelTestCase {
         notificationManager = MockNotificationManager()
         photoStorage = MockWishPhotoStorage()
         network = MockNetwork()
+        syncEngine = MockSyncEngine(log: callLog)
     }
 
     override func tearDown() {
@@ -100,6 +135,7 @@ final class AccountFeatureTests: ViewModelTestCase {
         notificationManager = nil
         photoStorage = nil
         network = nil
+        syncEngine = nil
         super.tearDown()
     }
 
@@ -107,6 +143,7 @@ final class AccountFeatureTests: ViewModelTestCase {
         accountManager.currentAccount = signedIn ? member : nil
         let sut = AccountViewModel(dependency: .init(
             accountManager: accountManager,
+            syncEngine: syncEngine,
             remoteDataEraser: MockRemoteDataEraser(log: callLog),
             wishRepository: wishRepository,
             notificationManager: notificationManager,
@@ -188,9 +225,10 @@ final class AccountFeatureTests: ViewModelTestCase {
         sut.send(.appleAuthorized(credential))
 
         // Then
-        waitUntil { sut.state.account == self.member }
+        waitUntil { sut.route == .toast(Strings.Account.Toast.synced) }
+        XCTAssertEqual(sut.state.account, member)
         XCTAssertFalse(sut.state.isWorking)
-        XCTAssertEqual(sut.route, .toast(Strings.Account.Toast.signedIn))
+        XCTAssertEqual(syncEngine.startedUids, ["uid-1"])
         XCTAssertEqual(customEvents(.accountSignIn).count, 1)
     }
 
@@ -225,7 +263,9 @@ final class AccountFeatureTests: ViewModelTestCase {
         // When
         sut.send(.selectLogout(.keep))
 
-        // Then
+        // Then: 남은 변경을 올린 뒤(로그인 상태에서) 로그아웃한다
+        waitUntil { sut.route == .popAccount }
+        XCTAssertEqual(callLog.calls, ["endSession(unbind:false,flush:true)"])
         XCTAssertEqual(accountManager.signOutCallCount, 1)
         XCTAssertEqual(wishRepository.eraseAllLocalWishesCallCount, 0)
         XCTAssertNil(sut.state.account)
@@ -249,6 +289,8 @@ final class AccountFeatureTests: ViewModelTestCase {
         sut.send(.selectLogout(.erase))
 
         // Then
+        waitUntil { sut.route == .popAccount }
+        XCTAssertEqual(callLog.calls, ["endSession(unbind:true,flush:true)"])
         XCTAssertEqual(wishRepository.eraseAllLocalWishesCallCount, 1)
         XCTAssertEqual(notificationManager.cancelledWishes.map(\.id), ["w1", "w2"])
         XCTAssertEqual(photoStorage.deletePhotosCalledWishIds, ["w1", "w2"])
@@ -273,7 +315,7 @@ final class AccountFeatureTests: ViewModelTestCase {
 
         // Then
         waitUntil { sut.state.dialog == .afterDelete }
-        XCTAssertEqual(callLog.calls, ["reauthenticate", "eraseServerData:uid-1", "revoke:code-1", "deleteUser"])
+        XCTAssertEqual(callLog.calls, ["reauthenticate", "eraseServerData:uid-1", "revoke:code-1", "deleteUser", "endSession(unbind:true,flush:false)"])
         XCTAssertNil(sut.state.account)
         XCTAssertEqual(sut.route, .popAccount)
         XCTAssertEqual(customEvents(.accountDelete).count, 1)
@@ -302,6 +344,61 @@ final class AccountFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sut.state.account, member)
         XCTAssertNil(sut.state.dialog)
         XCTAssertTrue(customEvents(.accountDelete).isEmpty)
+    }
+
+    // MARK: TC-31 (화면)
+
+    func test_GH93_TC31_다른계정싶이남은기기에서로그인하면_지우고받기를묻고_고르면로컬을지우고다시합친다() {
+        // Given
+        syncEngine.startOutcome = .accountMismatch
+        let sut = makeSut()
+        sut.send(.tapSignIn)
+        sut.send(.routeHandled)
+        sut.send(.appleAuthorized(credential))
+        waitUntil { sut.state.dialog == .otherAccount }
+
+        // When
+        syncEngine.startOutcome = .merged
+        sut.send(.selectOtherAccount(replace: true))
+
+        // Then
+        waitUntil { sut.route == .toast(Strings.Account.Toast.synced) }
+        XCTAssertEqual(wishRepository.eraseAllLocalWishesCallCount, 1)
+        XCTAssertEqual(callLog.calls.filter { $0 == "forgetBoundAccount" }.count, 1)
+        XCTAssertEqual(syncEngine.startedUids, ["uid-1", "uid-1"])
+    }
+
+    func test_GH93_TC31_다른계정확인에서취소하면_로그아웃하고로컬은그대로다() {
+        // Given
+        syncEngine.startOutcome = .accountMismatch
+        let sut = makeSut()
+        sut.send(.tapSignIn)
+        sut.send(.routeHandled)
+        sut.send(.appleAuthorized(credential))
+        waitUntil { sut.state.dialog == .otherAccount }
+
+        // When
+        sut.send(.selectOtherAccount(replace: false))
+
+        // Then
+        XCTAssertNil(sut.state.account)
+        XCTAssertEqual(accountManager.signOutCallCount, 1)
+        XCTAssertEqual(wishRepository.eraseAllLocalWishesCallCount, 0)
+    }
+
+    // MARK: TC-24 (화면)
+
+    func test_GH93_TC24_지금동기화를누르면_수동동기화하고_클릭로그가간다() {
+        // Given
+        let sut = makeSut(signedIn: true)
+
+        // When
+        sut.send(.tapSyncNow)
+
+        // Then
+        waitUntil { sut.route == .toast(Strings.Account.Toast.synced) }
+        XCTAssertTrue(callLog.calls.contains("sync:manual"))
+        XCTAssertEqual(clickEvents(objectId: .syncNow).count, 1)
     }
 
     // MARK: TC-20

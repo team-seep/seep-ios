@@ -147,12 +147,16 @@ internal enum Strings {
     internal static var eraseLocal: String { Strings.tr("Localization", "account.erase_local", fallback: "이 기기에서 싶 지우기") }
     /// 이 기기에 싶 남기기
     internal static var keepLocal: String { Strings.tr("Localization", "account.keep_local", fallback: "이 기기에 싶 남기기") }
+    /// 마지막 동기화
+    internal static var lastSync: String { Strings.tr("Localization", "account.last_sync", fallback: "마지막 동기화") }
     /// 로그아웃
     internal static var logout: String { Strings.tr("Localization", "account.logout", fallback: "로그아웃") }
     /// Apple로 로그인 · %@ 가입
     internal static func signedUpFormat(_ p1: Any) -> String {
       return Strings.tr("Localization", "account.signed_up_format", String(describing: p1), fallback: "Apple로 로그인 · %@ 가입")
     }
+    /// 지금 동기화
+    internal static var syncNow: String { Strings.tr("Localization", "account.sync_now", fallback: "지금 동기화") }
     /// 계정
     internal static var title: String { Strings.tr("Localization", "account.title", fallback: "계정") }
     internal enum AfterDelete {
@@ -172,10 +176,28 @@ internal enum Strings {
       internal static var guestNote: String { Strings.tr("Localization", "account.card.guest_note", fallback: "로그인하지 않아도 지금처럼 이 기기에서 모두 쓸 수 있어요") }
       /// 로그인하지 않았어요
       internal static var guestTitle: String { Strings.tr("Localization", "account.card.guest_title", fallback: "로그인하지 않았어요") }
+      /// 마지막 동기화 %@
+      internal static func lastSyncedFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "account.card.last_synced_format", String(describing: p1), fallback: "마지막 동기화 %@")
+      }
       /// Apple로 로그인했어요
       internal static var memberSubtitle: String { Strings.tr("Localization", "account.card.member_subtitle", fallback: "Apple로 로그인했어요") }
+      /// 아직 동기화하지 않았어요
+      internal static var notSynced: String { Strings.tr("Localization", "account.card.not_synced", fallback: "아직 동기화하지 않았어요") }
       /// 로그인하는 중…
       internal static var signingIn: String { Strings.tr("Localization", "account.card.signing_in", fallback: "로그인하는 중…") }
+      /// 동기화하지 못했어요. 계정 화면에서 다시 해 볼 수 있어요
+      internal static var syncFailed: String { Strings.tr("Localization", "account.card.sync_failed", fallback: "동기화하지 못했어요. 계정 화면에서 다시 해 볼 수 있어요") }
+      /// 동기화하는 중…
+      internal static var syncing: String { Strings.tr("Localization", "account.card.syncing", fallback: "동기화하는 중…") }
+      /// 올리는 중 · %1$lld / %2$lld
+      internal static func uploadingFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "account.card.uploading_format", p1, p2, fallback: "올리는 중 · %1$lld / %2$lld")
+      }
+      /// 인터넷에 연결되면 바뀐 싶 %lld개를 올릴게요
+      internal static func waitingFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "account.card.waiting_format", p1, fallback: "인터넷에 연결되면 바뀐 싶 %lld개를 올릴게요")
+      }
     }
     internal enum Delete {
       /// 삭제
@@ -199,9 +221,19 @@ internal enum Strings {
       /// 로그아웃할까요?
       internal static var title: String { Strings.tr("Localization", "account.logout.title", fallback: "로그아웃할까요?") }
     }
+    internal enum OtherAccount {
+      /// 계정끼리 싶이 섞이지 않게, 이 기기의 싶을 지우고 이 계정의 싶을 받을게요.
+      internal static var message: String { Strings.tr("Localization", "account.other_account.message", fallback: "계정끼리 싶이 섞이지 않게, 이 기기의 싶을 지우고 이 계정의 싶을 받을게요.") }
+      /// 이 기기 싶 지우고 받기
+      internal static var replace: String { Strings.tr("Localization", "account.other_account.replace", fallback: "이 기기 싶 지우고 받기") }
+      /// 이 기기의 싶은 다른 계정 것이에요
+      internal static var title: String { Strings.tr("Localization", "account.other_account.title", fallback: "이 기기의 싶은 다른 계정 것이에요") }
+    }
     internal enum Section {
       /// 계정
       internal static var account: String { Strings.tr("Localization", "account.section.account", fallback: "계정") }
+      /// 동기화
+      internal static var sync: String { Strings.tr("Localization", "account.section.sync", fallback: "동기화") }
     }
     internal enum Toast {
       /// 계정을 삭제했어요
@@ -214,6 +246,8 @@ internal enum Strings {
       internal static var signedIn: String { Strings.tr("Localization", "account.toast.signed_in", fallback: "로그인했어요") }
       /// 로그아웃했어요
       internal static var signedOut: String { Strings.tr("Localization", "account.toast.signed_out", fallback: "로그아웃했어요") }
+      /// 동기화했어요
+      internal static var synced: String { Strings.tr("Localization", "account.toast.synced", fallback: "동기화했어요") }
     }
   }
   internal enum AppLock {

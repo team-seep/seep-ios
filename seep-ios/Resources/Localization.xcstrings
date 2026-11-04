@@ -325,6 +325,42 @@
         }
       }
     },
+    "account.card.last_synced_format" : {
+      "comment" : "마이 탭 회원 카드, 이메일 아래 동기화 상태 (GH-93). %@는 상대 시각(\"방금 전\", \"5분 전\")",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last synced %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最終同期 %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 동기화 %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上次同步：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上次同步：%@"
+          }
+        }
+      }
+    },
     "account.card.member_subtitle" : {
       "comment" : "마이 탭 맨 위 계정 카드 (GH-93), 로그인했을 때 이메일 아래",
       "extractionState" : "manual",
@@ -361,6 +397,42 @@
         }
       }
     },
+    "account.card.not_synced" : {
+      "comment" : "마이 탭 회원 카드, 이메일 아래 동기화 상태 (GH-93)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not synced yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ同期していません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 동기화하지 않았어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尚未同步"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尚未同步"
+          }
+        }
+      }
+    },
     "account.card.signing_in" : {
       "comment" : "마이 탭 맨 위 계정 카드 (GH-93), 로그인 진행 중",
       "extractionState" : "manual",
@@ -393,6 +465,150 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在登入…"
+          }
+        }
+      }
+    },
+    "account.card.sync_failed" : {
+      "comment" : "마이 탭 회원 카드, 이메일 아래 동기화 상태 (GH-93)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't sync. You can try again from your account."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期できませんでした。アカウント画面からもう一度お試しください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동기화하지 못했어요. 계정 화면에서 다시 해 볼 수 있어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步失败，可以在账号页面重试"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步失敗，可以在帳號頁面重試"
+          }
+        }
+      }
+    },
+    "account.card.syncing" : {
+      "comment" : "마이 탭 회원 카드, 이메일 아래 동기화 상태 (GH-93)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동기화하는 중…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在同步…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在同步…"
+          }
+        }
+      }
+    },
+    "account.card.uploading_format" : {
+      "comment" : "마이 탭 회원 카드, 이메일 아래 동기화 상태 (GH-93). %1$lld 올린 수, %2$lld 전체",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uploading · %1$lld / %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップロード中 · %1$lld / %2$lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "올리는 중 · %1$lld / %2$lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在上传 · %1$lld / %2$lld"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在上傳 · %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "account.card.waiting_format" : {
+      "comment" : "마이 탭 회원 카드, 이메일 아래 동기화 상태 (GH-93). %lld 올리지 못한 싶 수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld changes will upload when you're back online"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インターネットにつながったら、変更したウィッシュ%lld件をアップロードします"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인터넷에 연결되면 바뀐 싶 %lld개를 올릴게요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连接网络后，将上传 %lld 个有改动的心愿"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連上網路後，將上傳 %lld 個有變動的心願"
           }
         }
       }
@@ -757,6 +973,42 @@
         }
       }
     },
+    "account.last_sync" : {
+      "comment" : "계정 화면 동기화 그룹 (GH-93) 줄",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last synced"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最終同期"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 동기화"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上次同步"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上次同步"
+          }
+        }
+      }
+    },
     "account.logout" : {
       "comment" : "계정 화면 (GH-93) 줄",
       "extractionState" : "manual",
@@ -865,6 +1117,114 @@
         }
       }
     },
+    "account.other_account.message" : {
+      "comment" : "다른 계정 싶이 남은 기기에서 로그인 (GH-93 설계 S7) 설명",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To keep accounts separate, the wishes on this device will be deleted and this account's wishes downloaded."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント同士でウィッシュが混ざらないよう、このデバイスのウィッシュを削除して、このアカウントのウィッシュを受け取ります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정끼리 싶이 섞이지 않게, 이 기기의 싶을 지우고 이 계정의 싶을 받을게요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "为避免不同账号的心愿混在一起，将删除这台设备上的心愿，并下载这个账号的心愿。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為避免不同帳號的心願混在一起，將刪除這台裝置上的心願，並下載這個帳號的心願。"
+          }
+        }
+      }
+    },
+    "account.other_account.replace" : {
+      "comment" : "다른 계정 싶이 남은 기기에서 로그인 (GH-93 설계 S7) 버튼(빨강)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete and download"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このデバイスのウィッシュを削除して受け取る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 기기 싶 지우고 받기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除并下载"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除並下載"
+          }
+        }
+      }
+    },
+    "account.other_account.title" : {
+      "comment" : "다른 계정 싶이 남은 기기에서 로그인 (GH-93 설계 S7) 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The wishes on this device belong to another account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このデバイスのウィッシュは別のアカウントのものです"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 기기의 싶은 다른 계정 것이에요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这台设备上的心愿属于其他账号"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這台裝置上的心願屬於其他帳號"
+          }
+        }
+      }
+    },
     "account.section.account" : {
       "comment" : "계정 화면 (GH-93) 그룹 제목",
       "extractionState" : "manual",
@@ -901,6 +1261,42 @@
         }
       }
     },
+    "account.section.sync" : {
+      "comment" : "계정 화면 동기화 그룹 (GH-93) 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동기화"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步"
+          }
+        }
+      }
+    },
     "account.signed_up_format" : {
       "comment" : "계정 화면 (GH-93), 이메일 아래. %@는 가입한 날짜(로케일 날짜)",
       "extractionState" : "manual",
@@ -933,6 +1329,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "透過 Apple 登入 · %@ 註冊"
+          }
+        }
+      }
+    },
+    "account.sync_now" : {
+      "comment" : "계정 화면 동기화 그룹 (GH-93) 버튼 줄",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync now"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今すぐ同期"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 동기화"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即同步"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即同步"
           }
         }
       }
@@ -1149,6 +1581,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已登出"
+          }
+        }
+      }
+    },
+    "account.toast.synced" : {
+      "comment" : "토스트, 동기화 완료 (GH-93)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synced"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期しました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동기화했어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已同步"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已同步"
           }
         }
       }

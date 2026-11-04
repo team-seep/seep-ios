@@ -92,6 +92,16 @@ struct SettingsTabRootView: View {
         } message: {
             Text(Strings.Account.AfterDelete.message)
         }
+        .confirmationDialog(
+            Strings.Account.OtherAccount.title,
+            isPresented: otherAccountBinding,
+            titleVisibility: .visible
+        ) {
+            Button(Strings.Account.OtherAccount.replace, role: .destructive) { accountViewModel.send(.selectOtherAccount(replace: true)) }
+            Button(Strings.Account.cancel, role: .cancel) { accountViewModel.send(.selectOtherAccount(replace: false)) }
+        } message: {
+            Text(Strings.Account.OtherAccount.message)
+        }
         .seepSheet(item: $appLockSheet, onDismiss: { viewModel.send(.appLockSheetDismissed) }) { sheetViewModel in
             AppLockSheet(viewModel: sheetViewModel, onDismiss: { _ in })
         }
@@ -302,6 +312,13 @@ extension SettingsTabRootView {
     private var afterDeleteBinding: Binding<Bool> {
         Binding(
             get: { accountViewModel.state.dialog == .afterDelete },
+            set: { _ in }
+        )
+    }
+
+    private var otherAccountBinding: Binding<Bool> {
+        Binding(
+            get: { accountViewModel.state.dialog == .otherAccount },
             set: { _ in }
         )
     }

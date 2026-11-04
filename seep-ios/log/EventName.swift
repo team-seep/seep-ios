@@ -12,4 +12,10 @@ enum EventName: String {
     case accountSignOut = "account_sign_out"
     /// 계정 삭제 완료 (GH-93)
     case accountDelete = "account_delete"
+    /// 동기화 올리기 한 번 (+count, trigger) (GH-93)
+    case syncPush = "sync_push"
+    /// 동기화 받기 한 번 (+count, trigger) (GH-93)
+    case syncPull = "sync_pull"
+    /// 동기화 실패 (+error_type: sign_in·push·pull) (GH-93)
+    case syncError = "sync_error"
 }

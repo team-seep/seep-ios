@@ -53,6 +53,19 @@ struct AccountCard: View {
     }
 
     private func memberCard(_ account: Account) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            memberRow(account)
+            if case .uploading(let done, let total) = viewModel.state.sync, total > 0 {
+                ProgressView(value: Double(done), total: Double(total))
+                    .tint(Color.seepBlue)
+            }
+        }
+        .padding(16)
+        .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
+        .contentShape(Rectangle())
+    }
+
+    private func memberRow(_ account: Account) -> some View {
         HStack(spacing: 12) {
             AppleAvatar(size: 44)
             VStack(alignment: .leading, spacing: 3) {
@@ -61,9 +74,10 @@ struct AccountCard: View {
                     .foregroundStyle(Color.gray5)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                Text(Strings.Account.Card.memberSubtitle)
+                Text(verbatim: Self.syncText(viewModel.state.sync))
                     .font(.appleRegular(size: 13))
                     .foregroundStyle(Color.gray4)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 4)
             Image(systemName: "chevron.right")
@@ -71,9 +85,32 @@ struct AccountCard: View {
                 .foregroundStyle(Color.gray3)
                 .accessibilityHidden(true)
         }
-        .padding(16)
-        .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
-        .contentShape(Rectangle())
+    }
+
+    /// 카드·계정 화면이 같이 쓰는 동기화 문구 (R-24)
+    static func syncText(_ sync: AccountViewModel.SyncDisplay) -> String {
+        switch sync {
+        case .idle:
+            return Strings.Account.Card.memberSubtitle
+        case .uploading(let done, let total):
+            return Strings.Account.Card.uploadingFormat(done, total)
+        case .syncing:
+            return Strings.Account.Card.syncing
+        case .synced(let date):
+            guard let date else { return Strings.Account.Card.notSynced }
+            return Strings.Account.Card.lastSyncedFormat(relative(date))
+        case .waitingForNetwork(let pending):
+            return Strings.Account.Card.waitingFormat(pending)
+        case .failed:
+            return Strings.Account.Card.syncFailed
+        }
+    }
+
+    static func relative(_ date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.locale = AppLanguage.shared.locale
+        formatter.dateTimeStyle = .named
+        return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
 

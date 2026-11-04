@@ -153,8 +153,46 @@ final class AppDatabase {
             }
         }
 
+        // GH-93: 서버 동기화 큐. 이 기기 전용 테이블이라 updatedAt·deletedAt 규칙에서 뺀다(RULES R4 예외).
+        // 앱·위젯·앱 인텐트 어느 경로로 쓰든 빠짐없이 잡으려고 트리거로 쌓는다. 줄을 지우는(DELETE) 쓰기는 이 기기만의 정리라 쌓지 않는다
+        migrator.registerMigration("v7") { db in
+            try db.execute(sql: """
+                CREATE TABLE syncOutbox (
+                  seq INTEGER PRIMARY KEY AUTOINCREMENT,
+                  tableName TEXT NOT NULL,
+                  rowId TEXT NOT NULL,
+                  enqueuedAt DOUBLE NOT NULL
+                )
+                """)
+            try db.create(index: "syncOutbox_on_row", on: "syncOutbox", columns: ["tableName", "rowId"])
+            try db.create(table: "syncState") { table in
+                table.primaryKey("key", .text)
+                table.column("value", .text).notNull()
+            }
+            // 배포된 마이그레이션이 바뀌지 않게 목록을 여기 그대로 적는다
+            for table in ["wish", "wishStep", "wishSaving", "wishNotification", "wishJournal"] {
+                for event in ["INSERT", "UPDATE"] {
+                    try db.execute(sql: """
+                        CREATE TRIGGER \(table)_after_\(event.lowercased())_outbox AFTER \(event) ON \(table)
+                        BEGIN
+                          INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES ('\(table)', NEW.id, NEW.updatedAt);
+                        END
+                        """)
+                }
+            }
+        }
+
         return migrator
     }
+
+    /// 서버와 동기화하는 테이블. 부모(`wish`)가 먼저다 (GH-93, 설계 §6.2)
+    static let syncedTableNames = [
+        WishRecord.databaseTableName,
+        WishStepRecord.databaseTableName,
+        WishSavingRecord.databaseTableName,
+        WishNotificationRecord.databaseTableName,
+        WishJournalRecord.databaseTableName
+    ]
 
     // MARK: - appMetadata
 

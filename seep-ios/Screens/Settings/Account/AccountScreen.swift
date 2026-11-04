@@ -11,12 +11,33 @@ struct AccountScreen: View {
                     header(account)
                 }
 
-                Text(Strings.Account.Section.account)
-                    .font(.appleMedium(size: 14))
-                    .foregroundStyle(Color.gray4)
-                    .padding(.top, 18)
-                    .padding(.bottom, 8)
-                    .padding(.horizontal, 2)
+                sectionTitle(Strings.Account.Section.sync)
+                VStack(spacing: 0) {
+                    SettingsRowView(title: Strings.Account.lastSync) {
+                        Text(verbatim: lastSyncValue)
+                            .font(.appleRegular(size: 14))
+                            .foregroundStyle(Color.gray4)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    Rectangle()
+                        .fill(Color.tagBg)
+                        .frame(height: 1)
+                        .padding(.leading, 14)
+                    Button {
+                        viewModel.send(.tapSyncNow)
+                    } label: {
+                        SettingsRowView(title: Strings.Account.syncNow) {
+                            if viewModel.state.sync == .syncing {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(viewModel.state.sync == .syncing)
+                }
+                .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
+
+                sectionTitle(Strings.Account.Section.account)
                 Button {
                     viewModel.send(.tapLogout)
                 } label: {
@@ -93,6 +114,26 @@ struct AccountScreen: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
+    }
+
+    private var lastSyncValue: String {
+        switch viewModel.state.sync {
+        case .synced(let date?):
+            return AccountCard.relative(date)
+        case .synced(nil), .idle:
+            return Strings.Account.Card.notSynced
+        default:
+            return AccountCard.syncText(viewModel.state.sync)
+        }
+    }
+
+    private func sectionTitle(_ title: String) -> some View {
+        Text(verbatim: title)
+            .font(.appleMedium(size: 14))
+            .foregroundStyle(Color.gray4)
+            .padding(.top, 18)
+            .padding(.bottom, 8)
+            .padding(.horizontal, 2)
     }
 
     private var deleteRow: some View {
