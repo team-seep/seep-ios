@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위시 상세 문서 머리 문구 (GH-59). `WishDetailSummary`·`DdayStyle`은 UIKit 없는 순수 타입이다.
 final class WishDetailSummaryTests: XCTestCase {

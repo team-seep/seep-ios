@@ -64,7 +64,7 @@ seep-iosTests/
 ```
 
 - **화면별 기능 테스트**: SwiftUI로 옮긴 화면은 `Features/{화면}/{화면}FeatureTests.swift`에 둔다. `ViewModelTestCase`를 상속하고 `viewModel.send(.action)` 뒤에 `state`·`route`·`logManager`를 단언한다. 비동기 Action은 `waitUntil { … }`.
-- `Features/` 밖에 새 테스트·목 파일을 두면 `project.pbxproj`의 `seep-iosTests` 타깃에 등록해야 실행된다(동기화 폴더는 `seep-iosTests/Features`·`seep-iosTests/Log`). 추가 후 `make test` 결과의 통과 수가 늘었는지 확인한다.
+- `Features/`·`Log/` 밖에 새 테스트·목 파일을 두면 `make project`로 프로젝트를 다시 만들어야 실행된다(GH-112). 추가 후 `make test` 결과의 통과 수가 늘었는지 확인한다.
 - 테스트 타깃은 `@testable import seep_ios_dev`로 앱 모듈에 접근한다 (Debug 구성의 PRODUCT_NAME이 `seep-ios-dev`).
 - 메서드명: **`test_GH{이슈번호}_TC{n}_{조건}_{기대결과}()`** — 한글 허용.
   - `test_GH12_TC1_위시를완료하면_예약된알림이취소된다()`

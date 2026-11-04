@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 private final class StubDeepLinkStore: ReservedDeepLinkStoring {
     var reservedDeepLink = ""

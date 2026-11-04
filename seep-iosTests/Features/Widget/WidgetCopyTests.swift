@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 예전 위젯 4종 정리 — kind·문구·링크 (GH-87)
 final class WidgetCopyTests: XCTestCase {

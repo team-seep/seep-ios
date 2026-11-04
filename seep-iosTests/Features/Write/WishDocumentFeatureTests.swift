@@ -1,7 +1,7 @@
 // GH-61 R-10: 칩 끝에 사진·미래의 나에게가 늘 있다
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 작성·수정 문서: 블록·칩·버리기 확인 (GH-70)
 final class WishDocumentFeatureTests: WishFormFeatureTestCase {

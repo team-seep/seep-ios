@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 작성·수정 폼 테스트 공용 바탕 (GH-64 P2)
 class WishFormFeatureTestCase: ViewModelTestCase {
@@ -51,7 +51,7 @@ class WishFormFeatureTestCase: ViewModelTestCase {
     }
 
     /// 작성 폼 + 필수값(제목) 입력, 날짜 끄기 (레거시 테스트의 공통 준비와 같다)
-    func makeWrite(category: seep_ios_dev.Category, title: String = "제주도 한 달 살기") -> WishFormViewModel {
+    func makeWrite(category: seep_ios.Category, title: String = "제주도 한 달 살기") -> WishFormViewModel {
         let viewModel = makeViewModel(mode: .add(category))
         viewModel.send(.inputTitle(title))
         viewModel.send(.toggleDeadline(false))

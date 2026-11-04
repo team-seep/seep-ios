@@ -26,7 +26,7 @@ struct LockScreenEntry: TimelineEntry {
 
     static var preview: LockScreenEntry {
         let endDate = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
-        let wish = Wish(emoji: "🌴", title: "제주도 한 달 살기", endDate: endDate)
+        let wish = Wish(emoji: "🌴", title: Strings.Widget.Preview.travelWish, endDate: endDate)
 
         return LockScreenEntry(date: Date(), wish: wish, remainCount: 7)
     }

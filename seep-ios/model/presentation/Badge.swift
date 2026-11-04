@@ -95,6 +95,6 @@ struct Badge: Equatable {
 
     var earnedDateText: String? {
         guard let earnedDate else { return nil }
-        return DateUtils.toString(format: "yyyy.MM.dd", date: earnedDate)
+        return DisplayDate.fixed(earnedDate, pattern: "yyyy.MM.dd")
     }
 }

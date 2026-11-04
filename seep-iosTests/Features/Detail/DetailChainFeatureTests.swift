@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 상세 "이어지는 싶" 섹션과 이룬 싶 상세의 "이어서 적기" (GH-84 R-3~R-5)
 final class DetailChainFeatureTests: ViewModelTestCase {
@@ -48,7 +48,8 @@ final class DetailChainFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sut.state.sections, [.chain, .journal, .place]) // 가고 싶어요는 장소, 홈에서 연 상세는 일지(GH-95) 섹션이 늘 있다
         XCTAssertEqual(sut.state.chain?.position, 2)
         XCTAssertEqual(rows.map(\.id), ["a", "b"])
-        XCTAssertEqual(rows.first?.caption, "2026. 10. 24. 이뤘어요 · “생각보다 훨씬 좋았어요”")
+        // 날짜 모양은 기기 로케일을 따른다 (GH-100). 한국어 형식("2026. 10. 24.")은 LocalizationFoundationTests 가 본다
+        XCTAssertEqual(rows.first?.caption, "\(DisplayDate.numericYearMonthDay(finishedAt)) 이뤘어요 · “생각보다 훨씬 좋았어요”")
         XCTAssertTrue(rows.first?.isFinished ?? false)
         XCTAssertEqual(rows.last?.caption, "지금 이 싶")
         XCTAssertTrue(rows.last?.isCurrent ?? false)

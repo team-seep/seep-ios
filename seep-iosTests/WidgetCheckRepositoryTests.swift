@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 체크 위젯 저장소 (GH-48 R-3, R-4, R-6, R-7). 메모리 DB(GH-79)와 테스트용 UserDefaults 로 돌린다.
 final class WidgetCheckRepositoryTests: XCTestCase {

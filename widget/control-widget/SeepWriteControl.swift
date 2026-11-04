@@ -14,11 +14,11 @@ struct SeepWriteControl: ControlWidget {
             ControlWidgetButton(action: OpenWriteIntent(target: configuration.category, source: .control)) {
                 Label {
                     Text("싶 적기")
-                    Text(configuration.category.title)
+                    Text(verbatim: configuration.category.title)
                 } icon: {
                     Image(systemName: "square.and.pencil")
                 }
-                .controlWidgetActionHint(Text(configuration.category.actionHint))
+                .controlWidgetActionHint(Text(verbatim: configuration.category.actionHint))
             }
             .tint(.tennisGreen)
         }

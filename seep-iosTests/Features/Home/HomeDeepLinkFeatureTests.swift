@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위젯·컨트롤 링크로 싶 탭에서 작성·상세를 여는 동작 (GH-47, GH-49, GH-50).
 /// 링크 처리는 홈 ViewModel 에서 `AppRouter`로 옮겨 갔다(GH-64 A-4). 기존 HomeViewModel*DeepLinkTests·WriteIntentTests 이전

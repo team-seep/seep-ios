@@ -1,6 +1,6 @@
 import Foundation
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class MockCalendarManager: CalendarManagerProtocol {
     var requestAccessResult = true

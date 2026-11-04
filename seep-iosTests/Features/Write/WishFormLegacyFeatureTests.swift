@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 레거시 `WriteReactor`·`WishEditReactor` 테스트를 SwiftUI 작성·수정 폼으로 옮긴 것 (원래 이름 유지).
 /// 단계(GH-5)·목표 금액(GH-16)·링크(GH-29)·장소(GH-31)
@@ -285,7 +285,7 @@ final class WishFormLegacyFeatureTests: WishFormFeatureTestCase {
 
     // MARK: GH-29 TC2 (링크)
 
-    private func makeEditWithLink(category: seep_ios_dev.Category = .wantToGet, link: String) -> WishFormViewModel {
+    private func makeEditWithLink(category: seep_ios.Category = .wantToGet, link: String) -> WishFormViewModel {
         makeEdit(Wish(id: "wish-1", emoji: "🎧", category: category, title: "노이즈캔슬링 헤드폰", link: link))
     }
 

@@ -1,7 +1,7 @@
 import XCTest
 import Combine
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class LogEventTests: XCTestCase {
     // MARK: 회귀 — 이벤트 형식 (가슴속 3천원과 동일)

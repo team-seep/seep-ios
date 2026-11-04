@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class MockPasteboard: PasteboardWriting {
     private(set) var copiedTexts: [String] = []

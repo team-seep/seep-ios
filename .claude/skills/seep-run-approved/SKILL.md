@@ -60,7 +60,7 @@ cd "$WT"
 - `CLAUDE.md`의 규칙(R1~R9)을 지킨다: `@Observable` ViewModel, Repository로만 DB 접근, 토큰·SwiftGen.
 - DB 레코드를 바꾸면 R4: `AppDatabase.migrator`에 새 마이그레이션을 추가하고 동기화 대비 규칙(UUID PK·`updatedAt`·`deletedAt`·UNIQUE 금지)을 지킨다.
 - **트래킹 이벤트**: `seep-ios/log/`의 `LogObjectId`·`ScreenName`·`EventName`에 케이스를 추가하고, ViewModel에서 `dependency.logManager.sendEvent(event: ClickEvent(...))`로 보낸다. 형식은 기존 `HomeViewModel.sendClickLog` 참고.
-- 새 파일은 `project.pbxproj` 등록이 필요하다 (동기화 폴더는 `seep-ios/model/Error`, `seep-ios/log`, `seep-iosTests/Log`뿐). 가능하면 기존 동기화 폴더 안에 두거나, 등록 후 빌드 결과 수로 포함 여부를 확인한다.
+- 새 파일은 동기화 폴더(CLAUDE.md 목록) 안이면 넣기만 하고, 그 밖이면 `make project`로 프로젝트를 다시 만든다. `project.pbxproj`는 직접 고치지 않는다(R10). 위젯과 같이 쓰는 파일은 `project.yml`의 `widgetExtension` sources에 더한다.
 - 커밋 메시지: `GH-{n} : {설명}`.
 
 ## 4. 검증

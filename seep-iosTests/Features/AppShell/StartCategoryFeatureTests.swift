@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 시작 카테고리 (GH-86 R-1, R-2)
 final class StartCategoryFeatureTests: ViewModelTestCase {

@@ -169,7 +169,7 @@ final class FinishNoteViewModel {
             : Strings.Home.FinishNote.letterTitleToday
         let caption = Strings.Home.FinishNote.letterCardFormat(
             "\(wish.emoji) \(wish.title)".trimmingCharacters(in: .whitespaces),
-            DateUtils.toString(format: "M월 d일", date: sealedAt)
+            DisplayDate.monthDay(sealedAt)
         )
         return OpenedLetter(headline: headline, caption: caption, body: wish.futureLetter)
     }

@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 이모지 고르기 시트의 목록 (GH-64 R-40, TC-37)
 final class EmojiPickerFeatureTests: XCTestCase {

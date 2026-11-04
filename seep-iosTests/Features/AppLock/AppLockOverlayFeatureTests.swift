@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 잠금 화면과 생명주기 (GH-46 R-5 ~ R-7, R-11) — `AppLockViewModelTests`(UIKit 윈도우)를 SwiftUI 오버레이 판으로 옮겼다.
 /// UIKit 생명주기 알림은 `scenePhase` 전이로 바뀐다: willResignActive = active→inactive, didEnterBackground = →background,

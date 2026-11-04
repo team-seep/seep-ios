@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 싶 잇기 저장소·마이그레이션 (GH-84 R-2, R-6, R-7). 메모리 DB 로 돌린다
 final class WishChainRepositoryTests: XCTestCase {

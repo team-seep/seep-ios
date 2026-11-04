@@ -10,8 +10,10 @@ struct Wish: Equatable, Hashable {
     var notifications: [SeepNotification]
     /// 추가한 순서(order) 오름차순
     var steps: [WishStep]
-    /// 목표 금액(원). 0 이면 저금통 없음 (GH-16)
+    /// 목표 금액. 통화의 최소 단위(원·센트·엔) 정수. 0 이면 저금통 없음 (GH-16, GH-103 R-14)
     var targetAmount: Int
+    /// 목표 금액·저금 기록의 통화(ISO 4217). 예전 위시는 KRW (GH-103 R-13)
+    var currency: String
     /// 모은 돈 기록, 최신순
     var savings: [WishSaving]
     /// 이루는 동안 남긴 일지, 최신순 (GH-95)
@@ -96,6 +98,7 @@ struct Wish: Equatable, Hashable {
         notifications: [SeepNotification] = [],
         steps: [WishStep] = [],
         targetAmount: Int = 0,
+        currency: String = "KRW",
         savings: [WishSaving] = [],
         journals: [WishJournal] = [],
         memo: String = "",
@@ -122,6 +125,7 @@ struct Wish: Equatable, Hashable {
         self.notifications = notifications
         self.steps = steps
         self.targetAmount = targetAmount
+        self.currency = currency
         self.savings = savings
         self.journals = journals
         self.memo = memo

@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 금액 입력·표시 (GH-16 R-2·R-4).
 final class AmountFormatterTests: XCTestCase {

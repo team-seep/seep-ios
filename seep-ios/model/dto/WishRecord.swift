@@ -15,8 +15,10 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     /// 마감 기한
     var date: Date?
     var finishDate: Date?
-    /// 목표 금액(원). 0 이면 저금통 없음 (GH-16)
+    /// 목표 금액. 통화의 최소 단위 정수. 0 이면 저금통 없음 (GH-16)
     var targetAmount: Int
+    /// 목표 금액·저금 기록의 통화(ISO 4217). 예전 위시는 KRW (GH-103, 마이그레이션 v6)
+    var currency: String
     var memo: String
     var hashtag: String
     var isSuccess: Bool
@@ -139,6 +141,7 @@ extension WishRecord {
         self.date = wish.endDate
         self.finishDate = wish.finishDate
         self.targetAmount = wish.targetAmount
+        self.currency = wish.currency
         self.memo = wish.memo
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
@@ -256,6 +259,7 @@ extension Wish {
                 .map { WishStep(id: $0.id, title: $0.title, isDone: $0.isDone, order: $0.order) }
                 .sorted { $0.order < $1.order },
             targetAmount: record.targetAmount,
+            currency: record.currency,
             savings: WishSaving.latestFirst(savings.map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }),
             journals: WishJournal.latestFirst(journals.map { WishJournal(id: $0.id, text: $0.text, createdAt: $0.createdAt) }),
             memo: record.memo,

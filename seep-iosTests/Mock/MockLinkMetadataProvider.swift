@@ -1,4 +1,4 @@
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// LinkMetadataProviding 스파이. 기본은 바로(동기) 응답한다. `isDeferred` 면 `complete(at:with:)`로 나중에 응답한다.
 final class MockLinkMetadataProvider: LinkMetadataProviding {

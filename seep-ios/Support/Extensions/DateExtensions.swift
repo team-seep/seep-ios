@@ -13,16 +13,6 @@ extension Date {
         return Calendar.current.date(byAdding: components, to: startOfDay)!
     }
     
-    func toString(format: String) -> String {
-        let dateFormatter = DateFormatter()
-        
-        dateFormatter.dateFormat = format
-        dateFormatter.locale = Locale.current
-        dateFormatter.timeZone = TimeZone.current
-        
-        return dateFormatter.string(from: self)
-    }
-    
     func setDay(date: Date) -> Self {
         var components = Calendar.current.dateComponents(
             [.year, .month, .day],

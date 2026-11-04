@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// GRDB 저장소 (GH-79 R-4~R-6, R-13). 메모리 DB 로 실제 구현을 돌린다.
 final class WishRepositoryTests: XCTestCase {

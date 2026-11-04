@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 장소 검색 시트 SwiftUI판 (GH-31 R-3, GH-64 TC-1003).
 /// 레거시 `PlaceSearchViewModelTests`는 작성·상세(P2)가 아직 쓰는 레거시 ViewModel 용으로 남는다

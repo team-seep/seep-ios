@@ -3,7 +3,7 @@ import XCTest
 
 import RealmSwift
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// Realm → GRDB 1회 이전 (GH-79 R-17~R-19). 임시 폴더의 Realm 파일과 메모리 DB 로 돌린다.
 final class LegacyRealmImporterTests: XCTestCase {

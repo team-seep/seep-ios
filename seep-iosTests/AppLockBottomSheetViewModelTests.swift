@@ -1,7 +1,7 @@
 import XCTest
 import Combine
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 잠금 켜기·끄기 바텀시트 (GH-46 R-2 ~ R-4, R-11)
 final class AppLockBottomSheetViewModelTests: XCTestCase {

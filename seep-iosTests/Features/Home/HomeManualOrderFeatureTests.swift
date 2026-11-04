@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈 "내가 정한 순서" — 정렬 시트·순서 바꾸기 모드 (GH-73)
 final class HomeManualOrderFeatureTests: HomeFeatureTestCase {

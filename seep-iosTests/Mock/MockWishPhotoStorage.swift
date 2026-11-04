@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// WishPhotoStorage 스파이. 파일을 실제로 쓰지 않고 "있는 파일 이름" 집합으로 흉내 낸다. 완료 콜백은 바로(동기로) 부른다.
 final class MockWishPhotoStorage: WishPhotoStorage {

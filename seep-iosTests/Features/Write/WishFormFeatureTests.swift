@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 작성·수정 폼 화면별 기능 테스트 (GH-64 TC-402~408, 501~504, TC-37, TC-39)
 final class WishFormFeatureTests: WishFormFeatureTestCase {

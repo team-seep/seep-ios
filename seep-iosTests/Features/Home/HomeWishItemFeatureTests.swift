@@ -1,7 +1,7 @@
 import CoreGraphics
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈 셀 값(단계 진행도·소감·핀·사진)과 그리드·카테고리 탭·지도 버튼 배치.
 /// 기존 HomeWishCellViewModelTests·HomeWishGridLayoutTests·HomePlaceMapTests, WideScreenLayout·ToastManager 테스트의 홈 부분 이전

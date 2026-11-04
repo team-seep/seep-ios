@@ -29,6 +29,6 @@ enum DetailLetter: Equatable {
     }
 
     private static func sealedDateText(_ date: Date?) -> String {
-        date.map { DateUtils.toString(format: "M월 d일", date: $0) } ?? ""
+        date.map { DisplayDate.monthDay($0) } ?? ""
     }
 }

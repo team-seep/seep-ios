@@ -21,6 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 프로젝트 드리프트 (project.yml ↔ xcodeproj, GH-112)
+        run: scripts/xcodegen.sh --check
+
       # 러너 이미지(macos-26)의 기본 Xcode 사용. Realm 20.0.6 지원 범위는 Xcode 26.1-27
       # (사용 가능한 버전: https://github.com/actions/runner-images/blob/main/images/macos/macos-26-arm64-Readme.md)
       - name: Xcode 버전

@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// Realm → GRDB 이전 안전장치: 결정적 id·원격 재이전 (GH-96 R-1 ~ R-5, R-15). 임시 Realm 파일과 메모리 DB 로 돌린다
 final class LegacyRealmReimportTests: XCTestCase {

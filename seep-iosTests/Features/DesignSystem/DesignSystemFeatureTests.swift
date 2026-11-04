@@ -2,7 +2,7 @@ import XCTest
 import SwiftUI
 import UIKit
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 앱·위젯 공용 SwiftUI 토큰과 D-day 뱃지 규칙 (GH-64 P0)
 final class DesignSystemFeatureTests: XCTestCase {

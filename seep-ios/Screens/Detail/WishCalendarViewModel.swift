@@ -130,7 +130,7 @@ final class WishCalendarViewModel {
             dependency.preference.setCalendarEventId(eventId, wishId: wish.id)
             state.isAdded = true
             route = .toast(Strings.Detail.Calendar.Toast.addedFormat(
-                DateUtils.toString(format: "M월 d일", date: date)
+                DisplayDate.monthDay(date)
             ))
             return .saved
         case .failure(let error):

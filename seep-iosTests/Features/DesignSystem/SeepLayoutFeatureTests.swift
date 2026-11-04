@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 넓은 화면 기둥 규칙 (GH-12). 기존 WideScreenLayoutTests 이전 — UIKit 컨테이너 뷰 대신 SwiftUI 화면이 쓰는 `SeepLayout` 계산을 본다
 final class SeepLayoutFeatureTests: XCTestCase {

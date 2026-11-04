@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 final class SleepingWishPolicyTests: XCTestCase {
     private let calendar = Calendar(identifier: .gregorian)

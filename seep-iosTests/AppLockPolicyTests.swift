@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 백그라운드 복귀 시 잠금 판정 (GH-46 R-5, R-9)
 final class AppLockPolicyTests: XCTestCase {

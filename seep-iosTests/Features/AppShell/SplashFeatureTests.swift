@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 흰 바탕 로고 스플래시 (#63)
 @MainActor

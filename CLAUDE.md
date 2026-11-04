@@ -17,7 +17,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 make lint            # SwiftLint(새 위반만) + scripts/check-db-schema.sh — 코드 작성 후 반드시
 make lint-fix        # SwiftLint 자동 수정
 make test            # 유닛 테스트 + build/summary.md (결과 수·실패 목록)
-make swiftgen        # Localization.strings / xcassets 변경 후 Generated/ 갱신
+make project         # project.yml → seep-ios.xcodeproj (파일 추가·삭제, 타깃·설정·스킴 변경 후)
+make swiftgen        # Localization.xcstrings / xcassets 변경 후 Generated/ 갱신
 make lint-baseline   # 베이스라인 재생성 (custom_rules 메시지를 바꿨을 때만)
 ```
 
@@ -30,8 +31,11 @@ xcodebuild build \
   -destination 'platform=iOS Simulator,id=<UDID>'
 ```
 - 시뮬레이터는 `xcrun simctl list devices available | grep iPhone`으로 먼저 확인한다. 기기명은 머신마다 다르다.
-- 스킴은 `seep-ios` 하나(Debug = dev 번들 `macgongmon.seep-ios.dev`, 모듈명 `seep_ios_dev` / Release = `macgongmon.seep-ios`). 위젯은 `widgetExtension` 스킴.
-- 일반 그룹 구조라 **새 파일은 `project.pbxproj`에 타깃 멤버로 등록해야 빌드에 들어간다.** 예외는 동기화 폴더(넣기만 하면 된다): `seep-ios/DesignSystem`(앱·위젯), `seep-ios/AppShell`(앱), `seep-ios/Screens`(앱), `seep-ios/model/Error`(앱·위젯), `seep-ios/log`(앱), `seep-iosTests/Features`·`seep-iosTests/Log`(테스트). 새 SwiftUI 코드는 가능하면 동기화 폴더 아래에 둔다. 테스트 파일은 `seep-iosTests` 타깃, 위젯과 같이 쓰는 파일(`WishDTO` 등)은 `widgetExtension` 타깃에도 넣는다. 등록이 빠지면 빌드는 통과해도 그 파일이 컴파일되지 않으니, 추가한 테스트가 실제로 실행됐는지 결과 수로 확인한다.
+- 스킴은 `seep-ios`(Debug = dev 번들 `macgongmon.seep-ios.dev` / Release = `macgongmon.seep-ios`, 모듈명은 둘 다 `seep_ios`). `seep-ios-dev`는 Xcode Cloud 개발앱 배포용(아카이브 Release), `seep-ios-i18n-check`는 다국어 점검용. 위젯은 `widgetExtension` 스킴.
+- **프로젝트 파일은 XcodeGen이 만든다(GH-112, R10).** 원본은 루트 `project.yml`이고 `seep-ios.xcodeproj`는 `make project`(고정 버전 XcodeGen, `scripts/xcodegen.sh`)로 만든다. `project.pbxproj`·스킴을 직접 고치지 않는다. 둘 다 커밋하고, 다르면 CI "프로젝트 드리프트"가 실패한다.
+  - 동기화 폴더(넣기만 하면 된다): `seep-ios/DesignSystem`(앱·위젯), `seep-ios/AppShell`(앱), `seep-ios/Screens`(앱), `seep-ios/model/Error`(앱·위젯), `seep-ios/log`(앱), `seep-iosTests/Features`·`seep-iosTests/Log`(테스트).
+  - 그 밖의 폴더(`seep-ios/` 아래·`widget/`·`seep-iosTests/`)는 파일을 넣고 `make project`만 하면 그 폴더의 타깃에 들어간다.
+  - 위젯과 같이 쓰는 파일(`WishDTO`, `AppLanguage` 등)은 `project.yml`의 `widgetExtension` sources 목록에 경로를 더한다.
 - DB는 GRDB 7.11.1(App Group `dev.sqlite`/`default.sqlite`, GH-79). Realm 20.0.6은 GH-79 이전 데이터를 1회 옮기는 데만 남아 있다(`Repository/LegacyRealm/`). CI는 `macos-26` 러너.
 - 서명 없이 빌드할 때 `CODE_SIGNING_ALLOWED=NO`를 쓰지 않는다 — App Group 엔타이틀먼트가 빠져 실행 직후 크래시한다. 대신 `CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=`.
 
@@ -99,7 +103,7 @@ seep-ios/
 ├── Support/                  # Preference(UserDefaults), DateUtils, AmountFormatter, WidgetCheckStore …
 │   └── Extensions/           # Foundation 확장(Date·Bundle·Array …). 색·폰트 토큰은 DesignSystem/
 ├── Generated/                # SwiftGen 산출물 (Strings.swift, Assets.swift) — 직접 수정 금지
-└── Resources/                # xcassets, en.lproj/Localization.strings, Firebase plist, Lottie
+└── Resources/                # xcassets, Localization.xcstrings(원문 ko)·Localizable·AppShortcuts·InfoPlist 카탈로그, Firebase plist, Lottie
 widget/                       # small-write / small-remain / medium-horizontal / medium-vertical 위젯
 seep-iosTests/                # {ViewModel}Tests.swift, Mock/Mock{Protocol}.swift
 ├── Features/{화면}/          # 화면별 기능 테스트 (GH-64 R-44) — 동기화 폴더, ViewModelTestCase 상속
@@ -236,7 +240,7 @@ struct MyView: View {
 ### UI
 
 - SwiftUI. 공용 컴포넌트는 `DesignSystem/`(앱·위젯 공용이라 도메인 타입·`Strings`에 의존하지 않는다 — 문구는 인자로 받는다), 앱 기반은 `AppShell/`.
-- 색·폰트·문자열·이미지는 토큰/SwiftGen만 (R6). 새 색은 `SeepColor`에 토큰부터, 새 문자열은 `Localization.strings`에 키 추가 → `make swiftgen`.
+- 색·폰트·문자열·이미지는 토큰/SwiftGen만 (R6). 새 색은 `SeepColor`에 토큰부터, 새 문자열은 `Localization.xcstrings`에 키·comment 추가 → `make swiftgen`(GH-100). 날짜는 `DisplayDate`(로케일 템플릿), 문장 이어 붙이기 금지. 용어·어조는 `docs/i18n/TRANSLATION.md`.
 - 넓은 화면은 콘텐츠를 `WideScreenLayout.maxContentWidth`(600) 기둥으로 가운데 둔다.
 
 ## 코드 스타일

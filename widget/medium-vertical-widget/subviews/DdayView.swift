@@ -6,7 +6,7 @@ struct DdayView: View {
     let date: Date
 
     var body: some View {
-        DdayBadge(style: DdayBadgeStyle(endDate: date), farFutureText: "먼훗날", noDateText: "일정없음")
+        DdayBadge(style: DdayBadgeStyle(endDate: date), farFutureText: Strings.homeInFarFurture, noDateText: Strings.homeNoDeanline)
     }
 }
 

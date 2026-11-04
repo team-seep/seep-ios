@@ -27,7 +27,7 @@ enum LockScreenDdayPicker {
 
     /// 빈 상태 한 줄 위젯 문구 (GH-47 R-6)
     static func remainText(count: Int) -> String {
-        return "남은 싶 \(count)개"
+        return Strings.Widget.LockScreen.remainFormat(count)
     }
 }
 
@@ -42,7 +42,7 @@ struct DdayText: Equatable {
 
     static let farFutureDays = 365
 
-    static func make(endDate: Date, now: Date, calendar: Calendar = .current) -> DdayText {
+    static func make(endDate: Date, now: Date, calendar: Calendar = .current, locale: Locale = AppLanguage.shared.locale) -> DdayText {
         let remainDay = calendar.dateComponents(
             [.day],
             from: calendar.startOfDay(for: now),
@@ -52,25 +52,16 @@ struct DdayText: Equatable {
         let dday: String
         let dueText: String
         if remainDay > farFutureDays {
-            dday = "먼훗날"
-            dueText = format(endDate, "yyyy년 M월 d일", calendar: calendar) + "까지"
+            dday = Strings.homeInFarFurture
+            dueText = Strings.Detail.Dday.untilFormat(DisplayDate.yearMonthDay(endDate, locale: locale, calendar: calendar))
         } else if remainDay == 0 {
             dday = "D-0"
-            dueText = "오늘까지"
+            dueText = Strings.Detail.Dday.untilToday
         } else {
             dday = remainDay < 0 ? "D+\(-remainDay)" : "D-\(remainDay)"
-            dueText = format(endDate, "M월 d일 (E)", calendar: calendar) + "까지"
+            dueText = Strings.Detail.Dday.untilFormat(DisplayDate.monthDayWeekday(endDate, locale: locale, calendar: calendar))
         }
 
         return DdayText(remainDay: remainDay, dday: dday, dueText: dueText)
-    }
-
-    private static func format(_ date: Date, _ format: String, calendar: Calendar) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.calendar = calendar
-        formatter.timeZone = calendar.timeZone
-        formatter.dateFormat = format
-        return formatter.string(from: date)
     }
 }

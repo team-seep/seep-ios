@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// GH-30 오래 잠든 위시에 "아직 하고 싶어요?" 다시 묻기 — 홈 카드 동작 (기존 HomeViewModelSleepingWishTests 이전)
 final class HomeSleepingWishFeatureTests: HomeFeatureTestCase {
@@ -292,7 +292,7 @@ final class HomeSleepingWishFeatureTests: HomeFeatureTestCase {
         XCTAssertEqual(impressions.first?.name, .impression)
         XCTAssertEqual(impressions.first?.parameters[ParameterName.screen.rawValue] as? String, "home")
         XCTAssertEqual(impressions.first?.parameters[ParameterName.objectType.rawValue] as? String, "card")
-        XCTAssertEqual(impressions.first?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+        XCTAssertEqual(impressions.first?.parameters[ParameterName.category.rawValue] as? String, seep_ios.Category.wantToDo.rawValue)
     }
 
     func test_GH30_TC13_잠든위시가없으면_노출로그를보내지않는다() {
@@ -321,7 +321,7 @@ final class HomeSleepingWishFeatureTests: HomeFeatureTestCase {
         XCTAssertEqual(clicks.count, 1)
         XCTAssertEqual(clicks.first?.name, .click)
         XCTAssertEqual(clicks.first?.parameters[ParameterName.objectType.rawValue] as? String, "button")
-        XCTAssertEqual(clicks.first?.parameters[ParameterName.category.rawValue] as? String, seep_ios_dev.Category.wantToDo.rawValue)
+        XCTAssertEqual(clicks.first?.parameters[ParameterName.category.rawValue] as? String, seep_ios.Category.wantToDo.rawValue)
     }
 
     // MARK: GH-30 TC15

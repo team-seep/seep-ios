@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위시 상세 상단 바(수정·⋯)·⋯ 메뉴·문서 갱신·삭제·완료 취소 (GH-59, GH-64 TC-601~606)
 final class WishDetailFeatureTests: ViewModelTestCase {

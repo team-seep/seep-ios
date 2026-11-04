@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 홈에서 완료할 때 "미래의 나에게" 편지가 열리는지 (GH-61 R-5)
 final class HomeFutureLetterFeatureTests: HomeFeatureTestCase {

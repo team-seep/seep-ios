@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 잠금 켜기·끄기 시트 (GH-46 R-2 ~ R-4, R-11) — `AppLockBottomSheetViewModelTests`를 SwiftUI 시트 판으로 옮겼다.
 /// 설정 탭 잠금 줄에서 연다 (GH-64 R-25)

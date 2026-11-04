@@ -23,10 +23,10 @@ struct LockScreenRemainEntryView: View {
         ZStack {
             AccessoryWidgetBackground()
             VStack(spacing: 0) {
-                Text("남은 싶")
+                Text(verbatim: Strings.Widget.LockScreen.remain)
                     .font(.custom("AppleSDGothicNeo-SemiBold", size: 10))
                     .opacity(0.7)
-                Text("\(entry.remainCount)")
+                Text(verbatim: "\(entry.remainCount)")
                     .font(.custom("AppleSDGothicNeoEB00", size: 24))
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)

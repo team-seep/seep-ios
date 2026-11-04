@@ -22,11 +22,13 @@ extension SavingInputViewModel {
     struct Config {
         let targetAmount: Int
         let savedAmount: Int
+        /// 금액의 통화. 입력 소수 자릿수·빠른 금액이 통화를 따른다 (GH-103)
+        var currency: String = AmountFormatter.krw
     }
 
     struct State: Equatable {
         var amount = 0
-        /// 입력 칸에 보일 콤마 문자열 (0 이면 빈 문자열)
+        /// 입력 칸에 보일 문자열 (0 이면 빈 문자열). 소수가 있는 통화는 치는 중인 소수점을 남긴다
         var amountText = ""
         var isSaveEnabled = false
         /// 지금 금액을 기록하면 어떻게 되는지 (GH-16 R-4 미리보기)
@@ -52,7 +54,8 @@ final class SavingInputViewModel: Identifiable {
     func send(_ action: Action) {
         switch action {
         case .inputAmountText(let text):
-            apply(amount: AmountFormatter.amount(from: text))
+            let input = AmountFormatter.input(text, currency: config.currency)
+            apply(amount: input.amount, text: input.text)
         case .tapQuickAmount(let quickAmount):
             applyQuickAmount(quickAmount)
         case .tapSave:
@@ -75,9 +78,18 @@ final class SavingInputViewModel: Identifiable {
         route = .dismiss
     }
 
-    private func apply(amount: Int) {
+    /// 빠른 금액 버튼(최소 단위). 원화는 +1만·+5만·+10만
+    var quickAmounts: [Int] {
+        AmountFormatter.quickAmounts(currency: config.currency)
+    }
+
+    var currency: String {
+        config.currency
+    }
+
+    private func apply(amount: Int, text: String? = nil) {
         state.amount = amount
-        state.amountText = AmountFormatter.inputText(from: amount)
+        state.amountText = text ?? AmountFormatter.inputText(from: amount, currency: config.currency)
         state.isSaveEnabled = amount > 0
         state.preview = Self.makePreview(config: config, amount: amount)
     }
@@ -85,7 +97,8 @@ final class SavingInputViewModel: Identifiable {
     private static func makePreview(config: Config, amount: Int) -> WishSavingProgress? {
         WishSavingProgress(
             targetAmount: config.targetAmount,
-            savings: [WishSaving(amount: config.savedAmount + amount)]
+            savings: [WishSaving(amount: config.savedAmount + amount)],
+            currency: config.currency
         )
     }
 }

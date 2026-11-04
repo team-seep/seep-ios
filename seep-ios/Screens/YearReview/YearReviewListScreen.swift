@@ -34,7 +34,7 @@ private struct YearReviewListContentView: View {
                         .padding(.bottom, 10)
                     ForEach(Array(viewModel.state.sections.enumerated()), id: \.element.id) { sectionIndex, section in
                         HStack {
-                            Text(verbatim: Strings.YearReview.List.monthFormat(section.month))
+                            Text(verbatim: DisplayDate.month(section.month))
                                 .font(.appleBold(size: 14))
                                 .foregroundStyle(Color.gray5)
                             Spacer()

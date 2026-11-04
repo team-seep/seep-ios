@@ -61,6 +61,7 @@ final class WishSavingsViewModel {
     private let wishId: String
     private var category: Category
     private var targetAmount: Int
+    private var currency: String
     private let dependency: Dependency
 
     init(config: Config, dependency: Dependency = Dependency()) {
@@ -68,10 +69,11 @@ final class WishSavingsViewModel {
         self.wishId = wish.id
         self.category = wish.category
         self.targetAmount = wish.targetAmount
+        self.currency = wish.currency
         self.dependency = dependency
         self.state = State(
             isVisible: Self.isVisible(category: wish.category, targetAmount: wish.targetAmount),
-            progress: WishSavingProgress(targetAmount: wish.targetAmount, savings: wish.savings),
+            progress: WishSavingProgress(targetAmount: wish.targetAmount, savings: wish.savings, currency: wish.currency),
             savings: wish.savings
         )
     }
@@ -89,6 +91,7 @@ final class WishSavingsViewModel {
         case .reload(let wish):
             category = wish.category
             targetAmount = wish.targetAmount
+            currency = wish.currency
             apply(savings: wish.savings)
         case .routeHandled:
             route = nil
@@ -100,7 +103,8 @@ final class WishSavingsViewModel {
         sendClickLog(objectId: .addSaving)
         let viewModel = SavingInputViewModel(config: .init(
             targetAmount: progress.targetAmount,
-            savedAmount: progress.savedAmount
+            savedAmount: progress.savedAmount,
+            currency: progress.currency
         ))
         viewModel.onSave = { [weak self] amount in
             self?.send(.saveAmount(amount))
@@ -136,12 +140,12 @@ final class WishSavingsViewModel {
     }
 
     private var currentProgress: WishSavingProgress? {
-        WishSavingProgress(targetAmount: targetAmount, savings: state.savings)
+        WishSavingProgress(targetAmount: targetAmount, savings: state.savings, currency: currency)
     }
 
     private func apply(savings: [WishSaving]) {
         state.savings = savings
-        state.progress = WishSavingProgress(targetAmount: targetAmount, savings: savings)
+        state.progress = WishSavingProgress(targetAmount: targetAmount, savings: savings, currency: currency)
         state.isVisible = Self.isVisible(category: category, targetAmount: targetAmount)
     }
 

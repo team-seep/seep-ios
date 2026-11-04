@@ -49,6 +49,23 @@ diff가 아래 경로/키워드를 건드리면 해당 블록을 추가한다.
 | `write/**`, `wish-edit/**` | 작성 중 이탈 후 복귀, 필수값 누락 시 버튼 비활성, 이모지 입력 |
 | `share-photo/**` | 사진 권한 거부 상태, 공유 시트 표시 |
 | `Home/**` | 카테고리 전환·정렬·완료만 보기 필터 조합, 리스트/그리드 전환 |
+| `*.xcstrings`, `Strings.swift`, `DisplayDate`, `Info.plist` 권한 문구 (다국어, GH-100) | 아래 "다국어 점검" |
+
+### 다국어 점검 (GH-100 R-15)
+
+시뮬레이터 실행 인자로 상황을 만든다. 스킴 **seep-ios-i18n-check**는 1번을 켜 둔 스킴이다.
+```bash
+xcrun simctl launch <UDID> macgongmon.seep-ios.dev -NSShowNonLocalizedStrings YES      # 1. 번역 빠진 문구가 대문자로
+xcrun simctl launch <UDID> macgongmon.seep-ios.dev -NSDoubleLocalizedStrings YES       # 2. Double-Length 의사 언어
+xcrun simctl launch <UDID> macgongmon.seep-ios.dev -NSAccentenateLocalizedStrings YES  # 3. Accented 의사 언어
+xcrun simctl launch <UDID> macgongmon.seep-ios.dev -AppleLanguages "(en)" -AppleLocale en_US  # 4. 다른 기기 언어
+```
+- 주요 화면: 홈(빈 상태·개수 제목)·상세(D-day 줄·저금·일지)·적기·설정·이룬 싶, 위젯 4종, 잠금화면 위젯 2종, 제어 센터 컨트롤
+- 1: 사용자에게 보이는 문구에 대문자 경고가 없다
+- 2·3: 버튼·탭·CTA·위젯 문구가 잘리거나 겹치지 않는다(Tall 의사 언어는 Xcode 스킴 옵션에서만 켤 수 있어 2단계 실기기 점검으로 미룬다). RTL은 대상 언어가 아니라 보지 않는다
+- 4: 번역이 없는 언어는 한국어 원문으로 보이고, 빈 문자열이나 키 이름이 보이지 않는다
+- 4는 앱 안에서 언어를 고르지 않은 상태(설정 › 언어 "기기 언어 따르기")에서 본다. 고른 언어가 있으면 그 언어가 이긴다
+- 앱 안 언어(GH-103 R-21~R-23): 설정 › 언어에서 고르면 열려 있던 탭이 바로 그 언어로 바뀌고, 다시 켜도 유지된다. "기기 언어 따르기"로 돌리면 바로 기기 언어로 돌아온다. 실기기에서 홈 화면 위젯·잠금화면 위젯 문구와 다음 D-day 알림도 새 언어인지 본다
 
 ## 4. PR 본문에 적는 법
 

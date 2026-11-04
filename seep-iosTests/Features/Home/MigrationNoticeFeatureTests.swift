@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 복구 결과를 정해 두는 대역
 private final class StubLegacyImportRecovery: LegacyImportRecovering {

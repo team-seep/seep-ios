@@ -3,7 +3,7 @@ import CoreGraphics
 import ImageIO
 import UniformTypeIdentifiers
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 위시 사진 파일 저장소 실제 구현 (GH-36 R-3, R-5, R-7, R-8). 임시 폴더에 쓰고 지운다.
 final class WishPhotoStorageTests: XCTestCase {

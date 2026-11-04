@@ -323,7 +323,6 @@ struct WishDocumentEditor: View {
                 )
                 .datePickerStyle(.wheel)
                 .labelsHidden()
-                .environment(\.locale, Locale(identifier: "ko_KR"))
                 SeepCTA(title: Strings.WishForm.dateConfirm, fillsWidth: true) {
                     viewModel.send(.dismissSheet)
                 }

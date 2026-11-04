@@ -146,6 +146,13 @@ final class AppDatabase {
             try db.create(index: "wishJournal_on_wishId", on: WishJournalRecord.databaseTableName, columns: ["wishId"])
         }
 
+        // GH-103: 위시마다 통화. 예전 위시·저금 기록은 모두 원화였다
+        migrator.registerMigration("v6") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "currency", .text).notNull().defaults(to: "KRW")
+            }
+        }
+
         return migrator
     }
 

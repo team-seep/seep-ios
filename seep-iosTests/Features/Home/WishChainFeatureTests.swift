@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 싶 잇기 — 완료 소감 시트의 "이어서 적기" (GH-84 R-1)
 final class WishChainFeatureTests: HomeFeatureTestCase {

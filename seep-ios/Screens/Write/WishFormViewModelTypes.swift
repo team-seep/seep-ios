@@ -99,6 +99,8 @@ extension WishFormViewModel {
         case addStep(String)
         case deleteStep(index: Int)
         case inputTargetAmount(String)
+        /// 목표 금액 통화 고르기 (GH-103 R-15). 저금 기록이 있으면 바뀌지 않고 안내한다 (R-18)
+        case selectCurrency(String)
         case inputLink(String)
         case pasteLink(String)
         case tapPlace
@@ -157,8 +159,14 @@ extension WishFormViewModel {
         var memo = ""
         var memoError: String?
         var steps: [WishStep] = []
-        /// 목표 금액(원). 갖고 싶어요일 때만 저장한다 (GH-16 R-1)
+        /// 목표 금액(통화의 최소 단위). 갖고 싶어요일 때만 저장한다 (GH-16 R-1)
         var targetAmount = 0
+        /// 목표 금액 칸에 보일 문자열. 소수가 있는 통화는 치는 중인 소수점을 남긴다 (GH-103 R-17)
+        var targetAmountText = ""
+        /// 목표 금액 통화(ISO 4217) (GH-103 R-15)
+        var currency = AmountFormatter.krw
+        /// 저금 기록이 있어 통화를 바꿀 수 없다 (GH-103 R-18)
+        var isCurrencyLocked = false
         var linkText = ""
         var link: WishLinkInput = .empty
         var linkError: String?
@@ -205,6 +213,8 @@ extension WishFormViewModel {
         let linkPreviewDelay: Duration?
         let randomEmoji: () -> String
         let now: () -> Date
+        /// 새로 적는 위시의 통화. 기기 지역 통화 (GH-103 R-15)
+        let defaultCurrency: () -> String
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
@@ -216,7 +226,8 @@ extension WishFormViewModel {
             photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
             linkPreviewDelay: Duration? = .milliseconds(500),
             randomEmoji: @escaping () -> String = EmojiCatalog.randomEmoji,
-            now: @escaping () -> Date = Date.init
+            now: @escaping () -> Date = Date.init,
+            defaultCurrency: @escaping () -> String = { AmountFormatter.defaultCurrency() }
         ) {
             self.wishRepository = wishRepository
             self.notificationManager = notificationManager
@@ -228,6 +239,7 @@ extension WishFormViewModel {
             self.linkPreviewDelay = linkPreviewDelay
             self.randomEmoji = randomEmoji
             self.now = now
+            self.defaultCurrency = defaultCurrency
         }
     }
 }

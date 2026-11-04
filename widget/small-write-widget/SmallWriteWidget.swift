@@ -4,24 +4,13 @@ import Intents
 
 struct SmallWriteWidget: Widget {
   let category: Category
-  let description: String
-  
+
   init() {
     self.category = .wantToDo
-    self.description = "하고싶은 것"
   }
-  
+
   init(category: Category) {
     self.category = category
-    
-    switch category {
-    case .wantToDo:
-      self.description = "하고싶은 것"
-    case .wantToGet:
-      self.description = "갖고싶은 것"
-    case .wantToGo:
-      self.description = "가고싶은 곳"
-    }
   }
   
   var body: some WidgetConfiguration {

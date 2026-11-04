@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 일괄 삭제 저장소 (GH-86 R-4). 메모리 DB 로 돌린다
 final class MultiDeleteRepositoryTests: XCTestCase {

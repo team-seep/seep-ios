@@ -1,7 +1,7 @@
 import XCTest
 import Observation
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 화면별 기능 테스트(GH-64 R-44)의 공용 바탕.
 /// SwiftUI ViewModel(`@Observable`, `send(_:)` → `state`/`route`)을 같은 방식으로 단언한다
@@ -11,6 +11,8 @@ class ViewModelTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         logManager = MockLogManager()
+        // 시뮬레이터에서 앱 안 언어를 바꿔 뒀어도 문구 단언은 원문(ko) 기준이다 (GH-103 R-21)
+        AppLanguage.shared.select(nil)
     }
 
     override func tearDown() {

@@ -16,17 +16,17 @@ enum WidgetCheckAction: Equatable {
         return .finishWish(lastStepId: remainingSteps.first?.id)
     }
 
-    /// 줄의 보조 문구 (R-2, R-4). 위젯 타깃에는 SwiftGen Strings 가 없어 기존 위젯처럼 코드에 쓴다
+    /// 줄의 보조 문구 (R-2, R-4)
     static func caption(wish: Wish) -> String {
         if wish.isSuccess {
-            return "이뤘어요! · 다시 누르면 취소"
+            return Strings.Widget.Check.Caption.finished
         }
         let steps = sortedSteps(wish)
         guard let nextStep = steps.first(where: { !$0.isDone }) else {
-            return "누르면 완료"
+            return Strings.Widget.Check.Caption.finish
         }
         let doneCount = steps.filter(\.isDone).count
-        return "다음 단계 · \(nextStep.title) \(doneCount + 1)/\(steps.count)"
+        return Strings.Widget.Check.Caption.nextStepFormat(nextStep.title, doneCount + 1, steps.count)
     }
 
     private static func sortedSteps(_ wish: Wish) -> [WishStep] {

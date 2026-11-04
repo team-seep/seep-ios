@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 설정 "화면 모드" (GH-85 R-3)
 final class AppearanceFeatureTests: ViewModelTestCase {

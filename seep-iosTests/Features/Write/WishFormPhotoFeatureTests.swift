@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import seep_ios_dev
+@testable import seep_ios
 
 /// 작성/수정 문서의 사진 블록 (GH-61 R-10, R-11)
 final class WishFormPhotoFeatureTests: WishFormFeatureTestCase {

@@ -35,6 +35,7 @@ final class WishFormViewModel {
                 category: category,
                 isDeadlineEnabled: false,
                 isNotificationEnabled: false,
+                currency: dependency.defaultCurrency(),
                 saveButtonState: .initial
             )
         case .edit(let wish):
@@ -51,6 +52,9 @@ final class WishFormViewModel {
                 memo: wish.memo,
                 steps: wish.steps,
                 targetAmount: wish.targetAmount,
+                targetAmountText: AmountFormatter.inputText(from: wish.targetAmount, currency: wish.currency),
+                currency: wish.currency,
+                isCurrencyLocked: !wish.savings.isEmpty,
                 linkText: wish.link,
                 link: WishLinkInput(text: wish.link),
                 place: wish.place,
@@ -211,7 +215,11 @@ final class WishFormViewModel {
         case .deleteStep(let index):
             deleteStep(index: index)
         case .inputTargetAmount(let text):
-            state.targetAmount = AmountFormatter.amount(from: text)
+            let input = AmountFormatter.input(text, currency: state.currency)
+            state.targetAmountText = input.text
+            state.targetAmount = input.amount
+        case .selectCurrency(let currency):
+            selectCurrency(currency)
         case .inputLink(let text):
             updateLink(text: text)
         case .pasteLink(let text):
@@ -339,6 +347,7 @@ final class WishFormViewModel {
             updateLink(text: "")
         case .targetAmount:
             state.targetAmount = 0
+            state.targetAmountText = ""
         case .place:
             state.place = nil
         case .photo:
@@ -347,6 +356,20 @@ final class WishFormViewModel {
             state.letter = nil
         }
         state.revealedBlocks.remove(block)
+    }
+
+    /// 저금 기록이 있으면 통화를 바꾸지 않는다. 기록 금액의 뜻이 바뀌기 때문이다 (GH-103 R-18)
+    private func selectCurrency(_ currency: String) {
+        guard !state.isCurrencyLocked else {
+            route = .toast(Strings.Write.TargetAmount.currencyLocked)
+            return
+        }
+        guard currency != state.currency, AmountFormatter.supportedCurrencies.contains(currency) else { return }
+        state.currency = currency
+        // 소수 자릿수가 달라지므로 칸의 글자를 새 통화로 다시 읽는다
+        let input = AmountFormatter.input(state.targetAmountText, currency: currency)
+        state.targetAmountText = input.text
+        state.targetAmount = input.amount
     }
 
     private var draft: WishFormDraft {
@@ -359,6 +382,7 @@ final class WishFormViewModel {
             memo: state.memo,
             steps: state.steps,
             targetAmount: state.targetAmount,
+            currency: state.currency,
             linkText: state.linkText,
             place: state.place,
             photo: state.photo,
@@ -597,6 +621,7 @@ final class WishFormViewModel {
             steps: state.steps,
             // 다른 카테고리로 바꿨으면 입력했던 목표 금액은 버린다 (GH-16 R-1)
             targetAmount: state.category == .wantToGet ? state.targetAmount : 0,
+            currency: state.currency,
             memo: state.memo,
             hashtag: hashtag,
             // 다른 카테고리로 바꿨으면 링크도 버린다 (GH-29 R-1)
@@ -642,6 +667,7 @@ final class WishFormViewModel {
             steps: state.steps,
             // 다른 카테고리로 바꿨으면 목표 금액은 0 으로 저장하고 기록은 남긴다 (GH-16 R-1)
             targetAmount: state.category == .wantToGet ? state.targetAmount : 0,
+            currency: state.currency,
             savings: original.savings,
             memo: state.memo,
             hashtag: hashtag,
@@ -693,6 +719,7 @@ struct WishFormDraft: Equatable {
     let memo: String
     let steps: [WishStep]
     let targetAmount: Int
+    let currency: String
     let linkText: String
     let place: WishPlace?
     let photo: WishFormPhoto
