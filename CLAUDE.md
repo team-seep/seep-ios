@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 서버 없이 **로컬 SQLite(GRDB)** 에 저장하고, App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
+**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 기본은 서버 없이 **로컬 SQLite(GRDB)** 에 저장하고(로그인하면 Firebase로 동기화, GH-93), App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
 
 - 타깃: `seep-ios`(앱), `widgetExtension`(WidgetKit, SwiftUI), `seep-iosTests`(XCTest)
 - iOS 18.0+. **SwiftUI + `@Observable` ViewModel**(GH-64에서 전환). UIKit은 `AppDelegate`(Firebase·DB·알림 델리게이트)만. 위젯도 SwiftUI
@@ -76,6 +76,8 @@ xcodebuild build \
 - **R7** 타입은 책임 하나. 타입 400·파일 600줄 초과는 `// swiftlint:disable:next type_body_length - {사유}`
 - **R8** `print`·`try!`·`as!` 금지
 - **R9** ViewModel 구조 Action/State/Route/Config/Dependency, View는 `send(_:)`로만 입력, `state` 하나를 읽고, `route`를 처리한 뒤 `send(.routeHandled)`
+- **R10** 프로젝트 구성은 `project.yml`로만(`make project`), pbxproj 직접 수정 금지
+- **R11** Firestore·Auth·Storage import는 `Repository/Sync/`·`Services/Account/`에서만. ViewModel은 `SyncEngineProtocol`·`AccountManagerProtocol`만 의존 (GH-93, 설계 `docs/architecture/server-sync-design.md`)
 
 ## 로그 (트래킹 이벤트)
 
