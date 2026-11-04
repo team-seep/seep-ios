@@ -49,14 +49,6 @@ private final class MockAccountManager: AccountManagerProtocol {
     }
 }
 
-private struct MockRemoteDataEraser: RemoteAccountDataEraser {
-    let log: AccountCallLog
-
-    func eraseAll(uid: String) async throws {
-        log.calls.append("eraseServerData:\(uid)")
-    }
-}
-
 private final class MockSyncEngine: SyncEngineProtocol, @unchecked Sendable {
     let log: AccountCallLog
     var startOutcome: SyncSessionOutcome = .merged
@@ -144,7 +136,6 @@ final class AccountFeatureTests: ViewModelTestCase {
         let sut = AccountViewModel(dependency: .init(
             accountManager: accountManager,
             syncEngine: syncEngine,
-            remoteDataEraser: MockRemoteDataEraser(log: callLog),
             wishRepository: wishRepository,
             notificationManager: notificationManager,
             photoStorage: photoStorage,
@@ -301,7 +292,8 @@ final class AccountFeatureTests: ViewModelTestCase {
 
     // MARK: TC-19
 
-    func test_GH93_TC19_계정삭제는_재인증후_서버데이터_토큰해지_계정삭제순으로하고_남길지묻는다() {
+    // 서버 데이터는 Auth 사용자 삭제를 받은 Cloud Function이 지운다(TC-43·45). 앱은 지우지 않는다
+    func test_GH93_TC19_계정삭제는_재인증후_토큰해지_계정삭제순으로하고_남길지묻는다() {
         // Given
         let sut = makeSut(signedIn: true)
         sut.send(.tapDeleteAccount)
@@ -315,7 +307,7 @@ final class AccountFeatureTests: ViewModelTestCase {
 
         // Then
         waitUntil { sut.state.dialog == .afterDelete }
-        XCTAssertEqual(callLog.calls, ["reauthenticate", "eraseServerData:uid-1", "revoke:code-1", "deleteUser", "endSession(unbind:true,flush:false)"])
+        XCTAssertEqual(callLog.calls, ["reauthenticate", "revoke:code-1", "deleteUser", "endSession(unbind:true,flush:false)"])
         XCTAssertNil(sut.state.account)
         XCTAssertEqual(sut.route, .popAccount)
         XCTAssertEqual(customEvents(.accountDelete).count, 1)

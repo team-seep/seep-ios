@@ -81,7 +81,6 @@
 		62A6428AAD04D88DA86C9459 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = F0B2B6FC67429CFCFA3C4396 /* FirebaseRemoteConfig */; };
 		6327ACE285428DB9BD4BEC4C /* NotificationLanguageRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C19CC851A234D697272B48 /* NotificationLanguageRefresh.swift */; };
 		63C9E308A6C87A229F558308 /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6D8C7D8C2D396C89B9DD3C2 /* AppleSDGothicNeoEB00.ttf */; };
-		65CFBC3D710AA5DF48BA92DE /* RemoteAccountDataEraser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF995E791BA4D5DAB3E0A5BB /* RemoteAccountDataEraser.swift */; };
 		65F41A4306F4701A90DE5E84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49EE461C41B94111C300529C /* Assets.xcassets */; };
 		6B0A7EDFB405FC3FCFCA5218 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC485367DA7F62CFF607785 /* EmptyView.swift */; };
 		6B500050C4291E51CCE4DF17 /* CheckWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9CA9E184F6FB4B871F9126 /* CheckWidget.swift */; };
@@ -365,7 +364,6 @@
 		BAABAD5DDE849088ADEDB345 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
 		BD659E527A34F0EDD07BD903 /* LockScreenDday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDday.swift; sourceTree = "<group>"; };
 		BD7B3F693592092D06E8E632 /* seep-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "seep-ios.entitlements"; sourceTree = "<group>"; };
-		BF995E791BA4D5DAB3E0A5BB /* RemoteAccountDataEraser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAccountDataEraser.swift; sourceTree = "<group>"; };
 		C045AE245B9C32B1D948D876 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		C2A3454212C8C153682A550E /* RemoteWishStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteWishStore.swift; sourceTree = "<group>"; };
 		C42B6BAFC44B0F9D31B1AF78 /* WishRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRepository.swift; sourceTree = "<group>"; };
@@ -860,7 +858,6 @@
 			children = (
 				777EE9DE1CE4841E350534D9 /* Account.swift */,
 				E3E8205C70C402DD756C02B9 /* AccountManager.swift */,
-				BF995E791BA4D5DAB3E0A5BB /* RemoteAccountDataEraser.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -1276,7 +1273,6 @@
 				E68697057C3F6F48243A3DCC /* Preference.swift in Sources */,
 				7DCD3D0CC2972D34FAB71C0D /* PublisherExtension.swift in Sources */,
 				FD9FADA6838C420CE0B6E890 /* RealmConfiguration.swift in Sources */,
-				65CFBC3D710AA5DF48BA92DE /* RemoteAccountDataEraser.swift in Sources */,
 				763F3B2BD48A5574540DFE1B /* RemoteConfigRepository.swift in Sources */,
 				C01A3F4B3F626D56B3CF46EC /* RemoteWishStore.swift in Sources */,
 				F98A239F3F4BE2692629EA9F /* SavingDTO.swift in Sources */,

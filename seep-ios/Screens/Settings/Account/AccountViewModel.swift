@@ -68,7 +68,6 @@ extension AccountViewModel {
     struct Dependency {
         let accountManager: AccountManagerProtocol
         let syncEngine: SyncEngineProtocol
-        let remoteDataEraser: RemoteAccountDataEraser
         let wishRepository: WishRepository
         let notificationManager: NotificationManagerProtocol
         let photoStorage: WishPhotoStorage
@@ -79,7 +78,6 @@ extension AccountViewModel {
         init(
             accountManager: AccountManagerProtocol = AccountManager.shared,
             syncEngine: SyncEngineProtocol = SyncEngine.shared,
-            remoteDataEraser: RemoteAccountDataEraser = NoRemoteAccountData(),
             wishRepository: WishRepository = WishRepositoryImpl(),
             notificationManager: NotificationManagerProtocol = NotificationManager.shared,
             photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
@@ -89,7 +87,6 @@ extension AccountViewModel {
         ) {
             self.accountManager = accountManager
             self.syncEngine = syncEngine
-            self.remoteDataEraser = remoteDataEraser
             self.wishRepository = wishRepository
             self.notificationManager = notificationManager
             self.photoStorage = photoStorage
@@ -337,23 +334,22 @@ final class AccountViewModel {
         }
     }
 
-    /// 서버 데이터 → Apple 토큰 → Auth 사용자 순서로 지운다 (설계 §8). 중간에 실패하면 계정은 남아 다시 시도할 수 있다
+    /// Apple 토큰 → Auth 사용자 순서로 지운다 (설계 §8). 서버의 내 문서·사진은 Auth 사용자가 지워지면
+    /// Cloud Function(`firebase/functions` eraseDeletedUser)이 지운다. 중간에 실패하면 계정은 남아 다시 시도할 수 있다
     private func deleteAccount(credential: AppleCredential, nonce: AppleSignInNonce) {
-        guard let uid = state.account?.uid, let authorizationCode = credential.authorizationCode else {
+        guard state.account != nil, let authorizationCode = credential.authorizationCode else {
             state.isWorking = false
             route = .toast(Strings.Account.Error.delete)
             return
         }
         let accountManager = dependency.accountManager
-        let remoteDataEraser = dependency.remoteDataEraser
         let engine = dependency.syncEngine
         Task { @MainActor [weak self] in
             do {
                 try await accountManager.reauthenticate(with: credential, nonce: nonce)
-                try await remoteDataEraser.eraseAll(uid: uid)
                 try await accountManager.revokeAppleToken(authorizationCode: authorizationCode)
                 try await accountManager.deleteUser()
-                // 계정이 없어졌으니 이 기기 싶은 어느 계정에도 묶이지 않은 비회원 싶이 된다. 서버 데이터는 지웠으니 남은 변경도 올리지 않는다
+                // 계정이 없어졌으니 이 기기 싶은 어느 계정에도 묶이지 않은 비회원 싶이 된다. 서버 데이터는 함수가 지우니 남은 변경도 올리지 않는다
                 await engine.endSession(unbindDevice: true, flushPending: false)
                 guard let self else { return }
                 state.isWorking = false

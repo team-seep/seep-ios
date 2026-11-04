@@ -1,6 +1,6 @@
-name: Firebase 규칙
+name: Firebase 규칙·함수
 
-# GH-93: 보안 규칙·인덱스는 레포가 원본이다. PR에서 에뮬레이터로 테스트하고,
+# GH-93: 보안 규칙·인덱스·Cloud Functions는 레포가 원본이다. PR에서 에뮬레이터로 테스트하고,
 # develop에 머지되면 dev 프로젝트에, 수동 실행하면 prod 프로젝트에 배포한다.
 on:
   pull_request:
@@ -46,9 +46,31 @@ jobs:
         working-directory: firebase/tests
       - run: npx --yes firebase-tools@15.15.0 emulators:exec --only firestore,storage --project demo-seep "cd tests && npm test"
 
+  functions-test:
+    name: 함수 테스트 (에뮬레이터)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: firebase
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: firebase/functions/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+        working-directory: firebase/functions
+      - run: npx --yes firebase-tools@15.15.0 emulators:exec --only auth,firestore,storage,functions --project demo-seep "cd functions && npm test"
+
   deploy:
     name: 배포 (${{ github.event_name == 'workflow_dispatch' && inputs.target || 'dev' }})
-    needs: test
+    needs: [test, functions-test]
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -71,4 +93,7 @@ jobs:
           if [ -z "$KEY" ]; then echo "::error::FIREBASE_SERVICE_ACCOUNT_${TARGET^^} 시크릿이 없다"; exit 1; fi
           printf '%s' "$KEY" > "$RUNNER_TEMP/sa.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/sa.json" >> "$GITHUB_ENV"
-      - run: npx --yes firebase-tools@15.15.0 deploy --only firestore,storage --project "$TARGET" --non-interactive
+      # 함수 정의를 읽으려면 로컬에 의존성이 있어야 한다
+      - run: npm ci
+        working-directory: firebase/functions
+      - run: npx --yes firebase-tools@15.15.0 deploy --only firestore,storage,functions --project "$TARGET" --non-interactive --force

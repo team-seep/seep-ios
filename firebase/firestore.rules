@@ -11,6 +11,12 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // 탈퇴하면 Cloud Function이 deletedUsers/{uid}를 남긴다. 다른 기기에 남은 ID 토큰(최대 1시간)으로
+    // 지운 뒤에 문서가 다시 생기지 않게 쓰기를 막는다 (GH-93 R-29). 앱은 이 컬렉션을 읽거나 쓸 수 없다
+    function notDeleted() {
+      return !exists(/databases/$(database)/documents/deletedUsers/$(request.auth.uid));
+    }
+
     function isMember() {
       return signedIn() && request.auth.uid in resource.data.memberUids;
     }
@@ -29,13 +35,14 @@ service cloud.firestore {
 
     match /{collection}/{docId} {
       allow read: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember();
-      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && createsOwnDocument();
-      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember() && keepsMembership();
+      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && createsOwnDocument() && notDeleted();
+      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember() && keepsMembership() && notDeleted();
       allow delete: if false;
     }
 
     match /users/{uid} {
-      allow read, write: if signedIn() && request.auth.uid == uid;
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if signedIn() && request.auth.uid == uid && notDeleted();
     }
   }
 }

@@ -81,7 +81,7 @@
 | Cloud Storage | 위시 사진 | **Blaze 요금제가 필요하다**(Spark에서는 버킷 접근 불가). 무료 사용량은 Blaze에서도 그대로 있다 |
 | App Check (App Attest) | 정식 앱에서 온 요청만 받기 | 패키지(`FirebaseAppCheck`)는 이미 들어와 있다 |
 | Remote Config | `sync_enabled` 킬 스위치, 점진 출시 | 이미 `RemoteConfigRepository`가 있다 |
-| Cloud Functions | 계정 삭제 정리, (3단계) 공개 피드·신고 | 1단계에서는 쓰지 않아도 된다 |
+| Cloud Functions | 계정 삭제 정리(`eraseDeletedUser`), (3단계) 공개 피드·신고 | 1·2단계는 계정 삭제 정리 하나 |
 
 Firebase 프로젝트는 **dev / prod 두 개**로 나눈다. Debug 번들(`macgongmon.seep-ios.dev`)은 dev 프로젝트, Release 번들은 prod 프로젝트에 붙는다. 보안 규칙·인덱스는 레포의 `firebase/`(`firestore.rules`, `firestore.indexes.json`, `storage.rules`)에 두고 CI에서 `firebase deploy --only firestore,storage`로 반영한다.
 
@@ -245,10 +245,13 @@ DELETE FROM syncOutbox WHERE seq > startSeq   -- 방금 적용하며 트리거�
 
 - **Sign in with Apple** → `OAuthProvider.appleCredential` → Firebase Auth.
 - **앱 안에서 계정 삭제** (App Store 심사 가이드라인 5.1.1(v)): 설정 → 계정 삭제
-  1. 서버의 내 문서·사진을 지운다. 1단계는 클라이언트에서 지우고, 2단계부터는 공유 위시 처리 때문에 Cloud Function으로 옮긴다.
+  1. Apple로 다시 인증한다.
   2. Apple 토큰을 해지한다(`Auth.auth().revokeToken(withAuthorizationCode:)`).
   3. Auth 사용자를 지운다.
-  4. 로컬 데이터는 남길지 묻는다.
+  4. 서버의 내 문서·사진은 **Cloud Function `eraseDeletedUser`**(Auth 사용자 삭제 트리거, `firebase/functions`)가 지운다. 앱은 직접 지우지 않는다. 그래서 보안 규칙의 문서 삭제 금지(TC-6)를 그대로 둔다. 남의 공유 위시(5단계)에서는 멤버에서만 뺀다.
+     - 함수는 먼저 `deletedUsers/{uid}` 표시를 남기고, 규칙은 표시가 있는 uid의 쓰기를 막는다. 다른 기기에 남은 ID 토큰(최대 1시간)으로 지운 뒤에 문서가 다시 생기지 않게 하기 위해서다.
+     - 함수는 Blaze 요금제가 필요하다. 호출은 탈퇴 때 1번이라 비용은 사실상 0이다.
+  5. 로컬 데이터는 남길지 묻는다.
 - 개인정보 처리방침·App Store 개인정보 라벨 갱신. 수집 항목은 이메일(Apple 비공개 릴레이 가능), 사용자 콘텐츠(위시·메모·**위치(위도·경도)**·**사진**·편지), 식별자(uid)다.
 - "미래의 나에게" 편지(`futureLetter`)는 봉인한 날까지 본인도 못 보는 기능이다. 서버에도 평문으로 올라간다는 점을 처리방침에 적는다. 클라이언트 측 암호화는 하지 않는다(§12 2번).
 - 3단계(남의 위시 보기)는 **사용자 생성 콘텐츠 규칙(가이드라인 1.2)**: 신고·차단·이용약관 동의·운영자 대응이 필요하다.

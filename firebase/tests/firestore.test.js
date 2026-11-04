@@ -6,7 +6,7 @@ import {
   assertSucceeds,
   initializeTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 
 const COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'];
 
@@ -141,5 +141,53 @@ describe('정해 둔 컬렉션 밖은 모두 거부', () => {
     const db = env.authenticatedContext('alice').firestore();
     await assertFails(setDoc(doc(db, 'publicWishes', 'w1'), syncedDoc('alice')));
     await assertFails(getDoc(doc(db, 'publicWishes', 'w1')));
+  });
+});
+
+describe('TC-42 탈퇴 표시가 있으면 쓰기를 막는다', () => {
+  async function markDeleted(uid) {
+    await env.withSecurityRulesDisabled(async (context) => {
+      await setDoc(doc(context.firestore(), 'deletedUsers', uid), { deletedAt: serverTimestamp() });
+    });
+  }
+
+  for (const collection of COLLECTIONS) {
+    test(`test_GH93_TC42_${collection}_탈퇴표시후_쓰기거부`, async () => {
+      await seedOwnedBy('alice', collection, 'w1');
+      await markDeleted('alice');
+      const db = env.authenticatedContext('alice').firestore();
+      await assertFails(setDoc(doc(db, collection, 'w2'), syncedDoc('alice')));
+      await assertFails(updateDoc(doc(db, collection, 'w1'), { title: '라멘' }));
+    });
+  }
+
+  test('test_GH93_TC42_users_탈퇴표시후_쓰기거부', async () => {
+    await markDeleted('alice');
+    const db = env.authenticatedContext('alice').firestore();
+    await assertFails(setDoc(doc(db, 'users', 'alice'), { createdAt: 1 }));
+  });
+
+  test('test_GH93_TC42_다른사용자는_영향없음', async () => {
+    await markDeleted('alice');
+    const db = env.authenticatedContext('bob').firestore();
+    await assertSucceeds(setDoc(doc(db, 'wishes', 'b1'), syncedDoc('bob')));
+  });
+
+  test('test_GH93_TC42_앱은_탈퇴표시를_읽고쓸수없다', async () => {
+    await markDeleted('alice');
+    const db = env.authenticatedContext('alice').firestore();
+    await assertFails(getDoc(doc(db, 'deletedUsers', 'alice')));
+    await assertFails(deleteDoc(doc(db, 'deletedUsers', 'alice')));
+    await assertFails(setDoc(doc(db, 'deletedUsers', 'bob'), { deletedAt: 1 }));
+  });
+
+  // 앱은 한 번에 450개씩 올린다(FirestoreRemoteWishStore). 문서마다 exists()를 불러도 한도에 걸리지 않아야 한다
+  test('test_GH93_TC42_450개_묶음쓰기_통과', async () => {
+    const db = env.authenticatedContext('alice').firestore();
+    const batch = writeBatch(db);
+    for (let i = 0; i < 450; i += 1) {
+      batch.set(doc(db, 'wishes', `w${i}`), syncedDoc('alice'));
+    }
+    await assertSucceeds(batch.commit());
   });
 });
