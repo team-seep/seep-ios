@@ -1,14 +1,18 @@
+import AuthenticationServices
 import SwiftUI
 
-/// 설정 탭 루트 (GH-64 R-24 ~ R-29).
+/// 마이 탭 루트 (GH-64 R-24 ~ R-29, GH-93에서 "설정" → "마이", 맨 위 계정 카드).
 /// 시스템 내비게이션 바 큰 제목 "설정" 아래 그룹 목록(gray2 바탕 위 흰 카드·라운드 12·줄 최소 52, 그룹 제목 14 gray4)
 struct SettingsTabRootView: View {
     @Environment(AppRouter.self) private var router
     @Environment(ToastCenter.self) private var toastCenter
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.authorizationController) private var authorizationController
 
     @State private var viewModel = SettingsViewModel()
+    @State private var accountViewModel = AccountViewModel()
+    @State private var isAccountPresented = false
     @State private var appLockSheet: AppLockSheetViewModel?
     @State private var isViewTypeDialogPresented = false
     @State private var isAppearanceDialogPresented = false
@@ -18,6 +22,9 @@ struct SettingsTabRootView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
+                if accountViewModel.state.isAvailable {
+                    AccountCard(viewModel: accountViewModel)
+                }
                 ForEach(viewModel.state.groups) { group in
                     Text(verbatim: group.title)
                         .font(.appleMedium(size: 14))
@@ -39,7 +46,7 @@ struct SettingsTabRootView: View {
                     .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
                 }
 
-                Text(Strings.Settings.footer)
+                Text(accountViewModel.state.account == nil ? Strings.Settings.footer : Strings.Settings.footerMember)
                     .font(.appleMedium(size: 12))
                     .foregroundStyle(Color.gray4)
                     .lineSpacing(3)
@@ -55,7 +62,10 @@ struct SettingsTabRootView: View {
         .background(Color.gray2)
         .navigationTitle(Strings.Settings.title)
         .navigationBarTitleDisplayMode(.large)
-        .onAppear { viewModel.send(.onAppear) }
+        .onAppear {
+            viewModel.send(.onAppear)
+            accountViewModel.send(.onAppear)
+        }
         .onChange(of: scenePhase) { _, phase in
             // 아이폰 설정에서 알림 권한을 바꾸고 돌아오면 다시 읽는다 (R-25)
             if phase == .active { viewModel.send(.onAppear) }
@@ -63,6 +73,24 @@ struct SettingsTabRootView: View {
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in
             handle(route)
+        }
+        .onChange(of: accountViewModel.route) { _, route in
+            handle(route)
+        }
+        .navigationDestination(isPresented: $isAccountPresented) {
+            AccountScreen(viewModel: accountViewModel)
+                .seepPushedScreen()
+        }
+        .confirmationDialog(
+            Strings.Account.AfterDelete.title,
+            isPresented: afterDeleteBinding,
+            titleVisibility: .visible
+        ) {
+            // 계정은 이미 지워졌으니 취소 없이 둘 중 하나를 고른다 (R-29)
+            Button(Strings.Account.keepLocal) { accountViewModel.send(.selectAfterDelete(.keep)) }
+            Button(Strings.Account.AfterDelete.erase, role: .destructive) { accountViewModel.send(.selectAfterDelete(.erase)) }
+        } message: {
+            Text(Strings.Account.AfterDelete.message)
         }
         .seepSheet(item: $appLockSheet, onDismiss: { viewModel.send(.appLockSheetDismissed) }) { sheetViewModel in
             AppLockSheet(viewModel: sheetViewModel, onDismiss: { _ in })
@@ -265,6 +293,40 @@ struct SettingsTabRootView: View {
             toastCenter.show(message)
         }
         viewModel.send(.routeHandled)
+    }
+}
+
+// MARK: - Account (GH-93)
+
+extension SettingsTabRootView {
+    private var afterDeleteBinding: Binding<Bool> {
+        Binding(
+            get: { accountViewModel.state.dialog == .afterDelete },
+            set: { _ in }
+        )
+    }
+
+    private func handle(_ route: AccountViewModel.Route?) {
+        guard let route else { return }
+        switch route {
+        case .requestAppleAuthorization(let nonce):
+            let controller = authorizationController
+            Task { @MainActor in
+                switch await AppleAuthorization.perform(nonce: nonce, with: controller) {
+                case .authorized(let credential):
+                    accountViewModel.send(.appleAuthorized(credential))
+                case .failed(let isCanceled):
+                    accountViewModel.send(.appleAuthorizationFailed(isCanceled: isCanceled))
+                }
+            }
+        case .pushAccount:
+            isAccountPresented = true
+        case .popAccount:
+            isAccountPresented = false
+        case .toast(let message):
+            toastCenter.show(message)
+        }
+        accountViewModel.send(.routeHandled)
     }
 }
 

@@ -8,7 +8,7 @@ import {
 } from '@firebase/rules-unit-testing';
 import { deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 
-const COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications'];
+const COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'];
 
 let env;
 

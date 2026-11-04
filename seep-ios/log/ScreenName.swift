@@ -38,6 +38,8 @@ extension ScreenName {
     static let appLock = ScreenName(rawValue: "app_lock")
     static let writeCategorySheet = ScreenName(rawValue: "write_category_sheet")
     static let settings = ScreenName(rawValue: "settings")
+    /// 마이 탭 > 계정 화면 (GH-93)
+    static let account = ScreenName(rawValue: "account")
     static let widgetGuide = ScreenName(rawValue: "widget_guide")
     static let controlGuide = ScreenName(rawValue: "control_guide")
     static let license = ScreenName(rawValue: "license")

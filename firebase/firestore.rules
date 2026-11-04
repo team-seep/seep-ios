@@ -28,9 +28,9 @@ service cloud.firestore {
     }
 
     match /{collection}/{docId} {
-      allow read: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications'] && isMember();
-      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications'] && createsOwnDocument();
-      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications'] && isMember() && keepsMembership();
+      allow read: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember();
+      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && createsOwnDocument();
+      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember() && keepsMembership();
       allow delete: if false;
     }
 

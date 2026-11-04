@@ -47,13 +47,14 @@
 		3362B1A07BE1FB725289E6B7 /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D647A93C1AF24889464AD56E /* UserDefaultsUtils.swift */; };
 		36218A40FEEE82E1061C69BD /* SmallWriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD930DF5924415798E8A6107 /* SmallWriteWidget.swift */; };
 		379B59510031717BAB88F6C5 /* MediumVerticalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0A36C6FC4EB6FC43495644 /* MediumVerticalProvider.swift */; };
+		3B1548722D045929B9DA8F1A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E8205C70C402DD756C02B9 /* AccountManager.swift */; };
 		3B1F87CBDD7B43EDCF8BE0BE /* WriteCategoryAppEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF76406E88CB28A0D07DE0E /* WriteCategoryAppEnum.swift */; };
 		3B7ECD8C7BF493EAC1909D2E /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD659E527A34F0EDD07BD903 /* LockScreenDday.swift */; };
 		3C267C82FD919776BA022C18 /* LockScreenRemainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D6968F08B0BE8274E9F7E4 /* LockScreenRemainWidget.swift */; };
 		3F45F96A3BC4CC5C674ACD6A /* PlaceSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5AF9691AD529C765F8159 /* PlaceSearchService.swift */; };
 		40AA3824BF768E816955DBDC /* WishDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48ED5CAEAEA4EA60C0DB7A8 /* WishDTO.swift */; };
 		4388D3CF99DBD2E4476AC9F3 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 17943DFA7A0271537BB5101E /* GoogleService-Info-Dev.plist */; };
-		442AF9A4019A47D373BAB195 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 72AB1605C70D29F7880D82FE /* FirebaseCrashlytics */; };
+		442AF9A4019A47D373BAB195 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E86363A938DA39D1682DD4F0 /* FirebaseAuth */; };
 		449FEA640AD6A5A7B4495857 /* SleepingWishPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49439CA357DB568D1C7B9A0 /* SleepingWishPolicyTests.swift */; };
 		44FE6D2F0FB37F8A97D540DA /* WishlistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CC85013733AF0439C1F69 /* WishlistItemView.swift */; };
 		45BFF1459FE57813D75801D0 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC435558EEAE1A9076A4C93D /* CalendarManager.swift */; };
@@ -76,9 +77,10 @@
 		607A340B32C2CEF0EF06A3DA /* AppLockPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6102DCA8E5147C14D3FEF /* AppLockPolicyTests.swift */; };
 		60877E665E671838B92EAF39 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DFD7B45D5FBF4F43DB70C8 /* Assets.swift */; };
 		611E2BE3A825C07835813CD9 /* OpenWriteIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B093AFC50FA2060B99FCAE /* OpenWriteIntent.swift */; };
-		62A6428AAD04D88DA86C9459 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = D6B016D28061392C5F4D53B0 /* GRDB */; };
+		62A6428AAD04D88DA86C9459 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3DD627C661CE1DF57B9645B4 /* RealmSwift */; };
 		6327ACE285428DB9BD4BEC4C /* NotificationLanguageRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C19CC851A234D697272B48 /* NotificationLanguageRefresh.swift */; };
 		63C9E308A6C87A229F558308 /* AppleSDGothicNeoEB00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6D8C7D8C2D396C89B9DD3C2 /* AppleSDGothicNeoEB00.ttf */; };
+		65CFBC3D710AA5DF48BA92DE /* RemoteAccountDataEraser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF995E791BA4D5DAB3E0A5BB /* RemoteAccountDataEraser.swift */; };
 		65F41A4306F4701A90DE5E84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49EE461C41B94111C300529C /* Assets.xcassets */; };
 		6B0A7EDFB405FC3FCFCA5218 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC485367DA7F62CFF607785 /* EmptyView.swift */; };
 		6B500050C4291E51CCE4DF17 /* CheckWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9CA9E184F6FB4B871F9126 /* CheckWidget.swift */; };
@@ -114,7 +116,7 @@
 		8E9DE55C4F66918ED6486701 /* DatabaseMigrationFollowUpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517FBAD224D304A301C405F7 /* DatabaseMigrationFollowUpTests.swift */; };
 		8F8E2EFED2C15C2F36DF3EE8 /* WidgetCheckStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD696F603FD35A5250F514 /* WidgetCheckStore.swift */; };
 		909F135ACAB676371BB5019E /* SmallWriteEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5C3E2A4C475FB539351F8 /* SmallWriteEntryView.swift */; };
-		915507AB6E596309EECC557A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E21409DA6ED08DD34C2AD098 /* FirebaseMessaging */; };
+		915507AB6E596309EECC557A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 72AB1605C70D29F7880D82FE /* FirebaseCrashlytics */; };
 		918025421A5015C408ADA2C7 /* WidgetWishRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4936DD5791912BB787ED537 /* WidgetWishRepository.swift */; };
 		91A192B6F0EF185CFB7923C1 /* WishSearchMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4483FBB4587419C44229EC23 /* WishSearchMatcher.swift */; };
 		954F2C732ED9F22C74932482 /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5FC1B86FB99D8053289ED /* WishStepDTO.swift */; };
@@ -138,6 +140,7 @@
 		B09273AEBF6C86F811F6A3E9 /* MediumHorizontalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85596EA0CBC45954AA2875FC /* MediumHorizontalProvider.swift */; };
 		B16F850B93314CA0516E00AE /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74EFEC4E1202225C55BDFB2 /* AuthenticationManager.swift */; };
 		B3E72AC878A64D55ADAD2B47 /* LinkMetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF1186A9BA89800BAB1DAB3 /* LinkMetadataProvider.swift */; };
+		B552FA6B5EAC162691455C19 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C045AE245B9C32B1D948D876 /* NetworkMonitor.swift */; };
 		B65330B3F48DA05B5B7898E6 /* WriteDeepLinkOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5F23DA45285F754329ECE2 /* WriteDeepLinkOpener.swift */; };
 		B71A205F8CD638F6981B4666 /* SmallRemainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F773BB5C9218B02C914FC1 /* SmallRemainWidget.swift */; };
 		B87D88A0EF176B3F91B6024B /* Localization.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3C715901586E040B2599D40C /* Localization.xcstrings */; };
@@ -146,6 +149,7 @@
 		BCB3EE574B4DC3ED56A9FB4B /* LockScreenDdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F95A4A8D97CBD4FAF766E5A /* LockScreenDdayTests.swift */; };
 		BCB788FFD7A1A7DD2BFCD588 /* RealmConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECB48C9236072F4A871449 /* RealmConfiguration.swift */; };
 		BD6C0E0312B8ED56DFBD7E3A /* WishStepDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5FC1B86FB99D8053289ED /* WishStepDTO.swift */; };
+		BEEB6CDDC32DE486974605A6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = D6B016D28061392C5F4D53B0 /* GRDB */; };
 		C0A528BF4941293913A44857 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44205927637E7F7B8EA4815A /* Icons.xcassets */; };
 		C1B527CDF5F11EB0B6C02E83 /* WriteIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645ABC420820466D0E889898 /* WriteIntentTests.swift */; };
 		C3068FA7D079FBF756EA493E /* WishDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48ED5CAEAEA4EA60C0DB7A8 /* WishDTO.swift */; };
@@ -159,7 +163,7 @@
 		D459C28C1B5F8F66166DEF58 /* GoogleService-Info-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1DAC59AF8F4FF0957B8D892 /* GoogleService-Info-Prod.plist */; };
 		D517CFA4DBE4E4E01EC43764 /* WishLinkInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7658BB1377E9DF8151DBE6D /* WishLinkInput.swift */; };
 		D62E51CF137F667BCBD6DB9C /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B05690B9CF9787D99F4E015 /* Badge.swift */; };
-		D7362B605776B2658D937FB5 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = F0B2B6FC67429CFCFA3C4396 /* FirebaseRemoteConfig */; };
+		D7362B605776B2658D937FB5 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E21409DA6ED08DD34C2AD098 /* FirebaseMessaging */; };
 		D7D83FB5BEC39B445EA74334 /* ManualOrderRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E90D1AFA81C500DD92752 /* ManualOrderRepositoryTests.swift */; };
 		DAC71C79E6CAAEA343916FA6 /* WishRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225CF347AB0286BABCA34092 /* WishRecordStore.swift */; };
 		DB901745AC67D919D0AAE5F5 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3786A42D0AAFB707E59C4F /* ArrayExtension.swift */; };
@@ -178,9 +182,10 @@
 		EAEBED975D3AE8922ACC4E16 /* YearReviewPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62CC09F7435DF8F43099421 /* YearReviewPeriod.swift */; };
 		EB2CD223509693B1F9BD4A8C /* DisplayDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B539B646E6CBAC6680C8B8A /* DisplayDate.swift */; };
 		EC2B39CE1395C7374C87972E /* SeepNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F981AA80218A166D02A985 /* SeepNotification.swift */; };
+		EDAEBCBBE6C1DBDD42CD28F4 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777EE9DE1CE4841E350534D9 /* Account.swift */; };
 		EEA485BF8E9EB3838725EA4B /* MediumHorizontalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156991FA4036DFCF63F61DF9 /* MediumHorizontalEntryView.swift */; };
 		EFA46DB0B045762FCAB2CE7B /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CAE09D01213997BE41FF22C0 /* RealmSwift */; };
-		F1ACA69971D1442DEC49DA89 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3DD627C661CE1DF57B9645B4 /* RealmSwift */; };
+		F1ACA69971D1442DEC49DA89 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = F0B2B6FC67429CFCFA3C4396 /* FirebaseRemoteConfig */; };
 		F4015BB5F8D7914BC33CB34F /* MockLinkMetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F042578075AEA8FA1A304D /* MockLinkMetadataProvider.swift */; };
 		F4B2509688F280546907570F /* DatabaseMigrationFollowUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFF4412FAC798CE506FF4DE /* DatabaseMigrationFollowUp.swift */; };
 		F5172C08734987E180699473 /* WidgetCheckRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A76421C94B6DE792B20DF18 /* WidgetCheckRepositoryTests.swift */; };
@@ -313,6 +318,7 @@
 		74A95376FB46640A1E6D46AD /* CheckWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidgetProvider.swift; sourceTree = "<group>"; };
 		74AFD27867913B4467B336CA /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		7657F2B495457B7469B35C32 /* LegacyImportRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyImportRecovery.swift; sourceTree = "<group>"; };
+		777EE9DE1CE4841E350534D9 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7A76421C94B6DE792B20DF18 /* WidgetCheckRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepositoryTests.swift; sourceTree = "<group>"; };
 		7CB5AF9691AD529C765F8159 /* PlaceSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchService.swift; sourceTree = "<group>"; };
 		83AB08DF5039EC2617125784 /* seep-iosTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "seep-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -350,6 +356,8 @@
 		BAABAD5DDE849088ADEDB345 /* CommonError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonError.swift; sourceTree = "<group>"; };
 		BD659E527A34F0EDD07BD903 /* LockScreenDday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenDday.swift; sourceTree = "<group>"; };
 		BD7B3F693592092D06E8E632 /* seep-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "seep-ios.entitlements"; sourceTree = "<group>"; };
+		BF995E791BA4D5DAB3E0A5BB /* RemoteAccountDataEraser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAccountDataEraser.swift; sourceTree = "<group>"; };
+		C045AE245B9C32B1D948D876 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		C42B6BAFC44B0F9D31B1AF78 /* WishRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRepository.swift; sourceTree = "<group>"; };
 		C48ED5CAEAEA4EA60C0DB7A8 /* WishDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDTO.swift; sourceTree = "<group>"; };
 		C5532E460ABEFF059D3B21EE /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -371,6 +379,7 @@
 		DD48731168132E7A8F9F476D /* WishPhotoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishPhotoStorage.swift; sourceTree = "<group>"; };
 		DECAAC748EA45DD07828E4BA /* WishPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishPlace.swift; sourceTree = "<group>"; };
 		DEE92DEBA2CA156F85D1C6E8 /* LegacyRealmReimportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmReimportTests.swift; sourceTree = "<group>"; };
+		E3E8205C70C402DD756C02B9 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		E49439CA357DB568D1C7B9A0 /* SleepingWishPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepingWishPolicyTests.swift; sourceTree = "<group>"; };
 		E830FEEE7DB4F9C9A231393B /* CheckWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckWidgetEntry.swift; sourceTree = "<group>"; };
 		EC32FFB39B88B46718974327 /* MediumHorizontalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumHorizontalEntry.swift; sourceTree = "<group>"; };
@@ -466,11 +475,12 @@
 				28FC9BB67E1715C021AF29AA /* FirebaseAnalytics in Frameworks */,
 				23E2150538C71C9118041AD0 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				7CFFB949CEB5C0D6569412F7 /* FirebaseAppCheck in Frameworks */,
-				442AF9A4019A47D373BAB195 /* FirebaseCrashlytics in Frameworks */,
-				915507AB6E596309EECC557A /* FirebaseMessaging in Frameworks */,
-				D7362B605776B2658D937FB5 /* FirebaseRemoteConfig in Frameworks */,
-				F1ACA69971D1442DEC49DA89 /* RealmSwift in Frameworks */,
-				62A6428AAD04D88DA86C9459 /* GRDB in Frameworks */,
+				442AF9A4019A47D373BAB195 /* FirebaseAuth in Frameworks */,
+				915507AB6E596309EECC557A /* FirebaseCrashlytics in Frameworks */,
+				D7362B605776B2658D937FB5 /* FirebaseMessaging in Frameworks */,
+				F1ACA69971D1442DEC49DA89 /* FirebaseRemoteConfig in Frameworks */,
+				62A6428AAD04D88DA86C9459 /* RealmSwift in Frameworks */,
+				BEEB6CDDC32DE486974605A6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,6 +791,7 @@
 		CADFA0AC24604C52EE89D8CB /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D21240302A090C2B108618B6 /* Account */,
 				23F426FF6F07845CEC7A3B58 /* AppLock */,
 				EDC72643E3448F0CADE477C7 /* Place */,
 				2D72111FCA04F6A749729FCF /* WishLink */,
@@ -788,6 +799,7 @@
 				EC435558EEAE1A9076A4C93D /* CalendarManager.swift */,
 				1EFF4412FAC798CE506FF4DE /* DatabaseMigrationFollowUp.swift */,
 				7657F2B495457B7469B35C32 /* LegacyImportRecovery.swift */,
+				C045AE245B9C32B1D948D876 /* NetworkMonitor.swift */,
 				08C19CC851A234D697272B48 /* NotificationLanguageRefresh.swift */,
 				5EF60DBAFC50211D098335E9 /* NotificationManager.swift */,
 				DD48731168132E7A8F9F476D /* WishPhotoStorage.swift */,
@@ -816,6 +828,16 @@
 				4687E3A17205ED50433A8C0D /* YearReviewSummary.swift */,
 			);
 			path = presentation;
+			sourceTree = "<group>";
+		};
+		D21240302A090C2B108618B6 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				777EE9DE1CE4841E350534D9 /* Account.swift */,
+				E3E8205C70C402DD756C02B9 /* AccountManager.swift */,
+				BF995E791BA4D5DAB3E0A5BB /* RemoteAccountDataEraser.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		D3472FF5074A0571F7BD6D9B /* lockscreen-widget */ = {
@@ -966,6 +988,7 @@
 				923C1749139FCF8828519AFC /* FirebaseAnalytics */,
 				985D40833CB0A1469D693396 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				DE43D1CA8E2C1AE366E85CAB /* FirebaseAppCheck */,
+				E86363A938DA39D1682DD4F0 /* FirebaseAuth */,
 				72AB1605C70D29F7880D82FE /* FirebaseCrashlytics */,
 				E21409DA6ED08DD34C2AD098 /* FirebaseMessaging */,
 				F0B2B6FC67429CFCFA3C4396 /* FirebaseRemoteConfig */,
@@ -1192,6 +1215,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDAEBCBBE6C1DBDD42CD28F4 /* Account.swift in Sources */,
+				3B1548722D045929B9DA8F1A /* AccountManager.swift in Sources */,
 				0A43805B84FDADF4B16323BD /* AmountFormatter.swift in Sources */,
 				A13E4809D1696147C03FC7B1 /* AppDatabase.swift in Sources */,
 				0820494162D6A5E1AFD12106 /* AppDelegate.swift in Sources */,
@@ -1216,6 +1241,7 @@
 				B3E72AC878A64D55ADAD2B47 /* LinkMetadataProvider.swift in Sources */,
 				A3F6EB8FAD2B517FBE767EC2 /* LinkPreviewCache.swift in Sources */,
 				3B7ECD8C7BF493EAC1909D2E /* LockScreenDday.swift in Sources */,
+				B552FA6B5EAC162691455C19 /* NetworkMonitor.swift in Sources */,
 				DF07FE6082525D2A90E9A4C2 /* NotificationDTO.swift in Sources */,
 				6327ACE285428DB9BD4BEC4C /* NotificationLanguageRefresh.swift in Sources */,
 				2B8293D3936E2DACA9440466 /* NotificationManager.swift in Sources */,
@@ -1224,6 +1250,7 @@
 				E68697057C3F6F48243A3DCC /* Preference.swift in Sources */,
 				7DCD3D0CC2972D34FAB71C0D /* PublisherExtension.swift in Sources */,
 				FD9FADA6838C420CE0B6E890 /* RealmConfiguration.swift in Sources */,
+				65CFBC3D710AA5DF48BA92DE /* RemoteAccountDataEraser.swift in Sources */,
 				763F3B2BD48A5574540DFE1B /* RemoteConfigRepository.swift in Sources */,
 				F98A239F3F4BE2692629EA9F /* SavingDTO.swift in Sources */,
 				05DAF96FEF014F92BEDD6610 /* SeepAppShortcuts.swift in Sources */,
@@ -1693,6 +1720,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7D81123D1C2AE915BE69BC32 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		E86363A938DA39D1682DD4F0 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7D81123D1C2AE915BE69BC32 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 		F0B2B6FC67429CFCFA3C4396 /* FirebaseRemoteConfig */ = {
 			isa = XCSwiftPackageProductDependency;

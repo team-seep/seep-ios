@@ -188,6 +188,16 @@ final class MockWishRepository: WishRepository {
         return deleteWishesResult
     }
 
+    // MARK: eraseAllLocalWishes (GH-93)
+
+    var eraseAllLocalWishesResult: Result<[Wish], RepositoryError> = .success([])
+    private(set) var eraseAllLocalWishesCallCount = 0
+
+    func eraseAllLocalWishes() -> Result<[Wish], RepositoryError> {
+        eraseAllLocalWishesCallCount += 1
+        return eraseAllLocalWishesResult
+    }
+
     // MARK: observeChanges (GH-99)
 
     private(set) var changeHandlers: [() -> Void] = []

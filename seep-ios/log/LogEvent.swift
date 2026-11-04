@@ -227,4 +227,14 @@ enum LogObjectId: String {
     case sidebarItem = "sidebar_item"
     /// 아이패드 레이아웃으로 처음 보일 때 (+type: three_column·two_column) (GH-99)
     case padLayout = "pad_layout"
+    /// 마이 탭 비회원 카드 "Apple로 계속하기" (GH-93)
+    case accountSignIn = "account_sign_in"
+    /// 마이 탭 회원 카드 → 계정 화면 (GH-93)
+    case accountCard = "account_card"
+    /// 계정 화면 "지금 동기화" (GH-93)
+    case syncNow = "sync_now"
+    /// 계정 화면 "로그아웃" (GH-93)
+    case logout = "logout"
+    /// 계정 화면 "계정 삭제" (GH-93)
+    case deleteAccount = "delete_account"
 }

@@ -68,7 +68,7 @@ final class LocalizationFoundationTests: XCTestCase {
 
     func test_GH100_TC1_SwiftGen호출부는_예전과같은한국어문구를돌려준다() {
         // Given / When / Then: 대표 문구 몇 개가 옮기기 전과 같다
-        XCTAssertEqual(Strings.Settings.title, "설정")
+        XCTAssertEqual(Strings.Settings.title, "마이") // GH-93 에서 "설정" → "마이"
         XCTAssertEqual(Strings.Home.EmptyTitle.wantToDo, "하고 싶은 것들을\n적어봐요!")
         XCTAssertEqual(Strings.Settings.Lock.titleFormat("Face ID"), "Face ID로 잠그기")
         XCTAssertEqual(Strings.notificationBodyFormat("제주도 가기"), "'제주도 가기' 하기로 한 것 잊지 않으셨나요?")

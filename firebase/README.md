@@ -5,7 +5,7 @@ Firestore·Storage 보안 규칙과 인덱스 (GH-93, 설계 `docs/architecture/
 
 | 파일 | 내용 |
 |---|---|
-| `firestore.rules` | `wishes`·`wishSteps`·`wishSavings`·`wishNotifications`(멤버만), `users/{uid}`(본인만), 문서 삭제 금지 |
+| `firestore.rules` | `wishes`·`wishSteps`·`wishSavings`·`wishNotifications`·`wishJournals`(멤버만), `users/{uid}`(본인만), 문서 삭제 금지 |
 | `firestore.indexes.json` | 컬렉션마다 `memberUids`(array-contains) + `serverUpdatedAt` |
 | `storage.rules` | `wishPhotos/{uid}/…` 본인만, 이미지·5MB 이하 |
 | `.firebaserc` | `dev` = `seep-dev`, `prod` = `seep-ios` |
