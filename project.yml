@@ -149,11 +149,13 @@ targets:
         product: FirebaseAnalyticsWithoutAdIdSupport
       - package: Firebase
         product: FirebaseAppCheck
-      # 로그인·계정·동기화 (GH-93). Storage 는 사진 단계에서 추가한다
+      # 로그인·계정·동기화·사진 동기화 (GH-93)
       - package: Firebase
         product: FirebaseAuth
       - package: Firebase
         product: FirebaseFirestore
+      - package: Firebase
+        product: FirebaseStorage
       - package: Firebase
         product: FirebaseCrashlytics
       - package: Firebase

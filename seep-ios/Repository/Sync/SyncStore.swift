@@ -103,6 +103,49 @@ final class SyncStore {
         }
     }
 
+    // MARK: 사진 업로드 큐 (설계 §7)
+
+    func pendingPhotoFileNames(limit: Int) -> [String] {
+        (try? database?.writer.read { db in
+            try String.fetchAll(db, sql: "SELECT fileName FROM photoOutbox ORDER BY enqueuedAt LIMIT ?", arguments: [limit])
+        }) ?? []
+    }
+
+    func pendingPhotoCount() -> Int {
+        (try? database?.writer.read { db in
+            try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM photoOutbox")
+        }).flatMap { $0 } ?? 0
+    }
+
+    func removePendingPhoto(_ fileName: String) {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: "DELETE FROM photoOutbox WHERE fileName = ?", arguments: [fileName])
+        }
+    }
+
+    /// 처음 로그인할 때 살아 있는 위시의 사진을 모두 큐에 넣는다
+    func enqueueAllPhotos() {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: """
+                INSERT OR IGNORE INTO photoOutbox (fileName, enqueuedAt)
+                SELECT photoFileName, updatedAt FROM wish WHERE photoFileName <> '' AND deletedAt IS NULL
+                """)
+        }
+    }
+
+    func clearPhotoOutbox() {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: "DELETE FROM photoOutbox")
+        }
+    }
+
+    /// 살아 있는 위시가 가리키는 사진 이름 (이 기기에 파일이 있는지는 부르는 쪽이 본다)
+    func referencedPhotoFileNames() -> [String] {
+        (try? database?.writer.read { db in
+            try String.fetchAll(db, sql: "SELECT DISTINCT photoFileName FROM wish WHERE photoFileName <> '' AND deletedAt IS NULL")
+        }) ?? []
+    }
+
     /// 처음 로그인할 때 올릴 로컬 전체(삭제 표시 포함, 설계 §6.3)
     func allDocuments() -> [SyncDocument] {
         (try? database?.writer.read { db in
@@ -123,6 +166,7 @@ final class SyncStore {
         }
         return (try? database.writer.write { db in
             let startSeq = try Int64.fetchOne(db, sql: "SELECT COALESCE(MAX(seq), 0) FROM syncOutbox") ?? 0
+            let photosBefore = Set(try String.fetchAll(db, sql: "SELECT fileName FROM photoOutbox"))
             var result = ApplyResult()
             var resendLocal: [(SyncCollection, String)] = []
             for document in ordered {
@@ -147,6 +191,10 @@ final class SyncStore {
                 }
             }
             try db.execute(sql: "DELETE FROM syncOutbox WHERE seq > ?", arguments: [startSeq])
+            // 받은 위시의 사진은 다른 기기가 올린 것이다. 이 기기 업로드 큐에 남기지 않는다
+            for fileName in try String.fetchAll(db, sql: "SELECT fileName FROM photoOutbox") where !photosBefore.contains(fileName) {
+                try db.execute(sql: "DELETE FROM photoOutbox WHERE fileName = ?", arguments: [fileName])
+            }
             for (collection, id) in resendLocal {
                 try db.execute(
                     sql: "INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES (?, ?, ?)",

@@ -33,6 +33,8 @@ extension ParameterName {
     static let errorType = ParameterName(rawValue: "error_type")
     /// db_migration 이 돈 계기: launch / retry / reimport (GH-96)
     static let trigger = ParameterName(rawValue: "trigger")
+    /// sync_push 에서 올린 사진 수, sync_pull 에서 내려받은 사진 수 (GH-93 3단계)
+    static let photoCount = ParameterName(rawValue: "photo_count")
     /// 원본 Realm 의 위시 수. wish_count 와 다르면 이전에서 빠진 것이 있다 (GH-96 R-15)
     static let realmWishCount = ParameterName(rawValue: "realm_wish_count")
     /// 재이전으로 새로 들어간 위시 수·하위 줄 수 (GH-96 R-7)

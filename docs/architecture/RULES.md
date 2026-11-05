@@ -148,7 +148,7 @@ migrator.registerMigration("v2") { db in
 - CI(`BASE_REF` 지정 시): 레코드가 바뀌었는데 마이그레이션이 늘지 않았으면 실패. base에 있던 마이그레이션 이름이 사라졌으면 실패.
 - 라벨 `schema-change`가 붙어 리뷰어가 마이그레이션 코드를 먼저 본다. 마이그레이션 TC(구버전 데이터 → 신버전 실행)는 유닛(메모리 DB에서 `migrator`)과 자동화 TC로 넣는다 (`docs/process/e2e-and-manual-tests.md`).
 
-**예외** — 저장되지 않는 computed 프로퍼티·메서드·주석만 바꿨다면 스크립트가 실패해도 PR 본문에 사유를 적고 리뷰어가 승인한다. `appMetadata`(1회 이전 표시 등 이 기기에만 있는 값)와 동기화 큐 `syncOutbox`·`syncState`(GH-93, 이 기기 전용)는 동기화 대상이 아니라 1·2번 규칙에서 뺀다(`syncOutbox`는 순서를 위해 정수 키).
+**예외** — 저장되지 않는 computed 프로퍼티·메서드·주석만 바꿨다면 스크립트가 실패해도 PR 본문에 사유를 적고 리뷰어가 승인한다. `appMetadata`(1회 이전 표시 등 이 기기에만 있는 값)와 동기화 큐 `syncOutbox`·`syncState`·사진 업로드 큐 `photoOutbox`(GH-93, 이 기기 전용)는 동기화 대상이 아니라 1·2번 규칙에서 뺀다(`syncOutbox`는 순서를 위해 정수 키).
 **새 컬럼은 기본값을 둔다** — 기기마다 앱 버전이 달라도 동기화로 받은 문서에 없는 필드가 비지 않게 한다(GH-93, 설계 §6.4).
 **이전용 Realm** — GH-79 전 데이터를 옮기는 `Repository/LegacyRealm/`(Realm DTO·`schemaVersion` 7·`migrationBlock`)은 고치지 않는다. 이전 실패율을 본 뒤 후속 이슈에서 지운다.
 

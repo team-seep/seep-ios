@@ -182,6 +182,27 @@ final class AppDatabase {
             }
         }
 
+        // GH-93 3단계: 사진 업로드 큐 (설계 §7). 이 기기 전용 테이블이라 updatedAt·deletedAt이 없다(R4 예외)
+        migrator.registerMigration("v8") { db in
+            try db.execute(sql: """
+                CREATE TABLE photoOutbox (
+                  fileName TEXT PRIMARY KEY NOT NULL,
+                  enqueuedAt DOUBLE NOT NULL
+                )
+                """)
+            // 어느 화면에서 붙였든(적기·상세·공유) 위시에 사진 이름이 생기면 큐에 넣는다
+            for event in ["INSERT", "UPDATE OF photoFileName"] {
+                let name = event == "INSERT" ? "insert" : "update"
+                try db.execute(sql: """
+                    CREATE TRIGGER wish_after_\(name)_photo_outbox AFTER \(event) ON wish
+                    WHEN NEW.photoFileName <> ''
+                    BEGIN
+                      INSERT OR IGNORE INTO photoOutbox (fileName, enqueuedAt) VALUES (NEW.photoFileName, NEW.updatedAt);
+                    END
+                    """)
+            }
+        }
+
         return migrator
     }
 

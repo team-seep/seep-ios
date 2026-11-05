@@ -43,26 +43,52 @@ final class FakeSyncServer: RemoteWishStore, @unchecked Sendable {
 }
 
 /// 기기 한 대: 메모리 DB + 실제 저장소·엔진
-private final class Device {
+/// Storage 대역. 경로 `wishPhotos/{uid}/{fileName}`를 키로 바이트를 둔다
+final class FakePhotoServer: RemotePhotoStore, @unchecked Sendable {
+    private(set) var files: [String: Data] = [:]
+    private(set) var uploadCallCount = 0
+    private(set) var downloadRequests: [String] = []
+    var failUpload = false
+
+    func upload(fileURL: URL, fileName: String, uid: String) async throws {
+        uploadCallCount += 1
+        if failUpload { throw FakeSyncServer.Failure() }
+        files["wishPhotos/\(uid)/\(fileName)"] = Data(fileName.utf8)
+    }
+
+    func download(fileName: String, uid: String) async throws -> Data {
+        downloadRequests.append(fileName)
+        guard let data = files["wishPhotos/\(uid)/\(fileName)"] else { throw RemotePhotoError.notFound }
+        return data
+    }
+}
+
+final class SyncTestDevice {
     let database: AppDatabase
     let repository: WishRepositoryImpl
     let store: SyncStore
     let engine: SyncEngine
     let notifications = MockNotificationManager()
     let logManager = MockLogManager()
+    let photoStorage = MockWishPhotoStorage()
     private(set) var widgetReloadCount = 0
+    private(set) var photosDidDownloadCount = 0
     var clock: Date
 
-    init(server: FakeSyncServer, clock: Date) throws {
+    init(server: FakeSyncServer, photoServer: FakePhotoServer = FakePhotoServer(), clock: Date) throws {
         self.clock = clock
         database = try AppDatabase.makeInMemory()
         store = SyncStore(database: database)
         var nowBox: (() -> Date)?
         repository = WishRepositoryImpl(database: database, now: { nowBox?() ?? Date() })
         var reload: (() -> Void)?
+        var photosDownloaded: (() -> Void)?
         engine = SyncEngine(dependency: .init(
             store: store,
             remote: server,
+            photos: photoServer,
+            photoStorage: photoStorage,
+            photosDidDownload: { photosDownloaded?() },
             isEnabled: { true },
             wishRepository: repository,
             notificationManager: notifications,
@@ -72,6 +98,13 @@ private final class Device {
         ))
         nowBox = { [unowned self] in self.clock }
         reload = { [unowned self] in self.widgetReloadCount += 1 }
+        photosDownloaded = { [unowned self] in self.photosDidDownloadCount += 1 }
+    }
+
+    /// 사진을 붙인 위시를 저장한다(파일은 이미 저장된 것으로 본다)
+    func addWishWithPhoto(id: String, fileName: String) throws {
+        photoStorage.existingFileNames.insert(fileName)
+        _ = try repository.addWish(Wish(id: id, title: "사진 \(id)", photoFileName: fileName)).get()
     }
 
     func tick(_ seconds: TimeInterval = 60) {
@@ -87,19 +120,22 @@ private final class Device {
 /// 동기화 v1 (GH-93 R-32 ~ R-39, 설계 §5·§6). 기기 두 대 = 메모리 DB 두 개 + 메모리 서버 하나
 final class SyncEngineTests: XCTestCase {
     private var server: FakeSyncServer!
-    private var deviceA: Device!
-    private var deviceB: Device!
+    private var photoServer: FakePhotoServer!
+    private var deviceA: SyncTestDevice!
+    private var deviceB: SyncTestDevice!
     private let start = Date(timeIntervalSinceReferenceDate: 800_000_000)
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         server = FakeSyncServer()
-        deviceA = try Device(server: server, clock: start)
-        deviceB = try Device(server: server, clock: start.addingTimeInterval(5))
+        photoServer = FakePhotoServer()
+        deviceA = try SyncTestDevice(server: server, photoServer: photoServer, clock: start)
+        deviceB = try SyncTestDevice(server: server, photoServer: photoServer, clock: start.addingTimeInterval(5))
     }
 
     override func tearDown() {
         server = nil
+        photoServer = nil
         deviceA = nil
         deviceB = nil
         super.tearDown()
