@@ -14,7 +14,7 @@ enum EventName: String {
     case accountDelete = "account_delete"
     /// 동기화 올리기 한 번 (+count, photo_count, trigger) (GH-93)
     case syncPush = "sync_push"
-    /// 동기화 받기 한 번 (+count, photo_count, trigger) (GH-93)
+    /// 동기화 받기 한 번 (+count, photo_count, purge_count, is_full_pull, trigger) (GH-93)
     case syncPull = "sync_pull"
     /// 동기화 실패 (+error_type: sign_in·push·pull·photo_upload·photo_download) (GH-93)
     case syncError = "sync_error"

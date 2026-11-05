@@ -7,6 +7,8 @@ final class FakeSyncServer: RemoteWishStore, @unchecked Sendable {
     struct Stored {
         var fields: [String: SyncValue]
         var serverUpdatedAt: RemoteTimestamp
+        /// Firestore TTL 필드. 삭제 표시 문서에만 있다
+        var purgeAt: Date?
     }
 
     private(set) var documents: [SyncCollection: [String: Stored]] = [:]
@@ -24,7 +26,11 @@ final class FakeSyncServer: RemoteWishStore, @unchecked Sendable {
         for document in documents {
             var stored = self.documents[document.collection]?[document.id]?.fields ?? [:]
             stored.merge(document.fields) { _, new in new }
-            self.documents[document.collection, default: [:]][document.id] = Stored(fields: stored, serverUpdatedAt: timestamp)
+            self.documents[document.collection, default: [:]][document.id] = Stored(
+                fields: stored,
+                serverUpdatedAt: timestamp,
+                purgeAt: document.isDeleted ? metadata.purgeAt : nil
+            )
         }
     }
 
@@ -33,6 +39,11 @@ final class FakeSyncServer: RemoteWishStore, @unchecked Sendable {
             .filter { entry in cursor.map { entry.value.serverUpdatedAt > $0 } ?? true }
             .sorted { ($0.value.serverUpdatedAt, $0.key) < ($1.value.serverUpdatedAt, $1.key) }
             .map { SyncDocument(collection: collection, id: $0.key, fields: $0.value.fields, serverUpdatedAt: $0.value.serverUpdatedAt) }
+    }
+
+    /// TTL 정책이 문서를 지운 것처럼 서버에서 뺀다
+    func purge(_ collection: SyncCollection, id: String) {
+        documents[collection]?[id] = nil
     }
 
     /// 다른 앱 버전이 쓴 문서처럼 서버에 바로 넣는다

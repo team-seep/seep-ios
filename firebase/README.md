@@ -30,6 +30,12 @@ firebase emulators:exec --only auth,firestore,storage,functions --project demo-s
 
 - `eraseUserData.test.js`: 지우는 로직을 에뮬레이터 Firestore·Storage에 직접 돌린다 (TC-43·44)
 - `trigger.test.js`: Auth 에뮬레이터에서 사용자를 지우면 함수가 돌아 데이터가 지워진다 (TC-45)
+- `wishPhotoCleanup.test.js`: 위시를 지우거나 사진을 바꾸면 예전 사진이 지워지고, 늦게 올라온 옛 값이면 지우지 않는다 (TC-49)
+
+### 삭제 표시 TTL
+
+`firestore.indexes.json`의 `fieldOverrides`가 5개 컬렉션의 `purgeAt`에 TTL 정책을 켠다(색인은 끈다). 앱이 삭제 표시를 올릴 때 `purgeAt` = 올린 시각 + 90일을 쓴다.
+TTL 삭제는 시각이 지난 뒤 보통 24시간 안에 일어나고, 지운 문서는 읽기 비용 없이 삭제 1건으로 센다. 정책을 처음 켜면 적용까지 시간이 걸린다(콘솔 Firestore → TTL에서 확인).
 
 ### 왜 탈퇴 표시를 남기나
 

@@ -93,4 +93,15 @@ struct SyncDocument: Equatable {
 struct SyncMetadata: Equatable {
     let ownerUid: String
     let schemaVersion: String
+    /// 삭제 표시 문서의 Firestore TTL 시각(`purgeAt`). 이 시각이 지나면 서버가 문서를 지운다 (설계 §6.5)
+    let purgeAt: Date
+}
+
+/// 삭제 표시 정리 기준 (GH-93 4단계, 설계 §6.5)
+enum TombstonePolicy {
+    /// 서버 TTL·로컬 물리 삭제 모두 삭제 표시 후 90일
+    static let retention: TimeInterval = 90 * 24 * 60 * 60
+    /// 마지막으로 받은 지 이만큼 지난 기기는 증분 대신 전체를 다시 받는다.
+    /// TTL 시각은 올린 기기의 시계로 정해지므로 기기 사이 시계 차이만큼 90일보다 여유를 둔다
+    static let fullPullAfter: TimeInterval = 80 * 24 * 60 * 60
 }

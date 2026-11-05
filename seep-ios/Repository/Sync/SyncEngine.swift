@@ -21,6 +21,10 @@ struct SyncReport: Equatable {
     var changedWishIds: Set<String> = []
     var photosUploaded = 0
     var photosDownloaded = 0
+    /// 오래 안 켠 기기라 증분 대신 전체를 받았다 (R-45)
+    var isFullPull = false
+    /// 물리 삭제한 로컬 줄 (R-44, R-45)
+    var purged = 0
     /// 실패한 단계(push·pull). nil 이면 성공 또는 건너뜀
     var failedStage: String?
     var isSkipped = false
@@ -136,6 +140,11 @@ actor SyncEngine: SyncEngineProtocol {
             // 로그인 전에도 트리거는 쌓인다. 처음 로그인하면 전체를 올리므로 비워 둔다 (설계 §5)
             store.clearOutbox()
             store.clearPhotoOutbox()
+            // 어느 계정에도 묶인 적 없는 기기는 삭제 표시를 서버에 알릴 일이 없다. 묶인 채 로그아웃한 기기는
+            // 다시 로그인할 때 삭제 표시를 올려야 해서 남긴다
+            if store.value(SyncStore.StateKey.boundUid) == nil {
+                purgeTombstones()
+            }
             return SyncReport(isSkipped: true)
         }
         guard dependency.isEnabled() else { return SyncReport(isSkipped: true) }
@@ -162,8 +171,12 @@ actor SyncEngine: SyncEngineProtocol {
             logPush(report, trigger: trigger)
             return report
         }
+        report.isFullPull = needsFullPull()
+        if report.isFullPull {
+            store.clearCursors()
+        }
         do {
-            try await pullAll(uid: uid, into: &report)
+            try await pullAll(uid: uid, into: &report, reconcile: report.isFullPull)
         } catch {
             report.failedStage = "pull"
             logPush(report, trigger: trigger)
@@ -171,6 +184,7 @@ actor SyncEngine: SyncEngineProtocol {
             return report
         }
         await downloadMissingPhotos(uid: uid, into: &report)
+        report.purged += purgeTombstones()
         finish(report, trigger: trigger)
         return report
     }
@@ -178,7 +192,23 @@ actor SyncEngine: SyncEngineProtocol {
     // MARK: - Private
 
     private func metadata(_ uid: String) -> SyncMetadata {
-        SyncMetadata(ownerUid: uid, schemaVersion: store.schemaVersion)
+        SyncMetadata(
+            ownerUid: uid,
+            schemaVersion: store.schemaVersion,
+            purgeAt: dependency.now().addingTimeInterval(TombstonePolicy.retention)
+        )
+    }
+
+    /// 마지막으로 받은 지 오래되면 그사이 서버에서 TTL 로 지워진 삭제 표시를 증분으로는 받을 수 없다 (R-45)
+    private func needsFullPull() -> Bool {
+        guard let last = store.value(SyncStore.StateKey.lastSyncedAt).flatMap(Double.init) else { return false }
+        return dependency.now().timeIntervalSinceReferenceDate - last > TombstonePolicy.fullPullAfter
+    }
+
+    /// 삭제 표시 후 90일 지났고 이미 올린 로컬 줄을 지운다 (R-44)
+    @discardableResult
+    private func purgeTombstones() -> Int {
+        store.purgeTombstones(deletedBefore: dependency.now().addingTimeInterval(-TombstonePolicy.retention))
     }
 
     private func uploadAll(uid: String, progress: @escaping @Sendable (Int, Int) -> Void) async throws {
@@ -208,13 +238,18 @@ actor SyncEngine: SyncEngineProtocol {
         }
     }
 
-    /// 컬렉션을 모두 받은 뒤 한 트랜잭션에 적용하고, 알림 다시 예약은 위시마다 한 번만 한다
-    private func pullAll(uid: String, into report: inout SyncReport) async throws {
+    /// 컬렉션을 모두 받은 뒤 한 트랜잭션에 적용하고, 알림 다시 예약은 위시마다 한 번만 한다.
+    /// `reconcile`(전체 다시 받기)이면 서버에 없는 로컬 줄을 지운다
+    private func pullAll(uid: String, into report: inout SyncReport, reconcile: Bool = false) async throws {
         var received: [SyncCollection: [SyncDocument]] = [:]
         for collection in SyncCollection.allCases {
             received[collection] = try await dependency.remote.pull(collection, uid: uid, after: store.cursor(collection))
         }
         let documents = SyncCollection.allCases.flatMap { received[$0] ?? [] }
+        // 받기가 모두 성공한 뒤에만 정리한다. 일부만 받고 정리하면 못 받은 줄까지 지운다
+        if reconcile {
+            removeRowsMissingFromServer(received: received, into: &report)
+        }
         guard !documents.isEmpty else { return }
         report.pulled += documents.count
 
@@ -226,6 +261,21 @@ actor SyncEngine: SyncEngineProtocol {
             let deferred = result.deferred.filter { $0.collection == collection }
             store.setCursor(Self.cursor(after: page, deferred: deferred) ?? store.cursor(collection), for: collection)
         }
+    }
+
+    /// 서버에서 TTL 로 지워진 위시는 이 기기에서도 지운다. 살아 있던 위시면 알림·사진도 정리한다
+    private func removeRowsMissingFromServer(received: [SyncCollection: [SyncDocument]], into report: inout SyncReport) {
+        let missing = store.rowsMissing(fromServer: received.mapValues { Set($0.map(\.id)) })
+        guard !missing.isEmpty else { return }
+        let wishIds = missing[.wish] ?? []
+        let alive = wishIds.compactMap(dependency.wishRepository.fetchWish(id:))
+        store.deleteRows(missing)
+        for wish in alive {
+            dependency.notificationManager.cancelNotifications(wish: wish)
+        }
+        wishIds.forEach(dependency.photoStorage.deletePhotos(wishId:))
+        report.purged += missing.values.reduce(0) { $0 + $1.count }
+        report.changedWishIds.formUnion(alive.map(\.id))
     }
 
     /// 업로드 큐의 사진을 올린다. 실패한 사진은 큐에 남겨 다음 동기화에서 다시 올리고, 문서 동기화는 막지 않는다
@@ -280,6 +330,10 @@ actor SyncEngine: SyncEngineProtocol {
     private func rescheduleNotifications(before: [Wish], changed: Set<String>) {
         for wish in before where changed.contains(wish.id) {
             dependency.notificationManager.cancelNotifications(wish: wish)
+            // 다른 기기에서 지운 위시면 이 기기에 남은 사진 파일도 지운다 (R-42)
+            if dependency.wishRepository.fetchWish(id: wish.id) == nil {
+                dependency.photoStorage.deletePhotos(wishId: wish.id)
+            }
         }
         for id in changed {
             guard let wish = dependency.wishRepository.fetchWish(id: id), !wish.isSuccess else { continue }
@@ -296,7 +350,14 @@ actor SyncEngine: SyncEngineProtocol {
         dependency.logManager.sendEvent(event: CustomEvent(
             screen: .sync,
             name: .syncPull,
-            extraParameters: [.count: report.pulled, .photoCount: report.photosDownloaded, .trigger: trigger.rawValue]
+            extraParameters: [
+                .count: report.pulled,
+                .photoCount: report.photosDownloaded,
+                .purgeCount: report.purged,
+                // GA 는 불 값을 따로 다루지 않아 0·1 로 보낸다
+                .isFullPull: report.isFullPull ? 1 : 0,
+                .trigger: trigger.rawValue
+            ]
         ))
     }
 

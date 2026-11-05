@@ -17,7 +17,9 @@ final class FirestoreRemoteWishStore: RemoteWishStore {
         static let memberUids = "memberUids"
         static let serverUpdatedAt = "serverUpdatedAt"
         static let schemaVersion = "schemaVersion"
-        static let serverOnly: Set<String> = [ownerUid, memberUids, serverUpdatedAt, schemaVersion]
+        /// TTL 정책 필드 (firestore.indexes.json `fieldOverrides`). 삭제 표시 문서에만 쓴다
+        static let purgeAt = "purgeAt"
+        static let serverOnly: Set<String> = [ownerUid, memberUids, serverUpdatedAt, schemaVersion, purgeAt]
     }
 
     /// Firestore 배치 한도(500)보다 조금 작게
@@ -42,6 +44,8 @@ final class FirestoreRemoteWishStore: RemoteWishStore {
                 data[Field.memberUids] = [metadata.ownerUid]
                 data[Field.schemaVersion] = metadata.schemaVersion
                 data[Field.serverUpdatedAt] = FieldValue.serverTimestamp()
+                // 살아 있는 문서는 TTL 필드를 지운다. 늦게 올라온 옛 값이 삭제 표시를 잠시 덮어도 서버가 살아 있는 문서를 지우지 않게 한다
+                data[Field.purgeAt] = document.isDeleted ? Timestamp(date: metadata.purgeAt) : FieldValue.delete()
                 let reference = firestore.collection(document.collection.collectionName).document(document.id)
                 batch.setData(data, forDocument: reference, merge: true)
             }

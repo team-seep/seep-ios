@@ -155,6 +155,58 @@ final class SyncStore {
         }) ?? []
     }
 
+    // MARK: 삭제 표시 정리 (설계 §6.5)
+
+    /// `cutoff` 전에 삭제 표시했고 이미 올린(아웃박스에 없는) 줄을 물리 삭제한다. 지운 위시의 하위 줄은 CASCADE 로 같이 지워진다.
+    /// 지운 줄 수를 돌려준다
+    @discardableResult
+    func purgeTombstones(deletedBefore cutoff: Date) -> Int {
+        (try? database?.writer.write { db in
+            var count = 0
+            // 하위 줄을 먼저 지워야 위시 CASCADE 로 지워진 줄이 수에 섞이지 않는다
+            for collection in SyncCollection.allCases.reversed() {
+                try db.execute(
+                    sql: """
+                        DELETE FROM \(collection.tableName)
+                        WHERE deletedAt IS NOT NULL AND deletedAt < ?
+                          AND NOT EXISTS (SELECT 1 FROM syncOutbox WHERE tableName = ? AND rowId = \(collection.tableName).id)
+                        """,
+                    arguments: [cutoff.timeIntervalSinceReferenceDate, collection.tableName]
+                )
+                count += db.changesCount
+            }
+            return count
+        }) ?? 0
+    }
+
+    /// 전체 다시 받기에서 서버에 없는 로컬 줄. 아직 안 올린(아웃박스에 있는) 줄은 뺀다.
+    /// 서버에서 TTL 로 지워진 삭제 표시라서, 이 기기에서도 지워야 한다 (R-45)
+    func rowsMissing(fromServer received: [SyncCollection: Set<String>]) -> [SyncCollection: [String]] {
+        (try? database?.writer.read { db in
+            var missing: [SyncCollection: [String]] = [:]
+            for collection in SyncCollection.allCases {
+                let ids = try String.fetchAll(db, sql: """
+                    SELECT id FROM \(collection.tableName) AS row
+                    WHERE NOT EXISTS (SELECT 1 FROM syncOutbox WHERE tableName = ? AND rowId = row.id)
+                    """, arguments: [collection.tableName])
+                let notOnServer = ids.filter { !(received[collection]?.contains($0) ?? false) }
+                if !notOnServer.isEmpty { missing[collection] = notOnServer }
+            }
+            return missing
+        }) ?? [:]
+    }
+
+    /// 줄을 물리 삭제한다(위시는 하위 줄까지). 삭제라 아웃박스 트리거가 불리지 않는다
+    func deleteRows(_ rows: [SyncCollection: [String]]) {
+        _ = try? database?.writer.write { db in
+            for collection in SyncCollection.allCases.reversed() {
+                for id in rows[collection] ?? [] {
+                    try db.execute(sql: "DELETE FROM \(collection.tableName) WHERE id = ?", arguments: [id])
+                }
+            }
+        }
+    }
+
     // MARK: 받은 문서 적용
 
     /// 줄 단위 LWW(`updatedAt`) + 삭제 우선으로 한 트랜잭션에 적용한다 (설계 §6.2).
@@ -174,7 +226,8 @@ final class SyncStore {
                     let parentId = document.wishId ?? ""
                     let parentExists = try Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM wish WHERE id = ?)", arguments: [parentId]) ?? false
                     guard parentExists else {
-                        result.deferred.append(document)
+                        // 부모 없는 삭제 표시는 적용할 것이 없다. 부모가 TTL 로 먼저 지워졌을 수 있어, 미루면 커서가 영영 막힌다
+                        if !document.isDeleted { result.deferred.append(document) }
                         continue
                     }
                 }

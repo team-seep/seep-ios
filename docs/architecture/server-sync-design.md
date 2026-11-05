@@ -81,7 +81,7 @@
 | Cloud Storage | 위시 사진 | **Blaze 요금제가 필요하다**(Spark에서는 버킷 접근 불가). 무료 사용량은 Blaze에서도 그대로 있다 |
 | App Check (App Attest) | 정식 앱에서 온 요청만 받기 | 패키지(`FirebaseAppCheck`)는 이미 들어와 있다 |
 | Remote Config | `sync_enabled` 킬 스위치, 점진 출시 | 이미 `RemoteConfigRepository`가 있다 |
-| Cloud Functions | 계정 삭제 정리(`eraseDeletedUser`), (3단계) 공개 피드·신고 | 1·2단계는 계정 삭제 정리 하나 |
+| Cloud Functions | 계정 삭제 정리(`eraseDeletedUser`), 위시 사진 정리(`cleanupWishPhotoOnUpdate`), (나중) 공개 피드·신고 | |
 
 Firebase 프로젝트는 **dev / prod 두 개**로 나눈다. Debug 번들(`macgongmon.seep-ios.dev`)은 dev 프로젝트, Release 번들은 prod 프로젝트에 붙는다. 보안 규칙·인덱스는 레포의 `firebase/`(`firestore.rules`, `firestore.indexes.json`, `storage.rules`)에 두고 CI에서 `firebase deploy --only firestore,storage`로 반영한다.
 
@@ -230,9 +230,11 @@ DELETE FROM syncOutbox WHERE seq > startSeq   -- 방금 적용하며 트리거�
 
 ### 6.5 삭제 표시 정리 (GH-79에서 미뤄 둔 것)
 
-- 서버: 삭제 표시가 있고 `serverUpdatedAt`이 90일 지난 문서는 Firestore **TTL 정책**으로 지운다.
-- 로컬: 삭제 표시 후 push가 끝났고 90일 지난 줄은 물리 삭제한다(CASCADE로 하위 줄도 같이).
-- 커서가 90일보다 오래된 기기(오래 안 켠 기기)는 증분 대신 **전체 다시 받기**를 한다. 그러지 않으면 그사이 지워진 위시가 그 기기에 남는다.
+- 서버: 삭제 표시를 올릴 때 TTL 필드 `purgeAt`(올린 시각 + 90일)을 같이 쓰고, 5개 컬렉션의 Firestore **TTL 정책**(`firestore.indexes.json` `fieldOverrides`, 색인 없음)이 그 시각이 지난 문서를 지운다. TTL은 시각이 필드에 있어야 해서 `serverUpdatedAt`을 바로 쓸 수 없다. 살아 있는 문서를 올릴 때는 `purgeAt`을 지운다(늦게 올라온 옛 값이 삭제 표시를 잠시 덮어도 살아 있는 문서가 지워지지 않게).
+- 로컬: 삭제 표시 후 90일 지났고 이미 올린(아웃박스에 없는) 줄은 동기화 받기가 끝날 때 물리 삭제한다(CASCADE로 하위 줄도 같이). 어느 계정에도 묶인 적 없는 비회원 기기도 정리한다. 계정에 묶인 채 로그아웃한 기기는 다시 로그인할 때 삭제 표시를 올려야 해서 남긴다.
+- **마지막으로 받은 지 80일**(`lastSyncedAt`)이 지난 기기는 증분 대신 **전체 다시 받기**를 하고, 서버에 없고 아직 안 올린 것도 아닌 로컬 줄을 지운다(알림 취소·사진 파일 삭제). 그러지 않으면 그사이 TTL로 사라진 삭제 표시를 못 받아 지운 위시가 그 기기에 남는다. 커서(서버 시각) 대신 마지막 받은 시각을 보는 이유: 바뀐 게 없는 계정은 커서가 오래돼도 매번 전체를 받을 필요가 없다. 90일이 아니라 80일인 이유: `purgeAt`은 올린 기기의 시계로 정해져 기기 사이 시계 차이만큼 여유를 둔다.
+- 부모 위시 없이 온 하위 줄의 삭제 표시는 미루지 않고 건너뛴다. 부모가 TTL로 먼저 지워졌으면 영영 오지 않아 커서가 막힌다.
+- `sync_pull`에 `purge_count`(물리 삭제한 줄)·`is_full_pull`(0·1)을 더해 전체 다시 받기가 얼마나 자주 일어나는지(읽기 비용) 본다.
 
 ## 7. 사진
 
@@ -241,7 +243,8 @@ DELETE FROM syncOutbox WHERE seq > startSeq   -- 방금 적용하며 트리거�
 - 받은 위시의 사진은 다른 기기가 올린 것이라 적용할 때 이 기기 큐에서 뺀다. 처음 로그인하면 살아 있는 위시의 사진을 모두 큐에 넣는다. 비회원·로그아웃이면 큐를 비운다.
 - 받기: pull 뒤에(실행·포그라운드·수동) 살아 있는 위시가 가리키는데 이 기기에 파일이 없는 사진을 한 번에 20장 받는다. 서버에 아직 없으면(notFound) 오류로 치지 않고 다음 동기화에서 다시 본다. 받으면 `wishPhotosDidDownload` 알림으로 목록을 다시 그린다(DB가 바뀌지 않아 관찰에 안 잡힘).
 - 사진을 받기 전에 그 위시를 고쳐 저장해도 사진 이름을 지우지 않는다(폼은 사진이 없는 것처럼 보이지만, 사용자가 사진을 건드리지 않았으면 이름을 그대로 둔다). 지우면 다른 기기의 사진까지 사라진다.
-- 삭제: 위시 삭제 표시가 서버에 반영되면 Storage 파일도 지운다(6.5 정리 때 같이). 사진을 바꿔 남은 옛 파일도 그때 정리한다.
+- 삭제: Cloud Function `cleanupWishPhotoOnUpdate`(1세대 Firestore `wishes/{id}` 고치기 트리거)가 서버에서 지운다. 삭제 표시가 새로 붙으면 그 사진을, 사진 이름이 바뀌면(바꾸기·지우기) 예전 사진을 지운다. 늦게 올라온 옛 값(`updatedAt`이 더 작음)이 사진 이름을 바꾸면 지우지 않는다 — 더 새 기기가 다시 올려 되돌릴 때 그 파일이 있어야 한다. 앱이 아니라 서버에서 하는 이유: 오프라인 기기·옛 앱 버전과 상관없이 한 곳에서 처리하고, 앱은 바꾸기 전 사진 이름을 동기화 때 알지 못한다.
+- 다른 기기에서 지운 위시를 받으면 이 기기의 사진 파일(`{위시id}-*`)도 지운다.
 - `WishPhotoStorage`는 프로토콜을 그대로 두고 받은 파일을 넣는 `importPhoto(data:fileName:)`만 더한다. 서버 쪽은 `RemotePhotoStore`(`FirebaseRemotePhotoStore`, Storage 경로 `wishPhotos/{uid}/{fileName}`)가 맡는다.
 - 같이 이루기(5단계)에서는 남의 위시 사진 경로가 주인 uid라, 로컬에 주인 uid를 두거나 문서의 `ownerUid`로 받아야 한다.
 
