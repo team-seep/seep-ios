@@ -32,6 +32,26 @@ final class WishRepositoryTests: XCTestCase {
         Date(timeIntervalSinceReferenceDate: 790_000_000 + Double(day) * 86_400)
     }
 
+    // MARK: GH-93 TC18
+
+    func test_GH93_TC18_이기기싶지우기는_삭제표시가아니라_위시와하위줄을모두지운다() throws {
+        // Given
+        try add(Wish(id: "wish-1", title: "위시", steps: [WishStep(id: "step-1", title: "단계", order: 0)]))
+        try add(Wish(id: "wish-2", title: "지운 위시"))
+        sut.deleteWish(id: "wish-2")
+        _ = try sut.addJournal(wishId: "wish-1", text: "오늘 한 줄").get()
+
+        // When
+        let erased = try sut.eraseAllLocalWishes().get()
+
+        // Then: 살아 있던 위시만 돌려주고(알림·사진 정리용), 줄은 삭제 표시까지 모두 사라진다
+        XCTAssertEqual(erased.map(\.id), ["wish-1"])
+        let snapshot = try database.snapshot()
+        XCTAssertTrue(snapshot.wishes.isEmpty)
+        XCTAssertTrue(snapshot.steps.isEmpty)
+        XCTAssertTrue(snapshot.journals.isEmpty)
+    }
+
     // MARK: GH-79 TC8
 
     func test_GH79_TC8_추가한위시를카테고리로읽으면_마감순으로보인다() throws {

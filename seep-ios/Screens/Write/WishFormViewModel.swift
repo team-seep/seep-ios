@@ -23,6 +23,9 @@ final class WishFormViewModel {
     private var isSaving = false
     /// 열었을 때의 입력값. 닫을 때 바뀐 게 있는지 본다 (GH-70 R-18)
     private var initialDraft: WishFormDraft?
+    /// 이름은 있는데 이 기기에 파일이 아직 없는 사진(다른 기기에서 붙여 내려받기 전, GH-93 R-41).
+    /// 화면엔 없는 것으로 보이지만, 사용자가 사진을 건드리지 않고 저장하면 이름을 그대로 둔다. 비우면 다른 기기의 사진까지 사라진다
+    private var photoNotYetDownloaded: String?
 
     init(config: Config, dependency: Dependency = Dependency()) {
         self.config = config
@@ -75,6 +78,9 @@ final class WishFormViewModel {
             if !wish.link.isEmpty { revealed.insert(.link) }
             if wish.targetAmount > 0 { revealed.insert(.targetAmount) }
             state.revealedBlocks = revealed
+            if !wish.photoFileName.isEmpty, dependency.photoStorage.photoURL(fileName: wish.photoFileName) == nil {
+                photoNotYetDownloaded = wish.photoFileName
+            }
         }
         initialDraft = draft
     }
@@ -264,6 +270,7 @@ final class WishFormViewModel {
             state.sheet = .hashtag
         case .pickPhoto(let data):
             state.photo = .picked(data)
+            photoNotYetDownloaded = nil
         case .pickPhotoFailed:
             route = .toast(WishPhotoStorageError.invalidImage.localizedDescription)
         case .tapPhoto:
@@ -352,6 +359,7 @@ final class WishFormViewModel {
             state.place = nil
         case .photo:
             state.photo = .none
+            photoNotYetDownloaded = nil
         case .letter:
             state.letter = nil
         }
@@ -554,7 +562,7 @@ final class WishFormViewModel {
         }
         switch state.photo {
         case .none:
-            finishSave(wishId: wishId, photoFileName: "", newFileName: nil)
+            finishSave(wishId: wishId, photoFileName: photoNotYetDownloaded ?? "", newFileName: nil)
         case .stored(let fileName):
             finishSave(wishId: wishId, photoFileName: fileName, newFileName: nil)
         case .picked(let data):

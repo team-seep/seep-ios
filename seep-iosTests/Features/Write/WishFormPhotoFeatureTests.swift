@@ -152,4 +152,39 @@ final class WishFormPhotoFeatureTests: WishFormFeatureTestCase {
         XCTAssertTrue(wishRepository.addedWishes.isEmpty)
         XCTAssertEqual(form.route, .toast(WishPhotoStorageError.writeFailed.localizedDescription))
     }
+
+    // MARK: GH-93 TC-47
+
+    /// 다른 기기에서 붙인 사진을 아직 내려받기 전 (GH-93 R-41)
+    private func notYetDownloadedWish() -> Wish {
+        photoStorage.existingFileNames = []
+        return Wish(id: "wish-1", title: "제주도 한 달 살기", photoFileName: "wish-1-remote.jpg")
+    }
+
+    func test_GH93_TC47_사진을받기전에고쳐저장해도_사진이름이남는다() {
+        // Given
+        let form = makeEdit(notYetDownloadedWish())
+
+        // When
+        form.send(.inputTitle("제주 두 달 살기"))
+        form.send(.tapSave)
+
+        // Then: 화면엔 사진이 없지만 이름은 그대로 저장한다
+        XCTAssertFalse(form.visibleBlocks.contains(.photo))
+        XCTAssertEqual(wishRepository.updatedWishes.first?.photoFileName, "wish-1-remote.jpg")
+        XCTAssertTrue(photoStorage.deletedFileNames.isEmpty)
+    }
+
+    func test_GH93_TC47_사진을받기전에새사진을고르면_새사진으로바뀐다() {
+        // Given
+        let form = makeEdit(notYetDownloadedWish())
+        photoStorage.savePhotoResult = .success("wish-1-new.jpg")
+
+        // When
+        form.send(.pickPhoto(imageData))
+        form.send(.tapSave)
+
+        // Then
+        XCTAssertEqual(wishRepository.updatedWishes.first?.photoFileName, "wish-1-new.jpg")
+    }
 }

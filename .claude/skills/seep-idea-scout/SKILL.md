@@ -54,17 +54,18 @@ gh issue list -R team-seep/seep-ios --label idea --state all --limit 1 --json nu
 
 ## 4. 서버리스 조건 (반드시 통과)
 
-seep은 서버가 없다. 아래 **허용 수단만으로** 구현되는 기획만 낸다.
+seep은 자체 서버가 없다. 기본은 비회원·로컬이고, 로그인하면 Firebase로 내 데이터만 동기화한다(GH-93). 아래 **허용 수단만으로** 구현되는 기획만 낸다.
 
 | 허용 | 불가 |
 |---|---|
 | 로컬 DB(GRDB), UserDefaults, App Group 공유 | 자체 서버·DB·API |
 | WidgetKit, App Intents, 단축어(Shortcuts), Live Activity(로컬 업데이트) | 원격 푸시(APNs 서버 발송) |
 | 로컬 알림(UNUserNotificationCenter) | 사용자 간 소셜·공유 피드·친구 |
-| 사진·카메라·공유 시트(UIActivityViewController) | 로그인·계정 |
+| 사진·카메라·공유 시트(UIActivityViewController) | 공개·소셜(남의 위시 보기), 새 로그인 수단 |
 | CloudKit(사용자 본인 iCloud) — 크기 L로 표시 | 외부 유료 API, 서버가 필요한 AI 호출 |
 | 기기 내 프레임워크(Vision, NaturalLanguage, MapKit, EventKit, Core ML) | 서버 측 크롤링·추천 |
 | Firebase Remote Config·Analytics (이미 연동됨) | |
+| Firebase Auth·Firestore·Storage로 **로그인 사용자의 내 데이터 동기화**(GH-93). 비회원에서도 기능이 동작해야 하고, 로그인이 필요한 부분은 비회원에게 안내만 | |
 
 통과하지 못하면 아이디어를 버리고 다시 고른다. 기획안에 **"서버리스 근거"** 를 한 줄로 적는다.
 

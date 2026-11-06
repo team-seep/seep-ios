@@ -19,6 +19,10 @@ private struct FinishedStubRemoteConfig: RemoteConfigRepository {
     func fetchLegacyRealmReimportToken() -> String {
         ""
     }
+
+    func fetchSyncEnabled() -> Bool {
+        false
+    }
 }
 
 /// 이룬 싶 탭 (GH-64 R-17 ~ R-22)

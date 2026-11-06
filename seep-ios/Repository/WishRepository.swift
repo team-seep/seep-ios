@@ -76,6 +76,10 @@ protocol WishRepository {
     /// DB 가 바뀔 때마다(어느 화면이 썼든) 메인 스레드에서 알린다. 돌려받은 값을 버리거나 `cancel()`하면 멈춘다.
     /// 아이패드에서 목록과 상세가 함께 보일 때 상세에서 바꾼 내용을 목록에 반영한다 (GH-99 TC-4)
     func observeChanges(_ onChange: @escaping () -> Void) -> WishChangeObservation?
+
+    /// 로그아웃·계정 삭제에서 "이 기기에서 싶 지우기" (GH-93 R-28, R-29).
+    /// 삭제 표시가 아니라 줄을 지운다(동기화로 서버에 지움이 퍼지지 않게). 지우기 전 살아 있던 위시를 돌려줘 알림·사진을 정리하게 한다
+    func eraseAllLocalWishes() -> Result<[Wish], RepositoryError>
 }
 
 /// `observeChanges` 구독. GRDB 타입을 화면 쪽에 드러내지 않으려고 감싼다
@@ -147,6 +151,16 @@ final class WishRepositoryImpl: WishRepository {
             for id in ids {
                 try WishRecordStore.softDeleteWish(id: id, now: now, in: db)
             }
+        }
+    }
+
+    func eraseAllLocalWishes() -> Result<[Wish], RepositoryError> {
+        return write { db, _ in
+            let wishes = try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes(), in: db)
+            // 일지는 외래키가 없어 따로 지운다. 단계·저금·알림은 CASCADE
+            try WishJournalRecord.deleteAll(db)
+            try WishRecord.deleteAll(db)
+            return wishes
         }
     }
 

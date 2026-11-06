@@ -99,6 +99,10 @@ struct StubRemoteConfigRepository: RemoteConfigRepository {
 
     func fetchAndActivate() async {}
 
+    func fetchSyncEnabled() -> Bool {
+        false
+    }
+
     func fetchYearReviewPeriod() -> YearReviewPeriod? {
         period
     }

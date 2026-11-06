@@ -1,0 +1,48 @@
+rules_version = '2';
+
+// GH-93 서버 데이터 규칙 (설계 docs/architecture/server-sync-design.md §4)
+// - 위시와 하위 문서는 최상위 컬렉션 + ownerUid·memberUids. 1단계에서 memberUids는 [ownerUid] 하나뿐
+// - 하위 문서도 memberUids를 복사해 둬서 부모 get() 없이 판정한다(읽기 비용)
+// - 문서 삭제는 막는다. 삭제는 deletedAt 표시로만 하고, 오래된 표시는 purgeAt TTL 정책이 지운다(4단계)
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // 탈퇴하면 Cloud Function이 deletedUsers/{uid}를 남긴다. 다른 기기에 남은 ID 토큰(최대 1시간)으로
+    // 지운 뒤에 문서가 다시 생기지 않게 쓰기를 막는다 (GH-93 R-29). 앱은 이 컬렉션을 읽거나 쓸 수 없다
+    function notDeleted() {
+      return !exists(/databases/$(database)/documents/deletedUsers/$(request.auth.uid));
+    }
+
+    function isMember() {
+      return signedIn() && request.auth.uid in resource.data.memberUids;
+    }
+
+    function createsOwnDocument() {
+      return signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.memberUids == [request.auth.uid];
+    }
+
+    // 멤버 변경은 같이 이루기(5단계)에서 별도 경로로 연다
+    function keepsMembership() {
+      return request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.memberUids == resource.data.memberUids;
+    }
+
+    match /{collection}/{docId} {
+      allow read: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember();
+      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && createsOwnDocument() && notDeleted();
+      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals'] && isMember() && keepsMembership() && notDeleted();
+      allow delete: if false;
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if signedIn() && request.auth.uid == uid && notDeleted();
+    }
+  }
+}

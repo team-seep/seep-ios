@@ -134,6 +134,122 @@ internal enum Strings {
   internal static var writePlaceholderTitleCategoryWantToGet: String { Strings.tr("Localization", "write_placeholder_title_category_want_to_get", fallback: "뭐 갖고 싶어요?") }
   /// 어디 가고 싶어요?
   internal static var writePlaceholderTitleCategoryWantToGo: String { Strings.tr("Localization", "write_placeholder_title_category_want_to_go", fallback: "어디 가고 싶어요?") }
+  internal enum Account {
+    /// Apple 계정
+    internal static var appleAccount: String { Strings.tr("Localization", "account.apple_account", fallback: "Apple 계정") }
+    /// 취소
+    internal static var cancel: String { Strings.tr("Localization", "account.cancel", fallback: "취소") }
+    /// 계정 삭제
+    internal static var delete: String { Strings.tr("Localization", "account.delete", fallback: "계정 삭제") }
+    /// 서버에 있는 싶과 사진이 모두 지워져요
+    internal static var deleteDescription: String { Strings.tr("Localization", "account.delete_description", fallback: "서버에 있는 싶과 사진이 모두 지워져요") }
+    /// 이 기기에서 싶 지우기
+    internal static var eraseLocal: String { Strings.tr("Localization", "account.erase_local", fallback: "이 기기에서 싶 지우기") }
+    /// 이 기기에 싶 남기기
+    internal static var keepLocal: String { Strings.tr("Localization", "account.keep_local", fallback: "이 기기에 싶 남기기") }
+    /// 마지막 동기화
+    internal static var lastSync: String { Strings.tr("Localization", "account.last_sync", fallback: "마지막 동기화") }
+    /// 로그아웃
+    internal static var logout: String { Strings.tr("Localization", "account.logout", fallback: "로그아웃") }
+    /// Apple로 로그인 · %@ 가입
+    internal static func signedUpFormat(_ p1: Any) -> String {
+      return Strings.tr("Localization", "account.signed_up_format", String(describing: p1), fallback: "Apple로 로그인 · %@ 가입")
+    }
+    /// 지금 동기화
+    internal static var syncNow: String { Strings.tr("Localization", "account.sync_now", fallback: "지금 동기화") }
+    /// 계정
+    internal static var title: String { Strings.tr("Localization", "account.title", fallback: "계정") }
+    internal enum AfterDelete {
+      /// 이 기기에서도 지우기
+      internal static var erase: String { Strings.tr("Localization", "account.after_delete.erase", fallback: "이 기기에서도 지우기") }
+      /// 계정을 삭제했어요. 이 기기에 있는 싶은 로그인하지 않고 계속 쓸 수 있어요.
+      internal static var message: String { Strings.tr("Localization", "account.after_delete.message", fallback: "계정을 삭제했어요. 이 기기에 있는 싶은 로그인하지 않고 계속 쓸 수 있어요.") }
+      /// 이 기기의 싶은 어떻게 할까요?
+      internal static var title: String { Strings.tr("Localization", "account.after_delete.title", fallback: "이 기기의 싶은 어떻게 할까요?") }
+    }
+    internal enum Card {
+      /// Apple로 계속하기
+      internal static var appleButton: String { Strings.tr("Localization", "account.card.apple_button", fallback: "Apple로 계속하기") }
+      /// 로그인하면 다른 기기에서도 내 싶을 볼 수 있어요
+      internal static var guestDescription: String { Strings.tr("Localization", "account.card.guest_description", fallback: "로그인하면 다른 기기에서도 내 싶을 볼 수 있어요") }
+      /// 로그인하지 않아도 지금처럼 이 기기에서 모두 쓸 수 있어요
+      internal static var guestNote: String { Strings.tr("Localization", "account.card.guest_note", fallback: "로그인하지 않아도 지금처럼 이 기기에서 모두 쓸 수 있어요") }
+      /// 로그인하지 않았어요
+      internal static var guestTitle: String { Strings.tr("Localization", "account.card.guest_title", fallback: "로그인하지 않았어요") }
+      /// 마지막 동기화 %@
+      internal static func lastSyncedFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "account.card.last_synced_format", String(describing: p1), fallback: "마지막 동기화 %@")
+      }
+      /// Apple로 로그인했어요
+      internal static var memberSubtitle: String { Strings.tr("Localization", "account.card.member_subtitle", fallback: "Apple로 로그인했어요") }
+      /// 아직 동기화하지 않았어요
+      internal static var notSynced: String { Strings.tr("Localization", "account.card.not_synced", fallback: "아직 동기화하지 않았어요") }
+      /// 로그인하는 중…
+      internal static var signingIn: String { Strings.tr("Localization", "account.card.signing_in", fallback: "로그인하는 중…") }
+      /// 동기화하지 못했어요. 계정 화면에서 다시 해 볼 수 있어요
+      internal static var syncFailed: String { Strings.tr("Localization", "account.card.sync_failed", fallback: "동기화하지 못했어요. 계정 화면에서 다시 해 볼 수 있어요") }
+      /// 동기화하는 중…
+      internal static var syncing: String { Strings.tr("Localization", "account.card.syncing", fallback: "동기화하는 중…") }
+      /// 올리는 중 · %1$lld / %2$lld
+      internal static func uploadingFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "account.card.uploading_format", p1, p2, fallback: "올리는 중 · %1$lld / %2$lld")
+      }
+      /// 인터넷에 연결되면 바뀐 싶 %lld개를 올릴게요
+      internal static func waitingFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "account.card.waiting_format", p1, fallback: "인터넷에 연결되면 바뀐 싶 %lld개를 올릴게요")
+      }
+    }
+    internal enum Delete {
+      /// 삭제
+      internal static var confirm: String { Strings.tr("Localization", "account.delete.confirm", fallback: "삭제") }
+      /// 서버에 있는 싶과 사진을 지우고 되돌릴 수 없어요. 확인을 위해 Apple 로그인을 한 번 더 할게요.
+      internal static var message: String { Strings.tr("Localization", "account.delete.message", fallback: "서버에 있는 싶과 사진을 지우고 되돌릴 수 없어요. 확인을 위해 Apple 로그인을 한 번 더 할게요.") }
+      /// 계정을 삭제할까요?
+      internal static var title: String { Strings.tr("Localization", "account.delete.title", fallback: "계정을 삭제할까요?") }
+    }
+    internal enum Error {
+      /// 계정을 삭제하지 못했어요. 잠시 후 다시 해 주세요.
+      internal static var delete: String { Strings.tr("Localization", "account.error.delete", fallback: "계정을 삭제하지 못했어요. 잠시 후 다시 해 주세요.") }
+      /// 로그인하지 못했어요. 잠시 후 다시 해 주세요.
+      internal static var signIn: String { Strings.tr("Localization", "account.error.sign_in", fallback: "로그인하지 못했어요. 잠시 후 다시 해 주세요.") }
+      /// 로그아웃하지 못했어요. 잠시 후 다시 해 주세요.
+      internal static var signOut: String { Strings.tr("Localization", "account.error.sign_out", fallback: "로그아웃하지 못했어요. 잠시 후 다시 해 주세요.") }
+    }
+    internal enum Logout {
+      /// 서버에 있는 싶은 그대로예요. 다시 로그인하면 돌아와요.
+      internal static var message: String { Strings.tr("Localization", "account.logout.message", fallback: "서버에 있는 싶은 그대로예요. 다시 로그인하면 돌아와요.") }
+      /// 로그아웃할까요?
+      internal static var title: String { Strings.tr("Localization", "account.logout.title", fallback: "로그아웃할까요?") }
+    }
+    internal enum OtherAccount {
+      /// 계정끼리 싶이 섞이지 않게, 이 기기의 싶을 지우고 이 계정의 싶을 받을게요.
+      internal static var message: String { Strings.tr("Localization", "account.other_account.message", fallback: "계정끼리 싶이 섞이지 않게, 이 기기의 싶을 지우고 이 계정의 싶을 받을게요.") }
+      /// 이 기기 싶 지우고 받기
+      internal static var replace: String { Strings.tr("Localization", "account.other_account.replace", fallback: "이 기기 싶 지우고 받기") }
+      /// 이 기기의 싶은 다른 계정 것이에요
+      internal static var title: String { Strings.tr("Localization", "account.other_account.title", fallback: "이 기기의 싶은 다른 계정 것이에요") }
+    }
+    internal enum Section {
+      /// 계정
+      internal static var account: String { Strings.tr("Localization", "account.section.account", fallback: "계정") }
+      /// 동기화
+      internal static var sync: String { Strings.tr("Localization", "account.section.sync", fallback: "동기화") }
+    }
+    internal enum Toast {
+      /// 계정을 삭제했어요
+      internal static var deleted: String { Strings.tr("Localization", "account.toast.deleted", fallback: "계정을 삭제했어요") }
+      /// 이 기기의 싶을 지웠어요
+      internal static var erased: String { Strings.tr("Localization", "account.toast.erased", fallback: "이 기기의 싶을 지웠어요") }
+      /// 인터넷에 연결되면 계정을 삭제할 수 있어요
+      internal static var offlineDelete: String { Strings.tr("Localization", "account.toast.offline_delete", fallback: "인터넷에 연결되면 계정을 삭제할 수 있어요") }
+      /// 로그인했어요
+      internal static var signedIn: String { Strings.tr("Localization", "account.toast.signed_in", fallback: "로그인했어요") }
+      /// 로그아웃했어요
+      internal static var signedOut: String { Strings.tr("Localization", "account.toast.signed_out", fallback: "로그아웃했어요") }
+      /// 동기화했어요
+      internal static var synced: String { Strings.tr("Localization", "account.toast.synced", fallback: "동기화했어요") }
+    }
+  }
   internal enum AppLock {
     /// 싶 잠금을 확인할게요
     internal static var reason: String { Strings.tr("Localization", "app_lock.reason", fallback: "싶 잠금을 확인할게요") }
@@ -1000,8 +1116,8 @@ internal enum Strings {
     internal static var finished: String { Strings.tr("Localization", "main_tab.finished", fallback: "이룬 싶") }
     /// 새로 이룬 싶이 있어요
     internal static var finishedDotAccessibility: String { Strings.tr("Localization", "main_tab.finished_dot_accessibility", fallback: "새로 이룬 싶이 있어요") }
-    /// 설정
-    internal static var settings: String { Strings.tr("Localization", "main_tab.settings", fallback: "설정") }
+    /// 마이
+    internal static var settings: String { Strings.tr("Localization", "main_tab.settings", fallback: "마이") }
     /// 싶
     internal static var wish: String { Strings.tr("Localization", "main_tab.wish", fallback: "싶") }
     /// 적기
@@ -1050,14 +1166,16 @@ internal enum Strings {
     internal static var contact: String { Strings.tr("Localization", "settings.contact", fallback: "문의하기") }
     /// 제어 센터 · 단축어로 적기
     internal static var controlGuide: String { Strings.tr("Localization", "settings.control_guide", fallback: "제어 센터 · 단축어로 적기") }
-    /// 싶은 서버 없이 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.
-    internal static var footer: String { Strings.tr("Localization", "settings.footer", fallback: "싶은 서버 없이 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.") }
+    /// 로그인하지 않으면 싶은 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.
+    internal static var footer: String { Strings.tr("Localization", "settings.footer", fallback: "로그인하지 않으면 싶은 이 기기에만 저장돼요. 앱을 지우면 적어 둔 싶도 함께 지워져요.") }
+    /// 싶은 이 기기와 내 계정에 함께 저장돼요. 다른 기기에서 같은 계정으로 로그인하면 같은 싶이 보여요.
+    internal static var footerMember: String { Strings.tr("Localization", "settings.footer_member", fallback: "싶은 이 기기와 내 계정에 함께 저장돼요. 다른 기기에서 같은 계정으로 로그인하면 같은 싶이 보여요.") }
     /// 오픈소스 라이선스
     internal static var license: String { Strings.tr("Localization", "settings.license", fallback: "오픈소스 라이선스") }
     /// 앱 평가하기
     internal static var rateApp: String { Strings.tr("Localization", "settings.rate_app", fallback: "앱 평가하기") }
-    /// 설정
-    internal static var title: String { Strings.tr("Localization", "settings.title", fallback: "설정") }
+    /// 마이
+    internal static var title: String { Strings.tr("Localization", "settings.title", fallback: "마이") }
     /// 버전
     internal static var version: String { Strings.tr("Localization", "settings.version", fallback: "버전") }
     /// 위젯 추가하는 법
