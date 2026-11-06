@@ -310,9 +310,12 @@ schemeTemplates:
 schemes:
   seep-ios:
     templates: [App]
-  # Xcode Cloud "개발앱 배포"가 이 이름으로 아카이브한다. Debug 로 아카이브하면 업로드가 실패해 Release 로 둔다
+  # Xcode Cloud "개발앱 배포"가 이 이름으로 아카이브한다. Debug 로 아카이브해야 번들이 macgongmon.seep-ios.dev 가 되어
+  # App Store Connect 개발 앱("싶-개발버전")의 Xcode Cloud 프로덕트로 잡힌다. Release 면 운영 앱으로 올라간다
   seep-ios-dev:
     templates: [App]
+    archive:
+      config: Debug
   # 번역이 빠진 문구를 대문자로 보여 준다 (GH-100 R-15)
   seep-ios-i18n-check:
     templates: [App]

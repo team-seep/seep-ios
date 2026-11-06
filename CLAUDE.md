@@ -31,7 +31,7 @@ xcodebuild build \
   -destination 'platform=iOS Simulator,id=<UDID>'
 ```
 - 시뮬레이터는 `xcrun simctl list devices available | grep iPhone`으로 먼저 확인한다. 기기명은 머신마다 다르다.
-- 스킴은 `seep-ios`(Debug = dev 번들 `macgongmon.seep-ios.dev` / Release = `macgongmon.seep-ios`, 모듈명은 둘 다 `seep_ios`). `seep-ios-dev`는 Xcode Cloud 개발앱 배포용(아카이브 Release), `seep-ios-i18n-check`는 다국어 점검용. 위젯은 `widgetExtension` 스킴.
+- 스킴은 `seep-ios`(Debug = dev 번들 `macgongmon.seep-ios.dev` / Release = `macgongmon.seep-ios`, 모듈명은 둘 다 `seep_ios`). `seep-ios-dev`는 Xcode Cloud 개발앱 배포용(아카이브 Debug → 개발 앱 "싶-개발버전"), `seep-ios-i18n-check`는 다국어 점검용. 위젯은 `widgetExtension` 스킴.
 - **프로젝트 파일은 XcodeGen이 만든다(GH-112, R10).** 원본은 루트 `project.yml`이고 `seep-ios.xcodeproj`는 `make project`(고정 버전 XcodeGen, `scripts/xcodegen.sh`)로 만든다. `project.pbxproj`·스킴을 직접 고치지 않는다. 둘 다 커밋하고, 다르면 CI "프로젝트 드리프트"가 실패한다.
   - 동기화 폴더(넣기만 하면 된다): `seep-ios/DesignSystem`(앱·위젯), `seep-ios/AppShell`(앱), `seep-ios/Screens`(앱), `seep-ios/model/Error`(앱·위젯), `seep-ios/log`(앱), `seep-iosTests/Features`·`seep-iosTests/Log`(테스트).
   - 그 밖의 폴더(`seep-ios/` 아래·`widget/`·`seep-iosTests/`)는 파일을 넣고 `make project`만 하면 그 폴더의 타깃에 들어간다.
