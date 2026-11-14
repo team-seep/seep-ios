@@ -106,8 +106,15 @@ extension WishFormViewModel {
         case tapPlace
         case selectPlace(WishPlace)
         case deletePlace
+        /// 태그 시트 기본 태그 칩 켜기·끄기. 시트는 닫지 않는다 (GH-136 R-2)
         case selectHashtag(HashtagType)
         case inputCustomHashtag(String)
+        /// 직접 입력 칸에서 완료 — 친 글자를 태그 칩으로 넣는다 (GH-136 R-2)
+        case submitCustomHashtag
+        /// 직접 입력 태그 칩의 x (GH-136 R-2)
+        case removeTag(String)
+        /// '전에 쓴 태그' 칩 (GH-136 R-2)
+        case selectRecentTag(String)
         case tapSave
         case tapClose
         case dismissSheet
@@ -175,9 +182,14 @@ extension WishFormViewModel {
         var place: WishPlace?
         var photo: WishFormPhoto = .none
         var letter: WishFormLetter?
-        var selectedHashtag: HashtagType?
-        var customHashtag = ""
-        var customHashtagError: String?
+        /// 고른 태그, 단 순서대로 (GH-136)
+        var tagSelection = WishTagSelection()
+        /// 태그 시트 직접 입력 칸에 친 글자. 완료하면 태그 칩이 된다
+        var customTagInput = ""
+        /// 태그 시트 안내(7자 넘음·최대 개수)
+        var tagError: String?
+        /// 전에 쓴 직접 입력 태그, 최근 것부터. 태그 시트를 열 때 읽는다 (GH-136 R-2)
+        var recentCustomTags: [String] = []
         var saveButtonState: WishFormSaveButtonState
         var sheet: WishFormSheet?
         /// 칩으로 꺼낸 메모·단계·링크·목표 금액 블록. 날짜·알림·장소는 값 자체로 펼침을 정한다
@@ -193,6 +205,8 @@ extension WishFormViewModel {
             }
         }
         var isAddStepEnabled: Bool { steps.count < WishStep.maxCount }
+        /// '전에 쓴 태그'에 보일 칩 — 이미 고른 태그는 뺀다
+        var suggestedTags: [String] { recentCustomTags.filter { !tagSelection.tags.contains($0) } }
     }
 
     struct Config {

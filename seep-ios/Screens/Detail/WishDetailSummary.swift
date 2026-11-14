@@ -92,10 +92,12 @@ struct WishDetailSummary: Equatable {
             ))
         }
 
-        let hashtag = wish.hashtag.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !hashtag.isEmpty {
-            let name = HashtagType(rawValue: hashtag)?.description ?? hashtag
-            items.append(.hashtag("#\(name)"))
+        // 태그를 모두 "#여행 #독서"처럼 한 칸에 보인다 (GH-136 R-5)
+        let tags = wish.tags
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        if !tags.isEmpty {
+            items.append(.hashtag(tags.map { "#" + HashtagType.displayName(for: $0) }.joined(separator: " ")))
         }
         return items
     }

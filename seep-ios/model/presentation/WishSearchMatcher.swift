@@ -13,11 +13,11 @@ enum WishSearchMatcher {
         return trimmed.isEmpty ? nil : trimmed
     }
 
-    /// 제목·메모·해시태그(저장값과 표시 이름) 중 하나에 검색어가 들어 있으면 true. `keyword`는 normalize 된 값이다
+    /// 제목·메모·태그 전부(저장값과 표시 이름, GH-136 R-5) 중 하나에 검색어가 들어 있으면 true. `keyword`는 normalize 된 값이다
     static func matches(wish: Wish, keyword: String) -> Bool {
         return contains(wish.title, keyword)
             || contains(wish.memo, keyword)
-            || hashtagTexts(wish.hashtag).contains { contains($0, keyword) }
+            || wish.tags.flatMap(hashtagTexts).contains { contains($0, keyword) }
     }
 
     /// 제목에서 처음 일치한 범위. 없으면 nil

@@ -161,7 +161,7 @@ private struct WishSearchResultRow: View {
                                 noDateText: Strings.homeNoDeanline
                             )
                             if !wish.hashtag.isEmpty {
-                                TagBadge(text: HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag)
+                                TagBadges(text: HashtagType.displayName(for: wish.hashtag), extraCount: wish.tags.count - 1)
                             }
                         }
                     }

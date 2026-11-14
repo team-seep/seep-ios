@@ -15,6 +15,21 @@ struct DdayBadge: View {
     }
 }
 
+/// 첫 태그 뱃지 + 나머지 태그 수 "+N" 뱃지 (GH-136 R-5). 태그가 여럿이어도 셀 폭을 넘기지 않게 하나만 이름을 보인다
+struct TagBadges: View {
+    let text: String
+    var extraCount: Int = 0
+
+    var body: some View {
+        HStack(spacing: 4) {
+            TagBadge(text: text)
+            if extraCount > 0 {
+                TagBadge(text: "+\(extraCount)")
+            }
+        }
+    }
+}
+
 /// 해시태그 뱃지 (디자인 시스템 TagBadge)
 struct TagBadge: View {
     let text: String

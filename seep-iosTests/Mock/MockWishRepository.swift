@@ -23,6 +23,7 @@ final class MockWishRepository: WishRepository {
     private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
     var searchWishesResult: [Wish] = []
     private(set) var searchWishesCalls: [String] = []
+    var recentCustomTagsResult: [String] = []
     /// 실제 구현처럼 [from, to) 안의 완료 위시만 골라 돌려준다
     var fetchFinishedWishesResult: [Wish] = []
     private(set) var fetchFinishedWishesCalls: [(from: Date, to: Date)] = []
@@ -97,6 +98,10 @@ final class MockWishRepository: WishRepository {
     func searchWishes(keyword: String) -> [Wish] {
         searchWishesCalls.append(keyword)
         return searchWishesResult
+    }
+
+    func fetchRecentCustomTags() -> [String] {
+        recentCustomTagsResult
     }
 
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {

@@ -16,65 +16,135 @@ struct WishFormError: View {
     }
 }
 
-/// 해시태그 칩 + 직접 입력 (레거시 해시태그 컬렉션뷰·`CustomHashtagField`)
+/// 태그 시트 내용: 기본 태그 칩(여러 개) + 직접 입력 태그 칩·입력 칸 + 전에 쓴 태그 (GH-136 R-2)
 struct WishFormHashtags: View {
-    let selected: HashtagType?
-    let custom: String
-    let customError: String?
+    let selection: WishTagSelection
+    let customInput: String
+    let error: String?
+    let suggestedTags: [String]
     let focus: FocusState<WishFormField?>.Binding
-    let onSelect: (HashtagType) -> Void
+    let onToggle: (HashtagType) -> Void
     let onInputCustom: (String) -> Void
+    let onSubmitCustom: () -> Void
+    let onRemove: (String) -> Void
+    let onSelectRecent: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             WishFormFlowLayout(spacing: 8) {
                 ForEach(HashtagType.array, id: \.self) { hashtag in
-                    let isSelected = hashtag == selected
+                    let isSelected = selection.contains(hashtag)
                     Button {
-                        onSelect(hashtag)
-                        focus.wrappedValue = nil
+                        onToggle(hashtag)
                     } label: {
-                        Text(verbatim: hashtag.description)
-                            .font(.appleExtraBold(size: 14))
-                            .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 6)
-                            .background(isSelected ? Color.seepBlue : Color.clear, in: RoundedRectangle(cornerRadius: 6))
-                            .overlay {
-                                if !isSelected {
-                                    RoundedRectangle(cornerRadius: 6).strokeBorder(Color.gray3, lineWidth: 1)
-                                }
-                            }
+                        TagChipLabel(text: hashtag.description, isSelected: isSelected)
                     }
                     .buttonStyle(.plain)
                     .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
             }
-            customField
-            WishFormError(message: customError)
+            WishFormFlowLayout(spacing: 8) {
+                ForEach(selection.customTags, id: \.self) { tag in
+                    Button {
+                        onRemove(tag)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text(verbatim: tag)
+                            Image(systemName: "xmark")
+                                .font(.system(size: 11, weight: .bold))
+                        }
+                        .font(.appleExtraBold(size: 14))
+                        .foregroundStyle(Color.onAccent)
+                        .padding(.leading, 8)
+                        .padding(.trailing, 6)
+                        .padding(.vertical, 6)
+                        .background(Color.seepBlue, in: RoundedRectangle(cornerRadius: 6))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(Text(Strings.WishDocument.HashtagSheet.removeFormat(tag)))
+                }
+                if !selection.isFull {
+                    customField
+                }
+            }
+            .padding(.top, 4)
+            WishFormError(message: error)
+            if !suggestedTags.isEmpty {
+                recentTags
+            }
         }
     }
 
     private var customField: some View {
         let isFocused = focus.wrappedValue == .hashtag
-        let isFilled = !custom.isEmpty && !isFocused
         return TextField(
             Strings.writePlaceholderHashtag,
-            text: Binding(get: { custom }, set: onInputCustom)
+            text: Binding(get: { customInput }, set: onInputCustom)
         )
         .font(.appleExtraBold(size: 14))
-        .foregroundStyle(isFilled ? Color.onAccent : Color.gray5)
+        .foregroundStyle(Color.gray5)
         .submitLabel(.done)
+        .onSubmit(onSubmitCustom)
         .focused(focus, equals: .hashtag)
         .fixedSize()
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
-        .background(isFilled ? Color.seepBlue : (isFocused ? Color.gray1 : Color.gray2), in: RoundedRectangle(cornerRadius: 6))
+        .background(isFocused ? Color.gray1 : Color.gray2, in: RoundedRectangle(cornerRadius: 6))
         .overlay {
             if isFocused {
                 RoundedRectangle(cornerRadius: 6).strokeBorder(Color.seepBlue, lineWidth: 1)
             }
         }
+    }
+
+    private var recentTags: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(Strings.WishDocument.HashtagSheet.recent)
+                .font(.appleMedium(size: 12))
+                .foregroundStyle(Color.gray4)
+            WishFormFlowLayout(spacing: 8) {
+                ForEach(suggestedTags, id: \.self) { tag in
+                    Button {
+                        onSelectRecent(tag)
+                    } label: {
+                        HStack(spacing: 2) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 11, weight: .bold))
+                            Text(verbatim: tag)
+                        }
+                        .font(.appleExtraBold(size: 14))
+                        .foregroundStyle(Color.gray4)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 6)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 6).strokeBorder(Color.gray3, style: StrokeStyle(lineWidth: 1, dash: [3, 2]))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .padding(.top, 12)
+    }
+}
+
+/// 기본 태그 칩. 고르면 seep-blue 바탕 + 흰 글자, 아니면 gray3 테두리 + gray4 글자
+private struct TagChipLabel: View {
+    let text: String
+    let isSelected: Bool
+
+    var body: some View {
+        Text(verbatim: text)
+            .font(.appleExtraBold(size: 14))
+            .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(isSelected ? Color.seepBlue : Color.clear, in: RoundedRectangle(cornerRadius: 6))
+            .overlay {
+                if !isSelected {
+                    RoundedRectangle(cornerRadius: 6).strokeBorder(Color.gray3, lineWidth: 1)
+                }
+            }
     }
 }
 
