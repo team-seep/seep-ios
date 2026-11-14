@@ -84,6 +84,9 @@ struct WishFormHashtags: View {
         .font(.appleExtraBold(size: 14))
         .foregroundStyle(Color.gray5)
         .submitLabel(.done)
+        // 태그는 친 그대로 저장한다 — 첫 글자 대문자·자동 고침이 끼어들면 "book"이 "Book"이 된다
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled()
         .onSubmit(onSubmitCustom)
         .focused(focus, equals: .hashtag)
         .fixedSize()

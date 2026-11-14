@@ -17,18 +17,19 @@ struct HomeTagFilterBar: View {
                     }
                 }
                 .padding(.horizontal, HomeLayout.horizontalInset)
+                // 여백까지 포함한 줄 전체를 맨 앞으로 — 칩에 맞추면 왼쪽 여백 20pt 가 밀려 'All' 이 가장자리에 붙는다
+                .id(ScrollStart.id)
             }
             .onChange(of: tags) { _, _ in
-                proxy.scrollTo(ChipID.all, anchor: .leading)
+                proxy.scrollTo(ScrollStart.id, anchor: .leading)
             }
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text(Strings.Home.TagFilter.accessibility))
     }
 
-    private enum ChipID: Hashable {
-        case all
-        case tag(String)
+    private enum ScrollStart {
+        static let id = "tag-filter-start"
     }
 
     private func chip(title: String, tag: String?) -> some View {
@@ -50,7 +51,6 @@ struct HomeTagFilterBar: View {
                 }
         }
         .buttonStyle(.plain)
-        .id(tag.map(ChipID.tag) ?? ChipID.all)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
