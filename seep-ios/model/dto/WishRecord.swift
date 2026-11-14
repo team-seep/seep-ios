@@ -113,7 +113,7 @@ struct WishJournalRecord: Codable, Equatable, FetchableRecord, PersistableRecord
     }
 }
 
-/// `wishTag` 테이블 한 줄. 위시에 붙인 태그 하나 (GH-136, 마이그레이션 v7).
+/// `wishTag` 테이블 한 줄. 위시에 붙인 태그 하나 (GH-136, 마이그레이션 v9).
 /// 일지처럼 동기화 대비로 `wishId`에 FK 를 두지 않고, 같은 이름도 UNIQUE 로 막지 않는다 — 중복은 쓰기에서 막는다 (R4)
 struct WishTagRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
     static let databaseTableName = "wishTag"
@@ -304,7 +304,7 @@ extension Wish {
             savings: WishSaving.latestFirst(savings.map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }),
             journals: WishJournal.latestFirst(journals.map { WishJournal(id: $0.id, text: $0.text, createdAt: $0.createdAt) }),
             memo: record.memo,
-            // 태그는 v7 부터 wishTag 가 원본이다. wish.hashtag 컬럼은 대표 태그를 같이 적어 두기만 한다
+            // 태그는 v9 부터 wishTag 가 원본이다. wish.hashtag 컬럼은 대표 태그를 같이 적어 두기만 한다
             tags: tags.sorted { $0.order < $1.order }.map(\.name),
             isSuccess: record.isSuccess,
             finishNote: record.finishNote,
