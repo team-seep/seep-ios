@@ -287,10 +287,11 @@ struct WishDocumentEditor: View {
         .sensoryFeedback(.impact(weight: .light), trigger: state.category)
     }
 
+    /// 메타 줄 태그 문구 "#여행 #일상 #독서" (GH-136 R-2)
     private var hashtagText: String? {
-        if !state.customHashtag.isEmpty { return "#" + state.customHashtag }
-        guard let hashtag = state.selectedHashtag else { return nil }
-        return "#" + hashtag.description
+        let tags = state.tagSelection.tags
+        guard !tags.isEmpty else { return nil }
+        return tags.map { "#" + HashtagType.displayName(for: $0) }.joined(separator: " ")
     }
 
     // MARK: 시트
@@ -346,14 +347,15 @@ struct WishDocumentEditor: View {
             FutureLetterSheet(viewModel: letterViewModel)
         case .hashtag:
             WishHashtagSheet(
-                selected: state.selectedHashtag,
-                custom: state.customHashtag,
-                customError: state.customHashtagError,
-                onSelect: {
-                    viewModel.send(.selectHashtag($0))
-                    viewModel.send(.dismissSheet)
-                },
+                selection: state.tagSelection,
+                customInput: state.customTagInput,
+                error: state.tagError,
+                suggestedTags: state.suggestedTags,
+                onToggle: { viewModel.send(.selectHashtag($0)) },
                 onInputCustom: { viewModel.send(.inputCustomHashtag($0)) },
+                onSubmitCustom: { viewModel.send(.submitCustomHashtag) },
+                onRemove: { viewModel.send(.removeTag($0)) },
+                onSelectRecent: { viewModel.send(.selectRecentTag($0)) },
                 onDone: { viewModel.send(.dismissSheet) }
             )
         }
@@ -390,32 +392,48 @@ struct WishDocumentEditor: View {
     }
 }
 
-/// 해시태그 시트: 추천 태그 + 직접 입력 (GH-70 R-4)
+/// 해시태그 시트: 기본 태그 여러 개 + 직접 입력 + 전에 쓴 태그 (GH-70 R-4, GH-136 R-2). 칩을 눌러도 닫히지 않고 '확인'으로 닫는다
 private struct WishHashtagSheet: View {
-    let selected: HashtagType?
-    let custom: String
-    let customError: String?
-    let onSelect: (HashtagType) -> Void
+    let selection: WishTagSelection
+    let customInput: String
+    let error: String?
+    let suggestedTags: [String]
+    let onToggle: (HashtagType) -> Void
     let onInputCustom: (String) -> Void
+    let onSubmitCustom: () -> Void
+    let onRemove: (String) -> Void
+    let onSelectRecent: (String) -> Void
     let onDone: () -> Void
 
     @FocusState private var focus: WishFormField?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text(Strings.WishDocument.HashtagSheet.title)
-                .font(.appleBold(size: 18))
-                .foregroundStyle(Color.gray5)
-            WishFormHashtags(
-                selected: selected,
-                custom: custom,
-                customError: customError,
-                focus: $focus,
-                onSelect: onSelect,
-                onInputCustom: onInputCustom
-            )
-            .onSubmit(onDone)
-            Spacer(minLength: 0)
+            HStack(alignment: .firstTextBaseline) {
+                Text(Strings.WishDocument.HashtagSheet.title)
+                    .font(.appleBold(size: 18))
+                    .foregroundStyle(Color.gray5)
+                Spacer(minLength: 8)
+                Text(Strings.WishDocument.HashtagSheet.countFormat(selection.tags.count, WishTagSelection.maxCount))
+                    .font(.appleMedium(size: 14))
+                    .foregroundStyle(Color.gray4)
+            }
+            ScrollView {
+                WishFormHashtags(
+                    selection: selection,
+                    customInput: customInput,
+                    error: error,
+                    suggestedTags: suggestedTags,
+                    focus: $focus,
+                    onToggle: onToggle,
+                    onInputCustom: onInputCustom,
+                    onSubmitCustom: onSubmitCustom,
+                    onRemove: onRemove,
+                    onSelectRecent: onSelectRecent
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .scrollBounceBehavior(.basedOnSize)
             SeepCTA(title: Strings.WishForm.dateConfirm, fillsWidth: true, action: onDone)
         }
         .padding(.horizontal, 20)

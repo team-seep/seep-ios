@@ -2,7 +2,7 @@ import Foundation
 
 import GRDB
 
-/// 위시와 하위 레코드(단계·저금·알림)를 한 묶음으로 읽고 쓴다. 앱·위젯 Repository 가 같이 쓴다 (GH-79 R-13).
+/// 위시와 하위 레코드(단계·저금·알림·일지·태그)를 한 묶음으로 읽고 쓴다. 앱·위젯 Repository 가 같이 쓴다 (GH-79 R-13).
 /// - 읽기는 삭제 표시가 없는 줄만 본다 (R-6)
 /// - 쓰기는 바뀐 줄과 부모 위시의 `updatedAt`을 갱신하고, 지우기는 `deletedAt`만 남긴다 (R-4, R-5)
 enum WishRecordStore {
@@ -45,6 +45,12 @@ enum WishRecordStore {
                 .fetchAll(db),
             by: \.wishId
         )
+        let tags = try Dictionary(
+            grouping: WishTagRecord
+                .filter(ids.contains(WishTagRecord.Columns.wishId) && WishTagRecord.Columns.deletedAt == nil)
+                .fetchAll(db),
+            by: \.wishId
+        )
 
         return records.map { record in
             Wish(
@@ -52,7 +58,8 @@ enum WishRecordStore {
                 steps: steps[record.id] ?? [],
                 savings: savings[record.id] ?? [],
                 notifications: notifications[record.id] ?? [],
-                journals: journals[record.id] ?? []
+                journals: journals[record.id] ?? [],
+                tags: tags[record.id] ?? []
             )
         }
     }
@@ -77,6 +84,9 @@ enum WishRecordStore {
         for journal in wish.journals {
             try WishJournalRecord(journal: journal, wishId: wish.id, updatedAt: now).insert(db)
         }
+        for (order, name) in wish.tags.enumerated() {
+            try WishTagRecord(name: name, wishId: wish.id, order: order, now: now).insert(db)
+        }
     }
 
     /// 살아 있는 위시 한 줄을 바꾸고 `updatedAt`을 갱신한다. 없으면(지웠으면) `targetNotFound`
@@ -99,6 +109,7 @@ enum WishRecordStore {
         try WishSavingRecord.filter(WishSavingRecord.Columns.wishId == id && WishSavingRecord.Columns.deletedAt == nil).updateAll(db, assignments)
         try WishNotificationRecord.filter(WishNotificationRecord.Columns.wishId == id && WishNotificationRecord.Columns.deletedAt == nil).updateAll(db, assignments)
         try WishJournalRecord.filter(WishJournalRecord.Columns.wishId == id && WishJournalRecord.Columns.deletedAt == nil).updateAll(db, assignments)
+        try WishTagRecord.filter(WishTagRecord.Columns.wishId == id && WishTagRecord.Columns.deletedAt == nil).updateAll(db, assignments)
     }
 
     static func aliveSteps(wishId: String, in db: Database) throws -> [WishStepRecord] {
@@ -140,6 +151,46 @@ enum WishRecordStore {
         for step in steps {
             try WishStepRecord(step: step, wishId: wishId, updatedAt: now).upsert(db)
         }
+    }
+
+    /// 수정 문서의 태그로 바꾼다 (GH-136). 이름으로 맞춰 남은 태그는 id·createdAt 을 그대로 두고 순서만 고치고,
+    /// 빠진 태그는 삭제 표시, 새 태그만 새 줄로 넣는다 — 다른 기기와 동기화할 때 같은 태그가 새 줄로 바뀌지 않게
+    static func replaceTags(wishId: String, with names: [String], now: Date, in db: Database) throws {
+        let alive = try WishTagRecord
+            .filter(WishTagRecord.Columns.wishId == wishId && WishTagRecord.Columns.deletedAt == nil)
+            .fetchAll(db)
+        var keptByName: [String: WishTagRecord] = [:]
+        for old in alive {
+            if names.contains(old.name), keptByName[old.name] == nil {
+                keptByName[old.name] = old
+            } else {
+                var deleted = old
+                deleted.deletedAt = now
+                deleted.updatedAt = now
+                try deleted.update(db)
+            }
+        }
+        for (order, name) in names.enumerated() {
+            if var kept = keptByName[name] {
+                guard kept.order != order else { continue }
+                kept.order = order
+                kept.updatedAt = now
+                try kept.update(db)
+            } else {
+                try WishTagRecord(name: name, wishId: wishId, order: order, now: now).insert(db)
+            }
+        }
+    }
+
+    /// 살아 있는 위시에 붙은 태그 이름, 최근에 쓴 것부터 하나씩. 직접 입력 태그 추천용 (GH-136)
+    static func recentTagNames(in db: Database) throws -> [String] {
+        try String.fetchAll(db, sql: """
+            SELECT wishTag.name FROM wishTag
+            JOIN wish ON wish.id = wishTag.wishId
+            WHERE wishTag.deletedAt IS NULL AND wish.deletedAt IS NULL AND TRIM(wishTag.name) != ''
+            GROUP BY wishTag.name
+            ORDER BY MAX(wishTag.updatedAt) DESC
+            """)
     }
 
     /// 수정 폼의 알림으로 바꾼다. 알림 id 는 예약 identifier 라 그대로 유지한다

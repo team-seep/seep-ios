@@ -949,6 +949,12 @@ internal enum Strings {
         internal static var release: String { Strings.tr("Localization", "home.sleeping_wish.toast.release", fallback: "위시를 보내줬어요") }
       }
     }
+    internal enum TagFilter {
+      /// 태그로 골라 보기
+      internal static var accessibility: String { Strings.tr("Localization", "home.tag_filter.accessibility", fallback: "태그로 골라 보기") }
+      /// 전체
+      internal static var all: String { Strings.tr("Localization", "home.tag_filter.all", fallback: "전체") }
+    }
     internal enum TitleFormat {
       /// 남았어요!
       internal static var bold: String { Strings.tr("Localization", "home.title_format.bold", fallback: "남았어요!") }
@@ -1351,6 +1357,20 @@ internal enum Strings {
       internal static var keep: String { Strings.tr("Localization", "wish_document.discard.keep", fallback: "계속 쓰기") }
     }
     internal enum HashtagSheet {
+      /// %d/%d
+      internal static func countFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "wish_document.hashtag_sheet.count_format", p1, p2, fallback: "%d/%d")
+      }
+      /// 태그는 %d개까지 달 수 있어요
+      internal static func maxCountFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "wish_document.hashtag_sheet.max_count_format", p1, fallback: "태그는 %d개까지 달 수 있어요")
+      }
+      /// 전에 쓴 태그
+      internal static var recent: String { Strings.tr("Localization", "wish_document.hashtag_sheet.recent", fallback: "전에 쓴 태그") }
+      /// %@ 태그 빼기
+      internal static func removeFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "wish_document.hashtag_sheet.remove_format", String(describing: p1), fallback: "%@ 태그 빼기")
+      }
       /// 태그
       internal static var title: String { Strings.tr("Localization", "wish_document.hashtag_sheet.title", fallback: "태그") }
     }
