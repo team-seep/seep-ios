@@ -35,6 +35,9 @@ protocol WishRepository {
     /// 세 카테고리 전체에서 제목·메모·해시태그에 검색어가 들어간 위시를 돌려준다. 정렬·묶음은 화면이 정한다 (GH-32 R-3).
     func searchWishes(keyword: String) -> [Wish]
     
+    /// 살아 있는 위시에 붙은 직접 입력 태그(기본 태그 제외), 최근에 쓴 것부터. 태그 시트 추천용 (GH-136 R-2)
+    func fetchRecentCustomTags() -> [String]
+
     /// 카테고리와 무관하게 `finishDate`가 [from, to) 안인 완료 위시를 돌려준다 (GH-34 R-3).
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish]
     
@@ -212,6 +215,11 @@ final class WishRepositoryImpl: WishRepository {
             .filter { WishSearchMatcher.matches(wish: $0, keyword: keyword) }
     }
 
+    func fetchRecentCustomTags() -> [String] {
+        let names = read { db in try WishRecordStore.recentTagNames(in: db) } ?? []
+        return names.filter { HashtagType(rawValue: $0) == nil }
+    }
+
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {
         return fetchAllFinishedWishes().filter { wish in
             guard let finishDate = wish.finishDate else { return false }
@@ -331,6 +339,7 @@ final class WishRepositoryImpl: WishRepository {
             }
             try WishRecordStore.replaceNotifications(wishId: wish.id, with: wish.notifications, now: now, in: db)
             try WishRecordStore.replaceSteps(wishId: wish.id, with: wish.steps, now: now, in: db)
+            try WishRecordStore.replaceTags(wishId: wish.id, with: wish.tags, now: now, in: db)
             return try Self.fetchExisting(id: wish.id, in: db)
         }
     }

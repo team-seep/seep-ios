@@ -153,6 +153,30 @@ final class AppDatabase {
             }
         }
 
+        // GH-136: 위시마다 태그 여러 개. 일지처럼 wishId 에 FK 없이 일반 인덱스만 둔다.
+        // 기존 위시의 해시태그 하나를 첫 태그로 옮긴다. 지운 위시의 태그도 같은 삭제 표시로 옮겨 동기화 때 어긋나지 않게 한다.
+        // v7·v8 은 GH-93(동기화, PR #127)이 개발 빌드에서 먼저 썼다. 같은 이름이면 그 빌드를 깔았던 기기에서 이 마이그레이션이 건너뛰어지므로 v9 로 둔다
+        migrator.registerMigration("v9") { db in
+            try db.create(table: WishTagRecord.databaseTableName) { table in
+                table.primaryKey("id", .text)
+                table.column("wishId", .text).notNull()
+                table.column("name", .text).notNull().defaults(to: "")
+                table.column("order", .integer).notNull().defaults(to: 0)
+                table.column("createdAt", .double).notNull()
+                table.column("updatedAt", .double).notNull()
+                table.column("deletedAt", .double)
+            }
+            try db.create(index: "wishTag_on_wishId", on: WishTagRecord.databaseTableName, columns: ["wishId"])
+
+            let rows = try Row.fetchAll(db, sql: "SELECT id, hashtag, updatedAt, deletedAt FROM wish WHERE TRIM(hashtag) != ''")
+            for row in rows {
+                let updatedAt = Date(timeIntervalSinceReferenceDate: row["updatedAt"])
+                var tag = WishTagRecord(name: row["hashtag"], wishId: row["id"], order: 0, now: updatedAt)
+                tag.deletedAt = (row["deletedAt"] as Double?).map(Date.init(timeIntervalSinceReferenceDate:))
+                try tag.insert(db)
+            }
+        }
+
         return migrator
     }
 
@@ -271,6 +295,7 @@ extension AppDatabase {
         let savings: [WishSavingRecord]
         let notifications: [WishNotificationRecord]
         let journals: [WishJournalRecord]
+        let tags: [WishTagRecord]
         let metadata: [String: String]
     }
 
@@ -282,6 +307,7 @@ extension AppDatabase {
                 savings: try WishSavingRecord.fetchAll(db),
                 notifications: try WishNotificationRecord.fetchAll(db),
                 journals: try WishJournalRecord.fetchAll(db),
+                tags: try WishTagRecord.fetchAll(db),
                 metadata: Dictionary(
                     uniqueKeysWithValues: try Row.fetchAll(db, sql: "SELECT key, value FROM appMetadata")
                         .map { (row: Row) -> (String, String) in (row["key"], row["value"]) }

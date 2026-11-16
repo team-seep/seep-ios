@@ -119,3 +119,8 @@ iOSInjectionProject/
 
 # End of https://www.gitignore.io/api/swift,xcode,cocoapods
 GoogleService-Info.plist
+
+# macOS 폴더 정보
+.DS_Store
+# Xcode가 Xcode Cloud 화면을 열 때 만드는 로컬 파일 (워크플로는 App Store Connect에 있다)
+*.xcodeproj/xcshareddata/xcodecloud/

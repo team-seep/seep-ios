@@ -178,20 +178,19 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
 
     // MARK: GH-64 TC406
 
-    func test_GH64_TC406_해시태그는하나만고르고_직접입력하면_고른태그가풀린다() {
+    // GH-136 에서 태그를 여러 개 고르게 바뀌어, 직접 입력해도 고른 기본 태그가 풀리지 않는다
+    func test_GH64_TC406_직접입력해도_고른기본태그는남고_같이저장된다() {
         // Given
         let viewModel = makeWrite(category: .wantToDo)
         viewModel.send(.selectHashtag(.trip))
         viewModel.send(.selectHashtag(.hobby))
-        XCTAssertEqual(viewModel.state.selectedHashtag, .hobby)
 
         // When
         viewModel.send(.inputCustomHashtag("버킷"))
         viewModel.send(.tapSave)
 
         // Then
-        XCTAssertNil(viewModel.state.selectedHashtag)
-        XCTAssertEqual(wishRepository.addedWishes.first?.hashtag, "버킷")
+        XCTAssertEqual(wishRepository.addedWishes.first?.tags, [HashtagType.trip.rawValue, HashtagType.hobby.rawValue, "버킷"])
     }
 
     func test_GH64_TC406_직접입력태그는7자까지만들어가고_안내한다() {
@@ -202,8 +201,8 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         viewModel.send(.inputCustomHashtag("일이삼사오육칠팔"))
 
         // Then
-        XCTAssertEqual(viewModel.state.customHashtag, "일이삼사오육칠")
-        XCTAssertEqual(viewModel.state.customHashtagError, Strings.writeErrorMaxLengthHashtag)
+        XCTAssertEqual(viewModel.state.customTagInput, "일이삼사오육칠")
+        XCTAssertEqual(viewModel.state.tagError, Strings.writeErrorMaxLengthHashtag)
     }
 
     func test_GH64_TC406_고른해시태그는_rawValue로저장된다() {
@@ -347,8 +346,7 @@ final class WishFormFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(state.steps.map(\.title), ["알아보기"])
         XCTAssertEqual(state.targetAmount, 1_200_000)
         XCTAssertEqual(state.memo, "필름 카메라")
-        XCTAssertNil(state.selectedHashtag)
-        XCTAssertEqual(state.customHashtag, "나만의")
+        XCTAssertEqual(state.tagSelection.tags, ["나만의"])
         XCTAssertEqual(state.linkText, "https://a.example.com/x")
         XCTAssertEqual(state.saveButtonState, .active)
         XCTAssertEqual(viewModel.screenName, .wishEdit)

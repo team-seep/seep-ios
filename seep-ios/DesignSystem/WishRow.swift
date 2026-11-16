@@ -7,6 +7,8 @@ struct WishRowModel: Equatable, Identifiable {
     let title: String
     let dday: DdayBadgeStyle
     var tag: String?
+    /// 첫 태그 말고 더 붙은 태그 수. 0 보다 크면 "+N" 뱃지 (GH-136 R-5)
+    var extraTagCount: Int = 0
     var isFinished: Bool = false
     /// 뱃지 줄 대신 보여줄 보조 문구(이룬 싶 탭의 "19일 이룸 · 소감" 등). 있으면 뱃지를 숨긴다
     var subtitle: String?
@@ -43,7 +45,7 @@ struct WishRow: View {
                         HStack(spacing: 7) {
                             DdayBadge(style: model.dday, farFutureText: farFutureText, noDateText: noDateText)
                             if let tag = model.tag {
-                                TagBadge(text: tag)
+                                TagBadges(text: tag, extraCount: model.extraTagCount)
                             }
                         }
                     }
@@ -89,7 +91,7 @@ struct WishTile: View {
                 VStack(alignment: .leading, spacing: 4) {
                     DdayBadge(style: model.dday, farFutureText: farFutureText, noDateText: noDateText)
                     if let tag = model.tag {
-                        TagBadge(text: tag)
+                        TagBadges(text: tag, extraCount: model.extraTagCount)
                     }
                 }
                 Spacer(minLength: 0)

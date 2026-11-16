@@ -40,6 +40,16 @@ enum HashtagType: String {
         }
     }
     
+    /// 저장한 태그를 보여줄 이름. 기본 태그면 언어에 맞는 이름, 직접 입력이면 그대로 (GH-136)
+    static func displayName(for tag: String) -> String {
+        return HashtagType(rawValue: tag)?.description ?? tag
+    }
+
+    /// 직접 입력한 글자가 기본 태그 이름과 같으면 그 기본 태그로 본다 — "여행"을 직접 쳐도 기본 태그 여행과 겹치지 않게 (GH-136)
+    static func preset(named name: String) -> HashtagType? {
+        return array.first { $0.description == name || $0.rawValue == name }
+    }
+
     static var array: [HashtagType] {
         return [
             .trip,

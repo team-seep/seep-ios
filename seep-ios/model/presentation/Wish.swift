@@ -19,7 +19,8 @@ struct Wish: Equatable, Hashable {
     /// 이루는 동안 남긴 일지, 최신순 (GH-95)
     var journals: [WishJournal]
     var memo: String
-    var hashtag: String
+    /// 붙인 태그, 단 순서대로. 기본 태그는 `HashtagType` rawValue, 직접 입력은 글자 그대로 (GH-136)
+    var tags: [String]
     var isSuccess: Bool
     /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
     var finishNote: String
@@ -48,6 +49,11 @@ struct Wish: Equatable, Hashable {
     
     var isPinned: Bool {
         return pinnedAt != nil
+    }
+
+    /// 대표 태그(첫 태그). 태그가 하나뿐이던 화면·`wish.hashtag` 컬럼과 맞춘다 (GH-136)
+    var hashtag: String {
+        return tags.first ?? ""
     }
 
     /// 봉인한 편지가 있는지 (GH-61)
@@ -103,6 +109,7 @@ struct Wish: Equatable, Hashable {
         journals: [WishJournal] = [],
         memo: String = "",
         hashtag: String = "",
+        tags: [String] = [],
         isSuccess: Bool = false,
         finishNote: String = "",
         pinnedAt: Date? = nil,
@@ -129,7 +136,8 @@ struct Wish: Equatable, Hashable {
         self.savings = savings
         self.journals = journals
         self.memo = memo
-        self.hashtag = hashtag
+        // 태그 하나만 넘기던 호출(이전·테스트)은 그 태그 하나로 본다
+        self.tags = tags.isEmpty && !hashtag.isEmpty ? [hashtag] : tags
         self.isSuccess = isSuccess
         self.finishNote = finishNote
         self.pinnedAt = pinnedAt
