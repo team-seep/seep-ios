@@ -113,6 +113,29 @@ struct WishJournalRecord: Codable, Equatable, FetchableRecord, PersistableRecord
     }
 }
 
+/// `wishTag` 테이블 한 줄. 위시에 붙인 태그 하나 (GH-136, 마이그레이션 v9).
+/// 일지처럼 동기화 대비로 `wishId`에 FK 를 두지 않고, 같은 이름도 UNIQUE 로 막지 않는다 — 중복은 쓰기에서 막는다 (R4)
+struct WishTagRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
+    static let databaseTableName = "wishTag"
+
+    var id: String
+    var wishId: String
+    /// 기본 태그는 `HashtagType` rawValue, 직접 입력은 글자 그대로
+    var name: String
+    /// 위시 안에서 보여 주는 순서. 첫 태그가 대표 태그다
+    var order: Int
+    var createdAt: Date
+    var updatedAt: Date
+    var deletedAt: Date?
+
+    enum Columns {
+        static let wishId = Column(CodingKeys.wishId)
+        static let name = Column(CodingKeys.name)
+        static let updatedAt = Column(CodingKeys.updatedAt)
+        static let deletedAt = Column(CodingKeys.deletedAt)
+    }
+}
+
 /// `wishNotification` 테이블 한 줄. id 는 예약한 로컬 알림의 identifier 와 같다 (GH-48)
 struct WishNotificationRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
     static let databaseTableName = "wishNotification"
@@ -198,6 +221,18 @@ extension WishJournalRecord {
     }
 }
 
+extension WishTagRecord {
+    init(name: String, wishId: String, order: Int, now: Date) {
+        self.id = UUID().uuidString
+        self.wishId = wishId
+        self.name = name
+        self.order = order
+        self.createdAt = now
+        self.updatedAt = now
+        self.deletedAt = nil
+    }
+}
+
 extension WishNotificationRecord {
     init(notification: SeepNotification, wishId: String, order: Int, updatedAt: Date) {
         self.id = notification.id
@@ -231,6 +266,11 @@ extension WishJournalRecord {
     static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
 }
 
+extension WishTagRecord {
+    static func databaseDateEncodingStrategy(for column: String) -> DatabaseDateEncodingStrategy { .timeIntervalSinceReferenceDate }
+    static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
+}
+
 extension WishNotificationRecord {
     static func databaseDateEncodingStrategy(for column: String) -> DatabaseDateEncodingStrategy { .timeIntervalSinceReferenceDate }
     static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
@@ -243,7 +283,8 @@ extension Wish {
         steps: [WishStepRecord],
         savings: [WishSavingRecord],
         notifications: [WishNotificationRecord],
-        journals: [WishJournalRecord] = []
+        journals: [WishJournalRecord] = [],
+        tags: [WishTagRecord] = []
     ) {
         self.init(
             id: record.id,
@@ -263,7 +304,8 @@ extension Wish {
             savings: WishSaving.latestFirst(savings.map { WishSaving(id: $0.id, amount: $0.amount, createdAt: $0.createdAt) }),
             journals: WishJournal.latestFirst(journals.map { WishJournal(id: $0.id, text: $0.text, createdAt: $0.createdAt) }),
             memo: record.memo,
-            hashtag: record.hashtag,
+            // 태그는 v9 부터 wishTag 가 원본이다. wish.hashtag 컬럼은 대표 태그를 같이 적어 두기만 한다
+            tags: tags.sorted { $0.order < $1.order }.map(\.name),
             isSuccess: record.isSuccess,
             finishNote: record.finishNote,
             pinnedAt: record.pinnedAt,

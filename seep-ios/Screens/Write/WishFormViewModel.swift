@@ -9,7 +9,9 @@ import Observation
 final class WishFormViewModel {
     static let titleMaxLength = 18
     static let memoMaxLength = 300
-    static let customHashtagMaxLength = 7
+    static let customHashtagMaxLength = WishTagSelection.customMaxLength
+    /// 태그 시트에 보일 '전에 쓴 태그' 수
+    static let recentTagLimit = 8
 
     private(set) var state: State
     private(set) var route: Route?
@@ -43,7 +45,6 @@ final class WishFormViewModel {
             )
         case .edit(let wish):
             screenName = .wishEdit
-            let hashtag = HashtagType(rawValue: wish.hashtag)
             state = State(
                 emoji: wish.emoji,
                 category: wish.category,
@@ -66,8 +67,7 @@ final class WishFormViewModel {
                     ? .none : .stored(fileName: wish.photoFileName),
                 letter: wish.hasFutureLetter
                     ? WishFormLetter(text: wish.futureLetter, sealedAt: wish.futureLetterSealedAt) : nil,
-                selectedHashtag: hashtag,
-                customHashtag: hashtag == nil ? wish.hashtag : "",
+                tagSelection: WishTagSelection(tags: wish.tags),
                 saveButtonState: .active
             )
             state.saveButtonState = validatedButtonState()
@@ -240,11 +240,17 @@ final class WishFormViewModel {
         case .deletePlace:
             state.place = nil
         case .selectHashtag(let hashtag):
-            state.customHashtag = ""
-            state.customHashtagError = nil
-            state.selectedHashtag = hashtag
+            let didChange = state.tagSelection.toggle(hashtag)
+            state.tagError = didChange ? nil : Strings.WishDocument.HashtagSheet.maxCountFormat(WishTagSelection.maxCount)
         case .inputCustomHashtag(let text):
             inputCustomHashtag(text)
+        case .submitCustomHashtag:
+            commitCustomTagInput()
+        case .removeTag(let tag):
+            state.tagSelection.remove(tag)
+            state.tagError = nil
+        case .selectRecentTag(let tag):
+            addTag(tag)
         case .tapSave:
             save()
         case .tapClose:
@@ -259,6 +265,10 @@ final class WishFormViewModel {
             linkPreviewTask?.cancel()
             route = .finish(nil)
         case .dismissSheet:
+            // 태그 시트를 '확인'·끌어내리기로 닫으면 치다 만 직접 입력도 태그로 넣는다 (GH-136 R-2)
+            if state.sheet == .hashtag {
+                commitCustomTagInput()
+            }
             state.sheet = nil
         case .routeHandled:
             route = nil
@@ -267,6 +277,7 @@ final class WishFormViewModel {
         case .removeBlock(let block):
             removeBlock(block)
         case .tapHashtag:
+            state.recentCustomTags = Array(dependency.wishRepository.fetchRecentCustomTags().prefix(Self.recentTagLimit))
             state.sheet = .hashtag
         case .pickPhoto(let data):
             state.photo = .picked(data)
@@ -395,7 +406,7 @@ final class WishFormViewModel {
             place: state.place,
             photo: state.photo,
             letter: state.letter,
-            hashtag: hashtag
+            tags: state.tagSelection.tags
         )
     }
 
@@ -430,9 +441,29 @@ final class WishFormViewModel {
     }
 
     private func inputCustomHashtag(_ text: String) {
-        state.selectedHashtag = nil
-        state.customHashtag = String(text.prefix(Self.customHashtagMaxLength))
-        state.customHashtagError = text.count >= Self.customHashtagMaxLength ? Strings.writeErrorMaxLengthHashtag : nil
+        state.customTagInput = String(text.prefix(Self.customHashtagMaxLength))
+        state.tagError = text.count >= Self.customHashtagMaxLength ? Strings.writeErrorMaxLengthHashtag : nil
+    }
+
+    /// 친 글자를 태그 칩으로 넣는다. 최대 개수면 글자를 남기고 안내한다 (GH-136 R-2)
+    private func commitCustomTagInput() {
+        guard !state.customTagInput.isEmpty else { return }
+        if addTag(state.customTagInput) {
+            state.customTagInput = ""
+        }
+    }
+
+    /// 직접 입력·추천 태그를 넣는다. 최대 개수라 못 넣었으면 false
+    @discardableResult
+    private func addTag(_ text: String) -> Bool {
+        switch state.tagSelection.addCustom(text) {
+        case .added, .duplicate, .empty:
+            state.tagError = nil
+            return true
+        case .full:
+            state.tagError = Strings.WishDocument.HashtagSheet.maxCountFormat(WishTagSelection.maxCount)
+            return false
+        }
     }
 
     // MARK: 단계 (GH-5)
@@ -543,6 +574,8 @@ final class WishFormViewModel {
     }
 
     private func save() {
+        // 시트를 거치지 않고 저장해도 치다 만 태그를 잃지 않게 넣는다 (GH-136 R-2)
+        commitCustomTagInput()
         var hasError = false
         if state.title.isEmpty {
             state.titleError = Strings.writeErrorTitleEmpty
@@ -612,11 +645,6 @@ final class WishFormViewModel {
         return (letter.text, letter.sealedAt ?? dependency.now())
     }
 
-    private var hashtag: String {
-        if !state.customHashtag.isEmpty { return state.customHashtag }
-        return state.selectedHashtag?.rawValue ?? ""
-    }
-
     private func addWish(id: String, photoFileName: String) -> Wish? {
         let letter = letterToSave
         let wish = Wish(
@@ -631,7 +659,7 @@ final class WishFormViewModel {
             targetAmount: state.category == .wantToGet ? state.targetAmount : 0,
             currency: state.currency,
             memo: state.memo,
-            hashtag: hashtag,
+            tags: state.tagSelection.tags,
             // 다른 카테고리로 바꿨으면 링크도 버린다 (GH-29 R-1)
             link: state.link.storedLink(category: state.category),
             // 다른 카테고리로 바꿨으면 골랐던 장소는 버린다 (GH-31 R-1)
@@ -650,7 +678,7 @@ final class WishFormViewModel {
                 screen: .write,
                 objectType: .button,
                 objectId: .write,
-                extraParameters: [.hasTargetAmount: saved.targetAmount > 0]
+                extraParameters: [.hasTargetAmount: saved.targetAmount > 0, .tagCount: saved.tags.count]
             ))
             if config.previousWishId != nil {
                 sendClickLog(objectType: .button, objectId: .saveChainedWish)
@@ -678,7 +706,7 @@ final class WishFormViewModel {
             currency: state.currency,
             savings: original.savings,
             memo: state.memo,
-            hashtag: hashtag,
+            tags: state.tagSelection.tags,
             isSuccess: original.isSuccess,
             finishNote: original.finishNote,
             // 옮겨 간 카테고리의 고정 3개 제한을 넘지 않도록, 카테고리를 바꾸면 고정을 푼다 (GH-33 R-9)
@@ -732,5 +760,5 @@ struct WishFormDraft: Equatable {
     let place: WishPlace?
     let photo: WishFormPhoto
     let letter: WishFormLetter?
-    let hashtag: String
+    let tags: [String]
 }

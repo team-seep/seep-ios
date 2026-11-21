@@ -183,6 +183,8 @@ enum LogObjectId: String {
     case selectLanguage = "select_language"
     /// 홈 "선택" → 선택 모드 (GH-86)
     case selectWishes = "select_wishes"
+    /// 홈 태그 필터 칩 (GH-136)
+    case tagFilter = "tag_filter"
     /// 선택 모드 일괄 삭제 확인 (+count) (GH-86)
     case deleteSelectedWishes = "delete_selected_wishes"
     case widgetGuide = "widget_guide"

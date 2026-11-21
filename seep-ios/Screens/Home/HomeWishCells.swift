@@ -47,7 +47,7 @@ struct HomeWishRow: View {
             HStack(spacing: 7) {
                 HomeDdayBadge(endDate: item.wish.endDate)
                 if let tag = item.tagText {
-                    TagBadge(text: tag)
+                    TagBadges(text: tag, extraCount: item.extraTagCount)
                 }
                 if let progress = item.stepProgress {
                     HomeStepProgress(progress: progress)
@@ -158,7 +158,7 @@ struct HomeWishTile: View {
                 }
             }
             if let tag = item.tagText {
-                TagBadge(text: tag)
+                TagBadges(text: tag, extraCount: item.extraTagCount)
             }
         }
         .padding(.trailing, 36)

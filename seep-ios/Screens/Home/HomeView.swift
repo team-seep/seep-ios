@@ -107,6 +107,12 @@ struct HomeView: View {
                 HomeCategoryTabs(selected: viewModel.state.category) { viewModel.send(.selectCategory($0)) }
                     .padding(.horizontal, 12)
             }
+            if viewModel.state.isTagFilterVisible {
+                HomeTagFilterBar(tags: viewModel.state.tagChips, selectedTag: viewModel.state.selectedTag) {
+                    viewModel.send(.selectTag($0))
+                }
+                .padding(.top, 4)
+            }
             HomeFilterBar(
                 sortOrder: viewModel.state.sortOrder,
                 viewType: viewModel.state.viewType,

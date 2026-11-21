@@ -25,10 +25,15 @@ struct HomeWishItem: Equatable, Identifiable {
         self.photoFileName = photoStorage.photoURL(fileName: wish.photoFileName) != nil ? wish.photoFileName : nil
     }
 
-    /// 해시태그 뱃지 문구. 기본 해시태그면 설명 문구, 직접 입력이면 그대로
+    /// 첫 태그 뱃지 문구. 기본 해시태그면 설명 문구, 직접 입력이면 그대로
     var tagText: String? {
         guard !wish.hashtag.isEmpty else { return nil }
-        return HashtagType(rawValue: wish.hashtag)?.description ?? wish.hashtag
+        return HashtagType.displayName(for: wish.hashtag)
+    }
+
+    /// 첫 태그 말고 더 붙은 태그 수 — 셀에 "+N" 으로 보인다 (GH-136 R-5)
+    var extraTagCount: Int {
+        max(wish.tags.count - 1, 0)
     }
 }
 

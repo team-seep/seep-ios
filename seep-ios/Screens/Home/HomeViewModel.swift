@@ -8,6 +8,8 @@ extension HomeViewModel {
         /// 화면이 나타날 때마다. 처음이면 배지 초기화까지 하고, 다시 나타나면 상세·검색·지도에서 바뀐 것을 반영한다 (TC-113)
         case onAppear
         case selectCategory(Category)
+        /// 태그 필터 칩. nil 이면 '전체' (GH-136 R-3)
+        case selectTag(String?)
         case tapSortOrder
         case selectSortOrder(HomeSortOrder)
         /// 필터 바 "순서 바꾸기" → 순서 바꾸기 모드 (GH-73 R-4)
@@ -64,6 +66,10 @@ extension HomeViewModel {
         var deleteConfirmCount: Int?
         /// 헤드라인의 남은 개수. 첫 로드 전에는 nil
         var notFinishedCount: Int?
+        /// 태그 필터 칩 줄의 태그(저장 값), 많이 쓴 순. 비면 칩 줄을 숨긴다 (GH-136 R-3)
+        var tagChips: [String] = []
+        /// 고른 태그 칩. nil 이면 '전체' (GH-136 R-3)
+        var selectedTag: String?
         var items: [HomeWishItem] = []
         /// 리스트 맨 위 잠든 위시 카드. 없으면 그리지 않는다 (GH-30 R-4)
         var sleepingWishCard: SleepingWishCard?
@@ -106,9 +112,15 @@ extension HomeViewModel {
             !selectableItems.isEmpty && !isReordering && !isSelecting
         }
 
-        /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11)
+        /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11).
+        /// 태그로 거른 목록에서 옮기면 숨은 위시 사이 순서가 꼬이므로 '전체'에서만 (GH-136 R-4)
         var isReorderButtonVisible: Bool {
-            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering
+            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering && selectedTag == nil
+        }
+
+        /// 순서 바꾸기·선택 모드가 아니고 태그가 하나라도 있으면 칩 줄을 보인다 (GH-136 R-3)
+        var isTagFilterVisible: Bool {
+            !tagChips.isEmpty && !isReordering && !isSelecting
         }
     }
 
@@ -238,8 +250,13 @@ final class HomeViewModel {
             state.category = category
             // 다른 카테고리의 선택은 이어가지 않는다 (GH-86)
             state.selectedIds = []
+            // 고른 태그는 카테고리를 옮기면 '전체'로 돌아간다 (GH-136 R-4)
+            state.selectedTag = nil
             dependency.router?.homeCategory = category
             fetchWishes()
+
+        case .selectTag(let tag):
+            selectTag(tag)
 
         case .tapSortOrder:
             state.sheet = .sortOrder
@@ -370,10 +387,41 @@ final class HomeViewModel {
 
     private func rebuildItems() {
         refreshSleepingWish()
-        state.items = wishes.map { HomeWishItem(wish: $0, photoStorage: dependency.photoStorage) }
+        state.tagChips = Self.tagChips(of: wishes.filter { !$0.isSuccess })
+        // 고른 태그가 사라졌으면(그 태그 위시를 다 지움·이룸) '전체'로 돌아간다
+        if let selectedTag = state.selectedTag, !state.tagChips.contains(selectedTag) {
+            state.selectedTag = nil
+        }
+        let visibleWishes = state.selectedTag.map { tag in wishes.filter { $0.tags.contains(tag) } } ?? wishes
+        state.items = visibleWishes.map { HomeWishItem(wish: $0, photoStorage: dependency.photoStorage) }
         if let banner = state.yearReviewBanner {
             sendYearReviewImpressionIfNeeded(banner: banner)
         }
+    }
+
+    private func selectTag(_ tag: String?) {
+        guard !state.isReordering, !state.isSelecting else { return }
+        let tagType = tag.map { HashtagType(rawValue: $0) != nil ? $0 : "custom" } ?? "all"
+        sendClickLog(objectId: .tagFilter, extraParameters: [.tagType: tagType])
+        state.selectedTag = tag
+        rebuildItems()
+    }
+
+    /// 지금 카테고리 진행 중 위시의 태그, 많이 쓴 순. 같으면 목록에 먼저 나온 순 (GH-136 R-3)
+    static func tagChips(of wishes: [Wish]) -> [String] {
+        var counts: [String: Int] = [:]
+        var firstSeen: [String] = []
+        for tag in wishes.flatMap(\.tags) {
+            if counts[tag] == nil { firstSeen.append(tag) }
+            counts[tag, default: 0] += 1
+        }
+        return firstSeen.enumerated()
+            .sorted { lhs, rhs in
+                let lhsCount = counts[lhs.element] ?? 0
+                let rhsCount = counts[rhs.element] ?? 0
+                return lhsCount != rhsCount ? lhsCount > rhsCount : lhs.offset < rhs.offset
+            }
+            .map(\.element)
     }
 
     private func sendClickLog(objectId: LogObjectId, extraParameters: [ParameterName: Any]? = nil) {

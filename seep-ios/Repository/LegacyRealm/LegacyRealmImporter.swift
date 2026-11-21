@@ -73,6 +73,7 @@ struct LegacyRealmImporter {
             try prepared.steps.forEach { try $0.insert(db) }
             try prepared.savings.forEach { try $0.insert(db) }
             try prepared.notifications.forEach { try $0.insert(db) }
+            try prepared.tags.forEach { try $0.insert(db) }
             var report = prepared.report
             // 옮긴 결과를 DB 에서 다시 세어 원본 수(realmWishCount)와 견준다 (GH-96 R-15)
             report.wishCount = try WishRecord.filter(prepared.wishes.map(\.id).contains(WishRecord.Columns.id)).fetchCount(db)
@@ -101,6 +102,9 @@ struct LegacyRealmImporter {
             let restoredSteps = try prepared.steps.filter { try Self.insertIfMissing($0, in: db) }
             let restoredSavings = try prepared.savings.filter { try Self.insertIfMissing($0, in: db) }
             let restoredNotifications = try prepared.notifications.filter { try Self.insertIfMissing($0, in: db) }
+            // 태그 id 는 Realm 에 없어 매번 새로 만든다 — 되돌아온 위시의 태그만 넣어야 겹치지 않는다 (GH-136)
+            let restoredWishIdSet = Set(restoredWishes.map(\.id))
+            try prepared.tags.filter { restoredWishIdSet.contains($0.wishId) }.forEach { try $0.insert(db) }
             let restoredRowCount = restoredSteps.count + restoredSavings.count + restoredNotifications.count
             let notifiedWishIds = Set(restoredNotifications.map(\.wishId))
             try Self.moveToTop(restoredWishes, in: db)
@@ -146,6 +150,8 @@ struct LegacyRealmImporter {
         var steps: [WishStepRecord] = []
         var savings: [WishSavingRecord] = []
         var notifications: [WishNotificationRecord] = []
+        /// Realm 의 해시태그 하나 → 첫 태그 (GH-136)
+        var tags: [WishTagRecord] = []
         var report = Report(wishCount: 0, realmWishCount: 0, reassignedIdCount: 0, rescheduleWishIds: [])
     }
 
@@ -189,6 +195,10 @@ struct LegacyRealmImporter {
                 updatedAt: importedAt,
                 deletedAt: nil
             ))
+
+            if !dto.hashtag.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                prepared.tags.append(WishTagRecord(name: dto.hashtag, wishId: wishId, order: 0, now: importedAt))
+            }
 
             for step in dto.steps {
                 prepared.steps.append(WishStepRecord(
