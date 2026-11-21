@@ -69,6 +69,20 @@
           "order": "ASCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "wishTags",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "memberUids",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "serverUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": [
@@ -98,6 +112,12 @@
     },
     {
       "collectionGroup": "wishJournals",
+      "fieldPath": "purgeAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "wishTags",
       "fieldPath": "purgeAt",
       "ttl": true,
       "indexes": []

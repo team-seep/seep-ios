@@ -95,6 +95,7 @@ wishSteps/{stepId}              // WishStepRecord
 wishSavings/{savingId}          // WishSavingRecord
 wishNotifications/{notifId}     // WishNotificationRecord
 wishJournals/{journalId}        // WishJournalRecord (GH-95 일지)
+wishTags/{tagId}                // WishTagRecord (GH-136 태그. 트리거는 마이그레이션 v10)
 ```
 
 모든 문서에 공통 필드:
@@ -128,7 +129,7 @@ match /wishes/{id} {
                 && request.resource.data.memberUids == resource.data.memberUids; // 멤버 변경은 2단계에서 별도 경로
   allow delete: if false;   // 삭제는 deletedAt 표시로만
 }
-// wishSteps / wishSavings / wishNotifications / wishJournals 도 같은 모양
+// wishSteps / wishSavings / wishNotifications / wishJournals / wishTags 도 같은 모양
 ```
 
 **사진**: `wishPhotos/{ownerUid}/{photoFileName}`. 로컬 파일 이름(`{위시id}-{uuid}.jpg`)을 그대로 쓴다. 규칙은 1단계에서 `ownerUid == auth.uid`만 허용, 2단계에서 위시 멤버까지 넓힌다.
@@ -152,7 +153,7 @@ CREATE TABLE syncState (       -- 커서·로그인한 uid 등. 이 기기에만
   value TEXT NOT NULL
 );
 
--- wish / wishStep / wishSaving / wishNotification / wishJournal 마다 INSERT·UPDATE 트리거
+-- wish / wishStep / wishSaving / wishNotification / wishJournal 마다 INSERT·UPDATE 트리거 (wishTag 는 v10)
 CREATE TRIGGER wish_after_insert_outbox AFTER INSERT ON wish
 BEGIN INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES ('wish', NEW.id, NEW.updatedAt); END;
 CREATE TRIGGER wish_after_update_outbox AFTER UPDATE ON wish

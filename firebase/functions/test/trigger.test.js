@@ -20,8 +20,10 @@ test('test_GH93_TC45_Auth사용자_삭제시_함수가_데이터를_지운다', 
   let erased = false;
   for (let i = 0; i < 120 && !erased; i += 1) {
     await sleep(500);
+    // 사진은 함수가 맨 마지막에 지우므로 사진까지 사라졌을 때를 끝으로 본다
     erased = (await db.collection(DELETED_USERS).doc(user.uid).get()).exists
-      && (await db.collection('wishes').doc('a1').get()).exists === false;
+      && (await db.collection('wishes').doc('a1').get()).exists === false
+      && (await photoNames(user.uid)).length === 0;
   }
   assert.ok(erased, '60초 안에 함수가 돌지 않았다');
   assert.equal((await db.collection('wishSteps').doc('a1-s1').get()).exists, false);

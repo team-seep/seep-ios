@@ -160,8 +160,9 @@ final class WishRepositoryImpl: WishRepository {
     func eraseAllLocalWishes() -> Result<[Wish], RepositoryError> {
         return write { db, _ in
             let wishes = try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes(), in: db)
-            // 일지는 외래키가 없어 따로 지운다. 단계·저금·알림은 CASCADE
+            // 일지·태그는 외래키가 없어 따로 지운다. 단계·저금·알림은 CASCADE
             try WishJournalRecord.deleteAll(db)
+            try WishTagRecord.deleteAll(db)
             try WishRecord.deleteAll(db)
             return wishes
         }

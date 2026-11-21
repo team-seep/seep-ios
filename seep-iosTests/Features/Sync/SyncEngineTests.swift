@@ -162,13 +162,13 @@ final class SyncEngineTests: XCTestCase {
     // MARK: TC-23
 
     func test_GH93_TC23_앱과위젯어느경로로쓰든_아웃박스에줄이쌓인다() throws {
-        // Given / When: 앱 저장소로 위시·단계·저금·일지, 위젯 저장소로 단계 체크
-        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)])).get()
+        // Given / When: 앱 저장소로 위시·단계·태그·저금·일지, 위젯 저장소로 단계 체크
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)], tags: ["여행"])).get()
         _ = try deviceA.repository.addSaving(wishId: "w1", amount: 1_000).get()
         _ = try deviceA.repository.addJournal(wishId: "w1", text: "오늘 검색").get()
 
         // Then
-        XCTAssertEqual(deviceA.outboxTables(), ["wish", "wishStep", "wishSaving", "wishJournal"])
+        XCTAssertEqual(deviceA.outboxTables(), ["wish", "wishStep", "wishTag", "wishSaving", "wishJournal"])
 
         // When: 위젯 프로세스의 쓰기만 따로
         deviceA.store.clearOutbox()
@@ -177,6 +177,19 @@ final class SyncEngineTests: XCTestCase {
 
         // Then
         XCTAssertTrue(deviceA.outboxTables().contains("wishStep"))
+    }
+
+    func test_GH93_TC23_태그가있는280기기에서올리면_v7v8v10이돌고_기존태그가큐에들어간다() throws {
+        // Given: 2.8.0 기기 — v9(태그)까지만 돈 DB에 태그 달린 위시
+        let database = try AppDatabase.makeInMemory(migratedUpTo: "v9")
+        _ = try WishRepositoryImpl(database: database).addWish(Wish(id: "w1", title: "제주", tags: ["여행"])).get()
+
+        // When
+        try database.migrateToLatest()
+
+        // Then: 트리거(v7)가 생기기 전에 쓴 위시는 큐에 없고, 태그만 v10이 넣는다
+        let queued = SyncStore(database: database).pendingDocuments(limit: 100)?.documents.map(\.collection) ?? []
+        XCTAssertEqual(queued, [.wishTag])
     }
 
     // MARK: TC-24
@@ -210,7 +223,7 @@ final class SyncEngineTests: XCTestCase {
     func test_GH93_TC25_A에서만든위시가_B에서받아진다() async throws {
         // Given
         await signInBoth()
-        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)])).get()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)], tags: ["여행", "봄"])).get()
         await deviceA.engine.sync(trigger: .manual)
 
         // When
@@ -220,6 +233,7 @@ final class SyncEngineTests: XCTestCase {
         let wish = deviceB.repository.fetchWish(id: "w1")
         XCTAssertEqual(wish?.title, "제주")
         XCTAssertEqual(wish?.steps.map(\.title), ["항공권"])
+        XCTAssertEqual(wish?.tags, ["여행", "봄"])
         XCTAssertEqual(report.changedWishIds, ["w1"])
         XCTAssertEqual(deviceB.widgetReloadCount, 1)
     }

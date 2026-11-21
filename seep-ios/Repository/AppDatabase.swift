@@ -30,6 +30,20 @@ final class AppDatabase {
         try AppDatabase(DatabaseQueue())
     }
 
+    /// 테스트용: 예전 출시 상태(마이그레이션 `identifier`까지만 돈) 메모리 DB. `migrateToLatest()`로 마저 올린다
+    static func makeInMemory(migratedUpTo identifier: String) throws -> AppDatabase {
+        try AppDatabase(DatabaseQueue(), upTo: identifier)
+    }
+
+    private init(_ writer: any DatabaseWriter, upTo identifier: String) throws {
+        self.writer = writer
+        try Self.migrator.migrate(writer, upTo: identifier)
+    }
+
+    /// 앱을 새 버전으로 올렸을 때처럼 남은 마이그레이션을 돌린다
+    func migrateToLatest() throws {
+        try Self.migrator.migrate(writer)
+    }
 
     // MARK: - 스키마
 
@@ -230,6 +244,19 @@ final class AppDatabase {
             }
         }
 
+        // GH-93: 태그(GH-136, v9)도 동기화한다. v7 트리거 목록은 이미 개발 빌드에 배포되어 고치지 않고 여기서 더한다.
+        // 이미 있는 태그도 큐에 넣는다. 로그인 전이면 처음 로그인할 때 큐를 비우고 전체를 올리므로 상관없다
+        migrator.registerMigration("v10") { db in
+            for event in ["INSERT", "UPDATE"] {
+                try db.execute(sql: """
+                    CREATE TRIGGER wishTag_after_\(event.lowercased())_outbox AFTER \(event) ON wishTag
+                    BEGIN
+                      INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES ('wishTag', NEW.id, NEW.updatedAt);
+                    END
+                    """)
+            }
+            try db.execute(sql: "INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) SELECT 'wishTag', id, updatedAt FROM wishTag")
+        }
 
         return migrator
     }
@@ -240,7 +267,8 @@ final class AppDatabase {
         WishStepRecord.databaseTableName,
         WishSavingRecord.databaseTableName,
         WishNotificationRecord.databaseTableName,
-        WishJournalRecord.databaseTableName
+        WishJournalRecord.databaseTableName,
+        WishTagRecord.databaseTableName
     ]
 
     // MARK: - appMetadata
