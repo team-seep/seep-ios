@@ -94,7 +94,7 @@ settingGroups:
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: X975A2HM62
   version:
-    MARKETING_VERSION: 2.8.0
+    MARKETING_VERSION: 2.8.1
     CURRENT_PROJECT_VERSION: "1"
 
 targets:
@@ -321,8 +321,6 @@ schemes:
   # App Store Connect 개발 앱("싶-개발버전")의 Xcode Cloud 프로덕트로 잡힌다. Release 면 운영 앱으로 올라간다
   seep-ios-dev:
     templates: [App]
-    archive:
-      config: Debug
   # 번역이 빠진 문구를 대문자로 보여 준다 (GH-100 R-15)
   seep-ios-i18n-check:
     templates: [App]
