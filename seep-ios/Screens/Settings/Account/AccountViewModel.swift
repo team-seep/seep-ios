@@ -1,0 +1,381 @@
+import Foundation
+import Observation
+
+extension AccountViewModel {
+    enum Action: Equatable {
+        /// 마이 탭이 보일 때. 로그인 상태·`sync_enabled`·동기화 상태를 다시 읽는다
+        case onAppear
+        /// 비회원 카드 "Apple로 계속하기"
+        case tapSignIn
+        /// View 가 Apple 로그인 시트에서 받은 값 (로그인·계정 삭제 재인증 공용)
+        case appleAuthorized(AppleCredential)
+        case appleAuthorizationFailed(isCanceled: Bool)
+        /// 회원 카드 → 계정 화면
+        case tapAccountCard
+        case tapSyncNow
+        /// 다른 계정 싶이 남은 기기에서 로그인했을 때: true 면 이 기기 싶을 지우고 받기, false 면 취소(로그아웃)
+        case selectOtherAccount(replace: Bool)
+        case tapLogout
+        case selectLogout(LocalDataChoice)
+        case tapDeleteAccount
+        case confirmDeleteAccount
+        /// 계정 삭제가 끝난 뒤 이 기기 싶을 남길지 (취소 없음)
+        case selectAfterDelete(LocalDataChoice)
+        case dismissDialog
+        case routeHandled
+    }
+
+    enum LocalDataChoice: String, Equatable {
+        case keep
+        case erase
+    }
+
+    enum Dialog: Equatable {
+        case logout
+        case deleteConfirm
+        case afterDelete
+        case otherAccount
+    }
+
+    /// 카드·계정 화면의 동기화 표시 (R-24)
+    enum SyncDisplay: Equatable {
+        case idle
+        /// 처음 로그인 업로드 (올린 수, 전체)
+        case uploading(done: Int, total: Int)
+        case syncing
+        case synced(Date?)
+        case waitingForNetwork(pending: Int)
+        case failed
+    }
+
+    struct State: Equatable {
+        /// Remote Config `sync_enabled`. 꺼져 있으면 계정 카드를 숨긴다 (R-30)
+        var isAvailable = false
+        var account: Account?
+        var isWorking = false
+        var dialog: Dialog?
+        var sync: SyncDisplay = .idle
+    }
+
+    enum Route: Equatable {
+        /// View 가 Apple 로그인 시트를 띄운다. 값은 요청에 넣을 nonce(SHA-256)
+        case requestAppleAuthorization(nonce: String)
+        case pushAccount
+        case popAccount
+        case toast(String)
+    }
+
+    struct Dependency {
+        let accountManager: AccountManagerProtocol
+        let syncEngine: SyncEngineProtocol
+        let wishRepository: WishRepository
+        let notificationManager: NotificationManagerProtocol
+        let photoStorage: WishPhotoStorage
+        let network: NetworkStatusProviding
+        let remoteConfigRepository: RemoteConfigRepository
+        let logManager: LogManagerProtocol
+
+        init(
+            accountManager: AccountManagerProtocol = AccountManager.shared,
+            syncEngine: SyncEngineProtocol = SyncEngine.shared,
+            wishRepository: WishRepository = WishRepositoryImpl(),
+            notificationManager: NotificationManagerProtocol = NotificationManager.shared,
+            photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
+            network: NetworkStatusProviding = NetworkMonitor.shared,
+            remoteConfigRepository: RemoteConfigRepository = RemoteConfigRepositoryImpl(),
+            logManager: LogManagerProtocol = LogManager.shared
+        ) {
+            self.accountManager = accountManager
+            self.syncEngine = syncEngine
+            self.wishRepository = wishRepository
+            self.notificationManager = notificationManager
+            self.photoStorage = photoStorage
+            self.network = network
+            self.remoteConfigRepository = remoteConfigRepository
+            self.logManager = logManager
+        }
+    }
+}
+
+/// 마이 탭 계정 카드와 계정 화면 (GH-93 R-24 ~ R-30, R-36). 두 화면이 같은 인스턴스를 쓴다
+@Observable
+final class AccountViewModel {
+    /// 로그아웃 확인의 선택지 순서. 첫 번째가 기본 선택이다 (결정 6)
+    static let logoutChoices: [LocalDataChoice] = [.keep, .erase]
+
+    let screenName: ScreenName = .account
+    private(set) var state = State()
+    private(set) var route: Route?
+
+    private let dependency: Dependency
+    private var pendingAuthorization: (purpose: AuthorizationPurpose, nonce: AppleSignInNonce)?
+    /// 계정 화면을 닫는 route 다음에 보여 줄 토스트. route 는 하나씩 처리되므로 닫은 뒤 이어서 낸다
+    private var pendingToast: String?
+
+    private enum AuthorizationPurpose {
+        case signIn
+        case deleteAccount
+    }
+
+    init(dependency: Dependency = Dependency()) {
+        self.dependency = dependency
+    }
+
+    func send(_ action: Action) {
+        switch action {
+        case .onAppear:
+            state.isAvailable = dependency.remoteConfigRepository.fetchSyncEnabled()
+            state.account = dependency.accountManager.currentAccount
+            refreshSyncDisplay()
+
+        case .tapSignIn:
+            sendClickLog(screen: .settings, objectId: .accountSignIn)
+            guard !state.isWorking else { return }
+            requestAuthorization(for: .signIn)
+
+        case .appleAuthorized(let credential):
+            guard let pending = pendingAuthorization else { return }
+            pendingAuthorization = nil
+            switch pending.purpose {
+            case .signIn:
+                signIn(credential: credential, nonce: pending.nonce)
+            case .deleteAccount:
+                deleteAccount(credential: credential, nonce: pending.nonce)
+            }
+
+        case .appleAuthorizationFailed(let isCanceled):
+            pendingAuthorization = nil
+            state.isWorking = false
+            // 사용자가 시트를 닫은 건 오류가 아니다 (TC-15)
+            if !isCanceled {
+                route = .toast(Strings.Account.Error.signIn)
+            }
+
+        case .tapAccountCard:
+            sendClickLog(screen: .settings, objectId: .accountCard)
+            route = .pushAccount
+
+        case .tapSyncNow:
+            sendClickLog(screen: screenName, objectId: .syncNow)
+            syncNow()
+
+        case .selectOtherAccount(let replace):
+            state.dialog = nil
+            if replace {
+                replaceLocalWithAccount()
+            } else {
+                // 이 계정으로는 들어가지 않는다. 기기는 이전 계정 싶을 그대로 둔 비회원으로 돌아간다
+                try? dependency.accountManager.signOut()
+                state.account = nil
+                state.sync = .idle
+            }
+
+        case .tapLogout:
+            sendClickLog(screen: screenName, objectId: .logout)
+            state.dialog = .logout
+
+        case .selectLogout(let choice):
+            state.dialog = nil
+            signOut(choice: choice)
+
+        case .tapDeleteAccount:
+            sendClickLog(screen: screenName, objectId: .deleteAccount)
+            guard dependency.network.isConnected else {
+                route = .toast(Strings.Account.Toast.offlineDelete)
+                return
+            }
+            state.dialog = .deleteConfirm
+
+        case .confirmDeleteAccount:
+            state.dialog = nil
+            requestAuthorization(for: .deleteAccount)
+
+        case .selectAfterDelete(let choice):
+            state.dialog = nil
+            if choice == .erase {
+                eraseLocalWishes()
+                route = .toast(Strings.Account.Toast.erased)
+            }
+
+        case .dismissDialog:
+            // 계정 삭제 뒤 선택은 닫을 수 없다 (R-29)
+            if state.dialog != .afterDelete {
+                state.dialog = nil
+            }
+
+        case .routeHandled:
+            route = pendingToast.map(Route.toast)
+            pendingToast = nil
+        }
+    }
+
+    // MARK: - 로그인·동기화
+
+    private func requestAuthorization(for purpose: AuthorizationPurpose) {
+        let nonce = dependency.accountManager.makeNonce()
+        pendingAuthorization = (purpose, nonce)
+        state.isWorking = true
+        route = .requestAppleAuthorization(nonce: nonce.sha256)
+    }
+
+    private func signIn(credential: AppleCredential, nonce: AppleSignInNonce) {
+        let accountManager = dependency.accountManager
+        Task { @MainActor [weak self] in
+            do {
+                let account = try await accountManager.signIn(with: credential, nonce: nonce)
+                guard let self else { return }
+                state.account = account
+                state.isWorking = false
+                dependency.logManager.sendEvent(event: CustomEvent(screen: .settings, name: .accountSignIn))
+                await startSession(uid: account.uid)
+            } catch {
+                guard let self else { return }
+                state.isWorking = false
+                route = .toast(Strings.Account.Error.signIn)
+            }
+        }
+    }
+
+    /// 처음 로그인 합치기 (설계 §6.3). 막는 모달 없이 카드에 진행을 보여 준다
+    private func startSession(uid: String) async {
+        state.sync = .uploading(done: 0, total: 0)
+        let outcome = await dependency.syncEngine.startSession(uid: uid) { [weak self] done, total in
+            Task { @MainActor in
+                guard let self, case .uploading = self.state.sync else { return }
+                self.state.sync = .uploading(done: done, total: total)
+            }
+        }
+        switch outcome {
+        case .merged:
+            state.sync = .synced(await dependency.syncEngine.status().lastSyncedAt)
+            route = .toast(Strings.Account.Toast.synced)
+        case .accountMismatch:
+            state.sync = .idle
+            state.dialog = .otherAccount
+        case .failed:
+            state.sync = .failed
+            route = .toast(Strings.Account.Toast.signedIn)
+        }
+    }
+
+    private func replaceLocalWithAccount() {
+        guard let uid = state.account?.uid else { return }
+        eraseLocalWishes()
+        let engine = dependency.syncEngine
+        Task { @MainActor [weak self] in
+            await engine.forgetBoundAccount()
+            await self?.startSession(uid: uid)
+        }
+    }
+
+    private func syncNow() {
+        guard state.sync != .syncing else { return }
+        state.sync = .syncing
+        let engine = dependency.syncEngine
+        Task { @MainActor [weak self] in
+            let report = await engine.sync(trigger: .manual)
+            guard let self else { return }
+            if report.failedStage != nil {
+                refreshSyncDisplay(failed: true)
+            } else {
+                state.sync = .synced(await engine.status().lastSyncedAt)
+                route = .toast(Strings.Account.Toast.synced)
+            }
+        }
+    }
+
+    private func refreshSyncDisplay(failed: Bool = false) {
+        guard state.account != nil else {
+            state.sync = .idle
+            return
+        }
+        let engine = dependency.syncEngine
+        let isConnected = dependency.network.isConnected
+        Task { @MainActor [weak self] in
+            let status = await engine.status()
+            guard let self else { return }
+            if case .uploading = state.sync { return }
+            if !isConnected, status.pendingCount > 0 {
+                state.sync = .waitingForNetwork(pending: status.pendingCount)
+            } else {
+                state.sync = failed ? .failed : .synced(status.lastSyncedAt)
+            }
+        }
+    }
+
+    // MARK: - 로그아웃·계정 삭제
+
+    private func signOut(choice: LocalDataChoice) {
+        state.isWorking = true
+        let engine = dependency.syncEngine
+        Task { @MainActor [weak self] in
+            // 남은 변경을 올리려면 로그인이 필요해서 Firebase 로그아웃보다 먼저 정리한다
+            await engine.endSession(unbindDevice: choice == .erase, flushPending: true)
+            guard let self else { return }
+            state.isWorking = false
+            do {
+                try dependency.accountManager.signOut()
+            } catch {
+                route = .toast(Strings.Account.Error.signOut)
+                return
+            }
+            if choice == .erase {
+                eraseLocalWishes()
+            }
+            state.account = nil
+            state.sync = .idle
+            dependency.logManager.sendEvent(event: CustomEvent(
+                screen: screenName,
+                name: .accountSignOut,
+                extraParameters: [.type: choice.rawValue]
+            ))
+            route = .popAccount
+            pendingToast = choice == .erase ? Strings.Account.Toast.erased : Strings.Account.Toast.signedOut
+        }
+    }
+
+    /// Apple 토큰 → Auth 사용자 순서로 지운다 (설계 §8). 서버의 내 문서·사진은 Auth 사용자가 지워지면
+    /// Cloud Function(`firebase/functions` eraseDeletedUser)이 지운다. 중간에 실패하면 계정은 남아 다시 시도할 수 있다
+    private func deleteAccount(credential: AppleCredential, nonce: AppleSignInNonce) {
+        guard state.account != nil, let authorizationCode = credential.authorizationCode else {
+            state.isWorking = false
+            route = .toast(Strings.Account.Error.delete)
+            return
+        }
+        let accountManager = dependency.accountManager
+        let engine = dependency.syncEngine
+        Task { @MainActor [weak self] in
+            do {
+                try await accountManager.reauthenticate(with: credential, nonce: nonce)
+                try await accountManager.revokeAppleToken(authorizationCode: authorizationCode)
+                try await accountManager.deleteUser()
+                // 계정이 없어졌으니 이 기기 싶은 어느 계정에도 묶이지 않은 비회원 싶이 된다. 서버 데이터는 함수가 지우니 남은 변경도 올리지 않는다
+                await engine.endSession(unbindDevice: true, flushPending: false)
+                guard let self else { return }
+                state.isWorking = false
+                state.account = nil
+                state.sync = .idle
+                state.dialog = .afterDelete
+                dependency.logManager.sendEvent(event: CustomEvent(screen: screenName, name: .accountDelete))
+                route = .popAccount
+                pendingToast = Strings.Account.Toast.deleted
+            } catch {
+                guard let self else { return }
+                state.isWorking = false
+                route = .toast(Strings.Account.Error.delete)
+            }
+        }
+    }
+
+    private func eraseLocalWishes() {
+        guard case .success(let wishes) = dependency.wishRepository.eraseAllLocalWishes() else { return }
+        for wish in wishes {
+            dependency.notificationManager.cancelNotifications(wish: wish)
+            dependency.photoStorage.deletePhotos(wishId: wish.id)
+        }
+    }
+
+    private func sendClickLog(screen: ScreenName, objectId: LogObjectId) {
+        dependency.logManager.sendEvent(event: ClickEvent(screen: screen, objectType: .button, objectId: objectId))
+    }
+}

@@ -8,6 +8,8 @@ protocol RemoteConfigRepository {
     func fetchYearReviewPeriod() -> YearReviewPeriod?
     /// 마지막으로 적용된 Realm 재이전 토큰. 비어 있으면 재이전하지 않는다 (GH-96 R-2)
     func fetchLegacyRealmReimportToken() -> String
+    /// 로그인·동기화 킬 스위치. 마지막으로 적용된 값, 받은 적 없으면 false (GH-93 R-30)
+    func fetchSyncEnabled() -> Bool
 }
 
 struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
@@ -15,6 +17,7 @@ struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
         static let timeout: TimeInterval = 1800
         static let yearReviewPeriodKey = "year_review_period"
         static let legacyRealmReimportTokenKey = "legacy_realm_reimport_token"
+        static let syncEnabledKey = "sync_enabled"
     }
     
     private let instance = RemoteConfig.remoteConfig()
@@ -47,6 +50,16 @@ struct RemoteConfigRepositoryImpl: RemoteConfigRepository {
 
     func fetchLegacyRealmReimportToken() -> String {
         instance[Constant.legacyRealmReimportTokenKey].stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    func fetchSyncEnabled() -> Bool {
+        #if DEBUG
+        // 개발 빌드에서 콘솔 값과 상관없이 켜 보려면 실행 인자 `-sync_enabled YES`
+        if UserDefaults.standard.object(forKey: Constant.syncEnabledKey) != nil {
+            return UserDefaults.standard.bool(forKey: Constant.syncEnabledKey)
+        }
+        #endif
+        return instance[Constant.syncEnabledKey].boolValue
     }
 }
 

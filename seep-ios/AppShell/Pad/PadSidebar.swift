@@ -134,7 +134,7 @@ private extension PadSidebarItem {
         case .finished: return "checkmark.circle"
         case .badges: return "medal"
         case .placeMap: return "map"
-        case .settings: return "gearshape"
+        case .settings: return "person.crop.circle"
         }
     }
 }

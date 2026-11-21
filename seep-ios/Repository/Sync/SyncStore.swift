@@ -1,0 +1,328 @@
+import Foundation
+
+import GRDB
+
+/// 동기화의 로컬 쪽: 아웃박스·syncState 읽기/쓰기와 받은 문서 적용 (GH-93, 설계 §5·§6.2). GRDB 접근은 여기서만 한다(R3)
+final class SyncStore {
+    enum StateKey {
+        static let uid = "uid"
+        /// 이 기기 로컬 데이터가 묶인 계정 (설계 §6.3)
+        static let boundUid = "boundUid"
+        static let lastSyncedAt = "lastSyncedAt"
+        static func cursor(_ collection: SyncCollection) -> String { "cursor.\(collection.rawValue)" }
+    }
+
+    /// 적용 결과
+    struct ApplyResult: Equatable {
+        /// 로컬이 바뀐 위시 (알림 다시 예약·위젯 갱신용)
+        var changedWishIds: Set<String> = []
+        /// 부모 위시가 아직 없어 다음 사이클로 미룬 문서
+        var deferred: [SyncDocument] = []
+    }
+
+    private let database: AppDatabase?
+
+    init(database: AppDatabase? = AppDatabase.shared) {
+        self.database = database
+    }
+
+    /// 지금 앱이 아는 마지막 마이그레이션 (`schemaVersion`, 설계 §6.4)
+    var schemaVersion: String {
+        (try? database?.writer.read { db in
+            try String.fetchOne(db, sql: "SELECT identifier FROM grdb_migrations ORDER BY rowid DESC LIMIT 1")
+        }).flatMap { $0 } ?? ""
+    }
+
+    // MARK: syncState
+
+    func value(_ key: String) -> String? {
+        try? database?.writer.read { db in
+            try String.fetchOne(db, sql: "SELECT value FROM syncState WHERE key = ?", arguments: [key])
+        }
+    }
+
+    func setValue(_ value: String?, for key: String) {
+        _ = try? database?.writer.write { db in
+            if let value {
+                try db.execute(sql: "INSERT OR REPLACE INTO syncState (key, value) VALUES (?, ?)", arguments: [key, value])
+            } else {
+                try db.execute(sql: "DELETE FROM syncState WHERE key = ?", arguments: [key])
+            }
+        }
+    }
+
+    func cursor(_ collection: SyncCollection) -> RemoteTimestamp? {
+        value(StateKey.cursor(collection)).flatMap(RemoteTimestamp.init(stored:))
+    }
+
+    func setCursor(_ cursor: RemoteTimestamp?, for collection: SyncCollection) {
+        setValue(cursor?.stored, for: StateKey.cursor(collection))
+    }
+
+    func clearCursors() {
+        SyncCollection.allCases.forEach { setCursor(nil, for: $0) }
+    }
+
+    // MARK: 아웃박스
+
+    func pendingCount() -> Int {
+        (try? database?.writer.read { db in
+            try Int.fetchOne(db, sql: "SELECT COUNT(DISTINCT tableName || ':' || rowId) FROM syncOutbox")
+        }).flatMap { $0 } ?? 0
+    }
+
+    /// 큐 앞에서부터 최대 `limit`줄을 읽어, 줄마다 **지금 로컬 값**을 돌려준다. 같은 줄은 한 번만.
+    /// 로컬에서 줄이 사라졌으면(이 기기에서 지우기) 건너뛴다
+    func pendingDocuments(limit: Int) -> (lastSeq: Int64, documents: [SyncDocument])? {
+        try? database?.writer.read { db in
+            let rows = try Row.fetchAll(db, sql: "SELECT seq, tableName, rowId FROM syncOutbox ORDER BY seq LIMIT ?", arguments: [limit])
+            guard let last = rows.last else { return nil }
+            var seen = Set<String>()
+            var documents: [SyncDocument] = []
+            for row in rows {
+                let tableName: String = row["tableName"]
+                let rowId: String = row["rowId"]
+                guard let collection = SyncCollection(tableName: tableName), seen.insert("\(tableName):\(rowId)").inserted else { continue }
+                if let document = try Self.document(collection: collection, id: rowId, in: db) {
+                    documents.append(document)
+                }
+            }
+            return (last["seq"], documents)
+        } ?? nil
+    }
+
+    func removeOutbox(upTo seq: Int64) {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: "DELETE FROM syncOutbox WHERE seq <= ?", arguments: [seq])
+        }
+    }
+
+    func clearOutbox() {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: "DELETE FROM syncOutbox")
+        }
+    }
+
+    // MARK: 사진 업로드 큐 (설계 §7)
+
+    func pendingPhotoFileNames(limit: Int) -> [String] {
+        (try? database?.writer.read { db in
+            try String.fetchAll(db, sql: "SELECT fileName FROM photoOutbox ORDER BY enqueuedAt LIMIT ?", arguments: [limit])
+        }) ?? []
+    }
+
+    func pendingPhotoCount() -> Int {
+        (try? database?.writer.read { db in
+            try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM photoOutbox")
+        }).flatMap { $0 } ?? 0
+    }
+
+    func removePendingPhoto(_ fileName: String) {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: "DELETE FROM photoOutbox WHERE fileName = ?", arguments: [fileName])
+        }
+    }
+
+    /// 처음 로그인할 때 살아 있는 위시의 사진을 모두 큐에 넣는다
+    func enqueueAllPhotos() {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: """
+                INSERT OR IGNORE INTO photoOutbox (fileName, enqueuedAt)
+                SELECT photoFileName, updatedAt FROM wish WHERE photoFileName <> '' AND deletedAt IS NULL
+                """)
+        }
+    }
+
+    func clearPhotoOutbox() {
+        _ = try? database?.writer.write { db in
+            try db.execute(sql: "DELETE FROM photoOutbox")
+        }
+    }
+
+    /// 살아 있는 위시가 가리키는 사진 이름 (이 기기에 파일이 있는지는 부르는 쪽이 본다)
+    func referencedPhotoFileNames() -> [String] {
+        (try? database?.writer.read { db in
+            try String.fetchAll(db, sql: "SELECT DISTINCT photoFileName FROM wish WHERE photoFileName <> '' AND deletedAt IS NULL")
+        }) ?? []
+    }
+
+    /// 처음 로그인할 때 올릴 로컬 전체(삭제 표시 포함, 설계 §6.3)
+    func allDocuments() -> [SyncDocument] {
+        (try? database?.writer.read { db in
+            try SyncCollection.allCases.flatMap { collection in
+                try Row.fetchAll(db, sql: "SELECT * FROM \(collection.tableName)").map { Self.document(collection: collection, row: $0) }
+            }
+        }) ?? []
+    }
+
+    // MARK: 삭제 표시 정리 (설계 §6.5)
+
+    /// `cutoff` 전에 삭제 표시했고 이미 올린(아웃박스에 없는) 줄을 물리 삭제한다. 지운 위시의 하위 줄은 CASCADE 로 같이 지워진다.
+    /// 지운 줄 수를 돌려준다
+    @discardableResult
+    func purgeTombstones(deletedBefore cutoff: Date) -> Int {
+        (try? database?.writer.write { db in
+            var count = 0
+            // 하위 줄을 먼저 지워야 위시 CASCADE 로 지워진 줄이 수에 섞이지 않는다
+            for collection in SyncCollection.allCases.reversed() {
+                try db.execute(
+                    sql: """
+                        DELETE FROM \(collection.tableName)
+                        WHERE deletedAt IS NOT NULL AND deletedAt < ?
+                          AND NOT EXISTS (SELECT 1 FROM syncOutbox WHERE tableName = ? AND rowId = \(collection.tableName).id)
+                        """,
+                    arguments: [cutoff.timeIntervalSinceReferenceDate, collection.tableName]
+                )
+                count += db.changesCount
+            }
+            return count
+        }) ?? 0
+    }
+
+    /// 전체 다시 받기에서 서버에 없는 로컬 줄. 아직 안 올린(아웃박스에 있는) 줄은 뺀다.
+    /// 서버에서 TTL 로 지워진 삭제 표시라서, 이 기기에서도 지워야 한다 (R-45)
+    func rowsMissing(fromServer received: [SyncCollection: Set<String>]) -> [SyncCollection: [String]] {
+        (try? database?.writer.read { db in
+            var missing: [SyncCollection: [String]] = [:]
+            for collection in SyncCollection.allCases {
+                let ids = try String.fetchAll(db, sql: """
+                    SELECT id FROM \(collection.tableName) AS row
+                    WHERE NOT EXISTS (SELECT 1 FROM syncOutbox WHERE tableName = ? AND rowId = row.id)
+                    """, arguments: [collection.tableName])
+                let notOnServer = ids.filter { !(received[collection]?.contains($0) ?? false) }
+                if !notOnServer.isEmpty { missing[collection] = notOnServer }
+            }
+            return missing
+        }) ?? [:]
+    }
+
+    /// 줄을 물리 삭제한다(위시는 하위 줄까지). 삭제라 아웃박스 트리거가 불리지 않는다
+    func deleteRows(_ rows: [SyncCollection: [String]]) {
+        _ = try? database?.writer.write { db in
+            for collection in SyncCollection.allCases.reversed() {
+                for id in rows[collection] ?? [] {
+                    try db.execute(sql: "DELETE FROM \(collection.tableName) WHERE id = ?", arguments: [id])
+                }
+            }
+        }
+    }
+
+    // MARK: 받은 문서 적용
+
+    /// 줄 단위 LWW(`updatedAt`) + 삭제 우선으로 한 트랜잭션에 적용한다 (설계 §6.2).
+    /// 적용하며 트리거가 쌓은 아웃박스 줄은 되돌려 보내지 않게 지운다
+    func apply(_ documents: [SyncDocument]) -> ApplyResult {
+        guard let database else { return ApplyResult(deferred: documents) }
+        let ordered = documents.sorted { lhs, rhs in
+            (SyncCollection.allCases.firstIndex(of: lhs.collection) ?? 0) < (SyncCollection.allCases.firstIndex(of: rhs.collection) ?? 0)
+        }
+        return (try? database.writer.write { db in
+            let startSeq = try Int64.fetchOne(db, sql: "SELECT COALESCE(MAX(seq), 0) FROM syncOutbox") ?? 0
+            let photosBefore = Set(try String.fetchAll(db, sql: "SELECT fileName FROM photoOutbox"))
+            var result = ApplyResult()
+            var resendLocal: [(SyncCollection, String)] = []
+            for document in ordered {
+                if document.collection.isChild {
+                    let parentId = document.wishId ?? ""
+                    let parentExists = try Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM wish WHERE id = ?)", arguments: [parentId]) ?? false
+                    guard parentExists else {
+                        // 부모 없는 삭제 표시는 적용할 것이 없다. 부모가 TTL 로 먼저 지워졌을 수 있어, 미루면 커서가 영영 막힌다
+                        if !document.isDeleted { result.deferred.append(document) }
+                        continue
+                    }
+                }
+                switch try Self.decide(document, in: db) {
+                case .write:
+                    // 한 문서가 깨져 있어도(필수 컬럼 없음 등) 나머지는 적용하고, 그 문서는 건너뛴다
+                    guard (try? Self.write(document, in: db)) != nil else { continue }
+                    if let wishId = document.wishId { result.changedWishIds.insert(wishId) }
+                case .skip:
+                    break
+                case .resendLocal:
+                    // 서버 값이 로컬보다 오래됐다(늦게 올라온 옛 값, 또는 로컬에서 지운 줄이 서버엔 살아 있음). 로컬 값을 다시 올린다
+                    resendLocal.append((document.collection, document.id))
+                }
+            }
+            try db.execute(sql: "DELETE FROM syncOutbox WHERE seq > ?", arguments: [startSeq])
+            // 받은 위시의 사진은 다른 기기가 올린 것이다. 이 기기 업로드 큐에 남기지 않는다
+            for fileName in try String.fetchAll(db, sql: "SELECT fileName FROM photoOutbox") where !photosBefore.contains(fileName) {
+                try db.execute(sql: "DELETE FROM photoOutbox WHERE fileName = ?", arguments: [fileName])
+            }
+            for (collection, id) in resendLocal {
+                try db.execute(
+                    sql: "INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES (?, ?, ?)",
+                    arguments: [collection.tableName, id, Date().timeIntervalSinceReferenceDate]
+                )
+            }
+            return result
+        }) ?? ApplyResult(deferred: documents)
+    }
+
+    // MARK: - Private
+
+    private enum Decision {
+        case write
+        case skip
+        case resendLocal
+    }
+
+    private static func decide(_ remote: SyncDocument, in db: Database) throws -> Decision {
+        guard let local = try document(collection: remote.collection, id: remote.id, in: db) else { return .write }
+        // 삭제가 이긴다: 지운 위시가 되살아나는 것이 더 나쁘다
+        if remote.isDeleted && !local.isDeleted { return .write }
+        if local.isDeleted && !remote.isDeleted { return .resendLocal }
+        if remote.updatedAt > local.updatedAt { return .write }
+        // 다른 기기가 오프라인에서 고친 옛 값을 나중에 올리면 서버가 더 새 값을 덮는다. 더 새 쪽이 다시 올려 맞춘다
+        return remote.updatedAt < local.updatedAt ? .resendLocal : .skip
+    }
+
+    /// 로컬 테이블에 있는 컬럼만 쓴다. 더 새 앱이 만든 모르는 필드는 버린다 (설계 §6.4)
+    private static func write(_ document: SyncDocument, in db: Database) throws {
+        let columns = try db.columns(in: document.collection.tableName).map(\.name)
+        let known = columns.filter { document.fields[$0] != nil || $0 == "id" }
+        var values: [DatabaseValueConvertible?] = []
+        for column in known {
+            values.append(column == "id" ? document.id : databaseValue(document.fields[column] ?? .null))
+        }
+        let placeholders = Array(repeating: "?", count: known.count).joined(separator: ", ")
+        let quoted = known.map { "\"\($0)\"" }.joined(separator: ", ")
+        let updates = known.filter { $0 != "id" }.map { "\"\($0)\" = excluded.\"\($0)\"" }.joined(separator: ", ")
+        try db.execute(
+            sql: "INSERT INTO \(document.collection.tableName) (\(quoted)) VALUES (\(placeholders)) ON CONFLICT(id) DO UPDATE SET \(updates)",
+            arguments: StatementArguments(values)
+        )
+    }
+
+    private static func document(collection: SyncCollection, id: String, in db: Database) throws -> SyncDocument? {
+        try Row.fetchOne(db, sql: "SELECT * FROM \(collection.tableName) WHERE id = ?", arguments: [id])
+            .map { document(collection: collection, row: $0) }
+    }
+
+    private static func document(collection: SyncCollection, row: Row) -> SyncDocument {
+        var fields: [String: SyncValue] = [:]
+        for (column, value) in row where column != "id" {
+            fields[column] = syncValue(value)
+        }
+        return SyncDocument(collection: collection, id: row["id"], fields: fields)
+    }
+
+    private static func syncValue(_ value: DatabaseValue) -> SyncValue {
+        switch value.storage {
+        case .null: return .null
+        case .int64(let int): return .integer(int)
+        case .double(let double): return .double(double)
+        case .string(let string): return .text(string)
+        case .blob(let data): return .blob(data)
+        }
+    }
+
+    private static func databaseValue(_ value: SyncValue) -> DatabaseValueConvertible? {
+        switch value {
+        case .null: return nil
+        case .integer(let int): return int
+        case .double(let double): return double
+        case .text(let string): return string
+        case .blob(let data): return data
+        }
+    }
+}

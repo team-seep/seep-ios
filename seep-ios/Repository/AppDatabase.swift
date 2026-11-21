@@ -30,6 +30,21 @@ final class AppDatabase {
         try AppDatabase(DatabaseQueue())
     }
 
+    /// 테스트용: 예전 출시 상태(마이그레이션 `identifier`까지만 돈) 메모리 DB. `migrateToLatest()`로 마저 올린다
+    static func makeInMemory(migratedUpTo identifier: String) throws -> AppDatabase {
+        try AppDatabase(DatabaseQueue(), upTo: identifier)
+    }
+
+    private init(_ writer: any DatabaseWriter, upTo identifier: String) throws {
+        self.writer = writer
+        try Self.migrator.migrate(writer, upTo: identifier)
+    }
+
+    /// 앱을 새 버전으로 올렸을 때처럼 남은 마이그레이션을 돌린다
+    func migrateToLatest() throws {
+        try Self.migrator.migrate(writer)
+    }
+
     // MARK: - 스키마
 
     // 배포된 마이그레이션은 고치지 않고 새로 추가한다 (RULES R4, scripts/check-db-schema.sh)
@@ -177,8 +192,84 @@ final class AppDatabase {
             }
         }
 
+        // v7·v8(GH-93)은 v9(GH-136)보다 늦게 출시되어 뒤에 등록한다. GRDB는 등록 순서대로 안 돈 마이그레이션을 모두 돌리므로
+        // 2.8.0 기기(v9까지)는 v7·v8을, GH-93 개발 빌드 기기(v8까지)는 v9를 마저 돈다
+        // GH-93: 서버 동기화 큐. 이 기기 전용 테이블이라 updatedAt·deletedAt 규칙에서 뺀다(RULES R4 예외).
+        // 앱·위젯·앱 인텐트 어느 경로로 쓰든 빠짐없이 잡으려고 트리거로 쌓는다. 줄을 지우는(DELETE) 쓰기는 이 기기만의 정리라 쌓지 않는다
+        migrator.registerMigration("v7") { db in
+            try db.execute(sql: """
+                CREATE TABLE syncOutbox (
+                  seq INTEGER PRIMARY KEY AUTOINCREMENT,
+                  tableName TEXT NOT NULL,
+                  rowId TEXT NOT NULL,
+                  enqueuedAt DOUBLE NOT NULL
+                )
+                """)
+            try db.create(index: "syncOutbox_on_row", on: "syncOutbox", columns: ["tableName", "rowId"])
+            try db.create(table: "syncState") { table in
+                table.primaryKey("key", .text)
+                table.column("value", .text).notNull()
+            }
+            // 배포된 마이그레이션이 바뀌지 않게 목록을 여기 그대로 적는다
+            for table in ["wish", "wishStep", "wishSaving", "wishNotification", "wishJournal"] {
+                for event in ["INSERT", "UPDATE"] {
+                    try db.execute(sql: """
+                        CREATE TRIGGER \(table)_after_\(event.lowercased())_outbox AFTER \(event) ON \(table)
+                        BEGIN
+                          INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES ('\(table)', NEW.id, NEW.updatedAt);
+                        END
+                        """)
+                }
+            }
+        }
+
+        // GH-93 3단계: 사진 업로드 큐 (설계 §7). 이 기기 전용 테이블이라 updatedAt·deletedAt이 없다(R4 예외)
+        migrator.registerMigration("v8") { db in
+            try db.execute(sql: """
+                CREATE TABLE photoOutbox (
+                  fileName TEXT PRIMARY KEY NOT NULL,
+                  enqueuedAt DOUBLE NOT NULL
+                )
+                """)
+            // 어느 화면에서 붙였든(적기·상세·공유) 위시에 사진 이름이 생기면 큐에 넣는다
+            for event in ["INSERT", "UPDATE OF photoFileName"] {
+                let name = event == "INSERT" ? "insert" : "update"
+                try db.execute(sql: """
+                    CREATE TRIGGER wish_after_\(name)_photo_outbox AFTER \(event) ON wish
+                    WHEN NEW.photoFileName <> ''
+                    BEGIN
+                      INSERT OR IGNORE INTO photoOutbox (fileName, enqueuedAt) VALUES (NEW.photoFileName, NEW.updatedAt);
+                    END
+                    """)
+            }
+        }
+
+        // GH-93: 태그(GH-136, v9)도 동기화한다. v7 트리거 목록은 이미 개발 빌드에 배포되어 고치지 않고 여기서 더한다.
+        // 이미 있는 태그도 큐에 넣는다. 로그인 전이면 처음 로그인할 때 큐를 비우고 전체를 올리므로 상관없다
+        migrator.registerMigration("v10") { db in
+            for event in ["INSERT", "UPDATE"] {
+                try db.execute(sql: """
+                    CREATE TRIGGER wishTag_after_\(event.lowercased())_outbox AFTER \(event) ON wishTag
+                    BEGIN
+                      INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES ('wishTag', NEW.id, NEW.updatedAt);
+                    END
+                    """)
+            }
+            try db.execute(sql: "INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) SELECT 'wishTag', id, updatedAt FROM wishTag")
+        }
+
         return migrator
     }
+
+    /// 서버와 동기화하는 테이블. 부모(`wish`)가 먼저다 (GH-93, 설계 §6.2)
+    static let syncedTableNames = [
+        WishRecord.databaseTableName,
+        WishStepRecord.databaseTableName,
+        WishSavingRecord.databaseTableName,
+        WishNotificationRecord.databaseTableName,
+        WishJournalRecord.databaseTableName,
+        WishTagRecord.databaseTableName
+    ]
 
     // MARK: - appMetadata
 

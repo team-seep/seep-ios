@@ -75,6 +75,15 @@ custom_rules:
     message: "R3: DB(GRDB, 이전용 Realm) 읽기/쓰기는 Repository(Protocol+Impl) 에서만. ViewModel 은 Dependency 로 Repository 를 주입받는다."
     severity: error
 
+  firebase_only_in_sync:                    # R11 (GH-93)
+    name: "R11 Firebase 서버 접근은 Sync·Account 에서만"
+    excluded:
+      - "seep-ios/Repository/Sync/.*"
+      - "seep-ios/Services/Account/.*"
+    regex: "^import (FirebaseFirestore|FirebaseFirestoreSwift|FirebaseAuth|FirebaseStorage)\\b"
+    message: "R11: Firestore·Auth·Storage 는 Repository/Sync/·Services/Account/ 에서만 쓴다. ViewModel 은 SyncEngineProtocol·AccountManagerProtocol 만 의존한다 (GH-93)."
+    severity: error
+
   no_raw_sheet:                             # R5 (GH-64)
     name: "R5 시트는 seepSheet 로만"
     included: "/seep-ios/(?!(widget|seep-iosTests)/)"   # 앱 폴더만. 레포 폴더 이름도 seep-ios 라 앵커 없이 쓰면 widget·테스트까지 잡힌다 (GH-76)
