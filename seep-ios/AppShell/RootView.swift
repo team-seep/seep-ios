@@ -11,6 +11,8 @@ struct RootView: View {
     @State private var isSplashFinished = false
     /// 언어를 바꿔 메인을 다시 만들 때는 콜드 스타트 잠금·맡아 둔 링크 처리를 다시 하지 않는다
     @State private var hasMainAppeared = false
+    /// 처음 활성화는 실행, 그다음은 포그라운드 동기화 (GH-93)
+    @State private var hasBecomeActive = false
     /// 설정 "화면 모드". `Preference.appearance`가 같은 키에 쓴다 (GH-85 R-3)
     @AppStorage(AppAppearance.storageKey) private var appearanceRawValue = AppAppearance.system.rawValue
     /// 설정 "언어". 바뀌면 메인 화면을 새 언어로 다시 만든다 (GH-103 R-21). 위젯과 같이 쓰려고 App Group 에 둔다
@@ -45,6 +47,8 @@ struct RootView: View {
             switch phase {
             case .active:
                 appLock.send(.phaseChanged(.active))
+                SyncScheduler.shared.appDidBecomeActive(isLaunch: !hasBecomeActive)
+                hasBecomeActive = true
             case .inactive:
                 appLock.send(.phaseChanged(.inactive))
             case .background:

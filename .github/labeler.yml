@@ -26,3 +26,4 @@ schema-change:
           - "seep-ios/model/dto/**"
           - "seep-ios/Repository/AppDatabase.swift"
           - "seep-ios/Repository/LegacyRealm/**"
+          - "firebase/**"

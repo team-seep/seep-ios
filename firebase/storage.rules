@@ -1,0 +1,16 @@
+rules_version = '2';
+
+// GH-93 위시 사진 (설계 §4·§7). 1단계는 본인 폴더만, 같이 이루기(5단계)에서 위시 멤버까지 넓힌다
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /wishPhotos/{ownerUid}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == ownerUid;
+      // 앱은 1080px JPEG로 저장한다. 5MB는 넉넉한 상한
+      allow create, update: if request.auth != null && request.auth.uid == ownerUid
+        && request.resource.contentType.matches('image/.*')
+        && request.resource.size <= 5 * 1024 * 1024;
+      // 계정 삭제·삭제 표시 정리 때 본인 파일을 지운다
+      allow delete: if request.auth != null && request.auth.uid == ownerUid;
+    }
+  }
+}

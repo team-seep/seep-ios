@@ -40,7 +40,7 @@ struct MainTabView: View {
                         .seepDestinations()
                 }
             } label: {
-                Label(Strings.MainTab.settings, systemImage: "gearshape")
+                Label(Strings.MainTab.settings, systemImage: "person.crop.circle")
             }
         }
         .tint(Color.seepBlue)

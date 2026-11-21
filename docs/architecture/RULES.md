@@ -28,6 +28,7 @@ AI가 코드를 많이 쓰는 환경에서 사람은 diff 전체가 아니라 **
 | R8 | `print`·`try!`·`as!` 금지 | 린트 `no_print`, `force_try`, `force_cast` | 0건 |
 | R9 | ViewModel 구조(Action/State/Route/Config/Dependency, `send(_:)`)·Route는 View에서 처리 | 문서 + AI 리뷰 | — |
 | R10 | 프로젝트 구성(파일·타깃·설정·스킴)은 `project.yml`로만 바꾼다. `project.pbxproj`를 직접 고치지 않는다 | 스크립트 `xcodegen.sh --check`(CI 드리프트) | — |
+| R11 | Firebase 서버 접근(Firestore·Auth·Storage)은 `Repository/Sync/`·`Services/Account/`에서만 | 린트 `firebase_only_in_sync` | 0건 |
 
 린트 대상은 `seep-ios/`, `seep-iosTests/`, `widget/`(R1·R7·R8·`snapkit`·`then`만). `seep-ios/Generated/`(SwiftGen 산출물)는 제외.
 
@@ -147,7 +148,8 @@ migrator.registerMigration("v2") { db in
 - CI(`BASE_REF` 지정 시): 레코드가 바뀌었는데 마이그레이션이 늘지 않았으면 실패. base에 있던 마이그레이션 이름이 사라졌으면 실패.
 - 라벨 `schema-change`가 붙어 리뷰어가 마이그레이션 코드를 먼저 본다. 마이그레이션 TC(구버전 데이터 → 신버전 실행)는 유닛(메모리 DB에서 `migrator`)과 자동화 TC로 넣는다 (`docs/process/e2e-and-manual-tests.md`).
 
-**예외** — 저장되지 않는 computed 프로퍼티·메서드·주석만 바꿨다면 스크립트가 실패해도 PR 본문에 사유를 적고 리뷰어가 승인한다. `appMetadata`(1회 이전 표시 등 이 기기에만 있는 값)는 동기화 대상이 아니라 2번 규칙에서 뺀다.
+**예외** — 저장되지 않는 computed 프로퍼티·메서드·주석만 바꿨다면 스크립트가 실패해도 PR 본문에 사유를 적고 리뷰어가 승인한다. `appMetadata`(1회 이전 표시 등 이 기기에만 있는 값)와 동기화 큐 `syncOutbox`·`syncState`·사진 업로드 큐 `photoOutbox`(GH-93, 이 기기 전용)는 동기화 대상이 아니라 1·2번 규칙에서 뺀다(`syncOutbox`는 순서를 위해 정수 키).
+**새 컬럼은 기본값을 둔다** — 기기마다 앱 버전이 달라도 동기화로 받은 문서에 없는 필드가 비지 않게 한다(GH-93, 설계 §6.4).
 **이전용 Realm** — GH-79 전 데이터를 옮기는 `Repository/LegacyRealm/`(Realm DTO·`schemaVersion` 7·`migrationBlock`)은 고치지 않는다. 이전 실패율을 본 뒤 후속 이슈에서 지운다.
 
 ---
@@ -278,6 +280,22 @@ do {
 **강제 수단** — CI 테스트 워크플로의 "프로젝트 드리프트" 스텝(`scripts/xcodegen.sh --check`). XcodeGen 버전은 스크립트에 고정한다.
 
 **예외** — 없음. Xcode가 프로젝트 파일을 바꿔 놓았으면 커밋하지 않고 `make project`로 되돌린다.
+
+---
+
+## R11. Firebase 서버 접근은 `Repository/Sync/`·`Services/Account/`에서만 한다
+
+`import FirebaseFirestore`·`FirebaseFirestoreSwift`·`FirebaseAuth`·`FirebaseStorage`는 `seep-ios/Repository/Sync/`(동기화 엔진·원격 저장소)와 `seep-ios/Services/Account/`(로그인·계정)에서만 쓴다. ViewModel은 `SyncEngineProtocol`·`AccountManagerProtocol`만 `Dependency`로 주입받는다(GH-93).
+
+**이유** — 로컬 GRDB가 기준 데이터이고 서버는 그 뒤를 따라온다(설계 `docs/architecture/server-sync-design.md` §1). 화면이 Firestore를 직접 읽으면 오프라인·비회원에서 동작이 갈리고, 동기화 버그가 화면 곳곳에 퍼진다. 한 곳에 모으면 목(`MockRemoteWishStore`)으로 "기기 두 대"를 유닛 테스트할 수 있다.
+
+**좋은 예** — `AccountViewModel.Dependency.accountManager: AccountManagerProtocol` → 구현 `Services/Account/AccountManager.swift`가 `FirebaseAuth`를 쓴다.
+
+**나쁜 예** — 화면에서 `Firestore.firestore().collection("wishes")`로 바로 읽는다.
+
+**강제 수단** — 린트 `firebase_only_in_sync`(error). Analytics·Remote Config·App Check·Crashlytics(`import Firebase…` 그 밖)는 대상이 아니다.
+
+**예외** — 없음. `AppDelegate`는 `import Firebase`로 `FirebaseApp.configure()`만 한다.
 
 ---
 
