@@ -126,7 +126,9 @@ struct AppleContinueButton: View {
                     ProgressView()
                         .tint(Color.gray1)
                 } else {
+                    // 앱 글자는 크기가 고정이라 아이콘도 큰 글자 설정을 따라 커지지 않게 맞춘다
                     Image(systemName: "apple.logo")
+                        .font(.system(size: 16, weight: .semibold))
                 }
                 Text(isWorking ? Strings.Account.Card.signingIn : Strings.Account.Card.appleButton)
                     .font(.appleSemiBold(size: 16))
