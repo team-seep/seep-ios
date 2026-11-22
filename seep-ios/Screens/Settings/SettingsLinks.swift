@@ -7,8 +7,16 @@ enum SettingsLinks {
     /// 문의 받는 메일 주소. 비어 있으면 "문의하기" 줄을 숨긴다 (GH-77 R-2, R-4)
     static let contactEmail: String? = "dbgustlr92@gmail.com"
 
+    /// 개인정보 처리방침 (GH-145 R-2). GitHub Pages `site/privacy/`
+    static let privacyPolicyBaseURL = "https://team-seep.github.io/seep-ios/privacy/"
+
     /// 앱의 시스템 설정 화면. UIKit `UIApplication.openSettingsURLString`과 같은 값
     static let appSettingsURL = URL(string: "app-settings:")
+
+    /// 한국어면 한국어 페이지, 그 밖의 언어는 영어 페이지 (GH-145 R-7)
+    static func privacyPolicyURL(languageCode: String) -> URL? {
+        URL(string: privacyPolicyBaseURL + (languageCode == "ko" ? "" : "en/"))
+    }
 
     static func reviewURL(appStoreID: String?) -> URL? {
         guard let appStoreID, !appStoreID.isEmpty else { return nil }

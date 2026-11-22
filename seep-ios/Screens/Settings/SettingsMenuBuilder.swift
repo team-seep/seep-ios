@@ -15,6 +15,8 @@ enum SettingsRow: Equatable, Identifiable {
     case controlGuide
     case rateApp
     case contact
+    /// 개인정보 처리방침. 로그인·`sync_enabled`와 상관없이 늘 보인다 (GH-145 R-6)
+    case privacyPolicy
     case license
     case version(String)
 
@@ -30,6 +32,7 @@ enum SettingsRow: Equatable, Identifiable {
         case .controlGuide: return "control_guide"
         case .rateApp: return "rate_app"
         case .contact: return "contact"
+        case .privacyPolicy: return "privacy_policy"
         case .license: return "license"
         case .version: return "version"
         }
@@ -61,6 +64,7 @@ enum SettingsMenuBuilder {
         let infoRows: [SettingsRow] = [
             isRateAppAvailable ? .rateApp : nil,
             isContactAvailable ? .contact : nil,
+            .privacyPolicy,
             .license,
             .version(version)
         ].compactMap { $0 }

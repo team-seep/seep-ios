@@ -221,6 +221,8 @@ struct SettingsTabRootView: View {
             button(title: Strings.Settings.rateApp, action: .tapRateApp)
         case .contact:
             button(title: Strings.Settings.contact, action: .tapContact)
+        case .privacyPolicy:
+            button(title: Strings.Settings.privacyPolicy, action: .tapPrivacyPolicy)
         case .license:
             button(title: Strings.Settings.license, action: .tapLicense)
 
@@ -340,6 +342,8 @@ extension SettingsTabRootView {
             isAccountPresented = true
         case .popAccount:
             isAccountPresented = false
+        case .openURL(let url):
+            openURL(url)
         case .toast(let message):
             toastCenter.show(message)
         }

@@ -42,11 +42,25 @@ struct AccountCard: View {
             AppleContinueButton(isWorking: viewModel.state.isWorking) {
                 viewModel.send(.tapSignIn)
             }
-            Text(Strings.Account.Card.guestNote)
-                .font(.appleRegular(size: 12))
-                .foregroundStyle(Color.gray4)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+            VStack(spacing: 6) {
+                Text(Strings.Account.Card.guestNote)
+                    .font(.appleRegular(size: 12))
+                    .foregroundStyle(Color.gray4)
+                    .multilineTextAlignment(.center)
+                // 로그인하면 서버에 올라가는 항목을 버튼 가까이에서 볼 수 있게 한다 (GH-145 R-5)
+                Button {
+                    viewModel.send(.tapPrivacyPolicy)
+                } label: {
+                    Text(Strings.Account.Card.privacyPolicy)
+                        .font(.appleMedium(size: 12))
+                        .foregroundStyle(Color.gray4)
+                        .underline()
+                        .frame(minHeight: 32)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+            .frame(maxWidth: .infinity)
         }
         .padding(16)
         .background(Color.gray1, in: RoundedRectangle(cornerRadius: 12))
