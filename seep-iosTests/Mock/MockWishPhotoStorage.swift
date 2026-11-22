@@ -36,6 +36,13 @@ final class MockWishPhotoStorage: WishPhotoStorage {
         deletePhotosCalledWishIds.append(wishId)
     }
 
+    private(set) var importedFileNames: [String] = []
+
+    func importPhoto(data: Data, fileName: String) throws {
+        importedFileNames.append(fileName)
+        existingFileNames.insert(fileName)
+    }
+
     func loadThumbnail(fileName: String, maxPixelSize: Int, completion: @escaping (CGImage?) -> Void) {
         loadThumbnailCalls.append((fileName, maxPixelSize))
         completion(thumbnailResult)

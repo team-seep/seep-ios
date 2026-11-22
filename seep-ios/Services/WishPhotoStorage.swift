@@ -32,6 +32,9 @@ protocol WishPhotoStorage {
     /// 위시를 지울 때 그 위시의 사진 파일(`{위시id}-*`)을 모두 지운다 (R-5).
     func deletePhotos(wishId: String)
 
+    /// 다른 기기에서 받은 사진 파일을 그 이름 그대로 저장한다 (GH-93 R-41). 이미 JPEG라 다시 인코딩하지 않는다
+    func importPhoto(data: Data, fileName: String) throws
+
     /// 셀 크기에 맞춘 썸네일을 백그라운드에서 디코딩해 메인 스레드로 돌려준다. 실패하면 nil (R-8).
     func loadThumbnail(fileName: String, maxPixelSize: Int, completion: @escaping (CGImage?) -> Void)
 }
@@ -92,6 +95,19 @@ final class WishPhotoStorageImpl: WishPhotoStorage {
         fileNames
             .filter { $0.hasPrefix(wishId + "-") }
             .forEach(deletePhoto(fileName:))
+    }
+
+    func importPhoto(data: Data, fileName: String) throws {
+        guard let url = fileURL(fileName: fileName),
+              CGImageSourceCreateWithData(data as CFData, nil).flatMap({ CGImageSourceGetCount($0) > 0 ? $0 : nil }) != nil else {
+            throw WishPhotoStorageError.invalidImage
+        }
+        do {
+            try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+            try data.write(to: url, options: .atomic)
+        } catch {
+            throw WishPhotoStorageError.writeFailed
+        }
     }
 
     func loadThumbnail(fileName: String, maxPixelSize: Int, completion: @escaping (CGImage?) -> Void) {

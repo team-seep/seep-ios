@@ -1,0 +1,37 @@
+name: 웹 페이지 (GitHub Pages)
+
+# GH-145: 개인정보 처리방침 등 정적 페이지는 레포 site/ 가 원본이다.
+# develop 에 site/ 가 바뀌어 들어오면 GitHub Pages(team-seep.github.io/seep-ios/)에 배포한다.
+on:
+  push:
+    branches: [develop]
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: 배포
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
