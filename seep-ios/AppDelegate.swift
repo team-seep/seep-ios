@@ -32,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func initilizeFirebase() {
+        // App Check 공급자는 Firebase 를 켜기 전에 정해야 첫 요청부터 토큰이 붙는다 (GH-145 R-10)
+        AppCheckSetup.configure()
         FirebaseApp.configure()
         
         // 연말 회고 노출 기간 등 Remote Config 최신 값을 받아 둔다 (GH-34 R-9).

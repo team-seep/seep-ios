@@ -26,6 +26,8 @@ extension SettingsViewModel {
         case tapContact
         /// 메일 앱을 열지 못했을 때 (R-28)
         case contactUnavailable
+        /// 정보 섹션 "개인정보 처리방침" (GH-145 R-6)
+        case tapPrivacyPolicy
         case tapLicense
         case routeHandled
     }
@@ -64,6 +66,8 @@ extension SettingsViewModel {
         let pasteboard: PasteboardWriting
         /// 앱 언어 고르기 (GH-103 R-21)
         let language: LanguageSwitching
+        /// 지금 보여 주는 앱 언어. 처리방침 페이지 언어를 고른다 (GH-145 R-7)
+        let appLanguageCode: () -> String
 
         init(
             preference: Preference = .shared,
@@ -74,7 +78,8 @@ extension SettingsViewModel {
             appStoreID: String? = SettingsLinks.appStoreID,
             contactEmail: String? = SettingsLinks.contactEmail,
             pasteboard: PasteboardWriting = SystemPasteboard(),
-            language: LanguageSwitching = LanguageSwitcher()
+            language: LanguageSwitching = LanguageSwitcher(),
+            appLanguageCode: @escaping () -> String = { AppLanguage.shared.code }
         ) {
             self.preference = preference
             self.authenticationManager = authenticationManager
@@ -85,6 +90,7 @@ extension SettingsViewModel {
             self.contactEmail = contactEmail
             self.pasteboard = pasteboard
             self.language = language
+            self.appLanguageCode = appLanguageCode
         }
     }
 }
@@ -189,6 +195,12 @@ final class SettingsViewModel {
             guard let email = dependency.contactEmail else { return }
             dependency.pasteboard.copy(email)
             route = .toast(Strings.Settings.Contact.copiedFormat(email))
+
+        case .tapPrivacyPolicy:
+            sendClickLog(objectId: .privacyPolicy, extraParameters: [.type: "info"])
+            if let url = SettingsLinks.privacyPolicyURL(languageCode: dependency.appLanguageCode()) {
+                route = .openURL(url)
+            }
 
         case .tapLicense:
             sendClickLog(objectId: .license)

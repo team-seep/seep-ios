@@ -131,7 +131,7 @@ final class AccountFeatureTests: ViewModelTestCase {
         super.tearDown()
     }
 
-    private func makeSut(isSyncEnabled: Bool = true, signedIn: Bool = false) -> AccountViewModel {
+    private func makeSut(isSyncEnabled: Bool = true, signedIn: Bool = false, appLanguageCode: String = "ko") -> AccountViewModel {
         accountManager.currentAccount = signedIn ? member : nil
         let sut = AccountViewModel(dependency: .init(
             accountManager: accountManager,
@@ -141,7 +141,8 @@ final class AccountFeatureTests: ViewModelTestCase {
             photoStorage: photoStorage,
             network: network,
             remoteConfigRepository: SyncFlagRemoteConfig(isSyncEnabled: isSyncEnabled),
-            logManager: logManager
+            logManager: logManager,
+            appLanguageCode: { appLanguageCode }
         ))
         sut.send(.onAppear)
         return sut
@@ -170,6 +171,34 @@ final class AccountFeatureTests: ViewModelTestCase {
         let clicks = clickEvents(objectId: .accountSignIn)
         XCTAssertEqual(clicks.count, 1)
         XCTAssertEqual(clicks.first?.screen, .settings)
+    }
+
+    // MARK: GH-145 TC-3
+
+    func test_GH145_TC3_비회원카드의처리방침을누르면_처리방침을열고_account_card클릭로그가간다() {
+        // Given
+        let sut = makeSut()
+
+        // When
+        sut.send(.tapPrivacyPolicy)
+
+        // Then
+        XCTAssertEqual(sut.route, .openURL(URL(string: "https://team-seep.github.io/seep-ios/privacy/")!))
+        let clicks = clickEvents(objectId: .privacyPolicy)
+        XCTAssertEqual(clicks.count, 1)
+        XCTAssertEqual(clicks.first?.screen, .settings)
+        XCTAssertEqual(clicks.first?.extraParameters?[.type] as? String, "account_card")
+    }
+
+    func test_GH145_TC6_앱언어가영어면_계정카드도영어처리방침을연다() {
+        // Given
+        let sut = makeSut(appLanguageCode: "en")
+
+        // When
+        sut.send(.tapPrivacyPolicy)
+
+        // Then
+        XCTAssertEqual(sut.route, .openURL(URL(string: "https://team-seep.github.io/seep-ios/privacy/en/")!))
     }
 
     // MARK: TC-15

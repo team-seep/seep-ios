@@ -35,7 +35,11 @@ final class SettingsFeatureTests: ViewModelTestCase {
         super.tearDown()
     }
 
-    private func makeSut(appStoreID: String? = "1234567890", contactEmail: String? = "help@example.com") -> SettingsViewModel {
+    private func makeSut(
+        appStoreID: String? = "1234567890",
+        contactEmail: String? = "help@example.com",
+        appLanguageCode: String = "ko"
+    ) -> SettingsViewModel {
         SettingsViewModel(dependency: .init(
             preference: preference,
             authenticationManager: authenticationManager,
@@ -44,7 +48,8 @@ final class SettingsFeatureTests: ViewModelTestCase {
             deviceInfo: deviceInfo,
             appStoreID: appStoreID,
             contactEmail: contactEmail,
-            pasteboard: pasteboard
+            pasteboard: pasteboard,
+            appLanguageCode: { appLanguageCode }
         ))
     }
 
@@ -180,7 +185,7 @@ final class SettingsFeatureTests: ViewModelTestCase {
 
         // Then
         XCTAssertEqual(groups.map(\.title), ["잠금과 알림", "보기", "바로 적기", "정보"])
-        XCTAssertEqual(groups[3].rows, [.rateApp, .contact, .license, .version("2.5.0")])
+        XCTAssertEqual(groups[3].rows, [.rateApp, .contact, .privacyPolicy, .license, .version("2.5.0")])
     }
 
     // MARK: GH-64 TC18
@@ -351,6 +356,7 @@ final class SettingsFeatureTests: ViewModelTestCase {
             (.tapControlGuide, .controlGuide),
             (.tapRateApp, .rateApp),
             (.tapContact, .contact),
+            (.tapPrivacyPolicy, .privacyPolicy),
             (.tapLicense, .license)
         ]
 
@@ -376,5 +382,54 @@ final class SettingsFeatureTests: ViewModelTestCase {
 
         // Then
         XCTAssertEqual(clickEvents(objectId: .appLock).first?.extraParameters?[.enabled] as? Bool, true)
+    }
+
+    // MARK: GH-145
+
+    func test_GH145_TC4_정보섹션의처리방침을누르면_처리방침을열고_info클릭로그가간다() {
+        // Given
+        let sut = makeSut()
+
+        // When
+        sut.send(.tapPrivacyPolicy)
+
+        // Then
+        XCTAssertEqual(sut.route, .openURL(URL(string: "https://team-seep.github.io/seep-ios/privacy/")!))
+        let clicks = clickEvents(objectId: .privacyPolicy)
+        XCTAssertEqual(clicks.count, 1)
+        XCTAssertEqual(clicks.first?.screen, .settings)
+        XCTAssertEqual(clicks.first?.extraParameters?[.type] as? String, "info")
+    }
+
+    func test_GH145_TC5_처리방침줄은_앱id나문의주소가없어도_늘보인다() {
+        // 정보 섹션은 로그인·sync_enabled 를 보지 않는다 — 링크 값이 비어 있는 설정에서도 줄이 남는지 본다
+        // Given / When
+        let noLinks = makeSut(appStoreID: nil, contactEmail: nil)
+
+        // Then
+        XCTAssertEqual(noLinks.state.groups.last?.rows, [.privacyPolicy, .license, .version("2.5.0")])
+    }
+
+    func test_GH145_TC6_앱언어가한국어면_한국어페이지_그밖이면_영어페이지다() {
+        // Given / When / Then
+        XCTAssertEqual(SettingsLinks.privacyPolicyURL(languageCode: "ko")?.absoluteString, "https://team-seep.github.io/seep-ios/privacy/")
+        for code in ["en", "ja", "zh-Hans", "zh-Hant"] {
+            XCTAssertEqual(
+                SettingsLinks.privacyPolicyURL(languageCode: code)?.absoluteString,
+                "https://team-seep.github.io/seep-ios/privacy/en/",
+                code
+            )
+        }
+    }
+
+    func test_GH145_TC6_앱언어가일본어면_정보섹션도영어처리방침을연다() {
+        // Given
+        let sut = makeSut(appLanguageCode: "ja")
+
+        // When
+        sut.send(.tapPrivacyPolicy)
+
+        // Then
+        XCTAssertEqual(sut.route, .openURL(URL(string: "https://team-seep.github.io/seep-ios/privacy/en/")!))
     }
 }

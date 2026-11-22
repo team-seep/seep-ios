@@ -7,6 +7,8 @@ extension AccountViewModel {
         case onAppear
         /// 비회원 카드 "Apple로 계속하기"
         case tapSignIn
+        /// 비회원 카드 로그인 버튼 아래 "개인정보 처리방침" (GH-145 R-5)
+        case tapPrivacyPolicy
         /// View 가 Apple 로그인 시트에서 받은 값 (로그인·계정 삭제 재인증 공용)
         case appleAuthorized(AppleCredential)
         case appleAuthorizationFailed(isCanceled: Bool)
@@ -62,6 +64,7 @@ extension AccountViewModel {
         case requestAppleAuthorization(nonce: String)
         case pushAccount
         case popAccount
+        case openURL(URL)
         case toast(String)
     }
 
@@ -74,6 +77,8 @@ extension AccountViewModel {
         let network: NetworkStatusProviding
         let remoteConfigRepository: RemoteConfigRepository
         let logManager: LogManagerProtocol
+        /// 지금 보여 주는 앱 언어. 처리방침 페이지 언어를 고른다 (GH-145 R-7)
+        let appLanguageCode: () -> String
 
         init(
             accountManager: AccountManagerProtocol = AccountManager.shared,
@@ -83,7 +88,8 @@ extension AccountViewModel {
             photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
             network: NetworkStatusProviding = NetworkMonitor.shared,
             remoteConfigRepository: RemoteConfigRepository = RemoteConfigRepositoryImpl(),
-            logManager: LogManagerProtocol = LogManager.shared
+            logManager: LogManagerProtocol = LogManager.shared,
+            appLanguageCode: @escaping () -> String = { AppLanguage.shared.code }
         ) {
             self.accountManager = accountManager
             self.syncEngine = syncEngine
@@ -93,6 +99,7 @@ extension AccountViewModel {
             self.network = network
             self.remoteConfigRepository = remoteConfigRepository
             self.logManager = logManager
+            self.appLanguageCode = appLanguageCode
         }
     }
 }
@@ -127,6 +134,12 @@ final class AccountViewModel {
             state.isAvailable = dependency.remoteConfigRepository.fetchSyncEnabled()
             state.account = dependency.accountManager.currentAccount
             refreshSyncDisplay()
+
+        case .tapPrivacyPolicy:
+            sendClickLog(screen: .settings, objectId: .privacyPolicy, extraParameters: [.type: "account_card"])
+            if let url = SettingsLinks.privacyPolicyURL(languageCode: dependency.appLanguageCode()) {
+                route = .openURL(url)
+            }
 
         case .tapSignIn:
             sendClickLog(screen: .settings, objectId: .accountSignIn)
@@ -375,7 +388,12 @@ final class AccountViewModel {
         }
     }
 
-    private func sendClickLog(screen: ScreenName, objectId: LogObjectId) {
-        dependency.logManager.sendEvent(event: ClickEvent(screen: screen, objectType: .button, objectId: objectId))
+    private func sendClickLog(screen: ScreenName, objectId: LogObjectId, extraParameters: [ParameterName: Any]? = nil) {
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: screen,
+            objectType: .button,
+            objectId: objectId,
+            extraParameters: extraParameters
+        ))
     }
 }

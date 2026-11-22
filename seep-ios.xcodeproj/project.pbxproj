@@ -50,6 +50,7 @@
 		379B59510031717BAB88F6C5 /* MediumVerticalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0A36C6FC4EB6FC43495644 /* MediumVerticalProvider.swift */; };
 		3B1548722D045929B9DA8F1A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E8205C70C402DD756C02B9 /* AccountManager.swift */; };
 		3B1F87CBDD7B43EDCF8BE0BE /* WriteCategoryAppEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF76406E88CB28A0D07DE0E /* WriteCategoryAppEnum.swift */; };
+		3B5FCBBEA1CE51E9696936B9 /* AppCheckSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1A31A858877892C1D91EB4 /* AppCheckSetup.swift */; };
 		3B7ECD8C7BF493EAC1909D2E /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD659E527A34F0EDD07BD903 /* LockScreenDday.swift */; };
 		3C267C82FD919776BA022C18 /* LockScreenRemainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D6968F08B0BE8274E9F7E4 /* LockScreenRemainWidget.swift */; };
 		3F45F96A3BC4CC5C674ACD6A /* PlaceSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5AF9691AD529C765F8159 /* PlaceSearchService.swift */; };
@@ -304,6 +305,7 @@
 		491A419DC6962D304FB3896A /* WishRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishRepositoryTests.swift; sourceTree = "<group>"; };
 		496E7CDC7A8049F70FCC01B0 /* WishDetailSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDetailSummaryTests.swift; sourceTree = "<group>"; };
 		49EE461C41B94111C300529C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4A1A31A858877892C1D91EB4 /* AppCheckSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCheckSetup.swift; sourceTree = "<group>"; };
 		4AAB6E962060D13CC4EE808D /* DdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayView.swift; sourceTree = "<group>"; };
 		4B05690B9CF9787D99F4E015 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		4E2835391381DB27FA1C4DAB /* MediumVerticalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumVerticalEntryView.swift; sourceTree = "<group>"; };
@@ -823,6 +825,7 @@
 				23F426FF6F07845CEC7A3B58 /* AppLock */,
 				EDC72643E3448F0CADE477C7 /* Place */,
 				2D72111FCA04F6A749729FCF /* WishLink */,
+				4A1A31A858877892C1D91EB4 /* AppCheckSetup.swift */,
 				F74EFEC4E1202225C55BDFB2 /* AuthenticationManager.swift */,
 				EC435558EEAE1A9076A4C93D /* CalendarManager.swift */,
 				1EFF4412FAC798CE506FF4DE /* DatabaseMigrationFollowUp.swift */,
@@ -1247,6 +1250,7 @@
 				EDAEBCBBE6C1DBDD42CD28F4 /* Account.swift in Sources */,
 				3B1548722D045929B9DA8F1A /* AccountManager.swift in Sources */,
 				0A43805B84FDADF4B16323BD /* AmountFormatter.swift in Sources */,
+				3B5FCBBEA1CE51E9696936B9 /* AppCheckSetup.swift in Sources */,
 				A13E4809D1696147C03FC7B1 /* AppDatabase.swift in Sources */,
 				0820494162D6A5E1AFD12106 /* AppDelegate.swift in Sources */,
 				539E03E41178ED7CE11241DA /* AppLanguage.swift in Sources */,

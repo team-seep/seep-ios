@@ -192,6 +192,8 @@ enum LogObjectId: String {
     case rateApp = "rate_app"
     case contact = "contact"
     case license = "license"
+    /// 개인정보 처리방침 링크 (+type: account_card·info) (GH-145)
+    case privacyPolicy = "privacy_policy"
     case detailEdit = "detail_edit"
     case detailMore = "detail_more"
     /// 작성·수정 문서 더하기 칩 (GH-70)

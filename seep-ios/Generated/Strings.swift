@@ -184,6 +184,8 @@ internal enum Strings {
       internal static var memberSubtitle: String { Strings.tr("Localization", "account.card.member_subtitle", fallback: "Apple로 로그인했어요") }
       /// 아직 동기화하지 않았어요
       internal static var notSynced: String { Strings.tr("Localization", "account.card.not_synced", fallback: "아직 동기화하지 않았어요") }
+      /// 개인정보 처리방침
+      internal static var privacyPolicy: String { Strings.tr("Localization", "account.card.privacy_policy", fallback: "개인정보 처리방침") }
       /// 로그인하는 중…
       internal static var signingIn: String { Strings.tr("Localization", "account.card.signing_in", fallback: "로그인하는 중…") }
       /// 동기화하지 못했어요. 계정 화면에서 다시 해 볼 수 있어요
@@ -1178,6 +1180,8 @@ internal enum Strings {
     internal static var footerMember: String { Strings.tr("Localization", "settings.footer_member", fallback: "싶은 이 기기와 내 계정에 함께 저장돼요. 다른 기기에서 같은 계정으로 로그인하면 같은 싶이 보여요.") }
     /// 오픈소스 라이선스
     internal static var license: String { Strings.tr("Localization", "settings.license", fallback: "오픈소스 라이선스") }
+    /// 개인정보 처리방침
+    internal static var privacyPolicy: String { Strings.tr("Localization", "settings.privacy_policy", fallback: "개인정보 처리방침") }
     /// 앱 평가하기
     internal static var rateApp: String { Strings.tr("Localization", "settings.rate_app", fallback: "앱 평가하기") }
     /// 마이
