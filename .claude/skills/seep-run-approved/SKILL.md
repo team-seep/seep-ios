@@ -1,12 +1,31 @@
 ---
 name: seep-run-approved
-description: seep(싶)에서 사람이 승인(approved 라벨)한 기획 이슈를 하나 골라 테크스펙 구체화 → 브랜치 → 구현 → 린트·테스트 → 시뮬레이터 검증 → (필요하면) 싶 디자인 시스템 갱신 → PR(develop)까지 자동으로 진행한다. 반영이 밀린 머지 PR이 있으면 개발 전에 디자인 시스템에 먼저 반영한다. "승인된 기획 진행해줘", "approved 이슈 처리", 매일 스케줄 실행에서 사용.
+description: seep(싶)에서 사람이 승인(approved 라벨)한 기획 이슈를 하나 골라 테크스펙 구체화 → 브랜치 → 구현 → 린트·테스트 → 시뮬레이터 검증 → (필요하면) 싶 디자인 시스템 갱신 → PR(develop) → CI·독립 리뷰 게이트 통과 시 develop 머지까지 자동으로 진행한다. 반영이 밀린 머지 PR이 있으면 개발 전에 디자인 시스템에 먼저 반영한다. "승인된 기획 진행해줘", "approved 이슈 처리", "GH-12 자동 개발해줘", Orca Developer 봇의 작업자 실행·매일 점검에서 사용.
 ---
 
 # 승인된 기획 실행
 
-**`approved` 라벨이 사람의 승인이다.** 이 라벨이 붙은 이슈에 한해 브랜치 생성, 커밋, push, PR 생성까지 사용자 확인 없이 진행한다. **머지는 하지 않는다** (머지는 사람).
+**`approved` 라벨이 사람의 승인이다.** 이 라벨이 붙은 이슈에 한해 브랜치 생성, 커밋, push, PR 생성, 그리고 **6단계 머지 게이트를 모두 통과하면 develop 머지**까지 사용자 확인 없이 진행한다. 게이트 하나라도 못 넘으면 머지하지 않고 사람에게 넘긴다. 사람이 정하는 지점은 승인(라벨)과 **릴리즈(심사 제출)** 둘이다.
 한 번 실행에 이슈 **1개**만 처리한다. 프로세스 전체는 `docs/process/planning.md`, 개발 절차는 `docs/process/pr-process.md`.
+
+**실행 경로** — 보통 Orca **Developer 봇**이 시작한다(`docs/process/planning.md` 3절):
+- 이슈에 `approved` 라벨이 붙으면(또는 앞 PR이 머지되면) 봇이 이 스킬을 따르는 작업자를 새 Orca 워크트리에 띄운다. 프롬프트에 이슈 번호가 있다.
+- 매일 14:00 봇이 놓친 승인 이슈·밀린 디자인 시스템 반영을 훑어 같은 방식으로 띄운다.
+- 사람이 직접 "승인된 기획 진행해줘"라고 해도 된다.
+
+**Project 상태** — 단계마다 조직 프로젝트 "싶 로드맵"(team-seep #2)의 Status를 바꾼다:
+```bash
+set_status() { # $1 이슈 번호, $2 옵션 id
+  local item
+  item=$(gh project item-list 2 --owner team-seep --format json --limit 1000 \
+    --jq ".items[] | select(.content.number==$1 and .content.repository==\"team-seep/seep-ios\") | .id")
+  [ -z "$item" ] && item=$(gh project item-add 2 --owner team-seep --url "https://github.com/team-seep/seep-ios/issues/$1" --format json --jq .id)
+  gh project item-edit --project-id PVT_kwDOBliDVc4Bs4GA --id "$item" \
+    --field-id PVTSSF_lADOBliDVc4Bs4GAzhrEIZM --single-select-option-id "$2" >/dev/null
+}
+# 기획 ae94312a · 승인 2c84df42 · 개발 중 ec4b6332 · 리뷰 0effc9cc · 출시 대기 dc03b5cb · 출시됨 31931633 · 보류 5de0aa54
+```
+상태 변경이 실패해도(권한·네트워크) 개발은 멈추지 않는다. 최종 보고에 적는다.
 
 ## 0. 밀린 디자인 시스템 동기화 (개발보다 먼저, 예비 단계)
 
@@ -29,13 +48,15 @@ gh pr list -R team-seep/seep-ios --state merged --label design-system-update \
 
 ## 1. 대상 고르기
 
+- 프롬프트에 이슈 번호가 있으면 그 이슈다. `approved` 라벨이 있고 열려 있는지 다시 확인하고, 아니면 이유 한 줄로 끝낸다.
+- 번호가 없으면 가장 오래된 승인 이슈를 고른다:
 ```bash
-cd /Users/hyunsikyoo/Documents/Github/seep-ios
 gh issue list -R team-seep/seep-ios --label approved --state open --json number,title,labels,createdAt \
-  --jq '[.[] | select([.labels[].name] | index("in-progress") | not)] | sort_by(.createdAt) | .[0]'
+  --jq '[.[] | select([.labels[].name] | (index("in-progress") or index("needs-input")) | not)] | sort_by(.createdAt) | .[0]'
 ```
 - 없으면 "처리할 승인 기획 없음"으로 끝낸다 (0단계 결과는 보고한다).
-- 고른 이슈에 `in-progress` 라벨을 달고 "🤖 개발 시작" 코멘트를 남긴다.
+- **동시에 하나만**: 다른 이슈에 `in-progress`가 있으면 시작하지 않는다(`in-progress`는 머지되거나 보류될 때까지 붙어 있다). 고른 이슈에 "⏳ #{진행 중} 끝나면 이어서 진행해요" 코멘트를 (이미 없을 때만) 남기고 끝낸다. 앞 PR이 머지되면 봇이 다음 이슈를 띄운다.
+- 시작하면 `in-progress` 라벨을 달고 "🤖 개발 시작" 코멘트를 남기고 `set_status {n} ec4b6332`(개발 중).
 
 ## 2. 테크스펙 구체화
 
@@ -48,14 +69,19 @@ gh issue list -R team-seep/seep-ios --label approved --state open --json number,
 
 ## 3. 구현
 
-사용자의 checkout(`~/Documents/Github/seep-ios`)은 건드리지 않고 **전용 worktree**에서 작업한다.
-```bash
-git fetch -q origin
-WT=~/Documents/Github/seep-ios-worktrees/GH-{n}
-git worktree add -b feature/GH-{n}-{영문-slug} "$WT" origin/develop
-cd "$WT"
-```
-이후 모든 명령은 `$WT`에서 실행한다. PR을 올린 뒤 worktree는 그대로 둔다(리뷰 수정 때 재사용). 머지 후 정리는 `git worktree remove`.
+사용자의 checkout(`~/Documents/Github/seep-ios`)은 건드리지 않는다.
+- **Orca 작업자로 실행됐으면** 이미 전용 워크트리 안이다. 그 자리에서 브랜치를 만든다:
+  ```bash
+  git fetch -q origin && git switch -c feature/GH-{n}-{영문-slug} origin/develop
+  ```
+- 그 밖(사람이 직접 실행 등)이면 전용 worktree를 만든다:
+  ```bash
+  git fetch -q origin
+  WT=~/Documents/Github/seep-ios-worktrees/GH-{n}
+  git worktree add -b feature/GH-{n}-{영문-slug} "$WT" origin/develop
+  cd "$WT"
+  ```
+이후 모든 명령은 그 워크트리에서 실행한다. 머지 전까지 워크트리는 그대로 둔다(CI·리뷰 수정 때 재사용).
 - 이슈의 **"디자인" 섹션이 UI 기준**이다. Design 링크를 Artifact `read`로 열어 After 아트보드를 확인하고, 싶 디자인 시스템(`https://claude.ai/artifact/Mhev8UMsdUZ6yEhfXfndUQ`)의 토큰·컴포넌트 README에 적힌 원본 Swift 컴포넌트(`DdayLabel`, `HomeWishListCell` 등)를 재사용한다. "새 토큰"이 있으면 `UIColorExtension`/`UIFontExtension`에 먼저 추가한다.
 - `CLAUDE.md`의 규칙(R1~R9)을 지킨다: `@Observable` ViewModel, Repository로만 DB 접근, 토큰·SwiftGen.
 - DB 레코드를 바꾸면 R4: `AppDatabase.migrator`에 새 마이그레이션을 추가하고 동기화 대비 규칙(UUID PK·`updatedAt`·`deletedAt`·UNIQUE 금지)을 지킨다.
@@ -86,8 +112,39 @@ cd "$WT"
   - 스펙 밖 변경, 설명이 필요한 결정(최대 3개, 스스로 답한다)
   - 위험도는 `docs/process/pr-process.md` 기준
 - 4-1단계에서 디자인 시스템을 반영했으면 PR 본문 "기타"에 "🎨 디자인 시스템 반영: {바뀐 토큰·컴포넌트·아이콘·규칙}"을 적고 **`design-system-synced` 라벨**을 단다. 반영에 실패했으면 "디자인 시스템 갱신 필요: {바뀐 것} (실패 이유)"를 적고 **`design-system-update` 라벨**을 단다 — 머지된 뒤 다음 실행의 0단계가 재시도한다.
-- 이슈에서 `in-progress`를 떼고 PR 링크를 코멘트로 남긴다: "🤖 PR #{pr} — 리뷰·머지 부탁드려요. 수동 TC: …"
+- PR 본문 맨 끝에 `🤖 seep-run-approved 자동 개발` 한 줄을 둔다.
+- `set_status {n} 0effc9cc`(리뷰). 4단계에서 Draft로 올렸으면 6단계를 건너뛰고 7단계 "머지 보류"로 간다.
 
-## 6. 결과
+## 6. 머지 게이트
 
-마지막 메시지: 디자인 시스템 반영 결과(이번 PR에서 반영한 것 + 0단계에서 반영한 밀린 PR, 실패 시 이유 — 없으면 "반영할 것 없음"), 이슈 번호, PR 링크, 테스트 결과 한 줄, 남은 수동 TC.
+PR을 머지 가능한 상태까지 책임진다. 아래를 **순서대로 전부** 통과해야 머지한다.
+
+1. **CI**: `gh pr checks {pr} -R team-seep/seep-ios --watch`. 실패하면 로그(`gh run view --log-failed`)를 보고 고쳐 push한다. 세 번 고쳐도 실패하면 보류.
+2. **TC 증거**: PR 본문 커버리지 표에 `⚠️ 미커버`·`FAIL`이 없고, 유닛 TC는 `make test` 결과로, 자동화 TC는 스크린샷·영상으로 덮였다. **수동 TC는 머지 조건이 아니다** — 이슈에 "🧪 릴리즈 전 수동 확인" 체크리스트 코멘트로 옮기고, 릴리즈 때 사람이 확인한다.
+3. **독립 리뷰**: 구현 맥락이 없는 새 에이전트에게 리뷰를 맡긴다 — `code-review` 스킬을 `medium`으로 이 PR 번호에 실행한다(또는 Agent 도구로 diff와 이슈 TC만 주고 "정확성 버그·이슈 요구사항 누락·CLAUDE.md 규칙 위반"을 찾게 한다). `important` 지적은 고쳐서 push하고 1번부터 다시. 두 바퀴를 돌아도 `important`가 남으면 보류. 받아들이지 않은 지적은 PR 코멘트에 이유를 남긴다.
+4. **위험도 경량**: PR에 `schema-change`·`baseline-change`·`verification-change` 라벨이 없고, 본문 위험도가 `경량`이다(`docs/process/pr-process.md` 기준, 판정을 낮춰 적지 않는다). 풀코스면 머지하지 않고 보류 — 사람이 라벨이 가리키는 파일을 먼저 본다.
+5. **충돌 없음**: `gh pr view {pr} --json mergeable,mergeStateStatus`가 `MERGEABLE`. 아니면 `origin/develop`을 머지해 충돌을 풀고 1번부터 다시.
+
+전부 통과하면:
+```bash
+gh pr merge {pr} -R team-seep/seep-ios --merge --delete-branch
+```
+- `Closes #n`은 기본 브랜치(main)가 아니라서 이슈를 닫지 않는다 — 이슈는 **릴리즈 finish 때** 닫는다(그때 Project 워크플로가 '출시됨'으로 바꾼다).
+- 이슈에서 `in-progress`를 떼고, 다음 릴리즈 마일스톤(열린 마일스톤 중 버전이 가장 낮은 것)을 붙이고, `set_status {n} dc03b5cb`(출시 대기):
+  ```bash
+  MS=$(gh api 'repos/team-seep/seep-ios/milestones?state=open' --jq 'sort_by(.title | ltrimstr("v") | split(".") | map(tonumber)) | .[0].title')
+  gh issue edit {n} -R team-seep/seep-ios --milestone "$MS"
+  ```
+  열린 마일스톤이 없으면 마지막 태그의 minor를 올린 `vX.(Y+1).0`을 만들어 붙인다. PR에도 같은 마일스톤을 붙인다.
+- 이슈 코멘트: "✅ PR #{pr} develop 머지 — {마일스톤}에 포함. 🧪 릴리즈 전 수동 확인: …"
+- 직접 만든 worktree면 `git worktree remove`로 정리한다(Orca 워크트리는 Orca가 정리).
+
+## 7. 머지 보류 (게이트를 못 넘었을 때)
+
+- 머지하지 않는다. PR에 "🙋 자동 머지 보류 — {걸린 게이트}: {이유}. 확인 후 머지해 주세요" 코멘트를 남긴다. Status는 '리뷰'로 둔다.
+- 이슈에서 `in-progress`를 떼고 `needs-input`을 단다(다음 이슈가 막히지 않게, 그리고 매일 점검이 이 이슈를 다시 고르지 않게). 사람이 PR을 머지하거나 고칠 방향을 코멘트하고 `needs-input`을 떼면 된다.
+- Orca 작업자로 실행됐으면 보고에 "결정 필요"로 적는다(봇이 항목을 Needs you로 둔다).
+
+## 8. 결과
+
+마지막 메시지: 디자인 시스템 반영 결과(이번 PR에서 반영한 것 + 0단계에서 반영한 밀린 PR, 실패 시 이유 — 없으면 "반영할 것 없음"), 이슈 번호, PR 링크, 머지 여부(머지됨 + 마일스톤 / 보류 + 걸린 게이트), 테스트 결과 한 줄, 릴리즈 전 수동 TC.
