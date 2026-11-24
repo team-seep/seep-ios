@@ -18,10 +18,10 @@ body:
     attributes:
       label: 왜 seep에 어울리나
   - type: textarea
-    id: serverless
+    id: server-storage
     attributes:
-      label: 서버리스 근거
-      description: 서버 없이 무엇으로 구현하나 (로컬 DB, 위젯, 로컬 알림, CloudKit …)
+      label: 서버 저장
+      description: 새로 저장하는 데이터를 로그인 사용자에게 서버 어디에 저장하나 (기존 wishes 문서 필드 / 새 Firestore 컬렉션 / Storage). 비회원은 로컬만으로 동작. 저장이 없으면 "저장 없음(계산·표시만)", 기기 전용이면 "기기 전용 — 이유" — docs/architecture/server-sync-design.md §4.1
     validations:
       required: true
   - type: textarea
@@ -30,7 +30,7 @@ body:
       label: 크기 · 영향 영역
       value: |
         - 크기: S / M / L
-        - 영향: [ ] DB 스키마(R4) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
+        - 영향: [ ] DB 스키마(R4) [ ] 서버 저장(Firestore·Storage) [ ] 위젯 [ ] 로컬 알림 [ ] 딥링크 [ ] UI
   - type: textarea
     id: requirements
     attributes:

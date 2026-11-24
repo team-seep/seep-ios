@@ -65,7 +65,7 @@ gh issue list -R team-seep/seep-ios --label approved --state open --json number,
 - TC마다 계층(유닛/자동화/수동)을 배정한다 (`docs/process/testing.md`).
 - **트래킹 이벤트를 TC로 넣는다**: "TC-n: {동작}하면 {event} 로그가 1건 전송된다" (유닛).
 - `gh issue edit {n} --body-file`로 갱신한다.
-- 기획이 서버리스 조건을 못 지키거나 모호해 구현을 결정할 수 없으면 **여기서 멈춘다**: 질문을 코멘트로 남기고 `in-progress`를 떼고 `needs-input` 라벨을 단다.
+- 새로 저장하는 데이터의 서버 저장 설계(`docs/architecture/server-sync-design.md` §4.1)가 빠졌거나 모호해 구현을 결정할 수 없으면 **여기서 멈춘다**: 질문을 코멘트로 남기고 `in-progress`를 떼고 `needs-input` 라벨을 단다.
 
 ## 3. 구현
 

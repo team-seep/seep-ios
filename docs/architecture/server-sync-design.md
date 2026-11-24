@@ -134,6 +134,20 @@ match /wishes/{id} {
 
 **사진**: `wishPhotos/{ownerUid}/{photoFileName}`. 로컬 파일 이름(`{위시id}-{uuid}.jpg`)을 그대로 쓴다. 규칙은 1단계에서 `ownerUid == auth.uid`만 허용, 2단계에서 위시 멤버까지 넓힌다.
 
+### 4.1 새 데이터를 동기화에 더할 때 (기획·구현 체크리스트)
+
+기획이 새로 저장하는 사용자 데이터는 로그인 사용자에게 서버에도 저장되어야 한다(2026-11-25 결정, `docs/process/planning.md` "서버 저장"). 비회원은 로컬만으로 그대로 동작한다.
+
+| 데이터 모양 | 서버 위치 | 바꿀 곳 |
+|---|---|---|
+| 위시 하나에 값 하나 | 기존 `wishes/{wishId}` 문서 필드. 문서 필드 이름 = 로컬 `wish` 컬럼 이름 | 기본값 있는 컬럼을 더하는 마이그레이션(§6.4). 업로드는 기존 트리거가 잡고 매핑은 컬럼 그대로라 동기화·규칙·인덱스 변경 없음 |
+| 위시 하나에 여러 줄(기록·히스토리·체크인 …) | 새 **최상위** 컬렉션 `wishXxxs/{id}` (위시 문서의 하위 컬렉션이 아님, §4 이유) | ① `model/dto/` 레코드: UUID PK·`wishId`(부모 위시만 참조, `ON DELETE CASCADE`)·`updatedAt`·`deletedAt`, PK 외 UNIQUE 금지 ② 마이그레이션: 테이블 + `syncOutbox` INSERT·UPDATE 트리거 + 기존 줄 큐에 넣기(v10 참고) ③ `AppDatabase.syncedTableNames`·`SyncCollection` ④ 로그아웃 "이 기기에서 지우기" 대상(`WishRepository`) ⑤ `firestore.rules` 컬렉션 목록, `firestore.indexes.json` 복합 인덱스(`memberUids`+`serverUpdatedAt`)·`purgeAt` TTL ⑥ `functions/eraseUserData.js` `SYNCED_COLLECTIONS` ⑦ 규칙·함수 테스트, `SyncEngineTests` "기기 두 대" |
+| 사진·파일 | Storage `wishPhotos/{uid}/…` 모양 | 위시 사진(§7) 방식: 이 기기 전용 아웃박스 + 트리거, `storage.rules`, 서버 쪽 정리 |
+| 위시와 무관한 내 데이터 | 먼저 위시에 붙일 수 있는지 본다. 안 되면 `users/{uid}` 아래로 이 문서를 먼저 확장한다 | 설계 갱신 포함, 크기 L |
+| 기기 전용 설정(UserDefaults 표시 옵션·정렬·위젯 모양 등) | 서버에 두지 않는다 | 기획안에 이유를 적는다 |
+
+TC에는 "로그인한 기기 A에서 저장하면 동기화 후 기기 B에서도 보인다"와 "비회원은 로컬에서 그대로 동작한다"를 넣는다.
+
 ## 5. 로컬 쪽: 아웃박스
 
 **왜 필요한가** — 로컬 쓰기는 앱(`WishRepositoryImpl`)만이 아니라 위젯(`WidgetCheckRepository`: 단계 체크·완료)과 앱 인텐트에서도 일어난다. 다른 프로세스의 쓰기를 앱이 놓치지 않아야 하고, 오프라인에서 한 쓰기는 앱이 꺼졌다 켜져도 남아 있어야 한다.
@@ -315,8 +329,8 @@ DELETE FROM syncOutbox WHERE seq > startSeq   -- 방금 적용하며 트리거�
 
 | 대상 | 변경 |
 |---|---|
-| `docs/process/planning.md` 서버리스 조건 | "Firebase Auth·Firestore·Storage를 통한 **내 데이터 동기화·공유**는 허용. 자체 서버, 원격 푸시는 여전히 제외"로 바꾼다. 3단계 승인 전까지 공개·소셜 기획은 제외 |
-| `seep-idea-scout` 스킬 | 위 조건을 같이 반영 |
+| `docs/process/planning.md` 서버리스 조건 | ✅ 2026-11-25 서버리스 조건을 없애고 **"서버 저장"** 기준으로 바꿨다: 새로 저장하는 데이터는 로그인 사용자에게 서버에도 저장(§4.1), 비회원은 로컬만. 같이 이루기·공개 위시(5·6단계)는 크기 L로 표시 |
+| `seep-idea-scout`·`seep-run-approved` 스킬, 기획 이슈 템플릿 | ✅ 같은 날 "서버 저장" 절로 반영 |
 | RULES **R11 신설** | `import FirebaseFirestore`·`FirebaseAuth`·`FirebaseStorage`는 `Repository/Sync/`·`Services/Account/`에서만. ViewModel은 `SyncEngineProtocol`·`AccountManagerProtocol`만 의존. SwiftLint custom rule로 강제 |
 | RULES R3 | DB 접근 예외에 `Repository/Sync/`가 포함됨을 명시 (이미 `Repository/` 안이라 규칙 변경은 없음) |
 | RULES R4 | 이 기기 전용 테이블 예외에 `syncOutbox`·`syncState` 추가. "새 컬럼은 기본값 필수"를 명시 (§6.4) |
