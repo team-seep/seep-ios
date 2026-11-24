@@ -59,7 +59,7 @@ xcodebuild build \
 - **테스트 계층 배정은 승인받는다.** TC별로 유닛/자동화/수동 표를 먼저 보여주고, 승인 후 유닛 테스트 코드만 작성한다.
 - **PR**: `.github/PULL_REQUEST_TEMPLATE.md`를 채워 `gh pr create --base develop`. 본문(위험도·커버리지 표·드리프트·설명이 필요한 결정)은 pr-process.md 절차대로 만들고, **생성 전에 본문을 보여주고 확인받는다.**
 - 이슈 생성·수정, push, PR 생성은 외부에 보이는 작업이라 매번 확인받는다.
-- **`approved` 라벨이 붙은 이슈**는 사람 승인이 끝난 것이다. `seep-run-approved` 스킬로 진행할 때는 브랜치·커밋·push·PR, 그리고 머지 게이트(CI·TC 증거·독립 리뷰·경량)를 전부 통과하면 develop 머지까지 확인 없이 한다(풀코스·게이트 실패는 사람). 라벨이 붙으면 Orca Seep 봇이 작업자를 띄운다. 사람이 정하는 건 승인과 릴리즈(심사 제출) 시점이다.
+- **`approved` 라벨이 붙은 이슈**는 사람 승인이 끝난 것이다. `seep-run-approved` 스킬로 진행할 때는 브랜치·커밋·push·PR, 리뷰 준비 게이트(CI·TC 증거·독립 리뷰)까지 확인 없이 하고 보드 '리뷰'에서 멈춘다(작업자는 머지 안 함). 라벨이 붙으면 Orca Seep 봇이 작업자를 띄운다. develop 머지는 사람이 개발 빌드로 검수하고 "검수 끝"이라고 하면 Seep 봇이 한다. 사람이 정하는 건 승인·검수·출시(심사 요청) 시점이다.
 - 프로젝트 스킬(`.claude/skills/`): `seep-idea-scout`(기획 추천), `seep-run-approved`(승인 기획 자동 개발), `seep-usage-report`(출시 후 사용량).
 - 가슴속 3천원용 `3dollars:*` 플러그인 스킬(pr-body, test-cases, drift 등)은 지라·노션 전제라 이 레포에서 쓰지 않는다. 같은 단계를 위 문서대로 수행한다. 예외: `3dollars:simulator-test`는 레포의 `docs/process/testing.md`를 읽고 동작하므로 자동화 TC 실행에 쓴다.
 
