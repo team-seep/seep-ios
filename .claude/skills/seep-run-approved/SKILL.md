@@ -55,7 +55,7 @@ gh issue list -R team-seep/seep-ios --label approved --state open --json number,
   --jq '[.[] | select([.labels[].name] | (index("in-progress") or index("needs-input")) | not)] | sort_by(.createdAt) | .[0]'
 ```
 - 없으면 "처리할 승인 기획 없음"으로 끝낸다 (0단계 결과는 보고한다).
-- **동시에 하나만**: 다른 이슈에 `in-progress`가 있으면 시작하지 않는다(`in-progress`는 머지되거나 보류될 때까지 붙어 있다). 고른 이슈에 "⏳ #{진행 중} 끝나면 이어서 진행해요" 코멘트를 (이미 없을 때만) 남기고 끝낸다. 앞 PR이 머지되면 봇이 다음 이슈를 띄운다.
+- **동시에 하나만**: 다른 이슈에 `in-progress`가 있으면 시작하지 않는다(`in-progress`는 머지되거나 보류될 때까지 붙어 있다). 고른 이슈에 "⏳ #{진행 중} 끝나면 이어서 진행해요" 코멘트를 (이미 없을 때만) 남기고 `set_status {n} 2c84df42`(승인)로 둔 뒤 끝낸다. 앞 PR이 머지되면 봇이 다음 이슈를 띄운다.
 - 시작하면 `in-progress` 라벨을 달고 "🤖 개발 시작" 코멘트를 남기고 `set_status {n} ec4b6332`(개발 중).
 
 ## 2. 테크스펙 구체화
