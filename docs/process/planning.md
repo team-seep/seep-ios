@@ -7,7 +7,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
                                    │
                     사람: approved 라벨 / 코멘트로 조정 / 사유 남기고 닫기(반려)
                                    │
-[Orca Developer 봇] approved 라벨 즉시 / 매일 14:00 점검
+[Orca Seep 봇] approved 라벨 즉시 / 매일 14:00 점검
         └▶ 작업자(seep-run-approved) ──▶ (밀린 design-system-update PR → 디자인 시스템 반영) → 테크스펙 구체화
              → 브랜치 → 구현 → lint·test·simulator-test → PR → 머지 게이트(CI·TC 증거·독립 리뷰·경량) → develop 머지
                                    │                         (못 넘으면 needs-input, 사람이 확인)
@@ -49,11 +49,11 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 | 반려 | 사유 한 줄 코멘트 후 닫기 |
 | 보류 | 그냥 둔다 (열린 `idea`는 다음 추천의 중복 판단에만 쓰인다) |
 
-`approved` 라벨이 **자동 개발(브랜치·커밋·push·PR·게이트 통과 시 develop 머지)의 승인**이다. 라벨을 붙이는 순간 개발이 시작된다(Orca Developer 봇). 사람이 정하는 건 승인과 릴리즈(심사 제출) 시점이다.
+`approved` 라벨이 **자동 개발(브랜치·커밋·push·PR·게이트 통과 시 develop 머지)의 승인**이다. 라벨을 붙이는 순간 개발이 시작된다(Orca Seep 봇). 사람이 정하는 건 승인과 릴리즈(심사 제출) 시점이다.
 
 ## 3. 자동 개발 (`.claude/skills/seep-run-approved`)
 
-- **시작**: Orca **Developer 봇**(이 Mac에서 실행, Orca가 켜져 있어야 함)의 자동화 두 개가 작업자를 새 Orca 워크트리에 띄운다.
+- **시작**: Orca **Seep 봇**(싶 1인 창업자 봇)(이 Mac에서 실행, Orca가 켜져 있어야 함)의 자동화 두 개가 작업자를 새 Orca 워크트리에 띄운다.
   | 자동화 | 언제 | 하는 일 |
   |---|---|---|
   | 싶 approved → 개발 작업자 | `approved` 라벨이 붙을 때, seep-ios PR이 머지될 때 | 진행 중인 이슈가 없으면 그 이슈(또는 기다리던 가장 오래된 승인 이슈)로 작업자 시작 |
@@ -106,7 +106,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 
 - 조직 프로젝트 **"싶 로드맵"**(https://github.com/orgs/team-seep/projects/2): Status 기획 → 승인 → 개발 중 → 리뷰 → 출시 대기 → 출시됨(+보류). 보드 뷰(Status), 릴리즈 뷰(마일스톤별).
   - 자동(Project 워크플로): 새 이슈 → 추가·기획, PR 연결 → 리뷰, 이슈 닫힘 → 출시됨.
-  - Developer 봇·스킬이 바꾸는 것: `approved` 라벨 → 승인(대기 포함), 개발 중, 리뷰, 출시 대기.
+  - Seep 봇·스킬이 바꾸는 것: `approved` 라벨 → 승인(대기 포함), 개발 중, 리뷰, 출시 대기.
 - 릴리즈는 레포 **마일스톤**(`v2.10.0` …)으로 묶는다. 자동 머지가 다음 마일스톤을 붙인다.
 - 릴리즈("릴리즈 해줘"): 마일스톤의 '출시 대기' 이슈와 "🧪 릴리즈 전 수동 확인"을 모아 보여주고 → release 브랜치·버전 → 심사 제출. 승인 후 출시·finish 때 포함 이슈를 닫고(→ 출시됨) 마일스톤을 닫고 다음 마일스톤을 연다.
 
@@ -114,8 +114,8 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 
 | 작업 | 어디서 | 주기 |
 |---|---|---|
-| `seep-idea-scout` | Orca 자동화 "싶 기획안 스카우트" | 매일 10:00 |
-| `seep-run-approved` | Orca Developer 봇 (위 3절) | `approved` 라벨·PR 머지 즉시 + 매일 14:00 점검 |
-| `seep-usage-report` | Claude 데스크톱 앱 예약 작업 | 매주 월 11:00 |
+| `seep-idea-scout` | Orca Seep 봇 | 매일 10:00 |
+| `seep-run-approved` | Orca Seep 봇 (위 3절) | `approved` 라벨·PR 머지 즉시 + 매일 14:00 점검 |
+| `seep-usage-report` | Orca Seep 봇 | 매주 월 11:00 |
 
 Orca(이 Mac)가 켜져 있을 때 실행되고, 꺼져 있었으면 다음 점검 때 돈다. 수동 실행: Claude에게 "기획 추천해줘" / "승인된 기획 진행해줘" / "기획 사용량 확인해줘".
