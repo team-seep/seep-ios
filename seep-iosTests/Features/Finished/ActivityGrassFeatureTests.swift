@@ -111,12 +111,13 @@ final class ActivityGrassFeatureTests: ViewModelTestCase {
         // Then
         let sheet = try XCTUnwrap(sut.state.activityDay)
         XCTAssertEqual(sheet.date, midnight)
-        XCTAssertEqual(sheet.activities.map(\.id), ["saving-2", "finished-1", "added-3"])
+        // 모은 돈·이룸은 날짜만 저장해 그날 시각이 있는 행동 뒤에, 모은 돈 → 이룸 순서로 둔다
+        XCTAssertEqual(sheet.activities.map(\.id), ["added-3", "saving-2", "finished-1"])
         XCTAssertEqual(Strings.Finished.ActivityDay.countFormat(sheet.activities.count), "싶에 3번 다가갔어요")
         XCTAssertEqual(sheet.activities.map(\.subtitle), [
+            "담았어요",
             Strings.Finished.ActivityDay.savingFormat(AmountFormatter.money(30_000, currency: "KRW")),
-            "이뤘어요!",
-            "담았어요"
+            "이뤘어요!"
         ])
         let logs = events(name: .click, objectId: .activityDay)
         XCTAssertEqual(logs.count, 1)

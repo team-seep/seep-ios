@@ -14,8 +14,16 @@ struct WishActivity: Equatable, Identifiable {
         /// 이룸 (`wish.finishDate`)
         case finished
 
-        /// 같은 시각이면 담음 → 단계 → 모은 돈 → 일지 → 이룸 순서로 둔다 (R-5).
-        /// 모은 돈·이룸은 날짜만 저장해 자정 시각이라 하루 안 순서를 시각만으로 정할 수 없다
+        /// 모은 돈·이룸은 날짜만 저장한다(자정). 시각을 모르니 그날 시각이 있는 행동 뒤에 둔다 (R-5) —
+        /// 같은 날 담고 이룬 위시가 "이뤘어요!"부터 나오지 않게
+        var isDateOnly: Bool {
+            switch self {
+            case .saving, .finished: return true
+            case .added, .stepDone, .journal: return false
+            }
+        }
+
+        /// 같은 자리면 담음 → 단계 → 모은 돈 → 일지 → 이룸 순서로 둔다 (R-5)
         var sortRank: Int {
             switch self {
             case .added: return 0
@@ -37,10 +45,15 @@ struct WishActivity: Equatable, Identifiable {
     let kind: Kind
     let date: Date
 
-    /// 시간순, 같은 시각이면 종류 순서 (R-5)
+    /// 시간순, 같은 시각이면 종류 순서. 날짜만 아는 행동은 그날 끝에 둔다 (R-5)
     static func chronological(_ lhs: WishActivity, _ rhs: WishActivity) -> Bool {
-        if lhs.date != rhs.date { return lhs.date < rhs.date }
+        if lhs.sortDate != rhs.sortDate { return lhs.sortDate < rhs.sortDate }
         if lhs.kind.sortRank != rhs.kind.sortRank { return lhs.kind.sortRank < rhs.kind.sortRank }
         return lhs.id < rhs.id
+    }
+
+    /// 날짜만 저장한 행동(자정)은 그날 마지막 순간으로 본다
+    private var sortDate: Date {
+        kind.isDateOnly ? date.addingTimeInterval(24 * 60 * 60 - 1) : date
     }
 }
