@@ -346,6 +346,22 @@ final class HomeWishTotalFeatureTests: HomeFeatureTestCase {
         XCTAssertNil(sut.state.visibleWishTotal)
     }
 
+    func test_GH148_TC12_펼친채로순서바꾸기에들어갔다나오면_접혀서보인다() {
+        // Given
+        preference.homeSortOrder = .manualOrder
+        let sut = makeGetSut()
+        load(sut, wishes: [wish("A", target: 400_000), wish("B", target: 800_000)])
+        sut.send(.toggleWishTotal)
+
+        // When
+        sut.send(.tapReorder)
+        sut.send(.finishReorder)
+
+        // Then
+        XCTAssertNotNil(sut.state.visibleWishTotal)
+        XCTAssertFalse(sut.state.isWishTotalExpanded)
+    }
+
     // MARK: GH-148 TC13
 
     func test_GH148_TC13_상세에서모은돈을기록하고돌아오면_남은금액이줄어든다() {
@@ -402,6 +418,26 @@ final class HomeWishTotalFeatureTests: HomeFeatureTestCase {
 
         // Then
         XCTAssertEqual(impressions.count, 1)
+    }
+
+    func test_GH148_TC14_선택모드로숨어있는동안은_노출로그를보내지않고_모드를나오면보낸다() {
+        // Given
+        let sut = makeGetSut()
+        load(sut, wishes: [wish("A", target: 400_000)])
+        sut.send(.tapSelect)
+        XCTAssertEqual(impressions.count, 1)
+
+        // When: 선택 모드 중 다시 진입(재로드)
+        sut.send(.onAppear)
+
+        // Then
+        XCTAssertEqual(impressions.count, 1)
+
+        // When
+        sut.send(.cancelSelection)
+
+        // Then
+        XCTAssertEqual(impressions.count, 2)
     }
 
     // MARK: GH-148 TC15

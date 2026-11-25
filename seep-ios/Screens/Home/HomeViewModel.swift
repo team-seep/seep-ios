@@ -291,9 +291,12 @@ final class HomeViewModel {
             guard state.isReorderButtonVisible else { return }
             sendClickLog(objectId: .reorderWishes)
             state.isReordering = true
+            // 숨겼다 다시 보일 때는 접힌 채로 (GH-148 R-8)
+            state.isWishTotalExpanded = false
 
         case .finishReorder:
             state.isReordering = false
+            sendWishTotalImpressionIfNeeded()
 
         case .moveWish(let source, let destination):
             moveWish(from: source, to: destination)
@@ -308,10 +311,12 @@ final class HomeViewModel {
             sendClickLog(objectId: .selectWishes)
             state.selectedIds = []
             state.isSelecting = true
+            state.isWishTotalExpanded = false
 
         case .cancelSelection:
             state.isSelecting = false
             state.selectedIds = []
+            sendWishTotalImpressionIfNeeded()
 
         case .selectAll:
             let all = Set(state.selectableItems.map(\.id))
@@ -550,6 +555,7 @@ extension HomeViewModel {
             }
             state.isSelecting = false
             state.selectedIds = []
+            sendWishTotalImpressionIfNeeded()
         case .failure(let error):
             showError(error)
         }
@@ -816,7 +822,12 @@ extension HomeViewModel {
             : nil
         state.wishTotal = summary
         if summary == nil { state.isWishTotalExpanded = false }
-        guard let summary, !didSendWishTotalImpression else { return }
+        sendWishTotalImpressionIfNeeded()
+    }
+
+    /// 화면에 실제로 보일 때만 보낸다. 순서 바꾸기·선택 모드에서 숨어 있었으면 모드를 나올 때 보낸다 (TC-14)
+    private func sendWishTotalImpressionIfNeeded() {
+        guard let summary = state.visibleWishTotal, !didSendWishTotalImpression else { return }
         didSendWishTotalImpression = true
         dependency.logManager.sendEvent(event: ImpressionEvent(
             screen: screenName,
