@@ -763,18 +763,15 @@ internal enum Strings {
       internal static func countBoldFormat(_ p1: Int) -> String {
         return Strings.tr("Localization", "finished.activity_day.count_bold_format", p1, fallback: "%d번 다가갔어요")
       }
-      /// 싶에 %d번 다가갔어요
-      internal static func countFormat(_ p1: Int) -> String {
-        return Strings.tr("Localization", "finished.activity_day.count_format", p1, fallback: "싶에 %d번 다가갔어요")
-      }
-      /// %@,
-      internal static func dateFormat(_ p1: Any) -> String {
-        return Strings.tr("Localization", "finished.activity_day.date_format", String(describing: p1), fallback: "%@,")
-      }
       /// 이뤘어요!
       internal static var finished: String { Strings.tr("Localization", "finished.activity_day.finished", fallback: "이뤘어요!") }
       /// 빈 칸은 쉬어 간 날이에요. 연속 기록은 세지 않아요.
       internal static var footnote: String { Strings.tr("Localization", "finished.activity_day.footnote", fallback: "빈 칸은 쉬어 간 날이에요. 연속 기록은 세지 않아요.") }
+      /// %1$@,
+      /// 싶에 %2$d번 다가갔어요
+      internal static func headlineFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_day.headline_format", String(describing: p1), p2, fallback: "%1$@,\n싶에 %2$d번 다가갔어요")
+      }
       /// 일지 한 줄
       internal static var journal: String { Strings.tr("Localization", "finished.activity_day.journal", fallback: "일지 한 줄") }
       /// 쉬어 간 날이에요

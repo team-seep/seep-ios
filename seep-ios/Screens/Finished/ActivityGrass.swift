@@ -45,10 +45,13 @@ struct ActivityGrass: Equatable {
         min(max(count, 0), 4)
     }
 
-    /// 칸 크기를 그대로 두고 너비에 들어가는 주 수. 18주보다 적게, 26주보다 많이 보이지 않는다 (R-9)
+    /// 칸 크기를 그대로 두고 너비에 들어가는 주 수, 최대 26주 (R-9).
+    /// 아이폰은 18주 이상 들어간다. 18주가 안 들어가는 좁은 화면(디스플레이 확대·좁은 분할 화면)은 카드를 넘지 않게 들어가는 만큼만 보여 준다
     static func visibleWeekCount(contentWidth: Double) -> Int {
+        // 아직 너비를 모르면 기본 주 수
+        guard contentWidth > 0 else { return minWeeks }
         let fit = Int(((contentWidth + cellSpacing) / (cellSize + cellSpacing)).rounded(.down))
-        return min(max(fit, minWeeks), maxWeeks)
+        return min(max(fit, 1), maxWeeks)
     }
 
     /// 읽어 올 범위: 보일 수 있는 가장 이른 날과 올해 1월 1일 중 이른 날 ~ 내일 0시
@@ -90,7 +93,9 @@ struct ActivityGrass: Equatable {
 
     func monthLabels(inLast weekCount: Int, calendar: Calendar) -> [ActivityGrassMonthLabel] {
         var labels: [ActivityGrassMonthLabel] = []
-        for (column, week) in visibleWeeks(weekCount).enumerated() {
+        let weeks = visibleWeeks(weekCount)
+        // 마지막 열의 라벨은 칸보다 넓어 카드 밖으로 넘치므로 두지 않는다
+        for (column, week) in weeks.enumerated() where column < weeks.count - 1 {
             guard let first = week.first(where: { calendar.component(.day, from: $0.date) == 1 }) else { continue }
             if let last = labels.last, column - last.column < Self.minLabelGap { continue }
             labels.append(ActivityGrassMonthLabel(column: column, monthStart: first.date))

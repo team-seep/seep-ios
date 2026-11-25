@@ -8354,181 +8354,37 @@
       }
     },
     "finished.activity_day.count_bold_format" : {
-      "comment" : "이룬 싶 탭 잔디 칸을 눌러 여는 그날 시트 (GH-146). count_format 안에서 굵게 칠할 부분",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%d step closer"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%d steps closer"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%d回近づきました"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%d번 다가갔어요"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "靠近了%d次"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hant" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "靠近了%d次"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "finished.activity_day.count_format" : {
-      "comment" : "이룬 싶 탭 잔디 칸을 눌러 여는 그날 시트 (GH-146). 헤드라인 둘째 줄. %d = 그날 행동 수",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%d step closer to your wishes"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%d steps closer to your wishes"
-                }
-              }
-            }
-          }
-        },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "ウィッシュに%d回近づきました"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "싶에 %d번 다가갔어요"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "向心愿靠近了%d次"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hant" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "向心願靠近了%d次"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "finished.activity_day.date_format" : {
-      "comment" : "이룬 싶 탭 잔디 칸을 눌러 여는 그날 시트 (GH-146). 헤드라인 첫 줄. %@ = 날짜(월 일 요일)",
+      "comment" : "이룬 싶 탭 잔디 칸을 눌러 여는 그날 시트 (GH-146). headline_format 안에서 굵게 칠할 부분. %d = 그날 행동 수",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@,"
+            "value" : "steps closer to your wishes: %d"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@、"
+            "value" : "%d回近づきました"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@,"
+            "value" : "%d번 다가갔어요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@，"
+            "value" : "靠近了%d次"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@，"
+            "value" : "靠近了%d次"
           }
         }
       }
@@ -8601,6 +8457,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "空白格子是休息的日子。我們不計算連續紀錄。"
+          }
+        }
+      }
+    },
+    "finished.activity_day.headline_format" : {
+      "comment" : "이룬 싶 탭 잔디 칸을 눌러 여는 그날 시트 (GH-146). 헤드라인. %1$@ = 날짜(월 일 요일), %2$d = 그날 행동 수. 굵게 칠할 부분은 count_bold_format",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@,\nsteps closer to your wishes: %2$d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、\nウィッシュに%2$d回近づきました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@,\n싶에 %2$d번 다가갔어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，\n向心愿靠近了%2$d次"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，\n向心願靠近了%2$d次"
           }
         }
       }

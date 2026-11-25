@@ -113,7 +113,9 @@ final class ActivityGrassFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sheet.date, midnight)
         // 모은 돈·이룸은 날짜만 저장해 그날 시각이 있는 행동 뒤에, 모은 돈 → 이룸 순서로 둔다
         XCTAssertEqual(sheet.activities.map(\.id), ["added-3", "saving-2", "finished-1"])
-        XCTAssertEqual(Strings.Finished.ActivityDay.countFormat(sheet.activities.count), "싶에 3번 다가갔어요")
+        let headline = Strings.Finished.ActivityDay.headlineFormat("11월 10일 (화)", sheet.activities.count)
+        XCTAssertEqual(headline, "11월 10일 (화),\n싶에 3번 다가갔어요")
+        XCTAssertTrue(headline.contains(Strings.Finished.ActivityDay.countBoldFormat(3)))
         XCTAssertEqual(sheet.activities.map(\.subtitle), [
             "담았어요",
             Strings.Finished.ActivityDay.savingFormat(AmountFormatter.money(30_000, currency: "KRW")),
@@ -251,7 +253,8 @@ final class ActivityGrassFeatureTests: ViewModelTestCase {
 
     func test_GH146_TC17_카드안쪽너비에따라_아이폰은18주_넓은화면은최대26주다() {
         // Given / When / Then: 칸 14 + 간격 3
-        XCTAssertEqual(ActivityGrass.visibleWeekCount(contentWidth: 0), 18)
+        XCTAssertEqual(ActivityGrass.visibleWeekCount(contentWidth: 0), 18)     // 너비를 재기 전
+        XCTAssertEqual(ActivityGrass.visibleWeekCount(contentWidth: 252), 15)   // 320pt(디스플레이 확대) — 카드를 넘지 않는다
         XCTAssertEqual(ActivityGrass.visibleWeekCount(contentWidth: 307), 18)   // iPhone SE·mini
         XCTAssertEqual(ActivityGrass.visibleWeekCount(contentWidth: 334), 19)   // 402pt 아이폰
         XCTAssertEqual(ActivityGrass.visibleWeekCount(contentWidth: 439), 26)
@@ -273,6 +276,7 @@ final class ActivityGrassFeatureTests: ViewModelTestCase {
         XCTAssertEqual(visible.count, 18)
         XCTAssertEqual(visible.last, grass.weeks.last)
         XCTAssertEqual(labels.map { calendar.component(.month, from: $0.monthStart) }, [8, 9, 10, 11])
+        XCTAssertTrue(labels.allSatisfy { $0.column < visible.count - 1 })
         for label in labels {
             XCTAssertTrue(visible[label.column].contains { $0.date == label.monthStart })
         }

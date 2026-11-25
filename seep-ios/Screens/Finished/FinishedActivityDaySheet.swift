@@ -48,7 +48,7 @@ struct FinishedActivityDaySheet: View {
         } else {
             let count = day.activities.count
             HeadlineText(
-                text: Strings.Finished.ActivityDay.dateFormat(date) + "\n" + Strings.Finished.ActivityDay.countFormat(count),
+                text: Strings.Finished.ActivityDay.headlineFormat(date, count),
                 boldPart: Strings.Finished.ActivityDay.countBoldFormat(count)
             )
         }

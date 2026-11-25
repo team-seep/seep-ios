@@ -15,8 +15,7 @@ final class TranslationCatalogTests: XCTestCase {
         ("year_review.headline_bold_format", ["year_review.headline_format"]),
         ("badge.collection.title_highlight_format", ["badge.collection.title_format"]),
         ("wish_search.result_count_highlight_format", ["wish_search.result_count_format"]),
-        ("finished.activity_grass.day_count_format", ["finished.activity_grass.year_format"]),
-        ("finished.activity_day.count_bold_format", ["finished.activity_day.count_format"])
+        ("finished.activity_grass.day_count_format", ["finished.activity_grass.year_format"])
     ]
 
     private func catalog(_ name: String) throws -> [String: [String: Any]] {
@@ -95,6 +94,26 @@ final class TranslationCatalogTests: XCTestCase {
                     }
                 }
             }
+        }
+    }
+
+    // MARK: GH-146 TC6
+
+    /// 그날 시트 헤드라인은 날짜(%@)와 횟수(%d)를 한 문장에 받아 위 boldPairs(숫자 하나) 검사에 넣을 수 없어 따로 본다
+    func test_GH146_TC6_번역언어마다_그날시트헤드라인안에_굵게칠할부분이있다() throws {
+        let strings = try catalog("Localization")
+        for language in languages(in: strings).union(["ko"]) {
+            // Given
+            let sentence = try XCTUnwrap(forms(try XCTUnwrap(strings["finished.activity_day.headline_format"]), language: language)?["other"])
+            let boldFormat = try XCTUnwrap(forms(try XCTUnwrap(strings["finished.activity_day.count_bold_format"]), language: language)?["other"])
+
+            // When
+            let text = String(format: sentence, "DATE", 3)
+            let bold = String(format: boldFormat, 3)
+
+            // Then
+            XCTAssertTrue(text.hasPrefix("DATE"), "\(language): \(text)")
+            XCTAssertTrue(text.contains(bold), "\(language): \(bold) ⊄ \(text)")
         }
     }
 }

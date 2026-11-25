@@ -1,7 +1,5 @@
 import XCTest
 
-import GRDB
-
 @testable import seep_ios
 
 /// 잔디 집계 저장소 (GH-146 R-2, R-7). 메모리 DB 로 실제 저장소·위젯 저장소를 돌린다
@@ -174,9 +172,7 @@ final class WishActivityRepositoryTests: XCTestCase {
 
         // When: 최신(v11)까지 올라갔다
 
-        // Then
-        let columns = try migrated.writer.read { try $0.columns(in: "wishStep").map(\.name) }
-        XCTAssertTrue(columns.contains("doneAt"))
+        // Then: 데이터는 그대로이고 doneAt 은 nil
         let step = try XCTUnwrap(try migrated.snapshot().steps.first)
         XCTAssertEqual(step.title, "10km 뛰기")
         XCTAssertTrue(step.isDone)
@@ -187,6 +183,10 @@ final class WishActivityRepositoryTests: XCTestCase {
         XCTAssertFalse(repository.fetchActivities(from: .distantPast, to: .distantFuture).contains {
             if case .stepDone = $0.kind { return true } else { return false }
         })
+        // 새 컬럼에 실제로 쓰고 읽힌다(풀었다가 다시 체크)
+        _ = try repository.toggleStep(wishId: "wish-1", stepId: "step-1").get()
+        _ = try repository.toggleStep(wishId: "wish-1", stepId: "step-1").get()
+        XCTAssertNotNil(try migrated.snapshot().steps.first?.doneAt)
     }
 
     // MARK: TC-15

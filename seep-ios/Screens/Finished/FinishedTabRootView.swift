@@ -59,6 +59,10 @@ struct FinishedTabRootView: View {
         .onChange(of: router.wishesChangedToken) { _, _ in
             viewModel.send(.onAppear)
         }
+        // 탭을 연 채 자정을 넘기면 잔디의 오늘 칸을 다시 정한다 (GH-146)
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged).receive(on: RunLoop.main)) { _ in
+            viewModel.send(.onAppear)
+        }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in
             handle(route)
