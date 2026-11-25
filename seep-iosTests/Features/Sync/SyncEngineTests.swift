@@ -468,7 +468,7 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "숙소") && $0.date == widgetNow })
     }
 
-    func test_GH146_TC12_v11전앱이풀었다다시체크하면_옛doneAt대신다시체크한시각으로바로잡고서버에도올린다() async throws {
+    func test_GH146_TC12_v11전앱이풀었다다시체크하면_서버doneAt을그대로따르고_기기마다같다() async throws {
         // Given: B(새 앱)에서 체크해 서버에 doneAt 이 있다
         await signInBoth()
         _ = try deviceB.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)])).get()
@@ -477,28 +477,24 @@ final class SyncEngineTests: XCTestCase {
         let firstCheck = try XCTUnwrap(try deviceB.database.snapshot().steps.first?.doneAt)
         await deviceB.engine.sync(trigger: .manual)
 
-        // When: v11 전 앱(doneAt 을 모름)이 풀었다가 다시 체크한다 — 서버는 merge 라 옛 doneAt 을 그대로 둔다
+        // When: v11 전 앱(doneAt 을 모름)이 풀었다가 다시 체크한다 — 서버는 merge 라 doneAt 을 그대로 둔다
         func oldAppWrite(isDone: Int64, at seconds: Double) throws {
             var fields = try XCTUnwrap(server.documents[.wishStep]?["s1"]?.fields)
             fields["isDone"] = .integer(isDone)
             fields["updatedAt"] = .double(seconds)
             server.put(.wishStep, id: "s1", fields: fields)
         }
-        let uncheckAt = firstCheck.timeIntervalSinceReferenceDate + 86_400
-        let recheckAt = uncheckAt + 86_400
-        try oldAppWrite(isDone: 0, at: uncheckAt)
+        try oldAppWrite(isDone: 0, at: firstCheck.timeIntervalSinceReferenceDate + 86_400)
         await deviceB.engine.sync(trigger: .manual)
-        XCTAssertNil(try deviceB.database.snapshot().steps.first?.doneAt)
-        try oldAppWrite(isDone: 1, at: recheckAt)
+        // 안 된 단계는 doneAt 이 남아 있어도 잔디에 세지 않는다
+        XCTAssertTrue(deviceB.repository.fetchActivities(from: .distantPast, to: .distantFuture).allSatisfy { $0.kind == .added })
+        try oldAppWrite(isDone: 1, at: firstCheck.timeIntervalSinceReferenceDate + 2 * 86_400)
         await deviceB.engine.sync(trigger: .manual)
-        await deviceB.engine.sync(trigger: .manual)
-
-        // Then: 다시 체크한 날로 잔디에 들어가고, 서버의 doneAt 도 바로잡혀 새로 받는 기기(A)도 같은 날을 본다
-        let recheck = Date(timeIntervalSinceReferenceDate: recheckAt)
-        XCTAssertEqual(try deviceB.database.snapshot().steps.first?.doneAt, recheck)
-        XCTAssertEqual(server.documents[.wishStep]?["s1"]?.fields["doneAt"], .double(recheckAt))
         await deviceA.engine.sync(trigger: .manual)
-        XCTAssertEqual(try deviceA.database.snapshot().steps.first?.doneAt, recheck)
+
+        // Then: 알려진 한계(R-10) — 다시 체크한 날을 알 수 없어 서버의 처음 체크 시각을 쓰고, 두 기기가 같은 날을 본다
+        XCTAssertEqual(try deviceB.database.snapshot().steps.first?.doneAt, firstCheck)
+        XCTAssertEqual(try deviceA.database.snapshot().steps.first?.doneAt, firstCheck)
     }
 
     // MARK: TC-34
