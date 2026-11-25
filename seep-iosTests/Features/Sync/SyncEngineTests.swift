@@ -430,6 +430,44 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertEqual(b1.manualOrder, a1.manualOrder)
     }
 
+    // MARK: GH-146 TC-12
+
+    func test_GH146_TC12_A와A의체크위젯에서단계를체크하고동기화하면_B에서doneAt이같고잔디에들어간다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [
+            WishStep(id: "s1", title: "항공권", order: 0),
+            WishStep(id: "s2", title: "숙소", order: 1)
+        ])).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When: A 앱에서 한 단계, A 의 체크 위젯에서 한 단계를 체크하고 동기화
+        deviceA.tick(60)
+        _ = try deviceA.repository.toggleStep(wishId: "w1", stepId: "s1").get()
+        let widgetNow = deviceA.clock.addingTimeInterval(30)
+        let suiteName = "test.syncEngine.gh146"
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        defer { UserDefaults().removePersistentDomain(forName: suiteName) }
+        let widget = WidgetCheckRepositoryImpl(
+            database: deviceA.database,
+            store: WidgetCheckStore(userDefaults: UserDefaults(suiteName: suiteName)),
+            now: { widgetNow }
+        )
+        _ = try widget.checkStep(wishId: "w1", stepId: "s2").get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        let stepsA = try deviceA.database.snapshot().steps.sorted { $0.order < $1.order }
+        let stepsB = try deviceB.database.snapshot().steps.sorted { $0.order < $1.order }
+        XCTAssertEqual(stepsA.compactMap(\.doneAt).count, 2)
+        XCTAssertEqual(stepsB.map(\.doneAt), stepsA.map(\.doneAt))
+        let activitiesB = deviceB.repository.fetchActivities(from: .distantPast, to: .distantFuture)
+        XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "항공권") && $0.date == stepsA[0].doneAt })
+        XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "숙소") && $0.date == widgetNow })
+    }
+
     // MARK: TC-34
 
     func test_GH93_TC34_더새앱이쓴문서는아는필드만적용하고_다시올려도모르는필드를지우지않는다() async throws {

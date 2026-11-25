@@ -756,6 +756,62 @@ internal enum Strings {
     }
     /// 이룬 싶 검색
     internal static var search: String { Strings.tr("Localization", "finished.search", fallback: "이룬 싶 검색") }
+    internal enum ActivityDay {
+      /// 담았어요
+      internal static var added: String { Strings.tr("Localization", "finished.activity_day.added", fallback: "담았어요") }
+      /// %d번 다가갔어요
+      internal static func countBoldFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_day.count_bold_format", p1, fallback: "%d번 다가갔어요")
+      }
+      /// 싶에 %d번 다가갔어요
+      internal static func countFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_day.count_format", p1, fallback: "싶에 %d번 다가갔어요")
+      }
+      /// %@,
+      internal static func dateFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "finished.activity_day.date_format", String(describing: p1), fallback: "%@,")
+      }
+      /// 이뤘어요!
+      internal static var finished: String { Strings.tr("Localization", "finished.activity_day.finished", fallback: "이뤘어요!") }
+      /// 빈 칸은 쉬어 간 날이에요. 연속 기록은 세지 않아요.
+      internal static var footnote: String { Strings.tr("Localization", "finished.activity_day.footnote", fallback: "빈 칸은 쉬어 간 날이에요. 연속 기록은 세지 않아요.") }
+      /// 일지 한 줄
+      internal static var journal: String { Strings.tr("Localization", "finished.activity_day.journal", fallback: "일지 한 줄") }
+      /// 쉬어 간 날이에요
+      internal static var restDay: String { Strings.tr("Localization", "finished.activity_day.rest_day", fallback: "쉬어 간 날이에요") }
+      /// 모은 돈 +%@
+      internal static func savingFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "finished.activity_day.saving_format", String(describing: p1), fallback: "모은 돈 +%@")
+      }
+      /// 단계 체크 · %@
+      internal static func stepFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "finished.activity_day.step_format", String(describing: p1), fallback: "단계 체크 · %@")
+      }
+    }
+    internal enum ActivityGrass {
+      /// %@, %d번
+      internal static func cellAccessibilityFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_grass.cell_accessibility_format", String(describing: p1), p2, fallback: "%@, %d번")
+      }
+      /// %d일
+      internal static func dayCountFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_grass.day_count_format", p1, fallback: "%d일")
+      }
+      /// 적게
+      internal static var legendLess: String { Strings.tr("Localization", "finished.activity_grass.legend_less", fallback: "적게") }
+      /// 많이
+      internal static var legendMore: String { Strings.tr("Localization", "finished.activity_grass.legend_more", fallback: "많이") }
+      /// 최근 %d주 중 %d일 싶에 다가갔어요
+      internal static func summaryAccessibilityFormat(_ p1: Int, _ p2: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_grass.summary_accessibility_format", p1, p2, fallback: "최근 %d주 중 %d일 싶에 다가갔어요")
+      }
+      /// 싶에 다가간 날
+      internal static var title: String { Strings.tr("Localization", "finished.activity_grass.title", fallback: "싶에 다가간 날") }
+      /// 올해 %d일
+      internal static func yearFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.activity_grass.year_format", p1, fallback: "올해 %d일")
+      }
+    }
     internal enum BadgeCard {
       /// 모아보기 ›
       internal static var more: String { Strings.tr("Localization", "finished.badge_card.more", fallback: "모아보기 ›") }
