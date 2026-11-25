@@ -12,6 +12,10 @@ protocol PhotoTextRecognizing {
 final class PhotoTextRecognizer: PhotoTextRecognizing {
     /// 스크린샷 글자를 읽기에 충분하고 메모리를 덜 쓰는 긴 변 크기
     private static let maxPixelSize = 2048
+    /// 긴 변을 줄여도 짧은 변은 이만큼 남긴다. 세로로 긴 캡처가 글자를 못 읽을 만큼 작아지지 않게 (2048 로 줄이면 1179×12000 이 200px 폭)
+    private static let minShortSide = 1080
+    /// 그래도 메모리를 넘지 않게 긴 변 상한
+    private static let maxLongSide = 12_000
     private let queue = DispatchQueue(label: "seep.photo-text-recognizer", qos: .userInitiated)
 
     func recognizeText(imageData: Data, completion: @escaping ([RecognizedTextLine]) -> Void) {
@@ -63,8 +67,27 @@ final class PhotoTextRecognizer: PhotoTextRecognizing {
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
+            kCGImageSourceThumbnailMaxPixelSize: thumbnailMaxPixelSize(source: source)
         ]
         return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
+    }
+
+    /// 보통은 긴 변 2048. 세로로 아주 긴 캡처는 짧은 변을 `minShortSide`까지 남기도록 긴 변을 더 둔다
+    static func thumbnailMaxPixelSize(width: Int, height: Int) -> Int {
+        let long = max(width, height)
+        let short = min(width, height)
+        guard long > 0, short > 0 else { return maxPixelSize }
+        var target = min(long, maxPixelSize)
+        if short * target / long < minShortSide {
+            target = min(long, minShortSide * long / short, maxLongSide)
+        }
+        return target
+    }
+
+    private static func thumbnailMaxPixelSize(source: CGImageSource) -> Int {
+        let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any]
+        let width = properties?[kCGImagePropertyPixelWidth] as? Int ?? 0
+        let height = properties?[kCGImagePropertyPixelHeight] as? Int ?? 0
+        return thumbnailMaxPixelSize(width: width, height: height)
     }
 }

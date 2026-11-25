@@ -78,6 +78,30 @@ final class PhotoTextSuggesterTests: XCTestCase {
         XCTAssertEqual(suggestion.titles, ["락앤락 밀폐 저장용기", "Preview Lens"])
     }
 
+    func test_GH144_TC1_할인가줄은가격이고_할인금액이나정가만있는줄보다앞선다() {
+        // Given: 정가(작게) 위에 쿠폰할인가(크게)
+        let lines = [line("89,000원", 14), line("쿠폰할인가 69,000원", 18), line("23% 할인 59,000원", 12)]
+
+        // When
+        let suggestion = PhotoTextSuggester.suggest(lines: lines, currentCurrency: "KRW")
+
+        // Then
+        XCTAssertEqual(suggestion.amount, PhotoTextAmount(amount: 69_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "23% 할인 59,000원", currentCurrency: "KRW"), PhotoTextAmount(amount: 59_000, currency: "KRW"))
+    }
+
+    func test_GH144_TC1_만원으로쓴가격과_모르는달러줄은_제목후보가아니다() {
+        // Given
+        let lines = [line("89만원", 20), line("R$ 1.299,00", 19), line("캠핑 의자", 12)]
+
+        // When
+        let suggestion = PhotoTextSuggester.suggest(lines: lines, currentCurrency: "KRW")
+
+        // Then
+        XCTAssertEqual(suggestion.titles, ["캠핑 의자"])
+        XCTAssertEqual(suggestion.amount, PhotoTextAmount(amount: 890_000, currency: "KRW"))
+    }
+
     // MARK: GH-144 TC2
 
     func test_GH144_TC2_숫자기호만있는줄과_1자41자줄은_제목후보가아니다() {
@@ -126,6 +150,35 @@ final class PhotoTextSuggesterTests: XCTestCase {
     func test_GH144_TC3_한줄에금액이여럿이면_마지막금액을읽는다() {
         XCTAssertEqual(PhotoTextSuggester.amount(in: "정가 99,000원 → 69,000원", currentCurrency: "KRW"), PhotoTextAmount(amount: 69_000, currency: "KRW"))
         XCTAssertEqual(PhotoTextSuggester.amount(in: "Save $5 — now $49.99", currentCurrency: "KRW"), PhotoTextAmount(amount: 4_999, currency: "USD"))
+    }
+
+    func test_GH144_TC3_정가라벨이붙은금액보다_같은줄의가격을고른다() {
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "$49.99 List: $59.99", currentCurrency: "KRW"), PhotoTextAmount(amount: 4_999, currency: "USD"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "69,000원 정가 89,000원", currentCurrency: "KRW"), PhotoTextAmount(amount: 69_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "정가 89,000원", currentCurrency: "KRW"), PhotoTextAmount(amount: 89_000, currency: "KRW"))
+        XCTAssertNil(PhotoTextSuggester.amount(in: "쿠폰 -3,000원", currentCurrency: "KRW"))
+        XCTAssertNil(PhotoTextSuggester.amount(in: "$5 off", currentCurrency: "KRW"))
+    }
+
+    func test_GH144_TC3_만천억으로쓴원화를읽는다() {
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "89만원", currentCurrency: "KRW"), PhotoTextAmount(amount: 890_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "12.5만 원", currentCurrency: "KRW"), PhotoTextAmount(amount: 125_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "1만 2천원", currentCurrency: "KRW"), PhotoTextAmount(amount: 12_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "3억원", currentCurrency: "KRW"), PhotoTextAmount(amount: 300_000_000, currency: "KRW"))
+    }
+
+    func test_GH144_TC3_모르는달러기호는_미국달러로읽지않는다() {
+        XCTAssertNil(PhotoTextSuggester.amount(in: "R$ 1.299,00", currentCurrency: "KRW"))
+        XCTAssertNil(PhotoTextSuggester.amount(in: "NZ$49", currentCurrency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "HK$49", currentCurrency: "KRW"), PhotoTextAmount(amount: 4_900, currency: "HKD"))
+    }
+
+    func test_GH144_TC1_세로로긴캡처는_짧은변을남기도록줄인다() {
+        XCTAssertEqual(PhotoTextRecognizer.thumbnailMaxPixelSize(width: 3024, height: 4032), 2048)
+        XCTAssertEqual(PhotoTextRecognizer.thumbnailMaxPixelSize(width: 1179, height: 2556), 2341)
+        XCTAssertEqual(PhotoTextRecognizer.thumbnailMaxPixelSize(width: 1179, height: 12_000), 10_992)
+        XCTAssertEqual(PhotoTextRecognizer.thumbnailMaxPixelSize(width: 800, height: 600), 800)
+        XCTAssertEqual(PhotoTextRecognizer.thumbnailMaxPixelSize(width: 1000, height: 30_000), 12_000)
     }
 
     func test_GH144_TC3_숫자뒤통화말은_낱말이끝나거나가격다운숫자일때만읽는다() {

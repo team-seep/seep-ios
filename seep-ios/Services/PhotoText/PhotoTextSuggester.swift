@@ -43,13 +43,6 @@ enum PhotoTextSuggester {
         "checkout", "wishlist", "sign in", "sponsored", "in stock", "sold out", "directions", "follow"
     ]
 
-    /// 할인·쿠폰·배송비·적립 금액 줄. 진짜 가격이 아니라 금액 후보에서 뺀다
-    static let nonPriceAmountPhrases: [String] = [
-        "할인", "쿠폰", "적립", "포인트", "배송비", "절약", "캐시백",
-        "coupon", "shipping", "discount", "points", "cashback",
-        "割引", "クーポン", "送料", "ポイント", "优惠", "優惠", "运费", "運費", "积分", "積分"
-    ]
-
     static func suggest(lines: [RecognizedTextLine], currentCurrency: String) -> PhotoTextSuggestion {
         // 큰 글자부터. 높이가 같으면 사진 위쪽(먼저 읽은 줄)부터
         let ordered = lines.enumerated()
@@ -65,8 +58,10 @@ enum PhotoTextSuggester {
         var amount: PhotoTextAmount?
         for line in ordered {
             let text = normalized(line.text)
-            if let found = self.amount(in: text, currentCurrency: currentCurrency) {
-                if amount == nil, !containsAny(text, nonPriceAmountPhrases) { amount = found }
+            // 금액이 있는 줄은 제목 후보가 아니다. 할인·배송비만 있는 줄은 금액 후보도 아니다
+            let reading = PhotoTextAmountReader.read(text, currentCurrency: currentCurrency)
+            if reading.isAmountLine {
+                if amount == nil { amount = reading.amount }
                 continue
             }
             guard titles.count < maxTitleCount, isTitleCandidate(text) else { continue }
@@ -77,22 +72,9 @@ enum PhotoTextSuggester {
         return PhotoTextSuggestion(titles: titles, amount: amount)
     }
 
-    /// 통화 표시와 숫자가 함께 있는 줄에서 금액을 읽는다 (R-2). 통화는 GH-103 통화 목록 안에서만.
-    /// 한 줄에 금액이 여럿이면 마지막 것 — "정가 99,000원 → 69,000원", "Save $5 — now $49.99"는 뒤가 내는 값이다
+    /// 통화 표시와 숫자가 함께 있는 줄에서 금액을 읽는다 (R-2). 규칙은 `PhotoTextAmountReader`
     static func amount(in text: String, currentCurrency: String) -> PhotoTextAmount? {
-        var found: PhotoTextAmount?
-        // "89,000", "12.99", "1.299,00", "3000". Swift 5 모드라 확장 구분자 리터럴을 쓴다
-        for match in text.matches(of: #/[0-9]+(?:[.,][0-9]+)*/#) {
-            let number = String(text[match.range])
-            let before = text[..<match.range.lowerBound].trimmingCharacters(in: .whitespaces)
-            let after = text[match.range.upperBound...].trimmingCharacters(in: .whitespaces)
-            guard let currency = prefixCurrency(before, current: currentCurrency)
-                    ?? suffixCurrency(after, number: number, current: currentCurrency),
-                  AmountFormatter.supportedCurrencies.contains(currency),
-                  let minor = minorUnits(number, currency: currency) else { continue }
-            found = PhotoTextAmount(amount: minor, currency: currency)
-        }
-        return found
+        PhotoTextAmountReader.read(text, currentCurrency: currentCurrency).amount
     }
 
     // MARK: 제목
@@ -115,87 +97,5 @@ enum PhotoTextSuggester {
     private static func containsWords(_ text: String, _ phrases: [String]) -> Bool {
         let words = " " + text.lowercased().split { !$0.isLetter }.joined(separator: " ") + " "
         return phrases.contains { words.contains(" \($0) ") }
-    }
-
-    // MARK: 금액
-
-    /// 숫자 앞에 붙는 기호. 긴 것부터 맞춘다("US$"가 "$"보다 먼저)
-    private static let prefixMarkers: [(marker: String, currency: Ambiguity)] = [
-        ("US$", .fixed("USD")), ("NT$", .fixed("TWD")), ("HK$", .fixed("HKD")), ("CA$", .fixed("CAD")),
-        ("AU$", .fixed("AUD")), ("C$", .fixed("CAD")), ("A$", .fixed("AUD")), ("S$", .fixed("SGD")),
-        ("$", .dollar), ("₩", .fixed("KRW")), ("￦", .fixed("KRW")), ("€", .fixed("EUR")), ("£", .fixed("GBP")),
-        ("¥", .yen), ("￥", .yen)
-    ]
-
-    /// 숫자 뒤에 붙는 말
-    private static let suffixMarkers: [(marker: String, currency: Ambiguity)] = [
-        ("원", .fixed("KRW")), ("円", .fixed("JPY")), ("엔", .fixed("JPY")), ("元", .yuan), ("위안", .fixed("CNY")),
-        ("달러", .dollar), ("유로", .fixed("EUR")), ("€", .fixed("EUR")), ("$", .dollar), ("£", .fixed("GBP"))
-    ]
-
-    /// 여러 통화가 같이 쓰는 기호는 지금 목표 금액 통화가 그중 하나면 그 통화로 읽는다
-    private enum Ambiguity {
-        case fixed(String)
-        case dollar
-        case yen
-        case yuan
-
-        func resolve(current: String) -> String {
-            switch self {
-            case .fixed(let code): return code
-            case .dollar: return ["USD", "CAD", "AUD", "SGD", "HKD", "TWD"].contains(current) ? current : "USD"
-            case .yen: return current == "CNY" ? "CNY" : "JPY"
-            case .yuan: return ["CNY", "TWD", "HKD"].contains(current) ? current : "CNY"
-            }
-        }
-    }
-
-    private static func prefixCurrency(_ before: String, current: String) -> String? {
-        if let code = isoCode(at: before.suffix(3)), !(before.dropLast(3).last?.isLetter ?? false) {
-            return code
-        }
-        return prefixMarkers.first { before.hasSuffix($0.marker) }?.currency.resolve(current: current)
-    }
-
-    /// 숫자 뒤 말은 낱말이 거기서 끝나야 통화다("1+1 원두커피"의 "원"은 아니다).
-    /// 다만 "89,000원부터", "299元起"처럼 가격다운 숫자(구분자가 있거나 세 자리 이상)는 뒤에 말이 붙어도 받는다
-    private static func suffixCurrency(_ after: String, number: String, current: String) -> String? {
-        if let code = isoCode(at: after.prefix(3)), !(after.dropFirst(3).first?.isLetter ?? false) {
-            return code
-        }
-        guard let marker = suffixMarkers.first(where: { after.hasPrefix($0.marker) }) else { return nil }
-        let endsWord = !(after.dropFirst(marker.marker.count).first?.isLetter ?? false)
-        let looksLikePrice = number.contains { $0 == "," || $0 == "." } || number.count >= 3
-        guard endsWord || looksLikePrice else { return nil }
-        return marker.currency.resolve(current: current)
-    }
-
-    private static func isoCode(at text: Substring) -> String? {
-        let code = text.uppercased()
-        return text.count == 3 && AmountFormatter.supportedCurrencies.contains(code) ? code : nil
-    }
-
-    /// 숫자 문자열 → 통화 최소 단위. 마지막 구분자 뒤가 1~2자리면 소수점, 3자리면 천 단위 구분으로 본다.
-    /// 0 이거나 상한(`WishSaving.maxAmount`)을 넘으면 후보가 아니다
-    private static func minorUnits(_ number: String, currency: String) -> Int? {
-        var integerText = Substring(number)
-        var fractionText: Substring = ""
-        if let separator = number.lastIndex(where: { $0 == "," || $0 == "." }) {
-            let tail = number[number.index(after: separator)...]
-            if tail.count <= 2 {
-                integerText = number[..<separator]
-                fractionText = tail
-            }
-        }
-        let digits = AmountFormatter.fractionDigits(currency)
-        let integerDigits = integerText.filter { $0 != "," && $0 != "." }
-        let paddedFraction = String(fractionText.prefix(digits)).padding(toLength: digits, withPad: "0", startingAt: 0)
-        guard integerDigits.count <= 12, let integer = Int(integerDigits), let fraction = Int(paddedFraction.isEmpty ? "0" : paddedFraction) else {
-            return nil
-        }
-        let scale = Int(pow(10, Double(digits)))
-        let total = integer * scale + fraction
-        guard total > 0, total <= WishSaving.maxAmount else { return nil }
-        return total
     }
 }
