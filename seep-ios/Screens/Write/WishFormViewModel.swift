@@ -721,6 +721,8 @@ final class WishFormViewModel {
             futureLetter: letter.text,
             futureLetterSealedAt: letter.sealedAt,
             previousWishId: original.previousWishId,
+            // 수정 폼은 시작 상태를 바꾸지 않는다. 카테고리를 바꿔도 하는 중으로 남는다 (GH-143 R-7)
+            startedAt: original.startedAt,
             createdAt: original.createdAt
         )
 

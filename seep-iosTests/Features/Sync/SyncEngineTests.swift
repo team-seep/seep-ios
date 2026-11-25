@@ -180,11 +180,14 @@ final class SyncEngineTests: XCTestCase {
     }
 
     func test_GH93_TC23_태그가있는280기기에서올리면_v7v8v10이돌고_기존태그가큐에들어간다() throws {
-        // Given: 2.8.0 기기 — v9(태그)까지만 돈 DB에 태그 달린 위시
-        let database = try AppDatabase.makeInMemory(migratedUpTo: "v9")
-        _ = try WishRepositoryImpl(database: database).addWish(Wish(id: "w1", title: "제주", tags: ["여행"])).get()
+        // Given: 2.8.0 기기 — v9(태그)까지만 돈 DB에 태그 달린 위시.
+        // 지금 레코드에는 v9 뒤에 생긴 컬럼(v11 startedAt)이 있어 저장소로 쓰지 않고 그때 스키마대로 SQL 로 넣는다 (GH-143)
+        let database = try AppDatabase.makeInMemory(migratedUpTo: "v9", seedSQL: [
+            "INSERT INTO wish (id, category, title, hashtag, createdAt, updatedAt) VALUES ('w1', 'category_want_to_do', '제주', '여행', 100, 10)",
+            "INSERT INTO wishTag (id, wishId, name, \"order\", createdAt, updatedAt) VALUES ('t1', 'w1', '여행', 0, 10, 10)"
+        ])
 
-        // When
+        // When: 넣은 뒤 남은 마이그레이션(v7·v8·v10·v11)이 돈다
         try database.migrateToLatest()
 
         // Then: 트리거(v7)가 생기기 전에 쓴 위시는 큐에 없고, 태그만 v10이 넣는다
@@ -428,6 +431,44 @@ final class SyncEngineTests: XCTestCase {
         let b1 = try XCTUnwrap(deviceB.repository.fetchWish(id: "w1"))
         XCTAssertNotNil(deviceB.repository.fetchWish(id: "w2")?.pinnedAt)
         XCTAssertEqual(b1.manualOrder, a1.manualOrder)
+    }
+
+    // MARK: GH-143 TC13
+
+    func test_GH143_TC13_A에서시작했어요를누르고동기화하면_B에서같은시작시각과하는중으로보이고_되돌리기도반영된다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "서핑")).get()
+        _ = try deviceA.repository.addWish(Wish(id: "w2", title: "기타")).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When
+        deviceA.tick(60)
+        let startedAt = try XCTUnwrap(deviceA.repository.updateStarted(wishId: "w1", isStarted: true).get().startedAt)
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then: 시작 시각이 같고, 칩 수·n일째가 같다
+        let wishesA = deviceA.repository.fetchWishes(category: .wantToDo, sort: .deadlineOrder, isOnlyFinished: false)
+        let wishesB = deviceB.repository.fetchWishes(category: .wantToDo, sort: .deadlineOrder, isOnlyFinished: false)
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.startedAt, startedAt)
+        XCTAssertEqual(wishesB.filter(\.isInProgress).map(\.id), ["w1"])
+        XCTAssertEqual(wishesB.filter(\.isInProgress).count, wishesA.filter(\.isInProgress).count)
+        let today = start.addingTimeInterval(86_400 * 3)
+        XCTAssertEqual(
+            wishesB.compactMap { WishStartStatus.inProgressDays(of: $0, now: today) },
+            wishesA.compactMap { WishStartStatus.inProgressDays(of: $0, now: today) }
+        )
+
+        // When: A에서 되돌린다
+        deviceA.tick(60)
+        _ = try deviceA.repository.updateStarted(wishId: "w1", isStarted: false).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.startedAt)
     }
 
     // MARK: TC-34

@@ -42,6 +42,8 @@ struct Wish: Equatable, Hashable {
     var manualOrder: Double
     /// 이어서 적은 앞 위시 id. nil 이면 처음 싶 (GH-84)
     var previousWishId: String?
+    /// "시작했어요" 시각. nil 이면 시작 전, 값이 있고 안 이뤘으면 하는 중. 이뤄도 남는다 (GH-143)
+    var startedAt: Date?
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -49,6 +51,11 @@ struct Wish: Equatable, Hashable {
     
     var isPinned: Bool {
         return pinnedAt != nil
+    }
+
+    /// 시작했고 아직 안 이룬 싶 = '하는 중' (GH-143 R-4)
+    var isInProgress: Bool {
+        return startedAt != nil && !isSuccess
     }
 
     /// 대표 태그(첫 태그). 태그가 하나뿐이던 화면·`wish.hashtag` 컬럼과 맞춘다 (GH-136)
@@ -121,6 +128,7 @@ struct Wish: Equatable, Hashable {
         futureLetterSealedAt: Date? = nil,
         manualOrder: Double = 0,
         previousWishId: String? = nil,
+        startedAt: Date? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -149,6 +157,7 @@ struct Wish: Equatable, Hashable {
         self.futureLetterSealedAt = futureLetterSealedAt
         self.manualOrder = manualOrder
         self.previousWishId = previousWishId
+        self.startedAt = startedAt
         self.createdAt = createdAt
     }
 }

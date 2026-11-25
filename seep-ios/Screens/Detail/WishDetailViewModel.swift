@@ -24,6 +24,12 @@ extension WishDetailViewModel {
         case editFinished(Wish)
         /// "이어지는 싶"의 다른 싶 줄 (GH-84 R-5)
         case tapChainWish(id: String)
+        /// 상태 줄 "시작했어요" (GH-143 R-2)
+        case tapStart
+        /// 상태 줄 "되돌리기" (GH-143 R-2)
+        case tapUnstart
+        /// 자동 시작 토스트의 "되돌리기". 시작 시각만 지우고 단계·저금은 그대로 둔다 (GH-143 R-3)
+        case undoAutoStart
         case routeHandled
     }
 
@@ -38,8 +44,16 @@ extension WishDetailViewModel {
         /// 체인의 다른 위시 상세로 간다 (GH-84 R-5)
         case wishDetail(id: String, isFinished: Bool)
         case errorAlert(String)
+        /// 단계 체크·저금 기록으로 자동 시작했다. "되돌리기" 버튼이 있는 토스트를 띄운다 (GH-143 R-3)
+        case autoStartToast(String)
         /// 삭제·완료 취소 뒤, 또는 위시가 지워져 있으면 상세를 닫는다
         case close
+    }
+
+    /// 자동 시작을 부른 동작 (`auto_start_wish` 의 `trigger`)
+    enum AutoStartTrigger: String {
+        case step
+        case saving
     }
 
     struct Config {
@@ -54,6 +68,8 @@ extension WishDetailViewModel {
         var letter: DetailLetter = .hidden
         /// 이어진 싶이 있을 때만 (GH-84 R-4, R-6)
         var chain: WishChain?
+        /// 메타 줄 아래 상태 줄. nil 이면 그리지 않는다(시작 기록 없는 이룬 싶) (GH-143 R-2, R-6)
+        var startStatus: WishStartStatus?
     }
 
     struct Dependency {
@@ -119,6 +135,11 @@ final class WishDetailViewModel {
         config.mode == .fromHome
     }
 
+    /// 홈에서 연 상세에서만 "시작했어요"·"되돌리기"를 누를 수 있다 (GH-143 R-2)
+    var isStartEditable: Bool {
+        config.mode == .fromHome
+    }
+
     init(config: Config, dependency: Dependency = Dependency()) {
         self.config = config
         self.dependency = dependency
@@ -148,6 +169,10 @@ final class WishDetailViewModel {
             reloadSections(wish: wish)
         case .tapChainWish(let id):
             openChainWish(id: id)
+        case .tapStart:
+            start()
+        case .tapUnstart, .undoAutoStart:
+            unstart()
         case .routeHandled:
             route = nil
         }
@@ -220,6 +245,50 @@ final class WishDetailViewModel {
         }
     }
 
+    // MARK: 시작했어요 (GH-143)
+
+    private func start() {
+        guard isStartEditable, let wish = state.wish, !wish.isSuccess, wish.startedAt == nil else { return }
+        sendClickLog(objectId: .startWish)
+        updateStarted(true, showsError: true)
+    }
+
+    private func unstart() {
+        guard let wish = state.wish, !wish.isSuccess, wish.startedAt != nil else { return }
+        sendClickLog(objectId: .unstartWish)
+        updateStarted(false, showsError: true)
+    }
+
+    /// 시작 전 싶에서 단계를 체크하거나 저금을 기록하면 시작한 것으로 본다. 이미 하는 중이면 아무것도 바꾸지 않는다 (R-3)
+    private func autoStartIfNeeded(trigger: AutoStartTrigger) {
+        guard let wish = state.wish, !wish.isSuccess, wish.startedAt == nil else { return }
+        // 단계·저금은 이미 저장됐다. 자동 시작만 실패하면 사용자에게 알릴 것 없이 시작 전으로 둔다
+        guard updateStarted(true, showsError: false) else { return }
+        route = .autoStartToast(Strings.Detail.Start.autoToast)
+        dependency.logManager.sendEvent(event: ImpressionEvent(
+            screen: screenName,
+            objectType: .banner,
+            objectId: .autoStartWish,
+            extraParameters: [.trigger: trigger.rawValue]
+        ))
+    }
+
+    @discardableResult
+    private func updateStarted(_ isStarted: Bool, showsError: Bool) -> Bool {
+        guard let wish = state.wish else { return false }
+        switch dependency.wishRepository.updateStarted(wishId: wish.id, isStarted: isStarted) {
+        case .success(let saved):
+            // 저장소가 돌려준 위시는 다른 섹션 값이 오래됐을 수 있어 시작 시각만 옮긴다
+            update { $0.startedAt = saved.startedAt }
+            return true
+        case .failure(let error):
+            if showsError {
+                route = .errorAlert(error.localizedDescription)
+            }
+            return false
+        }
+    }
+
     // MARK: 위시 반영
 
     private func reload() {
@@ -275,6 +344,10 @@ final class WishDetailViewModel {
         if letter != state.letter {
             state.letter = letter
         }
+        let startStatus = WishStartStatus(wish: wish, now: dependency.now(), calendar: dependency.calendar)
+        if startStatus != state.startStatus {
+            state.startStatus = startStatus
+        }
     }
 
     /// 섹션이 저장한 값을 상세가 들고 있는 위시에 반영해, 수정 화면·공유로 넘길 위시가 최신이게 한다
@@ -290,7 +363,13 @@ final class WishDetailViewModel {
             dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
         )
         steps.onUpdate = { [weak self] steps in
-            self?.update { $0.steps = steps }
+            guard let self else { return }
+            let doneBefore = state.wish?.steps.filter(\.isDone).count ?? 0
+            update { $0.steps = steps }
+            // 체크를 풀면 시작 상태를 그대로 둔다 (R-3)
+            if steps.filter(\.isDone).count > doneBefore {
+                autoStartIfNeeded(trigger: .step)
+            }
         }
         self.steps = steps
 
@@ -299,7 +378,13 @@ final class WishDetailViewModel {
             dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
         )
         savings.onUpdate = { [weak self] savings in
-            self?.update { $0.savings = savings }
+            guard let self else { return }
+            let countBefore = state.wish?.savings.count ?? 0
+            update { $0.savings = savings }
+            // 기록을 지우면 시작 상태를 그대로 둔다 (R-3)
+            if savings.count > countBefore {
+                autoStartIfNeeded(trigger: .saving)
+            }
         }
         self.savings = savings
 

@@ -185,6 +185,14 @@ enum LogObjectId: String {
     case selectWishes = "select_wishes"
     /// 홈 태그 필터 칩 (GH-136)
     case tagFilter = "tag_filter"
+    /// 홈 "하는 중" 칩 (GH-143)
+    case inProgressFilter = "in_progress_filter"
+    /// 상세 상태 줄 "시작했어요" (GH-143)
+    case startWish = "start_wish"
+    /// 상세 상태 줄·자동 시작 토스트 "되돌리기" (GH-143)
+    case unstartWish = "unstart_wish"
+    /// 단계 체크·저금 기록으로 자동 시작해 토스트가 뜸 (+trigger: step·saving) (GH-143)
+    case autoStartWish = "auto_start_wish"
     /// 선택 모드 일괄 삭제 확인 (+count) (GH-86)
     case deleteSelectedWishes = "delete_selected_wishes"
     case widgetGuide = "widget_guide"

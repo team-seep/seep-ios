@@ -258,6 +258,14 @@ final class AppDatabase {
             try db.execute(sql: "INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) SELECT 'wishTag', id, updatedAt FROM wishTag")
         }
 
+        // GH-143: '시작했어요' 시각. 기존 위시는 모두 시작 전(NULL). 기본값이 NULL 인 컬럼이라 구버전 앱과 섞여도
+        // merge 쓰기가 이 필드를 지우지 않는다(설계 §6.4). wish 아웃박스 트리거가 새 컬럼도 그대로 실어 나른다
+        migrator.registerMigration("v11") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "startedAt", .double)
+            }
+        }
+
         return migrator
     }
 

@@ -10,6 +10,8 @@ extension HomeViewModel {
         case selectCategory(Category)
         /// 태그 필터 칩. nil 이면 '전체' (GH-136 R-3)
         case selectTag(String?)
+        /// "하는 중 n" 칩 (GH-143 R-4)
+        case selectInProgressFilter
         case tapSortOrder
         case selectSortOrder(HomeSortOrder)
         /// 필터 바 "순서 바꾸기" → 순서 바꾸기 모드 (GH-73 R-4)
@@ -68,8 +70,10 @@ extension HomeViewModel {
         var notFinishedCount: Int?
         /// 태그 필터 칩 줄의 태그(저장 값), 많이 쓴 순. 비면 칩 줄을 숨긴다 (GH-136 R-3)
         var tagChips: [String] = []
-        /// 고른 태그 칩. nil 이면 '전체' (GH-136 R-3)
-        var selectedTag: String?
+        /// 칩 줄에서 고른 것. '전체'·'하는 중'·태그 중 하나만 (GH-136 R-3, GH-143 R-4)
+        var filter: HomeListFilter = .all
+        /// 지금 카테고리의 하는 중(시작했고 안 이룬) 싶 수. 0 이면 "하는 중" 칩을 숨긴다 (GH-143 R-4)
+        var inProgressCount = 0
         var items: [HomeWishItem] = []
         /// 리스트 맨 위 잠든 위시 카드. 없으면 그리지 않는다 (GH-30 R-4)
         var sleepingWishCard: SleepingWishCard?
@@ -81,6 +85,12 @@ extension HomeViewModel {
         var releaseAlertWish: Wish?
         var errorMessage: String?
         var toast: HomeToast?
+
+        /// 고른 태그 칩. 태그가 아니면('전체'·'하는 중') nil (GH-136 R-3)
+        var selectedTag: String? {
+            if case .tag(let tag) = filter { return tag }
+            return nil
+        }
 
         /// 가고 싶어요 탭에서만 지도 버튼을 보인다 (GH-31 R-5)
         var isPlaceMapVisible: Bool {
@@ -113,14 +123,14 @@ extension HomeViewModel {
         }
 
         /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11).
-        /// 태그로 거른 목록에서 옮기면 숨은 위시 사이 순서가 꼬이므로 '전체'에서만 (GH-136 R-4)
+        /// 태그·하는 중으로 거른 목록에서 옮기면 숨은 위시 사이 순서가 꼬이므로 '전체'에서만 (GH-136 R-4, GH-143 R-4)
         var isReorderButtonVisible: Bool {
-            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering && selectedTag == nil
+            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering && filter == .all
         }
 
-        /// 순서 바꾸기·선택 모드가 아니고 태그가 하나라도 있으면 칩 줄을 보인다 (GH-136 R-3)
+        /// 순서 바꾸기·선택 모드가 아니고 태그나 하는 중 싶이 하나라도 있으면 칩 줄을 보인다 (GH-136 R-3, GH-143 R-4)
         var isTagFilterVisible: Bool {
-            !tagChips.isEmpty && !isReordering && !isSelecting
+            (!tagChips.isEmpty || inProgressCount > 0) && !isReordering && !isSelecting
         }
     }
 
@@ -250,13 +260,16 @@ final class HomeViewModel {
             state.category = category
             // 다른 카테고리의 선택은 이어가지 않는다 (GH-86)
             state.selectedIds = []
-            // 고른 태그는 카테고리를 옮기면 '전체'로 돌아간다 (GH-136 R-4)
-            state.selectedTag = nil
+            // 고른 태그·하는 중은 카테고리를 옮기면 '전체'로 돌아간다 (GH-136 R-4, GH-143 R-4)
+            state.filter = .all
             dependency.router?.homeCategory = category
             fetchWishes()
 
         case .selectTag(let tag):
             selectTag(tag)
+
+        case .selectInProgressFilter:
+            selectInProgressFilter()
 
         case .tapSortOrder:
             state.sheet = .sortOrder
@@ -387,13 +400,32 @@ final class HomeViewModel {
 
     private func rebuildItems() {
         refreshSleepingWish()
-        state.tagChips = Self.tagChips(of: wishes.filter { !$0.isSuccess })
-        // 고른 태그가 사라졌으면(그 태그 위시를 다 지움·이룸) '전체'로 돌아간다
-        if let selectedTag = state.selectedTag, !state.tagChips.contains(selectedTag) {
-            state.selectedTag = nil
+        let openWishes = wishes.filter { !$0.isSuccess }
+        state.tagChips = Self.tagChips(of: openWishes)
+        state.inProgressCount = openWishes.filter(\.isInProgress).count
+        // 고른 태그가 사라졌거나(그 태그 위시를 다 지움·이룸) 하는 중 싶이 0개가 되면 '전체'로 돌아간다 (GH-143 R-4)
+        switch state.filter {
+        case .tag(let tag) where !state.tagChips.contains(tag):
+            state.filter = .all
+        case .inProgress where state.inProgressCount == 0:
+            state.filter = .all
+        default:
+            break
         }
-        let visibleWishes = state.selectedTag.map { tag in wishes.filter { $0.tags.contains(tag) } } ?? wishes
-        state.items = visibleWishes.map { HomeWishItem(wish: $0, photoStorage: dependency.photoStorage) }
+        let visibleWishes: [Wish]
+        switch state.filter {
+        case .all:
+            visibleWishes = wishes
+        case .inProgress:
+            // 방금 이뤄 흐리게 남은 싶도 시작 기록이 있으면 같은 자리에 둔다
+            visibleWishes = wishes.filter { $0.startedAt != nil }
+        case .tag(let tag):
+            visibleWishes = wishes.filter { $0.tags.contains(tag) }
+        }
+        let now = dependency.now()
+        state.items = visibleWishes.map {
+            HomeWishItem(wish: $0, photoStorage: dependency.photoStorage, now: now, calendar: dependency.calendar)
+        }
         if let banner = state.yearReviewBanner {
             sendYearReviewImpressionIfNeeded(banner: banner)
         }
@@ -403,7 +435,14 @@ final class HomeViewModel {
         guard !state.isReordering, !state.isSelecting else { return }
         let tagType = tag.map { HashtagType(rawValue: $0) != nil ? $0 : "custom" } ?? "all"
         sendClickLog(objectId: .tagFilter, extraParameters: [.tagType: tagType])
-        state.selectedTag = tag
+        state.filter = tag.map { .tag($0) } ?? .all
+        rebuildItems()
+    }
+
+    private func selectInProgressFilter() {
+        guard !state.isReordering, !state.isSelecting, state.inProgressCount > 0, state.filter != .inProgress else { return }
+        sendClickLog(objectId: .inProgressFilter)
+        state.filter = .inProgress
         rebuildItems()
     }
 

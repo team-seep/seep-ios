@@ -49,6 +49,9 @@ protocol WishRepository {
     
     /// "여전히 하고 싶어요"로 점검 시각(lastCheckedAt)을 지금으로 저장하고, 반영된 위시를 돌려준다 (GH-30 R-7, R-10).
     func markChecked(wishId: String) -> Result<Wish, RepositoryError>
+
+    /// '시작했어요'(지금 시각) / 되돌리기(nil). 단계·저금 등 다른 값은 건드리지 않는다 (GH-143 R-1)
+    func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError>
     
     /// 장소를 저장(nil 이면 지우기)하고, 장소가 반영된 위시를 돌려준다 (GH-31 R-4).
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError>
@@ -256,6 +259,12 @@ final class WishRepositoryImpl: WishRepository {
     func markChecked(wishId: String) -> Result<Wish, RepositoryError> {
         let checkedAt = now()
         return updateAndFetch(wishId: wishId) { $0.lastCheckedAt = checkedAt }
+    }
+
+    func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError> {
+        // "n일째"는 달력 날짜로 세지만, 시작한 순간을 남겨 둔다 (DateUtils.now()는 자정으로 잘라 쓰지 않는다)
+        let startedAt = isStarted ? now() : nil
+        return updateAndFetch(wishId: wishId) { $0.startedAt = startedAt }
     }
 
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {

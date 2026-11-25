@@ -201,6 +201,15 @@ private struct WishDetailContent: View {
                 } action: { maxY in
                     titleBottom = maxY
                 }
+            if let startStatus = viewModel.state.startStatus {
+                DetailStartStatusLine(
+                    status: startStatus,
+                    isEditable: viewModel.isStartEditable,
+                    onStart: { viewModel.send(.tapStart) },
+                    onUndo: { viewModel.send(.tapUnstart) }
+                )
+                .padding(.top, 20)
+            }
             if sections.contains(.memo), let memo = summary.memo {
                 DocumentBody(text: memo)
                     .padding(.top, Layout.bodySpacing)
@@ -321,6 +330,11 @@ private struct WishDetailContent: View {
             router?.push(.wishDetail(id: id, isFinished: isFinished))
         case .errorAlert(let message):
             errorMessage = message
+        case .autoStartToast(let message):
+            // 상세를 떠난 뒤 눌러도 되돌릴 수 있게 ViewModel 을 붙잡는다
+            toastCenter?.show(message, actionTitle: Strings.Detail.Start.undo) { [viewModel] in
+                viewModel.send(.undoAutoStart)
+            }
         case .close:
             // 아이패드 상세 열은 쌓인 화면이 아니라 열을 비운다 (GH-99 R-5)
             if isPadDetailPane {
