@@ -171,8 +171,10 @@ final class WishDetailViewModel {
             openChainWish(id: id)
         case .tapStart:
             start()
-        case .tapUnstart, .undoAutoStart:
+        case .tapUnstart:
             unstart()
+        case .undoAutoStart:
+            undoAutoStart()
         case .routeHandled:
             route = nil
         }
@@ -257,6 +259,13 @@ final class WishDetailViewModel {
         guard let wish = state.wish, !wish.isSuccess, wish.startedAt != nil else { return }
         sendClickLog(objectId: .unstartWish)
         updateStarted(false, showsError: true)
+    }
+
+    /// 토스트는 상세를 떠난 뒤에도 눌릴 수 있다. 그사이 다른 화면에서 이뤘거나 지웠을 수 있어 저장소에서 다시 읽고 판단한다
+    private func undoAutoStart() {
+        guard let latest = dependency.wishRepository.fetchWish(id: config.wishId) else { return }
+        apply(wish: latest)
+        unstart()
     }
 
     /// 시작 전 싶에서 단계를 체크하거나 저금을 기록하면 시작한 것으로 본다. 이미 하는 중이면 아무것도 바꾸지 않는다 (R-3)

@@ -417,7 +417,8 @@ final class HomeViewModel {
         case .all:
             visibleWishes = wishes
         case .inProgress:
-            // 방금 이뤄 흐리게 남은 싶도 시작 기록이 있으면 같은 자리에 둔다
+            // 다른 하는 중 싶이 남아 있으면, 방금 이뤄 흐리게 남은 싶도 같은 자리에 둔다.
+            // 마지막 하는 중 싶을 이루면 위에서 '전체'로 돌아간다 (TC-8)
             visibleWishes = wishes.filter { $0.startedAt != nil }
         case .tag(let tag):
             visibleWishes = wishes.filter { $0.tags.contains(tag) }

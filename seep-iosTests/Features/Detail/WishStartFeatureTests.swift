@@ -191,6 +191,8 @@ final class WishStartFeatureTests: ViewModelTestCase {
         repository.toggleStepResult = .success(checked)
         sut.steps?.send(.tapStep(0))
         sut.send(.routeHandled)
+        // 저장소에는 체크한 단계와 시작 시각이 남아 있다 (목의 toggleStep 은 fetchWish 에 반영하지 않는다)
+        repository.fetchWishResult = [makeWish(startedAt: now, steps: checked)]
 
         // When
         sut.send(.undoAutoStart)
@@ -219,14 +221,60 @@ final class WishStartFeatureTests: ViewModelTestCase {
         XCTAssertNil(center.message)
         XCTAssertNil(center.actionTitle)
 
-        // When: 버튼 없는 토스트가 오면 버튼도 사라진다
-        center.show("👏 시작했네요! '하는 중'에 담았어요", actionTitle: "되돌리기") { undoCount += 1 }
-        center.show("다른 토스트")
+        // When: 시간이 지나면 저절로 닫힌다
+        center.show("👏 시작했네요! '하는 중'에 담았어요", actionTitle: "되돌리기", duration: .milliseconds(100)) { undoCount += 1 }
 
         // Then
+        waitUntil(timeout: 1) { center.message == nil }
         XCTAssertNil(center.actionTitle)
         center.performAction()
         XCTAssertEqual(undoCount, 1)
+    }
+
+    func test_GH143_TC5_토스트가뜬뒤다른화면에서이룬싶은_토스트되돌리기가시작시각을지우지않는다() {
+        // Given
+        let sut = makeSut(wish: makeWish(steps: steps))
+        var checked = steps
+        checked[0].isDone = true
+        repository.toggleStepResult = .success(checked)
+        sut.steps?.send(.tapStep(0))
+        // 홈으로 돌아가 이뤘다
+        repository.fetchWishResult = [makeWish(startedAt: now, isSuccess: true, finishDate: now, steps: checked)]
+
+        // When
+        sut.send(.undoAutoStart)
+
+        // Then
+        XCTAssertEqual(repository.updateStartedCalls.map(\.isStarted), [true])
+        XCTAssertTrue(clickEvents(objectId: .unstartWish).isEmpty)
+    }
+
+    @MainActor
+    func test_GH143_TC5_첫저금이목표달성과자동시작을같이부르면_되돌리기토스트를먼저보이고_끝나면축하토스트를띄운다() {
+        // Given: 축하(버튼 없음)가 먼저 와도
+        let center = ToastCenter()
+        center.show("🎉 목표 금액을 다 모았어요!")
+
+        // When
+        center.show("👏 시작했네요! '하는 중'에 담았어요", actionTitle: "되돌리기") {}
+
+        // Then
+        XCTAssertEqual(center.actionTitle, "되돌리기")
+        center.dismiss()
+        XCTAssertEqual(center.message, "🎉 목표 금액을 다 모았어요!")
+        XCTAssertNil(center.actionTitle)
+
+        // Given: 버튼 토스트가 먼저 와도
+        center.dismiss()
+        center.show("👏 시작했네요! '하는 중'에 담았어요", actionTitle: "되돌리기") {}
+
+        // When
+        center.show("🎉 목표 금액을 다 모았어요!")
+
+        // Then: 버튼 토스트가 남고, 누르면 축하가 이어진다
+        XCTAssertEqual(center.actionTitle, "되돌리기")
+        center.performAction()
+        XCTAssertEqual(center.message, "🎉 목표 금액을 다 모았어요!")
     }
 
     // MARK: GH-143 TC6
