@@ -233,9 +233,12 @@ final class SyncStore {
                 }
                 switch try Self.decide(document, in: db) {
                 case .write:
+                    let (reconciled, didCorrectDoneAt) = try Self.reconcilingStepDoneAt(document, in: db)
                     // 한 문서가 깨져 있어도(필수 컬럼 없음 등) 나머지는 적용하고, 그 문서는 건너뛴다
-                    guard (try? Self.write(document, in: db)) != nil else { continue }
+                    guard (try? Self.write(reconciled, in: db)) != nil else { continue }
                     if let wishId = document.wishId { result.changedWishIds.insert(wishId) }
+                    // 바로잡은 체크 시각을 서버에도 올려 새로 받는 기기가 같은 날을 보게 한다
+                    if didCorrectDoneAt { resendLocal.append((document.collection, document.id)) }
                 case .skip:
                     break
                 case .resendLocal:
@@ -264,6 +267,25 @@ final class SyncStore {
         case write
         case skip
         case resendLocal
+    }
+
+    /// 단계 체크 시각(`doneAt`, GH-146)을 `isDone`과 맞춘다. v11 전 앱은 `doneAt`을 모른 채 올리고 서버는 모르는 필드를 지우지 않아(TC-34),
+    /// 그 앱에서 풀었다가 다시 체크해도 서버에 옛 `doneAt`이 남는다.
+    /// - 안 된 단계면 `doneAt`을 비운다
+    /// - 된 단계인데 이 기기가 마지막으로 "안 됨"을 본 시각(로컬 `updatedAt`)보다 `doneAt`이 이르거나 없으면, 그 뒤에 다시 체크한 것이다.
+    ///   그 문서의 `updatedAt`(체크한 쓰기 시각)을 체크 시각으로 보고, 바로잡았다고 알린다
+    private static func reconcilingStepDoneAt(_ remote: SyncDocument, in db: Database) throws -> (SyncDocument, corrected: Bool) {
+        guard remote.collection == .wishStep, let isDoneValue = remote.fields["isDone"]?.doubleValue else { return (remote, false) }
+        var reconciled = remote
+        guard isDoneValue != 0 else {
+            reconciled.fields["doneAt"] = .null
+            return (reconciled, false)
+        }
+        guard let local = try document(collection: .wishStep, id: remote.id, in: db),
+              (local.fields["isDone"]?.doubleValue ?? 0) == 0 else { return (remote, false) }
+        if let doneAt = remote.fields["doneAt"]?.doubleValue, doneAt >= local.updatedAt { return (remote, false) }
+        reconciled.fields["doneAt"] = .double(remote.updatedAt)
+        return (reconciled, true)
     }
 
     private static func decide(_ remote: SyncDocument, in db: Database) throws -> Decision {

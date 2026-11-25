@@ -168,6 +168,12 @@ final class FinishedViewModel {
         let activities = dependency.wishRepository.fetchActivities(from: range.from, to: range.to)
         activitiesByDay = Dictionary(grouping: activities) { calendar.startOfDay(for: $0.date) }
         state.grass = activities.isEmpty ? nil : ActivityGrass.make(activities: activities, today: today, calendar: calendar)
+        // 시트가 열린 채 다시 읽으면(동기화·다른 열에서 지움) 시트 줄도 새 값으로 맞춘다
+        if let openDay = state.activityDay {
+            state.activityDay = state.grass == nil
+                ? nil
+                : ActivityDay(date: openDay.date, activities: (activitiesByDay[openDay.date] ?? []).sorted(by: WishActivity.chronological))
+        }
     }
 
     private func logGrassImpressionOnce() {

@@ -167,6 +167,23 @@ final class ActivityGrassFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sut.route, .push(.wishDetail(id: "w1", isFinished: true)))
     }
 
+    func test_GH146_TC7_시트가열린채다시읽으면_지워진위시줄은시트에서빠진다() {
+        // Given
+        let kept = activity("added-1", wishId: "w1", date: date(2026, 11, 10))
+        let deleted = activity("added-2", wishId: "w2", date: date(2026, 11, 10, hour: 15))
+        wishRepository.fetchActivitiesResult = [kept, deleted]
+        let sut = makeSut()
+        sut.send(.onAppear)
+        sut.send(.tapGrassDay(date(2026, 11, 10)))
+
+        // When: 다른 곳에서 w2 를 지우고 다시 읽는다
+        wishRepository.fetchActivitiesResult = [kept]
+        sut.send(.onAppear)
+
+        // Then
+        XCTAssertEqual(sut.state.activityDay?.activities, [kept])
+    }
+
     // MARK: TC-8
 
     func test_GH146_TC8_행동이하나도없는새사용자는_카드가보이지않는다() {
