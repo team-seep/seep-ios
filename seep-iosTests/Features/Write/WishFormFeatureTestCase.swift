@@ -9,6 +9,7 @@ class WishFormFeatureTestCase: ViewModelTestCase {
     var linkMetadataProvider: MockLinkMetadataProvider!
     var linkPreviewCache: MockLinkPreviewCache!
     var photoStorage: MockWishPhotoStorage!
+    var photoTextRecognizer: MockPhotoTextRecognizer!
     var userDefaults: UserDefaultsUtils!
     var now = Date(timeIntervalSince1970: 1_792_540_800) // 2026-10-20
 
@@ -19,6 +20,7 @@ class WishFormFeatureTestCase: ViewModelTestCase {
         linkMetadataProvider = MockLinkMetadataProvider()
         linkPreviewCache = MockLinkPreviewCache()
         photoStorage = MockWishPhotoStorage()
+        photoTextRecognizer = MockPhotoTextRecognizer()
         userDefaults = UserDefaultsUtils(name: "test-gh64-wish-form")
     }
 
@@ -28,6 +30,7 @@ class WishFormFeatureTestCase: ViewModelTestCase {
         linkMetadataProvider = nil
         linkPreviewCache = nil
         photoStorage = nil
+        photoTextRecognizer = nil
         userDefaults = nil
         super.tearDown()
     }
@@ -43,6 +46,7 @@ class WishFormFeatureTestCase: ViewModelTestCase {
                 linkMetadataProvider: linkMetadataProvider,
                 linkPreviewCache: linkPreviewCache,
                 photoStorage: photoStorage,
+                photoTextRecognizer: photoTextRecognizer,
                 linkPreviewDelay: nil,
                 randomEmoji: { "🎲" },
                 now: { [unowned self] in self.now }

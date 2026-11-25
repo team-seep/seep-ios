@@ -318,7 +318,19 @@ struct WishDocumentBlocks: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint(Text(Strings.Detail.Photo.change))
+                // 찾은 글자가 없으면 아무것도 보이지 않는다 (GH-144 R-3)
+                if state.isPhotoTextSuggestionVisible {
+                    WishPhotoTextSuggestion(
+                        titles: state.photoTextTitles,
+                        amount: state.photoTextAmountChip,
+                        onTapTitle: { viewModel.send(.tapPhotoTextTitle($0)) },
+                        onTapAmount: { viewModel.send(.tapPhotoTextAmount) }
+                    )
+                    .padding(.top, 6)
+                    .transition(.opacity)
+                }
             }
+            .animation(.easeInOut(duration: 0.2), value: state.isPhotoTextSuggestionVisible)
         }
     }
 

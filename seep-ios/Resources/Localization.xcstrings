@@ -19259,6 +19259,150 @@
         }
       }
     },
+    "wish_document.photo_text.amount_format" : {
+      "comment" : "위시 작성·수정 문서 · 사진에서 찾은 금액 칩 (GH-144). %@ = 통화 기호까지 붙은 금액(AmountFormatter.money)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set %@ as goal amount"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@を目標金額に"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 목표 금액으로"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将%@设为目标金额"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將%@設為目標金額"
+          }
+        }
+      }
+    },
+    "wish_document.photo_text.caption" : {
+      "comment" : "위시 작성·수정 문서 · 사진 블록 아래 '사진에서 찾았어요' 칩 줄 위 캡션 (GH-144)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Found in your photo · Tap to fill in"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真から見つけました · タップで入力"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사진에서 찾았어요 · 누르면 채워요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从照片中找到 · 点按即可填入"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "從照片中找到 · 點按即可填入"
+          }
+        }
+      }
+    },
+    "wish_document.photo_text.filled" : {
+      "comment" : "위시 작성·수정 문서 · 사진에서 찾은 칩을 눌러 제목·목표 금액을 채운 뒤 토스트 (GH-144)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 Filled in from your photo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 写真の文字で入力しました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 사진 속 글자로 채웠어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 已用照片中的文字填入"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 已用照片中的文字填入"
+          }
+        }
+      }
+    },
+    "wish_document.photo_text.title_hint" : {
+      "comment" : "위시 작성·수정 문서 · 사진에서 찾은 제목 칩의 VoiceOver 힌트 (GH-144)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fills in the title"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトルに入力します"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제목으로 채워요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "填入标题"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "填入標題"
+          }
+        }
+      }
+    },
     "wish_document.random_tooltip" : {
       "comment" : "위시 작성·수정 문서 블록",
       "extractionState" : "manual",
