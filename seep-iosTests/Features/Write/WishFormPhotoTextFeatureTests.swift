@@ -321,7 +321,10 @@ final class WishFormPhotoTextFeatureTests: WishFormFeatureTestCase {
         form.send(.tapPhotoTextTitle(chip))
 
         // Then
-        XCTAssertEqual(chip.count <= WishFormViewModel.titleMaxLength, true)
+        XCTAssertEqual(form.state.photoTextTitles.isEmpty, true)
+        XCTAssertLessThanOrEqual(chip.count, WishFormViewModel.titleMaxLength)
         XCTAssertEqual(form.state.title, chip)
+        // 직접 치다 닿은 게 아니라 최대 길이 안내는 띄우지 않는다
+        XCTAssertNil(form.state.titleError)
     }
 }

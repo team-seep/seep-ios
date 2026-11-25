@@ -25,18 +25,29 @@ enum PhotoTextSuggester {
     static let maxTitleCount = 2
     static let titleLengthRange = 2...40
 
-    /// 상품·지도 화면에 흔한 UI 문구. 이 말이 들어간 줄은 제목 후보가 아니다
+    /// 상품·지도 화면에 흔한 UI 문구. 이 말이 들어간 줄은 제목 후보가 아니다.
+    /// 상품 이름에도 흔히 들어가는 말("저장용기", "공유기", "전화기")은 넣지 않는다
     static let uiPhrases: [String] = [
-        // ko
-        "장바구니", "구매", "리뷰", "후기", "배송", "쿠폰", "할인", "적립", "포인트", "찜하기", "공유", "좋아요", "팔로우",
-        "더보기", "문의", "수량", "결제", "주문", "판매자", "오늘출발", "도착", "별점", "평점", "상품정보", "혜택",
-        "무이자", "로그인", "검색", "선물하기", "품절", "광고", "길찾기", "전화", "영업", "저장",
-        // en
-        "add to cart", "add to bag", "buy now", "shipping", "delivery", "review", "rating", "coupon", "share",
-        "follow", "checkout", "wishlist", "sign in", "search", "sponsored", "in stock", "sold out", "directions",
+        // ko — 글자 안 어디든 들어 있으면 뺀다
+        "장바구니", "구매", "리뷰", "후기", "배송", "쿠폰", "할인", "적립", "포인트", "찜하기", "좋아요", "팔로우",
+        "더보기", "문의", "결제", "주문하기", "판매자", "오늘출발", "별점", "평점", "상품정보", "무이자", "로그인",
+        "선물하기", "품절", "길찾기",
         // ja · zh
         "カート", "購入", "レビュー", "送料", "配送", "クーポン",
         "购物车", "購物車", "购买", "購買", "评价", "評價", "包邮", "优惠", "優惠"
+    ]
+
+    /// 영어 UI 문구. 낱말 단위로만 맞춘다("Preview"는 "review"가 아니다)
+    static let uiWordPhrases: [String] = [
+        "add to cart", "add to bag", "buy now", "shipping", "delivery", "reviews", "review", "ratings", "coupon",
+        "checkout", "wishlist", "sign in", "sponsored", "in stock", "sold out", "directions", "follow"
+    ]
+
+    /// 할인·쿠폰·배송비·적립 금액 줄. 진짜 가격이 아니라 금액 후보에서 뺀다
+    static let nonPriceAmountPhrases: [String] = [
+        "할인", "쿠폰", "적립", "포인트", "배송비", "절약", "캐시백",
+        "coupon", "shipping", "discount", "points", "cashback",
+        "割引", "クーポン", "送料", "ポイント", "优惠", "優惠", "运费", "運費", "积分", "積分"
     ]
 
     static func suggest(lines: [RecognizedTextLine], currentCurrency: String) -> PhotoTextSuggestion {
@@ -55,7 +66,7 @@ enum PhotoTextSuggester {
         for line in ordered {
             let text = normalized(line.text)
             if let found = self.amount(in: text, currentCurrency: currentCurrency) {
-                if amount == nil { amount = found }
+                if amount == nil, !containsAny(text, nonPriceAmountPhrases) { amount = found }
                 continue
             }
             guard titles.count < maxTitleCount, isTitleCandidate(text) else { continue }
@@ -66,19 +77,22 @@ enum PhotoTextSuggester {
         return PhotoTextSuggestion(titles: titles, amount: amount)
     }
 
-    /// 통화 표시와 숫자가 함께 있는 줄에서 금액을 읽는다 (R-2). 통화는 GH-103 통화 목록 안에서만
+    /// 통화 표시와 숫자가 함께 있는 줄에서 금액을 읽는다 (R-2). 통화는 GH-103 통화 목록 안에서만.
+    /// 한 줄에 금액이 여럿이면 마지막 것 — "정가 99,000원 → 69,000원", "Save $5 — now $49.99"는 뒤가 내는 값이다
     static func amount(in text: String, currentCurrency: String) -> PhotoTextAmount? {
+        var found: PhotoTextAmount?
         // "89,000", "12.99", "1.299,00", "3000". Swift 5 모드라 확장 구분자 리터럴을 쓴다
         for match in text.matches(of: #/[0-9]+(?:[.,][0-9]+)*/#) {
+            let number = String(text[match.range])
             let before = text[..<match.range.lowerBound].trimmingCharacters(in: .whitespaces)
             let after = text[match.range.upperBound...].trimmingCharacters(in: .whitespaces)
             guard let currency = prefixCurrency(before, current: currentCurrency)
-                    ?? suffixCurrency(after, current: currentCurrency),
+                    ?? suffixCurrency(after, number: number, current: currentCurrency),
                   AmountFormatter.supportedCurrencies.contains(currency),
-                  let minor = minorUnits(String(text[match.range]), currency: currency) else { continue }
-            return PhotoTextAmount(amount: minor, currency: currency)
+                  let minor = minorUnits(number, currency: currency) else { continue }
+            found = PhotoTextAmount(amount: minor, currency: currency)
         }
-        return nil
+        return found
     }
 
     // MARK: 제목
@@ -89,8 +103,18 @@ enum PhotoTextSuggester {
 
     private static func isTitleCandidate(_ text: String) -> Bool {
         guard titleLengthRange.contains(text.count), text.contains(where: \.isLetter) else { return false }
+        return !containsAny(text, uiPhrases) && !containsWords(text, uiWordPhrases)
+    }
+
+    private static func containsAny(_ text: String, _ phrases: [String]) -> Bool {
         let lowered = text.lowercased()
-        return !uiPhrases.contains { lowered.contains($0) }
+        return phrases.contains { lowered.contains($0) }
+    }
+
+    /// 글자가 아닌 것으로 끊어 낱말 단위로 맞춘다
+    private static func containsWords(_ text: String, _ phrases: [String]) -> Bool {
+        let words = " " + text.lowercased().split { !$0.isLetter }.joined(separator: " ") + " "
+        return phrases.contains { words.contains(" \($0) ") }
     }
 
     // MARK: 금액
@@ -133,11 +157,17 @@ enum PhotoTextSuggester {
         return prefixMarkers.first { before.hasSuffix($0.marker) }?.currency.resolve(current: current)
     }
 
-    private static func suffixCurrency(_ after: String, current: String) -> String? {
+    /// 숫자 뒤 말은 낱말이 거기서 끝나야 통화다("1+1 원두커피"의 "원"은 아니다).
+    /// 다만 "89,000원부터", "299元起"처럼 가격다운 숫자(구분자가 있거나 세 자리 이상)는 뒤에 말이 붙어도 받는다
+    private static func suffixCurrency(_ after: String, number: String, current: String) -> String? {
         if let code = isoCode(at: after.prefix(3)), !(after.dropFirst(3).first?.isLetter ?? false) {
             return code
         }
-        return suffixMarkers.first { after.hasPrefix($0.marker) }?.currency.resolve(current: current)
+        guard let marker = suffixMarkers.first(where: { after.hasPrefix($0.marker) }) else { return nil }
+        let endsWord = !(after.dropFirst(marker.marker.count).first?.isLetter ?? false)
+        let looksLikePrice = number.contains { $0 == "," || $0 == "." } || number.count >= 3
+        guard endsWord || looksLikePrice else { return nil }
+        return marker.currency.resolve(current: current)
     }
 
     private static func isoCode(at text: Substring) -> String? {

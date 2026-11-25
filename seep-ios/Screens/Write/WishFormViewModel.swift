@@ -610,6 +610,8 @@ final class WishFormViewModel {
     private func fillTitleFromPhotoText(_ title: String) {
         guard state.photoTextTitles.contains(title) else { return }
         inputTitle(title)
+        // 칩은 이미 18자 안으로 잘라 두었다 — 직접 치다 닿은 게 아니라 최대 길이 안내는 띄우지 않는다
+        state.titleError = nil
         state.photoTextTitles = []
         didFillFromPhotoText(kind: "title")
     }

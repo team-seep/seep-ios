@@ -56,6 +56,28 @@ final class PhotoTextSuggesterTests: XCTestCase {
         XCTAssertEqual(suggestion.titles, [])
     }
 
+    func test_GH144_TC1_할인쿠폰적립금액줄은_글자가커도금액후보가아니다() {
+        // Given
+        let lines = [line("10,000원 할인 쿠폰 받기", 22), line("89,000원", 18), line("배송비 3,000원", 12)]
+
+        // When
+        let suggestion = PhotoTextSuggester.suggest(lines: lines, currentCurrency: "KRW")
+
+        // Then
+        XCTAssertEqual(suggestion.amount, PhotoTextAmount(amount: 89_000, currency: "KRW"))
+    }
+
+    func test_GH144_TC1_상품이름에흔한말은남기고_UI문구는낱말단위로뺀다() {
+        // Given
+        let lines = [line("락앤락 밀폐 저장용기", 15), line("Preview Lens", 14), line("Add to cart", 20), line("Reviews (1,204)", 19)]
+
+        // When
+        let suggestion = PhotoTextSuggester.suggest(lines: lines, currentCurrency: "KRW")
+
+        // Then
+        XCTAssertEqual(suggestion.titles, ["락앤락 밀폐 저장용기", "Preview Lens"])
+    }
+
     // MARK: GH-144 TC2
 
     func test_GH144_TC2_숫자기호만있는줄과_1자41자줄은_제목후보가아니다() {
@@ -99,6 +121,18 @@ final class PhotoTextSuggesterTests: XCTestCase {
         XCTAssertEqual(PhotoTextSuggester.amount(in: "$15", currentCurrency: "CAD"), PhotoTextAmount(amount: 1_500, currency: "CAD"))
         XCTAssertEqual(PhotoTextSuggester.amount(in: "¥128", currentCurrency: "CNY"), PhotoTextAmount(amount: 12_800, currency: "CNY"))
         XCTAssertEqual(PhotoTextSuggester.amount(in: "¥128", currentCurrency: "KRW"), PhotoTextAmount(amount: 128, currency: "JPY"))
+    }
+
+    func test_GH144_TC3_한줄에금액이여럿이면_마지막금액을읽는다() {
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "정가 99,000원 → 69,000원", currentCurrency: "KRW"), PhotoTextAmount(amount: 69_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "Save $5 — now $49.99", currentCurrency: "KRW"), PhotoTextAmount(amount: 4_999, currency: "USD"))
+    }
+
+    func test_GH144_TC3_숫자뒤통화말은_낱말이끝나거나가격다운숫자일때만읽는다() {
+        XCTAssertNil(PhotoTextSuggester.amount(in: "1+1 원두커피 세트", currentCurrency: "KRW"))
+        XCTAssertNil(PhotoTextSuggester.amount(in: "2 엔진오일", currentCurrency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "89,000원부터", currentCurrency: "KRW"), PhotoTextAmount(amount: 89_000, currency: "KRW"))
+        XCTAssertEqual(PhotoTextSuggester.amount(in: "5 원", currentCurrency: "KRW"), PhotoTextAmount(amount: 5, currency: "KRW"))
     }
 
     func test_GH144_TC3_통화표시가없거나_0이거나_상한을넘으면_금액이아니다() {
