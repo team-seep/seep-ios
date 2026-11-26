@@ -249,6 +249,26 @@ final class WishStartFeatureTests: ViewModelTestCase {
         XCTAssertTrue(clickEvents(objectId: .unstartWish).isEmpty)
     }
 
+    func test_GH143_TC5_자동시작뒤직접되돌리고다시시작했으면_토스트되돌리기는그시작을지우지않는다() {
+        // Given
+        let sut = makeSut(wish: makeWish(steps: steps))
+        var checked = steps
+        checked[0].isDone = true
+        repository.toggleStepResult = .success(checked)
+        sut.steps?.send(.tapStep(0))
+        sut.send(.tapUnstart)
+        let manualStart = now.addingTimeInterval(60)
+        repository.updateStartedNow = manualStart
+        sut.send(.tapStart)
+
+        // When
+        sut.send(.undoAutoStart)
+
+        // Then
+        XCTAssertEqual(repository.updateStartedCalls.map(\.isStarted), [true, false, true])
+        XCTAssertEqual(sut.state.wish?.startedAt, manualStart)
+    }
+
     @MainActor
     func test_GH143_TC5_첫저금이목표달성과자동시작을같이부르면_되돌리기토스트를먼저보이고_끝나면축하토스트를띄운다() {
         // Given: 축하(버튼 없음)가 먼저 와도

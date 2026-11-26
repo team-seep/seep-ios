@@ -71,6 +71,19 @@ final class WishStartRepositoryTests: XCTestCase {
         XCTAssertEqual(try database.snapshot().wishes.first?.updatedAt, clock)
     }
 
+    func test_GH143_TC2_이미시작한싶에다시시작을저장해도_처음시작한시각을지킨다() throws {
+        // Given: 다른 기기에서 먼저 시작해 받아 왔다
+        _ = try sut.addWish(Wish(id: "w", title: "서핑")).get()
+        let first = try XCTUnwrap(sut.updateStarted(wishId: "w", isStarted: true).get().startedAt)
+        tick(86_400 * 4)
+
+        // When: 오래된 화면 값으로 다시 시작이 불렸다
+        let again = try sut.updateStarted(wishId: "w", isStarted: true).get()
+
+        // Then
+        XCTAssertEqual(again.startedAt, first)
+    }
+
     // MARK: GH-143 TC10
 
     func test_GH143_TC10_하는중싶을이뤄도시작시각이남고_완료를취소하면다시하는중이다() throws {

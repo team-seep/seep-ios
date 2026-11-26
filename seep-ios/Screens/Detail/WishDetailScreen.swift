@@ -332,8 +332,10 @@ private struct WishDetailContent: View {
             errorMessage = message
         case .autoStartToast(let message):
             // 상세를 떠난 뒤 눌러도 되돌릴 수 있게 ViewModel 을 붙잡는다
-            toastCenter?.show(message, actionTitle: Strings.Detail.Start.undo) { [viewModel] in
+            toastCenter?.show(message, actionTitle: Strings.Detail.Start.undo) { [viewModel, router] in
                 viewModel.send(.undoAutoStart)
+                // 상세를 떠난 뒤 눌렀으면 홈은 onAppear 가 다시 오지 않는다. '하는 중' 칩·n일째를 다시 읽게 한다
+                router?.wishesDidChange()
             }
         case .close:
             // 아이패드 상세 열은 쌓인 화면이 아니라 열을 비운다 (GH-99 R-5)

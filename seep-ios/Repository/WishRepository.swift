@@ -263,8 +263,15 @@ final class WishRepositoryImpl: WishRepository {
 
     func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError> {
         // "n일째"는 달력 날짜로 세지만, 시작한 순간을 남겨 둔다 (DateUtils.now()는 자정으로 잘라 쓰지 않는다)
-        let startedAt = isStarted ? now() : nil
-        return updateAndFetch(wishId: wishId) { $0.startedAt = startedAt }
+        let now = now()
+        return updateAndFetch(wishId: wishId) { record in
+            if isStarted {
+                // 화면이 들고 있던 값이 오래돼(다른 기기에서 먼저 시작해 동기화됨) 다시 불려도 처음 시작한 날을 지킨다
+                if record.startedAt == nil { record.startedAt = now }
+            } else {
+                record.startedAt = nil
+            }
+        }
     }
 
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {

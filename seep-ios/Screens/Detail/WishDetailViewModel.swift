@@ -129,6 +129,8 @@ final class WishDetailViewModel {
 
     private let config: Config
     private let dependency: Dependency
+    /// 자동 시작이 저장한 시작 시각. 토스트 "되돌리기"는 이 시작만 되돌린다(그사이 직접 다시 시작했으면 두기) (R-3)
+    private var autoStartedAt: Date?
 
     /// 홈에서 연 상세에서만 "수정"이 보인다 (R-8)
     var isEditVisible: Bool {
@@ -263,8 +265,10 @@ final class WishDetailViewModel {
 
     /// 토스트는 상세를 떠난 뒤에도 눌릴 수 있다. 그사이 다른 화면에서 이뤘거나 지웠을 수 있어 저장소에서 다시 읽고 판단한다
     private func undoAutoStart() {
-        guard let latest = dependency.wishRepository.fetchWish(id: config.wishId) else { return }
+        guard let autoStartedAt, let latest = dependency.wishRepository.fetchWish(id: config.wishId) else { return }
+        self.autoStartedAt = nil
         apply(wish: latest)
+        guard latest.startedAt == autoStartedAt else { return }
         unstart()
     }
 
@@ -273,6 +277,7 @@ final class WishDetailViewModel {
         guard let wish = state.wish, !wish.isSuccess, wish.startedAt == nil else { return }
         // 단계·저금은 이미 저장됐다. 자동 시작만 실패하면 사용자에게 알릴 것 없이 시작 전으로 둔다
         guard updateStarted(true, showsError: false) else { return }
+        autoStartedAt = state.wish?.startedAt
         route = .autoStartToast(Strings.Detail.Start.autoToast)
         dependency.logManager.sendEvent(event: ImpressionEvent(
             screen: screenName,
