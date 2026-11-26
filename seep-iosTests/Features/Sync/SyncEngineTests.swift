@@ -181,13 +181,13 @@ final class SyncEngineTests: XCTestCase {
 
     func test_GH93_TC23_태그가있는280기기에서올리면_v7v8v10이돌고_기존태그가큐에들어간다() throws {
         // Given: 2.8.0 기기 — v9(태그)까지만 돈 DB에 태그 달린 위시.
-        // 지금 레코드에는 v9 뒤에 생긴 컬럼(v11 startedAt)이 있어 저장소로 쓰지 않고 그때 스키마대로 SQL 로 넣는다 (GH-143)
+        // 지금 레코드에는 v9 뒤에 생긴 컬럼(v12 startedAt)이 있어 저장소로 쓰지 않고 그때 스키마대로 SQL 로 넣는다 (GH-143)
         let database = try AppDatabase.makeInMemory(migratedUpTo: "v9", seedSQL: [
             "INSERT INTO wish (id, category, title, hashtag, createdAt, updatedAt) VALUES ('w1', 'category_want_to_do', '제주', '여행', 100, 10)",
             "INSERT INTO wishTag (id, wishId, name, \"order\", createdAt, updatedAt) VALUES ('t1', 'w1', '여행', 0, 10, 10)"
         ])
 
-        // When: 넣은 뒤 남은 마이그레이션(v7·v8·v10·v11)이 돈다
+        // When: 넣은 뒤 남은 마이그레이션(v7·v8·v10·v12)이 돈다
         try database.migrateToLatest()
 
         // Then: 트리거(v7)가 생기기 전에 쓴 위시는 큐에 없고, 태그만 v10이 넣는다

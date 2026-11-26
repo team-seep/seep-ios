@@ -26,7 +26,7 @@ final class WishStartRepositoryTests: XCTestCase {
 
     // MARK: GH-143 TC1
 
-    func test_GH143_TC1_v10까지돈DB를v11로올리면_모든싶이시작전이고_다른컬럼은그대로다() throws {
+    func test_GH143_TC1_v10까지돈DB를v12로올리면_모든싶이시작전이고_다른컬럼은그대로다() throws {
         // Given: v10 스키마의 진행 중·이룬·지운 위시
         let database = try AppDatabase.makeInMemory(migratedUpTo: "v10", seedSQL: [
             "INSERT INTO wish (id, category, title, memo, isSuccess, createdAt, updatedAt) VALUES ('A', 'category_want_to_do', '서핑', '양양', 0, 100, 10)",
@@ -34,7 +34,7 @@ final class WishStartRepositoryTests: XCTestCase {
             "INSERT INTO wish (id, category, title, createdAt, updatedAt, deletedAt) VALUES ('C', 'category_want_to_get', '에어팟', 300, 30, 40)"
         ])
 
-        // When: 앱 업데이트 — 남은 마이그레이션(v11)이 돈 뒤 읽는다
+        // When: 앱 업데이트 — 남은 마이그레이션(v12)이 돈 뒤 읽는다
         let wishes = try database.snapshot().wishes.sorted { $0.id < $1.id }
 
         // Then

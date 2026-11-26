@@ -44,7 +44,7 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var manualOrder: Double
     /// 이어서 적은 앞 위시 id. nil 이면 처음 싶. 동기화 대비로 FK·UNIQUE 를 두지 않는다 (GH-84, 마이그레이션 v4)
     var previousWishId: String?
-    /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v11)
+    /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v12)
     var startedAt: Date?
     var createdAt: Date
     var updatedAt: Date
