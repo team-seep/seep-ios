@@ -52,11 +52,10 @@ struct HomeTagFilterBar: View {
                 if showsDot {
                     InProgressDot()
                 }
-                Text(verbatim: title)
-                    .font(isSelected ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
-                    .foregroundStyle(isSelected ? Color.seepBlue : Color.gray4)
-                    .lineLimit(1)
+                chipTitle(title, isSelected: isSelected)
             }
+                // 칩은 글자 길이만큼 넓어지고 넘치면 줄이 가로 스크롤된다. 어떤 폭을 제안받아도 글자를 줄이지(…) 않는다 (GH-143 검수 피드백)
+                .fixedSize()
                 .padding(.horizontal, 12)
                 .frame(height: 32)
                 .background(Color.gray1, in: RoundedRectangle(cornerRadius: 6))
@@ -67,6 +66,22 @@ struct HomeTagFilterBar: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    /// 폭은 늘 ExtraBold 기준으로 잡는다. 고를 때 Medium→ExtraBold 로 바뀌어도 칩 폭이 그대로라
+    /// 폭이 바뀌는 중간 프레임에서 글자가 "하는…"처럼 잘려 보이지 않는다
+    private func chipTitle(_ title: String, isSelected: Bool) -> some View {
+        Text(verbatim: title)
+            .font(.appleExtraBold(size: 14))
+            .lineLimit(1)
+            .hidden()
+            .overlay {
+                Text(verbatim: title)
+                    .font(isSelected ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
+                    .foregroundStyle(isSelected ? Color.seepBlue : Color.gray4)
+                    .lineLimit(1)
+                    .fixedSize()
+            }
     }
 }
 
