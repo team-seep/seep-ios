@@ -148,8 +148,15 @@ enum WishRecordStore {
             deleted.updatedAt = now
             try deleted.update(db)
         }
+        let aliveById = Dictionary(try aliveSteps(wishId: wishId, in: db).map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         for step in steps {
-            try WishStepRecord(step: step, wishId: wishId, updatedAt: now).upsert(db)
+            // 남은 단계는 체크한 시각을 지킨다. 폼이 체크 여부를 바꿨으면 그에 맞춘다 (GH-146 TC-15)
+            var record = WishStepRecord(step: step, wishId: wishId, updatedAt: now, doneAt: aliveById[step.id]?.doneAt)
+            if let old = aliveById[step.id], old.isDone != step.isDone {
+                record.isDone = old.isDone
+                record.setDone(step.isDone, at: now)
+            }
+            try record.upsert(db)
         }
     }
 

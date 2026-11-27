@@ -121,6 +121,15 @@ final class MockWishRepository: WishRepository {
         return fetchAllFinishedWishesResult
     }
 
+    /// 기간 필터만 흉내 낸다 (GH-146)
+    var fetchActivitiesResult: [WishActivity] = []
+    private(set) var fetchActivitiesCalls: [(from: Date, to: Date)] = []
+
+    func fetchActivities(from: Date, to: Date) -> [WishActivity] {
+        fetchActivitiesCalls.append((from, to))
+        return fetchActivitiesResult.filter { from <= $0.date && $0.date < to }
+    }
+
     func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError> {
         updatePinCalls.append((wishId, isPinned))
         return updatePinResult ?? .success(Wish(id: wishId, pinnedAt: isPinned ? DateUtils.now() : nil))

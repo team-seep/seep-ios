@@ -87,16 +87,22 @@ private struct SeepFullScreenModifier<Item: Identifiable, Cover: View>: ViewModi
     let cover: (Item) -> Cover
 
     @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(ToastCenter.self) private var toastCenter: ToastCenter?
 
     func body(content: Content) -> some View {
         let usesPageSheet = style == .pageSheetOnRegular && sizeClass == .regular
         content
             .fullScreenCover(item: usesPageSheet ? .constant(nil) : item, onDismiss: onDismiss) { item in
-                cover(item).modifier(SeepModalTrackingModifier()).appLockOverlay()
+                cover(item)
+                    .modifier(SeepModalTrackingModifier())
+                    // 루트 토스트는 전체 화면 뒤에 가려지므로 시트처럼 안에도 그린다 (GH-144: 적기 화면 토스트)
+                    .modifier(OptionalToastOverlay(center: toastCenter))
+                    .appLockOverlay()
             }
             .sheet(item: usesPageSheet ? item : .constant(nil), onDismiss: onDismiss) { item in
                 cover(item)
                     .modifier(SeepModalTrackingModifier())
+                    .modifier(OptionalToastOverlay(center: toastCenter))
                     .appLockOverlay()
                     .presentationSizing(.page)
                     // 작성 중인 문서를 밀어서 닫아 잃지 않게 한다. 닫기는 문서의 버튼으로만

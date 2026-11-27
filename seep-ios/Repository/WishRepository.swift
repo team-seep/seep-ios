@@ -44,6 +44,9 @@ protocol WishRepository {
     /// 카테고리와 무관하게 완료한 위시 전체. 배지 계산용 (GH-35 R-3)
     func fetchAllFinishedWishes() -> [Wish]
     
+    /// [from, to) 안에 싶에 다가간 행동(담음·단계 체크·모은 돈·일지·이룸). 이룬 싶 탭 잔디용 (GH-146 R-2)
+    func fetchActivities(from: Date, to: Date) -> [WishActivity]
+
     /// 홈 맨 위 고정/해제. 고정이면 지금 시각을 pinnedAt 에 넣고, 해제면 nil 로 비운다 (GH-33 R-8)
     func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError>
     
@@ -102,6 +105,10 @@ final class WishRepositoryImpl: WishRepository {
     init(database: AppDatabase? = AppDatabase.shared, now: @escaping () -> Date = Date.init) {
         self.database = database
         self.now = now
+    }
+
+    func fetchActivities(from: Date, to: Date) -> [WishActivity] {
+        read { try WishActivityQuery.fetch(from: from, to: to, in: $0) } ?? []
     }
 
     func observeChanges(_ onChange: @escaping () -> Void) -> WishChangeObservation? {
@@ -173,7 +180,7 @@ final class WishRepositoryImpl: WishRepository {
 
     func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
         return write { db, now in
-            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.isDone.toggle() }
+            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.setDone(!$0.isDone, at: now) }
             return try WishRecordStore.aliveSteps(wishId: wishId, in: db)
                 .map { WishStep(id: $0.id, title: $0.title, isDone: $0.isDone, order: $0.order) }
                 .sorted { $0.order < $1.order }

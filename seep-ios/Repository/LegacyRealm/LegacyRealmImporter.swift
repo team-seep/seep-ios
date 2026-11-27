@@ -208,6 +208,8 @@ struct LegacyRealmImporter {
                     wishId: wishId,
                     title: step.title,
                     isDone: step.isDone,
+                    // 예전 체크 날짜는 알 수 없어 비워 둔다 (GH-146 R-7)
+                    doneAt: nil,
                     order: step.order,
                     updatedAt: importedAt,
                     deletedAt: nil
