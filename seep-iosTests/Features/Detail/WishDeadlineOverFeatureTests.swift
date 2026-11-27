@@ -177,6 +177,17 @@ final class WishDeadlineOverFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sut.state.deadlineOver, .init(postponeTitle: "다음 달까지로 미루기"))
     }
 
+    func test_GH118_TC5_지난해이번달안기한은_연도를붙여보인다() {
+        // Given: 2025년 12월에 정한 이번 달 안 — 2026년 2월에 연다
+        let wish = makeWish(endDate: lastMoment(2025, 12, 31), kind: .month)
+
+        // When
+        let sut = makeSut(wish: wish, now: day(2026, 2, 10))
+
+        // Then
+        XCTAssertEqual(sut.state.summary?.ddayLine.dateText, "2025년 12월 안에 하기로 했어요")
+    }
+
     func test_GH118_TC5_마감당일이거나이룬위시거나날짜기한이면_카드가없다() {
         // 마감 당일
         XCTAssertNil(makeSut(wish: makeWish(endDate: lastMoment(2026, 12, 31), kind: .year), now: day(2026, 12, 31)).state.deadlineOver)

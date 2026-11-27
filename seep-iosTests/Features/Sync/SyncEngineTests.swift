@@ -423,7 +423,7 @@ final class SyncEngineTests: XCTestCase {
 
         // When: A에서 올해 안에로 정하고 알림을 단다
         deviceA.tick(60)
-        let end = Date(timeIntervalSinceReferenceDate: 820_000_000)
+        let end = (Calendar.current.date(from: DateComponents(year: 2026, month: 12, day: 31)) ?? start).endOfDay
         let original = try XCTUnwrap(deviceA.repository.fetchWish(id: "w1"))
         var edited = original
         edited.endDate = end

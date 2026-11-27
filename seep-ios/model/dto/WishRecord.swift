@@ -313,7 +313,7 @@ extension Wish {
             category: Category(rawValue: record.category) ?? .wantToDo,
             title: record.title,
             endDate: record.date,
-            deadlineKind: DeadlineKind(stored: record.deadlineKind),
+            deadlineKind: Self.deadlineKind(stored: record.deadlineKind, endDate: record.date),
             finishDate: record.finishDate,
             notifications: notifications
                 .sorted { $0.order < $1.order }
@@ -347,5 +347,13 @@ extension Wish {
             startedAt: record.startedAt,
             createdAt: record.createdAt
         )
+    }
+}
+
+extension Wish {
+    /// 기간 마지막 날이 아닌 마감의 기간 종류는 날짜 기한으로 읽는다(구버전 앱과 섞인 동기화, GH-118 R-11)
+    fileprivate static func deadlineKind(stored: String, endDate: Date?) -> DeadlineKind {
+        let kind = DeadlineKind(stored: stored)
+        return kind.isConsistent(with: endDate) ? kind : .date
     }
 }

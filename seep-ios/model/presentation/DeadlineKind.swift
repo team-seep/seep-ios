@@ -18,6 +18,16 @@ enum DeadlineKind: String, CaseIterable {
         return self != .date
     }
 
+    /// 마감이 이 종류의 기간 마지막 날인지. 기간 종류를 모르는 구버전 앱이 날짜만 바꿔 동기화하면
+    /// "올해 안"인데 3월 5일 같은 값이 생긴다 — 그런 위시는 날짜 기한으로 읽는다 (GH-118 R-11)
+    func isConsistent(with endDate: Date?, calendar: Calendar = .current) -> Bool {
+        guard isPeriod else { return true }
+        guard let endDate else { return false }
+        let unit: Calendar.Component = self == .month ? .month : .year
+        guard let end = Self.lastMoment(of: unit, containing: endDate, calendar: calendar) else { return false }
+        return calendar.isDate(endDate, inSameDayAs: end)
+    }
+
     /// 지금 고르면 저장할 마감: 그 기간 마지막 날의 끝(23:59:59). 날짜 기한은 nil (R-2)
     func periodEnd(from now: Date, calendar: Calendar = .current) -> Date? {
         switch self {

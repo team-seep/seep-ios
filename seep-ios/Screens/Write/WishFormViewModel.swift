@@ -152,7 +152,17 @@ final class WishFormViewModel {
 
     /// 언제까지 시트 항목. 오른쪽 마감은 지금 고르면 저장될 날짜다 (GH-118 R-3)
     var deadlineOptionRows: [WishDeadlineOptionRow] {
-        WishDeadlineOptionRow.rows(isDeadlineEnabled: state.isDeadlineEnabled, kind: state.deadlineKind, now: dependency.now())
+        WishDeadlineOptionRow.rows(
+            selected: selectedDeadlineOption,
+            deadline: state.deadline,
+            now: dependency.now()
+        )
+    }
+
+    /// 시트에 체크할 항목. 임시로 켠 기한은 아직 고른 게 아니라 체크하지 않는다
+    private var selectedDeadlineOption: WishDeadlineOption? {
+        guard !state.isDeadlineTentative else { return nil }
+        return state.isDeadlineEnabled ? WishDeadlineOption(kind: state.deadlineKind) : .someday
     }
 
     /// 열었을 때와 입력이 달라졌는지 (R-18)
@@ -186,12 +196,14 @@ final class WishFormViewModel {
             if state.deadline == nil {
                 state.deadline = dependency.now().endOfDay
                 state.deadlineKind = .date
+                state.isDeadlineTentative = true
             }
             state.deadlineError = nil
             state.sheet = .date
         case .inputDeadline(let date):
             state.deadline = date.endOfDay
             state.deadlineKind = .date
+            state.isDeadlineTentative = false
             state.deadlineError = nil
         case .selectDeadlineOption(let option):
             selectDeadlineOption(option)
@@ -285,6 +297,10 @@ final class WishFormViewModel {
             if state.sheet == .hashtag {
                 commitCustomTagInput()
             }
+            // 언제까지 시트에서 아무것도 고르지 않고 닫으면 열 때 임시로 켠 기한을 되돌린다 (GH-118 R-3)
+            if state.sheet == .date, state.isDeadlineTentative {
+                removeBlock(.date)
+            }
             state.sheet = nil
         case .routeHandled:
             route = nil
@@ -372,6 +388,7 @@ final class WishFormViewModel {
             state.isDeadlineEnabled = false
             state.deadline = nil
             state.deadlineKind = .date
+            state.isDeadlineTentative = false
             state.deadlineError = nil
             state.isNotificationEnabled = false
             state.sheet = nil
@@ -464,6 +481,7 @@ final class WishFormViewModel {
             objectId: .selectDeadlineKind,
             extraParameters: [.type: option.rawValue]
         ))
+        state.isDeadlineTentative = false
         switch option {
         case .date:
             state.isDeadlineEnabled = true

@@ -83,7 +83,9 @@ struct SoftDeadline: Equatable {
         case .thisMonth, .thisYear, .nextYear:
             return Self.untilText(endDate, now: now, calendar: calendar, locale: locale)
         case .monthOver:
-            return Strings.Deadline.Period.promiseFormat(DisplayDate.string(endDate, template: "MMMM", locale: locale, calendar: calendar))
+            // 지난해 달이면 연도를 붙인다 — "12월 안에"가 다가올 12월로 읽히지 않게
+            let template = calendar.isDate(endDate, equalTo: now, toGranularity: .year) ? "MMMM" : "yMMMM"
+            return Strings.Deadline.Period.promiseFormat(DisplayDate.string(endDate, template: template, locale: locale, calendar: calendar))
         case .yearOver:
             return Strings.Deadline.Period.promiseFormat(DisplayDate.string(endDate, template: "y", locale: locale, calendar: calendar))
         }

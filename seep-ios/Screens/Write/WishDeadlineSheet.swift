@@ -39,27 +39,28 @@ struct WishDeadlineOptionRow: Equatable, Identifiable {
 
     var id: String { option.rawValue }
 
-    /// 오른쪽 마감은 지금 고르면 저장될 날짜다 (R-3). 해가 다르면 연도를 붙인다
+    /// 오른쪽 마감은 지금 고르면 저장될 날짜다 (R-3). 해가 다르면 연도를 붙인다.
+    /// 이미 고른 기간 항목은 저장된 마감을 보인다 — 수정 문서에서 지난해 기한을 열어도 실제 날짜가 보이게
     static func rows(
-        isDeadlineEnabled: Bool,
-        kind: DeadlineKind,
+        selected: WishDeadlineOption?,
+        deadline: Date?,
         now: Date,
         calendar: Calendar = .current,
         locale: Locale = AppLanguage.shared.locale
     ) -> [WishDeadlineOptionRow] {
-        let selected: WishDeadlineOption = isDeadlineEnabled ? WishDeadlineOption(kind: kind) : .someday
         return WishDeadlineOption.allCases.map { option in
+            let isSelected = option == selected
             let detail: String
             switch option {
             case .date:
                 detail = Strings.Deadline.Sheet.pickDateDetail
             case .month, .year, .nextYear:
-                let end = option.deadlineKind.periodEnd(from: now, calendar: calendar) ?? now
+                let end = (isSelected ? deadline : nil) ?? option.deadlineKind.periodEnd(from: now, calendar: calendar) ?? now
                 detail = SoftDeadline.untilText(end, now: now, calendar: calendar, locale: locale)
             case .someday:
                 detail = Strings.Deadline.Sheet.somedayDetail
             }
-            return WishDeadlineOptionRow(option: option, title: title(option), detail: detail, isSelected: option == selected)
+            return WishDeadlineOptionRow(option: option, title: title(option), detail: detail, isSelected: isSelected)
         }
     }
 
@@ -129,11 +130,17 @@ struct WishDeadlineSheet: View {
                     .foregroundStyle(Color.gray5)
                     .lineLimit(1)
                 Spacer(minLength: 8)
-                Text(verbatim: row.option == .date ? row.detail + " ›" : row.detail)
+                Text(verbatim: row.detail)
                     .font(.appleRegular(size: 14))
                     .foregroundStyle(row.isSelected ? Color.seepBlue : Color.gray4)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
+                if row.option == .date {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Color.gray4)
+                        .accessibilityHidden(true)
+                }
                 if row.isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 20))

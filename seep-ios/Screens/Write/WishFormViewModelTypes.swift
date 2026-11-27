@@ -171,6 +171,8 @@ extension WishFormViewModel {
         var deadline: Date?
         /// 기간 기한이면 `deadline`이 그 기간의 마지막 날이다 (GH-118 R-1, R-2)
         var deadlineKind: DeadlineKind = .date
+        /// 기한 없이 언제까지 시트를 열어 오늘로 임시로 켠 상태. 항목을 고르지 않고 닫으면 기한을 되돌린다 (GH-118 R-3)
+        var isDeadlineTentative = false
         var deadlineError: String?
         var isDeadlineEnabled = true
         var notifications: [SeepNotification] = [SeepNotification()]

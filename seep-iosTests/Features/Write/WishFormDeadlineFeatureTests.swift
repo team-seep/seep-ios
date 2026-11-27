@@ -92,7 +92,7 @@ final class WishFormDeadlineFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(rows.map(\.option), [.date, .month, .year, .nextYear, .someday])
         XCTAssertEqual(rows.map(\.title), ["날짜 정하기", "이번 달 안에", "올해 안에", "내년까지", "언젠가"])
         XCTAssertEqual(rows.map(\.detail), ["달력에서 고르기", "10월 31일까지", "12월 31일까지", "2027년 12월 31일까지", "정하지 않을래요"])
-        XCTAssertEqual(rows.filter(\.isSelected).map(\.option), [.date], "날짜 칩은 오늘로 채운 날짜 기한이다")
+        XCTAssertTrue(rows.filter(\.isSelected).isEmpty, "날짜 칩으로 열면 오늘로 임시로 켤 뿐 아직 고른 항목이 없다 (TC-19)")
     }
 
     // MARK: GH-118 TC10
@@ -200,5 +200,66 @@ final class WishFormDeadlineFeatureTests: WishFormFeatureTestCase {
 
         // Then
         XCTAssertTrue(viewModel.hasChanges)
+    }
+
+    // MARK: GH-118 TC19
+
+    func test_GH118_TC19_기한없이시트를열고고르지않고닫으면_기한이생기지않는다() {
+        // Given
+        let viewModel = makeWriteWithTitle()
+        viewModel.send(.tapChip(.date))
+
+        // Then: 열 때 오늘로 임시로 켜지만 아직 고른 항목은 없다
+        XCTAssertTrue(viewModel.deadlineOptionRows.filter(\.isSelected).isEmpty)
+
+        // When
+        viewModel.send(.dismissSheet)
+        viewModel.send(.tapSave)
+
+        // Then
+        XCTAssertFalse(viewModel.state.isDeadlineEnabled)
+        XCTAssertNil(viewModel.state.deadline)
+        XCTAssertNil(wishRepository.addedWishes.first?.endDate)
+    }
+
+    func test_GH118_TC19_날짜정하기로달력을연뒤닫으면_오늘날짜기한이남는다() {
+        // Given
+        let viewModel = makeWriteWithTitle()
+        viewModel.send(.tapChip(.date))
+
+        // When
+        viewModel.send(.selectDeadlineOption(.date))
+        viewModel.send(.dismissSheet)
+
+        // Then
+        XCTAssertTrue(viewModel.state.isDeadlineEnabled)
+        XCTAssertEqual(viewModel.state.deadline, now.endOfDay)
+    }
+
+    func test_GH118_TC19_기한이있는위시는시트를닫아도_기한이그대로다() {
+        // Given
+        let end = lastMoment(year: 2026, month: 12, day: 31)
+        let viewModel = makeViewModel(mode: .edit(Wish(id: "w", title: "서핑", endDate: end, deadlineKind: .year)))
+        viewModel.send(.tapDate)
+
+        // When
+        viewModel.send(.dismissSheet)
+
+        // Then
+        XCTAssertEqual(viewModel.state.deadline, end)
+        XCTAssertEqual(viewModel.state.deadlineKind, .year)
+    }
+
+    func test_GH118_TC17_지난해기간기한을수정하면_선택된항목에저장된마감이보인다() {
+        // Given: 2025년 "올해 안에"
+        let end = lastMoment(year: 2025, month: 12, day: 31)
+        let viewModel = makeViewModel(mode: .edit(Wish(id: "w", title: "서핑", endDate: end, deadlineKind: .year)))
+
+        // When
+        let selected = viewModel.deadlineOptionRows.first(where: \.isSelected)
+
+        // Then
+        XCTAssertEqual(selected?.option, .year)
+        XCTAssertEqual(selected?.detail, "2025년 12월 31일까지")
     }
 }

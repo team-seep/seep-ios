@@ -111,7 +111,7 @@ private struct WishSearchContentView: View {
                                 isFieldFocused = false
                                 viewModel.send(.tapResult(IndexPath(item: itemIndex, section: sectionIndex)))
                             } label: {
-                                WishSearchResultRow(item: item)
+                                WishSearchResultRow(item: item, dday: DdayBadgeStyle(wish: item.wish))
                             }
                             .buttonStyle(.plain)
                         }
@@ -140,6 +140,8 @@ private struct WishSearchContentView: View {
 /// 검색 화면에서는 체크할 수 없어 완료 여부만 보인다
 private struct WishSearchResultRow: View {
     let item: WishSearchResultItem
+    /// 값으로 받는다 — `Wish ==`는 id 만 비교해 기한이 바뀌어도 줄이 다시 그려지지 않는다 (GH-118)
+    let dday: DdayBadgeStyle
 
     var body: some View {
         let wish = item.wish
@@ -156,7 +158,7 @@ private struct WishSearchResultRow: View {
                     } else {
                         HStack(spacing: 7) {
                             DdayBadge(
-                                style: DdayBadgeStyle(wish: wish),
+                                style: dday,
                                 farFutureText: Strings.homeInFarFurture,
                                 noDateText: Strings.homeNoDeanline
                             )

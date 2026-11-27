@@ -143,7 +143,9 @@ final class SharePhotoViewModel {
         state.emojiBackground = dependency.averageColor(wish.emoji) ?? ShareCardPalette.fallback
         if let endDate = wish.endDate {
             state.dateText = Self.dateText(endDate, calendar: dependency.calendar)
-            state.ddayText = Self.ddayText(endDate: endDate, now: dependency.now(), calendar: dependency.calendar)
+            // 기간 기한은 D-n 대신 "올해 안" 등 홈 뱃지와 같은 문구 (GH-118 R-4)
+            state.ddayText = SoftDeadline(wish: wish, now: dependency.now(), calendar: dependency.calendar)?.badgeText
+                ?? Self.ddayText(endDate: endDate, now: dependency.now(), calendar: dependency.calendar)
         }
         return state
     }
