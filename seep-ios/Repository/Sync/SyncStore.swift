@@ -236,6 +236,9 @@ final class SyncStore {
                     // 한 문서가 깨져 있어도(필수 컬럼 없음 등) 나머지는 적용하고, 그 문서는 건너뛴다
                     guard (try? Self.write(document, in: db)) != nil else { continue }
                     if let wishId = document.wishId { result.changedWishIds.insert(wishId) }
+                    if try Self.clearStaleFinishFeeling(document, in: db) {
+                        resendLocal.append((document.collection, document.id))
+                    }
                 case .skip:
                     break
                 case .resendLocal:
@@ -274,6 +277,18 @@ final class SyncStore {
         if remote.updatedAt > local.updatedAt { return .write }
         // 다른 기기가 오프라인에서 고친 옛 값을 나중에 올리면 서버가 더 새 값을 덮는다. 더 새 쪽이 다시 올려 맞춘다
         return remote.updatedAt < local.updatedAt ? .resendLocal : .skip
+    }
+
+    /// v13 전 앱은 `finishFeeling`을 몰라, 완료를 취소해도 merge 쓰기가 서버의 옛 답을 남긴다.
+    /// 완료 전인데 기대 비교가 있는 위시를 받으면 비우고 다시 올려 서버의 옛 답도 지운다 (GH-139 R-9).
+    /// `updatedAt`은 그대로 둬 다른 기기의 LWW 판단을 바꾸지 않는다
+    private static func clearStaleFinishFeeling(_ document: SyncDocument, in db: Database) throws -> Bool {
+        guard document.collection == .wish else { return false }
+        try db.execute(
+            sql: "UPDATE wish SET finishFeeling = '' WHERE id = ? AND isSuccess = 0 AND finishFeeling <> ''",
+            arguments: [document.id]
+        )
+        return db.changesCount > 0
     }
 
     /// 로컬 테이블에 있는 컬럼만 쓴다. 더 새 앱이 만든 모르는 필드는 버린다 (설계 §6.4)

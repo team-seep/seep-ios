@@ -200,6 +200,27 @@ final class ExpectationFeatureTests: ViewModelTestCase {
         XCTAssertEqual(listedIds(sut).count, 2)
     }
 
+    // MARK: GH-139 TC21
+
+    func test_GH139_TC21_좋았던싶이0개면_모아보기를눌러도켜지지않고로그도없다() {
+        // Given: 기록 3개가 모두 same·worse
+        let sut = makeSut([
+            finished("a", .wantToDo, .same),
+            finished("b", .wantToGet, .worse),
+            finished("c", .wantToGo, .same)
+        ])
+        sut.send(.onAppear)
+        XCTAssertEqual(sut.state.expectationSummary?.betterCount, 0)
+
+        // When
+        sut.send(.tapExpectationBetterFilter)
+
+        // Then
+        XCTAssertFalse(sut.state.isBetterFilterOn)
+        XCTAssertEqual(listedIds(sut).count, 3)
+        XCTAssertTrue(events(.click, objectId: .expectationBetterFilter).isEmpty)
+    }
+
     // MARK: GH-139 TC12
 
     func test_GH139_TC12_요약카드가보이면_expectation_summary노출이화면당1건간다() {

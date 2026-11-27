@@ -443,6 +443,31 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertEqual(summaryB?.betterCount, 1)
     }
 
+    func test_GH139_TC20_구버전앱이완료를취소해서버에옛답이남으면_받은기기가비우고서버에서도지운다() async throws {
+        // Given: A에서 좋았어요로 이룬 싶
+        await signInBoth()
+        let wish = try deviceA.repository.addWish(Wish(id: "w1", title: "라멘")).get()
+        _ = try deviceA.repository.finishWish(wish: wish).get()
+        _ = try deviceA.repository.updateFinishNote(wishId: "w1", note: "", feeling: .better).get()
+        await deviceA.engine.sync(trigger: .manual)
+
+        // When: v13 전 앱이 완료를 취소해 올린다 — 모르는 finishFeeling 은 보내지 않아 서버에 그대로 남는다
+        var fields = try XCTUnwrap(server.documents[.wish]?["w1"]?.fields)
+        fields["isSuccess"] = .integer(0)
+        fields["finishDate"] = .null
+        fields["finishNote"] = .text("")
+        fields["updatedAt"] = .double(900_000_000)
+        server.put(.wish, id: "w1", fields: fields)
+        await deviceB.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then: 받은 기기는 비우고, 다시 올려 서버의 옛 답도 지운다
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.isSuccess, false)
+        XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.finishFeeling)
+        XCTAssertEqual(server.documents[.wish]?["w1"]?.fields["finishFeeling"], .text(""))
+        XCTAssertEqual(server.documents[.wish]?["w1"]?.fields["updatedAt"], .double(900_000_000))
+    }
+
     // MARK: TC-34
 
     func test_GH93_TC34_더새앱이쓴문서는아는필드만적용하고_다시올려도모르는필드를지우지않는다() async throws {

@@ -222,7 +222,8 @@ final class FinishedViewModel {
     }
 
     private func toggleBetterFilter() {
-        guard state.expectationSummary != nil else { return }
+        // 좋았던 싶이 없으면 버튼이 없다. 켜진 채라면 끄는 것만 받는다
+        guard let summary = state.expectationSummary, summary.betterCount > 0 || state.isBetterFilterOn else { return }
         state.isBetterFilterOn.toggle()
         // "모아 보기"를 켤 때만 센다. 끄는 "전체 보기"는 세지 않는다 (TC-12)
         if state.isBetterFilterOn { sendClickLog(objectId: .expectationBetterFilter) }

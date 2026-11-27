@@ -124,7 +124,7 @@ final class FinishFeelingFeatureTests: ViewModelTestCase {
         XCTAssertTrue(viewModel.state.isSaveEnabled)
     }
 
-    func test_GH139_R3_칸만고르고입력칸에서Return을누르면_저장하지않고시트를유지한다() {
+    func test_GH139_TC19_칸만고르고입력칸에서Return을누르면_저장하지않고시트를유지한다() {
         // Given
         let viewModel = makeViewModel()
         viewModel.send(.selectFeeling(.better))
@@ -137,7 +137,7 @@ final class FinishFeelingFeatureTests: ViewModelTestCase {
         XCTAssertNil(viewModel.route)
     }
 
-    func test_GH139_R3_소감을쓰고Return을누르면_고른칸과함께저장한다() {
+    func test_GH139_TC19_소감을쓰고Return을누르면_고른칸과함께저장한다() {
         // Given
         let viewModel = makeViewModel()
         viewModel.send(.selectFeeling(.better))
@@ -202,9 +202,9 @@ final class FinishFeelingFeatureTests: ViewModelTestCase {
         guard case .errorAlert = viewModel.route else { return XCTFail("에러 알럿을 띄워야 한다") }
     }
 
-    // MARK: GH-139 R-4
+    // MARK: GH-139 TC18
 
-    func test_GH139_R4_편지가열린시트에서도_칸을골라저장할수있다() {
+    func test_GH139_TC18_편지가열린시트에서도_칸을골라저장할수있다() {
         // Given: 편지를 봉인해 둔 위시
         let sealed = Wish(
             id: "letter", title: "한라산", finishDate: Date(), isSuccess: true,

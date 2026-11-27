@@ -32,17 +32,24 @@ struct FinishedExpectationCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
             Spacer(minLength: 0)
-            Button(action: onTapFilter) {
-                Text(isBetterFilterOn ? Strings.Finished.Expectation.showAll : Strings.Finished.Expectation.more)
-                    .font(.appleExtraBold(size: 14))
-                    .foregroundStyle(Color.seepBlue)
-                    .fixedSize()
-                    .frame(minHeight: 32)
-                    .contentShape(Rectangle())
+            // 좋았던 싶이 없으면 모아 볼 것이 없어 버튼을 두지 않는다
+            if summary.betterCount > 0 || isBetterFilterOn {
+                filterButton
             }
-            .buttonStyle(.plain)
-            .accessibilityAddTraits(isBetterFilterOn ? .isSelected : [])
         }
+    }
+
+    private var filterButton: some View {
+        Button(action: onTapFilter) {
+            Text(isBetterFilterOn ? Strings.Finished.Expectation.showAll : Strings.Finished.Expectation.more)
+                .font(.appleExtraBold(size: 14))
+                .foregroundStyle(Color.seepBlue)
+                .fixedSize()
+                .frame(minHeight: 32)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isBetterFilterOn ? .isSelected : [])
     }
 
     /// 숫자 부분("n개")만 seep-blue Bold

@@ -54,7 +54,7 @@ final class FinishFeelingRepositoryTests: XCTestCase {
 
     // MARK: GH-139 R-3
 
-    func test_GH139_R3_기대비교와소감을저장하면_함께읽히고_updatedAt이갱신된다() throws {
+    func test_GH139_TC17_기대비교와소감을저장하면_함께읽히고_updatedAt이갱신된다() throws {
         // Given
         let clock = Date(timeIntervalSinceReferenceDate: 800_000_000)
         let sut = WishRepositoryImpl(database: database, now: { clock })
@@ -132,7 +132,7 @@ final class FinishFeelingRepositoryTests: XCTestCase {
         XCTAssertNil(sut.fetchWish(id: "w")?.finishFeeling)
     }
 
-    func test_GH139_R1_수정해저장해도_기대비교는그대로다() throws {
+    func test_GH139_TC16_수정해저장해도_기대비교는그대로다() throws {
         // Given
         let wish = try sut.addWish(Wish(id: "w", title: "라멘")).get()
         _ = try sut.finishWish(wish: wish).get()

@@ -48,10 +48,10 @@ enum FinishedSectionBuilder {
         let day = calendar.component(.day, from: finishDate(of: wish))
         let dayText = Strings.Finished.Row.dayFormat(day)
         if let noteText = FinishFeeling.noteText(feeling: wish.finishFeeling, note: wish.finishNote) {
-            return dayText + " · " + noteText
+            return Strings.Finished.Row.detailFormat(dayText, noteText)
         }
         if filter == nil {
-            return dayText + " · " + wish.category.title
+            return Strings.Finished.Row.detailFormat(dayText, wish.category.title)
         }
         return dayText
     }

@@ -10585,6 +10585,42 @@
         }
       }
     },
+    "finished.row.detail_format" : {
+      "comment" : "이룬 싶 탭 줄 보조 문구 (GH-139). %1$@ = 이룬 날(day_format), %2$@ = 소감·기대 비교 또는 카테고리",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
     "finished.row.note_format" : {
       "comment" : "이룬 싶 탭. %@ = 한 줄 소감",
       "extractionState" : "manual",

@@ -917,6 +917,10 @@ internal enum Strings {
       internal static func dayFormat(_ p1: Int) -> String {
         return Strings.tr("Localization", "finished.row.day_format", p1, fallback: "%d일 이룸")
       }
+      /// %1$@ · %2$@
+      internal static func detailFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "finished.row.detail_format", String(describing: p1), String(describing: p2), fallback: "%1$@ · %2$@")
+      }
       /// “%@”
       internal static func noteFormat(_ p1: Any) -> String {
         return Strings.tr("Localization", "finished.row.note_format", String(describing: p1), fallback: "“%@”")
