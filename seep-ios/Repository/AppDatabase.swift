@@ -276,6 +276,15 @@ final class AppDatabase {
             }
         }
 
+        // GH-118: 기한 종류(날짜 / 이번 달 안 / 올해 안 / 내년까지). 기존 위시는 날짜 기한("").
+        // 기본값 있는 컬럼이라 구버전 앱과 섞여도 merge 쓰기가 이 필드를 지우지 않고(설계 §6.4), wish 아웃박스 트리거가 그대로 실어 나른다.
+        // "v13"은 같은 때 만든 GH-139(기대 비교)가 쓴다. GRDB 는 이름으로 적용 여부를 보므로 등록 순서가 바뀌어도 그대로 동작한다
+        migrator.registerMigration("v14") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "deadlineKind", .text).notNull().defaults(to: "")
+            }
+        }
+
         return migrator
     }
 

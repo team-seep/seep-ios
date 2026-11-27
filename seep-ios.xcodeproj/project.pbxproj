@@ -32,6 +32,7 @@
 		1354D0C5A024333EA596D28F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AB6F30DBF71049D22D51D94 /* Assets.xcassets */; };
 		1797C5B0B2411D40FF4874E3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 241224818A8B50E5702CD919 /* Localizable.xcstrings */; };
 		188127E379580E66BDA37009 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 738B4CD12964494CC8AF521C /* AppShortcuts.xcstrings */; };
+		1E7CA0B4F77F0A9AACE53FA3 /* DeadlineKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D450EC81A4A691F7C1FB6D /* DeadlineKind.swift */; };
 		1EA3F439830FF532D8726485 /* SmallWriteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F89CD574A872A8D7EF189B7 /* SmallWriteProvider.swift */; };
 		1EFFEA3F6C63B527C556B92B /* LockScreenDday.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD659E527A34F0EDD07BD903 /* LockScreenDday.swift */; };
 		23E2150538C71C9118041AD0 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 985D40833CB0A1469D693396 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -90,6 +91,7 @@
 		66C9532FB9641EF8B7FEB8C3 /* PhotoTextAmountReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15505C5382C6689808222C2D /* PhotoTextAmountReader.swift */; };
 		6B0A7EDFB405FC3FCFCA5218 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC485367DA7F62CFF607785 /* EmptyView.swift */; };
 		6B500050C4291E51CCE4DF17 /* CheckWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9CA9E184F6FB4B871F9126 /* CheckWidget.swift */; };
+		6D2EA20530D7A67D51B65F01 /* DeadlineKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D450EC81A4A691F7C1FB6D /* DeadlineKind.swift */; };
 		6D5DA65FBDCE237A466001CB /* WishRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDD5979732A59B57D3D9D73 /* WishRecord.swift */; };
 		6DAF9D1FF602614D4B91A3EE /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05B57E4F7C8417D5512D031 /* AppLanguage.swift */; };
 		70D9D47E4F39E1A042A5A559 /* NotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF328D0DB4A4FBEB3FD6D7B /* NotificationDTO.swift */; };
@@ -325,6 +327,7 @@
 		51D21BCF2F241852FC678AB2 /* SeepAppShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeepAppShortcuts.swift; sourceTree = "<group>"; };
 		52ECB48C9236072F4A871449 /* RealmConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfiguration.swift; sourceTree = "<group>"; };
 		53FD28DD9290682A807BCB10 /* RemoteConfigRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigRepository.swift; sourceTree = "<group>"; };
+		58D450EC81A4A691F7C1FB6D /* DeadlineKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineKind.swift; sourceTree = "<group>"; };
 		58E6CDB0454C88FE8F478280 /* MockAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationManager.swift; sourceTree = "<group>"; };
 		5B0AD4A4DA3AC5E58242E831 /* WidgetReloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetReloader.swift; sourceTree = "<group>"; };
 		5BD6102DCA8E5147C14D3FEF /* AppLockPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockPolicyTests.swift; sourceTree = "<group>"; };
@@ -871,6 +874,7 @@
 			children = (
 				4B05690B9CF9787D99F4E015 /* Badge.swift */,
 				2C883B1418F4C4E7C80547DD /* BadgeCalculator.swift */,
+				58D450EC81A4A691F7C1FB6D /* DeadlineKind.swift */,
 				CC9BB318C87295E0AA683E42 /* HashtagType.swift */,
 				BD659E527A34F0EDD07BD903 /* LockScreenDday.swift */,
 				01F981AA80218A166D02A985 /* SeepNotification.swift */,
@@ -1217,6 +1221,7 @@
 				4BECCEE8D8C4141AA712EAB0 /* CheckWishIntents.swift in Sources */,
 				2B2068A7C3E3CA95D3E3FC8B /* DateExtensions.swift in Sources */,
 				DF04401FE6DF100DBB890AD8 /* DdayView.swift in Sources */,
+				1E7CA0B4F77F0A9AACE53FA3 /* DeadlineKind.swift in Sources */,
 				7A5F4342C80F9F5CE44AB9DA /* DisplayDate.swift in Sources */,
 				6B0A7EDFB405FC3FCFCA5218 /* EmptyView.swift in Sources */,
 				FAF96ACE949C3ED83A2978CE /* LegacyRealmImporter.swift in Sources */,
@@ -1296,6 +1301,7 @@
 				F4B2509688F280546907570F /* DatabaseMigrationFollowUp.swift in Sources */,
 				E7F147CDD5B2A7DFE5093576 /* DateExtensions.swift in Sources */,
 				0A3EF469E069AD7092744094 /* DateUtils.swift in Sources */,
+				6D2EA20530D7A67D51B65F01 /* DeadlineKind.swift in Sources */,
 				EB2CD223509693B1F9BD4A8C /* DisplayDate.swift in Sources */,
 				BB2747C9ED0F864BC373E1C9 /* HashtagType.swift in Sources */,
 				2B9F5110C947CADC9533E31D /* LegacyImportRecovery.swift in Sources */,

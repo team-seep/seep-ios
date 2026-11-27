@@ -170,7 +170,7 @@ struct WishDocumentEditor: View {
                     focus = nil
                     viewModel.send(.tapDate)
                 } label: {
-                    DocumentDdayLine(line: WishDetailSummary.ddayLine(endDate: deadline))
+                    DocumentDdayLine(line: WishDetailSummary.ddayLine(endDate: deadline, kind: state.deadlineKind))
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
@@ -313,6 +313,12 @@ struct WishDocumentEditor: View {
                 viewModel.send(.selectEmoji(emoji))
             }
         case .date:
+            WishDeadlineSheet(
+                rows: viewModel.deadlineOptionRows,
+                onSelect: { viewModel.send(.selectDeadlineOption($0)) },
+                onClose: { viewModel.send(.dismissSheet) }
+            )
+        case .datePicker:
             VStack(spacing: 12) {
                 DatePicker(
                     "",

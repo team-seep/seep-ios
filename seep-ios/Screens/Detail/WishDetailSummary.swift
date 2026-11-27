@@ -30,15 +30,31 @@ struct WishDetailSummary: Equatable {
     init(wish: Wish, now: Date = Date(), calendar: Calendar = .current, locale: Locale = AppLanguage.shared.locale) {
         self.emoji = wish.emoji
         self.title = wish.title
-        self.ddayLine = Self.ddayLine(endDate: wish.endDate, now: now, calendar: calendar, locale: locale)
+        self.ddayLine = Self.ddayLine(endDate: wish.endDate, kind: wish.deadlineKind, now: now, calendar: calendar, locale: locale)
         self.metaItems = Self.metaItems(wish: wish, calendar: calendar, locale: locale)
         let memo = wish.memo.trimmingCharacters(in: .whitespacesAndNewlines)
         self.memo = memo.isEmpty ? nil : wish.memo
     }
 
-    /// D-day 줄. 작성·수정 문서 머리도 같은 줄을 쓴다 (GH-70 R-2)
-    static func ddayLine(endDate: Date?, now: Date = Date(), calendar: Calendar = .current, locale: Locale = AppLanguage.shared.locale) -> DdayLine {
+    /// D-day 줄. 작성·수정 문서 머리도 같은 줄을 쓴다 (GH-70 R-2).
+    /// 기간 기한이면 "올해 안에" + "12월 31일까지", 지났으면 "올해가 지났어요" + "2026년 안에 하기로 했어요" (GH-118 R-5, R-6)
+    static func ddayLine(
+        endDate: Date?,
+        kind: DeadlineKind = .date,
+        now: Date = Date(),
+        calendar: Calendar = .current,
+        locale: Locale = AppLanguage.shared.locale
+    ) -> DdayLine {
         let style = DdayStyle(endDate: endDate, now: now, calendar: calendar)
+        if let soft = SoftDeadline(endDate: endDate, kind: kind, now: now, calendar: calendar) {
+            // 색은 날짜 기한과 같은 규칙을 기간 마지막 날에 쓴다(지나면 보라). 단어라 작게 쓰고 상단 바에는 넣지 않는다
+            return DdayLine(
+                text: soft.lineText,
+                tone: style.tone,
+                isWord: true,
+                dateText: soft.dateText(now: now, calendar: calendar, locale: locale)
+            )
+        }
         return DdayLine(
             text: style.text,
             tone: style.tone,

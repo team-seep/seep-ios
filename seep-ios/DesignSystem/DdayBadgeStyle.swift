@@ -18,8 +18,12 @@ struct DdayBadgeStyle: Equatable {
     }
 
     let kind: Kind
+    /// D-n 대신 보일 단어("올해 안" 등 기간 기한, GH-118 R-4). 색은 마감일 기준 규칙을 그대로 쓴다.
+    /// 공용 컴포넌트라 문구는 밖(앱)에서 받는다
+    var label: String?
 
-    init(endDate: Date?, today: Date = Date(), calendar: Calendar = .current) {
+    init(endDate: Date?, label: String? = nil, today: Date = Date(), calendar: Calendar = .current) {
+        self.label = label
         guard let endDate else {
             kind = .noDate
             return
@@ -46,6 +50,7 @@ struct DdayBadgeStyle: Equatable {
 
     /// 문구. "먼훗날"·"일정없음"은 위젯과 앱이 문자열 출처가 달라 밖에서 받는다
     func text(farFuture: String, noDate: String) -> String {
+        if let label { return label }
         switch kind {
         case .passed(let days):
             return "D+\(days)"

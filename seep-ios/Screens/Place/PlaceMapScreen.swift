@@ -94,7 +94,7 @@ struct PlaceMapScreen: View {
             .padding(.top, 16)
             Spacer()
             if let wish = viewModel.state.selectedWish {
-                PlaceMapWishCard(wish: wish) {
+                PlaceMapWishCard(wish: wish, ddayStyle: DdayBadgeStyle(wish: wish)) {
                     viewModel.send(.tapCard)
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))

@@ -30,6 +30,10 @@ extension WishDetailViewModel {
         case tapUnstart
         /// 자동 시작 토스트의 "되돌리기". 시작 시각만 지우고 단계·저금은 그대로 둔다 (GH-143 R-3)
         case undoAutoStart
+        /// 기간 지난 카드 "다음 기간으로 미루기" (GH-118 R-6, R-7)
+        case tapPostponeDeadline
+        /// 기간 지난 카드 "기한 없애기" (GH-118 R-6)
+        case tapClearDeadline
         case routeHandled
     }
 
@@ -46,6 +50,8 @@ extension WishDetailViewModel {
         case errorAlert(String)
         /// 단계 체크·저금 기록으로 자동 시작했다. "되돌리기" 버튼이 있는 토스트를 띄운다 (GH-143 R-3)
         case autoStartToast(String)
+        /// 미루기 결과 등 버튼 없는 토스트 (GH-118 R-7)
+        case toast(String)
         /// 삭제·완료 취소 뒤, 또는 위시가 지워져 있으면 상세를 닫는다
         case close
     }
@@ -70,6 +76,14 @@ extension WishDetailViewModel {
         var chain: WishChain?
         /// 메타 줄 아래 상태 줄. nil 이면 그리지 않는다(시작 기록 없는 이룬 싶) (GH-143 R-2, R-6)
         var startStatus: WishStartStatus?
+        /// 기간 기한이 지난 안 이룬 싶의 "아직 하고 싶어요?" 카드. nil 이면 그리지 않는다 (GH-118 R-6)
+        var deadlineOver: DeadlineOverCard?
+    }
+
+    /// "아직 하고 싶어요?" 카드 (GH-118 R-6)
+    struct DeadlineOverCard: Equatable {
+        /// "이번 달 안으로 미루기" · "올해 안으로 미루기"
+        let postponeTitle: String
     }
 
     struct Dependency {
@@ -131,6 +145,8 @@ final class WishDetailViewModel {
     private let dependency: Dependency
     /// 자동 시작이 저장한 시작 시각. 토스트 "되돌리기"는 이 시작만 되돌린다(그사이 직접 다시 시작했으면 두기) (R-3)
     private var autoStartedAt: Date?
+    /// 기간 지난 카드 노출 로그는 화면마다 한 번 (GH-118 트래킹)
+    private var hasSentDeadlineOverImpression = false
 
     /// 홈에서 연 상세에서만 "수정"이 보인다 (R-8)
     var isEditVisible: Bool {
@@ -177,6 +193,10 @@ final class WishDetailViewModel {
             unstart()
         case .undoAutoStart:
             undoAutoStart()
+        case .tapPostponeDeadline:
+            postponeDeadline()
+        case .tapClearDeadline:
+            clearDeadline()
         case .routeHandled:
             route = nil
         }
@@ -303,6 +323,49 @@ final class WishDetailViewModel {
         }
     }
 
+    // MARK: 기간 지난 기한 (GH-118)
+
+    /// 다음 기간 마지막 날로 미루고, 알림을 새 날짜로 다시 예약한다 (R-6, R-7)
+    private func postponeDeadline() {
+        guard state.deadlineOver != nil, let wish = state.wish, let endDate = wish.endDate,
+              let newEnd = wish.deadlineKind.postponedEnd(from: endDate, now: dependency.now(), calendar: dependency.calendar)
+        else { return }
+        sendClickLog(objectId: .postponeDeadline, type: wish.deadlineKind.rawValue)
+        // 미루면 오늘이 든 해의 12월 31일이라 "내년까지"는 "올해 안"이 된다 (버튼 "올해 안으로 미루기")
+        let newKind: DeadlineKind = wish.deadlineKind == .nextYear ? .year : wish.deadlineKind
+        guard let saved = saveDeadline(wish: wish, endDate: newEnd, kind: newKind) else { return }
+        dependency.notificationManager.reserveNotifications(wish: saved)
+        let dateText = DisplayDate.yearMonthDay(newEnd, calendar: dependency.calendar)
+        route = .toast(Strings.Deadline.postponedToastFormat(dateText))
+    }
+
+    /// 언젠가(기한 없음)로 바꾼다. 알림은 날짜가 있어야 해서 같이 지운다 (R-6)
+    private func clearDeadline() {
+        guard state.deadlineOver != nil, let wish = state.wish else { return }
+        sendClickLog(objectId: .clearDeadline, type: wish.deadlineKind.rawValue)
+        _ = saveDeadline(wish: wish, endDate: nil, kind: .date)
+    }
+
+    /// 기한을 저장하고 예전 날짜로 예약한 알림을 지운다. 실패하면 알리고 nil
+    private func saveDeadline(wish: Wish, endDate: Date?, kind: DeadlineKind) -> Wish? {
+        switch dependency.wishRepository.updateDeadline(wishId: wish.id, endDate: endDate, kind: kind) {
+        case .success(let saved):
+            dependency.notificationManager.cancelNotifications(wish: wish)
+            // 저장소가 돌려준 위시는 다른 섹션 값이 오래됐을 수 있어 기한·알림만 옮긴다
+            update {
+                $0.endDate = saved.endDate
+                $0.deadlineKind = saved.deadlineKind
+                $0.notifications = saved.notifications
+            }
+            // 캘린더 추가 등 마감을 쓰는 섹션도 새 날짜를 보게 한다
+            if let updated = state.wish { reloadSections(wish: updated) }
+            return saved
+        case .failure(let error):
+            route = .errorAlert(error.localizedDescription)
+            return nil
+        }
+    }
+
     // MARK: 위시 반영
 
     private func reload() {
@@ -362,6 +425,24 @@ final class WishDetailViewModel {
         if startStatus != state.startStatus {
             state.startStatus = startStatus
         }
+        applyDeadlineOver(wish: wish)
+    }
+
+    /// 기간 기한이 지난 안 이룬 싶이면 미루기 카드를 보이고, 처음 보일 때 노출 로그를 남긴다 (R-6)
+    private func applyDeadlineOver(wish: Wish) {
+        let soft = SoftDeadline(wish: wish, now: dependency.now(), calendar: dependency.calendar)
+        let card = (!wish.isSuccess && soft?.isOver == true) ? soft.map { DeadlineOverCard(postponeTitle: $0.postponeTitle) } : nil
+        if card != state.deadlineOver {
+            state.deadlineOver = card
+        }
+        guard card != nil, !hasSentDeadlineOverImpression else { return }
+        hasSentDeadlineOverImpression = true
+        dependency.logManager.sendEvent(event: ImpressionEvent(
+            screen: screenName,
+            objectType: .card,
+            objectId: .deadlineOverCard,
+            extraParameters: [.type: wish.deadlineKind.rawValue]
+        ))
     }
 
     /// 섹션이 저장한 값을 상세가 들고 있는 위시에 반영해, 수정 화면·공유로 넘길 위시가 최신이게 한다
@@ -464,11 +545,12 @@ final class WishDetailViewModel {
         photo?.send(.reload(wish))
     }
 
-    private func sendClickLog(objectId: LogObjectId) {
+    private func sendClickLog(objectId: LogObjectId, type: String? = nil) {
         dependency.logManager.sendEvent(event: ClickEvent(
             screen: screenName,
             objectType: .button,
-            objectId: objectId
+            objectId: objectId,
+            extraParameters: type.map { [ParameterName.type: $0 as Any] }
         ))
     }
 }

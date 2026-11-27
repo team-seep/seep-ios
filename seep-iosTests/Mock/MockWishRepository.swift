@@ -43,6 +43,9 @@ final class MockWishRepository: WishRepository {
     private(set) var updatePlaceCalls: [(wishId: String, place: WishPlace?)] = []
     /// nil 이면 호출된 위시 id·파일 이름으로 만든 위시를 성공으로 돌려준다
     var updatePhotoResult: Result<Wish, RepositoryError>?
+    /// nil 이면 저장된(fetchWishResult) 위시에 기한을 반영해 성공으로 돌려준다 (GH-118)
+    var updateDeadlineResult: Result<Wish, RepositoryError>?
+    private(set) var updateDeadlineCalls: [(wishId: String, endDate: Date?, kind: DeadlineKind)] = []
     private(set) var updatePhotoCalls: [(wishId: String, fileName: String)] = []
 
     var fetchAllFinishedWishesResult: [Wish] = []
@@ -154,6 +157,19 @@ final class MockWishRepository: WishRepository {
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {
         updatePlaceCalls.append((wishId, place))
         return updatePlaceResult ?? .success(Wish(id: wishId, category: .wantToGo, place: place))
+    }
+
+    func updateDeadline(wishId: String, endDate: Date?, kind: DeadlineKind) -> Result<Wish, RepositoryError> {
+        updateDeadlineCalls.append((wishId, endDate, kind))
+        if let updateDeadlineResult { return updateDeadlineResult }
+        var wish = fetchWishResult.first(where: { $0.id == wishId }) ?? Wish(id: wishId)
+        wish.endDate = endDate
+        wish.deadlineKind = endDate == nil ? .date : kind
+        if endDate == nil { wish.notifications = [] }
+        if let index = fetchWishResult.firstIndex(where: { $0.id == wishId }) {
+            fetchWishResult[index] = wish
+        }
+        return .success(wish)
     }
 
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {

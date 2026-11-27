@@ -426,6 +426,58 @@ internal enum Strings {
       internal static var title: String { Strings.tr("Localization", "control_guide.shortcut.title", fallback: "단축어 · Siri") }
     }
   }
+  internal enum Deadline {
+    /// 👏 %@까지로 미뤘어요
+    internal static func postponedToastFormat(_ p1: Any) -> String {
+      return Strings.tr("Localization", "deadline.postponed_toast_format", String(describing: p1), fallback: "👏 %@까지로 미뤘어요")
+    }
+    internal enum OverCard {
+      /// 기간을 한 번 더 늘려 두면 다시 알려드려요.
+      internal static var message: String { Strings.tr("Localization", "deadline.over_card.message", fallback: "기간을 한 번 더 늘려 두면 다시 알려드려요.") }
+      /// 이번 달 안으로 미루기
+      internal static var postponeThisMonth: String { Strings.tr("Localization", "deadline.over_card.postpone_this_month", fallback: "이번 달 안으로 미루기") }
+      /// 올해 안으로 미루기
+      internal static var postponeThisYear: String { Strings.tr("Localization", "deadline.over_card.postpone_this_year", fallback: "올해 안으로 미루기") }
+      /// 기한 없애기
+      internal static var remove: String { Strings.tr("Localization", "deadline.over_card.remove", fallback: "기한 없애기") }
+      /// 아직 하고 싶어요?
+      internal static var title: String { Strings.tr("Localization", "deadline.over_card.title", fallback: "아직 하고 싶어요?") }
+    }
+    internal enum Period {
+      /// 이번 달이 지났어요
+      internal static var monthOver: String { Strings.tr("Localization", "deadline.period.month_over", fallback: "이번 달이 지났어요") }
+      /// 내년까지
+      internal static var nextYear: String { Strings.tr("Localization", "deadline.period.next_year", fallback: "내년까지") }
+      /// %@ 안에 하기로 했어요
+      internal static func promiseFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "deadline.period.promise_format", String(describing: p1), fallback: "%@ 안에 하기로 했어요")
+      }
+      /// 이번 달 안에
+      internal static var thisMonth: String { Strings.tr("Localization", "deadline.period.this_month", fallback: "이번 달 안에") }
+      /// 이번 달 안
+      internal static var thisMonthBadge: String { Strings.tr("Localization", "deadline.period.this_month_badge", fallback: "이번 달 안") }
+      /// 올해 안에
+      internal static var thisYear: String { Strings.tr("Localization", "deadline.period.this_year", fallback: "올해 안에") }
+      /// 올해 안
+      internal static var thisYearBadge: String { Strings.tr("Localization", "deadline.period.this_year_badge", fallback: "올해 안") }
+      /// 올해가 지났어요
+      internal static var yearOver: String { Strings.tr("Localization", "deadline.period.year_over", fallback: "올해가 지났어요") }
+    }
+    internal enum Sheet {
+      /// 날짜를 몰라도 괜찮아요. 대략 정해 두면 기간이 끝나기 전에 알려드려요.
+      internal static var description: String { Strings.tr("Localization", "deadline.sheet.description", fallback: "날짜를 몰라도 괜찮아요. 대략 정해 두면 기간이 끝나기 전에 알려드려요.") }
+      /// 날짜 정하기
+      internal static var pickDate: String { Strings.tr("Localization", "deadline.sheet.pick_date", fallback: "날짜 정하기") }
+      /// 달력에서 고르기
+      internal static var pickDateDetail: String { Strings.tr("Localization", "deadline.sheet.pick_date_detail", fallback: "달력에서 고르기") }
+      /// 언젠가
+      internal static var someday: String { Strings.tr("Localization", "deadline.sheet.someday", fallback: "언젠가") }
+      /// 정하지 않을래요
+      internal static var somedayDetail: String { Strings.tr("Localization", "deadline.sheet.someday_detail", fallback: "정하지 않을래요") }
+      /// 언제까지 이루고 싶어요?
+      internal static var title: String { Strings.tr("Localization", "deadline.sheet.title", fallback: "언제까지 이루고 싶어요?") }
+    }
+  }
   internal enum Detail {
     internal enum Calendar {
       /// 캘린더에 추가

@@ -217,6 +217,7 @@ targets:
       - seep-ios/Support/WidgetCheckStore.swift
       - seep-ios/model/Category.swift
       - seep-ios/model/dto/WishRecord.swift
+      - seep-ios/model/presentation/DeadlineKind.swift
       - seep-ios/model/presentation/LockScreenDday.swift
       - seep-ios/model/presentation/SeepNotification.swift
       - seep-ios/model/presentation/WidgetCheckAction.swift

@@ -59,7 +59,7 @@ struct HomeWishRow: View {
 
     private func badgeRow(showsTag: Bool, showsProgress: Bool) -> some View {
         HStack(spacing: 7) {
-            HomeDdayBadge(endDate: item.wish.endDate)
+            HomeDdayBadge(endDate: item.wish.endDate, deadlineKind: item.wish.deadlineKind)
             if let days = item.inProgressDays {
                 HomeInProgressDays(days: days)
             }
@@ -170,7 +170,7 @@ struct HomeWishTile: View {
         if item.inProgressDays == nil {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 9) {
-                    HomeDdayBadge(endDate: item.wish.endDate)
+                    HomeDdayBadge(endDate: item.wish.endDate, deadlineKind: item.wish.deadlineKind)
                     if let progress = item.stepProgress {
                         HomeStepProgress(progress: progress)
                     }
@@ -212,7 +212,7 @@ struct HomeWishTile: View {
 
     private var ddayAndDays: some View {
         HStack(spacing: 9) {
-            HomeDdayBadge(endDate: item.wish.endDate)
+            HomeDdayBadge(endDate: item.wish.endDate, deadlineKind: item.wish.deadlineKind)
             if let days = item.inProgressDays {
                 HomeInProgressDays(days: days)
             }
@@ -262,13 +262,15 @@ struct HomePinIcon: View {
     }
 }
 
-/// D-day 뱃지(앱 문구)
+/// D-day 뱃지(앱 문구). 기간 기한이면 기간 이름 (GH-118 R-4).
+/// `Wish`를 통째로 받지 않는다 — `Wish ==`는 id 만 비교해 기한을 바꿔도 SwiftUI 가 뱃지를 다시 그리지 않는다
 struct HomeDdayBadge: View {
     let endDate: Date?
+    let deadlineKind: DeadlineKind
 
     var body: some View {
         DdayBadge(
-            style: DdayBadgeStyle(endDate: endDate),
+            style: DdayBadgeStyle(endDate: endDate, deadlineKind: deadlineKind),
             farFutureText: Strings.homeInFarFurture,
             noDateText: Strings.homeNoDeanline
         )

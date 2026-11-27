@@ -46,6 +46,8 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var previousWishId: String?
     /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v12)
     var startedAt: Date?
+    /// 기한 종류. "" · "date" = 날짜, "month" · "year" · "next_year" = 기간이고 `date`가 그 기간의 마지막 날 (GH-118, 마이그레이션 v14)
+    var deadlineKind: String
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -197,6 +199,7 @@ extension WishRecord {
         self.manualOrder = wish.manualOrder
         self.previousWishId = wish.previousWishId
         self.startedAt = wish.startedAt
+        self.deadlineKind = wish.deadlineKind.rawValue
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -304,12 +307,15 @@ extension Wish {
         journals: [WishJournalRecord] = [],
         tags: [WishTagRecord] = []
     ) {
+        // 기기 달력(Calendar.current)으로 맞춘다. 화면(SoftDeadline 등)도 실제 앱에서는 같은 달력을 쓴다
+        let deadline = Self.deadline(stored: record.deadlineKind, endDate: record.date)
         self.init(
             id: record.id,
             emoji: record.emoji,
             category: Category(rawValue: record.category) ?? .wantToDo,
             title: record.title,
-            endDate: record.date,
+            endDate: deadline.endDate,
+            deadlineKind: deadline.kind,
             finishDate: record.finishDate,
             notifications: notifications
                 .sorted { $0.order < $1.order }
@@ -343,5 +349,14 @@ extension Wish {
             startedAt: record.startedAt,
             createdAt: record.createdAt
         )
+    }
+}
+
+extension Wish {
+    /// 기간 기한은 이 기기의 기간 마지막 날로 맞추고, 기간 마지막 날이 아닌 마감은 날짜 기한으로 읽는다 (GH-118 R-11)
+    fileprivate static func deadline(stored: String, endDate: Date?) -> (endDate: Date?, kind: DeadlineKind) {
+        let kind = DeadlineKind(stored: stored)
+        guard kind.isPeriod, let normalized = kind.normalizedEnd(endDate) else { return (endDate, .date) }
+        return (normalized, kind)
     }
 }

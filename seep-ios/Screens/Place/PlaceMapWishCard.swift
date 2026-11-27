@@ -6,9 +6,9 @@ struct PlaceMapWishCard: View {
     static let height: CGFloat = 88
 
     let wish: Wish
+    /// 값으로 받는다 — `Wish ==`는 id 만 비교해 기한이 바뀌어도 카드가 다시 그려지지 않는다 (GH-118)
+    let ddayStyle: DdayBadgeStyle
     let onTap: () -> Void
-
-    private var ddayStyle: DdayBadgeStyle { DdayBadgeStyle(endDate: wish.endDate) }
 
     var body: some View {
         Button(action: onTap) {

@@ -263,4 +263,12 @@ enum LogObjectId: String {
     case expandWishTotal = "expand_wish_total"
     /// 펼친 "다 합치면" 카드의 싶 한 줄 → 상세 (GH-148)
     case wishTotalItem = "wish_total_item"
+    /// 작성·수정 언제까지 시트 항목 (+type: date·month·year·next_year·none) (GH-118)
+    case selectDeadlineKind = "select_deadline_kind"
+    /// 상세 기간 지난 카드 노출 (GH-118)
+    case deadlineOverCard = "deadline_over_card"
+    /// 상세 기간 지난 카드 "미루기" (+type: month·year·next_year) (GH-118)
+    case postponeDeadline = "postpone_deadline"
+    /// 상세 기간 지난 카드 "기한 없애기" (+type) (GH-118)
+    case clearDeadline = "clear_deadline"
 }
