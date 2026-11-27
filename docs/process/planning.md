@@ -13,8 +13,8 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
                                    │                         (못 넘으면 needs-input, 사람이 확인)
                     사람: "개발 배포해줘" → Seep: '리뷰' PR들을 temp 브랜치로 합쳐 개발앱 배포
                     사람: 검수 피드백 → Seep: 각 PR 수정 / "검수 끝" → Seep: develop 머지·마일스톤·출시 대기
-                    사람: "출시하자" → Seep: release 브랜치·버전·심사 요청
-                    App Store 출시 → Seep: 출시됨·finish(vX.Y.Z)·GitHub 릴리즈
+                    사람: "출시하자" → Seep: release 브랜치·버전·심사 요청(승인 후 자동 출시)
+                    심사 통과 = App Store 자동 출시 → Seep: 출시됨·finish(vX.Y.Z)·GitHub 릴리즈
                                    │
 [seep-usage-report] 매주 ──▶ 출시 2주 뒤 GA 사용량을 이슈에 코멘트 (tracked)
 ```
@@ -72,12 +72,25 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 | "개발 배포해줘" | '리뷰' PR들을 `temp/` 통합 브랜치로 합쳐 Xcode Cloud "개발앱 배포"로 TestFlight 배포. 이슈별 "🧪 검수 때 확인"을 모아 보여준다 | 리뷰 |
 | 검수 피드백 | 해당 PR(같은 워크트리)에서 고치고 CI·TC 증거를 다시 통과시킨다. 필요하면 다시 개발 배포 | 리뷰 |
 | "검수 끝"·"검수 완료" (PR 지정 또는 전부) | develop 머지(`--merge`), 다음 릴리즈 마일스톤 지정 (스킬 9단계) | 출시 대기 |
-| "출시하자" | 마일스톤의 '출시 대기' 이슈로 release 브랜치·버전 → 앱스토어 빌드 → 심사 요청 | 출시 대기 |
-| (App Store 출시) | 출시 확인 → 포함 이슈 닫기, git-flow finish(main·태그·develop), GitHub 릴리즈, 마일스톤 닫고 다음 마일스톤 열기. 출시 신호는 ASC 웹훅으로 받을 예정(연결 전에는 오너가 "출시됐어") | 출시됨 |
+| "출시하자" | 마일스톤의 '출시 대기' 이슈로 release 브랜치·버전 → 앱스토어 빌드 → App Store 버전(`releaseType` `AFTER_APPROVAL`)·빌드 연결·새 기능 문구 → 심사 요청. 아래 "App Store 심사 제출" | 출시 대기 |
+| (심사 통과 → App Store 자동 출시) | 출시 확인(`READY_FOR_SALE`) → 포함 이슈 닫기, git-flow finish(main·태그·develop), GitHub 릴리즈, 마일스톤 닫고 다음 마일스톤 열기. 출시 신호는 ASC 웹훅으로 받을 예정(연결 전에는 오너가 "출시됐어") | 출시됨 |
 
 풀코스 PR(`schema-change`·`baseline-change`·`verification-change`)은 검수 때 라벨이 가리키는 파일부터 본다(작업자가 PR 코멘트로 짚어 둔다).
 - 구현 중 디자인 시스템에 영향이 있으면 PR 전에 디자인 시스템도 갱신한다(스킬 4-1단계). 개발 전에는 반영이 밀린 `design-system-update` PR을 먼저 반영한다(실패해도 개발은 진행, 라벨을 남겨 다음 실행에 재시도).
 - 절차는 기존과 같다: 테크스펙(TC) 구체화 → 규칙 R1~R9 안에서 구현 → `make lint` → `make test` → `simulator-test` → PR(`Closes #n`).
+
+### App Store 심사 제출 — 심사 통과 즉시 자동 출시
+
+**심사를 통과하면 App Store에 바로 자동 출시한다. 수동 출시 단계는 없다**(오너 결정 2026-11-28). 사람이 정하는 출시 시점은 "출시하자"(심사 요청)뿐이다. 그전에는 버전이 수동 출시(`MANUAL`)로 제출돼 심사 통과 뒤 `PENDING_DEVELOPER_RELEASE`에서 멈췄다(v2.10.0).
+
+- App Store 버전을 만들거나 고칠 때 항상 `releaseType`을 `AFTER_APPROVAL`로 둔다.
+  - 새로 만들 때: `POST /v1/appStoreVersions`, `attributes`에 `platform: IOS`·`versionString: X.Y.Z`·`releaseType: AFTER_APPROVAL`
+  - 이미 있는 버전(ASC가 미리 만든 초안, 지난 버전에서 넘어온 값 등): `PATCH /v1/appStoreVersions/{id}`로 `attributes.releaseType: AFTER_APPROVAL`
+  - ASC 웹에서는 버전 페이지 › "이 버전 출시" › "이 버전 자동 출시"
+  - fastlane을 쓰게 되면 `deliver`/`upload_to_app_store`에 `automatic_release: true`
+- 심사를 제출하기 전에 `GET /v1/appStoreVersions/{id}`로 `releaseType`이 `AFTER_APPROVAL`인지 확인한다. 다르면 고친 뒤 제출한다.
+- `MANUAL`로 제출돼 이미 `PENDING_DEVELOPER_RELEASE`에서 멈춘 버전은 오너에게 확인받고 `POST /v1/appStoreVersionReleaseRequests`(ASC 웹 "이 버전 출시")로 출시한다.
+- 출시 시각을 정해야 하는 버전은 예외로 둔다. 오너가 따로 말할 때만 `MANUAL`이나 `SCHEDULED`(`earliestReleaseDate`)로 제출한다.
 
 ## 4. 트래킹 이벤트
 
