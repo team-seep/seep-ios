@@ -180,6 +180,11 @@ enum LogObjectId: String {
     case activityGrass = "activity_grass"
     case activityDay = "activity_day"
     case activityDayWish = "activity_day_wish"
+    /// 완료 소감 시트 기대 비교 세 칸 중 하나를 고름 (+expectation: worse·same·better) (GH-139)
+    case selectExpectation = "select_expectation"
+    /// 이룬 싶 탭 "기대보다 좋았어요" 요약 카드 노출 · "모아 보기" (GH-139)
+    case expectationSummary = "expectation_summary"
+    case expectationBetterFilter = "expectation_better_filter"
     case notificationSetting = "notification_setting"
     case viewTypeSetting = "view_type_setting"
     /// 설정 "화면 모드"에서 고름 (+type) (GH-85)

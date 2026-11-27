@@ -463,6 +463,10 @@ internal enum Strings {
     internal enum Chain {
       /// 지금 이 싶
       internal static var current: String { Strings.tr("Localization", "detail.chain.current", fallback: "지금 이 싶") }
+      /// %1$@ 이뤘어요 · %2$@
+      internal static func finishedFeelingFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.chain.finished_feeling_format", String(describing: p1), String(describing: p2), fallback: "%1$@ 이뤘어요 · %2$@")
+      }
       /// %@ 이뤘어요
       internal static func finishedFormat(_ p1: Any) -> String {
         return Strings.tr("Localization", "detail.chain.finished_format", String(describing: p1), fallback: "%@ 이뤘어요")
@@ -761,6 +765,29 @@ internal enum Strings {
       internal static var travel: String { Strings.tr("Localization", "emoji_picker.category.travel", fallback: "여행") }
     }
   }
+  internal enum FinishFeeling {
+    /// 기대보다 좋았어요
+    internal static var better: String { Strings.tr("Localization", "finish_feeling.better", fallback: "기대보다 좋았어요") }
+    /// 딱 기대만큼
+    internal static var same: String { Strings.tr("Localization", "finish_feeling.same", fallback: "딱 기대만큼") }
+    /// %1$@ · “%2$@”
+    internal static func withNoteFormat(_ p1: Any, _ p2: Any) -> String {
+      return Strings.tr("Localization", "finish_feeling.with_note_format", String(describing: p1), String(describing: p2), fallback: "%1$@ · “%2$@”")
+    }
+    /// 기대보다 아쉬웠어요
+    internal static var worse: String { Strings.tr("Localization", "finish_feeling.worse", fallback: "기대보다 아쉬웠어요") }
+    internal enum Button {
+      /// 기대보다
+      /// 좋았어요
+      internal static var better: String { Strings.tr("Localization", "finish_feeling.button.better", fallback: "기대보다\n좋았어요") }
+      /// 딱
+      /// 기대만큼
+      internal static var same: String { Strings.tr("Localization", "finish_feeling.button.same", fallback: "딱\n기대만큼") }
+      /// 기대보다
+      /// 아쉬웠어요
+      internal static var worse: String { Strings.tr("Localization", "finish_feeling.button.worse", fallback: "기대보다\n아쉬웠어요") }
+    }
+  }
   internal enum Finished {
     /// 모였어요!
     internal static var headlineBold: String { Strings.tr("Localization", "finished.headline_bold", fallback: "모였어요!") }
@@ -842,12 +869,38 @@ internal enum Strings {
       }
     }
     internal enum Empty {
+      /// 기대보다 좋았던 싶이 아직 없어요
+      internal static var betterFiltered: String { Strings.tr("Localization", "finished.empty.better_filtered", fallback: "기대보다 좋았던 싶이 아직 없어요") }
       /// 싶 탭에서 체크하면 여기 모여요
       internal static var description: String { Strings.tr("Localization", "finished.empty.description", fallback: "싶 탭에서 체크하면 여기 모여요") }
       /// 이 카테고리에서 이룬 싶이 아직 없어요
       internal static var filtered: String { Strings.tr("Localization", "finished.empty.filtered", fallback: "이 카테고리에서 이룬 싶이 아직 없어요") }
       /// 아직 이룬 싶이 없어요
       internal static var title: String { Strings.tr("Localization", "finished.empty.title", fallback: "아직 이룬 싶이 없어요") }
+    }
+    internal enum Expectation {
+      /// 기대랑 비교해 본 싶 %d개 기준
+      internal static func captionFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.expectation.caption_format", p1, fallback: "기대랑 비교해 본 싶 %d개 기준")
+      }
+      /// %d개
+      internal static func countFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.expectation.count_format", p1, fallback: "%d개")
+      }
+      /// 모아 보기
+      internal static var more: String { Strings.tr("Localization", "finished.expectation.more", fallback: "모아 보기") }
+      /// 기록 없음
+      internal static var noRecord: String { Strings.tr("Localization", "finished.expectation.no_record", fallback: "기록 없음") }
+      /// %1$@, 기대보다 좋았어요 %2$d/%3$d
+      internal static func rowAccessibilityFormat(_ p1: Any, _ p2: Int, _ p3: Int) -> String {
+        return Strings.tr("Localization", "finished.expectation.row_accessibility_format", String(describing: p1), p2, p3, fallback: "%1$@, 기대보다 좋았어요 %2$d/%3$d")
+      }
+      /// 전체 보기
+      internal static var showAll: String { Strings.tr("Localization", "finished.expectation.show_all", fallback: "전체 보기") }
+      /// 이뤄 보니 %d개가 기대보다 좋았어요
+      internal static func titleFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "finished.expectation.title_format", p1, fallback: "이뤄 보니 %d개가 기대보다 좋았어요")
+      }
     }
     internal enum Filter {
       /// 전체
@@ -863,6 +916,10 @@ internal enum Strings {
       /// %d일 이룸
       internal static func dayFormat(_ p1: Int) -> String {
         return Strings.tr("Localization", "finished.row.day_format", p1, fallback: "%d일 이룸")
+      }
+      /// %1$@ · %2$@
+      internal static func detailFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "finished.row.detail_format", String(describing: p1), String(describing: p2), fallback: "%1$@ · %2$@")
       }
       /// “%@”
       internal static func noteFormat(_ p1: Any) -> String {
@@ -969,14 +1026,23 @@ internal enum Strings {
       internal static func countFormat(_ p1: Int, _ p2: Int) -> String {
         return Strings.tr("Localization", "home.finish_note.count_format", p1, p2, fallback: "%d/%d")
       }
-      /// 지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.
-      internal static var description: String { Strings.tr("Localization", "home.finish_note.description", fallback: "지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요.") }
+      /// 기대했던 것과 비교하면
+      /// 어땠어요?
+      internal static var feelingTitle: String { Strings.tr("Localization", "home.finish_note.feeling_title", fallback: "기대했던 것과 비교하면\n어땠어요?") }
+      /// 어땠어요?
+      internal static var feelingTitleBold: String { Strings.tr("Localization", "home.finish_note.feeling_title_bold", fallback: "어땠어요?") }
       /// 완료 소감
       internal static var field: String { Strings.tr("Localization", "home.finish_note.field", fallback: "완료 소감") }
+      /// %@ · 이뤘어요!
+      internal static func finishedCaptionFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.finish_note.finished_caption_format", String(describing: p1), fallback: "%@ · 이뤘어요!")
+      }
       /// %@ · %@에 씀
       internal static func letterCardFormat(_ p1: Any, _ p2: Any) -> String {
         return Strings.tr("Localization", "home.finish_note.letter_card_format", String(describing: p1), String(describing: p2), fallback: "%@ · %@에 씀")
       }
+      /// 기대했던 것과 비교하면 어땠어요?
+      internal static var letterFeelingQuestion: String { Strings.tr("Localization", "home.finish_note.letter_feeling_question", fallback: "기대했던 것과 비교하면 어땠어요?") }
       /// 이루고 나니 어때요?
       internal static var letterQuestion: String { Strings.tr("Localization", "home.finish_note.letter_question", fallback: "이루고 나니 어때요?") }
       /// 편지를 보냈어요
@@ -989,19 +1055,14 @@ internal enum Strings {
       /// 오늘의 내가
       /// 편지를 보냈어요
       internal static var letterTitleToday: String { Strings.tr("Localization", "home.finish_note.letter_title_today", fallback: "오늘의 내가\n편지를 보냈어요") }
+      /// 한 줄 소감 (선택)
+      internal static var noteLabel: String { Strings.tr("Localization", "home.finish_note.note_label", fallback: "한 줄 소감 (선택)") }
       /// 예) 생각보다 훨씬 좋았어요!
       internal static var placeholder: String { Strings.tr("Localization", "home.finish_note.placeholder", fallback: "예) 생각보다 훨씬 좋았어요!") }
-      /// 남기기
-      internal static var save: String { Strings.tr("Localization", "home.finish_note.save", fallback: "남기기") }
+      /// 저장할게요
+      internal static var save: String { Strings.tr("Localization", "home.finish_note.save", fallback: "저장할게요") }
       /// 다음에 할게요
       internal static var skip: String { Strings.tr("Localization", "home.finish_note.skip", fallback: "다음에 할게요") }
-      /// 이루고 나니 어때요?
-      internal static var titleBold: String { Strings.tr("Localization", "home.finish_note.title_bold", fallback: "이루고 나니 어때요?") }
-      /// %@,
-      /// 이루고 나니 어때요?
-      internal static func titleFormat(_ p1: Any) -> String {
-        return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
-      }
     }
     internal enum InProgress {
       /// 하는 중, %d일째

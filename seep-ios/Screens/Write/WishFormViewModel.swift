@@ -796,6 +796,7 @@ final class WishFormViewModel {
             tags: state.tagSelection.tags,
             isSuccess: original.isSuccess,
             finishNote: original.finishNote,
+            finishFeeling: original.finishFeeling,
             // 옮겨 간 카테고리의 고정 3개 제한을 넘지 않도록, 카테고리를 바꾸면 고정을 푼다 (GH-33 R-9)
             pinnedAt: state.category == original.category ? original.pinnedAt : nil,
             // 다른 카테고리로 바꿨으면 링크는 빈 문자열로 저장한다 (GH-29 R-1)

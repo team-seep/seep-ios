@@ -35,6 +35,8 @@ extension ParameterName {
     static let titleCount = ParameterName(rawValue: "title_count")
     /// 사진 속 글자 칩 줄에 금액 칩이 있는지 (GH-144)
     static let hasAmount = ParameterName(rawValue: "has_amount")
+    /// 완료 소감 시트에서 고른 기대 비교: worse / same / better (GH-139)
+    static let expectation = ParameterName(rawValue: "expectation")
     /// db_migration 결과: success / failure (GH-79 R-22)
     static let result = ParameterName(rawValue: "result")
     static let wishCount = ParameterName(rawValue: "wish_count")

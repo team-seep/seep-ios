@@ -276,6 +276,14 @@ final class AppDatabase {
             }
         }
 
+        // GH-139: 이룬 순간 기대와 비교(worse/same/better). 기존 위시는 기록 없음("").
+        // 기본값 있는 컬럼이라 구버전 앱과 섞여도 merge 쓰기가 이 필드를 지우지 않고(설계 §6.4), wish 아웃박스 트리거가 그대로 실어 나른다
+        migrator.registerMigration("v13") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "finishFeeling", .text).notNull().defaults(to: "")
+            }
+        }
+
         return migrator
     }
 

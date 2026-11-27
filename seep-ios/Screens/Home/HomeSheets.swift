@@ -42,7 +42,9 @@ struct SortOrderSheet: View {
     }
 }
 
-/// 완료 소감 시트: 이모지 40 · "{제목}, / **이루고 나니 어때요?**" · 설명 · 입력 칸 · 글자 수 · 남기기 · 다음에 할게요 (GH-25)
+/// 완료 소감 시트: "{이모지} {제목} · 이뤘어요!" · "기대했던 것과 비교하면 / **어땠어요?**" · 기대 비교 세 칸 ·
+/// "한 줄 소감 (선택)" 입력 칸(글자 수) · 이어서 적기 · 저장할게요 · 다음에 할게요 (GH-25, GH-139 R-2).
+/// 편지가 열리면 편지 아래에 기대 비교 질문과 세 칸을 둔다 (GH-139 R-4)
 struct FinishNoteSheet: View {
     @Bindable var viewModel: FinishNoteViewModel
     @Environment(\.dismiss) private var dismiss
@@ -52,45 +54,61 @@ struct FinishNoteSheet: View {
         VStack(alignment: .leading, spacing: 0) {
             if let letter = viewModel.state.openedLetter {
                 openedLetter(letter)
+                Text(Strings.Home.FinishNote.letterFeelingQuestion)
+                    .font(.appleMedium(size: 14))
+                    .foregroundStyle(Color.gray5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 24)
+                feelingButtons
+                    .padding(.top, 12)
+                Text(Strings.Home.FinishNote.letterQuestion)
+                    .font(.appleMedium(size: 14))
+                    .foregroundStyle(Color.gray5)
+                    .padding(.top, 24)
             } else {
-                Text(verbatim: viewModel.wish.emoji)
-                    .font(.system(size: 40))
+                Text(verbatim: finishedCaption)
+                    .font(.appleMedium(size: 13))
+                    .foregroundStyle(Color.gray4)
+                    .lineLimit(1)
                     .padding(.top, 24)
                 HeadlineText(
-                    text: Strings.Home.FinishNote.titleFormat(viewModel.wish.title),
-                    boldPart: Strings.Home.FinishNote.titleBold
+                    text: Strings.Home.FinishNote.feelingTitle,
+                    boldPart: Strings.Home.FinishNote.feelingTitleBold
                 )
-                .padding(.top, 10)
-                Text(Strings.Home.FinishNote.description)
-                    .font(.appleRegular(size: 14))
-                    .foregroundStyle(Color.gray4)
-                    .padding(.top, 6)
+                .padding(.top, 8)
+                .accessibilityAddTraits(.isHeader)
+                feelingButtons
+                    .padding(.top, 20)
+                Text(Strings.Home.FinishNote.noteLabel)
+                    .font(.appleMedium(size: 14))
+                    .foregroundStyle(Color.gray5)
+                    .padding(.top, 24)
             }
 
-            TextField(
-                "",
-                text: Binding(
-                    get: { viewModel.state.noteText },
-                    set: { viewModel.send(.inputNote($0)) }
-                ),
-                prompt: Text(Strings.Home.FinishNote.placeholder).foregroundStyle(Color.gray3)
-            )
-            .font(.appleRegular(size: 16))
-            .foregroundStyle(Color.gray5)
-            .focused($isFocused)
-            .submitLabel(.done)
-            .onSubmit { viewModel.send(.tapSave) }
-            .accessibilityLabel(Text(Strings.Home.FinishNote.field))
+            HStack(spacing: 8) {
+                TextField(
+                    "",
+                    text: Binding(
+                        get: { viewModel.state.noteText },
+                        set: { viewModel.send(.inputNote($0)) }
+                    ),
+                    prompt: Text(Strings.Home.FinishNote.placeholder).foregroundStyle(Color.gray3)
+                )
+                .font(.appleRegular(size: 16))
+                .foregroundStyle(Color.gray5)
+                .focused($isFocused)
+                .submitLabel(.done)
+                .onSubmit { viewModel.send(.submitNote) }
+                .accessibilityLabel(Text(Strings.Home.FinishNote.field))
+                Text(verbatim: viewModel.state.countText)
+                    .font(.appleMedium(size: 12))
+                    .foregroundStyle(Color.gray4)
+                    .fixedSize()
+            }
             .padding(.horizontal, 16)
-            .frame(height: 52)
+            .frame(minHeight: 52)
             .background(Color.gray2, in: RoundedRectangle(cornerRadius: 12))
-            .padding(.top, 20)
-
-            Text(verbatim: viewModel.state.countText)
-                .font(.appleMedium(size: 12))
-                .foregroundStyle(Color.gray4)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.top, 8)
+            .padding(.top, 10)
 
             chainRow
                 .padding(.top, 20)
@@ -130,6 +148,13 @@ struct FinishNoteSheet: View {
     private var errorMessage: String? {
         if case .errorAlert(let message) = viewModel.route { return message }
         return nil
+    }
+
+    /// "{이모지} {제목} · 이뤘어요!"
+    private var finishedCaption: String {
+        Strings.Home.FinishNote.finishedCaptionFormat(
+            "\(viewModel.wish.emoji) \(viewModel.wish.title)".trimmingCharacters(in: .whitespaces)
+        )
     }
 }
 
@@ -288,10 +313,43 @@ private extension FinishNoteSheet {
             .padding(20)
             .background(Color.gray2, in: RoundedRectangle(cornerRadius: 16))
             .padding(.top, 20)
-            Text(Strings.Home.FinishNote.letterQuestion)
-                .font(.appleMedium(size: 14))
-                .foregroundStyle(Color.gray5)
-                .padding(.top, 24)
         }
+    }
+
+    /// 기대 비교 세 칸: 고른 칸 = seep-blue 바탕 흰 ExtraBold + 그림자(카테고리 탭 선택과 같은 역할), 나머지 = gray2 바탕 gray4 (GH-139 R-2)
+    var feelingButtons: some View {
+        HStack(spacing: 8) {
+            ForEach(FinishFeeling.allCases, id: \.self) { feeling in
+                feelingButton(feeling)
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.state.selectedFeeling)
+        .sensoryFeedback(.selection, trigger: viewModel.state.selectedFeeling)
+    }
+
+    func feelingButton(_ feeling: FinishFeeling) -> some View {
+        let isSelected = viewModel.state.selectedFeeling == feeling
+        return Button {
+            viewModel.send(.selectFeeling(feeling))
+        } label: {
+            Text(verbatim: feeling.buttonTitle)
+                .font(isSelected ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
+                .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
+                .multilineTextAlignment(.center)
+                .lineSpacing(2)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, minHeight: 64)
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(isSelected ? Color.seepBlue : Color.gray2)
+                        .shadow(color: .black.opacity(isSelected ? 0.15 : 0), radius: 1.5, y: 2)
+                }
+                .contentShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(verbatim: feeling.title))
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

@@ -29,8 +29,9 @@ protocol WishRepository {
     /// 일지 한 줄에 삭제 표시를 하고, 갱신된 일지 목록(최신순)을 돌려준다 (GH-95 R-2, R-7).
     func deleteJournal(wishId: String, journalId: String) -> Result<[WishJournal], RepositoryError>
 
-    /// 완료 소감을 저장하고, 소감이 반영된 위시를 돌려준다 (GH-25 R-3).
-    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError>
+    /// 완료 소감과 기대 비교를 함께 저장하고, 반영된 위시를 돌려준다 (GH-25 R-3, GH-139 R-3).
+    /// `feeling`이 nil 이면 기대 비교 기록 없음으로 저장한다
+    func updateFinishNote(wishId: String, note: String, feeling: FinishFeeling?) -> Result<Wish, RepositoryError>
     
     /// 세 카테고리 전체에서 제목·메모·해시태그에 검색어가 들어간 위시를 돌려준다. 정렬·묶음은 화면이 정한다 (GH-32 R-3).
     func searchWishes(keyword: String) -> [Wish]
@@ -75,7 +76,7 @@ protocol WishRepository {
     /// (모은 돈 기록·장소·완료 상태는 건드리지 않는다) (GH-64 P2). 사진·편지는 수정 문서 블록 값으로 저장한다 (GH-61 R-11)
     func updateWish(_ wish: Wish) -> Result<Wish, RepositoryError>
     
-    /// 완료를 취소하고(완료일·소감도 지운다), 반영된 위시를 돌려준다. 상세 ⋯ "완료 취소하기" (GH-64 TC-605, GH-25 R-6)
+    /// 완료를 취소하고(완료일·소감·기대 비교도 지운다), 반영된 위시를 돌려준다. 상세 ⋯ "완료 취소하기" (GH-64 TC-605, GH-25 R-6)
     func cancelFinish(wishId: String) -> Result<Wish, RepositoryError>
 
     /// "내가 정한 순서"에서 위시를 옮긴다. `orderedIds`는 옮긴 뒤 화면의 순서(고정 위시 제외).
@@ -143,11 +144,15 @@ final class WishRepositoryImpl: WishRepository {
                 record.finishDate = finishDate
                 // 완료하면 고정을 푼다. 완료를 취소해도 돌아오지 않는다 (GH-33 R-6)
                 record.pinnedAt = nil
+                // 기대 비교는 이번 완료에 대한 답이다. v13 전 앱이 완료를 취소하면 merge 쓰기가 이 필드를 남겨
+                // 옛 답이 돌아올 수 있어 완료할 때마다 비운다 (GH-139 R-9)
+                record.finishFeeling = ""
             }
             var finishedWish = wish
             finishedWish.isSuccess = true
             finishedWish.finishDate = finishDate
             finishedWish.pinnedAt = nil
+            finishedWish.finishFeeling = nil
             return finishedWish
         }
     }
@@ -229,8 +234,11 @@ final class WishRepositoryImpl: WishRepository {
         }
     }
 
-    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
-        return updateAndFetch(wishId: wishId) { $0.finishNote = note }
+    func updateFinishNote(wishId: String, note: String, feeling: FinishFeeling?) -> Result<Wish, RepositoryError> {
+        return updateAndFetch(wishId: wishId) { record in
+            record.finishNote = note
+            record.finishFeeling = feeling?.rawValue ?? ""
+        }
     }
 
     func searchWishes(keyword: String) -> [Wish] {
@@ -309,8 +317,9 @@ final class WishRepositoryImpl: WishRepository {
         return updateAndFetch(wishId: wishId) { record in
             record.isSuccess = false
             record.finishDate = nil
-            // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
+            // 다시 완료하면 소감·기대 비교를 새로 묻는다 (GH-25 R-6, GH-139 R-9)
             record.finishNote = ""
+            record.finishFeeling = ""
         }
     }
 

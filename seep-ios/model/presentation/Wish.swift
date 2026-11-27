@@ -24,6 +24,8 @@ struct Wish: Equatable, Hashable {
     var isSuccess: Bool
     /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
     var finishNote: String
+    /// 이룬 순간 기대와 비교한 결과. nil 이면 기록 없음. 완료를 취소하면 지운다 (GH-139)
+    var finishFeeling: FinishFeeling?
     /// 홈 맨 위에 고정한 시각. nil 이면 고정 아님 (GH-33)
     var pinnedAt: Date?
     /// 상품 링크(http/https). 비어 있으면 링크 없음 (GH-29)
@@ -119,6 +121,7 @@ struct Wish: Equatable, Hashable {
         tags: [String] = [],
         isSuccess: Bool = false,
         finishNote: String = "",
+        finishFeeling: FinishFeeling? = nil,
         pinnedAt: Date? = nil,
         link: String = "",
         lastCheckedAt: Date? = nil,
@@ -148,6 +151,7 @@ struct Wish: Equatable, Hashable {
         self.tags = tags.isEmpty && !hashtag.isEmpty ? [hashtag] : tags
         self.isSuccess = isSuccess
         self.finishNote = finishNote
+        self.finishFeeling = finishFeeling
         self.pinnedAt = pinnedAt
         self.link = link
         self.lastCheckedAt = lastCheckedAt
@@ -159,5 +163,41 @@ struct Wish: Equatable, Hashable {
         self.previousWishId = previousWishId
         self.startedAt = startedAt
         self.createdAt = createdAt
+    }
+}
+
+/// 이룬 순간 "기대했던 것과 비교하면 어땠어요?" 세 칸 (GH-139 R-1). rawValue 가 `wish.finishFeeling` 컬럼·로그 `expectation` 값이다
+enum FinishFeeling: String, CaseIterable {
+    case worse
+    case same
+    case better
+
+    /// 칸·목록에 쓰는 한 줄 문구 ("기대보다 좋았어요")
+    var title: String {
+        switch self {
+        case .worse: return Strings.FinishFeeling.worse
+        case .same: return Strings.FinishFeeling.same
+        case .better: return Strings.FinishFeeling.better
+        }
+    }
+
+    /// 시트 칸 안에서 두 줄로 보이는 문구 ("기대보다\n좋았어요")
+    var buttonTitle: String {
+        switch self {
+        case .worse: return Strings.FinishFeeling.Button.worse
+        case .same: return Strings.FinishFeeling.Button.same
+        case .better: return Strings.FinishFeeling.Button.better
+        }
+    }
+
+    /// 목록·상세 소감 자리 문구: 기대 비교만 / 기대 비교 · “소감” / 소감만(“소감”). 둘 다 없으면 nil (R-8)
+    static func noteText(feeling: FinishFeeling?, note: String) -> String? {
+        let note = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        switch (feeling, note.isEmpty) {
+        case (nil, true): return nil
+        case (nil, false): return Strings.Finished.Row.noteFormat(note)
+        case (let feeling?, true): return feeling.title
+        case (let feeling?, false): return Strings.FinishFeeling.withNoteFormat(feeling.title, note)
+        }
     }
 }

@@ -5,7 +5,11 @@ extension FinishNoteViewModel {
     enum Action: Equatable {
         case onAppear
         case inputNote(String)
+        /// 기대 비교 세 칸. 고른 칸을 다시 누르면 선택을 푼다 (GH-139 R-2)
+        case selectFeeling(FinishFeeling)
         case tapSave
+        /// 입력 칸의 Return. 소감을 쓴 경우에만 저장한다 — 칸만 고르고 소감을 쓰려다 Return 을 눌러 닫히지 않게 (GH-139)
+        case submitNote
         case tapSkip
         /// "＋ 이어서 적기" — 입력한 소감은 저장하고 닫은 뒤 작성 화면을 연다 (GH-84 R-1)
         case tapChainNext
@@ -26,6 +30,9 @@ extension FinishNoteViewModel {
         /// 입력 칸에 보일 문자열 (최대 길이로 자른 값)
         var noteText = ""
         var countText = Strings.Home.FinishNote.countFormat(0, FinishNoteViewModel.maxLength)
+        /// 고른 기대 비교. nil 이면 고르지 않음 (GH-139 R-2)
+        var selectedFeeling: FinishFeeling?
+        /// 소감이나 기대 비교 중 하나라도 있으면 켠다 (GH-139 R-3)
         var isSaveEnabled = false
     }
 
@@ -58,7 +65,7 @@ extension FinishNoteViewModel {
     }
 }
 
-/// 완료 직후 "이루고 나니 어때요?" 한 줄 소감 시트 (GH-25 R-1~R-3)
+/// 완료 직후 "기대했던 것과 비교하면 어땠어요?" 세 칸 + 한 줄 소감 시트 (GH-25 R-1~R-3, GH-139 R-2~R-4)
 @Observable
 final class FinishNoteViewModel {
     /// 소감 최대 글자 수. 이모지 하나를 한 글자로 센다 (R-2)
@@ -98,8 +105,12 @@ final class FinishNoteViewModel {
             }
         case .inputNote(let text):
             apply(note: text)
+        case .selectFeeling(let feeling):
+            select(feeling: feeling)
         case .tapSave:
             save()
+        case .submitNote:
+            if !Self.trimmed(state.noteText).isEmpty { save() }
         case .tapSkip:
             sendClickLog(objectId: .skipFinishNote)
             route = .dismiss
@@ -112,14 +123,39 @@ final class FinishNoteViewModel {
         let limited = String(note.prefix(Self.maxLength))
         state.noteText = limited
         state.countText = Strings.Home.FinishNote.countFormat(limited.count, Self.maxLength)
-        state.isSaveEnabled = !Self.trimmed(limited).isEmpty
+        updateSaveEnabled()
+    }
+
+    private func select(feeling: FinishFeeling) {
+        if state.selectedFeeling == feeling {
+            state.selectedFeeling = nil
+        } else {
+            state.selectedFeeling = feeling
+            // 고를 때만 남긴다. 푸는 동작은 세지 않는다 (TC-11)
+            dependency.logManager.sendEvent(event: ClickEvent(
+                screen: screenName,
+                objectType: .button,
+                objectId: .selectExpectation,
+                extraParameters: [.expectation: feeling.rawValue]
+            ))
+        }
+        updateSaveEnabled()
+    }
+
+    private func updateSaveEnabled() {
+        state.isSaveEnabled = hasInput
+    }
+
+    /// 저장할 것이 있는지: 공백을 자른 소감이나 고른 기대 비교 (R-3)
+    private var hasInput: Bool {
+        !Self.trimmed(state.noteText).isEmpty || state.selectedFeeling != nil
     }
 
     private func save() {
+        guard hasInput else { return }
         let note = Self.trimmed(state.noteText)
-        guard !note.isEmpty else { return }
 
-        switch dependency.wishRepository.updateFinishNote(wishId: wish.id, note: note) {
+        switch dependency.wishRepository.updateFinishNote(wishId: wish.id, note: note, feeling: state.selectedFeeling) {
         case .success(let savedWish):
             sendClickLog(objectId: .saveFinishNote)
             onSave?(savedWish)
@@ -129,12 +165,12 @@ final class FinishNoteViewModel {
         }
     }
 
-    /// 소감이 있으면 저장하고(실패하면 이어 적지 않는다), 없으면 건너뛰기와 같다 (GH-84 R-1)
+    /// 소감·기대 비교가 있으면 저장하고(실패하면 이어 적지 않는다), 없으면 건너뛰기와 같다 (GH-84 R-1, GH-139 R-3)
     private func chainNext() {
         let note = Self.trimmed(state.noteText)
         var previous = wish
-        if !note.isEmpty {
-            switch dependency.wishRepository.updateFinishNote(wishId: wish.id, note: note) {
+        if hasInput {
+            switch dependency.wishRepository.updateFinishNote(wishId: wish.id, note: note, feeling: state.selectedFeeling) {
             case .success(let savedWish):
                 onSave?(savedWish)
                 previous = savedWish

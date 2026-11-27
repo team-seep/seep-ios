@@ -68,6 +68,33 @@ final class HomeWidgetCheckFeatureTests: HomeFeatureTestCase {
         XCTAssertEqual(notificationManager.cancelledWishes.count, 1)
     }
 
+    // MARK: GH-139 TC6
+
+    func test_GH139_TC6_위젯에서완료한싶에소감은없고기대비교만있으면_소감시트를다시띄우지않는다() {
+        // Given: 다른 기기에서 기대 비교만 남기고 동기화된 위시
+        repository.fetchWishResult = [Wish(id: "wish-1", title: "위시", isSuccess: true, finishFeeling: .better)]
+        store.recordFinish(wishId: "wish-1", at: now)
+
+        // When
+        sut.send(.syncWidgetChanges)
+
+        // Then
+        XCTAssertNil(sheetWishId)
+        XCTAssertEqual(notificationManager.cancelledWishes.map(\.id), ["wish-1"])
+    }
+
+    func test_GH139_TC6_소감과기대비교가둘다비어있으면_소감시트를띄운다() {
+        // Given
+        repository.fetchWishResult = [Wish(id: "wish-1", title: "위시", isSuccess: true)]
+        store.recordFinish(wishId: "wish-1", at: now)
+
+        // When
+        sut.send(.syncWidgetChanges)
+
+        // Then
+        XCTAssertEqual(sheetWishId, "wish-1")
+    }
+
     func test_GH48_TC8_그사이앱에서완료를취소한위시는_알림을지우지않고소감도묻지않는다() {
         // Given
         repository.fetchWishResult = [Wish(id: "wish-1", title: "위시", isSuccess: false)]

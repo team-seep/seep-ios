@@ -5,7 +5,7 @@ struct DetailChainRow: Equatable, Identifiable {
     let id: String
     let emoji: String
     let title: String
-    /// 이룬 싶 "{날짜} 이뤘어요"(소감이 있으면 · "소감"), 지금 싶 "지금 이 싶", 그 밖은 nil
+    /// 이룬 싶 "{날짜} 이뤘어요"(소감·기대 비교가 있으면 · 기대보다 좋았어요 · "소감"), 지금 싶 "지금 이 싶", 그 밖은 nil
     let caption: String?
     let isCurrent: Bool
     let isFinished: Bool
@@ -32,6 +32,10 @@ struct DetailChainRow: Equatable, Identifiable {
         guard wish.isSuccess else { return nil }
         let date = wish.finishDate.map { DisplayDate.numericYearMonthDay($0) } ?? ""
         let note = wish.finishNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        // 기대 비교가 있으면 소감 앞에 붙인다 (GH-139 R-8)
+        if let feeling = wish.finishFeeling, let noteText = FinishFeeling.noteText(feeling: feeling, note: note) {
+            return Strings.Detail.Chain.finishedFeelingFormat(date, noteText)
+        }
         return note.isEmpty
             ? Strings.Detail.Chain.finishedFormat(date)
             : Strings.Detail.Chain.finishedNoteFormat(date, note)

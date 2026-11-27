@@ -42,16 +42,16 @@ enum FinishedSectionBuilder {
         return sections
     }
 
-    /// "{일}일 이룸" + 소감이 있으면 " · “소감”", 소감이 없고 전체 필터면 " · {카테고리}" (R-20)
+    /// "{일}일 이룸" + 소감·기대 비교가 있으면 " · 기대보다 좋았어요 · “소감”"(R-20, GH-139 R-8),
+    /// 둘 다 없고 전체 필터면 " · {카테고리}"
     static func subtitle(wish: Wish, filter: Category?, calendar: Calendar = .current) -> String {
         let day = calendar.component(.day, from: finishDate(of: wish))
         let dayText = Strings.Finished.Row.dayFormat(day)
-        let note = wish.finishNote.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !note.isEmpty {
-            return dayText + " · " + Strings.Finished.Row.noteFormat(note)
+        if let noteText = FinishFeeling.noteText(feeling: wish.finishFeeling, note: wish.finishNote) {
+            return Strings.Finished.Row.detailFormat(dayText, noteText)
         }
         if filter == nil {
-            return dayText + " · " + wish.category.title
+            return Strings.Finished.Row.detailFormat(dayText, wish.category.title)
         }
         return dayText
     }
