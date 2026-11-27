@@ -10,6 +10,8 @@ extension HomeViewModel {
         case selectCategory(Category)
         /// 태그 필터 칩. nil 이면 '전체' (GH-136 R-3)
         case selectTag(String?)
+        /// "하는 중 n" 칩 (GH-143 R-4)
+        case selectInProgressFilter
         case tapSortOrder
         case selectSortOrder(HomeSortOrder)
         /// 필터 바 "순서 바꾸기" → 순서 바꾸기 모드 (GH-73 R-4)
@@ -46,6 +48,12 @@ extension HomeViewModel {
         case closeYearReviewBanner
         case yearReviewDismissed
 
+        // 다 합치면 카드 (GH-148)
+        /// 카드를 눌러 펼치기·접기 (R-6)
+        case toggleWishTotal
+        /// 펼친 카드의 싶 한 줄 → 상세 (R-6)
+        case tapWishTotalItem(id: String)
+
         /// 체크 위젯이 남긴 기록 처리. 싶 탭이 보일 때 첫 로드 직후·앱 활성화마다 (GH-48 R-7, R-8)
         case syncWidgetChanges
         /// 떠 있던 시트가 닫혔다(버튼·끌어내리기 모두)
@@ -68,12 +76,18 @@ extension HomeViewModel {
         var notFinishedCount: Int?
         /// 태그 필터 칩 줄의 태그(저장 값), 많이 쓴 순. 비면 칩 줄을 숨긴다 (GH-136 R-3)
         var tagChips: [String] = []
-        /// 고른 태그 칩. nil 이면 '전체' (GH-136 R-3)
-        var selectedTag: String?
+        /// 칩 줄에서 고른 것. '전체'·'하는 중'·태그 중 하나만 (GH-136 R-3, GH-143 R-4)
+        var filter: HomeListFilter = .all
+        /// 지금 카테고리의 하는 중(시작했고 안 이룬) 싶 수. 0 이면 "하는 중" 칩을 숨긴다 (GH-143 R-4)
+        var inProgressCount = 0
         var items: [HomeWishItem] = []
         /// 리스트 맨 위 잠든 위시 카드. 없으면 그리지 않는다 (GH-30 R-4)
         var sleepingWishCard: SleepingWishCard?
         var yearReviewBanner: YearReviewEligibility?
+        /// 갖고 싶어요 탭 "다 합치면" 카드. 목표 금액이 있는 미완료 싶이 없으면 nil (GH-148 R-1)
+        var wishTotal: WishTotalSummary?
+        /// 카드를 펼쳤는지. 카테고리·태그를 바꾸면 접힌다 (R-6)
+        var isWishTotalExpanded = false
         var badges: [Badge] = []
         var sheet: HomeSheet?
         var yearReviewPresentation: YearReviewPresentation?
@@ -82,9 +96,20 @@ extension HomeViewModel {
         var errorMessage: String?
         var toast: HomeToast?
 
+        /// 고른 태그 칩. 태그가 아니면('전체'·'하는 중') nil (GH-136 R-3)
+        var selectedTag: String? {
+            if case .tag(let tag) = filter { return tag }
+            return nil
+        }
+
         /// 가고 싶어요 탭에서만 지도 버튼을 보인다 (GH-31 R-5)
         var isPlaceMapVisible: Bool {
             category == .wantToGo
+        }
+
+        /// 순서 바꾸기·선택 모드에서는 다른 상단 카드처럼 숨긴다 (GH-148 R-8)
+        var visibleWishTotal: WishTotalSummary? {
+            isReordering || isSelecting ? nil : wishTotal
         }
 
         /// 리스트·그리드 모두 비었으면 빈 상태를 그린다
@@ -113,14 +138,14 @@ extension HomeViewModel {
         }
 
         /// "내가 정한 순서"이고 옮길 위시가 2개 이상일 때만 "순서 바꾸기"가 보인다 (R-4, TC-11).
-        /// 태그로 거른 목록에서 옮기면 숨은 위시 사이 순서가 꼬이므로 '전체'에서만 (GH-136 R-4)
+        /// 태그·하는 중으로 거른 목록에서 옮기면 숨은 위시 사이 순서가 꼬이므로 '전체'에서만 (GH-136 R-4, GH-143 R-4)
         var isReorderButtonVisible: Bool {
-            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering && selectedTag == nil
+            sortOrder == .manualOrder && movableItems.count >= 2 && !isReordering && filter == .all
         }
 
-        /// 순서 바꾸기·선택 모드가 아니고 태그가 하나라도 있으면 칩 줄을 보인다 (GH-136 R-3)
+        /// 순서 바꾸기·선택 모드가 아니고 태그나 하는 중 싶이 하나라도 있으면 칩 줄을 보인다 (GH-136 R-3, GH-143 R-4)
         var isTagFilterVisible: Bool {
-            !tagChips.isEmpty && !isReordering && !isSelecting
+            (!tagChips.isEmpty || inProgressCount > 0) && !isReordering && !isSelecting
         }
     }
 
@@ -142,6 +167,8 @@ extension HomeViewModel {
         let widgetCheckStore: WidgetCheckStore
         /// 화면 이동·이룬 싶 탭 점·적기 시트의 기본 카테고리. 테스트에서는 없어도 된다
         let router: AppRouter?
+        /// 합계 카드에서 싶 수가 같은 통화 중 먼저 둘 통화(앱 언어 기본 통화, GH-148 R-3)
+        let defaultCurrency: () -> String
 
         init(
             wishRepository: WishRepository = WishRepositoryImpl(),
@@ -155,7 +182,8 @@ extension HomeViewModel {
             dateProvider: @escaping () -> Date = Date.init,
             photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
             widgetCheckStore: WidgetCheckStore = .shared,
-            router: AppRouter? = nil
+            router: AppRouter? = nil,
+            defaultCurrency: @escaping () -> String = { AmountFormatter.defaultCurrency() }
         ) {
             self.wishRepository = wishRepository
             self.preference = preference
@@ -169,6 +197,7 @@ extension HomeViewModel {
             self.photoStorage = photoStorage
             self.widgetCheckStore = widgetCheckStore
             self.router = router
+            self.defaultCurrency = defaultCurrency
         }
     }
 }
@@ -219,6 +248,8 @@ final class HomeViewModel {
     private var pendingChainWish: Wish?
     private var toastId = 0
     private var didSendYearReviewImpression = false
+    /// 이번 화면 진입에서 합계 카드 노출을 보냈는지. 화면이 나타날 때마다 다시 보낸다 (GH-148 TC-14)
+    private var didSendWishTotalImpression = false
     /// 이번 실행에서 카테고리별로 카드에 올리기로 고른 위시 id — 실행당 카테고리별 1번만 고른다
     private var sleepingWishIds: [Category: String] = [:]
     /// 이번 실행에서 카드를 처리한 카테고리 — 다음 잠든 위시를 이어서 띄우지 않는다
@@ -244,19 +275,24 @@ final class HomeViewModel {
                 initializeBadgesIfNeeded()
                 widgetSyncedAt = dependency.now()
             }
+            didSendWishTotalImpression = false
             fetchWishes()
 
         case .selectCategory(let category):
             state.category = category
             // 다른 카테고리의 선택은 이어가지 않는다 (GH-86)
             state.selectedIds = []
-            // 고른 태그는 카테고리를 옮기면 '전체'로 돌아간다 (GH-136 R-4)
-            state.selectedTag = nil
+            // 고른 태그·하는 중은 카테고리를 옮기면 '전체'로 돌아간다 (GH-136 R-4, GH-143 R-4)
+            state.filter = .all
+            state.isWishTotalExpanded = false
             dependency.router?.homeCategory = category
             fetchWishes()
 
         case .selectTag(let tag):
             selectTag(tag)
+
+        case .selectInProgressFilter:
+            selectInProgressFilter()
 
         case .tapSortOrder:
             state.sheet = .sortOrder
@@ -268,9 +304,12 @@ final class HomeViewModel {
             guard state.isReorderButtonVisible else { return }
             sendClickLog(objectId: .reorderWishes)
             state.isReordering = true
+            // 숨겼다 다시 보일 때는 접힌 채로 (GH-148 R-8)
+            state.isWishTotalExpanded = false
 
         case .finishReorder:
             state.isReordering = false
+            sendWishTotalImpressionIfNeeded()
 
         case .moveWish(let source, let destination):
             moveWish(from: source, to: destination)
@@ -285,10 +324,12 @@ final class HomeViewModel {
             sendClickLog(objectId: .selectWishes)
             state.selectedIds = []
             state.isSelecting = true
+            state.isWishTotalExpanded = false
 
         case .cancelSelection:
             state.isSelecting = false
             state.selectedIds = []
+            sendWishTotalImpressionIfNeeded()
 
         case .selectAll:
             let all = Set(state.selectableItems.map(\.id))
@@ -363,6 +404,12 @@ final class HomeViewModel {
             // 회고·목록에서 상세로 들어가 완료 취소·삭제했을 수 있어 다시 읽는다 (GH-34 R-7)
             fetchWishes()
 
+        case .toggleWishTotal:
+            toggleWishTotal()
+
+        case .tapWishTotalItem(let id):
+            tapWishTotalItem(id: id)
+
         case .syncWidgetChanges:
             syncWidgetChanges()
 
@@ -387,13 +434,34 @@ final class HomeViewModel {
 
     private func rebuildItems() {
         refreshSleepingWish()
-        state.tagChips = Self.tagChips(of: wishes.filter { !$0.isSuccess })
-        // 고른 태그가 사라졌으면(그 태그 위시를 다 지움·이룸) '전체'로 돌아간다
-        if let selectedTag = state.selectedTag, !state.tagChips.contains(selectedTag) {
-            state.selectedTag = nil
+        let openWishes = wishes.filter { !$0.isSuccess }
+        state.tagChips = Self.tagChips(of: openWishes)
+        state.inProgressCount = openWishes.filter(\.isInProgress).count
+        // 고른 태그가 사라졌거나(그 태그 위시를 다 지움·이룸) 하는 중 싶이 0개가 되면 '전체'로 돌아간다 (GH-143 R-4)
+        switch state.filter {
+        case .tag(let tag) where !state.tagChips.contains(tag):
+            state.filter = .all
+        case .inProgress where state.inProgressCount == 0:
+            state.filter = .all
+        default:
+            break
         }
-        let visibleWishes = state.selectedTag.map { tag in wishes.filter { $0.tags.contains(tag) } } ?? wishes
-        state.items = visibleWishes.map { HomeWishItem(wish: $0, photoStorage: dependency.photoStorage) }
+        let visibleWishes: [Wish]
+        switch state.filter {
+        case .all:
+            visibleWishes = wishes
+        case .inProgress:
+            // 다른 하는 중 싶이 남아 있으면, 방금 이뤄 흐리게 남은 싶도 같은 자리에 둔다.
+            // 마지막 하는 중 싶을 이루면 위에서 '전체'로 돌아간다 (TC-8)
+            visibleWishes = wishes.filter { $0.startedAt != nil }
+        case .tag(let tag):
+            visibleWishes = wishes.filter { $0.tags.contains(tag) }
+        }
+        let now = dependency.now()
+        state.items = visibleWishes.map {
+            HomeWishItem(wish: $0, photoStorage: dependency.photoStorage, now: now, calendar: dependency.calendar)
+        }
+        refreshWishTotal(visibleWishes: visibleWishes)
         if let banner = state.yearReviewBanner {
             sendYearReviewImpressionIfNeeded(banner: banner)
         }
@@ -403,7 +471,16 @@ final class HomeViewModel {
         guard !state.isReordering, !state.isSelecting else { return }
         let tagType = tag.map { HashtagType(rawValue: $0) != nil ? $0 : "custom" } ?? "all"
         sendClickLog(objectId: .tagFilter, extraParameters: [.tagType: tagType])
-        state.selectedTag = tag
+        state.filter = tag.map { .tag($0) } ?? .all
+        state.isWishTotalExpanded = false
+        rebuildItems()
+    }
+
+    private func selectInProgressFilter() {
+        guard !state.isReordering, !state.isSelecting, state.inProgressCount > 0, state.filter != .inProgress else { return }
+        sendClickLog(objectId: .inProgressFilter)
+        state.filter = .inProgress
+        state.isWishTotalExpanded = false
         rebuildItems()
     }
 
@@ -519,6 +596,7 @@ extension HomeViewModel {
             }
             state.isSelecting = false
             state.selectedIds = []
+            sendWishTotalImpressionIfNeeded()
         case .failure(let error):
             showError(error)
         }
@@ -773,6 +851,51 @@ extension HomeViewModel {
         }
         state.sheet = .badgeCelebration(viewModel)
         return true
+    }
+}
+
+// MARK: 다 합치면 카드 (GH-148)
+extension HomeViewModel {
+    /// 갖고 싶어요 탭에서만, 보이는 목록(태그 필터 적용 후)으로 합친다 (R-1, R-5)
+    private func refreshWishTotal(visibleWishes: [Wish]) {
+        let summary = state.category == .wantToGet
+            ? WishTotalSummary.make(wishes: visibleWishes, tag: state.selectedTag, preferredCurrency: dependency.defaultCurrency())
+            : nil
+        state.wishTotal = summary
+        if summary == nil { state.isWishTotalExpanded = false }
+        sendWishTotalImpressionIfNeeded()
+    }
+
+    /// 화면에 실제로 보일 때만 보낸다. 순서 바꾸기·선택 모드에서 숨어 있었으면 모드를 나올 때 보낸다 (TC-14)
+    private func sendWishTotalImpressionIfNeeded() {
+        guard let summary = state.visibleWishTotal, !didSendWishTotalImpression else { return }
+        didSendWishTotalImpression = true
+        dependency.logManager.sendEvent(event: ImpressionEvent(
+            screen: screenName,
+            objectType: .card,
+            objectId: .wishTotalSummary,
+            extraParameters: [.count: summary.includedCount]
+        ))
+    }
+
+    private func toggleWishTotal() {
+        guard state.visibleWishTotal != nil else { return }
+        state.isWishTotalExpanded.toggle()
+        guard state.isWishTotalExpanded else { return }
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: screenName,
+            objectType: .card,
+            objectId: .expandWishTotal
+        ))
+    }
+
+    private func tapWishTotalItem(id: String) {
+        guard state.isWishTotalExpanded,
+              let summary = state.visibleWishTotal,
+              summary.groups.contains(where: { $0.items.contains { $0.id == id } }) else { return }
+        sendClickLog(objectId: .wishTotalItem)
+        // 합계에는 미완료 싶만 들어간다
+        dependency.router?.push(.wishDetail(id: id, isFinished: false))
     }
 }
 

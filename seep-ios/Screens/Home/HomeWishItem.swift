@@ -13,16 +13,19 @@ struct HomeWishItem: Equatable, Identifiable {
     let canShowPinMenu: Bool
     /// 사진 파일이 실제로 있을 때만 값이 있다 — 그리드 셀이 사진 레이아웃을 쓴다 (GH-36 R-6, R-7)
     let photoFileName: String?
+    /// 하는 중 싶의 "n일째". 시작 전·이룬 싶은 nil (GH-143 R-5)
+    let inProgressDays: Int?
 
     var id: String { wish.id }
 
-    init(wish: Wish, photoStorage: WishPhotoStorage) {
+    init(wish: Wish, photoStorage: WishPhotoStorage, now: Date = Date(), calendar: Calendar = .current) {
         self.wish = wish
         self.stepProgress = WishStepProgress(steps: wish.steps)
         self.finishNote = (wish.isSuccess && !wish.finishNote.isEmpty) ? wish.finishNote : nil
         self.isPinned = wish.isPinned
         self.canShowPinMenu = !wish.isSuccess
         self.photoFileName = photoStorage.photoURL(fileName: wish.photoFileName) != nil ? wish.photoFileName : nil
+        self.inProgressDays = WishStartStatus.inProgressDays(of: wish, now: now, calendar: calendar)
     }
 
     /// 첫 태그 뱃지 문구. 기본 해시태그면 설명 문구, 직접 입력이면 그대로
@@ -35,6 +38,14 @@ struct HomeWishItem: Equatable, Identifiable {
     var extraTagCount: Int {
         max(wish.tags.count - 1, 0)
     }
+}
+
+/// 홈 칩 줄에서 고른 것 (GH-136 R-3, GH-143 R-4)
+enum HomeListFilter: Equatable {
+    case all
+    /// 시작했고 안 이룬 싶만
+    case inProgress
+    case tag(String)
 }
 
 /// 오래 손대지 않은 위시에 "아직 하고 싶어요?"를 묻는 카드 (GH-30 R-6)

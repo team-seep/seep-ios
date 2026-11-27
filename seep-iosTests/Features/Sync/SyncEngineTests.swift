@@ -2,132 +2,6 @@ import XCTest
 
 @testable import seep_ios
 
-/// 메모리 Firestore 대역. `merge: true` 쓰기와 배치마다 같은 `serverUpdatedAt`을 흉내 낸다
-final class FakeSyncServer: RemoteWishStore, @unchecked Sendable {
-    struct Stored {
-        var fields: [String: SyncValue]
-        var serverUpdatedAt: RemoteTimestamp
-        /// Firestore TTL 필드. 삭제 표시 문서에만 있다
-        var purgeAt: Date?
-    }
-
-    private(set) var documents: [SyncCollection: [String: Stored]] = [:]
-    private(set) var pushCallCount = 0
-    var failPush = false
-    private var tick: Int64 = 0
-
-    struct Failure: Error {}
-
-    func push(_ documents: [SyncDocument], metadata: SyncMetadata) async throws {
-        if failPush { throw Failure() }
-        pushCallCount += 1
-        tick += 1
-        let timestamp = RemoteTimestamp(seconds: tick, nanoseconds: 0)
-        for document in documents {
-            var stored = self.documents[document.collection]?[document.id]?.fields ?? [:]
-            stored.merge(document.fields) { _, new in new }
-            self.documents[document.collection, default: [:]][document.id] = Stored(
-                fields: stored,
-                serverUpdatedAt: timestamp,
-                purgeAt: document.isDeleted ? metadata.purgeAt : nil
-            )
-        }
-    }
-
-    func pull(_ collection: SyncCollection, uid: String, after cursor: RemoteTimestamp?) async throws -> [SyncDocument] {
-        (documents[collection] ?? [:])
-            .filter { entry in cursor.map { entry.value.serverUpdatedAt > $0 } ?? true }
-            .sorted { ($0.value.serverUpdatedAt, $0.key) < ($1.value.serverUpdatedAt, $1.key) }
-            .map { SyncDocument(collection: collection, id: $0.key, fields: $0.value.fields, serverUpdatedAt: $0.value.serverUpdatedAt) }
-    }
-
-    /// TTL 정책이 문서를 지운 것처럼 서버에서 뺀다
-    func purge(_ collection: SyncCollection, id: String) {
-        documents[collection]?[id] = nil
-    }
-
-    /// 다른 앱 버전이 쓴 문서처럼 서버에 바로 넣는다
-    func put(_ collection: SyncCollection, id: String, fields: [String: SyncValue]) {
-        tick += 1
-        documents[collection, default: [:]][id] = Stored(fields: fields, serverUpdatedAt: RemoteTimestamp(seconds: tick, nanoseconds: 0))
-    }
-}
-
-/// 기기 한 대: 메모리 DB + 실제 저장소·엔진
-/// Storage 대역. 경로 `wishPhotos/{uid}/{fileName}`를 키로 바이트를 둔다
-final class FakePhotoServer: RemotePhotoStore, @unchecked Sendable {
-    private(set) var files: [String: Data] = [:]
-    private(set) var uploadCallCount = 0
-    private(set) var downloadRequests: [String] = []
-    var failUpload = false
-
-    func upload(fileURL: URL, fileName: String, uid: String) async throws {
-        uploadCallCount += 1
-        if failUpload { throw FakeSyncServer.Failure() }
-        files["wishPhotos/\(uid)/\(fileName)"] = Data(fileName.utf8)
-    }
-
-    func download(fileName: String, uid: String) async throws -> Data {
-        downloadRequests.append(fileName)
-        guard let data = files["wishPhotos/\(uid)/\(fileName)"] else { throw RemotePhotoError.notFound }
-        return data
-    }
-}
-
-final class SyncTestDevice {
-    let database: AppDatabase
-    let repository: WishRepositoryImpl
-    let store: SyncStore
-    let engine: SyncEngine
-    let notifications = MockNotificationManager()
-    let logManager = MockLogManager()
-    let photoStorage = MockWishPhotoStorage()
-    private(set) var widgetReloadCount = 0
-    private(set) var photosDidDownloadCount = 0
-    var clock: Date
-
-    init(server: FakeSyncServer, photoServer: FakePhotoServer = FakePhotoServer(), clock: Date) throws {
-        self.clock = clock
-        database = try AppDatabase.makeInMemory()
-        store = SyncStore(database: database)
-        var nowBox: (() -> Date)?
-        repository = WishRepositoryImpl(database: database, now: { nowBox?() ?? Date() })
-        var reload: (() -> Void)?
-        var photosDownloaded: (() -> Void)?
-        engine = SyncEngine(dependency: .init(
-            store: store,
-            remote: server,
-            photos: photoServer,
-            photoStorage: photoStorage,
-            photosDidDownload: { photosDownloaded?() },
-            isEnabled: { true },
-            wishRepository: repository,
-            notificationManager: notifications,
-            reloadWidgets: { reload?() },
-            logManager: logManager,
-            now: { nowBox?() ?? Date() }
-        ))
-        nowBox = { [unowned self] in self.clock }
-        reload = { [unowned self] in self.widgetReloadCount += 1 }
-        photosDownloaded = { [unowned self] in self.photosDidDownloadCount += 1 }
-    }
-
-    /// 사진을 붙인 위시를 저장한다(파일은 이미 저장된 것으로 본다)
-    func addWishWithPhoto(id: String, fileName: String) throws {
-        photoStorage.existingFileNames.insert(fileName)
-        _ = try repository.addWish(Wish(id: id, title: "사진 \(id)", photoFileName: fileName)).get()
-    }
-
-    func tick(_ seconds: TimeInterval = 60) {
-        clock = clock.addingTimeInterval(seconds)
-    }
-
-    /// 아웃박스에 쌓인 줄의 테이블 (같은 줄은 한 번)
-    func outboxTables() -> Set<String> {
-        Set(store.pendingDocuments(limit: 100)?.documents.map(\.collection.tableName) ?? [])
-    }
-}
-
 /// 동기화 v1 (GH-93 R-32 ~ R-39, 설계 §5·§6). 기기 두 대 = 메모리 DB 두 개 + 메모리 서버 하나
 final class SyncEngineTests: XCTestCase {
     private var server: FakeSyncServer!
@@ -180,11 +54,14 @@ final class SyncEngineTests: XCTestCase {
     }
 
     func test_GH93_TC23_태그가있는280기기에서올리면_v7v8v10이돌고_기존태그가큐에들어간다() throws {
-        // Given: 2.8.0 기기 — v9(태그)까지만 돈 DB에 태그 달린 위시
-        let database = try AppDatabase.makeInMemory(migratedUpTo: "v9")
-        _ = try WishRepositoryImpl(database: database).addWish(Wish(id: "w1", title: "제주", tags: ["여행"])).get()
+        // Given: 2.8.0 기기 — v9(태그)까지만 돈 DB에 태그 달린 위시.
+        // 지금 레코드에는 v9 뒤에 생긴 컬럼(v12 startedAt)이 있어 저장소로 쓰지 않고 그때 스키마대로 SQL 로 넣는다 (GH-143)
+        let database = try AppDatabase.makeInMemory(migratedUpTo: "v9", seedSQL: [
+            "INSERT INTO wish (id, category, title, hashtag, createdAt, updatedAt) VALUES ('w1', 'category_want_to_do', '제주', '여행', 100, 10)",
+            "INSERT INTO wishTag (id, wishId, name, \"order\", createdAt, updatedAt) VALUES ('t1', 'w1', '여행', 0, 10, 10)"
+        ])
 
-        // When
+        // When: 넣은 뒤 남은 마이그레이션(v7·v8·v10·v12)이 돈다
         try database.migrateToLatest()
 
         // Then: 트리거(v7)가 생기기 전에 쓴 위시는 큐에 없고, 태그만 v10이 넣는다
@@ -428,6 +305,111 @@ final class SyncEngineTests: XCTestCase {
         let b1 = try XCTUnwrap(deviceB.repository.fetchWish(id: "w1"))
         XCTAssertNotNil(deviceB.repository.fetchWish(id: "w2")?.pinnedAt)
         XCTAssertEqual(b1.manualOrder, a1.manualOrder)
+    }
+
+    // MARK: GH-146 TC-12
+
+    func test_GH146_TC12_A와A의체크위젯에서단계를체크하고동기화하면_B에서doneAt이같고잔디에들어간다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [
+            WishStep(id: "s1", title: "항공권", order: 0),
+            WishStep(id: "s2", title: "숙소", order: 1)
+        ])).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When: A 앱에서 한 단계, A 의 체크 위젯에서 한 단계를 체크하고 동기화
+        deviceA.tick(60)
+        _ = try deviceA.repository.toggleStep(wishId: "w1", stepId: "s1").get()
+        let widgetNow = deviceA.clock.addingTimeInterval(30)
+        let suiteName = "test.syncEngine.gh146"
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        defer { UserDefaults().removePersistentDomain(forName: suiteName) }
+        let widget = WidgetCheckRepositoryImpl(
+            database: deviceA.database,
+            store: WidgetCheckStore(userDefaults: UserDefaults(suiteName: suiteName)),
+            now: { widgetNow }
+        )
+        _ = try widget.checkStep(wishId: "w1", stepId: "s2").get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        let stepsA = try deviceA.database.snapshot().steps.sorted { $0.order < $1.order }
+        let stepsB = try deviceB.database.snapshot().steps.sorted { $0.order < $1.order }
+        XCTAssertEqual(stepsA.compactMap(\.doneAt).count, 2)
+        XCTAssertEqual(stepsB.map(\.doneAt), stepsA.map(\.doneAt))
+        let activitiesB = deviceB.repository.fetchActivities(from: .distantPast, to: .distantFuture)
+        XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "항공권") && $0.date == stepsA[0].doneAt })
+        XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "숙소") && $0.date == widgetNow })
+    }
+
+    func test_GH146_TC12_v11전앱이풀었다다시체크하면_서버doneAt을그대로따르고_기기마다같다() async throws {
+        // Given: B(새 앱)에서 체크해 서버에 doneAt 이 있다
+        await signInBoth()
+        _ = try deviceB.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)])).get()
+        deviceB.tick(60)
+        _ = try deviceB.repository.toggleStep(wishId: "w1", stepId: "s1").get()
+        let firstCheck = try XCTUnwrap(try deviceB.database.snapshot().steps.first?.doneAt)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When: v11 전 앱(doneAt 을 모름)이 풀었다가 다시 체크한다 — 서버는 merge 라 doneAt 을 그대로 둔다
+        func oldAppWrite(isDone: Int64, at seconds: Double) throws {
+            var fields = try XCTUnwrap(server.documents[.wishStep]?["s1"]?.fields)
+            fields["isDone"] = .integer(isDone)
+            fields["updatedAt"] = .double(seconds)
+            server.put(.wishStep, id: "s1", fields: fields)
+        }
+        try oldAppWrite(isDone: 0, at: firstCheck.timeIntervalSinceReferenceDate + 86_400)
+        await deviceB.engine.sync(trigger: .manual)
+        // 안 된 단계는 doneAt 이 남아 있어도 잔디에 세지 않는다
+        XCTAssertTrue(deviceB.repository.fetchActivities(from: .distantPast, to: .distantFuture).allSatisfy { $0.kind == .added })
+        try oldAppWrite(isDone: 1, at: firstCheck.timeIntervalSinceReferenceDate + 2 * 86_400)
+        await deviceB.engine.sync(trigger: .manual)
+        await deviceA.engine.sync(trigger: .manual)
+
+        // Then: 알려진 한계(R-10) — 다시 체크한 날을 알 수 없어 서버의 처음 체크 시각을 쓰고, 두 기기가 같은 날을 본다
+        XCTAssertEqual(try deviceB.database.snapshot().steps.first?.doneAt, firstCheck)
+        XCTAssertEqual(try deviceA.database.snapshot().steps.first?.doneAt, firstCheck)
+    }
+
+    // MARK: GH-143 TC13
+
+    func test_GH143_TC13_A에서시작했어요를누르고동기화하면_B에서같은시작시각과하는중으로보이고_되돌리기도반영된다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "서핑")).get()
+        _ = try deviceA.repository.addWish(Wish(id: "w2", title: "기타")).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When
+        deviceA.tick(60)
+        let startedAt = try XCTUnwrap(deviceA.repository.updateStarted(wishId: "w1", isStarted: true).get().startedAt)
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then: 시작 시각이 같고, 칩 수·n일째가 같다
+        let wishesA = deviceA.repository.fetchWishes(category: .wantToDo, sort: .deadlineOrder, isOnlyFinished: false)
+        let wishesB = deviceB.repository.fetchWishes(category: .wantToDo, sort: .deadlineOrder, isOnlyFinished: false)
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.startedAt, startedAt)
+        XCTAssertEqual(wishesB.filter(\.isInProgress).map(\.id), ["w1"])
+        XCTAssertEqual(wishesB.filter(\.isInProgress).count, wishesA.filter(\.isInProgress).count)
+        let today = start.addingTimeInterval(86_400 * 3)
+        XCTAssertEqual(
+            wishesB.compactMap { WishStartStatus.inProgressDays(of: $0, now: today) },
+            wishesA.compactMap { WishStartStatus.inProgressDays(of: $0, now: today) }
+        )
+
+        // When: A에서 되돌린다
+        deviceA.tick(60)
+        _ = try deviceA.repository.updateStarted(wishId: "w1", isStarted: false).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.startedAt)
     }
 
     // MARK: TC-34

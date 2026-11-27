@@ -136,6 +136,10 @@ extension WishFormViewModel {
         /// 봉인 카드를 눌렀다 → 다시 쓸지 묻는다 (R-4)
         case tapLetter
         case confirmRewriteLetter
+        /// 사진에서 찾은 제목 칩 (GH-144 R-4)
+        case tapPhotoTextTitle(String)
+        /// 사진에서 찾은 금액 칩 (GH-144 R-5)
+        case tapPhotoTextAmount
     }
 
     enum Route: Equatable {
@@ -194,6 +198,10 @@ extension WishFormViewModel {
         var sheet: WishFormSheet?
         /// 칩으로 꺼낸 메모·단계·링크·목표 금액 블록. 날짜·알림·장소는 값 자체로 펼침을 정한다
         var revealedBlocks: Set<WishDocumentBlock> = []
+        /// 사진에서 찾은 제목 칩. 제목 최대 길이로 자른 글자 (GH-144 R-3, R-4)
+        var photoTextTitles: [String] = []
+        /// 사진에서 찾은 금액. 칩으로 보일지는 `photoTextAmountChip`이 정한다 (GH-144 R-5)
+        var photoTextAmount: PhotoTextAmount?
 
         var isLinkVisible: Bool { category == .wantToGet }
         var isTargetAmountVisible: Bool { category == .wantToGet }
@@ -207,6 +215,14 @@ extension WishFormViewModel {
         var isAddStepEnabled: Bool { steps.count < WishStep.maxCount }
         /// '전에 쓴 태그'에 보일 칩 — 이미 고른 태그는 뺀다
         var suggestedTags: [String] { recentCustomTags.filter { !tagSelection.tags.contains($0) } }
+        /// 금액 칩: 갖고 싶어요에서만, 저금 기록이 있어 통화를 못 바꾸면 통화가 같을 때만 (GH-144 R-5)
+        var photoTextAmountChip: PhotoTextAmount? {
+            guard category == .wantToGet, let amount = photoTextAmount else { return nil }
+            guard !isCurrencyLocked || amount.currency == currency else { return nil }
+            return amount
+        }
+        /// 남은 칩이 없으면 캡션까지 숨긴다 (GH-144 R-3, R-6)
+        var isPhotoTextSuggestionVisible: Bool { !photoTextTitles.isEmpty || photoTextAmountChip != nil }
     }
 
     struct Config {
@@ -223,6 +239,8 @@ extension WishFormViewModel {
         let linkMetadataProvider: LinkMetadataProviding
         let linkPreviewCache: LinkPreviewCaching
         let photoStorage: WishPhotoStorage
+        /// 고른 사진 속 글자 읽기 (GH-144 R-8)
+        let photoTextRecognizer: PhotoTextRecognizing
         /// 링크 입력이 멈추고 이만큼 지나면 미리보기를 불러온다. nil 이면 바로 (테스트)
         let linkPreviewDelay: Duration?
         let randomEmoji: () -> String
@@ -238,6 +256,7 @@ extension WishFormViewModel {
             linkMetadataProvider: LinkMetadataProviding = LinkMetadataProvider(),
             linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared,
             photoStorage: WishPhotoStorage = WishPhotoStorageImpl.shared,
+            photoTextRecognizer: PhotoTextRecognizing = PhotoTextRecognizer(),
             linkPreviewDelay: Duration? = .milliseconds(500),
             randomEmoji: @escaping () -> String = EmojiCatalog.randomEmoji,
             now: @escaping () -> Date = Date.init,
@@ -250,6 +269,7 @@ extension WishFormViewModel {
             self.linkMetadataProvider = linkMetadataProvider
             self.linkPreviewCache = linkPreviewCache
             self.photoStorage = photoStorage
+            self.photoTextRecognizer = photoTextRecognizer
             self.linkPreviewDelay = linkPreviewDelay
             self.randomEmoji = randomEmoji
             self.now = now

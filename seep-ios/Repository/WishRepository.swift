@@ -44,11 +44,17 @@ protocol WishRepository {
     /// 카테고리와 무관하게 완료한 위시 전체. 배지 계산용 (GH-35 R-3)
     func fetchAllFinishedWishes() -> [Wish]
     
+    /// [from, to) 안에 싶에 다가간 행동(담음·단계 체크·모은 돈·일지·이룸). 이룬 싶 탭 잔디용 (GH-146 R-2)
+    func fetchActivities(from: Date, to: Date) -> [WishActivity]
+
     /// 홈 맨 위 고정/해제. 고정이면 지금 시각을 pinnedAt 에 넣고, 해제면 nil 로 비운다 (GH-33 R-8)
     func updatePin(wishId: String, isPinned: Bool) -> Result<Wish, RepositoryError>
     
     /// "여전히 하고 싶어요"로 점검 시각(lastCheckedAt)을 지금으로 저장하고, 반영된 위시를 돌려준다 (GH-30 R-7, R-10).
     func markChecked(wishId: String) -> Result<Wish, RepositoryError>
+
+    /// '시작했어요'(지금 시각) / 되돌리기(nil). 단계·저금 등 다른 값은 건드리지 않는다 (GH-143 R-1)
+    func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError>
     
     /// 장소를 저장(nil 이면 지우기)하고, 장소가 반영된 위시를 돌려준다 (GH-31 R-4).
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError>
@@ -99,6 +105,10 @@ final class WishRepositoryImpl: WishRepository {
     init(database: AppDatabase? = AppDatabase.shared, now: @escaping () -> Date = Date.init) {
         self.database = database
         self.now = now
+    }
+
+    func fetchActivities(from: Date, to: Date) -> [WishActivity] {
+        read { try WishActivityQuery.fetch(from: from, to: to, in: $0) } ?? []
     }
 
     func observeChanges(_ onChange: @escaping () -> Void) -> WishChangeObservation? {
@@ -170,7 +180,7 @@ final class WishRepositoryImpl: WishRepository {
 
     func toggleStep(wishId: String, stepId: String) -> Result<[WishStep], RepositoryError> {
         return write { db, now in
-            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.isDone.toggle() }
+            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.setDone(!$0.isDone, at: now) }
             return try WishRecordStore.aliveSteps(wishId: wishId, in: db)
                 .map { WishStep(id: $0.id, title: $0.title, isDone: $0.isDone, order: $0.order) }
                 .sorted { $0.order < $1.order }
@@ -256,6 +266,19 @@ final class WishRepositoryImpl: WishRepository {
     func markChecked(wishId: String) -> Result<Wish, RepositoryError> {
         let checkedAt = now()
         return updateAndFetch(wishId: wishId) { $0.lastCheckedAt = checkedAt }
+    }
+
+    func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError> {
+        // "n일째"는 달력 날짜로 세지만, 시작한 순간을 남겨 둔다 (DateUtils.now()는 자정으로 잘라 쓰지 않는다)
+        let now = now()
+        return updateAndFetch(wishId: wishId) { record in
+            if isStarted {
+                // 화면이 들고 있던 값이 오래돼(다른 기기에서 먼저 시작해 동기화됨) 다시 불려도 처음 시작한 날을 지킨다
+                if record.startedAt == nil { record.startedAt = now }
+            } else {
+                record.startedAt = nil
+            }
+        }
     }
 
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {

@@ -108,9 +108,13 @@ struct HomeView: View {
                     .padding(.horizontal, 12)
             }
             if viewModel.state.isTagFilterVisible {
-                HomeTagFilterBar(tags: viewModel.state.tagChips, selectedTag: viewModel.state.selectedTag) {
-                    viewModel.send(.selectTag($0))
-                }
+                HomeTagFilterBar(
+                    tags: viewModel.state.tagChips,
+                    filter: viewModel.state.filter,
+                    inProgressCount: viewModel.state.inProgressCount,
+                    onSelectTag: { viewModel.send(.selectTag($0)) },
+                    onSelectInProgress: { viewModel.send(.selectInProgressFilter) }
+                )
                 .padding(.top, 4)
             }
             HomeFilterBar(
@@ -159,6 +163,17 @@ struct HomeView: View {
             HomeEmptyView()
         } else {
             VStack(spacing: viewModel.state.viewType == .list ? HomeLayout.listSpacing : HomeGridLayout.spacing) {
+                // 잠든 위시 카드·고정 위시보다 위 (GH-148 R-1)
+                if let summary = viewModel.state.visibleWishTotal {
+                    HomeWishTotalCardView(
+                        summary: summary,
+                        isExpanded: viewModel.state.isWishTotalExpanded,
+                        onToggle: {
+                            withAnimation(.easeInOut(duration: 0.2)) { viewModel.send(.toggleWishTotal) }
+                        },
+                        onTapItem: { viewModel.send(.tapWishTotalItem(id: $0)) }
+                    )
+                }
                 if let card = viewModel.state.sleepingWishCard {
                     HomeSleepingWishCardView(
                         card: card,
