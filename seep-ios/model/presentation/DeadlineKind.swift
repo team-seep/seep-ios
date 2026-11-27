@@ -26,7 +26,11 @@ enum DeadlineKind: String, CaseIterable {
         guard isPeriod else { return endDate }
         guard let endDate else { return nil }
         let unit: Calendar.Component = self == .month ? .month : .year
-        for offset in [0, -1, 1] {
+        // 이 기기 시간대로 그날 23:59:59 이면 여기서(또는 같은 시간대에서) 고른 날짜다 — 하루 옆 기간 끝으로 옮기지 않는다.
+        // 구버전 앱이 1월 1일로 바꾼 "올해 안" 위시가 12월 31일로 당겨지면 안 된다
+        let isLocalDayEnd = calendar.dateInterval(of: .day, for: endDate).map { abs($0.end.timeIntervalSince(endDate) - 1) < 1 } ?? false
+        let offsets = isLocalDayEnd ? [0] : [0, -1, 1]
+        for offset in offsets {
             guard let shifted = calendar.date(byAdding: .day, value: offset, to: endDate),
                   let end = Self.lastMoment(of: unit, containing: shifted, calendar: calendar) else { continue }
             if calendar.isDate(shifted, inSameDayAs: end) { return end }

@@ -54,7 +54,7 @@ final class WishFormViewModel {
                 category: wish.category,
                 title: wish.title,
                 deadline: wish.endDate,
-                deadlineKind: wish.endDate == nil ? .date : wish.deadlineKind,
+                deadlineKind: Self.editingDeadlineKind(of: wish, now: dependency.now()),
                 isDeadlineEnabled: wish.endDate != nil,
                 notifications: wish.notifications.isEmpty ? [SeepNotification()] : wish.notifications,
                 isNotificationEnabled: !wish.notifications.isEmpty,
@@ -88,6 +88,15 @@ final class WishFormViewModel {
             }
         }
         initialDraft = draft
+    }
+
+    /// 수정 문서에서 고른 상태로 보일 기한 종류. "내년까지"로 정했어도 마감 해가 올해면 "올해 안에"다 — 시트 선택·문구가 맞게 (GH-118 R-4)
+    private static func editingDeadlineKind(of wish: Wish, now: Date, calendar: Calendar = .current) -> DeadlineKind {
+        guard let endDate = wish.endDate else { return .date }
+        if wish.deadlineKind == .nextYear, calendar.isDate(endDate, equalTo: now, toGranularity: .year) {
+            return .year
+        }
+        return wish.deadlineKind
     }
 
     private var isEditMode: Bool {

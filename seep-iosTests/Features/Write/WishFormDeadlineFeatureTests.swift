@@ -278,4 +278,15 @@ final class WishFormDeadlineFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(viewModel.state.deadline, end)
         XCTAssertFalse(viewModel.hasChanges)
     }
+
+    func test_GH118_TC17_마감해가올해인내년까지위시를수정하면_올해안에가선택돼있다() {
+        // Given: 2025년에 정한 내년까지(2026-12-31) — 오늘은 2026-10-29
+        let end = lastMoment(year: 2026, month: 12, day: 31)
+        let viewModel = makeViewModel(mode: .edit(Wish(id: "w", title: "피아노", endDate: end, deadlineKind: .nextYear)))
+
+        // Then
+        XCTAssertEqual(viewModel.state.deadlineKind, .year)
+        XCTAssertEqual(viewModel.deadlineOptionRows.filter(\.isSelected).map(\.option), [.year])
+        XCTAssertEqual(viewModel.deadlineOptionRows.first(where: \.isSelected)?.detail, "12월 31일까지")
+    }
 }

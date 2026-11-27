@@ -229,6 +229,20 @@ final class WishDeadlineOverFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sut.route, .toast("👏 2027년 12월 31일까지로 미뤘어요"))
     }
 
+    func test_GH118_TC6_내년까지기한을미루면_올해안종류로저장된다() {
+        // Given: 2025년에 정한 내년까지(2026-12-31) — 2027년 1월에 연다
+        let wish = makeWish(endDate: lastMoment(2026, 12, 31), kind: .nextYear)
+        let sut = makeSut(wish: wish, now: day(2027, 1, 10))
+
+        // When
+        sut.send(.tapPostponeDeadline)
+
+        // Then
+        XCTAssertEqual(repository.updateDeadlineCalls.first?.endDate, lastMoment(2027, 12, 31))
+        XCTAssertEqual(repository.updateDeadlineCalls.first?.kind, .year)
+        XCTAssertEqual(clickEvents(objectId: .postponeDeadline).first?.extraParameters?[.type] as? String, "next_year")
+    }
+
     // MARK: GH-118 TC15
 
     func test_GH118_TC15_한참지나미뤄도_오늘이든기간까지민다() {

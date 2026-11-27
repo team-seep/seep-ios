@@ -161,6 +161,9 @@ final class DeadlineKindRepositoryTests: XCTestCase {
         XCTAssertNil(DeadlineKind.year.normalizedEnd(losAngeles.date(from: DateComponents(year: 2026, month: 3, day: 5)), calendar: seoul))
         XCTAssertNil(DeadlineKind.year.normalizedEnd(nil, calendar: seoul))
         XCTAssertEqual(DeadlineKind.date.normalizedEnd(yearEnd, calendar: seoul), yearEnd)
+        // 이 기기 시간대로 1월 1일 23:59:59 — 구버전 앱에서 고른 날짜라 12월 31일로 당기지 않는다
+        let seoulJanuaryFirst = seoul.date(from: DateComponents(year: 2027, month: 1, day: 1, hour: 23, minute: 59, second: 59))
+        XCTAssertNil(DeadlineKind.year.normalizedEnd(seoulJanuaryFirst, calendar: seoul))
 
         // Then: 맞춘 마감에서 미루면 다음 해 12월 31일 (기간을 건너뛰지 않는다)
         let normalized = DeadlineKind.year.normalizedEnd(yearEnd, calendar: seoul) ?? Date()

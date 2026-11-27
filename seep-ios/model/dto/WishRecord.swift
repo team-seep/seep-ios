@@ -307,13 +307,15 @@ extension Wish {
         journals: [WishJournalRecord] = [],
         tags: [WishTagRecord] = []
     ) {
+        // 기기 달력(Calendar.current)으로 맞춘다. 화면(SoftDeadline 등)도 실제 앱에서는 같은 달력을 쓴다
+        let deadline = Self.deadline(stored: record.deadlineKind, endDate: record.date)
         self.init(
             id: record.id,
             emoji: record.emoji,
             category: Category(rawValue: record.category) ?? .wantToDo,
             title: record.title,
-            endDate: Self.deadline(stored: record.deadlineKind, endDate: record.date).endDate,
-            deadlineKind: Self.deadline(stored: record.deadlineKind, endDate: record.date).kind,
+            endDate: deadline.endDate,
+            deadlineKind: deadline.kind,
             finishDate: record.finishDate,
             notifications: notifications
                 .sorted { $0.order < $1.order }

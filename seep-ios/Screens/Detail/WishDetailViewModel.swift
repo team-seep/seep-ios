@@ -331,7 +331,9 @@ final class WishDetailViewModel {
               let newEnd = wish.deadlineKind.postponedEnd(from: endDate, now: dependency.now(), calendar: dependency.calendar)
         else { return }
         sendClickLog(objectId: .postponeDeadline, type: wish.deadlineKind.rawValue)
-        guard let saved = saveDeadline(wish: wish, endDate: newEnd, kind: wish.deadlineKind) else { return }
+        // 미루면 오늘이 든 해의 12월 31일이라 "내년까지"는 "올해 안"이 된다 (버튼 "올해 안으로 미루기")
+        let newKind: DeadlineKind = wish.deadlineKind == .nextYear ? .year : wish.deadlineKind
+        guard let saved = saveDeadline(wish: wish, endDate: newEnd, kind: newKind) else { return }
         dependency.notificationManager.reserveNotifications(wish: saved)
         let dateText = DisplayDate.yearMonthDay(newEnd, calendar: dependency.calendar)
         route = .toast(Strings.Deadline.postponedToastFormat(dateText))
