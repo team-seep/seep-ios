@@ -176,6 +176,8 @@ struct LegacyRealmImporter {
                 hashtag: dto.hashtag,
                 isSuccess: dto.isSuccess,
                 finishNote: dto.finishNote,
+                // Realm 시절에는 기대 비교가 없었다 (GH-139)
+                finishFeeling: "",
                 pinnedAt: dto.pinnedAt,
                 link: dto.link,
                 lastCheckedAt: dto.lastCheckedAt,

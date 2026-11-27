@@ -17,6 +17,10 @@ extension FinishedViewModel {
         /// 그날 시트의 줄을 누름 → 시트를 닫고 위시 상세 (GH-146 TC-7)
         case tapActivityWish(WishActivity)
         case activityDayDismissed
+        /// "기대보다 좋았어요" 요약 카드가 화면에 나타남. 노출 로그는 화면당 한 번 (GH-139 TC-12)
+        case expectationSummaryAppeared
+        /// 요약 카드 "모아 보기"/"전체 보기" — 목록을 기대보다 좋았던 싶만으로 거르거나 푼다 (GH-139 R-7)
+        case tapExpectationBetterFilter
         case routeHandled
     }
 
@@ -33,6 +37,10 @@ extension FinishedViewModel {
         var grass: ActivityGrass?
         /// 열려 있는 그날 시트 (GH-146 R-5)
         var activityDay: ActivityDay?
+        /// 기대 비교를 남긴 싶이 3개 미만이면 nil 이고 카드를 숨긴다 (GH-139 R-6)
+        var expectationSummary: ExpectationSummary?
+        /// "모아 보기"로 기대보다 좋았던 싶만 보는 중. 카테고리 필터와 함께 걸린다 (GH-139 R-7)
+        var isBetterFilterOn = false
 
         var isEmpty: Bool { totalCount == 0 }
         /// 이룬 싶은 있는데 고른 카테고리에만 없을 때 (R-22)
@@ -77,7 +85,7 @@ struct ActivityDay: Equatable, Identifiable {
     var id: Date { date }
 }
 
-/// 이룬 싶 탭 (GH-64 R-17 ~ R-22, GH-146 잔디)
+/// 이룬 싶 탭 (GH-64 R-17 ~ R-22, GH-146 잔디, GH-139 기대 비교 요약)
 @Observable
 final class FinishedViewModel {
     static let recentBadgeLimit = 5
@@ -90,6 +98,7 @@ final class FinishedViewModel {
     private var finishedWishes: [Wish] = []
     private var activitiesByDay: [Date: [WishActivity]] = [:]
     private var didLogGrassImpression = false
+    private var didLogExpectationImpression = false
 
     init(dependency: Dependency = Dependency()) {
         self.dependency = dependency
@@ -101,6 +110,8 @@ final class FinishedViewModel {
             reload()
 
         case .selectFilter(let filter):
+            // 카테고리를 바꾸면 모아 보기를 푼다 (GH-139 R-7)
+            if filter != state.filter { state.isBetterFilterOn = false }
             state.filter = filter
             rebuildSections()
 
@@ -133,6 +144,12 @@ final class FinishedViewModel {
         case .activityDayDismissed:
             state.activityDay = nil
 
+        case .expectationSummaryAppeared:
+            logExpectationImpressionOnce()
+
+        case .tapExpectationBetterFilter:
+            toggleBetterFilter()
+
         case .routeHandled:
             route = nil
         }
@@ -158,6 +175,9 @@ final class FinishedViewModel {
             calendar: dependency.calendar
         )
         reloadGrass()
+        state.expectationSummary = ExpectationSummary.make(finishedWishes: finishedWishes)
+        // 카드가 사라지면(완료 취소 등으로 3개 미만) 끌 버튼도 없으니 모아 보기를 푼다
+        if state.expectationSummary == nil { state.isBetterFilterOn = false }
         rebuildSections()
     }
 
@@ -195,9 +215,24 @@ final class FinishedViewModel {
         state.activityDay = ActivityDay(date: day, activities: activities)
     }
 
+    private func logExpectationImpressionOnce() {
+        guard state.expectationSummary != nil, !didLogExpectationImpression else { return }
+        didLogExpectationImpression = true
+        dependency.logManager.sendEvent(event: ImpressionEvent(screen: screenName, objectType: .card, objectId: .expectationSummary))
+    }
+
+    private func toggleBetterFilter() {
+        guard state.expectationSummary != nil else { return }
+        state.isBetterFilterOn.toggle()
+        // "모아 보기"를 켤 때만 센다. 끄는 "전체 보기"는 세지 않는다 (TC-12)
+        if state.isBetterFilterOn { sendClickLog(objectId: .expectationBetterFilter) }
+        rebuildSections()
+    }
+
     private func rebuildSections() {
+        let wishes = state.isBetterFilterOn ? finishedWishes.filter { $0.finishFeeling == .better } : finishedWishes
         state.sections = FinishedSectionBuilder.sections(
-            finishedWishes: finishedWishes,
+            finishedWishes: wishes,
             filter: state.filter,
             calendar: dependency.calendar
         )

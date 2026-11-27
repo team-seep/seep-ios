@@ -18,9 +18,9 @@ final class MockWishRepository: WishRepository {
     var deleteJournalResult: Result<[WishJournal], RepositoryError> = .success([])
     private(set) var addJournalCalls: [(wishId: String, text: String)] = []
     private(set) var deleteJournalCalls: [(wishId: String, journalId: String)] = []
-    /// nil 이면 호출된 위시 id·소감으로 만든 위시를 성공으로 돌려준다
+    /// nil 이면 호출된 위시 id·소감·기대 비교로 만든 위시를 성공으로 돌려준다
     var updateFinishNoteResult: Result<Wish, RepositoryError>?
-    private(set) var updateFinishNoteCalls: [(wishId: String, note: String)] = []
+    private(set) var updateFinishNoteCalls: [(wishId: String, note: String, feeling: FinishFeeling?)] = []
     var searchWishesResult: [Wish] = []
     private(set) var searchWishesCalls: [String] = []
     var recentCustomTagsResult: [String] = []
@@ -95,9 +95,9 @@ final class MockWishRepository: WishRepository {
         return deleteJournalResult
     }
 
-    func updateFinishNote(wishId: String, note: String) -> Result<Wish, RepositoryError> {
-        updateFinishNoteCalls.append((wishId, note))
-        return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note))
+    func updateFinishNote(wishId: String, note: String, feeling: FinishFeeling?) -> Result<Wish, RepositoryError> {
+        updateFinishNoteCalls.append((wishId, note, feeling))
+        return updateFinishNoteResult ?? .success(Wish(id: wishId, isSuccess: true, finishNote: note, finishFeeling: feeling))
     }
 
     func searchWishes(keyword: String) -> [Wish] {
@@ -199,6 +199,7 @@ final class MockWishRepository: WishRepository {
         wish.isSuccess = false
         wish.finishDate = nil
         wish.finishNote = ""
+        wish.finishFeeling = nil
         return .success(wish)
     }
 

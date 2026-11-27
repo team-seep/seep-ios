@@ -6,7 +6,7 @@ struct HomeWidgetCheckSync {
     struct Result: Equatable {
         /// 위젯이 마지막으로 읽은 뒤에 DB 를 바꿨으면 홈을 다시 읽는다 (R-8)
         let needsReload: Bool
-        /// 소감을 물을 위시. 위젯에서 완료한 것 중 가장 최근 하나만 (R-7)
+        /// 소감을 물을 위시. 위젯에서 완료한 것 중 소감·기대 비교가 둘 다 빈 가장 최근 하나만 (R-7, GH-139 R-5)
         let finishNoteWish: Wish?
     }
 
@@ -37,7 +37,8 @@ struct HomeWidgetCheckSync {
 
         return Result(
             needsReload: needsReload || finishedWishIds.isNotEmpty,
-            finishNoteWish: finishedWishes.first { $0.finishNote.isEmpty }
+            // 다른 기기에서 기대 비교만 남기고 동기화됐으면 이미 답한 것으로 본다 (GH-139 R-5)
+            finishNoteWish: finishedWishes.first { $0.finishNote.isEmpty && $0.finishFeeling == nil }
         )
     }
 

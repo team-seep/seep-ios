@@ -90,8 +90,9 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
             try WishRecordStore.updateWish(id: wishId, now: now, in: db) { record in
                 record.isSuccess = false
                 record.finishDate = nil
-                // 다시 완료하면 소감을 새로 묻는다 (앱의 완료 취소와 같은 규칙, GH-25 R-6)
+                // 다시 완료하면 소감·기대 비교를 새로 묻는다 (앱의 완료 취소와 같은 규칙, GH-25 R-6, GH-139 R-9)
                 record.finishNote = ""
+                record.finishFeeling = ""
             }
         }
         if case .success = result {

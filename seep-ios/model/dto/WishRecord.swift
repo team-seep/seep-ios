@@ -24,6 +24,8 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var isSuccess: Bool
     /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
     var finishNote: String
+    /// 기대 비교 `FinishFeeling` rawValue. 비어 있으면 기록 없음 (GH-139, 마이그레이션 v13)
+    var finishFeeling: String
     /// 홈 맨 위에 고정한 시각. nil 이면 고정 아님 (GH-33)
     var pinnedAt: Date?
     /// 갖고 싶어요의 상품 링크. 비어 있으면 링크 없음 (GH-29)
@@ -184,6 +186,7 @@ extension WishRecord {
         self.hashtag = wish.hashtag
         self.isSuccess = wish.isSuccess
         self.finishNote = wish.finishNote
+        self.finishFeeling = wish.finishFeeling?.rawValue ?? ""
         self.pinnedAt = wish.pinnedAt
         self.link = wish.link
         self.lastCheckedAt = wish.lastCheckedAt
@@ -326,6 +329,7 @@ extension Wish {
             tags: tags.sorted { $0.order < $1.order }.map(\.name),
             isSuccess: record.isSuccess,
             finishNote: record.finishNote,
+            finishFeeling: FinishFeeling(rawValue: record.finishFeeling),
             pinnedAt: record.pinnedAt,
             link: record.link,
             lastCheckedAt: record.lastCheckedAt,

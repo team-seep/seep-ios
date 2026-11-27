@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// 이룬 싶 탭 루트 (GH-64 R-17 ~ R-23).
-/// 헤드라인 → 배지 카드 → 싶에 다가간 날(행동이 있을 때, GH-146) → 연말 회고 카드(기간에만) → 카테고리 필터 + 검색 → 월별 완료 목록
+/// 헤드라인 → 배지 카드 → 기대보다 좋았어요(기록 3개 이상, GH-139) → 싶에 다가간 날(행동이 있을 때, GH-146) → 연말 회고 카드(기간에만)
+/// → 카테고리 필터 + 검색 → 월별 완료 목록
 struct FinishedTabRootView: View {
     @Environment(AppRouter.self) private var router
     @State private var viewModel = FinishedViewModel()
@@ -24,6 +25,14 @@ struct FinishedTabRootView: View {
                             recentBadges: viewModel.state.recentBadges,
                             onTap: { viewModel.send(.tapBadgeCollection) }
                         )
+                        if let summary = viewModel.state.expectationSummary {
+                            FinishedExpectationCard(
+                                summary: summary,
+                                isBetterFilterOn: viewModel.state.isBetterFilterOn,
+                                onTapFilter: { viewModel.send(.tapExpectationBetterFilter) }
+                            )
+                            .onAppear { viewModel.send(.expectationSummaryAppeared) }
+                        }
                         if let grass = viewModel.state.grass {
                             FinishedActivityGrassCard(grass: grass) { viewModel.send(.tapGrassDay($0)) }
                                 .onAppear { viewModel.send(.grassAppeared) }
@@ -159,7 +168,10 @@ struct FinishedTabRootView: View {
         if viewModel.state.isEmpty {
             emptyView(title: Strings.Finished.Empty.title, description: Strings.Finished.Empty.description)
         } else if viewModel.state.isFilteredEmpty {
-            emptyView(title: Strings.Finished.Empty.filtered, description: nil)
+            emptyView(
+                title: viewModel.state.isBetterFilterOn ? Strings.Finished.Empty.betterFiltered : Strings.Finished.Empty.filtered,
+                description: nil
+            )
         } else {
             VStack(alignment: .leading, spacing: 10) {
                 ForEach(viewModel.state.sections) { section in

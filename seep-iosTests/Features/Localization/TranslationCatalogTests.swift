@@ -15,7 +15,9 @@ final class TranslationCatalogTests: XCTestCase {
         ("year_review.headline_bold_format", ["year_review.headline_format"]),
         ("badge.collection.title_highlight_format", ["badge.collection.title_format"]),
         ("wish_search.result_count_highlight_format", ["wish_search.result_count_format"]),
-        ("finished.activity_grass.day_count_format", ["finished.activity_grass.year_format"])
+        ("finished.activity_grass.day_count_format", ["finished.activity_grass.year_format"]),
+        ("home.finish_note.feeling_title_bold", ["home.finish_note.feeling_title"]),
+        ("finished.expectation.count_format", ["finished.expectation.title_format"])
     ]
 
     private func catalog(_ name: String) throws -> [String: [String: Any]] {

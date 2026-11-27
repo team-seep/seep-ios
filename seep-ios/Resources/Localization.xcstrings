@@ -4573,6 +4573,42 @@
         }
       }
     },
+    "detail.chain.finished_feeling_format" : {
+      "comment" : "위시 상세 · 이어진 위시 (GH-139). %1$@ = 이룬 날짜, %2$@ = 기대 비교 문구(소감이 있으면 '기대 비교 · “소감”')",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Came true %1$@ · %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@に叶えました · %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 이뤘어요 · %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "于%1$@实现 · %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "於%1$@實現 · %2$@"
+          }
+        }
+      }
+    },
     "detail.chain.finished_format" : {
       "comment" : "위시 상세 · 이어진 위시. %@ = 이룬 날짜",
       "extractionState" : "manual",
@@ -8605,6 +8641,258 @@
         }
       }
     },
+    "finish_feeling.better" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 이룬 싶 목록·상세에 쓰는 한 줄 문구",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Better than expected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待よりよかった"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대보다 좋았어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比预期更好"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比預期更好"
+          }
+        }
+      }
+    },
+    "finish_feeling.button.better" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 완료 소감 시트의 칸 안 문구(두 줄)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Better than\nexpected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待より\nよかった"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대보다\n좋았어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比预期\n更好"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比預期\n更好"
+          }
+        }
+      }
+    },
+    "finish_feeling.button.same" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 완료 소감 시트의 칸 안 문구(두 줄)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just as\nexpected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ちょうど\n期待どおり"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "딱\n기대만큼"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刚好\n符合预期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剛好\n符合預期"
+          }
+        }
+      }
+    },
+    "finish_feeling.button.worse" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 완료 소감 시트의 칸 안 문구(두 줄)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Worse than\nexpected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待より\nいまいち"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대보다\n아쉬웠어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比预期\n差一点"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比預期\n差一點"
+          }
+        }
+      }
+    },
+    "finish_feeling.same" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 이룬 싶 목록·상세에 쓰는 한 줄 문구",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just as expected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ちょうど期待どおり"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "딱 기대만큼"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刚好符合预期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剛好符合預期"
+          }
+        }
+      }
+    },
+    "finish_feeling.with_note_format" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 이룬 싶 목록·상세 소감 자리. %1$@ = 기대 비교 문구, %2$@ = 한 줄 소감",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · “%2$@”"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · 「%2$@」"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · “%2$@”"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · “%2$@”"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ·「%2$@」"
+          }
+        }
+      }
+    },
+    "finish_feeling.worse" : {
+      "comment" : "기대 비교 세 칸 (GH-139). 이룬 순간 기대와 비교한 결과. 이룬 싶 목록·상세에 쓰는 한 줄 문구",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Worse than expected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待よりいまいち"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대보다 아쉬웠어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比预期差一点"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "比預期差一點"
+          }
+        }
+      }
+    },
     "finished.activity_day.added" : {
       "comment" : "이룬 싶 탭 잔디 칸을 눌러 여는 그날 시트 (GH-146). 줄 보조 문구: 싶을 담음",
       "extractionState" : "manual",
@@ -9361,6 +9649,42 @@
         }
       }
     },
+    "finished.empty.better_filtered" : {
+      "comment" : "이룬 싶 탭. '모아 보기'로 기대보다 좋았던 싶만 볼 때 고른 카테고리에 없음 (GH-139)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No wishes better than expected yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待以上だったウィッシュはまだありません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대보다 좋았던 싶이 아직 없어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有比预期更好的心愿"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還沒有比預期更好的心願"
+          }
+        }
+      }
+    },
     "finished.empty.description" : {
       "comment" : "이룬 싶 탭",
       "extractionState" : "manual",
@@ -9465,6 +9789,366 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "還沒有已實現的心願"
+          }
+        }
+      }
+    },
+    "finished.expectation.caption_format" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). 카드 아래 캡션. %d = 기대와 비교해 본 싶 수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Based on %d wish you compared"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Based on %d wishes you compared"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "期待と比べた%d個のウィッシュから"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "기대랑 비교해 본 싶 %d개 기준"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "基于%d个对比过预期的心愿"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "基於%d個對比過預期的心願"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "finished.expectation.count_format" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). title_format 안에서 굵게 칠할 부분. %d = 기대보다 좋았던 싶 수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d개"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d个"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d個"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "finished.expectation.more" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). 누르면 목록을 기대보다 좋았던 싶만 남긴다",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See them"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まとめて見る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모아 보기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只看这些"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只看這些"
+          }
+        }
+      }
+    },
+    "finished.expectation.no_record" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). 카테고리 줄에 기대 비교 기록이 없을 때",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No records"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録なし"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 없음"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂无记录"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暫無記錄"
+          }
+        }
+      }
+    },
+    "finished.expectation.row_accessibility_format" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). VoiceOver 카테고리 줄. %1$@ = 카테고리, %2$d = 기대보다 좋았던 수, %3$d = 기록한 수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, better than expected %2$d/%3$d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、期待以上 %2$d/%3$d"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, 기대보다 좋았어요 %2$d/%3$d"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，比预期更好 %2$d/%3$d"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，比預期更好 %2$d/%3$d"
+          }
+        }
+      }
+    },
+    "finished.expectation.show_all" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). 모아 보기를 켠 상태. 누르면 다시 전체 목록",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show all"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて見る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 보기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看全部"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看全部"
+          }
+        }
+      }
+    },
+    "finished.expectation.title_format" : {
+      "comment" : "이룬 싶 탭 '기대보다 좋았어요' 요약 카드 (GH-139). 제목. %d = 기대보다 좋았던 싶 수. 굵게 칠할 부분은 count_format",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wish was better than expected"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d wishes were better than expected"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "叶えてみたら%d個が期待以上でした"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "이뤄 보니 %d개가 기대보다 좋았어요"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "实现后有%d个比预期更好"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "實現後有%d個比預期更好"
+                }
+              }
+            }
           }
         }
       }
@@ -11449,38 +12133,74 @@
         }
       }
     },
-    "home.finish_note.description" : {
-      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
+    "home.finish_note.feeling_title" : {
+      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트 (GH-139). 헤드라인. 굵게 칠할 부분은 feeling_title_bold",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jot down how you feel in one line so you can look back on it later."
+            "value" : "Compared to what you expected,\nhow was it?"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "いまの気持ちをひとことで残しておくと、あとで読み返せます。"
+            "value" : "期待していたのと比べて\nどうでしたか？"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "지금 기분을 한 줄로 남겨두면 나중에 다시 볼 수 있어요."
+            "value" : "기대했던 것과 비교하면\n어땠어요?"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "用一句话记下现在的心情，以后还能回来看。"
+            "value" : "和期待的相比\n感觉怎么样？"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "用一句話記下現在的心情，以後還能回來看。"
+            "value" : "和期待的相比\n感覺怎麼樣？"
+          }
+        }
+      }
+    },
+    "home.finish_note.feeling_title_bold" : {
+      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트 (GH-139). feeling_title 안에서 굵게 칠할 부분",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "how was it?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どうでしたか？"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어땠어요?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "感觉怎么样？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "感覺怎麼樣？"
           }
         }
       }
@@ -11521,6 +12241,42 @@
         }
       }
     },
+    "home.finish_note.finished_caption_format" : {
+      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트 (GH-139). 헤드라인 위 캡션. %@ = 이모지와 위시 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · Came true!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 叶えました！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 이뤘어요!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 实现了！"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 實現了！"
+          }
+        }
+      }
+    },
     "home.finish_note.letter_card_format" : {
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %@ = 편지 제목, %@ = 쓴 날짜",
       "extractionState" : "manual",
@@ -11553,6 +12309,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ · 寫於%@"
+          }
+        }
+      }
+    },
+    "home.finish_note.letter_feeling_question" : {
+      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트 (GH-139). 미래의 나에게 편지가 열린 시트에서 편지 아래 기대 비교 질문",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compared to what you expected, how was it?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待していたのと比べてどうでしたか？"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대했던 것과 비교하면 어땠어요?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "和期待的相比，感觉怎么样？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "和期待的相比，感覺怎麼樣？"
           }
         }
       }
@@ -11737,6 +12529,42 @@
         }
       }
     },
+    "home.finish_note.note_label" : {
+      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트 (GH-139). 한 줄 소감 입력 칸 위 라벨",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One-line note (optional)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ひとこと感想（任意）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한 줄 소감 (선택)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一句话感想（选填）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一句話感想（選填）"
+          }
+        }
+      }
+    },
     "home.finish_note.placeholder" : {
       "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
       "extractionState" : "manual",
@@ -11792,7 +12620,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "남기기"
+            "value" : "저장할게요"
           }
         },
         "zh-Hans" : {
@@ -11841,78 +12669,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下次再說"
-          }
-        }
-      }
-    },
-    "home.finish_note.title_bold" : {
-      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "how does it feel?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "叶えてみてどうですか？"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이루고 나니 어때요?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "实现之后感觉怎么样？"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "實現之後感覺怎麼樣？"
-          }
-        }
-      }
-    },
-    "home.finish_note.title_format" : {
-      "comment" : "홈 · 이룬 뒤 한 줄 소감 시트. %@ = 위시 제목",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@,\nhow does it feel?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@、\n叶えてみてどうですか？"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@,\n이루고 나니 어때요?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@，\n实现之后感觉怎么样？"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@，\n實現之後感覺怎麼樣？"
           }
         }
       }

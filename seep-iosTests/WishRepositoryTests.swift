@@ -75,7 +75,7 @@ final class WishRepositoryTests: XCTestCase {
 
         // When
         let finished = try sut.finishWish(wish: wish).get()
-        _ = try sut.updateFinishNote(wishId: "wish-1", note: "해냈다").get()
+        _ = try sut.updateFinishNote(wishId: "wish-1", note: "해냈다", feeling: nil).get()
 
         // Then
         XCTAssertTrue(finished.isSuccess)
@@ -224,7 +224,7 @@ final class WishRepositoryTests: XCTestCase {
         let before = try database.snapshot().wishes
 
         // When
-        let missing = sut.updateFinishNote(wishId: "missing", note: "소감")
+        let missing = sut.updateFinishNote(wishId: "missing", note: "소감", feeling: nil)
         let deleted = sut.updatePin(wishId: "deleted", isPinned: true)
 
         // Then
