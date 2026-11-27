@@ -1149,6 +1149,48 @@ internal enum Strings {
       /// 👏 이룬 싶에 담았어요
       internal static var addedToFinished: String { Strings.tr("Localization", "home.toast.added_to_finished", fallback: "👏 이룬 싶에 담았어요") }
     }
+    internal enum WishTotal {
+      /// 포함된 싶을 펼치거나 접어요
+      internal static var accessibilityHint: String { Strings.tr("Localization", "home.wish_total.accessibility_hint", fallback: "포함된 싶을 펼치거나 접어요") }
+      /// 접기
+      internal static var collapse: String { Strings.tr("Localization", "home.wish_total.collapse", fallback: "접기") }
+      /// 다 모았어요
+      internal static var completed: String { Strings.tr("Localization", "home.wish_total.completed", fallback: "다 모았어요") }
+      /// %d개
+      internal static func countFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.wish_total.count_format", p1, fallback: "%d개")
+      }
+      /// 금액을 정하지 않은 싶 %d개는 빠졌어요
+      internal static func excludedFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.wish_total.excluded_format", p1, fallback: "금액을 정하지 않은 싶 %d개는 빠졌어요")
+      }
+      /// 펼쳐보기
+      internal static var expand: String { Strings.tr("Localization", "home.wish_total.expand", fallback: "펼쳐보기") }
+      /// 남은 금액이 큰 순 · 누르면 그 싶으로 가요
+      internal static var footer: String { Strings.tr("Localization", "home.wish_total.footer", fallback: "남은 금액이 큰 순 · 누르면 그 싶으로 가요") }
+      /// %@ 남았어요
+      internal static func remainingFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.wish_total.remaining_format", String(describing: p1), fallback: "%@ 남았어요")
+      }
+      /// 모은 돈 %@
+      internal static func savedFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.wish_total.saved_format", String(describing: p1), fallback: "모은 돈 %@")
+      }
+      /// %1$@ 남았어요 · %2$@
+      internal static func secondaryFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "home.wish_total.secondary_format", String(describing: p1), String(describing: p2), fallback: "%1$@ 남았어요 · %2$@")
+      }
+      /// #%@ 다 합치면
+      internal static func tagTitleFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "home.wish_total.tag_title_format", String(describing: p1), fallback: "#%@ 다 합치면")
+      }
+      /// 목표 %1$@ · %2$@
+      internal static func targetFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "home.wish_total.target_format", String(describing: p1), String(describing: p2), fallback: "목표 %1$@ · %2$@")
+      }
+      /// 다 합치면
+      internal static var title: String { Strings.tr("Localization", "home.wish_total.title", fallback: "다 합치면") }
+    }
     internal enum YearReview {
       /// %@년 돌아보기
       internal static func captionFormat(_ p1: Any) -> String {

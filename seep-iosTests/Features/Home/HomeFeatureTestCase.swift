@@ -41,7 +41,8 @@ class HomeFeatureTestCase: ViewModelTestCase {
         remoteConfigRepository: RemoteConfigRepository = StubRemoteConfigRepository(period: nil),
         dateProvider: @escaping () -> Date = Date.init,
         widgetCheckStore: WidgetCheckStore = WidgetCheckStore(userDefaults: UserDefaults(suiteName: "test.home.feature.widget")),
-        withRouter: Bool = true
+        withRouter: Bool = true,
+        defaultCurrency: @escaping () -> String = { AmountFormatter.krw }
     ) -> HomeViewModel {
         HomeViewModel(dependency: .init(
             wishRepository: repository,
@@ -55,7 +56,8 @@ class HomeFeatureTestCase: ViewModelTestCase {
             dateProvider: dateProvider,
             photoStorage: photoStorage,
             widgetCheckStore: widgetCheckStore,
-            router: withRouter ? router : nil
+            router: withRouter ? router : nil,
+            defaultCurrency: defaultCurrency
         ))
     }
 

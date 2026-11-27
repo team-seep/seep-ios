@@ -245,4 +245,10 @@ enum LogObjectId: String {
     case logout = "logout"
     /// 계정 화면 "계정 삭제" (GH-93)
     case deleteAccount = "delete_account"
+    /// 홈 갖고 싶어요 "다 합치면" 카드 노출 (+count) (GH-148)
+    case wishTotalSummary = "wish_total_summary"
+    /// "다 합치면" 카드 펼치기 (GH-148)
+    case expandWishTotal = "expand_wish_total"
+    /// 펼친 "다 합치면" 카드의 싶 한 줄 → 상세 (GH-148)
+    case wishTotalItem = "wish_total_item"
 }
