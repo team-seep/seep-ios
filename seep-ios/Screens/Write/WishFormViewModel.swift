@@ -484,11 +484,11 @@ final class WishFormViewModel {
         state.isDeadlineTentative = false
         switch option {
         case .date:
+            // 종류는 달력에서 날짜를 실제로 고를 때(inputDeadline) 날짜로 바뀐다 — 달력을 열고 닫기만 하면 기간 기한이 그대로다
             state.isDeadlineEnabled = true
             if state.deadline == nil {
                 state.deadline = dependency.now().endOfDay
             }
-            state.deadlineKind = .date
             state.deadlineError = nil
             state.sheet = .datePicker
         case .month, .year, .nextYear:

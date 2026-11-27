@@ -129,7 +129,7 @@ final class DeadlineKindRepositoryTests: XCTestCase {
         // Given: 구버전 앱이 "올해 안" 위시의 날짜만 3월 5일로 바꿔 동기화한 상태 (deadlineKind 는 서버에 남았다)
         _ = try sut.addWish(Wish(id: "old-app", title: "서핑", endDate: end(2027, 3, 5), deadlineKind: .year)).get()
         _ = try sut.addWish(Wish(id: "month-ok", title: "책", endDate: end(2027, 2, 28), deadlineKind: .month)).get()
-        _ = try sut.addWish(Wish(id: "month-bad", title: "요가", endDate: end(2027, 2, 27), deadlineKind: .month)).get()
+        _ = try sut.addWish(Wish(id: "month-bad", title: "요가", endDate: end(2027, 2, 20), deadlineKind: .month)).get()
 
         // When
         let oldApp = sut.fetchWish(id: "old-app")
@@ -140,5 +140,23 @@ final class DeadlineKindRepositoryTests: XCTestCase {
         XCTAssertEqual(sut.fetchWish(id: "month-ok")?.deadlineKind, .month)
         XCTAssertEqual(sut.fetchWish(id: "month-bad")?.deadlineKind, .date)
         XCTAssertEqual(DdayBadgeStyle(wish: try XCTUnwrap(oldApp), today: end(2027, 1, 1)).text(farFuture: "", noDate: ""), "D-63")
+    }
+
+    func test_GH118_TC18_다른시간대에서정한기간마감도_기간기한으로읽는다() {
+        // Given: 로스앤젤레스에서 "올해 안에"로 정한 마감(12월 31일 23:59:59 PST)
+        var losAngeles = Calendar(identifier: .gregorian)
+        losAngeles.timeZone = TimeZone(identifier: "America/Los_Angeles") ?? .current
+        var seoul = Calendar(identifier: .gregorian)
+        seoul.timeZone = TimeZone(identifier: "Asia/Seoul") ?? .current
+        let now = losAngeles.date(from: DateComponents(year: 2026, month: 6, day: 1)) ?? Date()
+        let yearEnd = DeadlineKind.year.periodEnd(from: now, calendar: losAngeles)
+        let monthEnd = DeadlineKind.month.periodEnd(from: now, calendar: losAngeles)
+
+        // Then: 서울에서는 1월 1일·7월 1일 오후로 보이지만 기간 기한이다
+        XCTAssertTrue(DeadlineKind.year.isConsistent(with: yearEnd, calendar: seoul))
+        XCTAssertTrue(DeadlineKind.month.isConsistent(with: monthEnd, calendar: seoul))
+        XCTAssertFalse(DeadlineKind.year.isConsistent(with: losAngeles.date(from: DateComponents(year: 2026, month: 3, day: 5)), calendar: seoul))
+        XCTAssertFalse(DeadlineKind.year.isConsistent(with: nil, calendar: seoul))
+        XCTAssertTrue(DeadlineKind.date.isConsistent(with: nil, calendar: seoul))
     }
 }

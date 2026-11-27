@@ -61,7 +61,7 @@ enum FinishedSectionBuilder {
             id: wish.id,
             emoji: wish.emoji,
             title: wish.title,
-            dday: DdayBadgeStyle(endDate: wish.endDate, calendar: calendar),
+            dday: DdayBadgeStyle(wish: wish, calendar: calendar),
             tag: nil,
             isFinished: true,
             subtitle: subtitle(wish: wish, filter: filter, calendar: calendar)

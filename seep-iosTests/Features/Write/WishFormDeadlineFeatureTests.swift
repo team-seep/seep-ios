@@ -262,4 +262,20 @@ final class WishFormDeadlineFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(selected?.option, .year)
         XCTAssertEqual(selected?.detail, "2025년 12월 31일까지")
     }
+
+    func test_GH118_TC19_기간위시에서날짜정하기로달력을열고닫으면_기간이그대로다() {
+        // Given
+        let end = lastMoment(year: 2026, month: 12, day: 31)
+        let viewModel = makeViewModel(mode: .edit(Wish(id: "w", title: "서핑", endDate: end, deadlineKind: .year)))
+        viewModel.send(.tapDate)
+
+        // When
+        viewModel.send(.selectDeadlineOption(.date))
+        viewModel.send(.dismissSheet)
+
+        // Then
+        XCTAssertEqual(viewModel.state.deadlineKind, .year)
+        XCTAssertEqual(viewModel.state.deadline, end)
+        XCTAssertFalse(viewModel.hasChanges)
+    }
 }

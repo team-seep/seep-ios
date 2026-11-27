@@ -134,6 +134,14 @@ final class WishDeadlineOverFeatureTests: ViewModelTestCase {
         XCTAssertEqual(line.dateText, "2027년 12월 31일까지")
     }
 
+    func test_GH118_TC4_이번달안종류인데마감이다른달이면_고르지않은올해안대신D_n이다() {
+        // Given: 동기화 등으로 이번 달 안 종류에 12월 마감이 들어왔다 — 11월에 본다
+        let wish = makeWish(endDate: lastMoment(2026, 12, 31), kind: .month)
+
+        // Then
+        XCTAssertEqual(DdayBadgeStyle(wish: wish, today: day(2026, 11, 15), calendar: calendar).text(farFuture: "", noDate: ""), "D-46")
+    }
+
     // MARK: GH-118 TC17
 
     func test_GH118_TC17_내년까지로정한위시도_해가바뀌면올해안이다() {

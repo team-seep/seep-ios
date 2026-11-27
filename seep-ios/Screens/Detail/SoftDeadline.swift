@@ -31,7 +31,9 @@ struct SoftDeadline: Equatable {
         }
         let endYear = calendar.component(.year, from: endDate)
         let thisYear = calendar.component(.year, from: now)
-        if kind == .month, calendar.isDate(endDate, equalTo: now, toGranularity: .month) {
+        if kind == .month {
+            // 이번 달 안은 이번 달일 때만 기간 문구. 다른 달이면(동기화·시간대 등) 고르지 않은 "올해 안"이 되지 않게 D-day 로 보인다
+            guard calendar.isDate(endDate, equalTo: now, toGranularity: .month) else { return nil }
             phase = .thisMonth
         } else if endYear == thisYear {
             phase = .thisYear
