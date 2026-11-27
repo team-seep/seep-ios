@@ -86,7 +86,7 @@ seep은 사이드 프로젝트라 기획은 가볍게 둔다. **AI가 기획안�
 - App Store 버전을 만들거나 고칠 때 항상 `releaseType`을 `AFTER_APPROVAL`로 둔다.
   - 새로 만들 때: `POST /v1/appStoreVersions`, `attributes`에 `platform: IOS`·`versionString: X.Y.Z`·`releaseType: AFTER_APPROVAL`
   - 이미 있는 버전(ASC가 미리 만든 초안, 지난 버전에서 넘어온 값 등): `PATCH /v1/appStoreVersions/{id}`로 `attributes.releaseType: AFTER_APPROVAL`
-  - ASC 웹에서는 버전 페이지 › "이 버전 출시" › "이 버전 자동 출시"
+  - ASC 웹에서는 버전 페이지의 "이 버전 출시"에서 승인 후 자동 출시 옵션을 고른다
   - fastlane을 쓰게 되면 `deliver`/`upload_to_app_store`에 `automatic_release: true`
 - 심사를 제출하기 전에 `GET /v1/appStoreVersions/{id}`로 `releaseType`이 `AFTER_APPROVAL`인지 확인한다. 다르면 고친 뒤 제출한다.
 - `MANUAL`로 제출돼 이미 `PENDING_DEVELOPER_RELEASE`에서 멈춘 버전은 오너에게 확인받고 `POST /v1/appStoreVersionReleaseRequests`(ASC 웹 "이 버전 출시")로 출시한다.
