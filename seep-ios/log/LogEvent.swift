@@ -172,6 +172,10 @@ enum LogObjectId: String {
     case finishedTabDot = "finished_tab_dot"
     // GH-64 이룬 싶·설정
     case yearReviewCard = "year_review_card"
+    /// 이룬 싶 탭 "싶에 다가간 날" 잔디 카드 노출 · 칸(+count) · 그날 시트의 줄 (GH-146)
+    case activityGrass = "activity_grass"
+    case activityDay = "activity_day"
+    case activityDayWish = "activity_day_wish"
     case notificationSetting = "notification_setting"
     case viewTypeSetting = "view_type_setting"
     /// 설정 "화면 모드"에서 고름 (+type) (GH-85)

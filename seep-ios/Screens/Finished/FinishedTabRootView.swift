@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// 이룬 싶 탭 루트 (GH-64 R-17 ~ R-23).
-/// 헤드라인 → 배지 카드 → 연말 회고 카드(기간에만) → 카테고리 필터 + 검색 → 월별 완료 목록
+/// 헤드라인 → 배지 카드 → 싶에 다가간 날(행동이 있을 때, GH-146) → 연말 회고 카드(기간에만) → 카테고리 필터 + 검색 → 월별 완료 목록
 struct FinishedTabRootView: View {
     @Environment(AppRouter.self) private var router
     @State private var viewModel = FinishedViewModel()
@@ -24,6 +24,10 @@ struct FinishedTabRootView: View {
                             recentBadges: viewModel.state.recentBadges,
                             onTap: { viewModel.send(.tapBadgeCollection) }
                         )
+                        if let grass = viewModel.state.grass {
+                            FinishedActivityGrassCard(grass: grass) { viewModel.send(.tapGrassDay($0)) }
+                                .onAppear { viewModel.send(.grassAppeared) }
+                        }
                         if let yearReview = viewModel.state.yearReview {
                             yearReviewCard(year: yearReview.year)
                         }
@@ -55,6 +59,10 @@ struct FinishedTabRootView: View {
         .onChange(of: router.wishesChangedToken) { _, _ in
             viewModel.send(.onAppear)
         }
+        // 탭을 연 채 자정을 넘기면 잔디의 오늘 칸을 다시 정한다 (GH-146)
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged).receive(on: RunLoop.main)) { _ in
+            viewModel.send(.onAppear)
+        }
         .trackScreen(viewModel.screenName)
         .onChange(of: viewModel.route) { _, route in
             handle(route)
@@ -62,6 +70,18 @@ struct FinishedTabRootView: View {
         .seepFullScreenCover(item: $presentedYearReview) { presented in
             YearReviewScreen(year: presented.year)
         }
+        .seepSheet(item: activityDayBinding) { day in
+            FinishedActivityDaySheet(day: day) { viewModel.send(.tapActivityWish($0)) }
+        }
+    }
+
+    private var activityDayBinding: Binding<ActivityDay?> {
+        Binding(
+            get: { viewModel.state.activityDay },
+            set: { newValue in
+                if newValue == nil, viewModel.state.activityDay != nil { viewModel.send(.activityDayDismissed) }
+            }
+        )
     }
 
     // MARK: Subviews

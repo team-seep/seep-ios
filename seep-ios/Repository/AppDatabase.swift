@@ -258,6 +258,14 @@ final class AppDatabase {
             try db.execute(sql: "INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) SELECT 'wishTag', id, updatedAt FROM wishTag")
         }
 
+        // GH-146: 단계를 체크한 시각(잔디 집계용). 이미 체크된 단계의 지난 날짜는 추정하지 않고 nil 로 둔다 (R-7).
+        // 동기화는 v7 트리거·`SELECT *` 매핑이 새 컬럼을 그대로 싣는다. updatedAt 을 건드리지 않아 기존 줄은 다시 올리지 않는다
+        migrator.registerMigration("v11") { db in
+            try db.alter(table: WishStepRecord.databaseTableName) { table in
+                table.add(column: "doneAt", .double)
+            }
+        }
+
         return migrator
     }
 
