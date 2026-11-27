@@ -98,7 +98,7 @@ struct FinishNoteSheet: View {
                 .foregroundStyle(Color.gray5)
                 .focused($isFocused)
                 .submitLabel(.done)
-                .onSubmit { viewModel.send(.tapSave) }
+                .onSubmit { viewModel.send(.submitNote) }
                 .accessibilityLabel(Text(Strings.Home.FinishNote.field))
                 Text(verbatim: viewModel.state.countText)
                     .font(.appleMedium(size: 12))

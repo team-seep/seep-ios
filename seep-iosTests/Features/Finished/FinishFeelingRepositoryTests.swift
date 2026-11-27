@@ -92,6 +92,36 @@ final class FinishFeelingRepositoryTests: XCTestCase {
         XCTAssertNil(sut.fetchWish(id: "w")?.finishFeeling)
     }
 
+    func test_GH139_TC10_취소때기대비교가남아있어도_다시완료하면_비어있다() throws {
+        // Given: v13 전 앱이 완료를 취소해 서버에 남은 옛 답이 동기화로 돌아온 상태
+        let wish = try sut.addWish(Wish(id: "w", title: "라멘")).get()
+        _ = try sut.finishWish(wish: wish).get()
+        _ = try sut.updateFinishNote(wishId: "w", note: "", feeling: .better).get()
+        try database.writer.write { try $0.execute(sql: "UPDATE wish SET isSuccess = 0, finishDate = NULL WHERE id = 'w'") }
+
+        // When: 앱에서 다시 완료
+        let refinished = try sut.finishWish(wish: try XCTUnwrap(sut.fetchWish(id: "w"))).get()
+
+        // Then
+        XCTAssertNil(refinished.finishFeeling)
+        XCTAssertNil(sut.fetchWish(id: "w")?.finishFeeling)
+    }
+
+    func test_GH139_TC10_취소때기대비교가남아있어도_위젯에서다시완료하면_비어있다() throws {
+        // Given
+        let wish = try sut.addWish(Wish(id: "w", title: "라멘")).get()
+        _ = try sut.finishWish(wish: wish).get()
+        _ = try sut.updateFinishNote(wishId: "w", note: "", feeling: .better).get()
+        try database.writer.write { try $0.execute(sql: "UPDATE wish SET isSuccess = 0, finishDate = NULL WHERE id = 'w'") }
+        let widgetRepository = WidgetCheckRepositoryImpl(database: database, store: WidgetCheckStore(userDefaults: UserDefaults(suiteName: suiteName)))
+
+        // When
+        _ = try widgetRepository.finishWish(wishId: "w", lastStepId: nil).get()
+
+        // Then: 홈이 소감 시트를 다시 띄울 수 있게 비어 있다 (R-5)
+        XCTAssertNil(sut.fetchWish(id: "w")?.finishFeeling)
+    }
+
     func test_GH139_R1_수정해저장해도_기대비교는그대로다() throws {
         // Given
         let wish = try sut.addWish(Wish(id: "w", title: "라멘")).get()

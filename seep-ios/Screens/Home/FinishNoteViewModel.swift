@@ -8,6 +8,8 @@ extension FinishNoteViewModel {
         /// 기대 비교 세 칸. 고른 칸을 다시 누르면 선택을 푼다 (GH-139 R-2)
         case selectFeeling(FinishFeeling)
         case tapSave
+        /// 입력 칸의 Return. 소감을 쓴 경우에만 저장한다 — 칸만 고르고 소감을 쓰려다 Return 을 눌러 닫히지 않게 (GH-139)
+        case submitNote
         case tapSkip
         /// "＋ 이어서 적기" — 입력한 소감은 저장하고 닫은 뒤 작성 화면을 연다 (GH-84 R-1)
         case tapChainNext
@@ -107,6 +109,8 @@ final class FinishNoteViewModel {
             select(feeling: feeling)
         case .tapSave:
             save()
+        case .submitNote:
+            if !Self.trimmed(state.noteText).isEmpty { save() }
         case .tapSkip:
             sendClickLog(objectId: .skipFinishNote)
             route = .dismiss

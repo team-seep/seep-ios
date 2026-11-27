@@ -77,6 +77,8 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
                 record.finishDate = self.calendar.startOfDay(for: finishedAt)
                 // 완료하면 고정을 푼다 (GH-33 R-6)
                 record.pinnedAt = nil
+                // 기대 비교는 이번 완료에 대한 답이다. v13 전 앱이 완료를 취소하면 서버에 옛 답이 남으므로 새로 묻는다 (GH-139 R-9)
+                record.finishFeeling = ""
             }
         }
         if case .success = result {

@@ -144,11 +144,15 @@ final class WishRepositoryImpl: WishRepository {
                 record.finishDate = finishDate
                 // 완료하면 고정을 푼다. 완료를 취소해도 돌아오지 않는다 (GH-33 R-6)
                 record.pinnedAt = nil
+                // 기대 비교는 이번 완료에 대한 답이다. v13 전 앱이 완료를 취소하면 merge 쓰기가 이 필드를 남겨
+                // 옛 답이 돌아올 수 있어 완료할 때마다 비운다 (GH-139 R-9)
+                record.finishFeeling = ""
             }
             var finishedWish = wish
             finishedWish.isSuccess = true
             finishedWish.finishDate = finishDate
             finishedWish.pinnedAt = nil
+            finishedWish.finishFeeling = nil
             return finishedWish
         }
     }

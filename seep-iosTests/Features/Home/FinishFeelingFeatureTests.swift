@@ -124,6 +124,33 @@ final class FinishFeelingFeatureTests: ViewModelTestCase {
         XCTAssertTrue(viewModel.state.isSaveEnabled)
     }
 
+    func test_GH139_R3_칸만고르고입력칸에서Return을누르면_저장하지않고시트를유지한다() {
+        // Given
+        let viewModel = makeViewModel()
+        viewModel.send(.selectFeeling(.better))
+
+        // When
+        viewModel.send(.submitNote)
+
+        // Then
+        XCTAssertTrue(repository.updateFinishNoteCalls.isEmpty)
+        XCTAssertNil(viewModel.route)
+    }
+
+    func test_GH139_R3_소감을쓰고Return을누르면_고른칸과함께저장한다() {
+        // Given
+        let viewModel = makeViewModel()
+        viewModel.send(.selectFeeling(.better))
+        viewModel.send(.inputNote("최고"))
+
+        // When
+        viewModel.send(.submitNote)
+
+        // Then
+        XCTAssertEqual(repository.updateFinishNoteCalls.map(\.feeling), [.better])
+        XCTAssertEqual(viewModel.route, .dismiss)
+    }
+
     // MARK: GH-139 TC4
 
     func test_GH139_TC4_칸과소감을입력하고_다음에할게요를누르면_아무것도저장하지않는다() {
