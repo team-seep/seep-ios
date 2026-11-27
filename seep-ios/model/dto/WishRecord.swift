@@ -67,13 +67,26 @@ struct WishStepRecord: Codable, Equatable, FetchableRecord, PersistableRecord, T
     var wishId: String
     var title: String
     var isDone: Bool
+    /// 체크한 시각. 체크를 풀면 nil. v11 전에 체크한 단계는 nil 로 남는다 — 지난 날짜는 추정하지 않는다 (GH-146 R-2, R-7)
+    var doneAt: Date?
     var order: Int
     var updatedAt: Date
     var deletedAt: Date?
 
     enum Columns {
         static let wishId = Column(CodingKeys.wishId)
+        static let doneAt = Column(CodingKeys.doneAt)
         static let deletedAt = Column(CodingKeys.deletedAt)
+    }
+
+    /// 체크 여부를 바꾸고 체크한 시각을 같이 맞춘다. 이미 체크된 단계를 다시 체크해도 처음 시각을 지킨다 (GH-146 R-2)
+    mutating func setDone(_ isDone: Bool, at now: Date) {
+        if isDone {
+            if !self.isDone { doneAt = now }
+        } else {
+            doneAt = nil
+        }
+        self.isDone = isDone
     }
 }
 
@@ -188,11 +201,13 @@ extension WishRecord {
 }
 
 extension WishStepRecord {
-    init(step: WishStep, wishId: String, updatedAt: Date) {
+    /// - Parameter doneAt: 체크한 시각. 새 단계·이전 데이터는 nil (GH-146 R-7)
+    init(step: WishStep, wishId: String, updatedAt: Date, doneAt: Date? = nil) {
         self.id = step.id
         self.wishId = wishId
         self.title = step.title
         self.isDone = step.isDone
+        self.doneAt = step.isDone ? doneAt : nil
         self.order = step.order
         self.updatedAt = updatedAt
         self.deletedAt = nil

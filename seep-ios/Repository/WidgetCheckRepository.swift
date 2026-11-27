@@ -57,7 +57,7 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
 
     func checkStep(wishId: String, stepId: String) -> Result<Wish, RepositoryError> {
         let result = write(wishId: wishId) { db, now in
-            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.isDone = true }
+            try WishRecordStore.updateStep(wishId: wishId, stepId: stepId, now: now, in: db) { $0.setDone(true, at: now) }
         }
         if case .success = result {
             store.recordStepCheck(at: now())
@@ -69,7 +69,7 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
         let finishedAt = now()
         let result = write(wishId: wishId) { db, now in
             if let lastStepId {
-                try WishRecordStore.updateStep(wishId: wishId, stepId: lastStepId, now: now, in: db) { $0.isDone = true }
+                try WishRecordStore.updateStep(wishId: wishId, stepId: lastStepId, now: now, in: db) { $0.setDone(true, at: now) }
             }
             try WishRecordStore.updateWish(id: wishId, now: now, in: db) { record in
                 record.isSuccess = true

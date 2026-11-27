@@ -176,6 +176,10 @@ enum LogObjectId: String {
     case finishedTabDot = "finished_tab_dot"
     // GH-64 이룬 싶·설정
     case yearReviewCard = "year_review_card"
+    /// 이룬 싶 탭 "싶에 다가간 날" 잔디 카드 노출 · 칸(+count) · 그날 시트의 줄 (GH-146)
+    case activityGrass = "activity_grass"
+    case activityDay = "activity_day"
+    case activityDayWish = "activity_day_wish"
     case notificationSetting = "notification_setting"
     case viewTypeSetting = "view_type_setting"
     /// 설정 "화면 모드"에서 고름 (+type) (GH-85)
@@ -245,4 +249,10 @@ enum LogObjectId: String {
     case logout = "logout"
     /// 계정 화면 "계정 삭제" (GH-93)
     case deleteAccount = "delete_account"
+    /// 홈 갖고 싶어요 "다 합치면" 카드 노출 (+count) (GH-148)
+    case wishTotalSummary = "wish_total_summary"
+    /// "다 합치면" 카드 펼치기 (GH-148)
+    case expandWishTotal = "expand_wish_total"
+    /// 펼친 "다 합치면" 카드의 싶 한 줄 → 상세 (GH-148)
+    case wishTotalItem = "wish_total_item"
 }

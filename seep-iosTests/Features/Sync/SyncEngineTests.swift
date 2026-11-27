@@ -430,6 +430,73 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertEqual(b1.manualOrder, a1.manualOrder)
     }
 
+    // MARK: GH-146 TC-12
+
+    func test_GH146_TC12_A와A의체크위젯에서단계를체크하고동기화하면_B에서doneAt이같고잔디에들어간다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", steps: [
+            WishStep(id: "s1", title: "항공권", order: 0),
+            WishStep(id: "s2", title: "숙소", order: 1)
+        ])).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When: A 앱에서 한 단계, A 의 체크 위젯에서 한 단계를 체크하고 동기화
+        deviceA.tick(60)
+        _ = try deviceA.repository.toggleStep(wishId: "w1", stepId: "s1").get()
+        let widgetNow = deviceA.clock.addingTimeInterval(30)
+        let suiteName = "test.syncEngine.gh146"
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        defer { UserDefaults().removePersistentDomain(forName: suiteName) }
+        let widget = WidgetCheckRepositoryImpl(
+            database: deviceA.database,
+            store: WidgetCheckStore(userDefaults: UserDefaults(suiteName: suiteName)),
+            now: { widgetNow }
+        )
+        _ = try widget.checkStep(wishId: "w1", stepId: "s2").get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        let stepsA = try deviceA.database.snapshot().steps.sorted { $0.order < $1.order }
+        let stepsB = try deviceB.database.snapshot().steps.sorted { $0.order < $1.order }
+        XCTAssertEqual(stepsA.compactMap(\.doneAt).count, 2)
+        XCTAssertEqual(stepsB.map(\.doneAt), stepsA.map(\.doneAt))
+        let activitiesB = deviceB.repository.fetchActivities(from: .distantPast, to: .distantFuture)
+        XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "항공권") && $0.date == stepsA[0].doneAt })
+        XCTAssertTrue(activitiesB.contains { $0.kind == .stepDone(stepTitle: "숙소") && $0.date == widgetNow })
+    }
+
+    func test_GH146_TC12_v11전앱이풀었다다시체크하면_서버doneAt을그대로따르고_기기마다같다() async throws {
+        // Given: B(새 앱)에서 체크해 서버에 doneAt 이 있다
+        await signInBoth()
+        _ = try deviceB.repository.addWish(Wish(id: "w1", title: "제주", steps: [WishStep(id: "s1", title: "항공권", order: 0)])).get()
+        deviceB.tick(60)
+        _ = try deviceB.repository.toggleStep(wishId: "w1", stepId: "s1").get()
+        let firstCheck = try XCTUnwrap(try deviceB.database.snapshot().steps.first?.doneAt)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When: v11 전 앱(doneAt 을 모름)이 풀었다가 다시 체크한다 — 서버는 merge 라 doneAt 을 그대로 둔다
+        func oldAppWrite(isDone: Int64, at seconds: Double) throws {
+            var fields = try XCTUnwrap(server.documents[.wishStep]?["s1"]?.fields)
+            fields["isDone"] = .integer(isDone)
+            fields["updatedAt"] = .double(seconds)
+            server.put(.wishStep, id: "s1", fields: fields)
+        }
+        try oldAppWrite(isDone: 0, at: firstCheck.timeIntervalSinceReferenceDate + 86_400)
+        await deviceB.engine.sync(trigger: .manual)
+        // 안 된 단계는 doneAt 이 남아 있어도 잔디에 세지 않는다
+        XCTAssertTrue(deviceB.repository.fetchActivities(from: .distantPast, to: .distantFuture).allSatisfy { $0.kind == .added })
+        try oldAppWrite(isDone: 1, at: firstCheck.timeIntervalSinceReferenceDate + 2 * 86_400)
+        await deviceB.engine.sync(trigger: .manual)
+        await deviceA.engine.sync(trigger: .manual)
+
+        // Then: 알려진 한계(R-10) — 다시 체크한 날을 알 수 없어 서버의 처음 체크 시각을 쓰고, 두 기기가 같은 날을 본다
+        XCTAssertEqual(try deviceB.database.snapshot().steps.first?.doneAt, firstCheck)
+        XCTAssertEqual(try deviceA.database.snapshot().steps.first?.doneAt, firstCheck)
+    }
+
     // MARK: TC-34
 
     func test_GH93_TC34_더새앱이쓴문서는아는필드만적용하고_다시올려도모르는필드를지우지않는다() async throws {

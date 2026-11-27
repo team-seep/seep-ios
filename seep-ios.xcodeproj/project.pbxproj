@@ -112,6 +112,7 @@
 		7F554F1F2B5490C9BA2F631C /* WishDetailSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496E7CDC7A8049F70FCC01B0 /* WishDetailSummaryTests.swift */; };
 		81E036270A99BDF11901ED15 /* WidgetCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEE7B7165AEDD10205CBF10 /* WidgetCopy.swift */; };
 		84A6EFA5894F8DD5F67C7862 /* MediumVerticalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2835391381DB27FA1C4DAB /* MediumVerticalEntryView.swift */; };
+		84E2606B230FE68ADB1FCCB8 /* WishActivityQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E284DD3C58B210BB8B8A19 /* WishActivityQuery.swift */; };
 		850B1372B30D4D3876BB795C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1AA1A3A8485167DBDB3014B /* Images.xcassets */; };
 		8651F53BC2F3FBED71EC811F /* MockCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AEF08CF36327081902249 /* MockCalendarManager.swift */; };
 		87133E5D5FFEB386FC86A003 /* PhotoTextRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29612A8DD6D75E941999C115 /* PhotoTextRecognizer.swift */; };
@@ -209,6 +210,7 @@
 		FC1FDD8A365185B6B45F3B69 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8718E6B222A66556629E25CF /* Strings.swift */; };
 		FC41C6F8F5E5268E9CDBC518 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3DD627C661CE1DF57B9645B4 /* RealmSwift */; };
 		FD9FADA6838C420CE0B6E890 /* RealmConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECB48C9236072F4A871449 /* RealmConfiguration.swift */; };
+		FE28474643D71ECF22FEC76A /* WishActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0983C35B7F2A2F65491F97F6 /* WishActivity.swift */; };
 		FEE7B8FC0591CEDCDDBCA5F8 /* LockScreenEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D375F7392D41C24B556B72 /* LockScreenEntry.swift */; };
 		FF762997C7FE6215BE262F9B /* LockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01607A33B44007CBFFAD73F4 /* LockScreenProvider.swift */; };
 /* End PBXBuildFile section */
@@ -263,6 +265,7 @@
 		07E47E76FDCB59ADEF075A54 /* AmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
 		089CC85013733AF0439C1F69 /* WishlistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItemView.swift; sourceTree = "<group>"; };
 		08C19CC851A234D697272B48 /* NotificationLanguageRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLanguageRefresh.swift; sourceTree = "<group>"; };
+		0983C35B7F2A2F65491F97F6 /* WishActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishActivity.swift; sourceTree = "<group>"; };
 		0B539B646E6CBAC6680C8B8A /* DisplayDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDate.swift; sourceTree = "<group>"; };
 		0C61661017325985EC539EDE /* WishStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
 		0E9051E705ECFB0359F76FDD /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -343,6 +346,7 @@
 		7A76421C94B6DE792B20DF18 /* WidgetCheckRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckRepositoryTests.swift; sourceTree = "<group>"; };
 		7CB5AF9691AD529C765F8159 /* PlaceSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchService.swift; sourceTree = "<group>"; };
 		83AB08DF5039EC2617125784 /* seep-iosTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "seep-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		83E284DD3C58B210BB8B8A19 /* WishActivityQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishActivityQuery.swift; sourceTree = "<group>"; };
 		83F773BB5C9218B02C914FC1 /* SmallRemainWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallRemainWidget.swift; sourceTree = "<group>"; };
 		84CD696F603FD35A5250F514 /* WidgetCheckStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCheckStore.swift; sourceTree = "<group>"; };
 		85596EA0CBC45954AA2875FC /* MediumHorizontalProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumHorizontalProvider.swift; sourceTree = "<group>"; };
@@ -713,6 +717,7 @@
 				53FD28DD9290682A807BCB10 /* RemoteConfigRepository.swift */,
 				D158944C664BF8E48976F97C /* WidgetCheckRepository.swift */,
 				D4936DD5791912BB787ED537 /* WidgetWishRepository.swift */,
+				83E284DD3C58B210BB8B8A19 /* WishActivityQuery.swift */,
 				225CF347AB0286BABCA34092 /* WishRecordStore.swift */,
 				C42B6BAFC44B0F9D31B1AF78 /* WishRepository.swift */,
 			);
@@ -873,6 +878,7 @@
 				4FEE7B7165AEDD10205CBF10 /* WidgetCopy.swift */,
 				16B6A4EDCB1C412309C4C69D /* WidgetDeepLink.swift */,
 				FB7E40757F0869218D4E49F6 /* Wish.swift */,
+				0983C35B7F2A2F65491F97F6 /* WishActivity.swift */,
 				6D791DD9ADB0DE2606530147 /* WishJournal.swift */,
 				DECAAC748EA45DD07828E4BA /* WishPlace.swift */,
 				A882A10B5F53D6BD97E23324 /* WishSaving.swift */,
@@ -1329,6 +1335,8 @@
 				B6253635B0C95AC886E28745 /* WidgetReloader.swift in Sources */,
 				918025421A5015C408ADA2C7 /* WidgetWishRepository.swift in Sources */,
 				D2A9F73B93CE8EC981975B81 /* Wish.swift in Sources */,
+				FE28474643D71ECF22FEC76A /* WishActivity.swift in Sources */,
+				84E2606B230FE68ADB1FCCB8 /* WishActivityQuery.swift in Sources */,
 				C3068FA7D079FBF756EA493E /* WishDTO.swift in Sources */,
 				2A7CAA98047CEED03A3136DF /* WishJournal.swift in Sources */,
 				D517CFA4DBE4E4E01EC43764 /* WishLinkInput.swift in Sources */,
