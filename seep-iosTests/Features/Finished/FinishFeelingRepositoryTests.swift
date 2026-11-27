@@ -22,6 +22,16 @@ final class FinishFeelingRepositoryTests: XCTestCase {
         super.tearDown()
     }
 
+    /// v13 전 앱의 완료 취소: 모르는 `finishFeeling`은 그대로 두고 완료만 푼 줄이 동기화로 들어온 상태
+    private func cancelFinishLikeOldApp(wishId: String) throws {
+        var record = try XCTUnwrap(try database.snapshot().wishes.first { $0.id == wishId })
+        try database.deleteRecord(record)
+        record.isSuccess = false
+        record.finishDate = nil
+        record.finishNote = ""
+        try database.insertRecord(record)
+    }
+
     // MARK: GH-139 TC1
 
     func test_GH139_TC1_v12까지돈DB를올리면_모든위시의finishFeeling이빈값이고_다른컬럼은그대로다() throws {
@@ -97,7 +107,7 @@ final class FinishFeelingRepositoryTests: XCTestCase {
         let wish = try sut.addWish(Wish(id: "w", title: "라멘")).get()
         _ = try sut.finishWish(wish: wish).get()
         _ = try sut.updateFinishNote(wishId: "w", note: "", feeling: .better).get()
-        try database.writer.write { try $0.execute(sql: "UPDATE wish SET isSuccess = 0, finishDate = NULL WHERE id = 'w'") }
+        try cancelFinishLikeOldApp(wishId: "w")
 
         // When: 앱에서 다시 완료
         let refinished = try sut.finishWish(wish: try XCTUnwrap(sut.fetchWish(id: "w"))).get()
@@ -112,7 +122,7 @@ final class FinishFeelingRepositoryTests: XCTestCase {
         let wish = try sut.addWish(Wish(id: "w", title: "라멘")).get()
         _ = try sut.finishWish(wish: wish).get()
         _ = try sut.updateFinishNote(wishId: "w", note: "", feeling: .better).get()
-        try database.writer.write { try $0.execute(sql: "UPDATE wish SET isSuccess = 0, finishDate = NULL WHERE id = 'w'") }
+        try cancelFinishLikeOldApp(wishId: "w")
         let widgetRepository = WidgetCheckRepositoryImpl(database: database, store: WidgetCheckStore(userDefaults: UserDefaults(suiteName: suiteName)))
 
         // When
