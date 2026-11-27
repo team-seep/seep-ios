@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 기본은 서버 없이 **로컬 SQLite(GRDB)** 에 저장하고(로그인하면 Firebase로 동기화, GH-93), App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
+**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 데이터는 **로컬 SQLite(GRDB)** 가 기준이고, 로그인하면 Firebase(Auth·Firestore·Storage)로 서버에도 동기화한다(GH-93, 비회원은 로컬만), App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
 
 - 타깃: `seep-ios`(앱), `widgetExtension`(WidgetKit, SwiftUI), `seep-iosTests`(XCTest)
 - iOS 18.0+. **SwiftUI + `@Observable` ViewModel**(GH-64에서 전환). UIKit은 `AppDelegate`(Firebase·DB·알림 델리게이트)만. 위젯도 SwiftUI
@@ -45,7 +45,7 @@ xcodebuild build \
 
 | 문서 | 내용 |
 |---|---|
-| [docs/process/planning.md](docs/process/planning.md) | AI 기획 추천(매일) → `approved` 승인 → 자동 개발(매일) → 출시 2주 뒤 사용량(매주). 서버리스 조건, 트래킹 이벤트 형식 |
+| [docs/process/planning.md](docs/process/planning.md) | AI 기획 추천(매일) → `approved` 승인 → 자동 개발(매일) → 출시 2주 뒤 사용량(매주). 서버 저장 기준, 트래킹 이벤트 형식 |
 | [docs/process/pr-process.md](docs/process/pr-process.md) | 전체 흐름 한 장 요약, 위험도(경량/풀코스), "PR 만들어줘" 시 Claude가 하는 일 |
 | [docs/process/tech-spec-process.md](docs/process/tech-spec-process.md) | GitHub Issue = 테크스펙(요약·요구사항·TC). 이슈 번호가 티켓 키 (`GH-12`) |
 | [docs/process/testing.md](docs/process/testing.md) | 테스트 3계층(유닛/자동화/수동), 네이밍 `test_GH{n}_TC{m}_{조건}_{기대결과}()`, 목 규칙 |
@@ -59,7 +59,7 @@ xcodebuild build \
 - **테스트 계층 배정은 승인받는다.** TC별로 유닛/자동화/수동 표를 먼저 보여주고, 승인 후 유닛 테스트 코드만 작성한다.
 - **PR**: `.github/PULL_REQUEST_TEMPLATE.md`를 채워 `gh pr create --base develop`. 본문(위험도·커버리지 표·드리프트·설명이 필요한 결정)은 pr-process.md 절차대로 만들고, **생성 전에 본문을 보여주고 확인받는다.**
 - 이슈 생성·수정, push, PR 생성은 외부에 보이는 작업이라 매번 확인받는다.
-- **`approved` 라벨이 붙은 이슈**는 사람 승인이 끝난 것이다. `seep-run-approved` 스킬로 진행할 때는 브랜치·커밋·push·PR까지 확인 없이 한다(머지는 안 함).
+- **`approved` 라벨이 붙은 이슈**는 사람 승인이 끝난 것이다. `seep-run-approved` 스킬로 진행할 때는 브랜치·커밋·push·PR, 리뷰 준비 게이트(CI·TC 증거·독립 리뷰)까지 확인 없이 하고 보드 '리뷰'에서 멈춘다(작업자는 머지 안 함). 라벨이 붙으면 Orca Seep 봇이 작업자를 띄운다. develop 머지는 사람이 개발 빌드로 검수하고 "검수 끝"이라고 하면 Seep 봇이 한다. 사람이 정하는 건 승인·검수·출시(심사 요청) 시점이다.
 - 프로젝트 스킬(`.claude/skills/`): `seep-idea-scout`(기획 추천), `seep-run-approved`(승인 기획 자동 개발), `seep-usage-report`(출시 후 사용량).
 - 가슴속 3천원용 `3dollars:*` 플러그인 스킬(pr-body, test-cases, drift 등)은 지라·노션 전제라 이 레포에서 쓰지 않는다. 같은 단계를 위 문서대로 수행한다. 예외: `3dollars:simulator-test`는 레포의 `docs/process/testing.md`를 읽고 동작하므로 자동화 TC 실행에 쓴다.
 

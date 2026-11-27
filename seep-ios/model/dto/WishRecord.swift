@@ -44,6 +44,8 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var manualOrder: Double
     /// 이어서 적은 앞 위시 id. nil 이면 처음 싶. 동기화 대비로 FK·UNIQUE 를 두지 않는다 (GH-84, 마이그레이션 v4)
     var previousWishId: String?
+    /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v12)
+    var startedAt: Date?
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -67,13 +69,26 @@ struct WishStepRecord: Codable, Equatable, FetchableRecord, PersistableRecord, T
     var wishId: String
     var title: String
     var isDone: Bool
+    /// 체크한 시각. 체크를 풀면 nil. v11 전에 체크한 단계는 nil 로 남는다 — 지난 날짜는 추정하지 않는다 (GH-146 R-2, R-7)
+    var doneAt: Date?
     var order: Int
     var updatedAt: Date
     var deletedAt: Date?
 
     enum Columns {
         static let wishId = Column(CodingKeys.wishId)
+        static let doneAt = Column(CodingKeys.doneAt)
         static let deletedAt = Column(CodingKeys.deletedAt)
+    }
+
+    /// 체크 여부를 바꾸고 체크한 시각을 같이 맞춘다. 이미 체크된 단계를 다시 체크해도 처음 시각을 지킨다 (GH-146 R-2)
+    mutating func setDone(_ isDone: Bool, at now: Date) {
+        if isDone {
+            if !self.isDone { doneAt = now }
+        } else {
+            doneAt = nil
+        }
+        self.isDone = isDone
     }
 }
 
@@ -181,6 +196,7 @@ extension WishRecord {
         self.futureLetterSealedAt = wish.futureLetterSealedAt
         self.manualOrder = wish.manualOrder
         self.previousWishId = wish.previousWishId
+        self.startedAt = wish.startedAt
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -188,11 +204,13 @@ extension WishRecord {
 }
 
 extension WishStepRecord {
-    init(step: WishStep, wishId: String, updatedAt: Date) {
+    /// - Parameter doneAt: 체크한 시각. 새 단계·이전 데이터는 nil (GH-146 R-7)
+    init(step: WishStep, wishId: String, updatedAt: Date, doneAt: Date? = nil) {
         self.id = step.id
         self.wishId = wishId
         self.title = step.title
         self.isDone = step.isDone
+        self.doneAt = step.isDone ? doneAt : nil
         self.order = step.order
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -322,6 +340,7 @@ extension Wish {
             futureLetterSealedAt: record.futureLetterSealedAt,
             manualOrder: record.manualOrder,
             previousWishId: record.previousWishId,
+            startedAt: record.startedAt,
             createdAt: record.createdAt
         )
     }

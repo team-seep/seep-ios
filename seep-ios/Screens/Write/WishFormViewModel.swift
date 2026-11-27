@@ -28,6 +28,10 @@ final class WishFormViewModel {
     /// 이름은 있는데 이 기기에 파일이 아직 없는 사진(다른 기기에서 붙여 내려받기 전, GH-93 R-41).
     /// 화면엔 없는 것으로 보이지만, 사용자가 사진을 건드리지 않고 저장하면 이름을 그대로 둔다. 비우면 다른 기기의 사진까지 사라진다
     private var photoNotYetDownloaded: String?
+    /// 사진 속 글자 읽기 차례. 사진을 빼거나 바꾸면 늘려서 앞 사진의 늦은 결과를 버린다 (GH-144 R-6)
+    private var photoTextRequestId = 0
+    /// 칩 줄 노출 로그는 사진마다 한 번 (GH-144 트래킹)
+    private var hasSentPhotoTextImpression = false
 
     init(config: Config, dependency: Dependency = Dependency()) {
         self.config = config
@@ -166,6 +170,8 @@ final class WishFormViewModel {
         case .selectCategory(let category):
             state.category = category
             updateButtonState()
+            // 갖고 싶어요로 바꾸면 금액 칩이 처음 보일 수 있다 (GH-144 R-5)
+            sendPhotoTextImpressionIfNeeded()
         case .inputTitle(let title):
             inputTitle(title)
         case .tapDate:
@@ -282,6 +288,7 @@ final class WishFormViewModel {
         case .pickPhoto(let data):
             state.photo = .picked(data)
             photoNotYetDownloaded = nil
+            recognizePhotoText(data)
         case .pickPhotoFailed:
             route = .toast(WishPhotoStorageError.invalidImage.localizedDescription)
         case .tapPhoto:
@@ -293,6 +300,10 @@ final class WishFormViewModel {
             route = .rewriteLetterAlert
         case .confirmRewriteLetter:
             presentLetterSheet()
+        case .tapPhotoTextTitle(let title):
+            fillTitleFromPhotoText(title)
+        case .tapPhotoTextAmount:
+            fillAmountFromPhotoText()
         }
     }
 
@@ -371,6 +382,8 @@ final class WishFormViewModel {
         case .photo:
             state.photo = .none
             photoNotYetDownloaded = nil
+            // 칩만 지우고 이미 채운 값은 그대로 둔다 (GH-144 R-6)
+            clearPhotoText()
         case .letter:
             state.letter = nil
         }
@@ -561,6 +574,80 @@ final class WishFormViewModel {
         ))
     }
 
+    // MARK: 사진 속 글자 (GH-144)
+
+    /// 새로 고른 사진만 읽는다. 저장된 사진을 열 때는 읽지 않는다 (R-1)
+    private func recognizePhotoText(_ data: Data) {
+        clearPhotoText()
+        let requestId = photoTextRequestId
+        dependency.photoTextRecognizer.recognizeText(imageData: data) { [weak self] lines in
+            guard let self, self.photoTextRequestId == requestId else { return }
+            let suggestion = PhotoTextSuggester.suggest(lines: lines, currentCurrency: self.state.currency)
+            self.state.photoTextTitles = Self.photoTextChipTitles(suggestion.titles)
+            self.state.photoTextAmount = suggestion.amount
+            self.sendPhotoTextImpressionIfNeeded()
+        }
+    }
+
+    /// 칩 글자 = 채울 글자. 제목 칸이 18자까지라 칩도 앞 18자로 보여 준다 (TC-12)
+    private static func photoTextChipTitles(_ titles: [String]) -> [String] {
+        var chips: [String] = []
+        for title in titles {
+            let chip = String(title.prefix(titleMaxLength)).trimmingCharacters(in: .whitespaces)
+            if !chip.isEmpty, !chips.contains(chip) { chips.append(chip) }
+        }
+        return chips
+    }
+
+    private func clearPhotoText() {
+        photoTextRequestId += 1
+        hasSentPhotoTextImpression = false
+        state.photoTextTitles = []
+        state.photoTextAmount = nil
+    }
+
+    /// 제목이 비어 있지 않아도 바꾼다 — 사용자가 눌렀으니까 (R-4)
+    private func fillTitleFromPhotoText(_ title: String) {
+        guard state.photoTextTitles.contains(title) else { return }
+        inputTitle(title)
+        // 칩은 이미 18자 안으로 잘라 두었다 — 직접 치다 닿은 게 아니라 최대 길이 안내는 띄우지 않는다
+        state.titleError = nil
+        state.photoTextTitles = []
+        didFillFromPhotoText(kind: "title")
+    }
+
+    /// 목표 금액 블록을 열고(열려 있으면 값만) 금액·통화를 넣는다 (R-5)
+    private func fillAmountFromPhotoText() {
+        guard let found = state.photoTextAmountChip else { return }
+        state.revealedBlocks.insert(.targetAmount)
+        state.currency = found.currency
+        state.targetAmount = found.amount
+        state.targetAmountText = AmountFormatter.inputText(from: found.amount, currency: found.currency)
+        state.photoTextAmount = nil
+        didFillFromPhotoText(kind: "amount")
+    }
+
+    private func didFillFromPhotoText(kind: String) {
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: screenName,
+            objectType: .button,
+            objectId: .fillFromPhotoText,
+            extraParameters: [.kind: kind]
+        ))
+        route = .toast(Strings.WishDocument.PhotoText.filled)
+    }
+
+    private func sendPhotoTextImpressionIfNeeded() {
+        guard !hasSentPhotoTextImpression, state.isPhotoTextSuggestionVisible else { return }
+        hasSentPhotoTextImpression = true
+        dependency.logManager.sendEvent(event: ImpressionEvent(
+            screen: screenName,
+            objectType: .card,
+            objectId: .photoTextSuggestion,
+            extraParameters: [.titleCount: state.photoTextTitles.count, .hasAmount: state.photoTextAmountChip != nil]
+        ))
+    }
+
     // MARK: 저장
 
     private func updateButtonState() {
@@ -721,6 +808,8 @@ final class WishFormViewModel {
             futureLetter: letter.text,
             futureLetterSealedAt: letter.sealedAt,
             previousWishId: original.previousWishId,
+            // 수정 폼은 시작 상태를 바꾸지 않는다. 카테고리를 바꿔도 하는 중으로 남는다 (GH-143 R-7)
+            startedAt: original.startedAt,
             createdAt: original.createdAt
         )
 
