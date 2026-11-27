@@ -312,8 +312,8 @@ extension Wish {
             emoji: record.emoji,
             category: Category(rawValue: record.category) ?? .wantToDo,
             title: record.title,
-            endDate: record.date,
-            deadlineKind: Self.deadlineKind(stored: record.deadlineKind, endDate: record.date),
+            endDate: Self.deadline(stored: record.deadlineKind, endDate: record.date).endDate,
+            deadlineKind: Self.deadline(stored: record.deadlineKind, endDate: record.date).kind,
             finishDate: record.finishDate,
             notifications: notifications
                 .sorted { $0.order < $1.order }
@@ -351,9 +351,10 @@ extension Wish {
 }
 
 extension Wish {
-    /// 기간 마지막 날이 아닌 마감의 기간 종류는 날짜 기한으로 읽는다(구버전 앱과 섞인 동기화, GH-118 R-11)
-    fileprivate static func deadlineKind(stored: String, endDate: Date?) -> DeadlineKind {
+    /// 기간 기한은 이 기기의 기간 마지막 날로 맞추고, 기간 마지막 날이 아닌 마감은 날짜 기한으로 읽는다 (GH-118 R-11)
+    fileprivate static func deadline(stored: String, endDate: Date?) -> (endDate: Date?, kind: DeadlineKind) {
         let kind = DeadlineKind(stored: stored)
-        return kind.isConsistent(with: endDate) ? kind : .date
+        guard kind.isPeriod, let normalized = kind.normalizedEnd(endDate) else { return (endDate, .date) }
+        return (normalized, kind)
     }
 }

@@ -168,11 +168,11 @@ final class WishDeadlineOverFeatureTests: ViewModelTestCase {
         XCTAssertEqual(sut.state.summary?.ddayLine.text, "올해가 지났어요")
         XCTAssertEqual(sut.state.summary?.ddayLine.dateText, "2026년 안에 하기로 했어요")
         XCTAssertEqual(sut.state.summary?.ddayLine.tone, .past)
-        XCTAssertEqual(sut.state.deadlineOver, .init(postponeTitle: "내년까지로 미루기"))
+        XCTAssertEqual(sut.state.deadlineOver, .init(postponeTitle: "올해 안으로 미루기"))
         XCTAssertEqual(DdayBadgeStyle(wish: wish, today: day(2027, 1, 1), calendar: calendar).textColor, .optionPurple)
     }
 
-    func test_GH118_TC5_이번달안기한이지나면_이번달이지났어요와다음달미루기다() {
+    func test_GH118_TC5_이번달안기한이지나면_이번달이지났어요와이번달안으로미루기다() {
         // Given
         let wish = makeWish(endDate: lastMoment(2026, 10, 31), kind: .month)
 
@@ -182,7 +182,7 @@ final class WishDeadlineOverFeatureTests: ViewModelTestCase {
         // Then
         XCTAssertEqual(sut.state.summary?.ddayLine.text, "이번 달이 지났어요")
         XCTAssertEqual(sut.state.summary?.ddayLine.dateText, "10월 안에 하기로 했어요")
-        XCTAssertEqual(sut.state.deadlineOver, .init(postponeTitle: "다음 달까지로 미루기"))
+        XCTAssertEqual(sut.state.deadlineOver, .init(postponeTitle: "이번 달 안으로 미루기"))
     }
 
     func test_GH118_TC5_지난해이번달안기한은_연도를붙여보인다() {

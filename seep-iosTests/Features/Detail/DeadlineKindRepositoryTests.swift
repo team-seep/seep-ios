@@ -142,8 +142,8 @@ final class DeadlineKindRepositoryTests: XCTestCase {
         XCTAssertEqual(DdayBadgeStyle(wish: try XCTUnwrap(oldApp), today: end(2027, 1, 1)).text(farFuture: "", noDate: ""), "D-63")
     }
 
-    func test_GH118_TC18_다른시간대에서정한기간마감도_기간기한으로읽는다() {
-        // Given: 로스앤젤레스에서 "올해 안에"로 정한 마감(12월 31일 23:59:59 PST)
+    func test_GH118_TC18_다른시간대에서정한기간마감은_이기기의기간마지막날로맞춘다() {
+        // Given: 로스앤젤레스에서 "올해 안에"로 정한 마감(12월 31일 23:59:59 PST) — 서울에서는 1월 1일 오후다
         var losAngeles = Calendar(identifier: .gregorian)
         losAngeles.timeZone = TimeZone(identifier: "America/Los_Angeles") ?? .current
         var seoul = Calendar(identifier: .gregorian)
@@ -151,12 +151,23 @@ final class DeadlineKindRepositoryTests: XCTestCase {
         let now = losAngeles.date(from: DateComponents(year: 2026, month: 6, day: 1)) ?? Date()
         let yearEnd = DeadlineKind.year.periodEnd(from: now, calendar: losAngeles)
         let monthEnd = DeadlineKind.month.periodEnd(from: now, calendar: losAngeles)
+        let seoulYearEnd = DeadlineKind.year.periodEnd(from: now, calendar: seoul)
+        let seoulMonthEnd = DeadlineKind.month.periodEnd(from: now, calendar: seoul)
 
-        // Then: 서울에서는 1월 1일·7월 1일 오후로 보이지만 기간 기한이다
-        XCTAssertTrue(DeadlineKind.year.isConsistent(with: yearEnd, calendar: seoul))
-        XCTAssertTrue(DeadlineKind.month.isConsistent(with: monthEnd, calendar: seoul))
-        XCTAssertFalse(DeadlineKind.year.isConsistent(with: losAngeles.date(from: DateComponents(year: 2026, month: 3, day: 5)), calendar: seoul))
-        XCTAssertFalse(DeadlineKind.year.isConsistent(with: nil, calendar: seoul))
-        XCTAssertTrue(DeadlineKind.date.isConsistent(with: nil, calendar: seoul))
+        // Then: 서울의 같은 기간 마지막 날로 맞춘다 — 문구·지남 판정·미루기가 같은 기간을 본다
+        XCTAssertEqual(DeadlineKind.year.normalizedEnd(yearEnd, calendar: seoul), seoulYearEnd)
+        XCTAssertEqual(DeadlineKind.month.normalizedEnd(monthEnd, calendar: seoul), seoulMonthEnd)
+        XCTAssertEqual(DeadlineKind.year.normalizedEnd(seoulYearEnd, calendar: seoul), seoulYearEnd)
+        XCTAssertNil(DeadlineKind.year.normalizedEnd(losAngeles.date(from: DateComponents(year: 2026, month: 3, day: 5)), calendar: seoul))
+        XCTAssertNil(DeadlineKind.year.normalizedEnd(nil, calendar: seoul))
+        XCTAssertEqual(DeadlineKind.date.normalizedEnd(yearEnd, calendar: seoul), yearEnd)
+
+        // Then: 맞춘 마감에서 미루면 다음 해 12월 31일 (기간을 건너뛰지 않는다)
+        let normalized = DeadlineKind.year.normalizedEnd(yearEnd, calendar: seoul) ?? Date()
+        let february = seoul.date(from: DateComponents(year: 2027, month: 2, day: 1)) ?? Date()
+        XCTAssertEqual(
+            DeadlineKind.year.postponedEnd(from: normalized, now: february, calendar: seoul),
+            DeadlineKind.year.periodEnd(from: february, calendar: seoul)
+        )
     }
 }

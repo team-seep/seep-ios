@@ -93,9 +93,9 @@ struct SoftDeadline: Equatable {
         }
     }
 
-    /// 지났을 때 미루기 버튼 문구 (R-6)
+    /// 지났을 때 미루기 버튼 문구 (R-6). 미루면 늘 오늘이 든 기간의 마지막 날이 되므로(`postponedEnd`) 그 기간 이름을 쓴다
     var postponeTitle: String {
-        return kind == .month ? Strings.Deadline.OverCard.postponeMonth : Strings.Deadline.OverCard.postponeYear
+        return kind == .month ? Strings.Deadline.OverCard.postponeThisMonth : Strings.Deadline.OverCard.postponeThisYear
     }
 
     /// "12월 31일까지". 올해가 아니면 연도를 붙인다 (언제까지 시트 항목과 같은 표기)

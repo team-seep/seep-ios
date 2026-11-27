@@ -434,10 +434,10 @@ internal enum Strings {
     internal enum OverCard {
       /// 기간을 한 번 더 늘려 두면 다시 알려드려요.
       internal static var message: String { Strings.tr("Localization", "deadline.over_card.message", fallback: "기간을 한 번 더 늘려 두면 다시 알려드려요.") }
-      /// 다음 달까지로 미루기
-      internal static var postponeMonth: String { Strings.tr("Localization", "deadline.over_card.postpone_month", fallback: "다음 달까지로 미루기") }
-      /// 내년까지로 미루기
-      internal static var postponeYear: String { Strings.tr("Localization", "deadline.over_card.postpone_year", fallback: "내년까지로 미루기") }
+      /// 이번 달 안으로 미루기
+      internal static var postponeThisMonth: String { Strings.tr("Localization", "deadline.over_card.postpone_this_month", fallback: "이번 달 안으로 미루기") }
+      /// 올해 안으로 미루기
+      internal static var postponeThisYear: String { Strings.tr("Localization", "deadline.over_card.postpone_this_year", fallback: "올해 안으로 미루기") }
       /// 기한 없애기
       internal static var remove: String { Strings.tr("Localization", "deadline.over_card.remove", fallback: "기한 없애기") }
       /// 아직 하고 싶어요?

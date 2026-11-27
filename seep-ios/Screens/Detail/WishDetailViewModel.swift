@@ -82,7 +82,7 @@ extension WishDetailViewModel {
 
     /// "아직 하고 싶어요?" 카드 (GH-118 R-6)
     struct DeadlineOverCard: Equatable {
-        /// "다음 달까지로 미루기" · "내년까지로 미루기"
+        /// "이번 달 안으로 미루기" · "올해 안으로 미루기"
         let postponeTitle: String
     }
 

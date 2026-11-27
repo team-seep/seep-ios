@@ -18,18 +18,20 @@ enum DeadlineKind: String, CaseIterable {
         return self != .date
     }
 
-    /// 마감이 이 종류의 기간 마지막 날인지. 기간 종류를 모르는 구버전 앱이 날짜만 바꿔 동기화하면
-    /// "올해 안"인데 3월 5일 같은 값이 생긴다 — 그런 위시는 날짜 기한으로 읽는다 (GH-118 R-11).
-    /// 마감은 저장한 기기 시간대의 23:59:59 라 다른 시간대 기기에서는 하루 앞뒤로 보일 수 있어 하루까지 봐준다
-    func isConsistent(with endDate: Date?, calendar: Calendar = .current) -> Bool {
-        guard isPeriod else { return true }
-        guard let endDate else { return false }
+    /// 저장된 마감을 이 기기에서 쓸 기간 마지막 날로 맞춘다. 기간 종류가 아니면 그대로, 맞출 수 없으면 nil (GH-118 R-11).
+    /// - 마감은 저장한 기기 시간대의 23:59:59 라 다른 시간대 기기에서는 하루 앞뒤로 보인다 → 그 기간의 마지막 날로 옮긴다.
+    ///   그래야 문구·지남 판정·미루기가 같은 기간을 본다.
+    /// - 기간 종류를 모르는 구버전 앱이 날짜만 바꿔 동기화하면 "올해 안"인데 3월 5일 같은 값이 생긴다 → nil(날짜 기한으로 읽는다)
+    func normalizedEnd(_ endDate: Date?, calendar: Calendar = .current) -> Date? {
+        guard isPeriod else { return endDate }
+        guard let endDate else { return nil }
         let unit: Calendar.Component = self == .month ? .month : .year
-        return [-1, 0, 1].contains { offset in
+        for offset in [0, -1, 1] {
             guard let shifted = calendar.date(byAdding: .day, value: offset, to: endDate),
-                  let end = Self.lastMoment(of: unit, containing: shifted, calendar: calendar) else { return false }
-            return calendar.isDate(shifted, inSameDayAs: end)
+                  let end = Self.lastMoment(of: unit, containing: shifted, calendar: calendar) else { continue }
+            if calendar.isDate(shifted, inSameDayAs: end) { return end }
         }
+        return nil
     }
 
     /// 지금 고르면 저장할 마감: 그 기간 마지막 날의 끝(23:59:59). 날짜 기한은 nil (R-2)

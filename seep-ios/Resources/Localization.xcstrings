@@ -4213,74 +4213,74 @@
         }
       }
     },
-    "deadline.over_card.postpone_month" : {
-      "comment" : "상세 · 기간이 지난 싶 카드 버튼 · '이번 달 안에'를 다음 달 말일로 (GH-118 R-6)",
+    "deadline.over_card.postpone_this_month" : {
+      "comment" : "상세 · 기간이 지난 싶 카드 버튼 · '이번 달 안에'를 오늘이 든 달 말일로 미룬다 (GH-118 R-6)",
       "extractionState" : "manual",
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다음 달까지로 미루기"
+            "value" : "이번 달 안으로 미루기"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extend to next month"
+            "value" : "Extend to this month"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "来月まで延ばす"
+            "value" : "今月中に延ばす"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "延到下个月"
+            "value" : "延到本月底"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "延到下個月"
+            "value" : "延到本月底"
           }
         }
       }
     },
-    "deadline.over_card.postpone_year" : {
-      "comment" : "상세 · 기간이 지난 싶 카드 버튼 · '올해 안에'·'내년까지'를 다음 해 12월 31일로 (GH-118 R-6)",
+    "deadline.over_card.postpone_this_year" : {
+      "comment" : "상세 · 기간이 지난 싶 카드 버튼 · '올해 안에'·'내년까지'를 오늘이 든 해 12월 31일로 미룬다 (GH-118 R-6)",
       "extractionState" : "manual",
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "내년까지로 미루기"
+            "value" : "올해 안으로 미루기"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extend to next year"
+            "value" : "Extend to this year"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "来年まで延ばす"
+            "value" : "今年中に延ばす"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "延到明年"
+            "value" : "延到今年底"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "延到明年"
+            "value" : "延到今年底"
           }
         }
       }
