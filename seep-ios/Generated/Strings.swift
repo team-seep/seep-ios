@@ -1591,6 +1591,18 @@ internal enum Strings {
       /// 태그
       internal static var title: String { Strings.tr("Localization", "wish_document.hashtag_sheet.title", fallback: "태그") }
     }
+    internal enum PhotoText {
+      /// %@ 목표 금액으로
+      internal static func amountFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "wish_document.photo_text.amount_format", String(describing: p1), fallback: "%@ 목표 금액으로")
+      }
+      /// 사진에서 찾았어요 · 누르면 채워요
+      internal static var caption: String { Strings.tr("Localization", "wish_document.photo_text.caption", fallback: "사진에서 찾았어요 · 누르면 채워요") }
+      /// 👏 사진 속 글자로 채웠어요
+      internal static var filled: String { Strings.tr("Localization", "wish_document.photo_text.filled", fallback: "👏 사진 속 글자로 채웠어요") }
+      /// 제목으로 채워요
+      internal static var titleHint: String { Strings.tr("Localization", "wish_document.photo_text.title_hint", fallback: "제목으로 채워요") }
+    }
     internal enum Section {
       /// 알림
       internal static var notification: String { Strings.tr("Localization", "wish_document.section.notification", fallback: "알림") }

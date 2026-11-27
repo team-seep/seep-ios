@@ -150,6 +150,10 @@ enum LogObjectId: String {
     case placeMap = "place_map"
     case placeMapWish = "place_map_wish"
     case addPhoto = "add_photo"
+    /// 적기·수정 문서 "사진에서 찾았어요" 칩 줄 노출 (+title_count, has_amount) (GH-144)
+    case photoTextSuggestion = "photo_text_suggestion"
+    /// 사진에서 찾은 제목·금액 칩 탭 (+kind: title·amount) (GH-144)
+    case fillFromPhotoText = "fill_from_photo_text"
     case changePhoto = "change_photo"
     case deletePhoto = "delete_photo"
     case controlWrite = "control_write"
