@@ -193,6 +193,8 @@ struct LegacyRealmImporter {
                 previousWishId: nil,
                 // Realm 시절에는 '시작했어요'가 없었다. 옮긴 싶은 시작 전이다 (GH-143 R-7)
                 startedAt: nil,
+                // Realm 시절 기한은 모두 날짜였다 (GH-118)
+                deadlineKind: DeadlineKind.date.rawValue,
                 createdAt: dto.createdAt,
                 updatedAt: importedAt,
                 deletedAt: nil

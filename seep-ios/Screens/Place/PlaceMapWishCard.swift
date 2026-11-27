@@ -8,7 +8,7 @@ struct PlaceMapWishCard: View {
     let wish: Wish
     let onTap: () -> Void
 
-    private var ddayStyle: DdayBadgeStyle { DdayBadgeStyle(endDate: wish.endDate) }
+    private var ddayStyle: DdayBadgeStyle { DdayBadgeStyle(wish: wish) }
 
     var body: some View {
         Button(action: onTap) {

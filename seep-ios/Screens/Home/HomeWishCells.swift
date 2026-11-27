@@ -59,7 +59,7 @@ struct HomeWishRow: View {
 
     private func badgeRow(showsTag: Bool, showsProgress: Bool) -> some View {
         HStack(spacing: 7) {
-            HomeDdayBadge(endDate: item.wish.endDate)
+            HomeDdayBadge(wish: item.wish)
             if let days = item.inProgressDays {
                 HomeInProgressDays(days: days)
             }
@@ -170,7 +170,7 @@ struct HomeWishTile: View {
         if item.inProgressDays == nil {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 9) {
-                    HomeDdayBadge(endDate: item.wish.endDate)
+                    HomeDdayBadge(wish: item.wish)
                     if let progress = item.stepProgress {
                         HomeStepProgress(progress: progress)
                     }
@@ -212,7 +212,7 @@ struct HomeWishTile: View {
 
     private var ddayAndDays: some View {
         HStack(spacing: 9) {
-            HomeDdayBadge(endDate: item.wish.endDate)
+            HomeDdayBadge(wish: item.wish)
             if let days = item.inProgressDays {
                 HomeInProgressDays(days: days)
             }
@@ -262,13 +262,13 @@ struct HomePinIcon: View {
     }
 }
 
-/// D-day 뱃지(앱 문구)
+/// D-day 뱃지(앱 문구). 기간 기한이면 기간 이름 (GH-118 R-4)
 struct HomeDdayBadge: View {
-    let endDate: Date?
+    let wish: Wish
 
     var body: some View {
         DdayBadge(
-            style: DdayBadgeStyle(endDate: endDate),
+            style: DdayBadgeStyle(wish: wish),
             farFutureText: Strings.homeInFarFurture,
             noDateText: Strings.homeNoDeanline
         )

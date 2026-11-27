@@ -6,6 +6,8 @@ struct Wish: Equatable, Hashable {
     var category: Category
     var title: String
     var endDate: Date?
+    /// 날짜 기한인지 기간 기한(이번 달 안·올해 안·내년까지)인지. 기간이면 `endDate`가 그 기간의 마지막 날이다 (GH-118 R-1, R-2)
+    var deadlineKind: DeadlineKind
     var finishDate: Date?
     var notifications: [SeepNotification]
     /// 추가한 순서(order) 오름차순
@@ -107,6 +109,7 @@ struct Wish: Equatable, Hashable {
         category: Category = .wantToDo,
         title: String = "",
         endDate: Date? = nil,
+        deadlineKind: DeadlineKind = .date,
         finishDate: Date? = nil,
         notifications: [SeepNotification] = [],
         steps: [WishStep] = [],
@@ -136,6 +139,7 @@ struct Wish: Equatable, Hashable {
         self.category = category
         self.title = title
         self.endDate = endDate
+        self.deadlineKind = deadlineKind
         self.finishDate = finishDate
         self.notifications = notifications
         self.steps = steps

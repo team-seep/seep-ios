@@ -58,6 +58,10 @@ protocol WishRepository {
     
     /// 장소를 저장(nil 이면 지우기)하고, 장소가 반영된 위시를 돌려준다 (GH-31 R-4).
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError>
+
+    /// 기한을 바꾸고 반영된 위시를 돌려준다. 상세의 "다음 기간으로 미루기"·"기한 없애기" (GH-118 R-6, R-7).
+    /// 기한을 없애면(`endDate` nil) 알림도 같이 지운다 — 알림은 날짜가 있어야 한다(작성 문서와 같은 규칙)
+    func updateDeadline(wishId: String, endDate: Date?, kind: DeadlineKind) -> Result<Wish, RepositoryError>
     
     /// 사진 파일 이름을 저장하고(빈 값이면 사진 없음), 반영된 위시를 돌려준다 (GH-36 R-9).
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError>
@@ -290,6 +294,19 @@ final class WishRepositoryImpl: WishRepository {
         }
     }
 
+    func updateDeadline(wishId: String, endDate: Date?, kind: DeadlineKind) -> Result<Wish, RepositoryError> {
+        return write { db, now in
+            try WishRecordStore.updateWish(id: wishId, now: now, in: db) { record in
+                record.date = endDate
+                record.deadlineKind = endDate == nil ? DeadlineKind.date.rawValue : kind.rawValue
+            }
+            if endDate == nil {
+                try WishRecordStore.replaceNotifications(wishId: wishId, with: [], now: now, in: db)
+            }
+            return try Self.fetchExisting(id: wishId, in: db)
+        }
+    }
+
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {
         return updateAndFetch(wishId: wishId) { $0.photoFileName = fileName }
     }
@@ -360,6 +377,7 @@ final class WishRepositoryImpl: WishRepository {
                 record.category = wish.category.rawValue
                 record.title = wish.title
                 record.date = wish.endDate
+                record.deadlineKind = wish.deadlineKind.rawValue
                 record.memo = wish.memo
                 record.hashtag = wish.hashtag
                 // 목표 금액만 바꾸고 모은 돈 기록(savings)은 건드리지 않는다 (GH-16 R-7)

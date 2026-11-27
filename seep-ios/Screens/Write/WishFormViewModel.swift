@@ -54,6 +54,7 @@ final class WishFormViewModel {
                 category: wish.category,
                 title: wish.title,
                 deadline: wish.endDate,
+                deadlineKind: wish.endDate == nil ? .date : wish.deadlineKind,
                 isDeadlineEnabled: wish.endDate != nil,
                 notifications: wish.notifications.isEmpty ? [SeepNotification()] : wish.notifications,
                 isNotificationEnabled: !wish.notifications.isEmpty,
@@ -149,6 +150,11 @@ final class WishFormViewModel {
         return DetailLetter.sealedCaption(sealedAt: letter.sealedAt ?? dependency.now(), length: letter.text.count)
     }
 
+    /// 언제까지 시트 항목. 오른쪽 마감은 지금 고르면 저장될 날짜다 (GH-118 R-3)
+    var deadlineOptionRows: [WishDeadlineOptionRow] {
+        WishDeadlineOptionRow.rows(isDeadlineEnabled: state.isDeadlineEnabled, kind: state.deadlineKind, now: dependency.now())
+    }
+
     /// 열었을 때와 입력이 달라졌는지 (R-18)
     var hasChanges: Bool {
         draft != initialDraft
@@ -179,12 +185,16 @@ final class WishFormViewModel {
             state.isDeadlineEnabled = true
             if state.deadline == nil {
                 state.deadline = dependency.now().endOfDay
+                state.deadlineKind = .date
             }
             state.deadlineError = nil
             state.sheet = .date
         case .inputDeadline(let date):
             state.deadline = date.endOfDay
+            state.deadlineKind = .date
             state.deadlineError = nil
+        case .selectDeadlineOption(let option):
+            selectDeadlineOption(option)
         case .toggleDeadline(let isEnabled):
             state.isDeadlineEnabled = isEnabled
             state.deadlineError = nil
@@ -361,6 +371,7 @@ final class WishFormViewModel {
             // 알림은 날짜가 있어야 한다 — 같이 끈다 (R-7)
             state.isDeadlineEnabled = false
             state.deadline = nil
+            state.deadlineKind = .date
             state.deadlineError = nil
             state.isNotificationEnabled = false
             state.sheet = nil
@@ -410,6 +421,7 @@ final class WishFormViewModel {
             category: state.category,
             title: state.title,
             deadline: state.isDeadlineEnabled ? state.deadline : nil,
+            deadlineKind: state.isDeadlineEnabled ? state.deadlineKind : .date,
             notifications: state.isNotificationEnabled ? state.notifications : [],
             memo: state.memo,
             steps: state.steps,
@@ -442,6 +454,35 @@ final class WishFormViewModel {
         state.title = limited
         state.titleError = title.count >= Self.titleMaxLength ? Strings.writeErrorMaxLengthTitle : nil
         updateButtonState()
+    }
+
+    /// 기간을 고르면 그 기간의 마지막 날을 마감으로 넣고 시트를 닫는다. 날짜 정하기는 달력을 연다 (GH-118 R-2, R-3)
+    private func selectDeadlineOption(_ option: WishDeadlineOption) {
+        dependency.logManager.sendEvent(event: ClickEvent(
+            screen: screenName,
+            objectType: .button,
+            objectId: .selectDeadlineKind,
+            extraParameters: [.type: option.rawValue]
+        ))
+        switch option {
+        case .date:
+            state.isDeadlineEnabled = true
+            if state.deadline == nil {
+                state.deadline = dependency.now().endOfDay
+            }
+            state.deadlineKind = .date
+            state.deadlineError = nil
+            state.sheet = .datePicker
+        case .month, .year, .nextYear:
+            state.isDeadlineEnabled = true
+            state.deadline = option.deadlineKind.periodEnd(from: dependency.now())
+            state.deadlineKind = option.deadlineKind
+            state.deadlineError = nil
+            state.sheet = nil
+        case .someday:
+            // 날짜 없애기와 같다 — 알림도 같이 꺼진다 (GH-70 R-7)
+            removeBlock(.date)
+        }
     }
 
     private func toggleNotification(_ isEnabled: Bool) {
@@ -740,6 +781,7 @@ final class WishFormViewModel {
             category: state.category,
             title: state.title,
             endDate: state.isDeadlineEnabled ? state.deadline : nil,
+            deadlineKind: state.isDeadlineEnabled ? state.deadlineKind : .date,
             notifications: state.isNotificationEnabled ? state.notifications : [],
             steps: state.steps,
             // 다른 카테고리로 바꿨으면 입력했던 목표 금액은 버린다 (GH-16 R-1)
@@ -785,6 +827,7 @@ final class WishFormViewModel {
             category: state.category,
             title: state.title,
             endDate: state.isDeadlineEnabled ? state.deadline : nil,
+            deadlineKind: state.isDeadlineEnabled ? state.deadlineKind : .date,
             finishDate: original.finishDate,
             notifications: state.isNotificationEnabled ? state.notifications : [],
             steps: state.steps,
@@ -840,6 +883,7 @@ struct WishFormDraft: Equatable {
     let category: Category
     let title: String
     let deadline: Date?
+    let deadlineKind: DeadlineKind
     let notifications: [SeepNotification]
     let memo: String
     let steps: [WishStep]

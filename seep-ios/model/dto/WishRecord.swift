@@ -46,6 +46,8 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var previousWishId: String?
     /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v12)
     var startedAt: Date?
+    /// 기한 종류. "" · "date" = 날짜, "month" · "year" · "next_year" = 기간이고 `date`가 그 기간의 마지막 날 (GH-118, 마이그레이션 v14)
+    var deadlineKind: String
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -197,6 +199,7 @@ extension WishRecord {
         self.manualOrder = wish.manualOrder
         self.previousWishId = wish.previousWishId
         self.startedAt = wish.startedAt
+        self.deadlineKind = wish.deadlineKind.rawValue
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -310,6 +313,7 @@ extension Wish {
             category: Category(rawValue: record.category) ?? .wantToDo,
             title: record.title,
             endDate: record.date,
+            deadlineKind: DeadlineKind(stored: record.deadlineKind),
             finishDate: record.finishDate,
             notifications: notifications
                 .sorted { $0.order < $1.order }

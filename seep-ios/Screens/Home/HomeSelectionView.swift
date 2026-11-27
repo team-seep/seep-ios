@@ -121,7 +121,7 @@ private struct HomeSelectionRow: View {
                     }
                 }
                 HStack(spacing: 7) {
-                    HomeDdayBadge(endDate: item.wish.endDate)
+                    HomeDdayBadge(wish: item.wish)
                     if let tag = item.tagText {
                         TagBadges(text: tag, extraCount: item.extraTagCount)
                     }

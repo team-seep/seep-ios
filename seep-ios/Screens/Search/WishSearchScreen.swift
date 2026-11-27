@@ -156,7 +156,7 @@ private struct WishSearchResultRow: View {
                     } else {
                         HStack(spacing: 7) {
                             DdayBadge(
-                                style: DdayBadgeStyle(endDate: wish.endDate),
+                                style: DdayBadgeStyle(wish: wish),
                                 farFutureText: Strings.homeInFarFurture,
                                 noDateText: Strings.homeNoDeanline
                             )

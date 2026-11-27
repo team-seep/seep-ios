@@ -210,6 +210,14 @@ private struct WishDetailContent: View {
                 )
                 .padding(.top, 20)
             }
+            if let deadlineOver = viewModel.state.deadlineOver {
+                DetailDeadlineOverCard(
+                    card: deadlineOver,
+                    onPostpone: { viewModel.send(.tapPostponeDeadline) },
+                    onClear: { viewModel.send(.tapClearDeadline) }
+                )
+                .padding(.top, 20)
+            }
             if sections.contains(.memo), let memo = summary.memo {
                 DocumentBody(text: memo)
                     .padding(.top, Layout.bodySpacing)
@@ -337,6 +345,8 @@ private struct WishDetailContent: View {
                 // 상세를 떠난 뒤 눌렀으면 홈은 onAppear 가 다시 오지 않는다. '하는 중' 칩·n일째를 다시 읽게 한다
                 router?.wishesDidChange()
             }
+        case .toast(let message):
+            toastCenter?.show(message)
         case .close:
             // 아이패드 상세 열은 쌓인 화면이 아니라 열을 비운다 (GH-99 R-5)
             if isPadDetailPane {

@@ -412,6 +412,50 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.startedAt)
     }
 
+    // MARK: GH-118 TC13
+
+    func test_GH118_TC13_A에서기한을올해안에로정하고동기화하면_B에서같은종류와마감_뱃지_알림설정으로보인다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", title: "서핑", notifications: [])).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // When: A에서 올해 안에로 정하고 알림을 단다
+        deviceA.tick(60)
+        let end = Date(timeIntervalSinceReferenceDate: 820_000_000)
+        let original = try XCTUnwrap(deviceA.repository.fetchWish(id: "w1"))
+        var edited = original
+        edited.endDate = end
+        edited.deadlineKind = .year
+        edited.notifications = [SeepNotification(id: "n1", type: .weekAgo, time: Date(timeIntervalSinceReferenceDate: 0))]
+        _ = try deviceA.repository.updateWish(edited).get()
+        await deviceA.engine.sync(trigger: .manual)
+        let report = await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        let wishA = try XCTUnwrap(deviceA.repository.fetchWish(id: "w1"))
+        let wishB = try XCTUnwrap(deviceB.repository.fetchWish(id: "w1"))
+        XCTAssertEqual(wishB.deadlineKind, .year)
+        XCTAssertEqual(wishB.endDate, end)
+        XCTAssertEqual(wishB.notifications.map(\.id), wishA.notifications.map(\.id))
+        let today = end.addingTimeInterval(-86_400 * 40)
+        XCTAssertEqual(DdayBadgeStyle(wish: wishB, today: today), DdayBadgeStyle(wish: wishA, today: today))
+        // 받은 기기는 바뀐 위시의 알림을 다시 예약한다(받기 후처리, 설계 §6.1)
+        XCTAssertEqual(report.changedWishIds, ["w1"])
+
+        // When: A에서 기한을 없앤다
+        deviceA.tick(60)
+        _ = try deviceA.repository.updateDeadline(wishId: "w1", endDate: nil, kind: .year).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.deadlineKind, .date)
+        XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.endDate)
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.notifications, [])
+    }
+
     // MARK: TC-34
 
     func test_GH93_TC34_더새앱이쓴문서는아는필드만적용하고_다시올려도모르는필드를지우지않는다() async throws {

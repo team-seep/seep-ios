@@ -58,7 +58,10 @@ struct WishFormLetter: Equatable {
 /// 폼이 띄우는 시트
 enum WishFormSheet: Identifiable, Equatable {
     case emoji
+    /// 언제까지 시트 — 날짜 정하기 · 이번 달 안에 · 올해 안에 · 내년까지 · 언젠가 (GH-118 R-3)
     case date
+    /// 언제까지 시트의 "날짜 정하기"에서 여는 달력 (GH-118 R-3)
+    case datePicker
     case notification(NotificationEditorConfig)
     case placeSearch
     case hashtag
@@ -69,6 +72,7 @@ enum WishFormSheet: Identifiable, Equatable {
         switch self {
         case .emoji: return "emoji"
         case .date: return "date"
+        case .datePicker: return "datePicker"
         case .notification(let config): return "notification-\(config.selectedIndex.map(String.init) ?? "new")"
         case .placeSearch: return "placeSearch"
         case .hashtag: return "hashtag"
@@ -88,6 +92,8 @@ extension WishFormViewModel {
         case inputTitle(String)
         case tapDate
         case inputDeadline(Date)
+        /// 언제까지 시트에서 항목을 골랐다 (GH-118 R-3)
+        case selectDeadlineOption(WishDeadlineOption)
         case toggleDeadline(Bool)
         case toggleNotification(Bool)
         case tapAddNotification
@@ -163,6 +169,8 @@ extension WishFormViewModel {
         var title = ""
         var titleError: String?
         var deadline: Date?
+        /// 기간 기한이면 `deadline`이 그 기간의 마지막 날이다 (GH-118 R-1, R-2)
+        var deadlineKind: DeadlineKind = .date
         var deadlineError: String?
         var isDeadlineEnabled = true
         var notifications: [SeepNotification] = [SeepNotification()]
