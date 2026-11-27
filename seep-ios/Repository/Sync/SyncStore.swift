@@ -236,7 +236,8 @@ final class SyncStore {
                     // 한 문서가 깨져 있어도(필수 컬럼 없음 등) 나머지는 적용하고, 그 문서는 건너뛴다
                     guard (try? Self.write(document, in: db)) != nil else { continue }
                     if let wishId = document.wishId { result.changedWishIds.insert(wishId) }
-                    if try Self.clearStaleFinishFeeling(document, in: db) {
+                    // 정리가 실패해도 받은 문서는 그대로 둔다(문서 하나가 배치 전체를 막지 않게)
+                    if (try? Self.clearStaleFinishFeeling(document, in: db)) == true {
                         resendLocal.append((document.collection, document.id))
                     }
                 case .skip:
