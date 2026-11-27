@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 기본은 서버 없이 **로컬 SQLite(GRDB)** 에 저장하고(로그인하면 Firebase로 동기화, GH-93), App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
+**싶(seep)** 은 하고 싶은 것·갖고 싶은 것·가고 싶은 곳을 적는 위시리스트 iOS 앱입니다. 데이터는 **로컬 SQLite(GRDB)** 가 기준이고, 로그인하면 Firebase(Auth·Firestore·Storage)로 서버에도 동기화한다(GH-93, 비회원은 로컬만), App Group으로 **위젯**과 데이터를 공유하며, D-day **로컬 알림**을 예약합니다.
 
 - 타깃: `seep-ios`(앱), `widgetExtension`(WidgetKit, SwiftUI), `seep-iosTests`(XCTest)
 - iOS 18.0+. **SwiftUI + `@Observable` ViewModel**(GH-64에서 전환). UIKit은 `AppDelegate`(Firebase·DB·알림 델리게이트)만. 위젯도 SwiftUI
@@ -45,7 +45,7 @@ xcodebuild build \
 
 | 문서 | 내용 |
 |---|---|
-| [docs/process/planning.md](docs/process/planning.md) | AI 기획 추천(매일) → `approved` 승인 → 자동 개발(매일) → 출시 2주 뒤 사용량(매주). 서버리스 조건, 트래킹 이벤트 형식 |
+| [docs/process/planning.md](docs/process/planning.md) | AI 기획 추천(매일) → `approved` 승인 → 자동 개발(매일) → 출시 2주 뒤 사용량(매주). 서버 저장 기준, 트래킹 이벤트 형식 |
 | [docs/process/pr-process.md](docs/process/pr-process.md) | 전체 흐름 한 장 요약, 위험도(경량/풀코스), "PR 만들어줘" 시 Claude가 하는 일 |
 | [docs/process/tech-spec-process.md](docs/process/tech-spec-process.md) | GitHub Issue = 테크스펙(요약·요구사항·TC). 이슈 번호가 티켓 키 (`GH-12`) |
 | [docs/process/testing.md](docs/process/testing.md) | 테스트 3계층(유닛/자동화/수동), 네이밍 `test_GH{n}_TC{m}_{조건}_{기대결과}()`, 목 규칙 |
