@@ -690,6 +690,30 @@ internal enum Strings {
         return Strings.tr("Localization", "detail.section.step_count_format", p1, p2, fallback: "%d/%d")
       }
     }
+    internal enum Start {
+      /// 👏 시작했네요! '하는 중'에 담았어요
+      internal static var autoToast: String { Strings.tr("Localization", "detail.start.auto_toast", fallback: "👏 시작했네요! '하는 중'에 담았어요") }
+      /// 하고 있어요
+      internal static var doing: String { Strings.tr("Localization", "detail.start.doing", fallback: "하고 있어요") }
+      /// 하고 있어요, %d일째
+      internal static func doingAccessibilityFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.start.doing_accessibility_format", p1, fallback: "하고 있어요, %d일째")
+      }
+      /// %1$@에 시작 · %2$d일 만에 이뤘어요
+      internal static func finishedFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.start.finished_format", String(describing: p1), p2, fallback: "%1$@에 시작 · %2$d일 만에 이뤘어요")
+      }
+      /// 아직 시작 전이에요
+      internal static var notStarted: String { Strings.tr("Localization", "detail.start.not_started", fallback: "아직 시작 전이에요") }
+      /// %1$@부터 %2$d일째
+      internal static func sinceFormat(_ p1: Any, _ p2: Int) -> String {
+        return Strings.tr("Localization", "detail.start.since_format", String(describing: p1), p2, fallback: "%1$@부터 %2$d일째")
+      }
+      /// 시작했어요
+      internal static var start: String { Strings.tr("Localization", "detail.start.start", fallback: "시작했어요") }
+      /// 되돌리기
+      internal static var undo: String { Strings.tr("Localization", "detail.start.undo", fallback: "되돌리기") }
+    }
     internal enum Step {
       /// 삭제
       internal static var delete: String { Strings.tr("Localization", "detail.step.delete", fallback: "삭제") }
@@ -979,6 +1003,16 @@ internal enum Strings {
         return Strings.tr("Localization", "home.finish_note.title_format", String(describing: p1), fallback: "%@,\n이루고 나니 어때요?")
       }
     }
+    internal enum InProgress {
+      /// 하는 중, %d일째
+      internal static func daysAccessibilityFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.in_progress.days_accessibility_format", p1, fallback: "하는 중, %d일째")
+      }
+      /// %d일째
+      internal static func daysFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.in_progress.days_format", p1, fallback: "%d일째")
+      }
+    }
     internal enum MigrationNotice {
       /// 문의하기
       internal static var contact: String { Strings.tr("Localization", "home.migration_notice.contact", fallback: "문의하기") }
@@ -1125,6 +1159,10 @@ internal enum Strings {
       internal static var accessibility: String { Strings.tr("Localization", "home.tag_filter.accessibility", fallback: "태그로 골라 보기") }
       /// 전체
       internal static var all: String { Strings.tr("Localization", "home.tag_filter.all", fallback: "전체") }
+      /// 하는 중 %d
+      internal static func inProgressFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.tag_filter.in_progress_format", p1, fallback: "하는 중 %d")
+      }
     }
     internal enum TitleFormat {
       /// 남았어요!

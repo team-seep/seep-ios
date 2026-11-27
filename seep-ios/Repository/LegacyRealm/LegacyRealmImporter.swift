@@ -191,6 +191,8 @@ struct LegacyRealmImporter {
                 manualOrder: 0,
                 // Realm 시절에는 이어 적기가 없었다 (GH-84)
                 previousWishId: nil,
+                // Realm 시절에는 '시작했어요'가 없었다. 옮긴 싶은 시작 전이다 (GH-143 R-7)
+                startedAt: nil,
                 createdAt: dto.createdAt,
                 updatedAt: importedAt,
                 deletedAt: nil

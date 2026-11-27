@@ -7345,6 +7345,294 @@
         }
       }
     },
+    "detail.start.auto_toast" : {
+      "comment" : "위시 상세 · 단계를 체크하거나 모은 돈을 기록해 자동으로 '하는 중'이 됐을 때 토스트 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 You've started! Moved to In progress"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 始めましたね！「進行中」に入れました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 시작했네요! '하는 중'에 담았어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 开始了！已放进“进行中”"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👏 開始了！已放進「進行中」"
+          }
+        }
+      }
+    },
+    "detail.start.doing" : {
+      "comment" : "위시 상세 · 상태 줄 왼쪽 굵은 글자, 시작한 싶 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In progress"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하고 있어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进行中"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中"
+          }
+        }
+      }
+    },
+    "detail.start.doing_accessibility_format" : {
+      "comment" : "위시 상세 · 상태 줄 VoiceOver. %d = 시작한 날을 1일째로 센 날수 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In progress, day %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中、%d日目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하고 있어요, %d일째"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进行中，第%d天"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中，第%d天"
+          }
+        }
+      }
+    },
+    "detail.start.finished_format" : {
+      "comment" : "이룬 싶 상세 · 상태 줄. %1$@ = 시작한 날짜(월·일), %2$d = 시작한 날부터 이룬 날까지 날수(같은 날이면 1) (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Started %1$@ · Achieved on day %2$d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@に開始 · %2$d日目に叶えました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에 시작 · %2$d일 만에 이뤘어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@开始 · 第%2$d天实现了"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@開始 · 第%2$d天實現了"
+          }
+        }
+      }
+    },
+    "detail.start.not_started" : {
+      "comment" : "위시 상세 · 상태 줄 왼쪽, 아직 '시작했어요'를 누르지 않은 싶 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not started yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ始めていません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 시작 전이에요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没开始"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還沒開始"
+          }
+        }
+      }
+    },
+    "detail.start.since_format" : {
+      "comment" : "위시 상세 · 상태 줄 '하고 있어요' 뒤. %1$@ = 시작한 날짜(월·일), %2$d = 시작한 날을 1일째로 센 날수 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day %2$d since %1$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@から%2$d日目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@부터 %2$d일째"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@开始 第%2$d天"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@開始 第%2$d天"
+          }
+        }
+      }
+    },
+    "detail.start.start" : {
+      "comment" : "위시 상세 · 상태 줄 오른쪽 버튼. 누르면 이 싶을 '하는 중'으로 둔다 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I've started"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "始めました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작했어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我开始了"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我開始了"
+          }
+        }
+      }
+    },
+    "detail.start.undo" : {
+      "comment" : "위시 상세 · 상태 줄·자동 시작 토스트의 버튼. 누르면 시작 전으로 돌린다 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "元に戻す"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "되돌리기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "撤销"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "復原"
+          }
+        }
+      }
+    },
     "detail.step.add_alert.confirm" : {
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
@@ -11665,6 +11953,78 @@
         }
       }
     },
+    "home.in_progress.days_accessibility_format" : {
+      "comment" : "홈 셀 '%d일째' VoiceOver. %d = 시작한 날을 1일째로 센 날수 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In progress, day %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中、%d日目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하는 중, %d일째"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进行中，第%d天"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中，第%d天"
+          }
+        }
+      }
+    },
+    "home.in_progress.days_format" : {
+      "comment" : "홈 셀 뱃지 줄 D-day 뒤, 하는 중 싶. %d = 시작한 날을 1일째로 센 날수 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d日目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d일째"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第%d天"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第%d天"
+          }
+        }
+      }
+    },
     "home.migration_notice.contact" : {
       "comment" : "홈 · 예전 데이터 불러오기 실패 안내 카드",
       "extractionState" : "manual",
@@ -13677,6 +14037,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "全部"
+          }
+        }
+      }
+    },
+    "home.tag_filter.in_progress_format" : {
+      "comment" : "홈 태그 필터 칩 줄 '전체' 뒤 칩. 시작한 싶만 보기. %d = 지금 카테고리의 하는 중 싶 수 (GH-143)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In progress %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中 %d"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하는 중 %d"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进行中 %d"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中 %d"
           }
         }
       }

@@ -108,9 +108,13 @@ struct HomeView: View {
                     .padding(.horizontal, 12)
             }
             if viewModel.state.isTagFilterVisible {
-                HomeTagFilterBar(tags: viewModel.state.tagChips, selectedTag: viewModel.state.selectedTag) {
-                    viewModel.send(.selectTag($0))
-                }
+                HomeTagFilterBar(
+                    tags: viewModel.state.tagChips,
+                    filter: viewModel.state.filter,
+                    inProgressCount: viewModel.state.inProgressCount,
+                    onSelectTag: { viewModel.send(.selectTag($0)) },
+                    onSelectInProgress: { viewModel.send(.selectInProgressFilter) }
+                )
                 .padding(.top, 4)
             }
             HomeFilterBar(

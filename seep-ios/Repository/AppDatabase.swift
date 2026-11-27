@@ -266,6 +266,16 @@ final class AppDatabase {
             }
         }
 
+        // GH-143: '시작했어요' 시각. 기존 위시는 모두 시작 전(NULL). 기본값이 NULL 인 컬럼이라 구버전 앱과 섞여도
+        // merge 쓰기가 이 필드를 지우지 않는다(설계 §6.4). wish 아웃박스 트리거가 새 컬럼도 그대로 실어 나른다.
+        // "v11"은 같은 때 만든 GH-146(단계 doneAt)이 쓴다. GRDB 는 이름으로 적용 여부를 보고 안 돈 것만 등록 순서대로 돌리므로(v9→v7 처럼)
+        // v11 이 아직 없어도, 나중에 v12 앞에 들어와도 그대로 동작한다
+        migrator.registerMigration("v12") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "startedAt", .double)
+            }
+        }
+
         return migrator
     }
 

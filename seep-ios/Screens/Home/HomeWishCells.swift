@@ -44,15 +44,31 @@ struct HomeWishRow: View {
                 .foregroundStyle(Color.gray4)
                 .lineLimit(1)
         } else {
-            HStack(spacing: 7) {
-                HomeDdayBadge(endDate: item.wish.endDate)
-                if let tag = item.tagText {
-                    TagBadges(text: tag, extraCount: item.extraTagCount)
+            if item.inProgressDays == nil {
+                badgeRow(showsTag: true, showsProgress: true)
+            } else {
+                // 하는 중 싶은 "n일째"가 붙어 폭이 모자랄 수 있다. 태그 뱃지가 먼저 빠진다 (GH-143 R-5)
+                ViewThatFits(in: .horizontal) {
+                    badgeRow(showsTag: true, showsProgress: true).fixedSize(horizontal: true, vertical: false)
+                    badgeRow(showsTag: false, showsProgress: true).fixedSize(horizontal: true, vertical: false)
+                    badgeRow(showsTag: false, showsProgress: false).fixedSize(horizontal: true, vertical: false)
                 }
-                if let progress = item.stepProgress {
-                    HomeStepProgress(progress: progress)
-                        .padding(.leading, 2)
-                }
+            }
+        }
+    }
+
+    private func badgeRow(showsTag: Bool, showsProgress: Bool) -> some View {
+        HStack(spacing: 7) {
+            HomeDdayBadge(endDate: item.wish.endDate)
+            if let days = item.inProgressDays {
+                HomeInProgressDays(days: days)
+            }
+            if showsTag, let tag = item.tagText {
+                TagBadges(text: tag, extraCount: item.extraTagCount)
+            }
+            if showsProgress, let progress = item.stepProgress {
+                HomeStepProgress(progress: progress)
+                    .padding(.leading, 2)
             }
         }
     }
@@ -149,19 +165,75 @@ struct HomeWishTile: View {
         .opacity(contentOpacity)
     }
 
+    @ViewBuilder
     private var bottomBadges: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 9) {
-                HomeDdayBadge(endDate: item.wish.endDate)
-                if let progress = item.stepProgress {
-                    HomeStepProgress(progress: progress)
+        if item.inProgressDays == nil {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 9) {
+                    HomeDdayBadge(endDate: item.wish.endDate)
+                    if let progress = item.stepProgress {
+                        HomeStepProgress(progress: progress)
+                    }
+                }
+                if let tag = item.tagText {
+                    TagBadges(text: tag, extraCount: item.extraTagCount)
                 }
             }
-            if let tag = item.tagText {
-                TagBadges(text: tag, extraCount: item.extraTagCount)
+            .padding(.trailing, 36)
+        } else {
+            inProgressBadges
+        }
+    }
+
+    /// D-day + "n일째" · 단계 진행도 / 태그. 칸이 좁으면 진행도를 둘째 줄로 내리고, 그래도 모자라면 태그가 빠진다 (GH-143 R-5)
+    private var inProgressBadges: some View {
+        ViewThatFits(in: .horizontal) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 9) {
+                    ddayAndDays
+                    progressBadge
+                }
+                tagBadges
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                ddayAndDays
+                HStack(spacing: 9) {
+                    progressBadge
+                    tagBadges
+                }
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                ddayAndDays
+                progressBadge
             }
         }
         .padding(.trailing, 36)
+    }
+
+    private var ddayAndDays: some View {
+        HStack(spacing: 9) {
+            HomeDdayBadge(endDate: item.wish.endDate)
+            if let days = item.inProgressDays {
+                HomeInProgressDays(days: days)
+            }
+        }
+        .fixedSize(horizontal: true, vertical: false)
+    }
+
+    @ViewBuilder
+    private var progressBadge: some View {
+        if let progress = item.stepProgress {
+            HomeStepProgress(progress: progress)
+                .fixedSize(horizontal: true, vertical: false)
+        }
+    }
+
+    @ViewBuilder
+    private var tagBadges: some View {
+        if let tag = item.tagText {
+            TagBadges(text: tag, extraCount: item.extraTagCount)
+                .fixedSize(horizontal: true, vertical: false)
+        }
     }
 }
 
@@ -200,6 +272,24 @@ struct HomeDdayBadge: View {
             farFutureText: Strings.homeInFarFurture,
             noDateText: Strings.homeNoDeanline
         )
+    }
+}
+
+/// 하는 중 싶의 "● n일째". 뱃지 배경 없이 점 + Bold 11 `gray4` (GH-143 R-5)
+struct HomeInProgressDays: View {
+    let days: Int
+
+    var body: some View {
+        HStack(spacing: 4) {
+            InProgressDot()
+            Text(verbatim: Strings.Home.InProgress.daysFormat(days))
+                .font(.appleBold(size: 11))
+                .foregroundStyle(Color.gray4)
+                .lineLimit(1)
+        }
+        .fixedSize()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(verbatim: Strings.Home.InProgress.daysAccessibilityFormat(days)))
     }
 }
 

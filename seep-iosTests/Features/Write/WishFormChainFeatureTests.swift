@@ -80,4 +80,33 @@ final class WishFormChainFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(events.count, 1)
         XCTAssertEqual(events.first?.screen, .write)
     }
+
+    // MARK: GH-143 TC11
+
+    func test_GH143_TC11_이어서연작성화면에서저장한새싶은_시작전이다() {
+        // Given
+        let sut = makeChainedWrite()
+        sut.send(.inputTitle("올레길 21코스 완주하기"))
+
+        // When
+        sut.send(.tapSave)
+
+        // Then
+        XCTAssertNil(wishRepository.addedWishes.first?.startedAt)
+        XCTAssertNil(finishedWish(sut)?.startedAt)
+    }
+
+    func test_GH143_TC11_하는중싶을수정해카테고리를바꿔도_시작시각을그대로넘긴다() {
+        // Given
+        let startedAt = Date(timeIntervalSinceReferenceDate: 800_000_000)
+        let sut = makeEdit(Wish(id: "surf", emoji: "🏄", category: .wantToDo, title: "서핑 배워보기", startedAt: startedAt))
+
+        // When
+        sut.send(.selectCategory(.wantToGo))
+        sut.send(.tapSave)
+
+        // Then
+        XCTAssertEqual(wishRepository.updatedWishes.first?.category, .wantToGo)
+        XCTAssertEqual(wishRepository.updatedWishes.first?.startedAt, startedAt)
+    }
 }

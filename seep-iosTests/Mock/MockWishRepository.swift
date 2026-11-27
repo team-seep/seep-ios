@@ -33,6 +33,11 @@ final class MockWishRepository: WishRepository {
     /// nil 이면 호출된 위시 id 로 lastCheckedAt 이 지금인 위시를 성공으로 돌려준다
     var markCheckedResult: Result<Wish, RepositoryError>?
     private(set) var markCheckedCalledIds: [String] = []
+    /// nil 이면 `fetchWishResult`의 같은 위시(없으면 새 위시)에 시작 시각을 바꿔 돌려주고, 이후 `fetchWish`에도 반영한다 (GH-143)
+    var updateStartedResult: Result<Wish, RepositoryError>?
+    private(set) var updateStartedCalls: [(wishId: String, isStarted: Bool)] = []
+    /// '시작했어요' 시각
+    var updateStartedNow = Date()
     /// nil 이면 호출된 위시 id·장소로 만든 위시를 성공으로 돌려준다
     var updatePlaceResult: Result<Wish, RepositoryError>?
     private(set) var updatePlaceCalls: [(wishId: String, place: WishPlace?)] = []
@@ -133,6 +138,17 @@ final class MockWishRepository: WishRepository {
     func markChecked(wishId: String) -> Result<Wish, RepositoryError> {
         markCheckedCalledIds.append(wishId)
         return markCheckedResult ?? .success(Wish(id: wishId, lastCheckedAt: Date()))
+    }
+
+    func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError> {
+        updateStartedCalls.append((wishId, isStarted))
+        if let updateStartedResult { return updateStartedResult }
+        var wish = fetchWishResult.first(where: { $0.id == wishId }) ?? Wish(id: wishId)
+        wish.startedAt = isStarted ? updateStartedNow : nil
+        if let index = fetchWishResult.firstIndex(where: { $0.id == wishId }) {
+            fetchWishResult[index] = wish
+        }
+        return .success(wish)
     }
 
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {
