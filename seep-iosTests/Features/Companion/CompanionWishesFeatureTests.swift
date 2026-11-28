@@ -114,6 +114,8 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         XCTAssertFalse(WishCompanion.hasFinalConsonant("엄마"))
         XCTAssertFalse(WishCompanion.hasFinalConsonant("아빠"))
         XCTAssertFalse(WishCompanion.hasFinalConsonant("Tom"))
+        XCTAssertTrue(WishCompanion.hasFinalConsonant("친구1"))
+        XCTAssertFalse(WishCompanion.hasFinalConsonant("친구2"))
         XCTAssertFalse(WishCompanion.hasFinalConsonant(""))
     }
 

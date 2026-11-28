@@ -38,9 +38,13 @@ struct WishCompanion: Equatable, Hashable, Identifiable {
         personId == other.personId || Self.matchKey(name) == Self.matchKey(other.name)
     }
 
-    /// 이름 끝 글자에 받침이 있는지. 한글이 아니면 받침 없음으로 본다 — "지은이랑" / "엄마랑" (R-9)
+    /// 이름 끝 글자에 받침이 있는지 — "지은이랑" / "엄마랑" (R-9). 숫자는 읽는 소리로(영·일·삼·육·칠·팔은 받침),
+    /// 그 밖의 글자(영문 등)는 받침 없음으로 본다
     static func hasFinalConsonant(_ name: String) -> Bool {
-        guard let scalar = name.unicodeScalars.last, (0xAC00...0xD7A3).contains(scalar.value) else { return false }
-        return (scalar.value - 0xAC00) % 28 != 0
+        guard let scalar = name.unicodeScalars.last else { return false }
+        if (0xAC00...0xD7A3).contains(scalar.value) {
+            return (scalar.value - 0xAC00) % 28 != 0
+        }
+        return "013678".unicodeScalars.contains(scalar)
     }
 }
