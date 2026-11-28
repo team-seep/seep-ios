@@ -165,6 +165,25 @@ final class SavingPlanFeatureTests: ViewModelTestCase {
         XCTAssertEqual(SavingPlanSchedule.paymentDate(plan: monthly, index: 1, now: now, calendar: calendar), date(2026, 11, 30))
     }
 
+    func test_GH121_TC3_넣는날에오늘기록이이미있으면_오늘회차는넣은것으로보고다음회차부터센다() throws {
+        // Given: 오늘 2026-10-31(토) 매주 토요일 30,000원, 오늘 30,000원을 이미 기록해 남은 금액 179,000원
+        let saturday = try XCTUnwrap(SavingPlan(cycle: .weekly, day: 7, amount: 30_000))
+        let savings = [
+            WishSaving(id: "s-2", amount: 30_000, createdAt: date(2026, 10, 31, hour: 9)),
+            WishSaving(id: "s-1", amount: 150_000, createdAt: date(2026, 10, 2, hour: 12))
+        ]
+
+        // When
+        let recorded = makeViewModel(wish: makeWish(savings: savings, plan: saturday))
+        let notYet = makeViewModel(wish: makeWish(savings: [savings[1]], plan: saturday))
+
+        // Then: 오늘 기록이 있으면 다음 토요일(11월 7일)부터 6번 → 12월 12일
+        XCTAssertEqual(recorded.state.planRow?.forecast, "6번 넣으면 12월 12일 (토)에 다 모여요")
+        XCTAssertEqual(recorded.state.planRow?.meta, "다음 넣는 날 11월 7일")
+        // 아직 안 넣었으면 오늘부터 센다
+        XCTAssertEqual(notYet.state.planRow?.meta, "다음 넣는 날 10월 31일")
+    }
+
     // MARK: GH-121 TC4
 
     func test_GH121_TC4_계획없이기록이2건이상이면_지금속도라면날짜쯤다모여요가보인다() {
@@ -221,6 +240,18 @@ final class SavingPlanFeatureTests: ViewModelTestCase {
         XCTAssertNil(noTarget.state.planRow)
         XCTAssertNil(finished.state.planRow)
         XCTAssertTrue(finished.state.isVisible, "모은 돈 섹션은 그대로 보인다")
+    }
+
+    func test_GH121_TC5_목표를다모았고계획이없으면_계획줄이없고_계획이있으면바꿀수있게남는다() {
+        // Given / When
+        let full = [WishSaving(id: "s-1", amount: 359_000, createdAt: date(2026, 10, 2, hour: 12))]
+        let noPlan = makeViewModel(wish: makeWish(savings: full))
+        let withPlan = makeViewModel(wish: makeWish(savings: full, plan: fridayPlan))
+
+        // Then
+        XCTAssertNil(noPlan.state.planRow)
+        XCTAssertEqual(withPlan.state.planRow?.summary, "매주 금요일 30,000원씩")
+        XCTAssertNil(withPlan.state.planRow?.forecast)
     }
 
     func test_GH121_TC5_계획줄이없으면_시트를열지않는다() {

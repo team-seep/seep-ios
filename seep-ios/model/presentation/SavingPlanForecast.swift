@@ -3,10 +3,12 @@ import Foundation
 /// 적금 계획의 넣는 날 계산 (GH-121 R-3). 날짜는 그 달력의 하루 시작(자정)으로 센다
 enum SavingPlanSchedule {
     /// 오늘을 포함해 오늘 이후 `index`번째(0부터) 넣는 날.
-    /// 매달 31일처럼 그 달에 없는 날짜는 그 달 마지막 날로 센다
-    static func paymentDate(plan: SavingPlan, index: Int, now: Date, calendar: Calendar) -> Date? {
+    /// 매달 31일처럼 그 달에 없는 날짜는 그 달 마지막 날로 센다.
+    /// - Parameter skipsToday: 오늘 이미 기록했으면 오늘 회차는 넣은 것으로 보고 내일부터 센다
+    static func paymentDate(plan: SavingPlan, index: Int, now: Date, calendar: Calendar, skipsToday: Bool = false) -> Date? {
         guard index >= 0 else { return nil }
-        let today = calendar.startOfDay(for: now)
+        let startOfToday = calendar.startOfDay(for: now)
+        guard let today = skipsToday ? calendar.date(byAdding: .day, value: 1, to: startOfToday) : startOfToday else { return nil }
         switch plan.cycle {
         case .weekly:
             let weekday = calendar.component(.weekday, from: today)
@@ -43,11 +45,14 @@ struct SavingPlanForecast: Equatable {
     /// 기한이 없으면 nil
     let deadlineGap: DeadlineGap?
 
-    init?(plan: SavingPlan, remainingAmount: Int, deadline: Date?, now: Date, calendar: Calendar) {
+    /// - Parameter savedToday: 오늘 기록이 있으면 오늘 넣는 날은 이미 넣은 것으로 보고 다음 회차부터 센다
+    init?(plan: SavingPlan, remainingAmount: Int, deadline: Date?, now: Date, calendar: Calendar, savedToday: Bool = false) {
         guard remainingAmount > 0 else { return nil }
         let count = (remainingAmount + plan.amount - 1) / plan.amount
-        guard let next = SavingPlanSchedule.paymentDate(plan: plan, index: 0, now: now, calendar: calendar),
-              let completion = SavingPlanSchedule.paymentDate(plan: plan, index: count - 1, now: now, calendar: calendar) else {
+        let date: (Int) -> Date? = {
+            SavingPlanSchedule.paymentDate(plan: plan, index: $0, now: now, calendar: calendar, skipsToday: savedToday)
+        }
+        guard let next = date(0), let completion = date(count - 1) else {
             return nil
         }
         self.depositCount = count

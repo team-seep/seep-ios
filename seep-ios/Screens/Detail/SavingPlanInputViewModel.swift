@@ -23,6 +23,8 @@ extension SavingPlanInputViewModel {
         let plan: SavingPlan?
         let targetAmount: Int
         let savedAmount: Int
+        /// 오늘 기록이 있으면 오늘 넣는 날은 넣은 것으로 보고 다음 회차부터 센다 (R-3)
+        var savedToday = false
         var currency: String = AmountFormatter.krw
         let now: Date
         let calendar: Calendar
@@ -144,7 +146,8 @@ final class SavingPlanInputViewModel: Identifiable {
                 remainingAmount: max(config.targetAmount - config.savedAmount, 0),
                 deadline: nil,
                 now: config.now,
-                calendar: config.calendar
+                calendar: config.calendar,
+                savedToday: config.savedToday
             )
         }.map { forecast in
             let sentence = SavingPlanText.forecastSentence(forecast, now: config.now, calendar: config.calendar)

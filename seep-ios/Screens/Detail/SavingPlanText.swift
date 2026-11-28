@@ -36,13 +36,19 @@ enum SavingPlanText {
             remainingAmount: remainingAmount,
             deadline: deadline,
             now: now,
-            calendar: calendar
+            calendar: calendar,
+            savedToday: hasSaving(on: now, in: savings, calendar: calendar)
         ) else { return row }
         let completion = forecastSentence(forecast, now: now, calendar: calendar)
         row.forecast = completion.text
         row.forecastHighlight = completion.highlight
         row.meta = meta(forecast, now: now, calendar: calendar)
         return row
+    }
+
+    /// 오늘 기록이 있는지. 넣는 날에 이미 기록했으면 그 회차는 넣은 것으로 본다 (R-3)
+    static func hasSaving(on now: Date, in savings: [WishSaving], calendar: Calendar) -> Bool {
+        savings.contains { calendar.isDate($0.createdAt, inSameDayAs: now) }
     }
 
     /// "매주 금요일 30,000원씩" / "매달 25일 30,000원씩"

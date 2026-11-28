@@ -165,6 +165,7 @@ final class WishSavingsViewModel {
             plan: wish.savingPlan,
             targetAmount: progress.targetAmount,
             savedAmount: progress.savedAmount,
+            savedToday: SavingPlanText.hasSaving(on: dependency.now(), in: state.savings, calendar: dependency.calendar),
             currency: progress.currency,
             now: dependency.now(),
             calendar: dependency.calendar
@@ -215,6 +216,8 @@ final class WishSavingsViewModel {
 
     private func makePlanRow() -> SavingPlanText.Row? {
         guard state.isVisible, !wish.isSuccess, let progress = state.progress else { return nil }
+        // 이미 다 모았으면 새 계획을 세울 일이 없다. 있던 계획은 바꾸거나 지울 수 있게 줄을 남긴다
+        if progress.isCompleted, wish.savingPlan == nil { return nil }
         return SavingPlanText.row(
             plan: wish.savingPlan,
             savings: state.savings,
