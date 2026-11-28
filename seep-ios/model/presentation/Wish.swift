@@ -21,6 +21,8 @@ struct Wish: Equatable, Hashable {
     var memo: String
     /// 붙인 태그, 단 순서대로. 기본 태그는 `HashtagType` rawValue, 직접 입력은 글자 그대로 (GH-136)
     var tags: [String]
+    /// 함께할 사람, 고른 순서대로 (GH-122)
+    var companions: [WishCompanion]
     var isSuccess: Bool
     /// 완료 소감 한 줄. 비어 있으면 소감 없음 (GH-25)
     var finishNote: String
@@ -117,6 +119,7 @@ struct Wish: Equatable, Hashable {
         memo: String = "",
         hashtag: String = "",
         tags: [String] = [],
+        companions: [WishCompanion] = [],
         isSuccess: Bool = false,
         finishNote: String = "",
         pinnedAt: Date? = nil,
@@ -146,6 +149,7 @@ struct Wish: Equatable, Hashable {
         self.memo = memo
         // 태그 하나만 넘기던 호출(이전·테스트)은 그 태그 하나로 본다
         self.tags = tags.isEmpty && !hashtag.isEmpty ? [hashtag] : tags
+        self.companions = companions
         self.isSuccess = isSuccess
         self.finishNote = finishNote
         self.pinnedAt = pinnedAt

@@ -10,9 +10,18 @@ struct WriteScreenPresenter: ViewModifier {
 
         content
             .seepFullScreenCover(item: $router.writeCategory, style: .pageSheetOnRegular) { category in
-                WishFormScreen(mode: .add(category), previousWishId: router.writePreviousWishId) { savedWish in
+                WishFormScreen(
+                    mode: .add(category),
+                    previousWishId: router.writePreviousWishId,
+                    companions: router.writeCompanion.map { [$0] } ?? []
+                ) { savedWish in
+                    let isFromCompanion = router.writeCompanion != nil
                     router.writeCategory = nil
-                    if let savedWish {
+                    guard let savedWish else { return }
+                    if isFromCompanion {
+                        // 사람별 모아보기에서 열었으면 그 화면에 머물러 방금 적은 싶을 바로 보여준다 (GH-122 R-6)
+                        router.wishesDidChange()
+                    } else {
                         // 작성을 마치면 그 카테고리를 보여준다 (R-9)
                         router.showSavedWish(category: savedWish.category)
                     }

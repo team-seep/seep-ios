@@ -32,6 +32,7 @@ enum SyncCollection: String, CaseIterable {
     case wishNotification
     case wishJournal
     case wishTag
+    case wishCompanion
 
     var tableName: String { rawValue }
 
@@ -43,6 +44,7 @@ enum SyncCollection: String, CaseIterable {
         case .wishNotification: return "wishNotifications"
         case .wishJournal: return "wishJournals"
         case .wishTag: return "wishTags"
+        case .wishCompanion: return "wishCompanions"
         }
     }
 

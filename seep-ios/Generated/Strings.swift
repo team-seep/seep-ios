@@ -398,6 +398,72 @@ internal enum Strings {
     /// 원
     internal static var wonUnit: String { Strings.tr("Localization", "common.won_unit", fallback: "원") }
   }
+  internal enum Companion {
+    /// 변경
+    internal static var change: String { Strings.tr("Localization", "companion.change", fallback: "변경") }
+    /// 누구랑
+    internal static var title: String { Strings.tr("Localization", "companion.title", fallback: "누구랑") }
+    internal enum Sheet {
+      /// 혼자 할래요
+      internal static var alone: String { Strings.tr("Localization", "companion.sheet.alone", fallback: "혼자 할래요") }
+      /// 정했어요
+      internal static var done: String { Strings.tr("Localization", "companion.sheet.done", fallback: "정했어요") }
+      /// 최대 %d명까지 함께할 수 있어요
+      internal static func maxCountFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "companion.sheet.max_count_format", p1, fallback: "최대 %d명까지 함께할 수 있어요")
+      }
+      /// 이름이나 별명을 적어요
+      internal static var placeholder: String { Strings.tr("Localization", "companion.sheet.placeholder", fallback: "이름이나 별명을 적어요") }
+      /// 전에 적은 사람
+      internal static var recent: String { Strings.tr("Localization", "companion.sheet.recent", fallback: "전에 적은 사람") }
+      /// %@ 빼기
+      internal static func removeFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "companion.sheet.remove_format", String(describing: p1), fallback: "%@ 빼기")
+      }
+      /// 함께할 사람
+      internal static var selected: String { Strings.tr("Localization", "companion.sheet.selected", fallback: "함께할 사람") }
+      /// 누구랑 하고 싶어요?
+      internal static var title: String { Strings.tr("Localization", "companion.sheet.title", fallback: "누구랑 하고 싶어요?") }
+      /// 이 싶은
+      internal static var titleLead: String { Strings.tr("Localization", "companion.sheet.title_lead", fallback: "이 싶은") }
+    }
+    internal enum Wishes {
+      /// 하고 싶어요 · 가고 싶어요 · 갖고 싶어요 모두
+      internal static var categories: String { Strings.tr("Localization", "companion.wishes.categories", fallback: "하고 싶어요 · 가고 싶어요 · 갖고 싶어요 모두") }
+      /// 아직 남은 싶이 없어요
+      internal static var empty: String { Strings.tr("Localization", "companion.wishes.empty", fallback: "아직 남은 싶이 없어요") }
+      /// 같이 이룬 것 %d개
+      internal static func finishedFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "companion.wishes.finished_format", p1, fallback: "같이 이룬 것 %d개")
+      }
+      /// %@이랑 하고 싶은 것
+      internal static func headlineFinalConsonantFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "companion.wishes.headline_final_consonant_format", String(describing: p1), fallback: "%@이랑 하고 싶은 것")
+      }
+      /// %@랑 하고 싶은 것
+      internal static func headlineFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "companion.wishes.headline_format", String(describing: p1), fallback: "%@랑 하고 싶은 것")
+      }
+      /// %d개
+      internal static func remainingCountFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "companion.wishes.remaining_count_format", p1, fallback: "%d개")
+      }
+      /// %d개 남았어요!
+      internal static func remainingFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "companion.wishes.remaining_format", p1, fallback: "%d개 남았어요!")
+      }
+      /// 공유
+      internal static var share: String { Strings.tr("Localization", "companion.wishes.share", fallback: "공유") }
+      /// 📝 %@이랑 하고 싶은 것 적기
+      internal static func writeFinalConsonantFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "companion.wishes.write_final_consonant_format", String(describing: p1), fallback: "📝 %@이랑 하고 싶은 것 적기")
+      }
+      /// 📝 %@랑 하고 싶은 것 적기
+      internal static func writeFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "companion.wishes.write_format", String(describing: p1), fallback: "📝 %@랑 하고 싶은 것 적기")
+      }
+    }
+  }
   internal enum ControlGuide {
     /// 제어 센터 · 단축어로 적기
     internal static var title: String { Strings.tr("Localization", "control_guide.title", fallback: "제어 센터 · 단축어로 적기") }

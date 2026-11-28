@@ -47,4 +47,8 @@ extension ScreenName {
     static let license = ScreenName(rawValue: "license")
     /// 상세 일지 한 줄 남기기 시트 (GH-95)
     static let journalBottomSheet = ScreenName(rawValue: "journal_bottom_sheet")
+    /// 작성·수정 문서 "누구랑 하고 싶어요?" 시트 (GH-122)
+    static let companionBottomSheet = ScreenName(rawValue: "companion_bottom_sheet")
+    /// 사람별 모아보기 (GH-122)
+    static let companionWishes = ScreenName(rawValue: "companion_wishes")
 }

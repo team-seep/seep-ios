@@ -263,4 +263,10 @@ enum LogObjectId: String {
     case expandWishTotal = "expand_wish_total"
     /// 펼친 "다 합치면" 카드의 싶 한 줄 → 상세 (GH-148)
     case wishTotalItem = "wish_total_item"
+    /// "누구랑" 시트 "정했어요" (+count: 고른 인원 수) (GH-122)
+    case companionSave = "companion_save"
+    /// 상세 "누구랑" 사람 칩 → 사람별 모아보기 (GH-122)
+    case companionChip = "companion_chip"
+    /// 사람별 모아보기 "공유" (GH-122)
+    case companionShare = "companion_share"
 }

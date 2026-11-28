@@ -8,7 +8,7 @@ import {
 } from '@firebase/rules-unit-testing';
 import { deleteDoc, doc, getDoc, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 
-const COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags'];
+const COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags', 'wishCompanions'];
 
 let env;
 
@@ -189,5 +189,34 @@ describe('TC-42 탈퇴 표시가 있으면 쓰기를 막는다', () => {
       batch.set(doc(db, 'wishes', `w${i}`), syncedDoc('alice'));
     }
     await assertSucceeds(batch.commit());
+  });
+});
+
+describe('GH-122 TC-15 함께할 사람의 linkedUid 는 지금은 비어 있어야 한다', () => {
+  test('test_GH122_TC15_linkedUid가_null이면_생성수정_성공', async () => {
+    const db = env.authenticatedContext('alice').firestore();
+    const ref = doc(db, 'wishCompanions', 'c1');
+    await assertSucceeds(setDoc(ref, syncedDoc('alice', { wishId: 'w1', personId: 'p1', name: '엄마', linkedUid: null })));
+    await assertSucceeds(updateDoc(ref, { name: '어머니', updatedAt: 1_762_000_100, serverUpdatedAt: serverTimestamp() }));
+  });
+
+  test('test_GH122_TC15_linkedUid에_값이있으면_생성거부', async () => {
+    const db = env.authenticatedContext('alice').firestore();
+    await assertFails(setDoc(
+      doc(db, 'wishCompanions', 'c1'),
+      syncedDoc('alice', { wishId: 'w1', personId: 'p1', name: '엄마', linkedUid: 'bob' }),
+    ));
+  });
+
+  test('test_GH122_TC15_linkedUid에_값을채우는수정_거부', async () => {
+    const db = env.authenticatedContext('alice').firestore();
+    const ref = doc(db, 'wishCompanions', 'c1');
+    await assertSucceeds(setDoc(ref, syncedDoc('alice', { wishId: 'w1', personId: 'p1', name: '엄마', linkedUid: null })));
+    await assertFails(updateDoc(ref, { linkedUid: 'bob', serverUpdatedAt: serverTimestamp() }));
+  });
+
+  test('test_GH122_TC15_다른컬렉션의_linkedUid는_보지않는다', async () => {
+    const db = env.authenticatedContext('alice').firestore();
+    await assertSucceeds(setDoc(doc(db, 'wishTags', 't1'), syncedDoc('alice', { linkedUid: 'bob' })));
   });
 });

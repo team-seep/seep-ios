@@ -20,6 +20,8 @@ enum WishFormSaveButtonState: Equatable {
 enum WishDocumentBlock: String, CaseIterable, Hashable {
     case date
     case memo
+    /// 함께할 사람 (GH-122 R-1)
+    case companion
     case steps
     case notification
     case link
@@ -31,7 +33,7 @@ enum WishDocumentBlock: String, CaseIterable, Hashable {
     case letter = "future_letter"
 
     /// 문서에 놓는 순서. 날짜는 머리의 D-day 줄이라 블록 목록에 없다 (R-5)
-    static let documentOrder: [WishDocumentBlock] = [.memo, .steps, .notification, .link, .targetAmount, .place, .photo, .letter]
+    static let documentOrder: [WishDocumentBlock] = [.memo, .companion, .steps, .notification, .link, .targetAmount, .place, .photo, .letter]
 }
 
 /// 문서의 사진 블록 값 (GH-61 R-10, R-11). 고른 사진은 저장할 때 파일로 쓴다
@@ -64,6 +66,8 @@ enum WishFormSheet: Identifiable, Equatable {
     case hashtag
     /// 편지 쓰기 시트 (GH-61 R-3, R-10)
     case letter(FutureLetterViewModel)
+    /// "누구랑 하고 싶어요?" 시트 (GH-122 R-1)
+    case companion(CompanionSheetViewModel)
 
     var id: String {
         switch self {
@@ -73,6 +77,7 @@ enum WishFormSheet: Identifiable, Equatable {
         case .placeSearch: return "placeSearch"
         case .hashtag: return "hashtag"
         case .letter: return "letter"
+        case .companion: return "companion"
         }
     }
 }
@@ -140,6 +145,10 @@ extension WishFormViewModel {
         case tapPhotoTextTitle(String)
         /// 사진에서 찾은 금액 칩 (GH-144 R-5)
         case tapPhotoTextAmount
+        /// 문서 "누구랑" 블록·변경 → 시트 (GH-122 R-1)
+        case tapCompanions
+        /// 시트에서 정한 사람 (GH-122 R-1)
+        case setCompanions([WishCompanion])
     }
 
     enum Route: Equatable {
@@ -194,6 +203,8 @@ extension WishFormViewModel {
         var tagError: String?
         /// 전에 쓴 직접 입력 태그, 최근 것부터. 태그 시트를 열 때 읽는다 (GH-136 R-2)
         var recentCustomTags: [String] = []
+        /// 함께할 사람, 고른 순서대로 (GH-122)
+        var companions: [WishCompanion] = []
         var saveButtonState: WishFormSaveButtonState
         var sheet: WishFormSheet?
         /// 칩으로 꺼낸 메모·단계·링크·목표 금액 블록. 날짜·알림·장소는 값 자체로 펼침을 정한다
@@ -229,6 +240,8 @@ extension WishFormViewModel {
         let mode: WishFormMode
         /// "이어서 적기"로 연 작성의 앞 위시 id. 저장하면 새 위시의 `previousWishId`가 된다 (GH-84 R-2)
         var previousWishId: String?
+        /// 새로 적을 때 미리 넣어 둘 함께할 사람. 사람별 모아보기 "…랑 하고 싶은 것 적기"에서 연다 (GH-122 R-6)
+        var companions: [WishCompanion] = []
     }
 
     struct Dependency {

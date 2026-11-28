@@ -45,6 +45,7 @@ final class WishFormViewModel {
                 isDeadlineEnabled: false,
                 isNotificationEnabled: false,
                 currency: dependency.defaultCurrency(),
+                companions: config.companions,
                 saveButtonState: .initial
             )
         case .edit(let wish):
@@ -72,6 +73,7 @@ final class WishFormViewModel {
                 letter: wish.hasFutureLetter
                     ? WishFormLetter(text: wish.futureLetter, sealedAt: wish.futureLetterSealedAt) : nil,
                 tagSelection: WishTagSelection(tags: wish.tags),
+                companions: wish.companions,
                 saveButtonState: .active
             )
             state.saveButtonState = validatedButtonState()
@@ -106,7 +108,7 @@ final class WishFormViewModel {
     /// 지금 카테고리·날짜에서 쓸 수 있는 칸인지 (R-6, R-8)
     func isAvailable(_ block: WishDocumentBlock) -> Bool {
         switch block {
-        case .date, .memo, .steps, .photo, .letter: return true
+        case .date, .memo, .steps, .photo, .letter, .companion: return true
         case .notification: return state.isDeadlineEnabled && state.deadline != nil
         case .link, .targetAmount: return state.category == .wantToGet
         case .place: return isPlaceVisible
@@ -120,6 +122,7 @@ final class WishFormViewModel {
         case .place: return state.place != nil
         case .photo: return state.photo != .none
         case .letter: return state.letter != nil
+        case .companion: return !state.companions.isEmpty
         case .memo, .steps, .link, .targetAmount: return state.revealedBlocks.contains(block)
         }
     }
@@ -302,6 +305,10 @@ final class WishFormViewModel {
             presentLetterSheet()
         case .tapPhotoTextTitle(let title):
             fillTitleFromPhotoText(title)
+        case .tapCompanions:
+            presentCompanionSheet()
+        case .setCompanions(let companions):
+            state.companions = companions
         case .tapPhotoTextAmount:
             fillAmountFromPhotoText()
         }
@@ -343,7 +350,20 @@ final class WishFormViewModel {
             route = .photoPicker
         case .letter:
             presentLetterSheet()
+        case .companion:
+            presentCompanionSheet()
         }
+    }
+
+    private func presentCompanionSheet() {
+        let sheet = CompanionSheetViewModel(
+            config: .init(selected: state.companions),
+            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+        )
+        sheet.onFinish = { [weak self] companions in
+            self?.send(.setCompanions(companions))
+        }
+        state.sheet = .companion(sheet)
     }
 
     /// 다시 쓰기도 빈 칸에서 시작한다 (GH-61 R-4)
@@ -386,6 +406,8 @@ final class WishFormViewModel {
             clearPhotoText()
         case .letter:
             state.letter = nil
+        case .companion:
+            state.companions = []
         }
         state.revealedBlocks.remove(block)
     }
@@ -419,7 +441,8 @@ final class WishFormViewModel {
             place: state.place,
             photo: state.photo,
             letter: state.letter,
-            tags: state.tagSelection.tags
+            tags: state.tagSelection.tags,
+            companions: state.companions
         )
     }
 
@@ -747,6 +770,7 @@ final class WishFormViewModel {
             currency: state.currency,
             memo: state.memo,
             tags: state.tagSelection.tags,
+            companions: state.companions,
             // 다른 카테고리로 바꿨으면 링크도 버린다 (GH-29 R-1)
             link: state.link.storedLink(category: state.category),
             // 다른 카테고리로 바꿨으면 골랐던 장소는 버린다 (GH-31 R-1)
@@ -794,6 +818,7 @@ final class WishFormViewModel {
             savings: original.savings,
             memo: state.memo,
             tags: state.tagSelection.tags,
+            companions: state.companions,
             isSuccess: original.isSuccess,
             finishNote: original.finishNote,
             // 옮겨 간 카테고리의 고정 3개 제한을 넘지 않도록, 카테고리를 바꾸면 고정을 푼다 (GH-33 R-9)
@@ -850,4 +875,5 @@ struct WishFormDraft: Equatable {
     let photo: WishFormPhoto
     let letter: WishFormLetter?
     let tags: [String]
+    let companions: [WishCompanion]
 }

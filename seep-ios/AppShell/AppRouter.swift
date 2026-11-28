@@ -11,6 +11,8 @@ enum MainTab: Hashable {
 /// 탭 내비게이션 스택에 쌓는 화면. 화면은 `DestinationView`가 고른다
 enum AppDestination: Hashable {
     case wishDetail(id: String, isFinished: Bool)
+    /// 사람별 모아보기 (GH-122 R-5)
+    case companionWishes(personId: String)
     /// 검색. 이룬 싶 탭에서 열면 완료한 위시만 찾는다 (R-19)
     case search(finishedOnly: Bool)
     case badgeCollection
@@ -79,11 +81,16 @@ final class AppRouter {
     /// 작성 화면을 띄울 카테고리. nil 이면 닫혀 있다
     var writeCategory: Category? {
         didSet {
-            if writeCategory == nil { writePreviousWishId = nil }
+            if writeCategory == nil {
+                writePreviousWishId = nil
+                writeCompanion = nil
+            }
         }
     }
     /// "이어서 적기"로 연 작성 화면의 앞 위시 id. 작성 화면이 닫히면 비운다 (GH-84 R-2)
     private(set) var writePreviousWishId: String?
+    /// 사람별 모아보기 "…랑 하고 싶은 것 적기"로 연 작성 화면에 미리 넣을 사람. 작성 화면이 닫히면 비운다 (GH-122 R-6)
+    private(set) var writeCompanion: WishCompanion?
     /// 스플래시가 끝나 메인 탭이 보이는지. 그 전에 온 링크는 맡아 뒀다가 메인이 뜰 때 처리한다
     private(set) var isMainReady = false
     /// `seepSheet`로 띄운 시트 수. 시트가 떠 있으면 위젯 링크를 무시한다
@@ -236,6 +243,17 @@ final class AppRouter {
             return
         }
         writeCategory = wish.category
+    }
+
+    /// 그 사람이 들어간 작성 화면을 연다. 카테고리는 홈에서 마지막으로 본 것이고 문서에서 바꿀 수 있다 (GH-122 R-6)
+    func openCompanionWrite(with companion: WishCompanion) {
+        guard writeCategory == nil else { return }
+        writeCompanion = companion
+        if presentedModalCount > 0 {
+            pendingIntentCategory = homeCategory
+            return
+        }
+        writeCategory = homeCategory
     }
 
     /// 시트가 모두 닫힌 뒤(`modalDidDisappear`로 0이 되면) 미뤄 둔 작성 화면을 띄운다
@@ -404,6 +422,19 @@ extension AppRouter {
         case .widgetGuide, .controlGuide, .license:
             guard padSection == .settings else { return false }
             padSettingsDetail = destination
+            return true
+        case .companionWishes:
+            // 상세 열에서 눌러도 목록 열에 쌓는다. 모아보기에서 고른 위시는 다시 상세 열에 열린다
+            switch padSection {
+            case .category:
+                wishPath.append(destination)
+            case .finished:
+                finishedPath.append(destination)
+            case .badges, .placeMap:
+                padSectionPath.append(destination)
+            case .settings:
+                return false
+            }
             return true
         case .search, .yearReviewList:
             switch padSection {
