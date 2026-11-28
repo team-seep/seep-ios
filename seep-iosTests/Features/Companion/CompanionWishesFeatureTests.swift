@@ -169,9 +169,7 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         // Given: 같은 이름 "지은"이 id 둘(Y가 먼저, X가 나중)로 붙어 있다 — 두 기기가 따로 적은 것처럼 줄을 직접 넣는다
         try add(Wish(id: "b", title: "캠핑", companions: [WishCompanion(personId: "Y", name: "지은")]))
         try add(Wish(id: "a", title: "서핑"))
-        try database.writer.write { db in
-            try WishCompanionRecord(companion: WishCompanion(personId: "X", name: "지은"), wishId: "a", order: 0, now: clock).insert(db)
-        }
+        try database.insertRecord(WishCompanionRecord(companion: WishCompanion(personId: "X", name: "지은"), wishId: "a", order: 0, now: clock))
         let viewModel = makeViewModel(WishCompanion(personId: "X", name: "지은"))
         XCTAssertEqual(Set(viewModel.state.remaining.map(\.id)), ["a", "b"])
 
@@ -191,10 +189,8 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
     func test_GH122_TC14_한위시에같은사람줄이둘이어도_한번만보인다() throws {
         // Given: 두 기기가 오프라인에서 같은 위시에 같은 사람을 붙여 줄이 둘
         try add(Wish(id: "w", title: "제주", companions: [WishCompanion(personId: "P", name: "엄마")]))
-        try database.writer.write { db in
-            try WishCompanionRecord(companion: WishCompanion(personId: "P", name: "엄마"), wishId: "w", order: 0, now: clock).insert(db)
-            try WishCompanionRecord(companion: WishCompanion(personId: "Q", name: "엄마"), wishId: "w", order: 1, now: clock).insert(db)
-        }
+        try database.insertRecord(WishCompanionRecord(companion: WishCompanion(personId: "P", name: "엄마"), wishId: "w", order: 0, now: clock))
+        try database.insertRecord(WishCompanionRecord(companion: WishCompanion(personId: "Q", name: "엄마"), wishId: "w", order: 1, now: clock))
 
         // Then
         XCTAssertEqual(repository.fetchWish(id: "w")?.companions.map(\.name), ["엄마"])

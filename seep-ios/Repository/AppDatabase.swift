@@ -474,6 +474,11 @@ extension AppDatabase {
         try writer.write { try record.insert($0) }
     }
 
+    /// 테스트에서 두 기기가 따로 쓴 것처럼 사람 줄을 직접 넣는다 (GH-122)
+    func insertRecord(_ record: WishCompanionRecord) throws {
+        try writer.write { try record.insert($0) }
+    }
+
     func deleteRecord(_ record: WishRecord) throws {
         _ = try writer.write { try record.delete($0) }
     }
