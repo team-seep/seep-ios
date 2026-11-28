@@ -25,7 +25,7 @@ extension HomeViewModel {
         case tapSelect
         case cancelSelection
         case selectAll
-        /// 선택 모드 "{n}개 삭제" → 확인 알럿 (R-4)
+        /// 선택 모드 [삭제] → 확인 알럿 (GH-86 R-4, GH-125 R-1)
         case tapDeleteSelected
         case confirmDeleteSelected
         case cancelDeleteSelected
