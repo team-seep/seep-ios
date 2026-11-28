@@ -7129,6 +7129,942 @@
         }
       }
     },
+    "detail.saving_plan.add" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 계획이 없을 때 파란 글자 버튼",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ Make a plan"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ プランを立てる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 계획 세우기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 制定计划"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "＋ 制定計畫"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.change" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 계획이 있을 때 파란 글자 버튼",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변경"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.deadline_earlier_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 다 모이는 날이 기한보다 빠름. %d = 날 수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d day before your deadline"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d days before your deadline"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "期限より%d日早いです"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "기한보다 %d일 먼저예요"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "比期限早%d天"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "比期限早%d天"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "detail.saving_plan.deadline_later_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 다 모이는 날이 기한보다 늦음. %d = 날 수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d day after your deadline"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d days after your deadline"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "期限より%d日遅れます"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "기한보다 %d일 늦어요"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "比期限晚%d天"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "比期限晚%d天"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "detail.saving_plan.deadline_on_time" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 다 모이는 날이 기한과 같은 날",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right on your deadline"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期限ぴったりです"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기한에 딱 맞춰요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刚好赶上期限"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剛好趕上期限"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.forecast_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 다 모이는 날 예측(상세 줄·시트 미리보기). %1$d = 앞으로 넣을 횟수, %2$@ = 다 모이는 날(월 일 요일). 날짜 부분을 굵게 칠한다",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All saved by %2$@ (%1$d deposits to go)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あと%1$d回で%2$@に貯まります"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d번 넣으면 %2$@에 다 모여요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再存%1$d次，%2$@就能存够"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再存%1$d次，%2$@就能存夠"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.meta_join_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 기한 비교 문구와 다음 넣는 날을 한 줄에 잇는다. %1$@ = 기한 비교, %2$@ = 다음 넣는 날",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.monthly_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 매달 계획 요약. %1$d = 날짜(1~31), %2$@ = 통화 표기를 붙인 한 번 금액",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ on day %1$d of every month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎月%1$d日に%2$@ずつ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매달 %1$d일 %2$@씩"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每月%1$d日存%2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每月%1$d日存%2$@"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.next_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 다음 넣는 날. %@ = 날짜(월 일)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next deposit %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の積立日 %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음 넣는 날 %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下次存钱 %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下次存錢 %@"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.notification_body_format" : {
+      "comment" : "적금 계획 넣는 날 로컬 알림 본문 (GH-121). %1$@ = 이모지와 위시 제목, %2$@ = 통화 표기를 붙인 한 번 금액",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's the day to put %2$@ toward %1$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日は%1$@に%2$@を積み立てる日です"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘은 %1$@에 %2$@ 넣는 날이에요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天是给%1$@存%2$@的日子"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天是給%1$@存%2$@的日子"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.pace_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 계획 없이 지금까지 기록한 속도로 본 예측. %@ = 날짜(월 일)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At this pace, you'll have it all around %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このペースなら%@ごろに貯まります"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 속도라면 %@쯤 다 모여요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "照这个速度，%@左右就能存够"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "照這個速度，%@左右就能存夠"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.amount_label" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 한 번 금액 입력 라벨",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much each time"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1回にいくらずつ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한 번에 얼마씩"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每次存多少"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每次存多少"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.cycle_label" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 주기 고르기 라벨",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How often"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どのくらいの頻度で"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "얼마나 자주"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "多久存一次"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "多久存一次"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.delete" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 계획이 있을 때 지우기 글자 버튼",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete plan"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プランを削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계획 지우기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除计划"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除計畫"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.later" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 계획이 없을 때 닫기 글자 버튼",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe later"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음에 할게요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以后再说"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以後再說"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.month_end_notice" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 매달 29~31일을 골랐을 때 안내",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In shorter months, we'll use the last day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その日がない月は月末で数えます"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 날짜가 없는 달은 마지막 날로 셀게요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有这一天的月份按最后一天算"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有這一天的月份按最後一天算"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.monthly" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 주기 알약 탭",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎月"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매달"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每月"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每月"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.notice" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 미리보기 아래 알림 안내",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We'll remind you at 11 AM on each saving day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "積立日の午前11時にお知らせします"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "넣는 날 오전 11시에 알려드릴게요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "存钱日上午11点会提醒你"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "存錢日上午11點會提醒你"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.save" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 저장 CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save plan"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プランを立てる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계획 세우기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "制定计划"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "制定計畫"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.title" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 헤드라인(두 줄). 굵게 칠할 부분은 title_bold",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set your saving days\nand see when you'll have it all"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "積立のように入れる日を決めると\n貯まる日がわかります"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "적금처럼 넣는 날을 정하면\n다 모이는 날을 알려줘요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "像定存一样定好存钱日\n就告诉你哪天能存够"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "像定存一樣定好存錢日\n就告訴你哪天能存夠"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.title_bold" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). title 안에서 굵게 칠할 부분(글자 그대로 들어 있어야 한다)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "and see when you'll have it all"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯まる日がわかります"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다 모이는 날을 알려줘요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "就告诉你哪天能存够"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "就告訴你哪天能存夠"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.sheet.weekly" : {
+      "comment" : "위시 상세 · 적금 계획 시트 (GH-121). 주기 알약 탭",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekly"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎週"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매주"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每周"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每週"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.title" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 모은 돈 섹션 안 줄 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Savings plan"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "積立プラン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "적금 계획"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "存钱计划"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "存錢計畫"
+          }
+        }
+      }
+    },
+    "detail.saving_plan.weekly_format" : {
+      "comment" : "위시 상세 · 적금 계획 (GH-121). 매주 계획 요약. %1$@ = 요일 이름(금요일), %2$@ = 통화 표기를 붙인 한 번 금액",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ every %1$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎週%1$@に%2$@ずつ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매주 %1$@ %2$@씩"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每周%1$@存%2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每週%1$@存%2$@"
+          }
+        }
+      }
+    },
     "detail.section.link_open" : {
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",

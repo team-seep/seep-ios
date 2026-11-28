@@ -276,6 +276,18 @@ final class AppDatabase {
             }
         }
 
+        // GH-121: 적금 계획(주기·날·한 번 금액). 기존 위시는 모두 계획 없음("" / 0 / 0).
+        // 기본값 있는 NOT NULL 컬럼이라 구버전 앱과 섞여도 merge 쓰기가 이 필드를 지우지 않는다(설계 §6.4).
+        // wish 아웃박스 트리거·`SELECT *` 매핑이 새 컬럼도 그대로 실어 나르고, updatedAt 을 건드리지 않아 기존 줄은 다시 올리지 않는다.
+        // v13·v14 는 같은 때 만든 GH-139(#158)·GH-118(#159)이 쓴다. GRDB 는 이름으로 적용 여부를 보고 안 돈 것만 등록 순서대로 돌린다
+        migrator.registerMigration("v15") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "savingPlanCycle", .text).notNull().defaults(to: "")
+                table.add(column: "savingPlanDay", .integer).notNull().defaults(to: 0)
+                table.add(column: "savingPlanAmount", .integer).notNull().defaults(to: 0)
+            }
+        }
+
         return migrator
     }
 

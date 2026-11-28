@@ -122,6 +122,12 @@ enum LogObjectId: String {
     case checkStep = "check_step"
     case addSaving = "add_saving"
     case saveSaving = "save_saving"
+    /// 상세 "적금 계획" 줄 "＋ 계획 세우기"/"변경" (GH-121)
+    case savingPlan = "saving_plan"
+    /// 적금 계획 시트 "계획 세우기"(저장). 금액은 보내지 않는다 (GH-121)
+    case saveSavingPlan = "save_saving_plan"
+    /// 적금 계획 넣는 날 알림을 눌러 상세 진입 (GH-121)
+    case savingPlanNotification = "saving_plan_notification"
     case finishNoteSheet = "finish_note_sheet"
     case saveFinishNote = "save_finish_note"
     case skipFinishNote = "skip_finish_note"

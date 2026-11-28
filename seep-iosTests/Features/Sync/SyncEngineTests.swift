@@ -412,6 +412,56 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.startedAt)
     }
 
+    // MARK: GH-121 TC11
+
+    func test_GH121_TC11_A에서적금계획을정하고동기화하면_B에서같은계획과다모이는날이보이고_넣는날알림이다시예약된다() async throws {
+        // Given
+        await signInBoth()
+        _ = try deviceA.repository.addWish(Wish(id: "w1", category: .wantToGet, title: "에어팟", targetAmount: 359_000)).get()
+        _ = try deviceA.repository.addSaving(wishId: "w1", amount: 150_000).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+        let reservedBefore = deviceB.notifications.reservedWishes.count
+
+        // When
+        deviceA.tick(60)
+        let plan = try XCTUnwrap(SavingPlan(cycle: .weekly, day: 6, amount: 30_000))
+        _ = try deviceA.repository.updateSavingPlan(wishId: "w1", plan: plan).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then: 계획 값·다 모이는 날이 같다
+        let wishA = try XCTUnwrap(deviceA.repository.fetchWish(id: "w1"))
+        let wishB = try XCTUnwrap(deviceB.repository.fetchWish(id: "w1"))
+        XCTAssertEqual(wishB.savingPlan, plan)
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Asia/Seoul") ?? .current
+        let today = start.addingTimeInterval(86_400)
+        let forecast: (Wish) -> SavingPlanForecast? = { wish in
+            let progress = WishSavingProgress(targetAmount: wish.targetAmount, savings: wish.savings)
+            return wish.savingPlan.flatMap {
+                SavingPlanForecast(plan: $0, remainingAmount: progress?.remainingAmount ?? 0, deadline: nil, now: today, calendar: calendar)
+            }
+        }
+        XCTAssertNotNil(forecast(wishB))
+        XCTAssertEqual(forecast(wishB), forecast(wishA))
+
+        // Then: B 는 받은 위시로 알림을 다시 예약한다(계획 알림은 reserveNotifications 안에서 맞춘다)
+        let reserved = deviceB.notifications.reservedWishes.dropFirst(reservedBefore)
+        XCTAssertEqual(reserved.filter { $0.id == "w1" }.map(\.savingPlan), [plan])
+        XCTAssertTrue(reserved.filter { $0.id == "w1" }.allSatisfy(SavingPlanNotification.isActive))
+
+        // When: A 에서 계획을 지운다
+        deviceA.tick(60)
+        _ = try deviceA.repository.updateSavingPlan(wishId: "w1", plan: nil).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.savingPlan)
+        XCTAssertEqual(deviceB.notifications.reservedWishes.last?.savingPlan, nil)
+    }
+
     // MARK: TC-34
 
     func test_GH93_TC34_더새앱이쓴문서는아는필드만적용하고_다시올려도모르는필드를지우지않는다() async throws {

@@ -1,10 +1,11 @@
 import Foundation
 
-/// 위젯·컨트롤 링크(`widget://…`). 위젯·컨트롤은 이 타입으로 URL 을 만들고, 앱은 같은 타입으로 읽는다 (GH-47 R-11, GH-48 R-9, GH-49 R-6)
+/// 위젯·컨트롤 링크(`widget://…`). 위젯·컨트롤은 이 타입으로 URL 을 만들고, 앱은 같은 타입으로 읽는다 (GH-47 R-11, GH-48 R-9, GH-49 R-6).
+/// 적금 계획 알림(GH-121)도 누르면 같은 링크로 위시 상세를 연다
 enum WidgetDeepLink: Equatable {
     /// 바로 적기 위젯·싶 적기 컨트롤·단축어 → 작성 화면. `widget://add?category=…&source=…`
     case add(Category, source: Source? = nil)
-    /// 잠금화면 D-day 위젯·체크 위젯의 위시 줄 → 위시 상세. `widget://wish?id=…&source=…`
+    /// 잠금화면 D-day 위젯·체크 위젯의 위시 줄·적금 계획 알림 → 위시 상세. `widget://wish?id=…&source=…`
     case wish(id: String, source: Source?)
     /// 홈만 연다. `widget://home?source=…`
     case home(source: Source?)
@@ -18,6 +19,8 @@ enum WidgetDeepLink: Equatable {
         case control
         /// 단축어·Siri·Spotlight (GH-49)
         case shortcut
+        /// 적금 계획 넣는 날 로컬 알림 (GH-121)
+        case savingPlanNotification = "saving_plan_notification"
     }
 
     static let scheme = "widget"

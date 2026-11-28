@@ -121,7 +121,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        completionHandler()
+        // 적금 계획 알림은 위시 상세 링크를 담고 있다 (GH-121). D-day 알림은 링크가 없어 앱만 열린다
+        let deepLink = response.notification.request.content.userInfo[SavingPlanNotification.deepLinkKey] as? String
+        Task { @MainActor in
+            if let deepLink {
+                NotificationDeepLinkOpener().open(userInfo: [SavingPlanNotification.deepLinkKey: deepLink])
+            }
+            completionHandler()
+        }
     }
     
     func userNotificationCenter(
