@@ -74,6 +74,48 @@ final class CompanionSyncTests: XCTestCase {
         XCTAssertEqual(Set(deviceB.repository.fetchCompanionWishes(personId: mom.personId).map(\.id)), ["w1", "w2"])
     }
 
+    func test_GH122_TC13_두기기가동기화전에같은이름을따로적어도_한사람으로보이고_고쳐저장하면id가하나로모인다() async throws {
+        // Given: 둘 다 로그인했지만 동기화 전에 각자 "엄마"를 적는다 → personId 가 둘
+        await signInBoth()
+        var wishA = try deviceA.repository.addWish(Wish(id: "w1", title: "제주", companions: [WishCompanion(name: "엄마")])).get()
+        _ = try deviceB.repository.addWish(Wish(id: "w2", title: "김치찌개", companions: [WishCompanion(name: "엄마")])).get()
+
+        // When
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+        await deviceA.engine.sync(trigger: .manual)
+
+        // Then: 칩은 하나, 어느 id 로 열어도 두 싶이 모인다. 대표 id 는 두 기기가 같다
+        for device in [deviceA!, deviceB!] {
+            let recent = device.repository.fetchRecentCompanions()
+            XCTAssertEqual(recent.map(\.name), ["엄마"])
+            let ids = Set(try device.database.snapshot().companions.map(\.personId))
+            XCTAssertEqual(ids.count, 2)
+            for personId in ids {
+                XCTAssertEqual(Set(device.repository.fetchCompanionWishes(personId: personId).map(\.id)), ["w1", "w2"])
+            }
+        }
+        let canonical = try XCTUnwrap(deviceA.repository.fetchRecentCompanions().first?.personId)
+        XCTAssertEqual(deviceB.repository.fetchRecentCompanions().first?.personId, canonical)
+
+        // When: 대표가 아닌 쪽 위시를 고쳐 저장한다
+        let nonCanonicalWishId = try deviceA.database.snapshot().companions.first { $0.personId != canonical }?.wishId
+        if nonCanonicalWishId == "w1" {
+            deviceA.tick(60)
+            wishA.title = "제주 한 달"
+            _ = try deviceA.repository.updateWish(wishA).get()
+        } else {
+            deviceA.tick(60)
+            var wishB = try XCTUnwrap(deviceA.repository.fetchWish(id: "w2"))
+            wishB.title = "김치찌개 배우기"
+            _ = try deviceA.repository.updateWish(wishB).get()
+        }
+
+        // Then: 살아 있는 줄은 대표 id 하나만 남는다
+        let alive = try deviceA.database.snapshot().companions.filter { $0.deletedAt == nil }
+        XCTAssertEqual(Set(alive.map(\.personId)), [canonical])
+    }
+
     // MARK: TC-15
 
     func test_GH122_TC15_올린사람문서의linkedUid는_null이다() async throws {
@@ -111,7 +153,7 @@ final class CompanionSyncTests: XCTestCase {
 
     // MARK: 마이그레이션
 
-    func test_GH122_v12기기에서올리면_v13이돌고_사람줄도아웃박스에쌓인다() throws {
+    func test_GH122_v12기기에서올리면_v17이돌고_사람줄도아웃박스에쌓인다() throws {
         // Given: 지난 출시(v12까지) DB
         let database = try AppDatabase.makeInMemory(migratedUpTo: "v12")
 

@@ -137,6 +137,22 @@ final class CompanionSheetFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(sheet.route, .toast(Strings.Companion.Sheet.maxCountFormat(WishCompanion.maxCount)))
     }
 
+    func test_GH122_TC4_5명이찬뒤치다만이름이남은채로정했어요를누르면_닫지않고안내한다() {
+        // Given: 이름을 치다가 전에 적은 사람 칩으로 5명을 채운다
+        let recent = ["엄마", "지은", "동생", "민수", "수아"].map { WishCompanion(name: $0) }
+        let sheet = makeSheet(recent: recent)
+        sheet.send(.inputName("친구"))
+        recent.forEach { sheet.send(.tapRecent($0)) }
+
+        // When
+        sheet.send(.tapDone)
+
+        // Then
+        XCTAssertEqual(sheet.route, .toast(Strings.Companion.Sheet.maxCountFormat(WishCompanion.maxCount)))
+        XCTAssertTrue(finished.isEmpty)
+        XCTAssertEqual(sheet.state.nameInput, "친구")
+    }
+
     // MARK: TC-7
 
     func test_GH122_TC7_사람을넣어연작성화면은_그사람이들어간채로저장된다() {

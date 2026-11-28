@@ -278,8 +278,10 @@ final class AppDatabase {
 
         // GH-122: 위시에 붙인 함께할 사람. 태그처럼 wishId 에 FK 없이 일반 인덱스만 둔다(다른 기기 줄이 위시보다 먼저 와도 들어가게).
         // personId 는 사람별 모아보기용 일반 인덱스(같은 사람이 여러 줄이라 UNIQUE 아님). linkedUid 는 친구 계정과 이을 빈 자리(R-12).
-        // 처음부터 동기화한다 — v7 트리거 목록은 배포되어 고치지 않고 여기서 더한다(v10 과 같다). 새 테이블이라 큐에 넣을 기존 줄은 없다
-        migrator.registerMigration("v13") { db in
+        // 처음부터 동기화한다 — v7 트리거 목록은 배포되어 고치지 않고 여기서 더한다(v10 과 같다). 새 테이블이라 큐에 넣을 기존 줄은 없다.
+        // 이름이 v17 인 것: v13~v16 은 같은 때 열린 다른 PR(#158·#159·#162·#163)이 쓴다. 개발 빌드를 깐 기기에서 같은 이름이 건너뛰어지지 않게
+        // 겹치지 않는 이름을 쓴다. GRDB 는 안 돈 것만 등록 순서대로 돌리므로 사이 번호가 비어도 된다
+        migrator.registerMigration("v17") { db in
             try db.create(table: WishCompanionRecord.databaseTableName) { table in
                 table.primaryKey("id", .text)
                 table.column("wishId", .text).notNull()

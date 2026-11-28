@@ -96,7 +96,7 @@ wishSavings/{savingId}          // WishSavingRecord
 wishNotifications/{notifId}     // WishNotificationRecord
 wishJournals/{journalId}        // WishJournalRecord (GH-95 일지)
 wishTags/{tagId}                // WishTagRecord (GH-136 태그. 트리거는 마이그레이션 v10)
-wishCompanions/{companionId}    // WishCompanionRecord (GH-122 함께할 사람. 마이그레이션 v13, linkedUid 는 규칙상 null 만)
+wishCompanions/{companionId}    // WishCompanionRecord (GH-122 함께할 사람. 마이그레이션 v17, linkedUid 는 규칙상 null 만)
 ```
 
 모든 문서에 공통 필드:

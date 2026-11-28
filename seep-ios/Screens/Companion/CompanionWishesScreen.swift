@@ -73,7 +73,6 @@ private struct CompanionWishesContent: View {
         .onAppear { reload() }
         // 모아보기에서 연 작성 화면에서 저장하면 여기 머문다 — 방금 적은 싶을 다시 읽는다 (R-6)
         .onChange(of: router.wishesChangedToken) { _, _ in reload() }
-        .onChange(of: state) { _, _ in renderShareImage() }
         .onChange(of: viewModel.route) { _, route in handle(route) }
     }
 

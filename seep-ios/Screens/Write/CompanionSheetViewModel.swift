@@ -91,8 +91,9 @@ final class CompanionSheetViewModel: Identifiable {
         case .tapSelected(let person):
             state.selected.removeAll { $0.personId == person.personId }
         case .tapDone:
-            // 치다 만 이름도 넣는다 (태그 시트와 같다)
-            _ = submitNameInput()
+            // 치다 만 이름도 넣는다 (태그 시트와 같다). 최대 인원이라 못 넣었으면 닫지 않고 안내를 보여 준다
+            guard submitNameInput() else { return }
+            state.nameInput = ""
             dependency.logManager.sendEvent(event: ClickEvent(
                 screen: screenName,
                 objectType: .button,

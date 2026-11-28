@@ -243,56 +243,75 @@ enum WishRecordStore {
         }
     }
 
-    /// 살아 있는 위시에 붙은 사람, 최근에 쓴 사람부터 한 명씩(이름은 그 사람의 가장 최근 이름). "전에 적은 사람"용 (GH-122 R-3)
+    /// 살아 있는 위시에 붙은 사람, 최근에 쓴 사람부터 한 명씩(이름은 그 사람의 가장 최근 이름). "전에 적은 사람"용 (GH-122 R-3).
+    /// 이름이 같은 사람은 하나로 보여 준다 — 두 기기가 동기화 전에 같은 이름을 따로 적어 id 가 둘이어도 칩은 하나다
     static func recentCompanions(in db: Database) throws -> [WishCompanion] {
+        let rows = try aliveCompanionRows(in: db)
+        let canonical = canonicalPersonIds(rows)
         var seen: Set<String> = []
-        return try aliveCompanionRows(in: db).compactMap { row in
-            guard seen.insert(row.personId).inserted else { return nil }
-            return WishCompanion(personId: row.personId, name: row.name)
+        return rows.compactMap { row in
+            let key = WishCompanion.matchKey(row.name)
+            guard seen.insert(key).inserted else { return nil }
+            return WishCompanion(personId: canonical[key] ?? row.personId, name: row.name)
         }
     }
 
-    /// 그 사람이 붙은 살아 있는 위시 id (GH-122 R-5)
+    /// 그 사람이 붙은 살아 있는 위시 id (GH-122 R-5). 같은 이름의 다른 id(다른 기기에서 따로 적은 같은 사람)도 같이 모은다
     static func wishIds(personId: String, in db: Database) throws -> [String] {
-        try String.fetchAll(db, sql: """
-            SELECT DISTINCT wishCompanion.wishId FROM wishCompanion
-            JOIN wish ON wish.id = wishCompanion.wishId
-            WHERE wishCompanion.personId = ? AND wishCompanion.deletedAt IS NULL AND wish.deletedAt IS NULL
-            """, arguments: [personId])
+        let rows = try aliveCompanionRows(in: db)
+        let keys = Set(rows.filter { $0.personId == personId }.map { WishCompanion.matchKey($0.name) })
+        var seen: Set<String> = []
+        return rows
+            .filter { $0.personId == personId || keys.contains(WishCompanion.matchKey($0.name)) }
+            .compactMap { seen.insert($0.wishId).inserted ? $0.wishId : nil }
     }
 
-    /// 저장할 사람 목록을 다듬는다 (R-2, R-11): 이름을 정리하고, 처음 보는 `personId`인데 이름이 기존 사람과 같으면 그 사람의 id 를 쓰고,
-    /// 같은 사람은 한 번만, 최대 인원까지만 둔다. 화면이 들고 있던 목록이 오래돼도(다른 기기에서 같은 사람을 먼저 적음) 사람이 둘로 갈리지 않게 한다
+    /// 저장할 사람 목록을 다듬는다 (R-2, R-11): 이름을 정리하고, 이름이 기존 사람과 같으면 그 사람의 대표 id 를 쓰고,
+    /// 같은 사람·같은 이름은 한 번만, 최대 인원까지만 둔다. 화면이 들고 있던 목록이 오래됐거나(다른 기기에서 같은 사람을 먼저 적음)
+    /// 두 기기가 따로 적어 id 가 둘이 됐어도, 고쳐 저장할 때마다 대표 id 하나로 모인다
     static func resolvedCompanions(_ companions: [WishCompanion], in db: Database) throws -> [WishCompanion] {
         guard !companions.isEmpty else { return [] }
-        let known = try aliveCompanionRows(in: db)
-        let knownIds = Set(known.map(\.personId))
-        var idByKey: [String: String] = [:]
-        for row in known where idByKey[WishCompanion.matchKey(row.name)] == nil {
-            idByKey[WishCompanion.matchKey(row.name)] = row.personId
-        }
+        var canonical = canonicalPersonIds(try aliveCompanionRows(in: db))
         var result: [WishCompanion] = []
         for companion in companions {
             guard let name = WishCompanion.cleanedName(companion.name) else { continue }
             let key = WishCompanion.matchKey(name)
-            let personId = knownIds.contains(companion.personId) ? companion.personId : idByKey[key] ?? companion.personId
+            let personId = canonical[key] ?? companion.personId
             // 같은 사람(id)이나 같은 이름은 한 번만 (R-2)
             guard !result.contains(where: { $0.personId == personId || WishCompanion.matchKey($0.name) == key }),
                   result.count < WishCompanion.maxCount else { continue }
-            idByKey[key] = idByKey[key] ?? personId
+            canonical[key] = personId
             result.append(WishCompanion(personId: personId, name: name))
         }
         return result
     }
 
+    private struct CompanionRow {
+        let wishId: String
+        let personId: String
+        let name: String
+        let createdAt: Double
+    }
+
     /// 살아 있는 위시에 붙은 사람 줄, 최근에 고친 것부터
-    private static func aliveCompanionRows(in db: Database) throws -> [(personId: String, name: String)] {
+    private static func aliveCompanionRows(in db: Database) throws -> [CompanionRow] {
         try Row.fetchAll(db, sql: """
-            SELECT wishCompanion.personId, wishCompanion.name FROM wishCompanion
+            SELECT wishCompanion.wishId, wishCompanion.personId, wishCompanion.name, wishCompanion.createdAt FROM wishCompanion
             JOIN wish ON wish.id = wishCompanion.wishId
             WHERE wishCompanion.deletedAt IS NULL AND wish.deletedAt IS NULL AND TRIM(wishCompanion.name) != ''
             ORDER BY wishCompanion.updatedAt DESC, wishCompanion.createdAt DESC
-            """).map { (personId: $0["personId"], name: $0["name"]) }
+            """).map { CompanionRow(wishId: $0["wishId"], personId: $0["personId"], name: $0["name"], createdAt: $0["createdAt"]) }
+    }
+
+    /// 이름(정규화) → 대표 personId. 가장 먼저 적은 줄의 id, 같으면 id 순 — 어느 기기에서 계산해도 같은 값이 나오게
+    private static func canonicalPersonIds(_ rows: [CompanionRow]) -> [String: String] {
+        var best: [String: CompanionRow] = [:]
+        for row in rows {
+            let key = WishCompanion.matchKey(row.name)
+            if let current = best[key], (current.createdAt, current.personId) <= (row.createdAt, row.personId) { continue }
+            best[key] = row
+        }
+        return best.mapValues(\.personId)
     }
 
     /// 수정 폼의 알림으로 바꾼다. 알림 id 는 예약 identifier 라 그대로 유지한다

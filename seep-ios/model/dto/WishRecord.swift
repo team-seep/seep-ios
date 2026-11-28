@@ -151,7 +151,7 @@ struct WishTagRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Ta
     }
 }
 
-/// `wishCompanion` 테이블 한 줄. 위시에 붙인 함께할 사람 한 명 (GH-122, 마이그레이션 v13).
+/// `wishCompanion` 테이블 한 줄. 위시에 붙인 함께할 사람 한 명 (GH-122, 마이그레이션 v17).
 /// 태그처럼 동기화 대비로 `wishId`에 FK 를 두지 않고 UNIQUE 도 두지 않는다 — 같은 위시에 같은 사람은 쓰기에서 막는다 (R4).
 /// `personId`는 같은 사람이면 위시가 달라도 같다(R-11). `linkedUid`는 나중에 친구 계정과 이을 자리로, 지금은 늘 nil 이다(R-12)
 struct WishCompanionRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
