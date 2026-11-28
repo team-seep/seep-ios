@@ -137,20 +137,36 @@ final class CompanionSheetFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(sheet.route, .toast(Strings.Companion.Sheet.maxCountFormat(WishCompanion.maxCount)))
     }
 
-    func test_GH122_TC4_5명이찬뒤치다만이름이남은채로정했어요를누르면_닫지않고안내한다() {
-        // Given: 이름을 치다가 전에 적은 사람 칩으로 5명을 채운다
+    func test_GH122_TC4_치다만이름이있어도_칩으로5명을채우면_칸이비고정했어요로닫힌다() {
+        // Given: 이름을 치다가 전에 적은 사람 칩으로 5명을 채운다(입력 칸이 사라진다)
         let recent = ["엄마", "지은", "동생", "민수", "수아"].map { WishCompanion(name: $0) }
         let sheet = makeSheet(recent: recent)
         sheet.send(.inputName("친구"))
         recent.forEach { sheet.send(.tapRecent($0)) }
 
+        // Then
+        XCTAssertEqual(sheet.state.nameInput, "")
+
         // When
         sheet.send(.tapDone)
 
+        // Then: 보이지 않는 칸 때문에 막히지 않는다
+        XCTAssertEqual(sheet.route, .dismiss)
+        XCTAssertEqual(finished.last?.count, WishCompanion.maxCount)
+    }
+
+    func test_GH122_TC14_고른사람과이름이같은전에적은사람은_다시보이지않고눌러도두번들어가지않는다() {
+        // Given: 이 위시의 "지은"(X)과 전에 적은 사람의 "지은"(대표 Y)이 id 가 다르다
+        let sheet = makeSheet(selected: [WishCompanion(personId: "X", name: "지은")], recent: [WishCompanion(personId: "Y", name: "지은"), WishCompanion(name: "엄마")])
+
         // Then
-        XCTAssertEqual(sheet.route, .toast(Strings.Companion.Sheet.maxCountFormat(WishCompanion.maxCount)))
-        XCTAssertTrue(finished.isEmpty)
-        XCTAssertEqual(sheet.state.nameInput, "친구")
+        XCTAssertEqual(sheet.state.suggested.map(\.name), ["엄마"])
+
+        // When
+        sheet.send(.tapRecent(WishCompanion(personId: "Y", name: "지은")))
+
+        // Then
+        XCTAssertEqual(sheet.state.selected.map(\.name), ["지은"])
     }
 
     // MARK: TC-7

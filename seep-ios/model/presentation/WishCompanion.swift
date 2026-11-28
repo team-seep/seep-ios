@@ -33,6 +33,11 @@ struct WishCompanion: Equatable, Hashable, Identifiable {
             .joined(separator: " ")
     }
 
+    /// 같은 사람인지: id 가 같거나, 정규화한 이름이 같다 (R-11). 두 기기가 따로 적어 id 가 다른 같은 사람도 하나로 본다
+    func isSamePerson(as other: WishCompanion) -> Bool {
+        personId == other.personId || Self.matchKey(name) == Self.matchKey(other.name)
+    }
+
     /// 이름 끝 글자에 받침이 있는지. 한글이 아니면 받침 없음으로 본다 — "지은이랑" / "엄마랑" (R-9)
     static func hasFinalConsonant(_ name: String) -> Bool {
         guard let scalar = name.unicodeScalars.last, (0xAC00...0xD7A3).contains(scalar.value) else { return false }

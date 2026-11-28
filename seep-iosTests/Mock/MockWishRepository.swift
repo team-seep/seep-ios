@@ -116,7 +116,7 @@ final class MockWishRepository: WishRepository {
         recentCompanionsResult
     }
 
-    func fetchCompanionWishes(personId: String) -> [Wish] {
+    func fetchCompanionWishes(personId: String, name: String?) -> [Wish] {
         companionWishesCalls.append(personId)
         return companionWishesResult
     }

@@ -348,8 +348,8 @@ private struct WishDetailContent: View {
             router?.openChainedWrite(from: wish)
         case .wishDetail(let id, let isFinished):
             router?.push(.wishDetail(id: id, isFinished: isFinished))
-        case .companionWishes(let personId):
-            router?.push(.companionWishes(personId: personId))
+        case .companionWishes(let person):
+            router?.push(.companionWishes(personId: person.personId, name: person.name))
         case .errorAlert(let message):
             errorMessage = message
         case .autoStartToast(let message):

@@ -2,13 +2,13 @@ import SwiftUI
 
 /// 사람별 모아보기 (GH-122 R-5 ~ R-7). "엄마랑 하고 싶은 것 / 3개 남았어요!" + 남은 싶 + 같이 이룬 것 + 하단 적기 버튼
 struct CompanionWishesScreen: View {
-    let personId: String
+    let person: WishCompanion
 
     @State private var viewModel: CompanionWishesViewModel
 
-    init(personId: String) {
-        self.personId = personId
-        _viewModel = State(initialValue: CompanionWishesViewModel(config: .init(personId: personId)))
+    init(person: WishCompanion) {
+        self.person = person
+        _viewModel = State(initialValue: CompanionWishesViewModel(config: .init(person: person)))
     }
 
     var body: some View {

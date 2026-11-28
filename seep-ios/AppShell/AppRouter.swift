@@ -12,7 +12,7 @@ enum MainTab: Hashable {
 enum AppDestination: Hashable {
     case wishDetail(id: String, isFinished: Bool)
     /// 사람별 모아보기 (GH-122 R-5)
-    case companionWishes(personId: String)
+    case companionWishes(personId: String, name: String)
     /// 검색. 이룬 싶 탭에서 열면 완료한 위시만 찾는다 (R-19)
     case search(finishedOnly: Bool)
     case badgeCollection
@@ -221,6 +221,8 @@ final class AppRouter {
             dependency.deepLinkStore.reservedDeepLink = url.absoluteString
             return nil
         }
+        // 단축어로 연 작성에는 모아보기에서 미뤄 둔 사람을 싣지 않는다
+        writeCompanion = nil
         if writeCategory != nil {
             writeCategory = category
             return deepLink
@@ -237,6 +239,7 @@ final class AppRouter {
     /// 이룬 위시에 이어서 같은 카테고리의 작성 화면을 연다. 닫히는 시트가 있으면 다 닫힌 뒤 연다 (GH-84 R-1~R-3)
     func openChainedWrite(from wish: Wish) {
         guard writeCategory == nil else { return }
+        writeCompanion = nil
         writePreviousWishId = wish.id
         if presentedModalCount > 0 {
             pendingIntentCategory = wish.category
@@ -248,6 +251,7 @@ final class AppRouter {
     /// 그 사람이 들어간 작성 화면을 연다. 카테고리는 홈에서 마지막으로 본 것이고 문서에서 바꿀 수 있다 (GH-122 R-6)
     func openCompanionWrite(with companion: WishCompanion) {
         guard writeCategory == nil else { return }
+        writePreviousWishId = nil
         writeCompanion = companion
         if presentedModalCount > 0 {
             pendingIntentCategory = homeCategory

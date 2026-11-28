@@ -46,7 +46,7 @@ extension WishDetailViewModel {
         /// 체인의 다른 위시 상세로 간다 (GH-84 R-5)
         case wishDetail(id: String, isFinished: Bool)
         /// 사람별 모아보기로 간다 (GH-122 R-5)
-        case companionWishes(personId: String)
+        case companionWishes(WishCompanion)
         case errorAlert(String)
         /// 단계 체크·저금 기록으로 자동 시작했다. "되돌리기" 버튼이 있는 토스트를 띄운다 (GH-143 R-3)
         case autoStartToast(String)
@@ -178,7 +178,7 @@ final class WishDetailViewModel {
         case .tapCompanion(let person):
             // 이름은 개인정보라 로그에 넣지 않는다 (GH-122 트래킹)
             sendClickLog(objectId: .companionChip)
-            route = .companionWishes(personId: person.personId)
+            route = .companionWishes(person)
         case .tapStart:
             start()
         case .tapUnstart:

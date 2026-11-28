@@ -257,9 +257,10 @@ enum WishRecordStore {
     }
 
     /// 그 사람이 붙은 살아 있는 위시 id (GH-122 R-5). 같은 이름의 다른 id(다른 기기에서 따로 적은 같은 사람)도 같이 모은다
-    static func wishIds(personId: String, in db: Database) throws -> [String] {
+    static func wishIds(personId: String, name: String? = nil, in db: Database) throws -> [String] {
         let rows = try aliveCompanionRows(in: db)
-        let keys = Set(rows.filter { $0.personId == personId }.map { WishCompanion.matchKey($0.name) })
+        var keys = Set(rows.filter { $0.personId == personId }.map { WishCompanion.matchKey($0.name) })
+        if let name { keys.insert(WishCompanion.matchKey(name)) }
         var seen: Set<String> = []
         return rows
             .filter { $0.personId == personId || keys.contains(WishCompanion.matchKey($0.name)) }

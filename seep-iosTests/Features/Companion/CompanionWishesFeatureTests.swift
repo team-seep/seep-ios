@@ -26,9 +26,9 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         return try repository.addWish(wish).get()
     }
 
-    private func makeViewModel(personId: String, repository: WishRepository? = nil) -> CompanionWishesViewModel {
+    private func makeViewModel(_ person: WishCompanion, repository: WishRepository? = nil) -> CompanionWishesViewModel {
         let viewModel = CompanionWishesViewModel(
-            config: .init(personId: personId),
+            config: .init(person: person),
             dependency: .init(wishRepository: repository ?? self.repository, logManager: logManager)
         )
         viewModel.send(.onAppear)
@@ -52,7 +52,7 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         try add(Wish(id: "camp", title: "캠핑", companions: [WishCompanion(name: "지은")]))
 
         // When
-        let viewModel = makeViewModel(personId: mom.personId)
+        let viewModel = makeViewModel(mom)
 
         // Then
         XCTAssertEqual(viewModel.state.remainingText, Strings.Companion.Wishes.remainingFormat(3))
@@ -67,7 +67,7 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         // Given
         let mom = WishCompanion(name: "엄마")
         try add(Wish(id: "jeju", title: "제주", companions: [mom]))
-        let viewModel = makeViewModel(personId: mom.personId)
+        let viewModel = makeViewModel(mom)
 
         // When
         viewModel.send(.tapWish(id: "jeju"))
@@ -82,7 +82,7 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         // Given
         let mom = WishCompanion(name: "엄마")
         try add(Wish(id: "jeju", title: "제주", companions: [mom]))
-        let viewModel = makeViewModel(personId: mom.personId)
+        let viewModel = makeViewModel(mom)
 
         // When
         viewModel.send(.tapWrite)
@@ -102,10 +102,10 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         try add(Wish(id: "a", title: "캠핑", companions: [jieun, mom, tom]))
 
         // When / Then
-        XCTAssertEqual(makeViewModel(personId: jieun.personId).state.headline, "지은이랑 하고 싶은 것")
-        XCTAssertEqual(makeViewModel(personId: mom.personId).state.headline, "엄마랑 하고 싶은 것")
-        XCTAssertEqual(makeViewModel(personId: tom.personId).state.headline, "Tom랑 하고 싶은 것")
-        XCTAssertEqual(makeViewModel(personId: jieun.personId).state.writeTitle, "📝 지은이랑 하고 싶은 것 적기")
+        XCTAssertEqual(makeViewModel(jieun).state.headline, "지은이랑 하고 싶은 것")
+        XCTAssertEqual(makeViewModel(mom).state.headline, "엄마랑 하고 싶은 것")
+        XCTAssertEqual(makeViewModel(tom).state.headline, "Tom랑 하고 싶은 것")
+        XCTAssertEqual(makeViewModel(jieun).state.writeTitle, "📝 지은이랑 하고 싶은 것 적기")
     }
 
     func test_GH122_TC10_받침판정() {
@@ -135,7 +135,7 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         // Given
         let mom = WishCompanion(name: "엄마")
         try add(Wish(id: "jeju", title: "제주", companions: [mom]))
-        let viewModel = makeViewModel(personId: mom.personId)
+        let viewModel = makeViewModel(mom)
 
         // When
         viewModel.send(.tapShare)
@@ -157,10 +157,45 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
         try add(Wish(id: "c", title: "꽃구경", companions: [WishCompanion(name: " 엄마 ")]))
 
         // When
-        let viewModel = makeViewModel(personId: mom.personId)
+        let viewModel = makeViewModel(mom)
 
         // Then
         XCTAssertEqual(Set(viewModel.state.remaining.map(\.id)), ["a", "b", "c"])
+    }
+
+    func test_GH122_TC14_모아보기를연id가_고쳐저장해대표id로합쳐져도_같은싶이보인다() throws {
+        // Given: 같은 이름 "지은"이 id 둘(Y가 먼저, X가 나중)로 붙어 있다 — 두 기기가 따로 적은 것처럼 줄을 직접 넣는다
+        try add(Wish(id: "b", title: "캠핑", companions: [WishCompanion(personId: "Y", name: "지은")]))
+        try add(Wish(id: "a", title: "서핑"))
+        try database.writer.write { db in
+            try WishCompanionRecord(companion: WishCompanion(personId: "X", name: "지은"), wishId: "a", order: 0, now: clock).insert(db)
+        }
+        let viewModel = makeViewModel(WishCompanion(personId: "X", name: "지은"))
+        XCTAssertEqual(Set(viewModel.state.remaining.map(\.id)), ["a", "b"])
+
+        // When: 위시 a 를 고쳐 저장하면 X 줄이 대표 id Y 로 바뀐다
+        var wishA = try XCTUnwrap(repository.fetchWish(id: "a"))
+        wishA.memo = "보드 빌리기"
+        clock = clock.addingTimeInterval(1)
+        _ = try repository.updateWish(wishA).get()
+        viewModel.send(.onAppear)
+
+        // Then: 그대로 두 싶이 보이고, 화면의 사람은 대표 id 를 따라간다
+        XCTAssertEqual(Set(try database.snapshot().companions.filter { $0.deletedAt == nil }.map(\.personId)), ["Y"])
+        XCTAssertEqual(Set(viewModel.state.remaining.map(\.id)), ["a", "b"])
+        XCTAssertEqual(viewModel.state.person?.personId, "Y")
+    }
+
+    func test_GH122_TC14_한위시에같은사람줄이둘이어도_한번만보인다() throws {
+        // Given: 두 기기가 오프라인에서 같은 위시에 같은 사람을 붙여 줄이 둘
+        try add(Wish(id: "w", title: "제주", companions: [WishCompanion(personId: "P", name: "엄마")]))
+        try database.writer.write { db in
+            try WishCompanionRecord(companion: WishCompanion(personId: "P", name: "엄마"), wishId: "w", order: 0, now: clock).insert(db)
+            try WishCompanionRecord(companion: WishCompanion(personId: "Q", name: "엄마"), wishId: "w", order: 1, now: clock).insert(db)
+        }
+
+        // Then
+        XCTAssertEqual(repository.fetchWish(id: "w")?.companions.map(\.name), ["엄마"])
     }
 
     // MARK: TC-19
@@ -191,7 +226,7 @@ final class CompanionWishesFeatureTests: ViewModelTestCase {
 
         // Then
         XCTAssertTrue(detail.state.sections.contains(.companion))
-        XCTAssertEqual(detail.route, .companionWishes(personId: "p-mom"))
+        XCTAssertEqual(detail.route, .companionWishes(mom))
         let events = clickEvents(objectId: .companionChip)
         XCTAssertEqual(events.count, 1)
         XCTAssertEqual(events.first?.screen, .wishDetail)

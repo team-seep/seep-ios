@@ -26,9 +26,9 @@ extension CompanionSheetViewModel {
         var recent: [WishCompanion] = []
 
         var isFull: Bool { selected.count >= WishCompanion.maxCount }
-        /// '전에 적은 사람'에 보일 칩 — 이미 고른 사람은 뺀다
+        /// '전에 적은 사람'에 보일 칩 — 이미 고른 사람(같은 id 나 같은 이름)은 뺀다
         var suggested: [WishCompanion] {
-            recent.filter { person in !selected.contains { $0.personId == person.personId } }
+            recent.filter { person in !selected.contains { $0.isSamePerson(as: person) } }
         }
     }
 
@@ -124,12 +124,14 @@ final class CompanionSheetViewModel: Identifiable {
 
     @discardableResult
     private func add(_ person: WishCompanion) -> Bool {
-        guard !state.selected.contains(where: { $0.personId == person.personId }) else { return true }
+        guard !state.selected.contains(where: { $0.isSamePerson(as: person) }) else { return true }
         guard !state.isFull else {
             route = .toast(Strings.Companion.Sheet.maxCountFormat(WishCompanion.maxCount))
             return false
         }
         state.selected.append(person)
+        // 다 차면 입력 칸이 사라진다. 보이지 않는 칸에 친 글자가 남아 "정했어요"를 막지 않게 비운다
+        if state.isFull { state.nameInput = "" }
         return true
     }
 

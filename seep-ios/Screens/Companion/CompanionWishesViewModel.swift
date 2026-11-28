@@ -47,7 +47,8 @@ extension CompanionWishesViewModel {
     }
 
     struct Config {
-        let personId: String
+        /// 연 사람(칩의 id·이름). 이름은 그 id 의 줄이 대표 id 로 합쳐진 뒤에도 찾는 데 쓴다
+        let person: WishCompanion
     }
 
     struct Dependency {
@@ -77,6 +78,7 @@ final class CompanionWishesViewModel {
     init(config: Config, dependency: Dependency = Dependency()) {
         self.config = config
         self.dependency = dependency
+        state.person = config.person
     }
 
     func send(_ action: Action) {
@@ -101,11 +103,10 @@ final class CompanionWishesViewModel {
     }
 
     private func reload() {
-        let wishes = dependency.wishRepository.fetchCompanionWishes(personId: config.personId)
-        // 이름은 그 사람의 가장 최근 이름. 위시가 모두 지워졌으면 보던 이름을 그대로 둔다
-        let latest = dependency.wishRepository.fetchRecentCompanions().first { $0.personId == config.personId }
-            ?? wishes.lazy.flatMap(\.companions).first { $0.personId == config.personId }
-        if let latest {
+        let current = state.person ?? config.person
+        let wishes = dependency.wishRepository.fetchCompanionWishes(personId: current.personId, name: current.name)
+        // 이름·id 는 그 사람의 가장 최근 이름과 대표 id(같은 이름이면 하나로 본다). 위시가 모두 지워졌으면 보던 사람을 그대로 둔다
+        if let latest = dependency.wishRepository.fetchRecentCompanions().first(where: { $0.isSamePerson(as: current) }) {
             state.person = latest
         }
         state.remaining = wishes.filter { !$0.isSuccess }.sorted(by: Self.deadlineFirst)

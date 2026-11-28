@@ -340,6 +340,18 @@ extension WishNotificationRecord {
 }
 
 extension Wish {
+    /// 위시 안 사람, 순서대로 한 번씩. 두 기기가 오프라인에서 같은 사람을 같은 위시에 따로 붙이면 줄이 둘이 될 수 있어(UNIQUE 없음, R4)
+    /// 같은 id·같은 이름은 앞 줄만 남긴다 (GH-122 R-11)
+    static func uniqueCompanions(_ records: [WishCompanionRecord]) -> [WishCompanion] {
+        var result: [WishCompanion] = []
+        for record in records.sorted(by: { ($0.order, $0.createdAt, $0.id) < ($1.order, $1.createdAt, $1.id) }) {
+            let key = WishCompanion.matchKey(record.name)
+            guard !result.contains(where: { $0.personId == record.personId || WishCompanion.matchKey($0.name) == key }) else { continue }
+            result.append(WishCompanion(personId: record.personId, name: record.name))
+        }
+        return result
+    }
+
     /// 레코드에서 위시를 만든다. 하위 레코드는 이 위시의 살아 있는 줄(deletedAt == nil)만 넘긴다
     init(
         record: WishRecord,
@@ -370,9 +382,7 @@ extension Wish {
             memo: record.memo,
             // 태그는 v9 부터 wishTag 가 원본이다. wish.hashtag 컬럼은 대표 태그를 같이 적어 두기만 한다
             tags: tags.sorted { $0.order < $1.order }.map(\.name),
-            companions: companions
-                .sorted { ($0.order, $0.createdAt) < ($1.order, $1.createdAt) }
-                .map { WishCompanion(personId: $0.personId, name: $0.name) },
+            companions: Self.uniqueCompanions(companions),
             isSuccess: record.isSuccess,
             finishNote: record.finishNote,
             pinnedAt: record.pinnedAt,

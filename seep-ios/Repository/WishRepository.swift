@@ -41,8 +41,9 @@ protocol WishRepository {
     /// 살아 있는 위시에 붙은 함께할 사람, 최근에 쓴 사람부터. "누구랑" 시트 "전에 적은 사람"용 (GH-122 R-3)
     func fetchRecentCompanions() -> [WishCompanion]
 
-    /// 그 사람(`personId`)이 붙은 살아 있는 위시, 세 카테고리 전부. 사람별 모아보기용 (GH-122 R-5)
-    func fetchCompanionWishes(personId: String) -> [Wish]
+    /// 그 사람(`personId`, 같은 이름의 다른 id 포함)이 붙은 살아 있는 위시, 세 카테고리 전부. 사람별 모아보기용 (GH-122 R-5).
+    /// `name`을 주면 그 id 의 줄이 모두 대표 id 로 합쳐진 뒤에도 이름으로 찾는다
+    func fetchCompanionWishes(personId: String, name: String?) -> [Wish]
 
     /// 카테고리와 무관하게 `finishDate`가 [from, to) 안인 완료 위시를 돌려준다 (GH-34 R-3).
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish]
@@ -95,6 +96,12 @@ protocol WishRepository {
     /// 로그아웃·계정 삭제에서 "이 기기에서 싶 지우기" (GH-93 R-28, R-29).
     /// 삭제 표시가 아니라 줄을 지운다(동기화로 서버에 지움이 퍼지지 않게). 지우기 전 살아 있던 위시를 돌려줘 알림·사진을 정리하게 한다
     func eraseAllLocalWishes() -> Result<[Wish], RepositoryError>
+}
+
+extension WishRepository {
+    func fetchCompanionWishes(personId: String) -> [Wish] {
+        fetchCompanionWishes(personId: personId, name: nil)
+    }
 }
 
 /// `observeChanges` 구독. GRDB 타입을 화면 쪽에 드러내지 않으려고 감싼다
@@ -256,9 +263,9 @@ final class WishRepositoryImpl: WishRepository {
         read { try WishRecordStore.recentCompanions(in: $0) } ?? []
     }
 
-    func fetchCompanionWishes(personId: String) -> [Wish] {
+    func fetchCompanionWishes(personId: String, name: String?) -> [Wish] {
         read { db in
-            let ids = try WishRecordStore.wishIds(personId: personId, in: db)
+            let ids = try WishRecordStore.wishIds(personId: personId, name: name, in: db)
             return try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes().filter(ids.contains(WishRecord.Columns.id)), in: db)
         } ?? []
     }
