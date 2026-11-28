@@ -1085,12 +1085,14 @@ internal enum Strings {
       internal static func countFormat(_ p1: Int) -> String {
         return Strings.tr("Localization", "home.select.count_format", p1, fallback: "%d개 선택됨")
       }
-      /// %d개 삭제
-      internal static func deleteFormat(_ p1: Int) -> String {
-        return Strings.tr("Localization", "home.select.delete_format", p1, fallback: "%d개 삭제")
+      /// 삭제
+      internal static var delete: String { Strings.tr("Localization", "home.select.delete", fallback: "삭제") }
+      /// %d개 보내기
+      internal static func sendFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "home.select.send_format", p1, fallback: "%d개 보내기")
       }
-      /// 골라서 지워요
-      internal static var titleBold: String { Strings.tr("Localization", "home.select.title_bold", fallback: "골라서 지워요") }
+      /// 골라 주세요
+      internal static var titleBold: String { Strings.tr("Localization", "home.select.title_bold", fallback: "골라 주세요") }
       internal enum DeleteAlert {
         /// 삭제
         internal static var confirm: String { Strings.tr("Localization", "home.select.delete_alert.confirm", fallback: "삭제") }
@@ -1104,14 +1106,14 @@ internal enum Strings {
       }
       internal enum Title {
         /// 하고 싶은 것들을
-        /// 골라서 지워요
-        internal static var wantToDo: String { Strings.tr("Localization", "home.select.title.want_to_do", fallback: "하고 싶은 것들을\n골라서 지워요") }
+        /// 골라 주세요
+        internal static var wantToDo: String { Strings.tr("Localization", "home.select.title.want_to_do", fallback: "하고 싶은 것들을\n골라 주세요") }
         /// 갖고 싶은 것들을
-        /// 골라서 지워요
-        internal static var wantToGet: String { Strings.tr("Localization", "home.select.title.want_to_get", fallback: "갖고 싶은 것들을\n골라서 지워요") }
+        /// 골라 주세요
+        internal static var wantToGet: String { Strings.tr("Localization", "home.select.title.want_to_get", fallback: "갖고 싶은 것들을\n골라 주세요") }
         /// 가고 싶은 장소를
-        /// 골라서 지워요
-        internal static var wantToGo: String { Strings.tr("Localization", "home.select.title.want_to_go", fallback: "가고 싶은 장소를\n골라서 지워요") }
+        /// 골라 주세요
+        internal static var wantToGo: String { Strings.tr("Localization", "home.select.title.want_to_go", fallback: "가고 싶은 장소를\n골라 주세요") }
       }
     }
     internal enum SleepingWish {
@@ -1431,6 +1433,45 @@ internal enum Strings {
     internal static var saveFailed: String { Strings.tr("Localization", "share_photo.save_failed", fallback: "이미지를 저장하지 못했어요. 다시 시도해 주세요.") }
     /// 👏이미지를 앨범에 저장했어요!
     internal static var savedToast: String { Strings.tr("Localization", "share_photo.saved_toast", fallback: "👏이미지를 앨범에 저장했어요!") }
+  }
+  internal enum ShareWishList {
+    /// 닫기
+    internal static var close: String { Strings.tr("Localization", "share_wish_list.close", fallback: "닫기") }
+    /// D-day 같이 보내기
+    internal static var ddayToggle: String { Strings.tr("Localization", "share_wish_list.dday_toggle", fallback: "D-day 같이 보내기") }
+    /// 카드와 글에 D-day를 넣어요
+    internal static var ddayToggleDetail: String { Strings.tr("Localization", "share_wish_list.dday_toggle_detail", fallback: "카드와 글에 D-day를 넣어요") }
+    /// 이렇게 한 장으로
+    /// 보낼게요
+    internal static var headline: String { Strings.tr("Localization", "share_wish_list.headline", fallback: "이렇게 한 장으로\n보낼게요") }
+    /// 보낼게요
+    internal static var headlineBold: String { Strings.tr("Localization", "share_wish_list.headline_bold", fallback: "보낼게요") }
+    /// 링크 같이 보내기
+    internal static var linkToggle: String { Strings.tr("Localization", "share_wish_list.link_toggle", fallback: "링크 같이 보내기") }
+    /// 글에 상품 링크를 붙여요 · 카드에는 주소만
+    internal static var linkToggleDetail: String { Strings.tr("Localization", "share_wish_list.link_toggle_detail", fallback: "글에 상품 링크를 붙여요 · 카드에는 주소만") }
+    /// 보내기
+    internal static var send: String { Strings.tr("Localization", "share_wish_list.send", fallback: "보내기") }
+    /// %1$@ %2$d개
+    internal static func textTitleFormat(_ p1: Any, _ p2: Int) -> String {
+      return Strings.tr("Localization", "share_wish_list.text_title_format", String(describing: p1), p2, fallback: "%1$@ %2$d개")
+    }
+    internal enum Card {
+      /// 싶에서 보냄
+      internal static var footer: String { Strings.tr("Localization", "share_wish_list.card.footer", fallback: "싶에서 보냄") }
+      /// 외 %d개
+      internal static func moreFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "share_wish_list.card.more_format", p1, fallback: "외 %d개")
+      }
+    }
+    internal enum Category {
+      /// 하고 싶어요
+      internal static var wantToDo: String { Strings.tr("Localization", "share_wish_list.category.want_to_do", fallback: "하고 싶어요") }
+      /// 갖고 싶어요
+      internal static var wantToGet: String { Strings.tr("Localization", "share_wish_list.category.want_to_get", fallback: "갖고 싶어요") }
+      /// 가고 싶어요
+      internal static var wantToGo: String { Strings.tr("Localization", "share_wish_list.category.want_to_go", fallback: "가고 싶어요") }
+    }
   }
   internal enum Widget {
     internal enum Check {

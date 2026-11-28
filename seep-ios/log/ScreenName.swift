@@ -24,6 +24,8 @@ extension ScreenName {
     static let finished = ScreenName(rawValue: "finished")
     static let notification = ScreenName(rawValue: "notification")
     static let sharePhoto = ScreenName(rawValue: "share_photo")
+    /// 골라서 보내기 미리보기 (GH-125)
+    static let shareWishList = ScreenName(rawValue: "share_wish_list")
     static let wishSearch = ScreenName(rawValue: "wish_search")
     static let yearReview = ScreenName(rawValue: "year_review")
     static let yearReviewList = ScreenName(rawValue: "year_review_list")

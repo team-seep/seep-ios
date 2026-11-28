@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// 여러 개 골라 지우기 모드 (GH-86 R-3~R-5).
-/// 헤드라인 "…을 / **골라서 지워요**" · 카테고리 탭 · "취소 · n개 선택됨 · 전체 선택" · 체크 리스트 · 하단 "n개 삭제"
+/// 여러 개 골라 지우기·보내기 모드 (GH-86 R-3~R-5, GH-125 R-1).
+/// 헤드라인 "…을 / **골라 주세요**" · 카테고리 탭 · "취소 · n개 선택됨 · 전체 선택" · 체크 리스트 · 하단 [삭제] [n개 보내기]
 struct HomeSelectionView: View {
     let viewModel: HomeViewModel
 
@@ -27,7 +27,7 @@ struct HomeSelectionView: View {
         .scrollIndicators(.hidden)
         .background(Color.gray2.ignoresSafeArea())
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            deleteButton
+            actionButtons
         }
         .sensoryFeedback(.selection, trigger: state.selectedIds)
     }
@@ -66,19 +66,35 @@ struct HomeSelectionView: View {
         }
     }
 
-    private var deleteButton: some View {
+    /// [삭제] 폭 110 흰 캡슐 + 빨간 글씨 · [n개 보내기] 나머지 폭 tennis-green. 0개면 둘 다 비활성 (GH-125 R-1, TC-1)
+    private var actionButtons: some View {
         let count = state.selectedIds.count
-        return Button {
-            viewModel.send(.tapDeleteSelected)
-        } label: {
-            Text(Strings.Home.Select.deleteFormat(count))
-                .font(.appleExtraBold(size: 17))
-                .foregroundStyle(Color.gray1)
-                .frame(maxWidth: .infinity, minHeight: 50)
-                .background(count > 0 ? Color.optionRed : Color.ctaDisabled, in: Capsule())
+        let isEnabled = state.canActOnSelection
+        return HStack(spacing: 10) {
+            Button {
+                viewModel.send(.tapDeleteSelected)
+            } label: {
+                Text(Strings.Home.Select.delete)
+                    .font(.appleExtraBold(size: 17))
+                    .foregroundStyle(isEnabled ? Color.optionRed : Color.gray3)
+                    .frame(width: 110, height: 50)
+                    .background(Color.gray1, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(!isEnabled)
+
+            Button {
+                viewModel.send(.tapShareSelected)
+            } label: {
+                Text(Strings.Home.Select.sendFormat(count))
+                    .font(.appleExtraBold(size: 17))
+                    .foregroundStyle(Color.onAccent)
+                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .background(isEnabled ? Color.tennisGreen : Color.ctaDisabled, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(!isEnabled)
         }
-        .buttonStyle(.plain)
-        .disabled(count == 0)
         .padding(.horizontal, HomeLayout.horizontalInset)
         .padding(.bottom, 12)
         .frame(maxWidth: HomeLayout.maxContentWidth)

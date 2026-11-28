@@ -29,6 +29,10 @@ extension HomeViewModel {
         case tapDeleteSelected
         case confirmDeleteSelected
         case cancelDeleteSelected
+        /// 선택 모드 "{n}개 보내기" → 미리보기 풀스크린 (GH-125 R-1, R-2)
+        case tapShareSelected
+        /// 미리보기를 ✕로 닫았다. 선택 모드·선택은 그대로 (R-7, TC-8)
+        case shareWishListDismissed
         case tapWish(Wish)
         case tapFinish(Wish)
         case tapPinMenu(Wish)
@@ -72,6 +76,8 @@ extension HomeViewModel {
         var selectedIds: Set<String> = []
         /// 일괄 삭제 확인 알럿에 보일 개수. nil 이면 알럿 없음 (R-4)
         var deleteConfirmCount: Int?
+        /// 골라서 보내기 미리보기. nil 이면 닫힘 (GH-125 R-2)
+        var shareWishList: ShareWishListPresentation?
         /// 헤드라인의 남은 개수. 첫 로드 전에는 nil
         var notFinishedCount: Int?
         /// 태그 필터 칩 줄의 태그(저장 값), 많이 쓴 순. 비면 칩 줄을 숨긴다 (GH-136 R-3)
@@ -130,6 +136,11 @@ extension HomeViewModel {
         /// 선택 모드에서 고를 수 있는 위시. 방금 완료해 흐린 위시는 뺀다 (GH-86 R-5)
         var selectableItems: [HomeWishItem] {
             items.filter { !$0.wish.isSuccess }
+        }
+
+        /// 하나라도 골랐을 때만 하단 [삭제]·[n개 보내기]가 켜진다 (GH-125 R-1, TC-1)
+        var canActOnSelection: Bool {
+            isSelecting && !selectedIds.isEmpty
         }
 
         /// 위시가 하나라도 있고 다른 모드가 아닐 때 "선택"이 보인다 (GH-86 R-3)
@@ -221,6 +232,16 @@ enum HomeSheet: Identifiable, Equatable {
 
     static func == (lhs: HomeSheet, rhs: HomeSheet) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+/// 골라서 보내기 미리보기 풀스크린 (GH-125 R-2). 홈 순서 그대로의 고른 싶 (R-4)
+struct ShareWishListPresentation: Identifiable, Equatable {
+    let category: Category
+    let wishes: [Wish]
+
+    var id: String {
+        wishes.map(\.id).joined(separator: ",")
     }
 }
 
@@ -345,6 +366,12 @@ final class HomeViewModel {
 
         case .cancelDeleteSelected:
             state.deleteConfirmCount = nil
+
+        case .tapShareSelected:
+            presentShareWishList()
+
+        case .shareWishListDismissed:
+            state.shareWishList = nil
 
         case .tapWish(let wish):
             // 선택 모드에서는 상세 대신 선택/해제 (GH-86 R-5, TC-7)
@@ -581,6 +608,18 @@ extension HomeViewModel {
         } else {
             state.selectedIds.insert(wish.id)
         }
+    }
+
+    /// 고른 싶을 홈에서 보이던 순서 그대로 미리보기에 넘긴다. 완료 흐름 중인 싶은 뺀다 (GH-125 R-4, R-9)
+    private func presentShareWishList() {
+        guard state.canActOnSelection else { return }
+        let wishes = state.selectableItems.map(\.wish).filter { state.selectedIds.contains($0.id) }
+        guard !wishes.isEmpty else { return }
+        sendClickLog(objectId: .shareSelectedWishes, extraParameters: [
+            .count: wishes.count,
+            .category: state.category.rawValue
+        ])
+        state.shareWishList = ShareWishListPresentation(category: state.category, wishes: wishes)
     }
 
     /// 한 트랜잭션으로 지우고, 성공하면 알림·사진·링크 캐시를 정리한다. 실패하면 아무것도 지우지 않는다 (GH-86 R-4)
