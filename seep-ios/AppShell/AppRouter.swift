@@ -227,6 +227,21 @@ final class AppRouter {
         return deepLink
     }
 
+    /// 적금 계획 알림을 눌렀을 때 (GH-121 R-6). 위젯 링크와 달리 탭에 쌓인 화면(다른 위시 상세 등)이 있어도 비우고 그 위시 상세를 연다.
+    /// 시트·작성 화면이 떠 있으면 입력 중일 수 있어 위젯 링크처럼 버린다. 메인이 뜨기 전이면 맡아 둔다
+    @discardableResult
+    func openFromNotification(url: URL) -> WidgetDeepLink? {
+        if isMainReady, presentedModalCount == 0, writeCategory == nil,
+           case .wish(let id, _) = WidgetDeepLink(string: url.absoluteString),
+           dependency.wishRepository.fetchWish(id: id) != nil {
+            wishPath = []
+            finishedPath = []
+            settingsPath = []
+            padSectionPath = []
+        }
+        return open(url: url)
+    }
+
     /// 이룬 위시에 이어서 같은 카테고리의 작성 화면을 연다. 닫히는 시트가 있으면 다 닫힌 뒤 연다 (GH-84 R-1~R-3)
     func openChainedWrite(from wish: Wish) {
         guard writeCategory == nil else { return }

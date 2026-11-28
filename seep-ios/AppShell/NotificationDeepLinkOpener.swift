@@ -17,7 +17,7 @@ struct NotificationDeepLinkOpener {
     func open(userInfo: [AnyHashable: Any]) -> WidgetDeepLink? {
         guard let string = userInfo[SavingPlanNotification.deepLinkKey] as? String,
               let url = URL(string: string),
-              let deepLink = router.open(url: url) else { return nil }
+              let deepLink = router.openFromNotification(url: url) else { return nil }
         if let event = deepLink.source?.clickEvent {
             logManager.sendEvent(event: event)
         }

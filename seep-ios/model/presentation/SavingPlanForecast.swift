@@ -52,7 +52,9 @@ struct SavingPlanForecast: Equatable {
         let date: (Int) -> Date? = {
             SavingPlanSchedule.paymentDate(plan: plan, index: $0, now: now, calendar: calendar, skipsToday: savedToday)
         }
-        guard let next = date(0), let completion = date(count - 1) else {
+        // 10년 넘게 걸리는 계획은 예측이 의미 없어 숨긴다(속도 예측과 같은 상한)
+        guard let next = date(0), let completion = date(count - 1),
+              (calendar.dateComponents([.day], from: next, to: completion).day ?? 0) <= SavingPaceForecast.maxDays else {
             return nil
         }
         self.depositCount = count

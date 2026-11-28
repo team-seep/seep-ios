@@ -184,6 +184,19 @@ final class SavingPlanFeatureTests: ViewModelTestCase {
         XCTAssertEqual(notYet.state.planRow?.meta, "다음 넣는 날 10월 31일")
     }
 
+    func test_GH121_TC3_다모이는데10년넘게걸리는계획은_예측을숨긴다() throws {
+        // Given: 남은 209,000원을 매주 100원씩 → 2,090번(약 40년)
+        let tiny = try XCTUnwrap(SavingPlan(cycle: .weekly, day: 6, amount: 100))
+
+        // When
+        let viewModel = makeViewModel(wish: makeWish(plan: tiny))
+
+        // Then
+        XCTAssertEqual(viewModel.state.planRow?.summary, "매주 금요일 100원씩")
+        XCTAssertNil(viewModel.state.planRow?.forecast)
+        XCTAssertNil(viewModel.state.planRow?.meta)
+    }
+
     // MARK: GH-121 TC4
 
     func test_GH121_TC4_계획없이기록이2건이상이면_지금속도라면날짜쯤다모여요가보인다() {

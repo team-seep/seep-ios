@@ -48,9 +48,13 @@ struct SavingPlanInputSheet: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 8)
-        // 매달(날짜 칩 31개)이면 키보드가 CTA 를 가린다. 금액 칸 밖을 누르면 키보드를 내린다
-        .contentShape(Rectangle())
-        .onTapGesture { isAmountFocused = false }
+        // 매달(날짜 칩 31개)이면 키보드가 CTA 를 가린다. 빈 곳을 누르면 키보드를 내린다.
+        // 바탕 층에만 달아 금액 칸·버튼을 누를 때는 끼어들지 않는다
+        .background {
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture { isAmountFocused = false }
+        }
         .onAppear { text = viewModel.state.amountText }
         .onChange(of: text) { _, newText in
             viewModel.send(.inputAmountText(newText))

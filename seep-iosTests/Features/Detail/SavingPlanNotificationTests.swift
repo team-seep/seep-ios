@@ -195,6 +195,41 @@ final class SavingPlanNotificationTests: ViewModelTestCase {
     }
 
     @MainActor
+    func test_GH121_TC10_다른화면이쌓여있어도_비우고그위시상세를연다() throws {
+        // Given: 다른 위시 상세를 보다가 앱을 내렸다
+        let (router, request) = try makeRouterAndRequest()
+        router.mainDidAppear()
+        router.wishPath = [.wishDetail(id: "other", isFinished: false)]
+        router.settingsPath = [.license]
+
+        // When
+        let opened = NotificationDeepLinkOpener(router: router, logManager: logManager).open(userInfo: request.content.userInfo)
+
+        // Then
+        XCTAssertEqual(opened, .wish(id: "wish-1", source: .savingPlanNotification))
+        XCTAssertEqual(router.wishPath, [.wishDetail(id: "wish-1", isFinished: false)])
+        XCTAssertTrue(router.settingsPath.isEmpty)
+        XCTAssertEqual(clickEvents(objectId: .savingPlanNotification).count, 1)
+    }
+
+    @MainActor
+    func test_GH121_TC10_시트가떠있으면_입력을지키려고링크를버린다() throws {
+        // Given
+        let (router, request) = try makeRouterAndRequest()
+        router.mainDidAppear()
+        router.wishPath = [.wishDetail(id: "other", isFinished: false)]
+        router.modalDidAppear()
+
+        // When
+        let opened = NotificationDeepLinkOpener(router: router, logManager: logManager).open(userInfo: request.content.userInfo)
+
+        // Then
+        XCTAssertNil(opened)
+        XCTAssertEqual(router.wishPath, [.wishDetail(id: "other", isFinished: false)])
+        XCTAssertTrue(logManager.sentEvents.isEmpty)
+    }
+
+    @MainActor
     func test_GH121_TC10_냉시작에알림을누르면_메인이뜬뒤그위시상세가열린다() throws {
         // Given: 메인이 아직 없다
         let (router, request) = try makeRouterAndRequest()
