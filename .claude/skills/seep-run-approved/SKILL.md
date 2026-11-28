@@ -119,7 +119,7 @@ gh issue list -R team-seep/seep-ios --label approved --state open --json number,
 
 PR을 **오너가 검수할 수 있는 상태**까지 책임진다. 아래를 순서대로 전부 통과하면 '리뷰'로 넘긴다. **머지하지 않는다.**
 
-1. **CI**: `gh pr checks {pr} -R team-seep/seep-ios --watch`. 실패하면 로그(`gh run view --log-failed`)를 보고 고쳐 push한다. 세 번 고쳐도 실패하면 보류.
+1. **CI**: `gh pr checks {pr} -R team-seep/seep-ios --watch`. 실패하면 PR의 실패 테스트 코멘트(이름·`파일:줄`·메시지)와 로그(`gh run view --log-failed`)를 보고 고쳐 push한다 — 고치면 "✅ 다시 통과" 코멘트가 달린다. 모두 통과하면 코멘트는 없고 체크 초록이 증거다. 세 번 고쳐도 실패하면 보류.
 2. **TC 증거**: PR 본문 커버리지 표에 `⚠️ 미커버`·`FAIL`이 없고, 유닛 TC는 `make test` 결과로, 자동화 TC는 스크린샷·영상으로 덮였다. 수동 TC는 이슈에 "🧪 검수 때 확인" 체크리스트 코멘트로 옮긴다 — 오너가 개발 빌드로 확인한다.
 3. **독립 리뷰**: 구현 맥락이 없는 새 에이전트에게 리뷰를 맡긴다 — `code-review` 스킬을 `medium`으로 이 PR 번호에 실행한다(또는 Agent 도구로 diff와 이슈 TC만 주고 "정확성 버그·이슈 요구사항 누락·CLAUDE.md 규칙 위반"을 찾게 한다). `important` 지적은 고쳐서 push하고 1번부터 다시. 두 바퀴를 돌아도 `important`가 남으면 보류. 받아들이지 않은 지적은 PR 코멘트에 이유를 남긴다.
 4. **충돌 없음**: `gh pr view {pr} --json mergeable`이 `MERGEABLE`. 아니면 `origin/develop`을 머지해 충돌을 풀고 1번부터 다시.

@@ -1,5 +1,5 @@
 #!/bin/sh
-# xcresult 번들을 PR용 마크다운 요약으로 변환한다.
+# xcresult 번들을 마크다운 요약으로 변환한다 (make test 출력·CI Job Summary용. PR 코멘트는 scripts/test-failure-comment.py).
 #   사용: scripts/test-summary.sh <path.xcresult>  > summary.md
 # 출력: 전체 결과(통과/실패/스킵 수) + 실패한 테스트 목록만. 통과한 테스트는 나열하지 않는다.
 # 이슈 TC 대비 커버리지는 PR 본문 "TC" 표가 원본이다 (docs/process/testing.md "PR에 남기는 것").
