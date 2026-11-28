@@ -121,7 +121,8 @@ final class DetailPlaceViewModel {
             if updatedWish.nearbyAlertOn {
                 // 장소를 바꾸면 같은 식별자로 새 좌표에 다시 건다 (R-7)
                 let scheduler = dependency.nearbyAlertScheduler
-                Task { await scheduler.schedule(wish: updatedWish) }
+                let cancelCount = scheduler.cancelCount(wishId: wishId)
+                Task { await scheduler.schedule(wish: updatedWish, cancelCount: cancelCount) }
             } else {
                 // 장소를 지우면 저장소가 근처 알림을 껐다. 예약도 지운다 (R-7)
                 dependency.nearbyAlertScheduler.cancel(wishId: wishId)
@@ -152,12 +153,7 @@ final class DetailPlaceViewModel {
     private func turnOn() {
         // 한도에 닿았으면 권한을 묻지 않는다 (R-6)
         if dependency.nearbyAlertScheduler.isAtLimit(excluding: wishId) {
-            route = .toast(Strings.Detail.Place.NearbyAlert.limitToast)
-            dependency.logManager.sendEvent(event: ImpressionEvent(
-                screen: screenName,
-                objectType: .banner,
-                objectId: .nearbyAlertLimitToast
-            ))
+            showLimitToast()
             return
         }
         isRequestingAuthorization = true
@@ -168,6 +164,11 @@ final class DetailPlaceViewModel {
             isRequestingAuthorization = false
             guard isGranted else {
                 route = .nearbyAlertPermissionAlert
+                return
+            }
+            // 권한 팝업이 떠 있는 동안 다른 화면·동기화로 한도가 찼을 수 있다 (R-6)
+            if scheduler.isAtLimit(excluding: wishId) {
+                showLimitToast()
                 return
             }
             switch dependency.wishRepository.updateNearbyAlert(wishId: wishId, isOn: true) {
@@ -188,6 +189,15 @@ final class DetailPlaceViewModel {
         case .failure(let error):
             route = .errorAlert(error.localizedDescription)
         }
+    }
+
+    private func showLimitToast() {
+        route = .toast(Strings.Detail.Place.NearbyAlert.limitToast)
+        dependency.logManager.sendEvent(event: ImpressionEvent(
+            screen: screenName,
+            objectType: .banner,
+            objectId: .nearbyAlertLimitToast
+        ))
     }
 
     private func applyNearbyAlert(_ isOn: Bool) {

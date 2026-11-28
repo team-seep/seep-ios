@@ -6,11 +6,21 @@ protocol NearbyAlertSchedulerProtocol: AnyObject {
     func isAtLimit(excluding wishId: String) -> Bool
     /// 켜기 전에: 알림 → 위치(앱 사용 중) 순서로, 미결정이면 묻는다. 둘 다 허용이면 true (R-3)
     func requestAuthorization() async -> Bool
-    /// 걸 수 있는 위시면 (다시) 예약하고, 아니면 예약을 지운다. 권한이 없으면 묻지 않고 건너뛴다
-    func schedule(wish: Wish) async
+    /// 걸 수 있는 위시면 (다시) 예약하고, 아니면 예약을 지운다. 권한이 없으면 묻지 않고 건너뛴다.
+    /// `cancelCount`(예약을 맡긴 때의 `cancelCount(wishId:)`)와 지금 취소 횟수가 다르면, 그 사이 취소된 것이라 걸지 않는다. nil 이면 지금 값
+    func schedule(wish: Wish, cancelCount: Int?) async
     func cancel(wishId: String)
+    /// 위시의 지금까지 취소 횟수. `Task` 로 예약을 맡기기 전에 읽어 `schedule(wish:cancelCount:)`에 넘긴다 —
+    /// Task 가 시작되기 전에 끝난 취소도 놓치지 않는다
+    func cancelCount(wishId: String) -> Int
     /// 앱이 활성화될 때: 켜진 위시 중 예약이 없는 것만 다시 걸고, 켜진 위시에 없는 근처 알림은 지운다 (R-5)
     func rescheduleMissing() async
+}
+
+extension NearbyAlertSchedulerProtocol {
+    func schedule(wish: Wish) async {
+        await schedule(wish: wish, cancelCount: nil)
+    }
 }
 
 final class NearbyAlertScheduler: NearbyAlertSchedulerProtocol {
@@ -50,12 +60,12 @@ final class NearbyAlertScheduler: NearbyAlertSchedulerProtocol {
         return location == .authorized
     }
 
-    func schedule(wish: Wish) async {
+    func schedule(wish: Wish, cancelCount: Int?) async {
+        let cancelCount = cancelCount ?? self.cancelCount(wishId: wish.id)
         guard let request = NearbyAlertRequest(wish: wish) else {
             cancel(wishId: wish.id)
             return
         }
-        let cancelCount = cancelCount(wishId: wish.id)
         // 다른 기기에서 켠 위시를 받았을 때 등, 이 기기에 권한이 없으면 예약하지 않는다 (서버 저장 절)
         guard await hasAuthorization() else { return }
         addUnlessCancelled([(request, cancelCount)])
@@ -82,7 +92,7 @@ final class NearbyAlertScheduler: NearbyAlertSchedulerProtocol {
         addUnlessCancelled(missing)
     }
 
-    private func cancelCount(wishId: String) -> Int {
+    func cancelCount(wishId: String) -> Int {
         lock.withLock { cancelCounts[wishId, default: 0] }
     }
 

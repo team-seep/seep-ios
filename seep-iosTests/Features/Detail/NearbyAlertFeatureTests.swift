@@ -174,6 +174,23 @@ final class NearbyAlertFeatureTests: ViewModelTestCase {
         XCTAssertFalse(viewModel.state.isNearbyAlertOn)
     }
 
+    func test_GH126_TC5_권한팝업사이한도가차면_저장예약없이_한도토스트가뜬다() {
+        // Given: 누를 때는 9개였는데, 팝업이 떠 있는 동안 다른 화면·동기화로 10개가 찼다
+        scheduler.isAtLimitSequence = [false, true]
+        let viewModel = makeViewModel(wish: makeWish(place: place))
+
+        // When
+        viewModel.send(.toggleNearbyAlert(true))
+
+        // Then
+        waitUntil { viewModel.route != nil }
+        XCTAssertEqual(viewModel.route, .toast("근처 알림은 10개까지 켤 수 있어요"))
+        XCTAssertEqual(scheduler.requestAuthorizationCallCount, 1)
+        XCTAssertTrue(repository.updateNearbyAlertCalls.isEmpty)
+        XCTAssertTrue(scheduler.scheduledWishes.isEmpty)
+        XCTAssertFalse(viewModel.state.isNearbyAlertOn)
+    }
+
     // MARK: GH-126 TC6
 
     func test_GH126_TC6_근처알림켠위시의장소를지우면_토글이꺼지고_예약이지워진다() {

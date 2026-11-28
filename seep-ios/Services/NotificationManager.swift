@@ -35,7 +35,9 @@ final class NotificationManager: NotificationManagerProtocol {
         // 동기화로 받은 위시·수정 저장한 위시도 켜져 있으면 다시 건다. 권한이 없으면 스케줄러가 건너뛴다 (GH-126 서버 저장 절)
         if wish.nearbyAlertOn {
             let scheduler = nearbyAlertScheduler
-            Task { await scheduler.schedule(wish: wish) }
+            // Task 가 시작되기 전에 완료·삭제로 취소돼도 다시 걸지 않게, 취소 횟수는 지금 읽어 넘긴다
+            let cancelCount = scheduler.cancelCount(wishId: wish.id)
+            Task { await scheduler.schedule(wish: wish, cancelCount: cancelCount) }
         }
         guard let deadline = wish.endDate else { return }
         for notification in wish.notifications {

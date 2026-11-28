@@ -302,7 +302,11 @@ final class WishRepositoryImpl: WishRepository {
     }
 
     func updateNearbyAlert(wishId: String, isOn: Bool) -> Result<Wish, RepositoryError> {
-        return updateAndFetch(wishId: wishId) { $0.nearbyAlertOn = isOn }
+        return updateAndFetch(wishId: wishId) { record in
+            // 권한 팝업을 기다리는 사이 위젯·동기화로 이뤘거나 장소가 빠졌으면 켜지 않는다 (R-2, R-7). 끄기는 언제나 된다
+            let canTurnOn = !record.isSuccess && record.category == Category.wantToGo.rawValue && !record.placeName.isEmpty
+            record.nearbyAlertOn = isOn && canTurnOn
+        }
     }
 
     func fetchNearbyAlertWishes() -> [Wish] {

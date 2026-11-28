@@ -65,6 +65,25 @@ final class NearbyAlertRepositoryTests: XCTestCase {
 
     // MARK: GH-126 TC6
 
+    func test_GH126_TC6_이룬위시나장소없는위시는_켜기를저장하지않는다() throws {
+        // Given: 권한 팝업을 기다리는 사이 위젯으로 이뤘거나, 장소를 지운 위시
+        let wish = try sut.addWish(Wish(id: "w1", category: .wantToGo, title: "성수 블루보틀", place: place)).get()
+        _ = try sut.finishWish(wish: wish).get()
+        _ = try sut.addWish(Wish(id: "w2", category: .wantToGo, title: "을지로 냉면")).get()
+        tick()
+
+        // When
+        let finished = try sut.updateNearbyAlert(wishId: "w1", isOn: true).get()
+        let noPlace = try sut.updateNearbyAlert(wishId: "w2", isOn: true).get()
+
+        // Then
+        XCTAssertFalse(finished.nearbyAlertOn)
+        XCTAssertFalse(noPlace.nearbyAlertOn)
+        XCTAssertFalse(try record("w1").nearbyAlertOn)
+        XCTAssertFalse(try record("w2").nearbyAlertOn)
+        XCTAssertTrue(sut.fetchNearbyAlertWishes().isEmpty)
+    }
+
     func test_GH126_TC6_근처알림켠위시를완료하면_꺼진다() throws {
         // Given
         let wish = try addOnWish()

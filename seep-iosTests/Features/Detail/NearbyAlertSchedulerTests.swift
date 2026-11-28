@@ -185,6 +185,32 @@ final class NearbyAlertSchedulerTests: ViewModelTestCase {
         XCTAssertNil(center.pending["nearby-wish-1"])
     }
 
+    func test_GH126_TC6_예약을맡긴뒤시작전에취소되면_걸지않는다() async {
+        // Given: 예약을 Task 로 맡긴 때의 취소 횟수. Task 가 시작되기 전에 완료·삭제로 취소됐다
+        let cancelCount = sut.cancelCount(wishId: "wish-1")
+        sut.cancel(wishId: "wish-1")
+
+        // When
+        await sut.schedule(wish: onWish("wish-1"), cancelCount: cancelCount)
+
+        // Then
+        XCTAssertTrue(center.addedRequests.isEmpty)
+    }
+
+    func test_GH126_TC6_위시알림을예약하면_맡긴때의취소횟수를넘긴다() {
+        // Given
+        let scheduler = MockNearbyAlertScheduler()
+        scheduler.cancelCountResult = 7
+        let notificationManager = NotificationManager(nearbyAlertScheduler: scheduler)
+
+        // When
+        notificationManager.reserveNotifications(wish: onWish("wish-1"))
+        RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+
+        // Then
+        XCTAssertEqual(scheduler.scheduledCancelCounts, [7])
+    }
+
     func test_GH126_TC6_다시거는사이취소된위시는_빼고건다() async {
         // Given
         repository.fetchNearbyAlertWishesResult = [onWish("wish-1"), onWish("wish-2")]
