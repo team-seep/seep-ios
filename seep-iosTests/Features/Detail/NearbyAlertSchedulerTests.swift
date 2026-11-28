@@ -1,3 +1,4 @@
+import CoreLocation
 import XCTest
 
 @testable import seep_ios
@@ -134,6 +135,14 @@ final class NearbyAlertSchedulerTests: ViewModelTestCase {
         XCTAssertTrue(center.requestedPermissions.isEmpty)
     }
 
+    func test_GH126_TC4_정확한위치를끄고허용하면_거부로본다() {
+        // Given / When / Then: 대략적 위치에서는 iOS 가 지역 감시를 하지 않는다
+        XCTAssertEqual(SystemNearbyAlertCenter.locationAuthorization(.authorizedWhenInUse, accuracy: .reducedAccuracy), .denied)
+        XCTAssertEqual(SystemNearbyAlertCenter.locationAuthorization(.authorizedWhenInUse, accuracy: .fullAccuracy), .authorized)
+        XCTAssertEqual(SystemNearbyAlertCenter.locationAuthorization(.denied, accuracy: .fullAccuracy), .denied)
+        XCTAssertEqual(SystemNearbyAlertCenter.locationAuthorization(.notDetermined, accuracy: .reducedAccuracy), .notDetermined)
+    }
+
     // MARK: GH-126 TC5
 
     func test_GH126_TC5_켠위시가10개면_한도이고_9개거나그위시자신을빼면아니다() {
@@ -160,6 +169,34 @@ final class NearbyAlertSchedulerTests: ViewModelTestCase {
 
         // Then
         XCTAssertEqual(scheduler.cancelledWishIds, ["wish-1"])
+    }
+
+    func test_GH126_TC6_권한을확인하는사이취소되면_예약하지않는다() async {
+        // Given: 예약이 권한 확인을 기다리는 동안 위시를 완료·삭제해 취소가 먼저 끝난다
+        center.onNotificationAuthorizationCheck = { [unowned self] in
+            sut.cancel(wishId: "wish-1")
+        }
+
+        // When
+        await sut.schedule(wish: onWish("wish-1"))
+
+        // Then
+        XCTAssertTrue(center.addedRequests.isEmpty)
+        XCTAssertNil(center.pending["nearby-wish-1"])
+    }
+
+    func test_GH126_TC6_다시거는사이취소된위시는_빼고건다() async {
+        // Given
+        repository.fetchNearbyAlertWishesResult = [onWish("wish-1"), onWish("wish-2")]
+        center.onNotificationAuthorizationCheck = { [unowned self] in
+            sut.cancel(wishId: "wish-1")
+        }
+
+        // When
+        await sut.rescheduleMissing()
+
+        // Then
+        XCTAssertEqual(center.addedRequests.map(\.identifier), ["nearby-wish-2"])
     }
 
     func test_GH126_TC6_켜지않은위시를예약하면_근처알림은걸지않는다() {

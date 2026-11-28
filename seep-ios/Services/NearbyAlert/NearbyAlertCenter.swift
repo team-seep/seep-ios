@@ -51,7 +51,10 @@ final class SystemNearbyAlertCenter: NearbyAlertCenter {
     }
 
     func locationAuthorization() async -> LocationAuthorization {
-        await MainActor.run { Self.locationAuthorization(CLLocationManager().authorizationStatus) }
+        await MainActor.run {
+            let manager = CLLocationManager()
+            return Self.locationAuthorization(manager.authorizationStatus, accuracy: manager.accuracyAuthorization)
+        }
     }
 
     func requestLocationAuthorization() async -> LocationAuthorization {
@@ -111,9 +114,12 @@ final class SystemNearbyAlertCenter: NearbyAlertCenter {
         }
     }
 
-    fileprivate static func locationAuthorization(_ status: CLAuthorizationStatus) -> LocationAuthorization {
+    /// 정확한 위치를 끈(대략적 위치) 허용은 거부로 본다. iOS 는 대략적 위치에서 지역 감시를 하지 않아
+    /// 토글만 켜지고 알림은 오지 않는다. 거부로 돌려 [설정 열기] 알럿에서 정확한 위치를 켜게 한다
+    static func locationAuthorization(_ status: CLAuthorizationStatus, accuracy: CLAccuracyAuthorization) -> LocationAuthorization {
         switch status {
-        case .authorizedWhenInUse, .authorizedAlways: return .authorized
+        case .authorizedWhenInUse, .authorizedAlways:
+            return accuracy == .fullAccuracy ? .authorized : .denied
         case .denied, .restricted: return .denied
         case .notDetermined: return .notDetermined
         @unknown default: return .notDetermined
@@ -133,7 +139,7 @@ private final class LocationAuthorizationRequester: NSObject, CLLocationManagerD
     }
 
     func start() {
-        let current = SystemNearbyAlertCenter.locationAuthorization(manager.authorizationStatus)
+        let current = SystemNearbyAlertCenter.locationAuthorization(manager.authorizationStatus, accuracy: manager.accuracyAuthorization)
         guard current == .notDetermined else {
             finish(current)
             return
@@ -143,7 +149,7 @@ private final class LocationAuthorizationRequester: NSObject, CLLocationManagerD
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         // 델리게이트를 붙이자마자 지금 상태(미결정)로 한 번 불린다. 사용자가 고를 때까지 기다린다
-        let status = SystemNearbyAlertCenter.locationAuthorization(manager.authorizationStatus)
+        let status = SystemNearbyAlertCenter.locationAuthorization(manager.authorizationStatus, accuracy: manager.accuracyAuthorization)
         guard status != .notDetermined else { return }
         finish(status)
     }

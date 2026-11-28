@@ -21,6 +21,10 @@ final class NearbyAlertScheduler: NearbyAlertSchedulerProtocol {
 
     private let center: NearbyAlertCenter
     private let wishRepository: WishRepository
+    /// 위시별 취소 횟수. 예약은 권한 확인을 기다리는 동안 취소될 수 있어, 기다리기 전과 횟수가 다르면 걸지 않는다.
+    /// 확인과 걸기·지우기를 같은 잠금 안에서 해 "취소했는데 다시 걸림"이 생기지 않게 한다
+    private let lock = NSLock()
+    private var cancelCounts: [String: Int] = [:]
 
     init(center: NearbyAlertCenter = SystemNearbyAlertCenter(), wishRepository: WishRepository = WishRepositoryImpl()) {
         self.center = center
@@ -51,13 +55,17 @@ final class NearbyAlertScheduler: NearbyAlertSchedulerProtocol {
             cancel(wishId: wish.id)
             return
         }
+        let cancelCount = cancelCount(wishId: wish.id)
         // 다른 기기에서 켠 위시를 받았을 때 등, 이 기기에 권한이 없으면 예약하지 않는다 (서버 저장 절)
         guard await hasAuthorization() else { return }
-        center.add(request)
+        addUnlessCancelled([(request, cancelCount)])
     }
 
     func cancel(wishId: String) {
-        center.remove(identifiers: [NearbyAlertRequest.identifier(wishId: wishId)])
+        lock.withLock {
+            cancelCounts[wishId, default: 0] += 1
+            center.remove(identifiers: [NearbyAlertRequest.identifier(wishId: wishId)])
+        }
     }
 
     func rescheduleMissing() async {
@@ -67,9 +75,24 @@ final class NearbyAlertScheduler: NearbyAlertSchedulerProtocol {
         // 다른 기기에서 끄거나 지운 위시의 예약이 남았으면 지운다
         center.remove(identifiers: pending.subtracting(wanted).sorted())
 
-        let missing = requests.filter { !pending.contains($0.identifier) }
+        let missing = requests
+            .filter { !pending.contains($0.identifier) }
+            .map { ($0, cancelCount(wishId: $0.wishId)) }
         guard !missing.isEmpty, await hasAuthorization() else { return }
-        missing.forEach(center.add)
+        addUnlessCancelled(missing)
+    }
+
+    private func cancelCount(wishId: String) -> Int {
+        lock.withLock { cancelCounts[wishId, default: 0] }
+    }
+
+    /// 권한을 기다리는 사이 완료·삭제·끄기로 취소된 위시는 걸지 않는다 (R-7)
+    private func addUnlessCancelled(_ requests: [(request: NearbyAlertRequest, cancelCount: Int)]) {
+        lock.withLock {
+            for (request, cancelCount) in requests where cancelCounts[request.wishId, default: 0] == cancelCount {
+                center.add(request)
+            }
+        }
     }
 
     private func hasAuthorization() async -> Bool {

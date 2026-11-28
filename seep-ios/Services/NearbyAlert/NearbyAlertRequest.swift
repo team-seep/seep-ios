@@ -26,6 +26,11 @@ struct NearbyAlertRequest: Equatable {
         self.radius = Self.radius
     }
 
+    /// 이 알림의 위시 id
+    var wishId: String {
+        Self.wishId(fromIdentifier: identifier) ?? ""
+    }
+
     static func identifier(wishId: String) -> String {
         identifierPrefix + wishId
     }

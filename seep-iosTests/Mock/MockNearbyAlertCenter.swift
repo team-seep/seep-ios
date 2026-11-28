@@ -10,6 +10,8 @@ final class MockNearbyAlertCenter: NearbyAlertCenter, @unchecked Sendable {
     /// 팝업에서 사용자가 고를 값
     var notificationAnswer: NotificationAuthorization = .authorized
     var locationAnswer: LocationAuthorization = .authorized
+    /// 권한을 확인하는 중(await 사이)에 끼어들 일. 예약을 기다리는 사이의 취소를 흉내 낸다
+    var onNotificationAuthorizationCheck: (() -> Void)?
 
     private let lock = NSLock()
     private var _requestedPermissions: [String] = []
@@ -25,7 +27,8 @@ final class MockNearbyAlertCenter: NearbyAlertCenter, @unchecked Sendable {
     var removedIdentifiers: [String] { lock.withLock { _removedIdentifiers } }
 
     func notificationAuthorization() async -> NotificationAuthorization {
-        notificationStatus
+        onNotificationAuthorizationCheck?()
+        return notificationStatus
     }
 
     func requestNotificationAuthorization() async -> NotificationAuthorization {
