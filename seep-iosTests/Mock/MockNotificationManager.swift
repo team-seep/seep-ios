@@ -12,6 +12,13 @@ final class MockNotificationManager: NotificationManagerProtocol {
         reservedWishes.append(wish)
     }
 
+    /// 적금 계획 알림을 맞춘 위시 (GH-121)
+    private(set) var savingPlanUpdatedWishes: [Wish] = []
+
+    func updateSavingPlanNotification(wish: Wish) {
+        savingPlanUpdatedWishes.append(wish)
+    }
+
     var authorizationStatusResult: NotificationAuthorization = .authorized
     private(set) var authorizationStatusCallCount = 0
 

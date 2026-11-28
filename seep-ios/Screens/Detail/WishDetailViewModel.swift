@@ -389,7 +389,13 @@ final class WishDetailViewModel {
 
         let savings = WishSavingsViewModel(
             config: .init(wish: wish),
-            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+            dependency: .init(
+                wishRepository: dependency.wishRepository,
+                notificationManager: dependency.notificationManager,
+                logManager: dependency.logManager,
+                now: dependency.now,
+                calendar: dependency.calendar
+            )
         )
         savings.onUpdate = { [weak self] savings in
             guard let self else { return }
@@ -399,6 +405,10 @@ final class WishDetailViewModel {
             if savings.count > countBefore {
                 autoStartIfNeeded(trigger: .saving)
             }
+        }
+        // 수정 문서·공유로 넘길 위시가 지금 계획을 갖게 한다 (GH-121)
+        savings.onPlanUpdate = { [weak self] plan in
+            self?.update { $0.savingPlan = plan }
         }
         self.savings = savings
 

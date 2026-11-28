@@ -810,6 +810,8 @@ final class WishFormViewModel {
             previousWishId: original.previousWishId,
             // 수정 폼은 시작 상태를 바꾸지 않는다. 카테고리를 바꿔도 하는 중으로 남는다 (GH-143 R-7)
             startedAt: original.startedAt,
+            // 적금 계획은 상세에서만 고친다. 저장소도 수정 폼 저장에서 계획 컬럼을 건드리지 않는다 (GH-121)
+            savingPlan: original.savingPlan,
             createdAt: original.createdAt
         )
 

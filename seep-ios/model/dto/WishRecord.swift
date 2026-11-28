@@ -46,6 +46,12 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var previousWishId: String?
     /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v12)
     var startedAt: Date?
+    /// 적금 계획 주기. "" 없음 / "weekly" / "monthly" (GH-121, 마이그레이션 v15)
+    var savingPlanCycle: String
+    /// 매주면 요일(`Calendar` weekday 1=일요일 … 7=토요일), 매달이면 날짜(1~31). 계획이 없으면 0
+    var savingPlanDay: Int
+    /// 한 번 넣는 금액(통화의 최소 단위). 0 이면 계획 없음
+    var savingPlanAmount: Int
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -197,6 +203,9 @@ extension WishRecord {
         self.manualOrder = wish.manualOrder
         self.previousWishId = wish.previousWishId
         self.startedAt = wish.startedAt
+        self.savingPlanCycle = wish.savingPlan?.cycle.rawValue ?? ""
+        self.savingPlanDay = wish.savingPlan?.day ?? 0
+        self.savingPlanAmount = wish.savingPlan?.amount ?? 0
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -341,6 +350,7 @@ extension Wish {
             manualOrder: record.manualOrder,
             previousWishId: record.previousWishId,
             startedAt: record.startedAt,
+            savingPlan: SavingPlan(storedCycle: record.savingPlanCycle, day: record.savingPlanDay, amount: record.savingPlanAmount),
             createdAt: record.createdAt
         )
     }

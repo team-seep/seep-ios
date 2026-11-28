@@ -33,11 +33,14 @@ struct DetailStepsBody: View {
     }
 }
 
-/// 모은 돈 본문 (GH-16, GH-59 R-6): 큰 금액 ExtraBold 22 + "/ 목표" · 진행 바 · 남은 금액 문구 · 기록 목록
+/// 모은 돈 본문 (GH-16, GH-59 R-6): 큰 금액 ExtraBold 22 + "/ 목표" · 진행 바 · 남은 금액 문구 · 적금 계획 줄(GH-121) · 기록 목록
 struct DetailSavingsBody: View {
     let progress: WishSavingProgress
     let savings: [WishSaving]
     private var currency: String { progress.currency }
+    /// 적금 계획 줄. nil 이면 그리지 않는다 (GH-121 R-1)
+    var planRow: SavingPlanText.Row?
+    var onPlan: () -> Void = {}
     let onDelete: (String) -> Void
 
     var body: some View {
@@ -52,13 +55,17 @@ struct DetailSavingsBody: View {
                 .padding(.top, 10)
             message
                 .padding(.top, 8)
+            if let planRow {
+                DetailSavingPlanRow(row: planRow, onTap: onPlan)
+                    .padding(.top, 20)
+            }
             if !savings.isEmpty {
                 VStack(spacing: 0) {
                     ForEach(savings, id: \.id) { saving in
                         recordRow(saving)
                     }
                 }
-                .padding(.top, 12)
+                .padding(.top, planRow == nil ? 12 : 16)
             }
         }
     }

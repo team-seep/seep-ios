@@ -674,6 +674,77 @@ internal enum Strings {
         internal static var completed: String { Strings.tr("Localization", "detail.saving.toast.completed", fallback: "👏 목표 금액을 다 모았어요!") }
       }
     }
+    internal enum SavingPlan {
+      /// ＋ 계획 세우기
+      internal static var add: String { Strings.tr("Localization", "detail.saving_plan.add", fallback: "＋ 계획 세우기") }
+      /// 변경
+      internal static var change: String { Strings.tr("Localization", "detail.saving_plan.change", fallback: "변경") }
+      /// 기한보다 %d일 먼저예요
+      internal static func deadlineEarlierFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.deadline_earlier_format", p1, fallback: "기한보다 %d일 먼저예요")
+      }
+      /// 기한보다 %d일 늦어요
+      internal static func deadlineLaterFormat(_ p1: Int) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.deadline_later_format", p1, fallback: "기한보다 %d일 늦어요")
+      }
+      /// 기한에 딱 맞춰요
+      internal static var deadlineOnTime: String { Strings.tr("Localization", "detail.saving_plan.deadline_on_time", fallback: "기한에 딱 맞춰요") }
+      /// %1$d번 넣으면 %2$@에 다 모여요
+      internal static func forecastFormat(_ p1: Int, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.forecast_format", p1, String(describing: p2), fallback: "%1$d번 넣으면 %2$@에 다 모여요")
+      }
+      /// %1$@ · %2$@
+      internal static func metaJoinFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.meta_join_format", String(describing: p1), String(describing: p2), fallback: "%1$@ · %2$@")
+      }
+      /// 매달 %1$d일 %2$@씩
+      internal static func monthlyFormat(_ p1: Int, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.monthly_format", p1, String(describing: p2), fallback: "매달 %1$d일 %2$@씩")
+      }
+      /// 다음 넣는 날 %@
+      internal static func nextFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.next_format", String(describing: p1), fallback: "다음 넣는 날 %@")
+      }
+      /// 오늘은 %1$@에 %2$@ 넣는 날이에요
+      internal static func notificationBodyFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.notification_body_format", String(describing: p1), String(describing: p2), fallback: "오늘은 %1$@에 %2$@ 넣는 날이에요")
+      }
+      /// 지금 속도라면 %@쯤 다 모여요
+      internal static func paceFormat(_ p1: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.pace_format", String(describing: p1), fallback: "지금 속도라면 %@쯤 다 모여요")
+      }
+      /// 적금 계획
+      internal static var title: String { Strings.tr("Localization", "detail.saving_plan.title", fallback: "적금 계획") }
+      /// 매주 %1$@ %2$@씩
+      internal static func weeklyFormat(_ p1: Any, _ p2: Any) -> String {
+        return Strings.tr("Localization", "detail.saving_plan.weekly_format", String(describing: p1), String(describing: p2), fallback: "매주 %1$@ %2$@씩")
+      }
+      internal enum Sheet {
+        /// 한 번에 얼마씩
+        internal static var amountLabel: String { Strings.tr("Localization", "detail.saving_plan.sheet.amount_label", fallback: "한 번에 얼마씩") }
+        /// 얼마나 자주
+        internal static var cycleLabel: String { Strings.tr("Localization", "detail.saving_plan.sheet.cycle_label", fallback: "얼마나 자주") }
+        /// 계획 지우기
+        internal static var delete: String { Strings.tr("Localization", "detail.saving_plan.sheet.delete", fallback: "계획 지우기") }
+        /// 다음에 할게요
+        internal static var later: String { Strings.tr("Localization", "detail.saving_plan.sheet.later", fallback: "다음에 할게요") }
+        /// 그 날짜가 없는 달은 마지막 날로 셀게요
+        internal static var monthEndNotice: String { Strings.tr("Localization", "detail.saving_plan.sheet.month_end_notice", fallback: "그 날짜가 없는 달은 마지막 날로 셀게요") }
+        /// 매달
+        internal static var monthly: String { Strings.tr("Localization", "detail.saving_plan.sheet.monthly", fallback: "매달") }
+        /// 넣는 날 오전 11시에 알려드릴게요
+        internal static var notice: String { Strings.tr("Localization", "detail.saving_plan.sheet.notice", fallback: "넣는 날 오전 11시에 알려드릴게요") }
+        /// 계획 세우기
+        internal static var save: String { Strings.tr("Localization", "detail.saving_plan.sheet.save", fallback: "계획 세우기") }
+        /// 적금처럼 넣는 날을 정하면
+        /// 다 모이는 날을 알려줘요
+        internal static var title: String { Strings.tr("Localization", "detail.saving_plan.sheet.title", fallback: "적금처럼 넣는 날을 정하면\n다 모이는 날을 알려줘요") }
+        /// 다 모이는 날을 알려줘요
+        internal static var titleBold: String { Strings.tr("Localization", "detail.saving_plan.sheet.title_bold", fallback: "다 모이는 날을 알려줘요") }
+        /// 매주
+        internal static var weekly: String { Strings.tr("Localization", "detail.saving_plan.sheet.weekly", fallback: "매주") }
+      }
+    }
     internal enum Section {
       /// 열기
       internal static var linkOpen: String { Strings.tr("Localization", "detail.section.link_open", fallback: "열기") }

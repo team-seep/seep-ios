@@ -55,6 +55,9 @@ protocol WishRepository {
 
     /// '시작했어요'(지금 시각) / 되돌리기(nil). 단계·저금 등 다른 값은 건드리지 않는다 (GH-143 R-1)
     func updateStarted(wishId: String, isStarted: Bool) -> Result<Wish, RepositoryError>
+
+    /// 적금 계획을 저장(nil 이면 지우기)하고, 반영된 위시를 돌려준다. 모은 돈 기록은 건드리지 않는다 (GH-121 R-2, R-8)
+    func updateSavingPlan(wishId: String, plan: SavingPlan?) -> Result<Wish, RepositoryError>
     
     /// 장소를 저장(nil 이면 지우기)하고, 장소가 반영된 위시를 돌려준다 (GH-31 R-4).
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError>
@@ -278,6 +281,14 @@ final class WishRepositoryImpl: WishRepository {
             } else {
                 record.startedAt = nil
             }
+        }
+    }
+
+    func updateSavingPlan(wishId: String, plan: SavingPlan?) -> Result<Wish, RepositoryError> {
+        return updateAndFetch(wishId: wishId) { record in
+            record.savingPlanCycle = plan?.cycle.rawValue ?? ""
+            record.savingPlanDay = plan?.day ?? 0
+            record.savingPlanAmount = plan?.amount ?? 0
         }
     }
 

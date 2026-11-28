@@ -58,3 +58,41 @@ struct WishSavingProgress: Equatable, Hashable {
         self.savedAmount = savings.reduce(0) { $0 + $1.amount }
     }
 }
+
+/// 적금처럼 정한 넣는 주기·한 번 금액 (GH-121). 기록만 하고 실제 돈은 옮기지 않는다 (R-7).
+/// 위젯도 `Wish`를 읽어 이 파일을 같이 쓴다
+struct SavingPlan: Equatable, Hashable {
+    enum Cycle: String, CaseIterable {
+        case weekly
+        case monthly
+    }
+
+    let cycle: Cycle
+    /// 매주면 요일(`Calendar` weekday, 1=일요일 … 7=토요일), 매달이면 날짜(1~31)
+    let day: Int
+    /// 한 번 넣는 금액. 통화의 최소 단위, 0 보다 크다
+    let amount: Int
+
+    /// 값이 어긋나면(날 범위 밖·금액 0 이하) 계획을 만들지 않는다 (R-8)
+    init?(cycle: Cycle, day: Int, amount: Int) {
+        guard amount > 0, amount <= WishSaving.maxAmount, Self.dayRange(cycle).contains(day) else { return nil }
+        self.cycle = cycle
+        self.day = day
+        self.amount = amount
+    }
+
+    /// 저장한 컬럼 값(`savingPlanCycle`·`savingPlanDay`·`savingPlanAmount`)에서 읽는다. ""·0 이면 계획 없음
+    init?(storedCycle: String, day: Int, amount: Int) {
+        guard let cycle = Cycle(rawValue: storedCycle) else { return nil }
+        self.init(cycle: cycle, day: day, amount: amount)
+    }
+
+    static func dayRange(_ cycle: Cycle) -> ClosedRange<Int> {
+        switch cycle {
+        case .weekly:
+            return 1...7
+        case .monthly:
+            return 1...31
+        }
+    }
+}

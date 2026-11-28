@@ -57,6 +57,7 @@ private struct WishDetailContent: View {
     @State private var sharingWish: SharingWish?
     @State private var errorMessage: String?
     @State private var savingInput: SavingInputViewModel?
+    @State private var savingPlanInput: SavingPlanInputViewModel?
     @State private var deletingSavingId: String?
     @State private var isAddAgainAlertPresented = false
     @State private var isCalendarDeniedAlertPresented = false
@@ -148,6 +149,9 @@ private struct WishDetailContent: View {
         }
         .seepSheet(item: $savingInput) { inputViewModel in
             SavingInputSheet(viewModel: inputViewModel)
+        }
+        .seepSheet(item: $savingPlanInput) { inputViewModel in
+            SavingPlanInputSheet(viewModel: inputViewModel)
         }
         .seepSheet(isPresented: $isPlaceSearchPresented, detent: .large) {
             PlaceSearchSheet { place in
@@ -257,9 +261,13 @@ private struct WishDetailContent: View {
                     actionTitle: Strings.Detail.Section.savingsAdd,
                     action: { savings.send(.tapAdd) }
                 ) {
-                    DetailSavingsBody(progress: progress, savings: savings.state.savings) {
-                        savings.send(.tapDelete(savingId: $0))
-                    }
+                    DetailSavingsBody(
+                        progress: progress,
+                        savings: savings.state.savings,
+                        planRow: savings.state.planRow,
+                        onPlan: { savings.send(.tapPlan) },
+                        onDelete: { savings.send(.tapDelete(savingId: $0)) }
+                    )
                 }
             }
         case .link:
@@ -362,6 +370,8 @@ private struct WishDetailContent: View {
         switch route {
         case .savingInput(let inputViewModel):
             savingInput = inputViewModel
+        case .savingPlanInput(let inputViewModel):
+            savingPlanInput = inputViewModel
         case .deleteAlert(let savingId):
             deletingSavingId = savingId
         case .errorAlert(let message):

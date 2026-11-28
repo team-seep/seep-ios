@@ -44,6 +44,8 @@ struct Wish: Equatable, Hashable {
     var previousWishId: String?
     /// "시작했어요" 시각. nil 이면 시작 전, 값이 있고 안 이뤘으면 하는 중. 이뤄도 남는다 (GH-143)
     var startedAt: Date?
+    /// 적금 계획(넣는 주기·한 번 금액). nil 이면 계획 없음 (GH-121)
+    var savingPlan: SavingPlan?
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -129,6 +131,7 @@ struct Wish: Equatable, Hashable {
         manualOrder: Double = 0,
         previousWishId: String? = nil,
         startedAt: Date? = nil,
+        savingPlan: SavingPlan? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -158,6 +161,7 @@ struct Wish: Equatable, Hashable {
         self.manualOrder = manualOrder
         self.previousWishId = previousWishId
         self.startedAt = startedAt
+        self.savingPlan = savingPlan
         self.createdAt = createdAt
     }
 }
