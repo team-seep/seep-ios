@@ -203,6 +203,10 @@ enum LogObjectId: String {
     case autoStartWish = "auto_start_wish"
     /// 선택 모드 일괄 삭제 확인 (+count) (GH-86)
     case deleteSelectedWishes = "delete_selected_wishes"
+    /// 선택 모드 "n개 보내기" (+count, +category) (GH-125)
+    case shareSelectedWishes = "share_selected_wishes"
+    /// 골라서 보내기 미리보기 "보내기" (+count, +type: dday_link·dday·link·none) (GH-125)
+    case sendWishList = "send_wish_list"
     case widgetGuide = "widget_guide"
     case controlGuide = "control_guide"
     case rateApp = "rate_app"

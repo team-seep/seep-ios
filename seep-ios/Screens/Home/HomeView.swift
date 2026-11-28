@@ -246,6 +246,9 @@ private struct HomeViewEvents: ViewModifier {
             .seepFullScreenCover(item: yearReviewBinding) { presentation in
                 YearReviewScreen(year: presentation.year)
             }
+            .seepFullScreenCover(item: shareWishListBinding) { presentation in
+                ShareWishListScreen(presentation: presentation)
+            }
             .alert(
                 Strings.Home.SleepingWish.Alert.title,
                 isPresented: releaseAlertBinding,
@@ -299,6 +302,15 @@ private struct HomeViewEvents: ViewModifier {
             get: { viewModel.state.yearReviewPresentation },
             set: { newValue in
                 if newValue == nil { viewModel.send(.yearReviewDismissed) }
+            }
+        )
+    }
+
+    private var shareWishListBinding: Binding<ShareWishListPresentation?> {
+        Binding(
+            get: { viewModel.state.shareWishList },
+            set: { newValue in
+                if newValue == nil, viewModel.state.shareWishList != nil { viewModel.send(.shareWishListDismissed) }
             }
         )
     }

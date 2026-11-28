@@ -13033,6 +13033,42 @@
         }
       }
     },
+    "home.select.delete" : {
+      "comment" : "홈 · 여러 개 선택 모드 하단 [삭제] 버튼 (GH-125)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除"
+          }
+        }
+      }
+    },
     "home.select.delete_alert.confirm" : {
       "comment" : "홈 · 여러 개 선택 모드",
       "extractionState" : "manual",
@@ -13177,8 +13213,8 @@
         }
       }
     },
-    "home.select.delete_format" : {
-      "comment" : "홈 · 여러 개 선택 모드. %d = 지울 개수",
+    "home.select.send_format" : {
+      "comment" : "홈 · 여러 개 선택 모드 하단 [n개 보내기] 버튼. %d = 고른 개수 (GH-125)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -13187,13 +13223,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Delete %d"
+                  "value" : "Send %d"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Delete %d"
+                  "value" : "Send %d"
                 }
               }
             }
@@ -13205,7 +13241,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d個削除"
+                  "value" : "%d個送る"
                 }
               }
             }
@@ -13217,7 +13253,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d개 삭제"
+                  "value" : "%d개 보내기"
                 }
               }
             }
@@ -13229,7 +13265,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "删除%d个"
+                  "value" : "发送%d个"
                 }
               }
             }
@@ -13241,7 +13277,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "刪除%d個"
+                  "value" : "傳送%d個"
                 }
               }
             }
@@ -13250,145 +13286,145 @@
       }
     },
     "home.select.title.want_to_do" : {
-      "comment" : "홈 · 여러 개 선택 모드",
+      "comment" : "홈 · 여러 개 선택 모드 헤드라인 (GH-86, GH-125 지우기·보내기)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Things to do —\nselect to delete"
+            "value" : "Things to do —\npick some"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "やりたいことを\n選んで削除します"
+            "value" : "やりたいことを\n選んでください"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "하고 싶은 것들을\n골라서 지워요"
+            "value" : "하고 싶은 것들을\n골라 주세요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "想做的事\n勾选后删除"
+            "value" : "想做的事\n请勾选"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "想做的事\n勾選後刪除"
+            "value" : "想做的事\n請勾選"
           }
         }
       }
     },
     "home.select.title.want_to_get" : {
-      "comment" : "홈 · 여러 개 선택 모드",
+      "comment" : "홈 · 여러 개 선택 모드 헤드라인 (GH-86, GH-125 지우기·보내기)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Things to get —\nselect to delete"
+            "value" : "Things to get —\npick some"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ほしいものを\n選んで削除します"
+            "value" : "ほしいものを\n選んでください"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "갖고 싶은 것들을\n골라서 지워요"
+            "value" : "갖고 싶은 것들을\n골라 주세요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "想要的东西\n勾选后删除"
+            "value" : "想要的东西\n请勾选"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "想要的東西\n勾選後刪除"
+            "value" : "想要的東西\n請勾選"
           }
         }
       }
     },
     "home.select.title.want_to_go" : {
-      "comment" : "홈 · 여러 개 선택 모드",
+      "comment" : "홈 · 여러 개 선택 모드 헤드라인 (GH-86, GH-125 지우기·보내기)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Places to go —\nselect to delete"
+            "value" : "Places to go —\npick some"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "行きたい場所を\n選んで削除します"
+            "value" : "行きたい場所を\n選んでください"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "가고 싶은 장소를\n골라서 지워요"
+            "value" : "가고 싶은 장소를\n골라 주세요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "想去的地方\n勾选后删除"
+            "value" : "想去的地方\n请勾选"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "想去的地方\n勾選後刪除"
+            "value" : "想去的地方\n請勾選"
           }
         }
       }
     },
     "home.select.title_bold" : {
-      "comment" : "홈 · 여러 개 선택 모드",
+      "comment" : "홈 · 여러 개 선택 모드 헤드라인의 굵은 부분. home.select.title.* 안에 글자 그대로 들어 있어야 한다 (GH-125)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "select to delete"
+            "value" : "pick some"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選んで削除します"
+            "value" : "選んでください"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "골라서 지워요"
+            "value" : "골라 주세요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "勾选后删除"
+            "value" : "请勾选"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "勾選後刪除"
+            "value" : "請勾選"
           }
         }
       }
@@ -18319,6 +18355,582 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "👆點兩下畫面，可以更換文字顏色"
+          }
+        }
+      }
+    },
+    "share_wish_list.card.footer" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 카드 맨 아래 서명. 싶 = 앱 이름",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sent from Seep"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seepから送信"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "싶에서 보냄"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来自Seep"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "來自Seep"
+          }
+        }
+      }
+    },
+    "share_wish_list.card.more_format" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 카드 마지막 줄. 10줄을 넘으면 남은 수. %d = 남은 개수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "+%d more"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "+%d more"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ほか%d個"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "외 %d개"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "等另外%d个"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "等另外%d個"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "share_wish_list.category.want_to_do" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 카드 제목 줄·글 첫 줄의 카테고리 이름. 다른 언어는 문장형",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things to do"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やりたいこと"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "하고 싶어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想做的事"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想做的事"
+          }
+        }
+      }
+    },
+    "share_wish_list.category.want_to_get" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 카드 제목 줄·글 첫 줄의 카테고리 이름. 다른 언어는 문장형",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Things to get"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほしいもの"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "갖고 싶어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想要的东西"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想要的東西"
+          }
+        }
+      }
+    },
+    "share_wish_list.category.want_to_go" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 카드 제목 줄·글 첫 줄의 카테고리 이름. 다른 언어는 문장형",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places to go"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가고 싶어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想去的地方"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "想去的地方"
+          }
+        }
+      }
+    },
+    "share_wish_list.close" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 오른쪽 위 ✕ 접근성 이름",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "닫기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
+          }
+        }
+      }
+    },
+    "share_wish_list.dday_toggle" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 토글 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include D-day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-dayも送る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D-day 같이 보내기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一起发送D-day"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一起傳送D-day"
+          }
+        }
+      }
+    },
+    "share_wish_list.dday_toggle_detail" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 토글 설명",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds the D-day to the card and message"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カードとメッセージにD-dayを入れます"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카드와 글에 D-day를 넣어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在卡片和文字里加上D-day"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在卡片和文字裡加上D-day"
+          }
+        }
+      }
+    },
+    "share_wish_list.headline" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 헤드라인",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All on one card —\nready to send"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1枚にまとめて\n送ります"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이렇게 한 장으로\n보낼게요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理成一张\n发出去"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理成一張\n傳出去"
+          }
+        }
+      }
+    },
+    "share_wish_list.headline_bold" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 헤드라인의 굵은 부분. share_wish_list.headline 안에 글자 그대로 들어 있어야 한다",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ready to send"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送ります"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보낼게요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发出去"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傳出去"
+          }
+        }
+      }
+    },
+    "share_wish_list.link_toggle" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 토글 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include links"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクも送る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "링크 같이 보내기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一起发送链接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一起傳送連結"
+          }
+        }
+      }
+    },
+    "share_wish_list.link_toggle_detail" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 토글 설명. 글에는 전체 링크, 카드에는 도메인만 들어간다",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds links to the message · the card shows the site only"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージにリンクを付けます · カードにはサイト名だけ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글에 상품 링크를 붙여요 · 카드에는 주소만"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文字里附上链接 · 卡片只显示网址"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文字裡附上連結 · 卡片只顯示網址"
+          }
+        }
+      }
+    },
+    "share_wish_list.send" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 하단 CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傳送"
+          }
+        }
+      }
+    },
+    "share_wish_list.text_row_dday_format" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 공유 글의 싶 한 줄. %1$@ = 이모지와 제목, %2$@ = D-day 문구(D-23·먼훗날)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）"
+          }
+        }
+      }
+    },
+    "share_wish_list.text_title_format" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 공유 글 첫 줄. %1$@ = 카테고리 이름(share_wish_list.category.*), %2$d = 개수",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$d)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$d個"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$d개"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$d个"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$d個"
           }
         }
       }
