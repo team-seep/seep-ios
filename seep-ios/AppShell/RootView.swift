@@ -48,6 +48,8 @@ struct RootView: View {
             case .active:
                 appLock.send(.phaseChanged(.active))
                 SyncScheduler.shared.appDidBecomeActive(isLaunch: !hasBecomeActive)
+                // 한 번 울려 사라진 근처 알림을 다시 건다. 앱을 열기 전까지는 같은 곳을 지나도 한 번만 온다 (GH-126 R-5)
+                Task { await NearbyAlertScheduler.shared.rescheduleMissing() }
                 hasBecomeActive = true
             case .inactive:
                 appLock.send(.phaseChanged(.inactive))

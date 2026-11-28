@@ -603,6 +603,22 @@ internal enum Strings {
       internal static var delete: String { Strings.tr("Localization", "detail.place.delete", fallback: "장소 지우기") }
       /// 장소
       internal static var title: String { Strings.tr("Localization", "detail.place.title", fallback: "장소") }
+      internal enum NearbyAlert {
+        /// 300m 안에 들어오면 알림 한 번 · 위치는 이 기기에서만 써요
+        internal static var caption: String { Strings.tr("Localization", "detail.place.nearby_alert.caption", fallback: "300m 안에 들어오면 알림 한 번 · 위치는 이 기기에서만 써요") }
+        /// 근처 알림은 10개까지 켤 수 있어요
+        internal static var limitToast: String { Strings.tr("Localization", "detail.place.nearby_alert.limit_toast", fallback: "근처 알림은 10개까지 켤 수 있어요") }
+        /// 근처에 가면 알려줘요
+        internal static var title: String { Strings.tr("Localization", "detail.place.nearby_alert.title", fallback: "근처에 가면 알려줘요") }
+        internal enum PermissionAlert {
+          /// 닫기
+          internal static var close: String { Strings.tr("Localization", "detail.place.nearby_alert.permission_alert.close", fallback: "닫기") }
+          /// 설정 열기
+          internal static var settings: String { Strings.tr("Localization", "detail.place.nearby_alert.permission_alert.settings", fallback: "설정 열기") }
+          /// 근처 알림을 받으려면 위치·알림 권한이 필요해요
+          internal static var title: String { Strings.tr("Localization", "detail.place.nearby_alert.permission_alert.title", fallback: "근처 알림을 받으려면 위치·알림 권한이 필요해요") }
+        }
+      }
       internal enum Search {
         /// 장소 이름이나 주소로 찾아봐요. 위치 권한은 필요 없어요.
         internal static var caption: String { Strings.tr("Localization", "detail.place.search.caption", fallback: "장소 이름이나 주소로 찾아봐요. 위치 권한은 필요 없어요.") }
@@ -1263,6 +1279,13 @@ internal enum Strings {
     internal static var wish: String { Strings.tr("Localization", "main_tab.wish", fallback: "싶") }
     /// 적기
     internal static var write: String { Strings.tr("Localization", "main_tab.write", fallback: "적기") }
+  }
+  internal enum NearbyAlert {
+    /// %1$@ %2$@
+    /// 근처에 왔어요. 지금 들러 볼까요?
+    internal static func bodyFormat(_ p1: Any, _ p2: Any) -> String {
+      return Strings.tr("Localization", "nearby_alert.body_format", String(describing: p1), String(describing: p2), fallback: "%1$@ %2$@\n근처에 왔어요. 지금 들러 볼까요?")
+    }
   }
   internal enum NotificationEditor {
     /// 알림 삭제

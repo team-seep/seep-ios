@@ -18,6 +18,8 @@ enum WidgetDeepLink: Equatable {
         case control
         /// 단축어·Siri·Spotlight (GH-49)
         case shortcut
+        /// 근처 알림을 눌러 연 위시 상세 (GH-126 R-8). 위시가 이뤄졌거나 지워졌으면 홈을 연다
+        case nearbyAlert = "nearby_alert"
     }
 
     static let scheme = "widget"

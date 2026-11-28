@@ -3,8 +3,10 @@ import UserNotifications
 
 
 protocol NotificationManagerProtocol {
+    /// D-day 알림과, 켜 둔 위시면 근처 알림(GH-126)도 예약한다
     func reserveNotifications(wish: Wish)
-    
+
+    /// 위시의 D-day 알림과 근처 알림(GH-126)을 모두 지운다. 완료·삭제 어느 경로로 불러도 근처 알림이 남지 않는다 (R-7)
     func cancelNotifications(wish: Wish)
 
     /// 시스템 알림 권한. 설정 탭 "D-day 알림" 줄에 보여준다 (GH-64 R-25)
@@ -22,8 +24,19 @@ enum NotificationAuthorization: Equatable {
 
 final class NotificationManager: NotificationManagerProtocol {
     static let shared = NotificationManager()
-    
+
+    private let nearbyAlertScheduler: NearbyAlertSchedulerProtocol
+
+    init(nearbyAlertScheduler: NearbyAlertSchedulerProtocol = NearbyAlertScheduler.shared) {
+        self.nearbyAlertScheduler = nearbyAlertScheduler
+    }
+
     func reserveNotifications(wish: Wish) {
+        // 동기화로 받은 위시·수정 저장한 위시도 켜져 있으면 다시 건다. 권한이 없으면 스케줄러가 건너뛴다 (GH-126 서버 저장 절)
+        if wish.nearbyAlertOn {
+            let scheduler = nearbyAlertScheduler
+            Task { await scheduler.schedule(wish: wish) }
+        }
         guard let deadline = wish.endDate else { return }
         for notification in wish.notifications {
             self.reserveNotification(
@@ -38,6 +51,7 @@ final class NotificationManager: NotificationManagerProtocol {
         for notification in wish.notifications {
             self.cancelNotification(notification: notification)
         }
+        nearbyAlertScheduler.cancel(wishId: wish.id)
     }
 
     func authorizationStatus() async -> NotificationAuthorization {

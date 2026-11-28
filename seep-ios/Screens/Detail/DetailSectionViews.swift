@@ -199,38 +199,76 @@ struct DetailLinkBody: View {
     }
 }
 
-/// 장소 본문 (GH-31, GH-59 R-6): 장소 이름 SemiBold 16 · 주소 14 `gray4`. 없으면 파란 글자 "＋ 장소 붙이기". 길게 눌러 지우기
+/// 장소 본문 (GH-31, GH-59 R-6): 장소 이름 SemiBold 16 · 주소 14 `gray4`. 없으면 파란 글자 "＋ 장소 붙이기". 길게 눌러 지우기.
+/// 장소가 있고 `nearbyAlert`가 있으면 아래에 "근처에 가면 알려줘요" 토글 한 줄 (GH-126 R-2)
 struct DetailPlaceBody: View {
+    /// 근처 알림 토글 값과 바꾸기. nil 이면 토글을 그리지 않는다(완료한 위시 등)
+    struct NearbyAlert {
+        let isOn: Bool
+        let onChange: (Bool) -> Void
+    }
+
     let place: WishPlace?
+    var nearbyAlert: NearbyAlert?
     let onAdd: () -> Void
     let onDelete: () -> Void
 
     var body: some View {
         if let place {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: place.name)
-                    .font(.appleSemiBold(size: 16))
-                    .foregroundStyle(Color.gray5)
-                if !place.address.isEmpty {
-                    Text(verbatim: place.address)
-                        .font(.appleRegular(size: 14))
-                        .foregroundStyle(Color.gray4)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-            .contextMenu {
-                Button(role: .destructive, action: onDelete) {
-                    Label {
-                        Text(Strings.Detail.Place.delete)
-                    } icon: {
-                        Image(systemName: "trash")
-                    }
+            VStack(alignment: .leading, spacing: 20) {
+                placeInfo(place)
+                if let nearbyAlert {
+                    NearbyAlertToggleRow(nearbyAlert: nearbyAlert)
                 }
             }
         } else {
             TextActionButton(title: Strings.Detail.Section.placeAdd, action: onAdd)
         }
+    }
+
+    private func placeInfo(_ place: WishPlace) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(verbatim: place.name)
+                .font(.appleSemiBold(size: 16))
+                .foregroundStyle(Color.gray5)
+            if !place.address.isEmpty {
+                Text(verbatim: place.address)
+                    .font(.appleRegular(size: 14))
+                    .foregroundStyle(Color.gray4)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
+        .contextMenu {
+            Button(role: .destructive, action: onDelete) {
+                Label {
+                    Text(Strings.Detail.Place.delete)
+                } icon: {
+                    Image(systemName: "trash")
+                }
+            }
+        }
+    }
+}
+
+/// "근처에 가면 알려줘요" + 보조 문구(Medium 12 `gray4`) + 시스템 토글(tint `tennis-green`) (GH-126 R-2).
+/// 토글 값은 ViewModel 이 정한다 — 권한 거부·한도면 켜지지 않고 꺼진 채로 돌아온다
+private struct NearbyAlertToggleRow: View {
+    let nearbyAlert: DetailPlaceBody.NearbyAlert
+
+    var body: some View {
+        Toggle(isOn: Binding(get: { nearbyAlert.isOn }, set: { nearbyAlert.onChange($0) })) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.Detail.Place.NearbyAlert.title)
+                    .font(.appleRegular(size: 16))
+                    .foregroundStyle(Color.gray5)
+                Text(Strings.Detail.Place.NearbyAlert.caption)
+                    .font(.appleMedium(size: 12))
+                    .foregroundStyle(Color.gray4)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .tint(Color.tennisGreen)
     }
 }
 

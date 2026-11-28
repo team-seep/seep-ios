@@ -121,7 +121,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        completionHandler()
+        let identifier = response.notification.request.identifier
+        // 근처 알림이면 그 위시 상세를 연다. D-day 알림 탭 동작은 그대로 둔다 (GH-126 R-8)
+        Task { @MainActor in
+            NearbyAlertOpener().open(notificationIdentifier: identifier)
+            completionHandler()
+        }
     }
     
     func userNotificationCenter(

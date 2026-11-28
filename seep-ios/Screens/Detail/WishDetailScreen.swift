@@ -61,6 +61,7 @@ private struct WishDetailContent: View {
     @State private var isAddAgainAlertPresented = false
     @State private var isCalendarDeniedAlertPresented = false
     @State private var isPlaceSearchPresented = false
+    @State private var isNearbyAlertDeniedAlertPresented = false
     @State private var isPhotoPickerPresented = false
     @State private var pickedPhoto: PhotosPickerItem?
 
@@ -140,6 +141,13 @@ private struct WishDetailContent: View {
             } label: { Text(Strings.Detail.Calendar.DeniedAlert.settings) }
         } message: {
             Text(Strings.Detail.Calendar.DeniedAlert.message)
+        }
+        .alert(Text(Strings.Detail.Place.NearbyAlert.PermissionAlert.title), isPresented: $isNearbyAlertDeniedAlertPresented) {
+            Button(role: .cancel) {} label: { Text(Strings.Detail.Place.NearbyAlert.PermissionAlert.close) }
+            Button {
+                // UIApplication.openSettingsURLString 과 같은 값 (UIKit 없이 앱 설정 열기)
+                if let url = URL(string: "app-settings:") { openURL(url) }
+            } label: { Text(Strings.Detail.Place.NearbyAlert.PermissionAlert.settings) }
         }
         .alert(Text(verbatim: ""), isPresented: errorBinding) {
             Button {} label: { Text(Strings.commonOk) }
@@ -282,6 +290,10 @@ private struct WishDetailContent: View {
                 ) {
                     DetailPlaceBody(
                         place: place.state.place,
+                        nearbyAlert: place.isNearbyAlertVisible ? .init(
+                            isOn: place.state.isNearbyAlertOn,
+                            onChange: { place.send(.toggleNearbyAlert($0)) }
+                        ) : nil,
                         onAdd: { place.send(.tapPlace) },
                         onDelete: { place.send(.tapDelete) }
                     )
@@ -403,6 +415,10 @@ private struct WishDetailContent: View {
             isPlaceSearchPresented = true
         case .errorAlert(let message):
             errorMessage = message
+        case .nearbyAlertPermissionAlert:
+            isNearbyAlertDeniedAlertPresented = true
+        case .toast(let message):
+            toastCenter?.show(message)
         }
         viewModel.place?.send(.routeHandled)
     }

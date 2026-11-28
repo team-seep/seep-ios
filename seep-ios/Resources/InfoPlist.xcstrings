@@ -109,6 +109,42 @@
         }
       }
     },
+    "NSLocationWhenInUseUsageDescription" : {
+      "comment" : "권한 팝업 · 위치(앱 사용 중) — 근처 알림",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seep uses your location to let you know when you're near a place you want to go. Your location never leaves your device."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行きたい場所の近くに来たときにお知らせするため、位置情報を使います。位置情報が端末の外に出ることはありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가고 싶은 곳 근처에 왔을 때 알려드리려고 위치를 써요. 위치는 기기 밖으로 나가지 않아요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我们会使用你的位置，在你到达想去的地点附近时提醒你。位置信息不会离开你的设备。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們會使用你的位置，在你到達想去的地點附近時提醒你。位置資訊不會離開你的裝置。"
+          }
+        }
+      }
+    },
     "NSPhotoLibraryUsageDescription" : {
       "comment" : "권한 팝업 · 사진 보관함 접근",
       "extractionState" : "extracted_with_value",

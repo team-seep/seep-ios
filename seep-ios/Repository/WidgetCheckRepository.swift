@@ -77,6 +77,8 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
                 record.finishDate = self.calendar.startOfDay(for: finishedAt)
                 // 완료하면 고정을 푼다 (GH-33 R-6)
                 record.pinnedAt = nil
+                // 앱의 완료처럼 근처 알림을 끈다. 예약은 앱이 열릴 때 `HomeWidgetCheckSync`가 지운다 (GH-126 R-7)
+                record.nearbyAlertOn = false
             }
         }
         if case .success = result {
@@ -92,6 +94,7 @@ final class WidgetCheckRepositoryImpl: WidgetCheckRepository {
                 record.finishDate = nil
                 // 다시 완료하면 소감을 새로 묻는다 (앱의 완료 취소와 같은 규칙, GH-25 R-6)
                 record.finishNote = ""
+                record.nearbyAlertOn = false
             }
         }
         if case .success = result {

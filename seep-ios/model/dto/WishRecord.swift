@@ -46,6 +46,8 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
     var previousWishId: String?
     /// "시작했어요"를 누른(또는 단계 체크·저금으로 자동 시작한) 시각. nil 이면 시작 전. 이뤄도 남긴다 (GH-143, 마이그레이션 v12)
     var startedAt: Date?
+    /// "근처에 가면 알려줘요"를 켰는지. 완료·삭제·장소 지우기·카테고리 변경이면 끈다 (GH-126, 마이그레이션 v16)
+    var nearbyAlertOn: Bool
     var createdAt: Date
     var updatedAt: Date
     var deletedAt: Date?
@@ -57,6 +59,7 @@ struct WishRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Table
         static let finishDate = Column(CodingKeys.finishDate)
         static let manualOrder = Column(CodingKeys.manualOrder)
         static let previousWishId = Column(CodingKeys.previousWishId)
+        static let nearbyAlertOn = Column(CodingKeys.nearbyAlertOn)
         static let deletedAt = Column(CodingKeys.deletedAt)
     }
 }
@@ -197,6 +200,7 @@ extension WishRecord {
         self.manualOrder = wish.manualOrder
         self.previousWishId = wish.previousWishId
         self.startedAt = wish.startedAt
+        self.nearbyAlertOn = wish.nearbyAlertOn
         self.createdAt = wish.createdAt
         self.updatedAt = updatedAt
         self.deletedAt = nil
@@ -341,6 +345,7 @@ extension Wish {
             manualOrder: record.manualOrder,
             previousWishId: record.previousWishId,
             startedAt: record.startedAt,
+            nearbyAlertOn: record.nearbyAlertOn,
             createdAt: record.createdAt
         )
     }

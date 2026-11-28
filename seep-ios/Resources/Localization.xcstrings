@@ -6229,6 +6229,222 @@
         }
       }
     },
+    "detail.place.nearby_alert.caption" : {
+      "comment" : "위시 상세 · 장소 근처 알림",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One alert within 300 m · Location stays on this device"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "300m以内に入ると1回お知らせ・位置情報はこの端末でだけ使います"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "300m 안에 들어오면 알림 한 번 · 위치는 이 기기에서만 써요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进入300米内提醒一次 · 位置只在本设备上使用"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進入300公尺內提醒一次 · 位置只在本裝置上使用"
+          }
+        }
+      }
+    },
+    "detail.place.nearby_alert.limit_toast" : {
+      "comment" : "위시 상세 · 장소 근처 알림 · 10개 한도 토스트",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can turn on up to 10 nearby alerts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近くの通知は10個までオンにできます"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "근처 알림은 10개까지 켤 수 있어요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最多只能开启10个附近提醒"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最多只能開啟10個附近提醒"
+          }
+        }
+      }
+    },
+    "detail.place.nearby_alert.permission_alert.close" : {
+      "comment" : "위시 상세 · 장소 근처 알림 · 권한 거부 알럿 버튼",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "닫기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
+          }
+        }
+      }
+    },
+    "detail.place.nearby_alert.permission_alert.settings" : {
+      "comment" : "위시 상세 · 장소 근처 알림 · 권한 거부 알럿 버튼",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定を開く"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정 열기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打开设置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打開設定"
+          }
+        }
+      }
+    },
+    "detail.place.nearby_alert.permission_alert.title" : {
+      "comment" : "위시 상세 · 장소 근처 알림 · 권한 거부 알럿",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby alerts need location and notification access"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近くの通知を受け取るには、位置情報と通知の許可が必要です"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "근처 알림을 받으려면 위치·알림 권한이 필요해요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要接收附近提醒，需要位置和通知权限"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要接收附近提醒，需要位置和通知權限"
+          }
+        }
+      }
+    },
+    "detail.place.nearby_alert.title" : {
+      "comment" : "위시 상세 · 장소 근처 알림",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notify me when I'm nearby"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近くに来たら知らせて"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "근처에 가면 알려줘요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "到附近时提醒我"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "到附近時提醒我"
+          }
+        }
+      }
+    },
     "detail.place.search.caption" : {
       "comment" : "위시 상세 화면",
       "extractionState" : "manual",
@@ -15441,6 +15657,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "寫下"
+          }
+        }
+      }
+    },
+    "nearby_alert.body_format" : {
+      "comment" : "근처 알림 본문(잠금화면 알림). %1$@ = 위시 이모지, %2$@ = 위시 제목",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@\nYou're nearby. Want to stop by now?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@\n近くに来ました。今、寄ってみませんか？"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@\n근처에 왔어요. 지금 들러 볼까요?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@\n你就在附近，现在去看看吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@\n你就在附近，現在去看看嗎？"
           }
         }
       }

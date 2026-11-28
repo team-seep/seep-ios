@@ -103,7 +103,11 @@ enum WishRecordStore {
 
     /// 위시와 하위 레코드에 삭제 표시를 한다 (R-5)
     static func softDeleteWish(id: String, now: Date, in db: Database) throws {
-        try updateWish(id: id, now: now, in: db) { $0.deletedAt = now }
+        try updateWish(id: id, now: now, in: db) { record in
+            record.deletedAt = now
+            // 지운 위시의 근처 알림이 다른 기기에서 다시 걸리지 않게 끈다 (GH-126 R-7)
+            record.nearbyAlertOn = false
+        }
         let assignments = [Column("deletedAt").set(to: now.timeIntervalSinceReferenceDate), Column("updatedAt").set(to: now.timeIntervalSinceReferenceDate)]
         try WishStepRecord.filter(WishStepRecord.Columns.wishId == id && WishStepRecord.Columns.deletedAt == nil).updateAll(db, assignments)
         try WishSavingRecord.filter(WishSavingRecord.Columns.wishId == id && WishSavingRecord.Columns.deletedAt == nil).updateAll(db, assignments)

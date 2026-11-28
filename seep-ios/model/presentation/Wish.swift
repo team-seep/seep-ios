@@ -44,6 +44,8 @@ struct Wish: Equatable, Hashable {
     var previousWishId: String?
     /// "시작했어요" 시각. nil 이면 시작 전, 값이 있고 안 이뤘으면 하는 중. 이뤄도 남는다 (GH-143)
     var startedAt: Date?
+    /// "근처에 가면 알려줘요"를 켰는지. 장소 300m 안에 들어오면 로컬 알림 한 번 (GH-126)
+    var nearbyAlertOn: Bool
     let createdAt: Date
     
     /// 카테고리마다 고정할 수 있는 최대 개수 (GH-33 R-3)
@@ -129,6 +131,7 @@ struct Wish: Equatable, Hashable {
         manualOrder: Double = 0,
         previousWishId: String? = nil,
         startedAt: Date? = nil,
+        nearbyAlertOn: Bool = false,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -158,6 +161,7 @@ struct Wish: Equatable, Hashable {
         self.manualOrder = manualOrder
         self.previousWishId = previousWishId
         self.startedAt = startedAt
+        self.nearbyAlertOn = nearbyAlertOn
         self.createdAt = createdAt
     }
 }

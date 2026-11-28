@@ -41,6 +41,10 @@ final class MockWishRepository: WishRepository {
     /// nil 이면 호출된 위시 id·장소로 만든 위시를 성공으로 돌려준다
     var updatePlaceResult: Result<Wish, RepositoryError>?
     private(set) var updatePlaceCalls: [(wishId: String, place: WishPlace?)] = []
+    /// nil 이면 fetchWishResult 의 위시(없으면 새 위시)에 켬 여부를 반영해 성공으로 돌려준다 (GH-126)
+    var updateNearbyAlertResult: Result<Wish, RepositoryError>?
+    private(set) var updateNearbyAlertCalls: [(wishId: String, isOn: Bool)] = []
+    var fetchNearbyAlertWishesResult: [Wish] = []
     /// nil 이면 호출된 위시 id·파일 이름으로 만든 위시를 성공으로 돌려준다
     var updatePhotoResult: Result<Wish, RepositoryError>?
     private(set) var updatePhotoCalls: [(wishId: String, fileName: String)] = []
@@ -153,7 +157,28 @@ final class MockWishRepository: WishRepository {
 
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError> {
         updatePlaceCalls.append((wishId, place))
-        return updatePlaceResult ?? .success(Wish(id: wishId, category: .wantToGo, place: place))
+        if let updatePlaceResult { return updatePlaceResult }
+        // 실제 구현처럼 장소를 지우면 근처 알림이 꺼진다 (GH-126 R-7)
+        let base = fetchWishResult.first(where: { $0.id == wishId })
+        var wish = base ?? Wish(id: wishId, category: .wantToGo)
+        wish.place = place
+        wish.nearbyAlertOn = place != nil && (base?.nearbyAlertOn ?? false)
+        return .success(wish)
+    }
+
+    func updateNearbyAlert(wishId: String, isOn: Bool) -> Result<Wish, RepositoryError> {
+        updateNearbyAlertCalls.append((wishId, isOn))
+        if let updateNearbyAlertResult { return updateNearbyAlertResult }
+        var wish = fetchWishResult.first(where: { $0.id == wishId }) ?? Wish(id: wishId, category: .wantToGo)
+        wish.nearbyAlertOn = isOn
+        if let index = fetchWishResult.firstIndex(where: { $0.id == wishId }) {
+            fetchWishResult[index] = wish
+        }
+        return .success(wish)
+    }
+
+    func fetchNearbyAlertWishes() -> [Wish] {
+        return fetchNearbyAlertWishesResult
     }
 
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {

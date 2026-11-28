@@ -58,6 +58,12 @@ protocol WishRepository {
     
     /// 장소를 저장(nil 이면 지우기)하고, 장소가 반영된 위시를 돌려준다 (GH-31 R-4).
     func updatePlace(wishId: String, place: WishPlace?) -> Result<Wish, RepositoryError>
+
+    /// "근처에 가면 알려줘요" 켬/끔 (GH-126 R-1)
+    func updateNearbyAlert(wishId: String, isOn: Bool) -> Result<Wish, RepositoryError>
+
+    /// 근처 알림을 켠 살아 있고 못 이룬 위시. 개수 제한·다시 걸기에 쓴다 (GH-126 R-5, R-6)
+    func fetchNearbyAlertWishes() -> [Wish]
     
     /// 사진 파일 이름을 저장하고(빈 값이면 사진 없음), 반영된 위시를 돌려준다 (GH-36 R-9).
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError>
@@ -143,11 +149,14 @@ final class WishRepositoryImpl: WishRepository {
                 record.finishDate = finishDate
                 // 완료하면 고정을 푼다. 완료를 취소해도 돌아오지 않는다 (GH-33 R-6)
                 record.pinnedAt = nil
+                // 이룬 곳 근처 알림은 끈다. 완료를 취소해도 돌아오지 않는다 (GH-126 R-7)
+                record.nearbyAlertOn = false
             }
             var finishedWish = wish
             finishedWish.isSuccess = true
             finishedWish.finishDate = finishDate
             finishedWish.pinnedAt = nil
+            finishedWish.nearbyAlertOn = false
             return finishedWish
         }
     }
@@ -287,7 +296,19 @@ final class WishRepositoryImpl: WishRepository {
             record.placeAddress = place?.address ?? ""
             record.latitude = place?.latitude ?? 0
             record.longitude = place?.longitude ?? 0
+            // 장소를 지우면 근처 알림도 끈다 (GH-126 R-7)
+            if place == nil { record.nearbyAlertOn = false }
         }
+    }
+
+    func updateNearbyAlert(wishId: String, isOn: Bool) -> Result<Wish, RepositoryError> {
+        return updateAndFetch(wishId: wishId) { $0.nearbyAlertOn = isOn }
+    }
+
+    func fetchNearbyAlertWishes() -> [Wish] {
+        let request = WishRecordStore.aliveWishes()
+            .filter(WishRecord.Columns.nearbyAlertOn == true && WishRecord.Columns.isSuccess == false)
+        return read { try WishRecordStore.fetchWishes(request, in: $0) } ?? []
     }
 
     func updatePhoto(wishId: String, fileName: String) -> Result<Wish, RepositoryError> {
@@ -311,6 +332,8 @@ final class WishRepositoryImpl: WishRepository {
             record.finishDate = nil
             // 다시 완료하면 소감을 새로 묻는다 (GH-25 R-6)
             record.finishNote = ""
+            // 근처 알림은 꺼진 채로 돌아온다. 완료 때 껐지만 다른 기기·구버전이 쓴 값도 맞춘다 (GH-126 R-7)
+            record.nearbyAlertOn = false
         }
     }
 
@@ -355,6 +378,10 @@ final class WishRepositoryImpl: WishRepository {
                 // 카테고리를 바꾸면 새 카테고리의 맨 위로 간다 (GH-73 R-8)
                 if record.category != wish.category.rawValue {
                     record.manualOrder = newCategoryTop
+                }
+                // 장소는 가고 싶어요에서만 보인다. 다른 카테고리로 옮기면 근처 알림을 끈다 (GH-126 R-10)
+                if wish.category != .wantToGo {
+                    record.nearbyAlertOn = false
                 }
                 record.emoji = wish.emoji
                 record.category = wish.category.rawValue
