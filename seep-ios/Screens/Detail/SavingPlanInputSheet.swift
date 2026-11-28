@@ -5,6 +5,7 @@ import SwiftUI
 struct SavingPlanInputSheet: View {
     @State var viewModel: SavingPlanInputViewModel
     @State private var text = ""
+    @FocusState private var isAmountFocused: Bool
     @Environment(\.dismiss) private var dismiss
 
     /// 요일 칩은 월요일부터 (`Calendar` weekday: 2=월 … 7=토, 1=일)
@@ -47,6 +48,9 @@ struct SavingPlanInputSheet: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 8)
+        // 매달(날짜 칩 31개)이면 키보드가 CTA 를 가린다. 금액 칸 밖을 누르면 키보드를 내린다
+        .contentShape(Rectangle())
+        .onTapGesture { isAmountFocused = false }
         .onAppear { text = viewModel.state.amountText }
         .onChange(of: text) { _, newText in
             viewModel.send(.inputAmountText(newText))
@@ -71,6 +75,7 @@ struct SavingPlanInputSheet: View {
             ForEach(SavingPlan.Cycle.allCases, id: \.self) { cycle in
                 let isSelected = viewModel.state.cycle == cycle
                 Button {
+                    isAmountFocused = false
                     viewModel.send(.selectCycle(cycle))
                 } label: {
                     Text(verbatim: cycle == .weekly ? Strings.Detail.SavingPlan.Sheet.weekly : Strings.Detail.SavingPlan.Sheet.monthly)
@@ -120,10 +125,15 @@ struct SavingPlanInputSheet: View {
                 }
             }
         }
+        // 요일(1~7)과 날짜(1~31) 칩이 같은 id 를 써서, 주기를 바꾸면 예전 칩이 남지 않게 격자를 새로 만든다
+        .id(viewModel.state.cycle)
     }
 
     private func chip(title: String, accessibilityLabel: String?, isSelected: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            isAmountFocused = false
+            action()
+        } label: {
             Text(verbatim: title)
                 .font(isSelected ? .appleExtraBold(size: 14) : .appleMedium(size: 14))
                 .foregroundStyle(isSelected ? Color.onAccent : Color.gray4)
@@ -145,6 +155,7 @@ struct SavingPlanInputSheet: View {
                 .font(.appleRegular(size: 16))
                 .foregroundStyle(Color.gray5)
                 .keyboardType(AmountFormatter.fractionDigits(viewModel.currency) > 0 ? .decimalPad : .numberPad)
+                .focused($isAmountFocused)
                 .accessibilityLabel(Text(Strings.Detail.SavingPlan.Sheet.amountLabel))
             Text(verbatim: AmountFormatter.unit(currency: viewModel.currency))
                 .font(.appleRegular(size: 16))
