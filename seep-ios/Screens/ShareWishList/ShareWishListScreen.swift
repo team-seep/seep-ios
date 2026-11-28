@@ -24,7 +24,9 @@ struct ShareWishListScreen: View {
                 VStack(alignment: .leading, spacing: 0) {
                     HeadlineText(text: Strings.ShareWishList.headline, boldPart: Strings.ShareWishList.headlineBold)
                         .padding(.leading, 22)
+                    // 보내는 이미지와 같게 화면 모드와 상관없이 라이트로 보인다
                     ShareWishListCardView(card: viewModel.state.card)
+                        .environment(\.colorScheme, .light)
                         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { cardWidth = $0 }
                         .padding(.horizontal, horizontalInset)
                         .padding(.top, 20)
@@ -96,10 +98,10 @@ struct ShareWishListScreen: View {
     private func toggleRow(title: String, detail: String, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: title)
+                Text(title)
                     .font(.appleSemiBold(size: 15))
                     .foregroundStyle(Color.gray5)
-                Text(verbatim: detail)
+                Text(detail)
                     .font(.appleMedium(size: 12))
                     .foregroundStyle(Color.gray4)
             }

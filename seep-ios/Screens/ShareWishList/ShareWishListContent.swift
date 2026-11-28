@@ -76,13 +76,14 @@ enum ShareWishListContent {
     ) -> String {
         var lines = [Strings.ShareWishList.textTitleFormat(categoryTitle(category), wishes.count)]
         for wish in wishes {
-            var line = [wish.emoji, wish.title].filter { !$0.isEmpty }.joined(separator: " ")
-            // 일정없음은 글에 넣지 않는다 — 날짜를 정한 싶만 (R-7)
+            let name = [wish.emoji, wish.title].filter { !$0.isEmpty }.joined(separator: " ")
+            // 일정없음은 글에 넣지 않는다 — 날짜를 정한 싶만 (R-7). 괄호 모양은 언어마다 다르다
             if includesDday, wish.endDate != nil {
                 let style = DdayBadgeStyle(endDate: wish.endDate, today: now, calendar: calendar)
-                line += " (\(ddayText(style)))"
+                lines.append(Strings.ShareWishList.textRowDdayFormat(name, ddayText(style)))
+            } else {
+                lines.append(name)
             }
-            lines.append(line)
             if includesLink, hasLink(wish.link) {
                 lines.append(wish.link.trimmingCharacters(in: .whitespacesAndNewlines))
             }
@@ -100,12 +101,10 @@ enum ShareWishListContent {
         wishes.contains { hasLink($0.link) }
     }
 
-    /// "https://www.apple.com/kr/…" → "apple.com". 주소로 읽을 수 없으면 nil
+    /// "https://www.apple.com/kr/…" → "apple.com". 상세 링크 카드와 같은 규칙(`WishLinkInput.domain`). 링크가 없으면 nil
     static func domain(of link: String) -> String? {
-        guard hasLink(link),
-              let host = URL(string: link.trimmingCharacters(in: .whitespacesAndNewlines))?.host(),
-              !host.isEmpty else { return nil }
-        return host.hasPrefix("www.") ? String(host.dropFirst(4)) : host
+        guard hasLink(link) else { return nil }
+        return WishLinkInput.domain(of: link.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     private static func hasLink(_ link: String) -> Bool {

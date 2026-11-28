@@ -66,6 +66,21 @@ final class HomeShareWishListFeatureTests: HomeFeatureTestCase {
         XCTAssertTrue(sut.state.isSelecting)
     }
 
+    func test_GH125_TC2_새로고침으로사라진싶은_선택과보내기수에서빠진다() {
+        // Given
+        let sut = selecting()
+        tap(sut, ["a", "b", "c"])
+
+        // When: 다른 곳에서 b 를 지워 다시 읽었다
+        repository.fetchWishesResult = wishes.filter { $0.id != "b" }
+        sut.send(.onAppear)
+        sut.send(.tapShareSelected)
+
+        // Then
+        XCTAssertEqual(sut.state.selectedIds, ["a", "c"])
+        XCTAssertEqual(sut.state.shareWishList?.wishes.map(\.id), ["a", "c"])
+    }
+
     // MARK: GH-125 TC8
 
     func test_GH125_TC8_미리보기를닫으면_선택모드로돌아가고선택은유지된다() {

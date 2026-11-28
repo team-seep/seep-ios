@@ -14,7 +14,7 @@ struct ShareWishListCardView: View {
             }
             if card.moreCount > 0 {
                 divider
-                Text(verbatim: Strings.ShareWishList.Card.moreFormat(card.moreCount))
+                Text(Strings.ShareWishList.Card.moreFormat(card.moreCount))
                     .font(.appleSemiBold(size: 14))
                     .foregroundStyle(Color.gray4)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -22,7 +22,7 @@ struct ShareWishListCardView: View {
                     .padding(.leading, 42)
             }
             divider
-            Text(verbatim: Strings.ShareWishList.Card.footer)
+            Text(Strings.ShareWishList.Card.footer)
                 .font(.appleBold(size: 11))
                 .foregroundStyle(Color.gray3)
                 .frame(maxWidth: .infinity, alignment: .trailing)

@@ -18863,6 +18863,42 @@
         }
       }
     },
+    "share_wish_list.text_row_dday_format" : {
+      "comment" : "골라서 보내기 미리보기 화면 (GH-125) 공유 글의 싶 한 줄. %1$@ = 이모지와 제목, %2$@ = D-day 문구(D-23·먼훗날)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）"
+          }
+        }
+      }
+    },
     "share_wish_list.text_title_format" : {
       "comment" : "골라서 보내기 미리보기 화면 (GH-125) 공유 글 첫 줄. %1$@ = 카테고리 이름(share_wish_list.category.*), %2$d = 개수",
       "extractionState" : "manual",

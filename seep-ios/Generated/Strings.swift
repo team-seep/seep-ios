@@ -1452,6 +1452,10 @@ internal enum Strings {
     internal static var linkToggleDetail: String { Strings.tr("Localization", "share_wish_list.link_toggle_detail", fallback: "글에 상품 링크를 붙여요 · 카드에는 주소만") }
     /// 보내기
     internal static var send: String { Strings.tr("Localization", "share_wish_list.send", fallback: "보내기") }
+    /// %1$@ (%2$@)
+    internal static func textRowDdayFormat(_ p1: Any, _ p2: Any) -> String {
+      return Strings.tr("Localization", "share_wish_list.text_row_dday_format", String(describing: p1), String(describing: p2), fallback: "%1$@ (%2$@)")
+    }
     /// %1$@ %2$d개
     internal static func textTitleFormat(_ p1: Any, _ p2: Int) -> String {
       return Strings.tr("Localization", "share_wish_list.text_title_format", String(describing: p1), p2, fallback: "%1$@ %2$d개")

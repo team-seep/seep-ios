@@ -66,19 +66,8 @@ final class ShareWishListViewModel {
         self.config = config
         self.dependency = dependency
         let isLinkToggleVisible = ShareWishListContent.hasAnyLink(config.wishes)
-        self.state = State(
-            isLinkToggleVisible: isLinkToggleVisible,
-            card: ShareWishListContent.card(
-                category: config.category,
-                wishes: config.wishes,
-                includesDday: true,
-                includesLink: isLinkToggleVisible,
-                now: dependency.now(),
-                calendar: dependency.calendar
-            ),
-            text: ""
-        )
-        rebuild()
+        let content = Self.makeContent(config: config, dependency: dependency, includesDday: true, includesLink: isLinkToggleVisible)
+        self.state = State(isLinkToggleVisible: isLinkToggleVisible, card: content.card, text: content.text)
     }
 
     func send(_ action: Action) {
@@ -121,22 +110,35 @@ final class ShareWishListViewModel {
     }
 
     private func rebuild() {
+        let content = Self.makeContent(config: config, dependency: dependency, includesDday: state.includesDday, includesLink: sendsLink)
+        state.card = content.card
+        state.text = content.text
+    }
+
+    /// 카드와 글을 같은 "오늘"로 만든다
+    private static func makeContent(
+        config: Config,
+        dependency: Dependency,
+        includesDday: Bool,
+        includesLink: Bool
+    ) -> (card: ShareWishListCard, text: String) {
         let now = dependency.now()
-        state.card = ShareWishListContent.card(
+        let card = ShareWishListContent.card(
             category: config.category,
             wishes: config.wishes,
-            includesDday: state.includesDday,
-            includesLink: sendsLink,
+            includesDday: includesDday,
+            includesLink: includesLink,
             now: now,
             calendar: dependency.calendar
         )
-        state.text = ShareWishListContent.text(
+        let text = ShareWishListContent.text(
             category: config.category,
             wishes: config.wishes,
-            includesDday: state.includesDday,
-            includesLink: sendsLink,
+            includesDday: includesDday,
+            includesLink: includesLink,
             now: now,
             calendar: dependency.calendar
         )
+        return (card, text)
     }
 }

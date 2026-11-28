@@ -488,6 +488,10 @@ final class HomeViewModel {
         state.items = visibleWishes.map {
             HomeWishItem(wish: $0, photoStorage: dependency.photoStorage, now: now, calendar: dependency.calendar)
         }
+        // 새로고침으로 지워지거나 이뤄진 싶은 선택에서도 뺀다 — 버튼의 n과 카드 수가 어긋나지 않게 (GH-125 R-1)
+        if state.isSelecting {
+            state.selectedIds.formIntersection(state.selectableItems.map(\.id))
+        }
         refreshWishTotal(visibleWishes: visibleWishes)
         if let banner = state.yearReviewBanner {
             sendYearReviewImpressionIfNeeded(banner: banner)
