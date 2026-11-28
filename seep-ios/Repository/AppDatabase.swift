@@ -276,6 +276,35 @@ final class AppDatabase {
             }
         }
 
+        // GH-122: 위시에 붙인 함께할 사람. 태그처럼 wishId 에 FK 없이 일반 인덱스만 둔다(다른 기기 줄이 위시보다 먼저 와도 들어가게).
+        // personId 는 사람별 모아보기용 일반 인덱스(같은 사람이 여러 줄이라 UNIQUE 아님). linkedUid 는 친구 계정과 이을 빈 자리(R-12).
+        // 처음부터 동기화한다 — v7 트리거 목록은 배포되어 고치지 않고 여기서 더한다(v10 과 같다). 새 테이블이라 큐에 넣을 기존 줄은 없다.
+        // 이름이 v17 인 것: v13~v16 은 같은 때 열린 다른 PR(#158·#159·#162·#163)이 쓴다. 개발 빌드를 깐 기기에서 같은 이름이 건너뛰어지지 않게
+        // 겹치지 않는 이름을 쓴다. GRDB 는 안 돈 것만 등록 순서대로 돌리므로 사이 번호가 비어도 된다
+        migrator.registerMigration("v17") { db in
+            try db.create(table: WishCompanionRecord.databaseTableName) { table in
+                table.primaryKey("id", .text)
+                table.column("wishId", .text).notNull()
+                table.column("personId", .text).notNull()
+                table.column("name", .text).notNull().defaults(to: "")
+                table.column("linkedUid", .text)
+                table.column("order", .integer).notNull().defaults(to: 0)
+                table.column("createdAt", .double).notNull()
+                table.column("updatedAt", .double).notNull()
+                table.column("deletedAt", .double)
+            }
+            try db.create(index: "wishCompanion_on_wishId", on: WishCompanionRecord.databaseTableName, columns: ["wishId"])
+            try db.create(index: "wishCompanion_on_personId", on: WishCompanionRecord.databaseTableName, columns: ["personId"])
+            for event in ["INSERT", "UPDATE"] {
+                try db.execute(sql: """
+                    CREATE TRIGGER wishCompanion_after_\(event.lowercased())_outbox AFTER \(event) ON wishCompanion
+                    BEGIN
+                      INSERT INTO syncOutbox (tableName, rowId, enqueuedAt) VALUES ('wishCompanion', NEW.id, NEW.updatedAt);
+                    END
+                    """)
+            }
+        }
+
         return migrator
     }
 
@@ -286,7 +315,8 @@ final class AppDatabase {
         WishSavingRecord.databaseTableName,
         WishNotificationRecord.databaseTableName,
         WishJournalRecord.databaseTableName,
-        WishTagRecord.databaseTableName
+        WishTagRecord.databaseTableName,
+        WishCompanionRecord.databaseTableName
     ]
 
     // MARK: - appMetadata
@@ -405,6 +435,7 @@ extension AppDatabase {
         let notifications: [WishNotificationRecord]
         let journals: [WishJournalRecord]
         let tags: [WishTagRecord]
+        let companions: [WishCompanionRecord]
         let metadata: [String: String]
     }
 
@@ -417,6 +448,7 @@ extension AppDatabase {
                 notifications: try WishNotificationRecord.fetchAll(db),
                 journals: try WishJournalRecord.fetchAll(db),
                 tags: try WishTagRecord.fetchAll(db),
+                companions: try WishCompanionRecord.fetchAll(db),
                 metadata: Dictionary(
                     uniqueKeysWithValues: try Row.fetchAll(db, sql: "SELECT key, value FROM appMetadata")
                         .map { (row: Row) -> (String, String) in (row["key"], row["value"]) }
@@ -439,6 +471,11 @@ extension AppDatabase {
 
     /// 테스트에서 이전 도중 실패를 만들려고 위시 한 줄을 직접 넣는다
     func insertRecord(_ record: WishRecord) throws {
+        try writer.write { try record.insert($0) }
+    }
+
+    /// 테스트에서 두 기기가 따로 쓴 것처럼 사람 줄을 직접 넣는다 (GH-122)
+    func insertRecord(_ record: WishCompanionRecord) throws {
         try writer.write { try record.insert($0) }
     }
 

@@ -1,7 +1,7 @@
 import { FieldValue } from 'firebase-admin/firestore';
 
 // 앱 동기화 대상 컬렉션 (firestore.rules·SyncCollection과 같다)
-export const SYNCED_COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags'];
+export const SYNCED_COLLECTIONS = ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags', 'wishCompanions'];
 export const DELETED_USERS = 'deletedUsers';
 const PAGE = 400;
 

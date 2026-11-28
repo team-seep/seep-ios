@@ -34,11 +34,17 @@ struct WishFormScreen: View {
 
     @State private var viewModel: WishFormViewModel
 
-    /// - Parameter previousWishId: "이어서 적기"로 열었으면 앞 위시 id (GH-84 R-2)
-    init(mode: WishFormMode, previousWishId: String? = nil, onFinish: @escaping (Wish?) -> Void) {
+    /// - Parameters:
+    ///   - previousWishId: "이어서 적기"로 열었으면 앞 위시 id (GH-84 R-2)
+    ///   - companions: 미리 넣어 둘 함께할 사람. 사람별 모아보기에서 열었을 때 (GH-122 R-6)
+    init(mode: WishFormMode, previousWishId: String? = nil, companions: [WishCompanion] = [], onFinish: @escaping (Wish?) -> Void) {
         self.mode = mode
         self.onFinish = onFinish
-        _viewModel = State(initialValue: WishFormViewModel(config: .init(mode: mode, previousWishId: previousWishId)))
+        _viewModel = State(initialValue: WishFormViewModel(config: .init(
+            mode: mode,
+            previousWishId: previousWishId,
+            companions: companions
+        )))
     }
 
     /// 테스트·프리뷰에서 ViewModel 을 넣는다

@@ -96,6 +96,7 @@ wishSavings/{savingId}          // WishSavingRecord
 wishNotifications/{notifId}     // WishNotificationRecord
 wishJournals/{journalId}        // WishJournalRecord (GH-95 일지)
 wishTags/{tagId}                // WishTagRecord (GH-136 태그. 트리거는 마이그레이션 v10)
+wishCompanions/{companionId}    // WishCompanionRecord (GH-122 함께할 사람. 마이그레이션 v17, linkedUid 는 규칙상 null 만)
 ```
 
 모든 문서에 공통 필드:
@@ -129,7 +130,7 @@ match /wishes/{id} {
                 && request.resource.data.memberUids == resource.data.memberUids; // 멤버 변경은 2단계에서 별도 경로
   allow delete: if false;   // 삭제는 deletedAt 표시로만
 }
-// wishSteps / wishSavings / wishNotifications / wishJournals / wishTags 도 같은 모양
+// wishSteps / wishSavings / wishNotifications / wishJournals / wishTags / wishCompanions 도 같은 모양 (wishCompanions 는 linkedUid == null 조건 추가, GH-122)
 ```
 
 **사진**: `wishPhotos/{ownerUid}/{photoFileName}`. 로컬 파일 이름(`{위시id}-{uuid}.jpg`)을 그대로 쓴다. 규칙은 1단계에서 `ownerUid == auth.uid`만 허용, 2단계에서 위시 멤버까지 넓힌다.

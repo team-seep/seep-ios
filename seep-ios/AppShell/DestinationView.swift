@@ -25,6 +25,8 @@ struct DestinationView: View {
         switch destination {
         case .wishDetail(let id, let isFinished):
             WishDetailScreen(wishId: id, isFinished: isFinished)
+        case .companionWishes(let personId, let name):
+            CompanionWishesScreen(person: WishCompanion(personId: personId, name: name))
         case .search(let finishedOnly):
             WishSearchScreen(finishedOnly: finishedOnly)
         case .badgeCollection:

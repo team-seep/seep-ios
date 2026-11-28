@@ -345,6 +345,8 @@ struct WishDocumentEditor: View {
             PlaceSearchSheet(onSelect: { viewModel.send(.selectPlace($0)) })
         case .letter(let letterViewModel):
             FutureLetterSheet(viewModel: letterViewModel)
+        case .companion(let companionViewModel):
+            CompanionSheet(viewModel: companionViewModel)
         case .hashtag:
             WishHashtagSheet(
                 selection: state.tagSelection,

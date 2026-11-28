@@ -33,10 +33,16 @@ service cloud.firestore {
         && request.resource.data.memberUids == resource.data.memberUids;
     }
 
+    // GH-122: 함께할 사람의 linkedUid(친구 계정과 이을 자리)는 지금은 비어 있어야 한다(R-12).
+    // 계정 연결 기능(설계 §11 5단계)에서 별도 경로로 연다
+    function keepsLinkSlotEmpty(collection) {
+      return collection != 'wishCompanions' || request.resource.data.get('linkedUid', null) == null;
+    }
+
     match /{collection}/{docId} {
-      allow read: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags'] && isMember();
-      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags'] && createsOwnDocument() && notDeleted();
-      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags'] && isMember() && keepsMembership() && notDeleted();
+      allow read: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags', 'wishCompanions'] && isMember();
+      allow create: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags', 'wishCompanions'] && createsOwnDocument() && keepsLinkSlotEmpty(collection) && notDeleted();
+      allow update: if collection in ['wishes', 'wishSteps', 'wishSavings', 'wishNotifications', 'wishJournals', 'wishTags', 'wishCompanions'] && isMember() && keepsMembership() && keepsLinkSlotEmpty(collection) && notDeleted();
       allow delete: if false;
     }
 

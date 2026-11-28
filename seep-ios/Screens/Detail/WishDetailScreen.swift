@@ -235,6 +235,26 @@ private struct WishDetailContent: View {
             if let chain = viewModel.state.chain {
                 DetailChainSection(chain: chain) { viewModel.send(.tapChainWish(id: $0)) }
             }
+        case .companion:
+            if let companions = viewModel.state.wish?.companions, !companions.isEmpty {
+                // "변경"은 수정 문서로 바꾼다 — 수정 버튼이 있는 상세에서만 (GH-122)
+                DocumentSection(
+                    title: Strings.Companion.title,
+                    actionTitle: viewModel.isEditVisible ? Strings.Companion.change : nil,
+                    action: { viewModel.send(.tapEdit) }
+                ) {
+                    WishFormFlowLayout(spacing: 8) {
+                        ForEach(companions) { person in
+                            Button {
+                                viewModel.send(.tapCompanion(person))
+                            } label: {
+                                CompanionChip(name: person.name, isSelected: false)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+            }
         case .steps:
             if let steps = viewModel.steps {
                 DocumentSection(
@@ -328,6 +348,8 @@ private struct WishDetailContent: View {
             router?.openChainedWrite(from: wish)
         case .wishDetail(let id, let isFinished):
             router?.push(.wishDetail(id: id, isFinished: isFinished))
+        case .companionWishes(let person):
+            router?.push(.companionWishes(personId: person.personId, name: person.name))
         case .errorAlert(let message):
             errorMessage = message
         case .autoStartToast(let message):

@@ -23,6 +23,8 @@ struct WishDocumentBlocks: View {
             EmptyView()
         case .memo:
             memoBlock
+        case .companion:
+            companionBlock
         case .steps:
             stepsBlock
         case .notification:
@@ -66,6 +68,30 @@ struct WishDocumentBlocks: View {
             .focused(focus, equals: .memo)
             .accessibilityLabel(Text(Strings.writeHeaderMemo))
             WishFormError(message: state.memoError)
+        }
+    }
+
+    /// 함께할 사람 칩. 칩을 누르면 시트로 고친다 (GH-122 R-1)
+    private var companionBlock: some View {
+        DocumentSection(
+            title: Strings.Companion.title,
+            actionTitle: Strings.WishDocument.remove,
+            action: removeAction(.companion)
+        ) {
+            Button {
+                focus.wrappedValue = nil
+                viewModel.send(.tapCompanions)
+            } label: {
+                WishFormFlowLayout(spacing: 8) {
+                    ForEach(state.companions) { person in
+                        CompanionChip(name: person.name, isSelected: false)
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(Strings.Companion.title))
+            .accessibilityValue(Text(verbatim: state.companions.map(\.name).joined(separator: ", ")))
         }
     }
 
@@ -428,6 +454,7 @@ extension WishDocumentBlock {
         case .place: return Strings.WishDocument.Chip.place
         case .photo: return Strings.WishDocument.Chip.photo
         case .letter: return Strings.WishDocument.Chip.letter
+        case .companion: return Strings.Companion.title
         }
     }
 
@@ -442,6 +469,7 @@ extension WishDocumentBlock {
         case .place: return "mappin.and.ellipse"
         case .photo: return "photo"
         case .letter: return "envelope"
+        case .companion: return "person.2"
         }
     }
 }

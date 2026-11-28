@@ -108,6 +108,7 @@
 		7C55A671B25F8070DAC3FE9E /* WishSearchMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CA6BF4647978C7DAEFFDE /* WishSearchMatcherTests.swift */; };
 		7CFFB949CEB5C0D6569412F7 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = DE43D1CA8E2C1AE366E85CAB /* FirebaseAppCheck */; };
 		7DCD3D0CC2972D34FAB71C0D /* PublisherExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200901448859D06A23FEFBA1 /* PublisherExtension.swift */; };
+		7DCEAEF6C517FB54677FF65D /* WishCompanion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0983903BD1EC963EC7B913F5 /* WishCompanion.swift */; };
 		7EDB051C19F729387BB9BF4A /* WishRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491A419DC6962D304FB3896A /* WishRepositoryTests.swift */; };
 		7F554F1F2B5490C9BA2F631C /* WishDetailSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496E7CDC7A8049F70FCC01B0 /* WishDetailSummaryTests.swift */; };
 		81E036270A99BDF11901ED15 /* WidgetCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEE7B7165AEDD10205CBF10 /* WidgetCopy.swift */; };
@@ -144,6 +145,7 @@
 		A3F6EB8FAD2B517FBE767EC2 /* LinkPreviewCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294631DE1287FEC94F0BD1C0 /* LinkPreviewCache.swift */; };
 		A4144B10B6393DAB32765EB6 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F7A234C7528B33050C19B7F8 /* InfoPlist.xcstrings */; };
 		AA0808A82E36F4FB6BA03FEA /* BadgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C883B1418F4C4E7C80547DD /* BadgeCalculator.swift */; };
+		AB05917377D445391BD1FC5F /* WishCompanion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0983903BD1EC963EC7B913F5 /* WishCompanion.swift */; };
 		AC3B46C90C740217191D2DB3 /* LegacyRealmReimportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE92DEBA2CA156F85D1C6E8 /* LegacyRealmReimportTests.swift */; };
 		AC8AEC4CD00A0F268EE16C12 /* widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 2AD84C75F0B027A0F5952425 /* widget.intentdefinition */; };
 		B09273AEBF6C86F811F6A3E9 /* MediumHorizontalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85596EA0CBC45954AA2875FC /* MediumHorizontalProvider.swift */; };
@@ -265,6 +267,7 @@
 		07E47E76FDCB59ADEF075A54 /* AmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
 		089CC85013733AF0439C1F69 /* WishlistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItemView.swift; sourceTree = "<group>"; };
 		08C19CC851A234D697272B48 /* NotificationLanguageRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLanguageRefresh.swift; sourceTree = "<group>"; };
+		0983903BD1EC963EC7B913F5 /* WishCompanion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishCompanion.swift; sourceTree = "<group>"; };
 		0983C35B7F2A2F65491F97F6 /* WishActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishActivity.swift; sourceTree = "<group>"; };
 		0B539B646E6CBAC6680C8B8A /* DisplayDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDate.swift; sourceTree = "<group>"; };
 		0C61661017325985EC539EDE /* WishStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishStep.swift; sourceTree = "<group>"; };
@@ -879,6 +882,7 @@
 				16B6A4EDCB1C412309C4C69D /* WidgetDeepLink.swift */,
 				FB7E40757F0869218D4E49F6 /* Wish.swift */,
 				0983C35B7F2A2F65491F97F6 /* WishActivity.swift */,
+				0983903BD1EC963EC7B913F5 /* WishCompanion.swift */,
 				6D791DD9ADB0DE2606530147 /* WishJournal.swift */,
 				DECAAC748EA45DD07828E4BA /* WishPlace.swift */,
 				A882A10B5F53D6BD97E23324 /* WishSaving.swift */,
@@ -1256,6 +1260,7 @@
 				0D4C7D6973CAEE01F1B1EC7A /* WidgetDeepLink.swift in Sources */,
 				2EC52AFDFB29E4FF034690CB /* WidgetWishRepository.swift in Sources */,
 				E0F72AF35D5F47CE7DAAFE39 /* Wish.swift in Sources */,
+				AB05917377D445391BD1FC5F /* WishCompanion.swift in Sources */,
 				40AA3824BF768E816955DBDC /* WishDTO.swift in Sources */,
 				E74EFD6C543946001652009C /* WishHorizontalItemView.swift in Sources */,
 				018EF85EEFB0F1B8D0D7C8A4 /* WishJournal.swift in Sources */,
@@ -1337,6 +1342,7 @@
 				D2A9F73B93CE8EC981975B81 /* Wish.swift in Sources */,
 				FE28474643D71ECF22FEC76A /* WishActivity.swift in Sources */,
 				84E2606B230FE68ADB1FCCB8 /* WishActivityQuery.swift in Sources */,
+				7DCEAEF6C517FB54677FF65D /* WishCompanion.swift in Sources */,
 				C3068FA7D079FBF756EA493E /* WishDTO.swift in Sources */,
 				2A7CAA98047CEED03A3136DF /* WishJournal.swift in Sources */,
 				D517CFA4DBE4E4E01EC43764 /* WishLinkInput.swift in Sources */,

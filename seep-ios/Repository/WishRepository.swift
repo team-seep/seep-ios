@@ -38,6 +38,13 @@ protocol WishRepository {
     /// 살아 있는 위시에 붙은 직접 입력 태그(기본 태그 제외), 최근에 쓴 것부터. 태그 시트 추천용 (GH-136 R-2)
     func fetchRecentCustomTags() -> [String]
 
+    /// 살아 있는 위시에 붙은 함께할 사람, 최근에 쓴 사람부터. "누구랑" 시트 "전에 적은 사람"용 (GH-122 R-3)
+    func fetchRecentCompanions() -> [WishCompanion]
+
+    /// 그 사람(`personId`, 같은 이름의 다른 id 포함)이 붙은 살아 있는 위시, 세 카테고리 전부. 사람별 모아보기용 (GH-122 R-5).
+    /// `name`을 주면 그 id 의 줄이 모두 대표 id 로 합쳐진 뒤에도 이름으로 찾는다
+    func fetchCompanionWishes(personId: String, name: String?) -> [Wish]
+
     /// 카테고리와 무관하게 `finishDate`가 [from, to) 안인 완료 위시를 돌려준다 (GH-34 R-3).
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish]
     
@@ -89,6 +96,12 @@ protocol WishRepository {
     /// 로그아웃·계정 삭제에서 "이 기기에서 싶 지우기" (GH-93 R-28, R-29).
     /// 삭제 표시가 아니라 줄을 지운다(동기화로 서버에 지움이 퍼지지 않게). 지우기 전 살아 있던 위시를 돌려줘 알림·사진을 정리하게 한다
     func eraseAllLocalWishes() -> Result<[Wish], RepositoryError>
+}
+
+extension WishRepository {
+    func fetchCompanionWishes(personId: String) -> [Wish] {
+        fetchCompanionWishes(personId: personId, name: nil)
+    }
 }
 
 /// `observeChanges` 구독. GRDB 타입을 화면 쪽에 드러내지 않으려고 감싼다
@@ -170,9 +183,10 @@ final class WishRepositoryImpl: WishRepository {
     func eraseAllLocalWishes() -> Result<[Wish], RepositoryError> {
         return write { db, _ in
             let wishes = try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes(), in: db)
-            // 일지·태그는 외래키가 없어 따로 지운다. 단계·저금·알림은 CASCADE
+            // 일지·태그·함께할 사람은 외래키가 없어 따로 지운다. 단계·저금·알림은 CASCADE
             try WishJournalRecord.deleteAll(db)
             try WishTagRecord.deleteAll(db)
+            try WishCompanionRecord.deleteAll(db)
             try WishRecord.deleteAll(db)
             return wishes
         }
@@ -243,6 +257,17 @@ final class WishRepositoryImpl: WishRepository {
     func fetchRecentCustomTags() -> [String] {
         let names = read { db in try WishRecordStore.recentTagNames(in: db) } ?? []
         return names.filter { HashtagType(rawValue: $0) == nil }
+    }
+
+    func fetchRecentCompanions() -> [WishCompanion] {
+        read { try WishRecordStore.recentCompanions(in: $0) } ?? []
+    }
+
+    func fetchCompanionWishes(personId: String, name: String?) -> [Wish] {
+        read { db in
+            let ids = try WishRecordStore.wishIds(personId: personId, name: name, in: db)
+            return try WishRecordStore.fetchWishes(WishRecordStore.aliveWishes().filter(ids.contains(WishRecord.Columns.id)), in: db)
+        } ?? []
     }
 
     func fetchFinishedWishes(from: Date, to: Date) -> [Wish] {
@@ -378,6 +403,7 @@ final class WishRepositoryImpl: WishRepository {
             try WishRecordStore.replaceNotifications(wishId: wish.id, with: wish.notifications, now: now, in: db)
             try WishRecordStore.replaceSteps(wishId: wish.id, with: wish.steps, now: now, in: db)
             try WishRecordStore.replaceTags(wishId: wish.id, with: wish.tags, now: now, in: db)
+            try WishRecordStore.replaceCompanions(wishId: wish.id, with: wish.companions, now: now, in: db)
             return try Self.fetchExisting(id: wish.id, in: db)
         }
     }

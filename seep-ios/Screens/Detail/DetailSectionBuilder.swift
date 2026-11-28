@@ -5,6 +5,8 @@ enum DetailSection: CaseIterable, Equatable {
     case memo
     /// "이어지는 싶" — 메모 다음 (GH-84 R-4)
     case chain
+    /// "누구랑" 함께할 사람 — 단계 앞 (GH-122 R-4)
+    case companion
     case steps
     /// 일지 — 단계와 모은 돈 사이 (GH-95 R-3)
     case journal
@@ -45,6 +47,8 @@ enum DetailSectionBuilder {
         switch section {
         case .memo:
             return wish.memo.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+        case .companion:
+            return wish.companions.isEmpty == false
         case .steps:
             return wish.steps.isEmpty == false
         case .savings:

@@ -151,6 +151,32 @@ struct WishTagRecord: Codable, Equatable, FetchableRecord, PersistableRecord, Ta
     }
 }
 
+/// `wishCompanion` 테이블 한 줄. 위시에 붙인 함께할 사람 한 명 (GH-122, 마이그레이션 v17).
+/// 태그처럼 동기화 대비로 `wishId`에 FK 를 두지 않고 UNIQUE 도 두지 않는다 — 같은 위시에 같은 사람은 쓰기에서 막는다 (R4).
+/// `personId`는 같은 사람이면 위시가 달라도 같다(R-11). `linkedUid`는 나중에 친구 계정과 이을 자리로, 지금은 늘 nil 이다(R-12)
+struct WishCompanionRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
+    static let databaseTableName = "wishCompanion"
+
+    var id: String
+    var wishId: String
+    var personId: String
+    /// 적은 이름 그대로(앞뒤 공백만 지움)
+    var name: String
+    /// 연결한 친구 계정 uid. 이번 구현은 쓰지도 읽지도 않는다 (R-12)
+    var linkedUid: String?
+    /// 위시 안에서 보여 주는 순서 (TC-1)
+    var order: Int
+    var createdAt: Date
+    var updatedAt: Date
+    var deletedAt: Date?
+
+    enum Columns {
+        static let wishId = Column(CodingKeys.wishId)
+        static let personId = Column(CodingKeys.personId)
+        static let deletedAt = Column(CodingKeys.deletedAt)
+    }
+}
+
 /// `wishNotification` 테이블 한 줄. id 는 예약한 로컬 알림의 identifier 와 같다 (GH-48)
 struct WishNotificationRecord: Codable, Equatable, FetchableRecord, PersistableRecord, TableRecord {
     static let databaseTableName = "wishNotification"
@@ -251,6 +277,20 @@ extension WishTagRecord {
     }
 }
 
+extension WishCompanionRecord {
+    init(companion: WishCompanion, wishId: String, order: Int, now: Date) {
+        self.id = UUID().uuidString
+        self.wishId = wishId
+        self.personId = companion.personId
+        self.name = companion.name
+        self.linkedUid = nil
+        self.order = order
+        self.createdAt = now
+        self.updatedAt = now
+        self.deletedAt = nil
+    }
+}
+
 extension WishNotificationRecord {
     init(notification: SeepNotification, wishId: String, order: Int, updatedAt: Date) {
         self.id = notification.id
@@ -289,12 +329,29 @@ extension WishTagRecord {
     static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
 }
 
+extension WishCompanionRecord {
+    static func databaseDateEncodingStrategy(for column: String) -> DatabaseDateEncodingStrategy { .timeIntervalSinceReferenceDate }
+    static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
+}
+
 extension WishNotificationRecord {
     static func databaseDateEncodingStrategy(for column: String) -> DatabaseDateEncodingStrategy { .timeIntervalSinceReferenceDate }
     static func databaseDateDecodingStrategy(for column: String) -> DatabaseDateDecodingStrategy { .timeIntervalSinceReferenceDate }
 }
 
 extension Wish {
+    /// 위시 안 사람, 순서대로 한 번씩. 두 기기가 오프라인에서 같은 사람을 같은 위시에 따로 붙이면 줄이 둘이 될 수 있어(UNIQUE 없음, R4)
+    /// 같은 id·같은 이름은 앞 줄만 남긴다 (GH-122 R-11)
+    static func uniqueCompanions(_ records: [WishCompanionRecord]) -> [WishCompanion] {
+        var result: [WishCompanion] = []
+        for record in records.sorted(by: { ($0.order, $0.createdAt, $0.id) < ($1.order, $1.createdAt, $1.id) }) {
+            let key = WishCompanion.matchKey(record.name)
+            guard !result.contains(where: { $0.personId == record.personId || WishCompanion.matchKey($0.name) == key }) else { continue }
+            result.append(WishCompanion(personId: record.personId, name: record.name))
+        }
+        return result
+    }
+
     /// 레코드에서 위시를 만든다. 하위 레코드는 이 위시의 살아 있는 줄(deletedAt == nil)만 넘긴다
     init(
         record: WishRecord,
@@ -302,7 +359,8 @@ extension Wish {
         savings: [WishSavingRecord],
         notifications: [WishNotificationRecord],
         journals: [WishJournalRecord] = [],
-        tags: [WishTagRecord] = []
+        tags: [WishTagRecord] = [],
+        companions: [WishCompanionRecord] = []
     ) {
         self.init(
             id: record.id,
@@ -324,6 +382,7 @@ extension Wish {
             memo: record.memo,
             // 태그는 v9 부터 wishTag 가 원본이다. wish.hashtag 컬럼은 대표 태그를 같이 적어 두기만 한다
             tags: tags.sorted { $0.order < $1.order }.map(\.name),
+            companions: Self.uniqueCompanions(companions),
             isSuccess: record.isSuccess,
             finishNote: record.finishNote,
             pinnedAt: record.pinnedAt,

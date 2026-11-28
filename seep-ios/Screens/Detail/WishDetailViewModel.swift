@@ -24,6 +24,8 @@ extension WishDetailViewModel {
         case editFinished(Wish)
         /// "이어지는 싶"의 다른 싶 줄 (GH-84 R-5)
         case tapChainWish(id: String)
+        /// "누구랑" 사람 칩 → 사람별 모아보기 (GH-122 R-5)
+        case tapCompanion(WishCompanion)
         /// 상태 줄 "시작했어요" (GH-143 R-2)
         case tapStart
         /// 상태 줄 "되돌리기" (GH-143 R-2)
@@ -43,6 +45,8 @@ extension WishDetailViewModel {
         case chainedWrite(Wish)
         /// 체인의 다른 위시 상세로 간다 (GH-84 R-5)
         case wishDetail(id: String, isFinished: Bool)
+        /// 사람별 모아보기로 간다 (GH-122 R-5)
+        case companionWishes(WishCompanion)
         case errorAlert(String)
         /// 단계 체크·저금 기록으로 자동 시작했다. "되돌리기" 버튼이 있는 토스트를 띄운다 (GH-143 R-3)
         case autoStartToast(String)
@@ -171,6 +175,10 @@ final class WishDetailViewModel {
             reloadSections(wish: wish)
         case .tapChainWish(let id):
             openChainWish(id: id)
+        case .tapCompanion(let person):
+            // 이름은 개인정보라 로그에 넣지 않는다 (GH-122 트래킹)
+            sendClickLog(objectId: .companionChip)
+            route = .companionWishes(person)
         case .tapStart:
             start()
         case .tapUnstart:

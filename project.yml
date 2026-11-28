@@ -223,6 +223,7 @@ targets:
       - seep-ios/model/presentation/WidgetCopy.swift
       - seep-ios/model/presentation/WidgetDeepLink.swift
       - seep-ios/model/presentation/Wish.swift
+      - seep-ios/model/presentation/WishCompanion.swift
       - seep-ios/model/presentation/WishJournal.swift
       - seep-ios/model/presentation/WishPlace.swift
       - seep-ios/model/presentation/WishSaving.swift

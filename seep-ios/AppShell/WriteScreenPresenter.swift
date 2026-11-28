@@ -10,9 +10,22 @@ struct WriteScreenPresenter: ViewModifier {
 
         content
             .seepFullScreenCover(item: $router.writeCategory, style: .pageSheetOnRegular) { category in
-                WishFormScreen(mode: .add(category), previousWishId: router.writePreviousWishId) { savedWish in
+                WishFormScreen(
+                    mode: .add(category),
+                    previousWishId: router.writePreviousWishId,
+                    companions: router.writeCompanion.map { [$0] } ?? []
+                ) { savedWish in
+                    let companion = router.writeCompanion
                     router.writeCategory = nil
-                    if let savedWish {
+                    guard let savedWish else { return }
+                    // 문서에서 그 사람을 빼고 저장했으면 모아보기에 안 나오므로 평소처럼 그 카테고리로 간다.
+                    // 저장소가 같은 이름의 대표 id 로 바꿔 저장할 수 있어 이름으로도 본다
+                    if let companion, savedWish.companions.contains(where: {
+                        $0.personId == companion.personId || WishCompanion.matchKey($0.name) == WishCompanion.matchKey(companion.name)
+                    }) {
+                        // 사람별 모아보기에서 열었으면 그 화면에 머물러 방금 적은 싶을 바로 보여준다 (GH-122 R-6)
+                        router.wishesDidChange()
+                    } else {
                         // 작성을 마치면 그 카테고리를 보여준다 (R-9)
                         router.showSavedWish(category: savedWish.category)
                     }

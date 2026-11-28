@@ -5,7 +5,7 @@ Firestore·Storage 보안 규칙·인덱스와 Cloud Functions (GH-93, 설계 `d
 
 | 파일 | 내용 |
 |---|---|
-| `firestore.rules` | `wishes`·`wishSteps`·`wishSavings`·`wishNotifications`·`wishJournals`·`wishTags`(멤버만), `users/{uid}`(본인만), 문서 삭제 금지, 탈퇴 표시(`deletedUsers/{uid}`)가 있으면 쓰기 금지 |
+| `firestore.rules` | `wishes`·`wishSteps`·`wishSavings`·`wishNotifications`·`wishJournals`·`wishTags`·`wishCompanions`(멤버만, `wishCompanions`는 `linkedUid`가 null 일 때만), `users/{uid}`(본인만), 문서 삭제 금지, 탈퇴 표시(`deletedUsers/{uid}`)가 있으면 쓰기 금지 |
 | `firestore.indexes.json` | 컬렉션마다 `memberUids`(array-contains) + `serverUpdatedAt` |
 | `storage.rules` | `wishPhotos/{uid}/…` 본인만, 이미지·5MB 이하 |
 | `.firebaserc` | `dev` = `seep-dev`, `prod` = `seep-ios` |
@@ -34,7 +34,7 @@ firebase emulators:exec --only auth,firestore,storage,functions --project demo-s
 
 ### 삭제 표시 TTL
 
-`firestore.indexes.json`의 `fieldOverrides`가 6개 컬렉션의 `purgeAt`에 TTL 정책을 켠다(색인은 끈다). 앱이 삭제 표시를 올릴 때 `purgeAt` = 올린 시각 + 90일을 쓴다.
+`firestore.indexes.json`의 `fieldOverrides`가 7개 컬렉션의 `purgeAt`에 TTL 정책을 켠다(색인은 끈다). 앱이 삭제 표시를 올릴 때 `purgeAt` = 올린 시각 + 90일을 쓴다.
 TTL 삭제는 시각이 지난 뒤 보통 24시간 안에 일어나고, 지운 문서는 읽기 비용 없이 삭제 1건으로 센다. 정책을 처음 켜면 적용까지 시간이 걸린다(콘솔 Firestore → TTL에서 확인).
 
 ### 왜 탈퇴 표시를 남기나

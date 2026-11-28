@@ -21,12 +21,12 @@ final class WishDocumentFeatureTests: WishFormFeatureTestCase {
         XCTAssertFalse(viewModel.state.isDeadlineEnabled)
         XCTAssertFalse(viewModel.state.isNotificationEnabled)
         XCTAssertTrue(viewModel.visibleBlocks.isEmpty)
-        XCTAssertEqual(viewModel.chips, [.date, .memo, .steps, .photo, .letter])
+        XCTAssertEqual(viewModel.chips, [.date, .memo, .companion, .steps, .photo, .letter])
     }
 
     func test_GH70_TC1_갖고싶어요는_링크·목표금액칩이_가고싶어요는_장소칩이더있다() {
-        XCTAssertEqual(makeViewModel(mode: .add(.wantToGet)).chips, [.date, .memo, .steps, .link, .targetAmount, .photo, .letter])
-        XCTAssertEqual(makeViewModel(mode: .add(.wantToGo)).chips, [.date, .memo, .steps, .place, .photo, .letter])
+        XCTAssertEqual(makeViewModel(mode: .add(.wantToGet)).chips, [.date, .memo, .companion, .steps, .link, .targetAmount, .photo, .letter])
+        XCTAssertEqual(makeViewModel(mode: .add(.wantToGo)).chips, [.date, .memo, .companion, .steps, .place, .photo, .letter])
     }
 
     // MARK: GH-70 TC2
@@ -60,7 +60,7 @@ final class WishDocumentFeatureTests: WishFormFeatureTestCase {
         XCTAssertTrue(viewModel.state.isDeadlineEnabled)
         XCTAssertEqual(viewModel.state.deadline, now.endOfDay)
         XCTAssertEqual(viewModel.state.sheet, .date)
-        XCTAssertEqual(viewModel.chips, [.memo, .steps, .notification, .photo, .letter])
+        XCTAssertEqual(viewModel.chips, [.memo, .companion, .steps, .notification, .photo, .letter])
     }
 
     // MARK: GH-70 TC4
@@ -94,7 +94,7 @@ final class WishDocumentFeatureTests: WishFormFeatureTestCase {
         XCTAssertNil(viewModel.state.deadline)
         XCTAssertFalse(viewModel.state.isNotificationEnabled)
         XCTAssertTrue(viewModel.visibleBlocks.isEmpty)
-        XCTAssertEqual(viewModel.chips, [.date, .memo, .steps, .photo, .letter])
+        XCTAssertEqual(viewModel.chips, [.date, .memo, .companion, .steps, .photo, .letter])
     }
 
     // MARK: GH-70 TC5
@@ -113,7 +113,7 @@ final class WishDocumentFeatureTests: WishFormFeatureTestCase {
             XCTAssertEqual(viewModel.route, .focus(field))
             viewModel.send(.routeHandled)
         }
-        XCTAssertEqual(viewModel.chips, [.date, .steps, .photo, .letter])
+        XCTAssertEqual(viewModel.chips, [.date, .companion, .steps, .photo, .letter])
     }
 
     func test_GH70_TC5_지우기를누르면_값이비고_블록이닫히며_칩이돌아온다() {
@@ -137,7 +137,7 @@ final class WishDocumentFeatureTests: WishFormFeatureTestCase {
         XCTAssertEqual(viewModel.state.linkPreview, .hidden)
         XCTAssertEqual(viewModel.state.targetAmount, 0)
         XCTAssertTrue(viewModel.visibleBlocks.isEmpty)
-        XCTAssertEqual(viewModel.chips, [.date, .memo, .steps, .link, .targetAmount, .photo, .letter])
+        XCTAssertEqual(viewModel.chips, [.date, .memo, .companion, .steps, .link, .targetAmount, .photo, .letter])
     }
 
     // MARK: GH-70 TC6
@@ -209,7 +209,7 @@ final class WishDocumentFeatureTests: WishFormFeatureTestCase {
         // Then
         XCTAssertEqual(viewModel.visibleBlocks, [.memo, .steps, .notification])
         XCTAssertTrue(viewModel.isRevealed(.date))
-        XCTAssertEqual(viewModel.chips, [.photo, .letter])
+        XCTAssertEqual(viewModel.chips, [.companion, .photo, .letter])
     }
 
     // MARK: GH-70 TC10
