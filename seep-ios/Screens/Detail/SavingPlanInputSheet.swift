@@ -168,6 +168,9 @@ struct SavingPlanInputSheet: View {
         .padding(.horizontal, 16)
         .frame(height: 52)
         .background(Color.gray2, in: RoundedRectangle(cornerRadius: 12))
+        // 칸의 여백(회색 상자)을 눌러도 입력을 시작한다
+        .contentShape(RoundedRectangle(cornerRadius: 12))
+        .onTapGesture { isAmountFocused = true }
     }
 
     /// "7번 넣으면 **12월 18일 (금)**에 다 모여요" + "넣는 날 오전 11시에 알려드릴게요"
