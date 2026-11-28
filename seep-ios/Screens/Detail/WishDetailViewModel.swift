@@ -81,6 +81,7 @@ extension WishDetailViewModel {
         let linkMetadataProvider: LinkMetadataProviding
         let linkPreviewCache: LinkPreviewCaching
         let calendarManager: CalendarManagerProtocol
+        let nearbyAlertScheduler: NearbyAlertSchedulerProtocol
         let now: () -> Date
         let calendar: Calendar
 
@@ -93,6 +94,7 @@ extension WishDetailViewModel {
             linkMetadataProvider: LinkMetadataProviding = LinkMetadataProvider(),
             linkPreviewCache: LinkPreviewCaching = LinkPreviewCache.shared,
             calendarManager: CalendarManagerProtocol = CalendarManager.shared,
+            nearbyAlertScheduler: NearbyAlertSchedulerProtocol = NearbyAlertScheduler.shared,
             now: @escaping () -> Date = Date.init,
             calendar: Calendar = .current
         ) {
@@ -104,6 +106,7 @@ extension WishDetailViewModel {
             self.linkMetadataProvider = linkMetadataProvider
             self.linkPreviewCache = linkPreviewCache
             self.calendarManager = calendarManager
+            self.nearbyAlertScheduler = nearbyAlertScheduler
             self.now = now
             self.calendar = calendar
         }
@@ -432,11 +435,19 @@ final class WishDetailViewModel {
         )
 
         let place = DetailPlaceViewModel(
-            config: .init(wish: wish),
-            dependency: .init(wishRepository: dependency.wishRepository, logManager: dependency.logManager)
+            // 근처 알림 토글은 홈에서 연 상세에만 (GH-126 R-2)
+            config: .init(wish: wish, isNearbyAlertEditable: config.mode == .fromHome),
+            dependency: .init(
+                wishRepository: dependency.wishRepository,
+                nearbyAlertScheduler: dependency.nearbyAlertScheduler,
+                logManager: dependency.logManager
+            )
         )
         place.onUpdate = { [weak self] place in
             self?.update { $0.place = place }
+        }
+        place.onNearbyAlertUpdate = { [weak self] isOn in
+            self?.update { $0.nearbyAlertOn = isOn }
         }
         self.place = place
 

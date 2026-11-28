@@ -412,6 +412,84 @@ final class SyncEngineTests: XCTestCase {
         XCTAssertNil(deviceB.repository.fetchWish(id: "w1")?.startedAt)
     }
 
+    // MARK: GH-126 TC13
+
+    /// B 기기: 실제 알림 관리자 + 근처 알림 스케줄러, 시스템(알림 센터·위치 권한)만 목
+    private func makeNearbyDeviceB(center: MockNearbyAlertCenter) throws -> SyncTestDevice {
+        try SyncTestDevice(server: server, photoServer: photoServer, clock: start.addingTimeInterval(5)) { repository in
+            NotificationManager(nearbyAlertScheduler: NearbyAlertScheduler(center: center, wishRepository: repository))
+        }
+    }
+
+    private func turnOnNearbyAlertOnA() throws {
+        let place = WishPlace(name: "블루보틀 성수 카페", address: "서울 성동구 아차산로 7", latitude: 37.5478, longitude: 127.0451)
+        _ = try deviceA.repository.addWish(Wish(id: "w1", emoji: "☕️", category: .wantToGo, title: "성수 블루보틀", place: place)).get()
+        deviceA.tick(60)
+        _ = try deviceA.repository.updateNearbyAlert(wishId: "w1", isOn: true).get()
+    }
+
+    func test_GH126_TC13_A에서근처알림을켜고동기화하면_B에서켜짐으로받고_B에근처알림이1건예약된다() async throws {
+        // Given: B 는 위치·알림 권한 허용
+        let center = MockNearbyAlertCenter()
+        deviceB = try makeNearbyDeviceB(center: center)
+        await signInBoth()
+
+        // When
+        try turnOnNearbyAlertOnA()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.nearbyAlertOn, true)
+        XCTAssertEqual(deviceB.repository.fetchNearbyAlertWishes().map(\.id), ["w1"])
+        for _ in 0..<50 where center.addedRequests.isEmpty {
+            try await Task.sleep(nanoseconds: 20_000_000)
+        }
+        XCTAssertEqual(center.addedRequests.map(\.identifier), ["nearby-w1"])
+        XCTAssertEqual(Set(center.pending.keys), ["nearby-w1"])
+    }
+
+    func test_GH126_TC13_B가위치권한을거부했으면_켜짐으로받되_예약은0건이다() async throws {
+        // Given
+        let center = MockNearbyAlertCenter()
+        center.locationStatus = .denied
+        deviceB = try makeNearbyDeviceB(center: center)
+        await signInBoth()
+
+        // When
+        try turnOnNearbyAlertOnA()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+        try await Task.sleep(nanoseconds: 300_000_000)
+
+        // Then
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.nearbyAlertOn, true)
+        XCTAssertTrue(center.addedRequests.isEmpty)
+    }
+
+    func test_GH126_TC13_A에서끄고동기화하면_B의근처알림예약이지워진다() async throws {
+        // Given
+        let center = MockNearbyAlertCenter()
+        deviceB = try makeNearbyDeviceB(center: center)
+        await signInBoth()
+        try turnOnNearbyAlertOnA()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+        for _ in 0..<50 where center.pending.isEmpty {
+            try await Task.sleep(nanoseconds: 20_000_000)
+        }
+
+        // When
+        deviceA.tick(60)
+        _ = try deviceA.repository.updateNearbyAlert(wishId: "w1", isOn: false).get()
+        await deviceA.engine.sync(trigger: .manual)
+        await deviceB.engine.sync(trigger: .manual)
+
+        // Then
+        XCTAssertEqual(deviceB.repository.fetchWish(id: "w1")?.nearbyAlertOn, false)
+        XCTAssertTrue(center.pending.isEmpty)
+    }
+
     // MARK: TC-34
 
     func test_GH93_TC34_더새앱이쓴문서는아는필드만적용하고_다시올려도모르는필드를지우지않는다() async throws {

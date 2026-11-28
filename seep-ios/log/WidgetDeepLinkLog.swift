@@ -9,8 +9,9 @@ extension WidgetDeepLink.Source {
             return .lockscreenDdayWidget
         case .lockscreenRemain:
             return .lockscreenRemainWidget
-        case .checkWidget, .control, .shortcut:
-            // 체크 위젯 줄 열기는 트래킹 대상이 아니고, 컨트롤·단축어는 writeIntentClickEvent 가 보낸다 (GH-49)
+        case .checkWidget, .control, .shortcut, .nearbyAlert:
+            // 체크 위젯 줄 열기는 트래킹 대상이 아니고, 컨트롤·단축어는 writeIntentClickEvent 가,
+            // 근처 알림은 `NearbyAlertOpener`가 `open_nearby_alert`로 보낸다 (GH-49, GH-126)
             return nil
         }
     }

@@ -146,6 +146,10 @@ enum LogObjectId: String {
     case keepSleepingWish = "keep_sleeping_wish"
     case releaseSleepingWish = "release_sleeping_wish"
     case addPlace = "add_place"
+    /// 상세 장소 섹션 "근처에 가면 알려줘요" 토글 (+enabled: 켜려는 값) (GH-126)
+    case nearbyAlert = "nearby_alert"
+    /// 근처 알림 10개 한도 토스트 노출 (GH-126)
+    case nearbyAlertLimitToast = "nearby_alert_limit_toast"
     case selectPlace = "select_place"
     case placeMap = "place_map"
     case placeMapWish = "place_map_wish"

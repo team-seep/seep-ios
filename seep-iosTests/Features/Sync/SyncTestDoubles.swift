@@ -88,7 +88,13 @@ final class SyncTestDevice {
     private(set) var photosDidDownloadCount = 0
     var clock: Date
 
-    init(server: FakeSyncServer, photoServer: FakePhotoServer = FakePhotoServer(), clock: Date) throws {
+    /// - Parameter makeNotificationManager: 엔진이 쓸 알림 관리자. nil 이면 `notifications`(목). 근처 알림 예약까지 보려면 실제 `NotificationManager`를 넘긴다 (GH-126 TC-13)
+    init(
+        server: FakeSyncServer,
+        photoServer: FakePhotoServer = FakePhotoServer(),
+        clock: Date,
+        makeNotificationManager: ((WishRepository) -> NotificationManagerProtocol)? = nil
+    ) throws {
         self.clock = clock
         database = try AppDatabase.makeInMemory()
         store = SyncStore(database: database)
@@ -104,7 +110,7 @@ final class SyncTestDevice {
             photosDidDownload: { photosDownloaded?() },
             isEnabled: { true },
             wishRepository: repository,
-            notificationManager: notifications,
+            notificationManager: makeNotificationManager?(repository) ?? notifications,
             reloadWidgets: { reload?() },
             logManager: logManager,
             now: { nowBox?() ?? Date() }

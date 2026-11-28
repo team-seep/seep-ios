@@ -292,9 +292,16 @@ final class AppRouter {
             writeCategory = category
             return true
 
-        case .wish(let id, _):
+        case .wish(let id, let source):
             // 위젯이 갱신되기 전에 위시가 지워졌으면 홈만 보여준다 (GH-47 R-10, GH-48 R-9)
-            guard let wish = dependency.wishRepository.fetchWish(id: id) else { return false }
+            guard let wish = dependency.wishRepository.fetchWish(id: id) else {
+                // 근처 알림은 눌렀다는 것 자체가 앱을 연 이유라 홈을 보여 준다 (GH-126 R-8)
+                return source == .nearbyAlert ? handle(.home(source: source)) : false
+            }
+            // 근처 알림이 남아 있던 사이에 이뤘으면 상세 대신 홈을 연다 (GH-126 R-8)
+            if source == .nearbyAlert, wish.isSuccess {
+                return handle(.home(source: source))
+            }
             if isRegularLayout {
                 // 아이패드에서는 그 위시의 사이드바 항목 + 상세 열을 연다 (GH-99 R-13)
                 selectPadSection(wish.isSuccess ? .finished : .category(wish.category))

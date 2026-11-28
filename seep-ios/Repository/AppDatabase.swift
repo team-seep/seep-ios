@@ -276,6 +276,15 @@ final class AppDatabase {
             }
         }
 
+        // GH-126: "근처에 가면 알려줘요". 기존 위시는 모두 꺼짐. 기본값 있는 컬럼이라 구버전 앱과 섞여도 merge 쓰기가
+        // 이 필드를 지우지 않고(설계 §6.4), wish 아웃박스 트리거가 새 컬럼도 그대로 실어 나른다.
+        // v13~v15 는 같은 때 열린 PR(GH-139·GH-118·GH-121)이 쓴다. 이름이 겹치지 않게 v16 으로 두고, 등록 순서가 섞여도 GRDB 는 안 돈 것만 돈다
+        migrator.registerMigration("v16") { db in
+            try db.alter(table: WishRecord.databaseTableName) { table in
+                table.add(column: "nearbyAlertOn", .boolean).notNull().defaults(to: false)
+            }
+        }
+
         return migrator
     }
 

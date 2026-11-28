@@ -193,6 +193,8 @@ struct LegacyRealmImporter {
                 previousWishId: nil,
                 // Realm 시절에는 '시작했어요'가 없었다. 옮긴 싶은 시작 전이다 (GH-143 R-7)
                 startedAt: nil,
+                // Realm 시절에는 근처 알림이 없었다 (GH-126)
+                nearbyAlertOn: false,
                 createdAt: dto.createdAt,
                 updatedAt: importedAt,
                 deletedAt: nil

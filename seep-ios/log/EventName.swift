@@ -18,4 +18,6 @@ enum EventName: String {
     case syncPull = "sync_pull"
     /// 동기화 실패 (+error_type: sign_in·push·pull·photo_upload·photo_download) (GH-93)
     case syncError = "sync_error"
+    /// 근처 알림(`nearby-{wishId}`)을 눌러 앱이 열림 (GH-126)
+    case openNearbyAlert = "open_nearby_alert"
 }
